@@ -78,7 +78,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_fingers(const u32 fingers) noexcept
+  void set_fingers(const Uint32 fingers) noexcept
   {
     m_event.numFingers = fingers;
   }
@@ -150,7 +150,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto finger_count() const noexcept -> u32
+  [[nodiscard]] auto finger_count() const noexcept -> Uint32
   {
     return m_event.numFingers;
   }

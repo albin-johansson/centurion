@@ -59,7 +59,7 @@ class message_box final
    *
    * \since 3.0.0
    */
-  enum class default_button : u32
+  enum class default_button : Uint32
   {
     return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
@@ -460,7 +460,8 @@ class message_box final
   }
 
   [[nodiscard]] constexpr static auto to_flags(const message_box_type type,
-                                               const button_order buttonOrder) noexcept -> u32
+                                               const button_order buttonOrder) noexcept
+      -> Uint32
   {
     return to_underlying(type) | to_underlying(buttonOrder);
   }

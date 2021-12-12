@@ -51,7 +51,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const u32 id) noexcept
+  void set_window_id(const Uint32 id) noexcept
   {
     m_event.windowID = id;
   }
@@ -63,7 +63,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const u32 which) noexcept
+  void set_which(const Uint32 which) noexcept
   {
     m_event.which = which;
   }
@@ -99,7 +99,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_clicks(const u8 clicks) noexcept
+  void set_clicks(const Uint8 clicks) noexcept
   {
     m_event.clicks = clicks;
   }
@@ -111,7 +111,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_x(const i32 x) noexcept
+  void set_x(const Sint32 x) noexcept
   {
     m_event.x = x;
   }
@@ -123,7 +123,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_y(const i32 y) noexcept
+  void set_y(const Sint32 y) noexcept
   {
     m_event.y = y;
   }
@@ -135,7 +135,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> u32
+  [[nodiscard]] auto window_id() const noexcept -> Uint32
   {
     return m_event.windowID;
   }
@@ -148,7 +148,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> u32
+  [[nodiscard]] auto which() const noexcept -> Uint32
   {
     return m_event.which;
   }
@@ -208,7 +208,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto clicks() const noexcept -> u8
+  [[nodiscard]] auto clicks() const noexcept -> Uint8
   {
     return m_event.clicks;
   }
@@ -220,7 +220,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> i32
+  [[nodiscard]] auto x() const noexcept -> Sint32
   {
     return m_event.x;
   }
@@ -232,7 +232,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> i32
+  [[nodiscard]] auto y() const noexcept -> Sint32
   {
     return m_event.y;
   }

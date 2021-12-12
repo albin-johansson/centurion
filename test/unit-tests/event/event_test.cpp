@@ -6,7 +6,7 @@
 
 namespace {
 
-[[nodiscard]] auto create_event(const cen::u32 type) -> cen::event
+[[nodiscard]] auto create_event(const Uint32 type) -> cen::event
 {
   SDL_Event sdlEvent;
   sdlEvent.type = type;

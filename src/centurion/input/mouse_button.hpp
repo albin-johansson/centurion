@@ -21,7 +21,7 @@ namespace cen {
  *
  * \since 3.1.0
  */
-enum class mouse_button : u8
+enum class mouse_button : Uint8
 {
   left = SDL_BUTTON_LEFT,
   middle = SDL_BUTTON_MIDDLE,

@@ -151,7 +151,7 @@ class palette final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto version() const noexcept -> u32
+  [[nodiscard]] auto version() const noexcept -> Uint32
   {
     return m_palette->version;
   }

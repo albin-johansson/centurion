@@ -41,7 +41,7 @@ enum class power_state
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto frequency() noexcept -> u64
+[[nodiscard]] inline auto frequency() noexcept -> Uint64
 {
   return SDL_GetPerformanceFrequency();
 }
@@ -55,7 +55,7 @@ enum class power_state
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto now() noexcept -> u64
+[[nodiscard]] inline auto now() noexcept -> Uint64
 {
   return SDL_GetPerformanceCounter();
 }
@@ -84,7 +84,7 @@ template <typename T>
  *
  * \since 3.0.0
  */
-[[nodiscard, deprecated]] inline auto ticks() noexcept(noexcept(u32_ms{u32{}})) -> u32_ms
+[[nodiscard, deprecated]] inline auto ticks() noexcept(noexcept(u32_ms{Uint32{}})) -> u32_ms
 {
   return u32_ms{SDL_GetTicks()};
 }
@@ -98,7 +98,7 @@ template <typename T>
  *
  * \since 6.4.0
  */
-[[nodiscard]] inline auto ticks64() noexcept(noexcept(u64_ms{u64{}})) -> u64_ms
+[[nodiscard]] inline auto ticks64() noexcept(noexcept(u64_ms{Uint64{}})) -> u64_ms
 {
   return u64_ms{SDL_GetTicks64()};
 }

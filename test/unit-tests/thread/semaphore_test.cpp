@@ -15,7 +15,7 @@ TEST(Semaphore, Acquire)
 
 TEST(Semaphore, AcquireMilliseconds)
 {
-  using ms = cen::milliseconds<cen::u32>;
+  using ms = cen::milliseconds<Uint32>;
 
   cen::semaphore semaphore{0u};
 
@@ -46,7 +46,7 @@ TEST(Semaphore, Release)
 
 TEST(Semaphore, Tokens)
 {
-  constexpr cen::u32 tokens = 32;
+  constexpr Uint32 tokens = 32;
 
   cen::semaphore semaphore{tokens};
   ASSERT_EQ(semaphore.tokens(), tokens);

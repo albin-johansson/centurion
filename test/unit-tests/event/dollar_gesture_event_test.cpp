@@ -33,7 +33,7 @@ TEST(DollarGestureEvent, SetFingers)
 {
   cen::dollar_gesture_event event;
 
-  constexpr cen::u32 fingers = 2;
+  constexpr Uint32 fingers = 2;
   event.set_fingers(fingers);
 
   ASSERT_EQ(fingers, event.finger_count());
@@ -128,6 +128,6 @@ TEST(DollarGestureEvent, AsSDLEvent)
   const cen::dollar_gesture_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.dgesture.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.dgesture.type, static_cast<Uint32>(event.type()));
   ASSERT_EQ(sdl.dgesture.timestamp, event.time());
 }

@@ -194,7 +194,7 @@ TEST_F(TextureTest, IsTarget)
 
 TEST_F(TextureTest, Format)
 {
-  cen::u32 format{};
+  Uint32 format{};
   SDL_QueryTexture(m_texture->get(), &format, nullptr, nullptr, nullptr);
 
   const auto actual = static_cast<cen::pixel_format>(format);

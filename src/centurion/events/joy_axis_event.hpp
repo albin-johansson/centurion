@@ -61,7 +61,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_axis(const u8 axis) noexcept
+  void set_axis(const Uint8 axis) noexcept
   {
     m_event.axis = axis;
   }
@@ -73,7 +73,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_value(const i16 value) noexcept
+  void set_value(const Sint16 value) noexcept
   {
     m_event.value = value;
   }
@@ -97,7 +97,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto axis() const noexcept -> u8
+  [[nodiscard]] auto axis() const noexcept -> Uint8
   {
     return m_event.axis;
   }
@@ -109,7 +109,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto value() const noexcept -> i16
+  [[nodiscard]] auto value() const noexcept -> Sint16
   {
     return m_event.value;
   }

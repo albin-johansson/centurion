@@ -62,7 +62,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_button(const u8 button) noexcept
+  void set_button(const Uint8 button) noexcept
   {
     m_event.button = button;
   }
@@ -100,7 +100,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto button() const noexcept -> u8
+  [[nodiscard]] auto button() const noexcept -> Uint8
   {
     return m_event.button;
   }

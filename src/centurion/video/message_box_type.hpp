@@ -23,7 +23,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-enum class message_box_type : u32
+enum class message_box_type : Uint32
 {
   error = SDL_MESSAGEBOX_ERROR,
   warning = SDL_MESSAGEBOX_WARNING,

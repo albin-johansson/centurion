@@ -54,10 +54,10 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  void set_axis_count(const u8 count) noexcept
+  void set_axis_count(const Uint8 count) noexcept
   {
     assert(count > 0);
-    representation().channels = detail::max(u8{1}, count);
+    representation().channels = detail::max(Uint8{1}, count);
   }
 
   // clang-format off
@@ -69,7 +69,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  void set_sample_period(const milliseconds<u16> period) noexcept(noexcept(period.count()))
+  void set_sample_period(const milliseconds<Uint16> period) noexcept(noexcept(period.count()))
   {
     representation().period = period.count();
   }
@@ -83,7 +83,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  void set_sample_count(const u16 count) noexcept
+  void set_sample_count(const Uint16 count) noexcept
   {
     representation().samples = count;
   }
@@ -99,7 +99,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  void set_data(u16* data) noexcept
+  void set_data(Uint16* data) noexcept
   {
     representation().data = data;
   }
@@ -111,7 +111,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto axis_count() const noexcept -> u8
+  [[nodiscard]] auto axis_count() const noexcept -> Uint8
   {
     return representation().channels;
   }
@@ -123,9 +123,9 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto sample_period() const -> milliseconds<u16>
+  [[nodiscard]] auto sample_period() const -> milliseconds<Uint16>
   {
-    return milliseconds<u16>{representation().period};
+    return milliseconds<Uint16>{representation().period};
   }
 
   /**
@@ -135,7 +135,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto sample_count() const noexcept -> u16
+  [[nodiscard]] auto sample_count() const noexcept -> Uint16
   {
     return representation().samples;
   }
@@ -147,7 +147,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto data() const noexcept -> u16*
+  [[nodiscard]] auto data() const noexcept -> Uint16*
   {
     return representation().data;
   }

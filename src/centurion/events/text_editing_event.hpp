@@ -58,7 +58,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const u32 id) noexcept
+  void set_window_id(const Uint32 id) noexcept
   {
     m_event.windowID = id;
   }
@@ -70,7 +70,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  void set_start(const i32 start) noexcept
+  void set_start(const Sint32 start) noexcept
   {
     m_event.start = start;
   }
@@ -84,7 +84,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  void set_length(const i32 length) noexcept
+  void set_length(const Sint32 length) noexcept
   {
     m_event.length = detail::clamp(length, 0, 32);
   }
@@ -96,7 +96,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> u32
+  [[nodiscard]] auto window_id() const noexcept -> Uint32
   {
     return m_event.windowID;
   }
@@ -121,7 +121,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto start() const noexcept -> i32
+  [[nodiscard]] auto start() const noexcept -> Sint32
   {
     return m_event.start;
   }
@@ -135,7 +135,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto length() const noexcept -> i32
+  [[nodiscard]] auto length() const noexcept -> Sint32
   {
     return m_event.length;
   }

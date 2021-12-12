@@ -115,7 +115,7 @@ TEST(Thread, Get)
 
 TEST(Thread, Sleep)
 {
-  using ms = cen::milliseconds<cen::u32>;
+  using ms = cen::milliseconds<Uint32>;
   ASSERT_NO_THROW(cen::thread::sleep(ms{2}));
   ASSERT_NO_THROW(cen::thread::sleep(ms{0}));
 }

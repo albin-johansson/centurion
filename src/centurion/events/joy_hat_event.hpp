@@ -50,7 +50,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  void set_hat(const u8 hat) noexcept
+  void set_hat(const Uint8 hat) noexcept
   {
     m_event.hat = hat;
   }
@@ -74,7 +74,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto hat() const noexcept -> u8
+  [[nodiscard]] auto hat() const noexcept -> Uint8
   {
     return m_event.hat;
   }

@@ -23,7 +23,7 @@ namespace cen {
  *
  * \since 3.1.0
  */
-enum class pixel_format : u32
+enum class pixel_format : Uint32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 

@@ -128,16 +128,6 @@ using uint = unsigned int;
 /// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
-using u8 = Uint8;
-using u16 = Uint16;
-using u32 = Uint32;
-using u64 = Uint64;
-
-using i8 = Sint8;
-using i16 = Sint16;
-using i32 = Sint32;
-using i64 = Sint64;
-
 /// \} End of integer aliases
 
 // TODO use _t suffix instead of _v in the SFINAE aliases
@@ -446,9 +436,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> Uint8
 {
-  return static_cast<u8>(value);
+  return static_cast<Uint8>(value);
 }
 
 /**
@@ -460,9 +450,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> Uint16
 {
-  return static_cast<u16>(value);
+  return static_cast<Uint16>(value);
 }
 
 /**
@@ -474,9 +464,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> Uint32
 {
-  return static_cast<u32>(value);
+  return static_cast<Uint32>(value);
 }
 
 /**
@@ -488,9 +478,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> Uint64
 {
-  return static_cast<u64>(value);
+  return static_cast<Uint64>(value);
 }
 
 /**
@@ -502,9 +492,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> Sint8
 {
-  return static_cast<i8>(value);
+  return static_cast<Sint8>(value);
 }
 
 /**
@@ -516,9 +506,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> Sint16
 {
-  return static_cast<i16>(value);
+  return static_cast<Sint16>(value);
 }
 
 /**
@@ -530,9 +520,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> Sint32
 {
-  return static_cast<i32>(value);
+  return static_cast<Sint32>(value);
 }
 
 /**
@@ -544,9 +534,9 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> Sint64
 {
-  return static_cast<i64>(value);
+  return static_cast<Sint64>(value);
 }
 
 /// \} End of group core

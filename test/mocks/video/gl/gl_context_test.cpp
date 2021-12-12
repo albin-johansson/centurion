@@ -32,7 +32,7 @@ TEST_F(OpenGLContextTest, Construction)
 
 TEST_F(OpenGLContextTest, MakeCurrent)
 {
-  std::array flags{cen::u32{cen::window::opengl}};
+  std::array flags{Uint32{cen::window::opengl}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
   std::array values{-1, 0};

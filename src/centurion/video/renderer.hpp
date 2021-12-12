@@ -109,7 +109,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  enum renderer_flags : u32
+  enum renderer_flags : Uint32
   {
     software = SDL_RENDERER_SOFTWARE,              ///< Software renderer
     accelerated = SDL_RENDERER_ACCELERATED,        ///< Hardware-accelerated
@@ -156,7 +156,7 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename Window, typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_renderer(const Window& window, const u32 flags = default_flags())
+  explicit basic_renderer(const Window& window, const Uint32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
@@ -654,7 +654,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<cstr> str,
                                                  const font& font,
-                                                 const u32 wrap) -> texture
+                                                 const Uint32 wrap) -> texture
   {
     assert(str);
     return render_text(
@@ -667,7 +667,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
                                                  const font& font,
-                                                 const u32 wrap) -> texture
+                                                 const Uint32 wrap) -> texture
   {
     return render_blended_wrapped_utf8(str.c_str(), font, wrap);
   }
@@ -819,7 +819,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<cstr> str,
                                                    const font& font,
-                                                   const u32 wrap) -> texture
+                                                   const Uint32 wrap) -> texture
   {
     assert(str);
     return render_text(
@@ -832,7 +832,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
                                                    const font& font,
-                                                   const u32 wrap) -> texture
+                                                   const Uint32 wrap) -> texture
   {
     return render_blended_wrapped_latin1(str.c_str(), font, wrap);
   }
@@ -970,7 +970,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
                                                     const font& font,
-                                                    const u32 wrap) -> texture
+                                                    const Uint32 wrap) -> texture
   {
     return render_text(
         TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), get_color().get(), wrap));
@@ -2039,10 +2039,10 @@ class basic_renderer final
    */
   [[nodiscard]] auto get_color() const noexcept -> color
   {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
+    Uint8 red{};
+    Uint8 green{};
+    Uint8 blue{};
+    Uint8 alpha{};
     SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
     return {red, green, blue, alpha};
   }
@@ -2087,7 +2087,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> Uint32
   {
     return accelerated | vsync;
   }

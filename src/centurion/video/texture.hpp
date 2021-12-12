@@ -223,7 +223,7 @@ class basic_texture final
     basic_texture texture{renderer, format, texture_access::streaming, surface.size()};
     texture.set_blend_mode(blendMode);
 
-    u32* pixels{};
+    Uint32* pixels{};
     if (!texture.lock(&pixels)) {
       throw SDLError{};
     }
@@ -273,7 +273,7 @@ class basic_texture final
       return;
     }
 
-    u32* pixels{};
+    Uint32* pixels{};
     int pitch{};
     if (!lock(&pixels, &pitch)) {
       return;
@@ -297,7 +297,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  void set_alpha(const u8 alpha) noexcept
+  void set_alpha(const Uint8 alpha) noexcept
   {
     SDL_SetTextureAlphaMod(m_texture, alpha);
   }
@@ -358,7 +358,7 @@ class basic_texture final
    */
   [[nodiscard]] auto format() const noexcept -> pixel_format
   {
-    u32 format{};
+    Uint32 format{};
     SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
     return static_cast<pixel_format>(format);
   }
@@ -461,9 +461,9 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto alpha() const noexcept -> u8
+  [[nodiscard]] auto alpha() const noexcept -> Uint8
   {
-    u8 alpha{};
+    Uint8 alpha{};
     SDL_GetTextureAlphaMod(m_texture, &alpha);
     return alpha;
   }
@@ -491,9 +491,9 @@ class basic_texture final
    */
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
+    Uint8 red{};
+    Uint8 green{};
+    Uint8 blue{};
     SDL_GetTextureColorMod(m_texture, &red, &green, &blue);
     return {red, green, blue, 0xFF};
   }
@@ -613,7 +613,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
+  auto lock(Uint32** pixels, int* pitch = nullptr) noexcept -> result
   {
     if (pitch) {
       return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;

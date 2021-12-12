@@ -13,7 +13,7 @@ TEST(TextInputEvent, SetWindowId)
 {
   cen::text_input_event event;
 
-  constexpr cen::u32 id = 23;
+  constexpr Uint32 id = 23;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

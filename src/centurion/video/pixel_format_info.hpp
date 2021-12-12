@@ -143,11 +143,11 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto pixel_to_rgb(const u32 pixel) const noexcept -> color
+  [[nodiscard]] auto pixel_to_rgb(const Uint32 pixel) const noexcept -> color
   {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
+    Uint8 red{};
+    Uint8 green{};
+    Uint8 blue{};
     SDL_GetRGB(pixel, m_format, &red, &green, &blue);
     return color{red, green, blue};
   }
@@ -161,12 +161,12 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto pixel_to_rgba(const u32 pixel) const noexcept -> color
+  [[nodiscard]] auto pixel_to_rgba(const Uint32 pixel) const noexcept -> color
   {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
+    Uint8 red{};
+    Uint8 green{};
+    Uint8 blue{};
+    Uint8 alpha{};
     SDL_GetRGBA(pixel, m_format, &red, &green, &blue, &alpha);
     return color{red, green, blue, alpha};
   }
@@ -182,7 +182,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto rgb_to_pixel(const color& color) const noexcept -> u32
+  [[nodiscard]] auto rgb_to_pixel(const color& color) const noexcept -> Uint32
   {
     return SDL_MapRGB(m_format, color.red(), color.green(), color.blue());
   }
@@ -196,7 +196,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> u32
+  [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> Uint32
   {
     return SDL_MapRGBA(m_format, color.red(), color.green(), color.blue(), color.alpha());
   }

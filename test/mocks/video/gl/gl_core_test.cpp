@@ -53,7 +53,7 @@ class OpenGLTest : public testing::Test
 
 TEST_F(OpenGLTest, Swap)
 {
-  std::array flags{cen::u32{SDL_WINDOW_OPENGL}};
+  std::array flags{Uint32{SDL_WINDOW_OPENGL}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
   ASSERT_NO_FATAL_FAILURE(cen::gl::swap(m_window));
@@ -62,7 +62,7 @@ TEST_F(OpenGLTest, Swap)
 
 TEST_F(OpenGLTest, DrawableSize)
 {
-  std::array flags{cen::u32{SDL_WINDOW_OPENGL}};
+  std::array flags{Uint32{SDL_WINDOW_OPENGL}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
   ASSERT_NO_FATAL_FAILURE(cen::gl::drawable_size(m_window));

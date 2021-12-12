@@ -623,7 +623,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
+  [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> Sint16
   {
     return SDL_GameControllerGetAxis(m_controller, static_cast<SDL_GameControllerAxis>(axis));
   }
@@ -684,9 +684,10 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  auto rumble(const u16 lo,
-              const u16 hi,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
+  auto rumble(const Uint16 lo,
+              const Uint16 hi,
+              const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
+      -> result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -713,9 +714,9 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  auto rumble_triggers(const u16 lo,
-                       const u16 hi,
-                       const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+  auto rumble_triggers(const Uint16 lo,
+                       const Uint16 hi,
+                       const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
       -> result
   {
     return SDL_GameControllerRumbleTriggers(m_controller, lo, hi, duration.count()) == 0;
@@ -732,7 +733,7 @@ class basic_controller final
    */
   void stop_rumble() noexcept
   {
-    rumble(0, 0, milliseconds<u32>::zero());
+    rumble(0, 0, milliseconds<Uint32>::zero());
   }
 
   /// \} End of rumble functions
@@ -748,7 +749,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto product() const noexcept -> std::optional<u16>
+  [[nodiscard]] auto product() const noexcept -> std::optional<Uint16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
     if (id != 0) {
@@ -766,7 +767,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
+  [[nodiscard]] auto vendor() const noexcept -> std::optional<Uint16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
     if (id != 0) {
@@ -785,7 +786,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
+  [[nodiscard]] auto product_version() const noexcept -> std::optional<Uint16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
     if (id != 0) {
@@ -990,7 +991,7 @@ class basic_controller final
       -> std::optional<touch::finger_state>
   {
     touch::finger_state result{};
-    u8 state{};
+    Uint8 state{};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
                                                          touchpad,

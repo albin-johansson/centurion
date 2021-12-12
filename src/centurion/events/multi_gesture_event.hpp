@@ -117,7 +117,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 6.1.0
    */
-  void set_finger_count(const u16 count) noexcept
+  void set_finger_count(const Uint16 count) noexcept
   {
     m_event.numFingers = count;
   }
@@ -195,7 +195,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto finger_count() const noexcept -> u16
+  [[nodiscard]] auto finger_count() const noexcept -> Uint16
   {
     return m_event.numFingers;
   }

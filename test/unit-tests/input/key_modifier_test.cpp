@@ -47,7 +47,7 @@ TEST(KeyModifier, GetModifiers)
 
 TEST(KeyModifier, BitwiseNot)
 {
-  ASSERT_EQ(cen::u16(~cen::u16{KMOD_SHIFT}), cen::to_underlying(~cen::key_mod::shift));
+  ASSERT_EQ(Uint16(~Uint16{KMOD_SHIFT}), cen::to_underlying(~cen::key_mod::shift));
 }
 
 TEST(KeyModifier, BitwiseOR)

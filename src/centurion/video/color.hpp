@@ -66,7 +66,10 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
+  constexpr color(const Uint8 red,
+                  const Uint8 green,
+                  const Uint8 blue,
+                  const Uint8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -156,9 +159,9 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
+    const auto r = static_cast<Uint8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<Uint8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<Uint8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
@@ -227,9 +230,9 @@ class color final
 
     const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
+    const auto r = static_cast<Uint8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<Uint8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<Uint8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
@@ -261,9 +264,9 @@ class color final
     const auto gg = noHash.substr(2, 2);
     const auto bb = noHash.substr(4, 2);
 
-    const auto red = detail::stoi<u8>(rr, 16);
-    const auto green = detail::stoi<u8>(gg, 16);
-    const auto blue = detail::stoi<u8>(bb, 16);
+    const auto red = detail::stoi<Uint8>(rr, 16);
+    const auto green = detail::stoi<Uint8>(gg, 16);
+    const auto blue = detail::stoi<Uint8>(bb, 16);
 
     if (red && green && blue) {
       return cen::color{*red, *green, *blue};
@@ -301,10 +304,10 @@ class color final
     const auto bb = noHash.substr(4, 2);
     const auto aa = noHash.substr(6, 2);
 
-    const auto red = detail::stoi<u8>(rr, 16);
-    const auto green = detail::stoi<u8>(gg, 16);
-    const auto blue = detail::stoi<u8>(bb, 16);
-    const auto alpha = detail::stoi<u8>(aa, 16);
+    const auto red = detail::stoi<Uint8>(rr, 16);
+    const auto green = detail::stoi<Uint8>(gg, 16);
+    const auto blue = detail::stoi<Uint8>(bb, 16);
+    const auto alpha = detail::stoi<Uint8>(aa, 16);
 
     if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
@@ -342,10 +345,10 @@ class color final
     const auto gg = noHash.substr(4, 2);
     const auto bb = noHash.substr(6, 2);
 
-    const auto alpha = detail::stoi<u8>(aa, 16);
-    const auto red = detail::stoi<u8>(rr, 16);
-    const auto green = detail::stoi<u8>(gg, 16);
-    const auto blue = detail::stoi<u8>(bb, 16);
+    const auto alpha = detail::stoi<Uint8>(aa, 16);
+    const auto red = detail::stoi<Uint8>(rr, 16);
+    const auto green = detail::stoi<Uint8>(gg, 16);
+    const auto blue = detail::stoi<Uint8>(bb, 16);
 
     if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
@@ -379,10 +382,10 @@ class color final
     blue = detail::clamp(blue, 0.0f, 1.0f);
     alpha = detail::clamp(alpha, 0.0f, 1.0f);
 
-    const auto r = static_cast<u8>(std::round(red * 255.0f));
-    const auto g = static_cast<u8>(std::round(green * 255.0f));
-    const auto b = static_cast<u8>(std::round(blue * 255.0f));
-    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+    const auto r = static_cast<Uint8>(std::round(red * 255.0f));
+    const auto g = static_cast<Uint8>(std::round(green * 255.0f));
+    const auto b = static_cast<Uint8>(std::round(blue * 255.0f));
+    const auto a = static_cast<Uint8>(std::round(alpha * 255.0f));
 
     return color{r, g, b, a};
   }
@@ -399,7 +402,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_red(const u8 red) noexcept
+  constexpr void set_red(const Uint8 red) noexcept
   {
     m_color.r = red;
   }
@@ -411,7 +414,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_green(const u8 green) noexcept
+  constexpr void set_green(const Uint8 green) noexcept
   {
     m_color.g = green;
   }
@@ -423,7 +426,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_blue(const u8 blue) noexcept
+  constexpr void set_blue(const Uint8 blue) noexcept
   {
     m_color.b = blue;
   }
@@ -435,7 +438,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_alpha(const u8 alpha) noexcept
+  constexpr void set_alpha(const Uint8 alpha) noexcept
   {
     m_color.a = alpha;
   }
@@ -452,7 +455,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto red() const noexcept -> u8
+  [[nodiscard]] constexpr auto red() const noexcept -> Uint8
   {
     return m_color.r;
   }
@@ -464,7 +467,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto green() const noexcept -> u8
+  [[nodiscard]] constexpr auto green() const noexcept -> Uint8
   {
     return m_color.g;
   }
@@ -476,7 +479,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto blue() const noexcept -> u8
+  [[nodiscard]] constexpr auto blue() const noexcept -> Uint8
   {
     return m_color.b;
   }
@@ -488,7 +491,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto alpha() const noexcept -> u8
+  [[nodiscard]] constexpr auto alpha() const noexcept -> Uint8
   {
     return m_color.a;
   }
@@ -763,7 +766,7 @@ class color final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept -> color
+  [[nodiscard]] constexpr auto with_alpha(const Uint8 alpha) const noexcept -> color
   {
     return {red(), green(), blue(), alpha};
   }
@@ -775,7 +778,7 @@ class color final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr static auto max() noexcept -> u8
+  [[nodiscard]] constexpr static auto max() noexcept -> Uint8
   {
     return 0xFF;
   }

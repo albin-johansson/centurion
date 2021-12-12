@@ -20,7 +20,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-using unicode = u16;
+using unicode = Uint16;
 
 /**
  * \class unicode_string

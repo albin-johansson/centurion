@@ -52,7 +52,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto supported_flags() const noexcept -> u32
+  [[nodiscard]] auto supported_flags() const noexcept -> Uint32
   {
     return m_info.flags;
   }
@@ -124,7 +124,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto format_count() const noexcept -> u32
+  [[nodiscard]] auto format_count() const noexcept -> Uint32
   {
     return m_info.num_texture_formats;
   }

@@ -54,7 +54,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    */
   void set_button(const controller_button button) noexcept
   {
-    m_event.button = static_cast<u8>(button);
+    m_event.button = static_cast<Uint8>(button);
   }
 
   /**

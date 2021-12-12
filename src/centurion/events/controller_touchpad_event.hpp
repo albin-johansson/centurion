@@ -67,7 +67,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \since 6.3.0
    */
-  void set_touchpad_index(const i32 index) noexcept
+  void set_touchpad_index(const Sint32 index) noexcept
   {
     m_event.touchpad = index;
   }
@@ -79,7 +79,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \since 6.3.0
    */
-  void set_finger_index(const i32 index) noexcept
+  void set_finger_index(const Sint32 index) noexcept
   {
     m_event.finger = index;
   }
@@ -145,7 +145,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto touchpad_index() const noexcept -> i32
+  [[nodiscard]] auto touchpad_index() const noexcept -> Sint32
   {
     return m_event.touchpad;
   }
@@ -157,7 +157,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto finger_index() const noexcept -> i32
+  [[nodiscard]] auto finger_index() const noexcept -> Sint32
   {
     return m_event.finger;
   }

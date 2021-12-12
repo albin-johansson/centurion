@@ -34,7 +34,7 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  explicit semaphore(const u32 tokens) : m_semaphore{SDL_CreateSemaphore(tokens)}
+  explicit semaphore(const Uint32 tokens) : m_semaphore{SDL_CreateSemaphore(tokens)}
   {
     if (!m_semaphore) {
       throw SDLError{};
@@ -65,7 +65,7 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  auto acquire(const milliseconds<u32> ms) noexcept(noexcept(ms.count())) -> lock_status
+  auto acquire(const milliseconds<Uint32> ms) noexcept(noexcept(ms.count())) -> lock_status
   {
     return static_cast<lock_status>(SDL_SemWaitTimeout(m_semaphore.get(), ms.count()));
   }
@@ -102,7 +102,7 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto tokens() const noexcept -> u32
+  [[nodiscard]] auto tokens() const noexcept -> Uint32
   {
     return SDL_SemValue(m_semaphore.get());
   }

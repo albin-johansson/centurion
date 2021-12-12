@@ -189,7 +189,7 @@ TEST(HapticCustom, Defaults)
   effect.set_sample_count(42);
   ASSERT_EQ(42, effect.sample_count());
 
-  cen::u16 data{12};
+  Uint16 data{12};
   effect.set_data(&data);
   ASSERT_TRUE(effect.data());
   ASSERT_EQ(data, *effect.data());
@@ -197,8 +197,8 @@ TEST(HapticCustom, Defaults)
 
 TEST(HapticCondition, Defaults)
 {
-  using u16vector = cen::vector3<cen::u16>;
-  using i16vector = cen::vector3<cen::i16>;
+  using u16vector = cen::vector3<Uint16>;
+  using i16vector = cen::vector3<Sint16>;
 
   cen::haptic_condition effect;
   ASSERT_EQ(cen::haptic_condition::spring, effect.type());

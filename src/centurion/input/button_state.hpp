@@ -25,7 +25,7 @@ namespace cen {
  *
  * \since 3.1.0
  */
-enum class button_state : u8
+enum class button_state : Uint8
 {
   released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.

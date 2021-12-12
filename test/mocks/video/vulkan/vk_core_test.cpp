@@ -40,7 +40,7 @@ TEST_F(VulkanCoreTest, GetInstanceProcAddr)
 
 TEST_F(VulkanCoreTest, CreateSurface)
 {
-  std::array flags{cen::u32{cen::window::vulkan}};
+  std::array flags{Uint32{cen::window::vulkan}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
   std::array values{SDL_FALSE, SDL_TRUE};
@@ -66,7 +66,7 @@ TEST_F(VulkanCoreTest, RequiredExtensions)
 
 TEST_F(VulkanCoreTest, DrawableSize)
 {
-  std::array flags{cen::u32{cen::window::vulkan}};
+  std::array flags{Uint32{cen::window::vulkan}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
   cen::window_handle window{nullptr};

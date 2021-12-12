@@ -23,7 +23,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class button_order : u32
+enum class button_order : Uint32
 {
 #if SDL_VERSION_ATLEAST(2, 0, 12)
   left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,

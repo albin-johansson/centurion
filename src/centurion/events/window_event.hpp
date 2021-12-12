@@ -72,7 +72,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto data_1() const noexcept -> i32
+  [[nodiscard]] auto data_1() const noexcept -> Sint32
   {
     return m_event.data1;
   }
@@ -92,7 +92,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto data_2() const noexcept -> i32
+  [[nodiscard]] auto data_2() const noexcept -> Sint32
   {
     return m_event.data2;
   }

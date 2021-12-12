@@ -39,7 +39,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  enum periodic_type : u16
+  enum periodic_type : Uint16
   {
     sine = SDL_HAPTIC_SINE,
     left_right = SDL_HAPTIC_LEFTRIGHT,
@@ -78,7 +78,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  void set_period(const milliseconds<u16> period) noexcept(noexcept(period.count()))
+  void set_period(const milliseconds<Uint16> period) noexcept(noexcept(period.count()))
   {
     representation().period = period.count();
   }
@@ -93,7 +93,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  void set_magnitude(const i16 magnitude) noexcept
+  void set_magnitude(const Sint16 magnitude) noexcept
   {
     representation().magnitude = magnitude;
   }
@@ -105,7 +105,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  void set_mean(const i16 mean) noexcept
+  void set_mean(const Sint16 mean) noexcept
   {
     representation().offset = mean;
   }
@@ -117,7 +117,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  void set_phase_shift(const u16 shift) noexcept
+  void set_phase_shift(const Uint16 shift) noexcept
   {
     representation().phase = shift;
   }
@@ -129,9 +129,9 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto period() const -> milliseconds<u16>
+  [[nodiscard]] auto period() const -> milliseconds<Uint16>
   {
-    return milliseconds<u16>{representation().period};
+    return milliseconds<Uint16>{representation().period};
   }
 
   /**
@@ -141,7 +141,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto magnitude() const noexcept -> i16
+  [[nodiscard]] auto magnitude() const noexcept -> Sint16
   {
     return representation().magnitude;
   }
@@ -153,7 +153,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto mean() const noexcept -> i16
+  [[nodiscard]] auto mean() const noexcept -> Sint16
   {
     return representation().offset;
   }
@@ -165,7 +165,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto phase_shift() const noexcept -> u16
+  [[nodiscard]] auto phase_shift() const noexcept -> Uint16
   {
     return representation().phase;
   }

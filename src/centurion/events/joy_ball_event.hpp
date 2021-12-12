@@ -61,7 +61,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_ball(const u8 ball) noexcept
+  void set_ball(const Uint8 ball) noexcept
   {
     m_event.ball = ball;
   }
@@ -73,7 +73,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_dx(const i16 dx) noexcept
+  void set_dx(const Sint16 dx) noexcept
   {
     m_event.xrel = dx;
   }
@@ -85,7 +85,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_dy(const i16 dy) noexcept
+  void set_dy(const Sint16 dy) noexcept
   {
     m_event.yrel = dy;
   }
@@ -109,7 +109,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ball() const noexcept -> u8
+  [[nodiscard]] auto ball() const noexcept -> Uint8
   {
     return m_event.ball;
   }
@@ -124,7 +124,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dx() const noexcept -> i16
+  [[nodiscard]] auto dx() const noexcept -> Sint16
   {
     return m_event.xrel;
   }
@@ -139,7 +139,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dy() const noexcept -> i16
+  [[nodiscard]] auto dy() const noexcept -> Sint16
   {
     return m_event.yrel;
   }

@@ -72,7 +72,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  void set_time(const u32 timestamp) noexcept
+  void set_time(const Uint32 timestamp) noexcept
   {
     m_event.timestamp = timestamp;
   }
@@ -96,7 +96,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto time() const noexcept -> u32
+  [[nodiscard]] auto time() const noexcept -> Uint32
   {
     return m_event.timestamp;
   }

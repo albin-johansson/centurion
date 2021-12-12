@@ -228,7 +228,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_active(modifiers, static_cast<u16>(SDL_GetModState()));
+    return detail::is_active(modifiers, static_cast<Uint16>(SDL_GetModState()));
   }
 
   /**
@@ -250,7 +250,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_active(modifiers, static_cast<u16>(SDL_GetModState()));
+    return detail::is_only_active(modifiers, static_cast<Uint16>(SDL_GetModState()));
   }
 
   /**
@@ -275,7 +275,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_any_of_active(modifiers, static_cast<u16>(SDL_GetModState()));
+    return detail::is_only_any_of_active(modifiers, static_cast<Uint16>(SDL_GetModState()));
   }
 
   /**
@@ -291,8 +291,8 @@ class keyboard final
   }
 
  private:
-  const u8* m_states{};
-  std::array<u8, cen::scan_code::count()> m_previous{};
+  const Uint8* m_states{};
+  std::array<Uint8, cen::scan_code::count()> m_previous{};
   int m_nKeys{};
 
   template <typename Predicate>

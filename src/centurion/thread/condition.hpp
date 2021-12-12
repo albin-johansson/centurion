@@ -90,7 +90,7 @@ class condition final
    *
    * \since 5.0.0
    */
-  auto wait(mutex& mutex, const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
+  auto wait(mutex& mutex, const milliseconds<Uint32> ms) noexcept(noexcept(ms.count()))
       -> lock_status
   {
     return static_cast<lock_status>(

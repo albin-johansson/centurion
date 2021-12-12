@@ -32,7 +32,7 @@ namespace cen {
  *
  * \since 3.1.0
  */
-enum class key_modifier : u16
+enum class key_modifier : Uint16
 {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
@@ -237,7 +237,7 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 
 namespace detail {
 
-[[nodiscard]] inline auto is_active(const key_mod modifiers, const u16 currentMask) noexcept
+[[nodiscard]] inline auto is_active(const key_mod modifiers, const Uint16 currentMask) noexcept
     -> bool
 {
   if (modifiers == key_mod::none) {
@@ -249,7 +249,7 @@ namespace detail {
 }
 
 [[nodiscard]] inline auto is_only_active(const key_mod modifiers,
-                                         const u16 currentMask) noexcept -> bool
+                                         const Uint16 currentMask) noexcept -> bool
 {
   if (modifiers == key_mod::none) {
     return !currentMask;
@@ -268,7 +268,7 @@ namespace detail {
 }
 
 [[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
-                                                const u16 currentMask) noexcept -> bool
+                                                const Uint16 currentMask) noexcept -> bool
 {
   if (modifiers == key_mod::none) {
     return !currentMask;

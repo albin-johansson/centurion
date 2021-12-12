@@ -49,7 +49,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const u32 id) noexcept
+  void set_window_id(const Uint32 id) noexcept
   {
     m_event.windowID = id;
   }
@@ -61,7 +61,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const u32 which) noexcept
+  void set_which(const Uint32 which) noexcept
   {
     m_event.which = which;
   }
@@ -76,7 +76,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_x_scroll(const i32 xScroll) noexcept
+  void set_x_scroll(const Sint32 xScroll) noexcept
   {
     m_event.x = xScroll;
   }
@@ -91,7 +91,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_y_scroll(const i32 yScroll) noexcept
+  void set_y_scroll(const Sint32 yScroll) noexcept
   {
     m_event.y = yScroll;
   }
@@ -115,7 +115,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> u32
+  [[nodiscard]] auto window_id() const noexcept -> Uint32
   {
     return m_event.windowID;
   }
@@ -128,7 +128,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> u32
+  [[nodiscard]] auto which() const noexcept -> Uint32
   {
     return m_event.which;
   }
@@ -143,7 +143,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x_scroll() const noexcept -> i32
+  [[nodiscard]] auto x_scroll() const noexcept -> Sint32
   {
     return m_event.x;
   }
@@ -158,7 +158,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y_scroll() const noexcept -> i32
+  [[nodiscard]] auto y_scroll() const noexcept -> Sint32
   {
     return m_event.y;
   }

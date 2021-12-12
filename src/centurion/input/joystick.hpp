@@ -71,7 +71,7 @@ enum class joystick_power
  *
  * \since 4.2.0
  */
-enum class hat_state : u8
+enum class hat_state : Uint8
 {
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
@@ -242,9 +242,10 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  auto rumble(const u16 lowFreq,
-              const u16 highFreq,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
+  auto rumble(const Uint16 lowFreq,
+              const Uint16 highFreq,
+              const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
+      -> result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -267,9 +268,9 @@ class basic_joystick final
    *
    * \since 5.2.0
    */
-  auto rumble_triggers(const u16 left,
-                       const u16 right,
-                       const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+  auto rumble_triggers(const Uint16 left,
+                       const Uint16 right,
+                       const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
       -> result
   {
     return SDL_JoystickRumbleTriggers(m_joystick,
@@ -390,7 +391,7 @@ class basic_joystick final
    *
    * \since 5.2.0
    */
-  auto set_virtual_axis(const int axis, const i16 value) noexcept -> result
+  auto set_virtual_axis(const int axis, const Sint16 value) noexcept -> result
   {
     return SDL_JoystickSetVirtualAxis(m_joystick, axis, value) == 0;
   }
@@ -487,7 +488,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
+  [[nodiscard]] auto vendor() const noexcept -> std::optional<Uint16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
     if (vendor != 0) {
@@ -506,7 +507,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto product() const noexcept -> std::optional<u16>
+  [[nodiscard]] auto product() const noexcept -> std::optional<Uint16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
     if (product != 0) {
@@ -524,7 +525,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
+  [[nodiscard]] auto product_version() const noexcept -> std::optional<Uint16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
     if (version != 0) {
@@ -658,7 +659,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
+  [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<Uint16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
     if (vendor != 0) {
@@ -680,7 +681,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
+  [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<Uint16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
     if (product != 0) {
@@ -703,7 +704,7 @@ class basic_joystick final
    * \since 4.2.0
    */
   [[nodiscard]] static auto product_version(const int deviceIndex) noexcept
-      -> std::optional<u16>
+      -> std::optional<Uint16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
     if (version != 0) {
@@ -811,7 +812,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> i16
+  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> Sint16
   {
     return SDL_JoystickGetAxis(m_joystick, axis);
   }
@@ -826,9 +827,9 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<i16>
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<Sint16>
   {
-    i16 state{};
+    Sint16 state{};
     if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state)) {
       return state;
     }
@@ -1062,7 +1063,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] constexpr static auto axis_max() noexcept -> i16
+  [[nodiscard]] constexpr static auto axis_max() noexcept -> Sint16
   {
     return SDL_JOYSTICK_AXIS_MAX;
   }
@@ -1074,7 +1075,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] constexpr static auto axis_min() noexcept -> i16
+  [[nodiscard]] constexpr static auto axis_min() noexcept -> Sint16
   {
     return SDL_JOYSTICK_AXIS_MIN;
   }

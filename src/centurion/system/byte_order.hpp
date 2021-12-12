@@ -22,19 +22,19 @@ namespace cen {
  *
  * \since 5.3.0
  */
-[[nodiscard]] inline auto swap_byte_order(const u16 value) noexcept -> u16
+[[nodiscard]] inline auto swap_byte_order(const Uint16 value) noexcept -> Uint16
 {
   return SDL_Swap16(value);
 }
 
 /// \copydoc swap_byte_order()
-[[nodiscard]] inline auto swap_byte_order(const u32 value) noexcept -> u32
+[[nodiscard]] inline auto swap_byte_order(const Uint32 value) noexcept -> Uint32
 {
   return SDL_Swap32(value);
 }
 
 /// \copydoc swap_byte_order()
-[[nodiscard]] inline auto swap_byte_order(const u64 value) noexcept -> u64
+[[nodiscard]] inline auto swap_byte_order(const Uint64 value) noexcept -> Uint64
 {
   return SDL_Swap64(value);
 }
@@ -59,19 +59,19 @@ namespace cen {
  *
  * \since 5.3.0
  */
-[[nodiscard]] inline auto swap_big_endian(const u16 value) noexcept -> u16
+[[nodiscard]] inline auto swap_big_endian(const Uint16 value) noexcept -> Uint16
 {
   return SDL_SwapBE16(value);
 }
 
 /// \copydoc swap_big_endian()
-[[nodiscard]] inline auto swap_big_endian(const u32 value) noexcept -> u32
+[[nodiscard]] inline auto swap_big_endian(const Uint32 value) noexcept -> Uint32
 {
   return SDL_SwapBE32(value);
 }
 
 /// \copydoc swap_big_endian()
-[[nodiscard]] inline auto swap_big_endian(const u64 value) noexcept -> u64
+[[nodiscard]] inline auto swap_big_endian(const Uint64 value) noexcept -> Uint64
 {
   return SDL_SwapBE64(value);
 }
@@ -96,19 +96,19 @@ namespace cen {
  *
  * \since 5.3.0
  */
-[[nodiscard]] inline auto swap_little_endian(const u16 value) noexcept -> u16
+[[nodiscard]] inline auto swap_little_endian(const Uint16 value) noexcept -> Uint16
 {
   return SDL_SwapLE16(value);
 }
 
 /// \copydoc swap_little_endian()
-[[nodiscard]] inline auto swap_little_endian(const u32 value) noexcept -> u32
+[[nodiscard]] inline auto swap_little_endian(const Uint32 value) noexcept -> Uint32
 {
   return SDL_SwapLE32(value);
 }
 
 /// \copydoc swap_little_endian()
-[[nodiscard]] inline auto swap_little_endian(const u64 value) noexcept -> u64
+[[nodiscard]] inline auto swap_little_endian(const Uint64 value) noexcept -> Uint64
 {
   return SDL_SwapLE64(value);
 }

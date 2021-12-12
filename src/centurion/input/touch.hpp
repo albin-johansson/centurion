@@ -129,7 +129,7 @@ struct finger_state final
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto touch_mouse_id() noexcept -> u32
+[[nodiscard]] constexpr auto touch_mouse_id() noexcept -> Uint32
 {
   return SDL_TOUCH_MOUSEID;
 }

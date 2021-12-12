@@ -53,7 +53,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    */
   void set_event_id(const display_event_id id) noexcept
   {
-    m_event.event = static_cast<u8>(to_underlying(id));
+    m_event.event = static_cast<Uint8>(to_underlying(id));
   }
 
   /**
@@ -63,7 +63,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  void set_index(const u32 index) noexcept
+  void set_index(const Uint32 index) noexcept
   {
     m_event.display = index;
   }
@@ -77,7 +77,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  void set_data_1(const i32 data) noexcept
+  void set_data_1(const Sint32 data) noexcept
   {
     m_event.data1 = data;
   }
@@ -101,7 +101,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto index() const noexcept -> u32
+  [[nodiscard]] auto index() const noexcept -> Uint32
   {
     return m_event.display;
   }
@@ -118,7 +118,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data_1() const noexcept -> i32
+  [[nodiscard]] auto data_1() const noexcept -> Sint32
   {
     return m_event.data1;
   }

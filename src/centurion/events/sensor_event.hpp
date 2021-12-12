@@ -51,7 +51,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  void set_which(const i32 id) noexcept
+  void set_which(const Sint32 id) noexcept
   {
     m_event.which = id;
   }
@@ -75,7 +75,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto which() const noexcept -> i32
+  [[nodiscard]] auto which() const noexcept -> Sint32
   {
     return m_event.which;
   }

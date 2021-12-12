@@ -49,7 +49,7 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
    *
    * \since 5.2.0
    */
-  void set_large_magnitude(const u16 magnitude) noexcept
+  void set_large_magnitude(const Uint16 magnitude) noexcept
   {
     representation().large_magnitude = magnitude;
   }
@@ -61,7 +61,7 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
    *
    * \since 5.2.0
    */
-  void set_small_magnitude(const u16 magnitude) noexcept
+  void set_small_magnitude(const Uint16 magnitude) noexcept
   {
     representation().small_magnitude = magnitude;
   }
@@ -73,7 +73,7 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto large_magnitude() const noexcept -> u16
+  [[nodiscard]] auto large_magnitude() const noexcept -> Uint16
   {
     return representation().large_magnitude;
   }
@@ -86,7 +86,7 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto small_magnitude() const noexcept -> u16
+  [[nodiscard]] auto small_magnitude() const noexcept -> Uint16
   {
     return representation().small_magnitude;
   }

@@ -49,7 +49,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const u32 which) noexcept
+  void set_which(const Uint32 which) noexcept
   {
     m_event.which = which;
   }
@@ -75,7 +75,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> u32
+  [[nodiscard]] auto which() const noexcept -> Uint32
   {
     return m_event.which;
   }

@@ -15,7 +15,7 @@ TEST(UserEvent, SetWindowId)
 {
   cen::user_event event;
 
-  const cen::u32 id = 123;
+  const Uint32 id = 123;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

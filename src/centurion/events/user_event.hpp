@@ -49,7 +49,7 @@ class user_event final : public common_event<SDL_UserEvent>
    *
    * \since 6.3.0
    */
-  void set_window_id(const u32 id) noexcept
+  void set_window_id(const Uint32 id) noexcept
   {
     m_event.windowID = id;
   }
@@ -61,7 +61,7 @@ class user_event final : public common_event<SDL_UserEvent>
    *
    * \since 6.3.0
    */
-  void set_code(const i32 code) noexcept
+  void set_code(const Sint32 code) noexcept
   {
     m_event.code = code;
   }
@@ -91,7 +91,7 @@ class user_event final : public common_event<SDL_UserEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> u32
+  [[nodiscard]] auto window_id() const noexcept -> Uint32
   {
     return m_event.windowID;
   }
@@ -103,7 +103,7 @@ class user_event final : public common_event<SDL_UserEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto code() const noexcept -> i32
+  [[nodiscard]] auto code() const noexcept -> Sint32
   {
     return m_event.code;
   }

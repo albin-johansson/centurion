@@ -110,7 +110,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const u32 id) noexcept
+  void set_window_id(const Uint32 id) noexcept
   {
     m_event.windowID = id;
   }
@@ -157,7 +157,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> u32
+  [[nodiscard]] auto window_id() const noexcept -> Uint32
   {
     return m_event.windowID;
   }

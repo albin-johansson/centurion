@@ -465,7 +465,7 @@ class basic_surface final
 
     if ((index >= 0) && (index < nPixels)) {
       const auto info = format_info();
-      auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
+      auto* pixels = reinterpret_cast<Uint32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
     }
 
@@ -479,7 +479,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_alpha(const u8 alpha) noexcept
+  void set_alpha(const Uint8 alpha) noexcept
   {
     SDL_SetSurfaceAlphaMod(m_surface, alpha);
   }
@@ -538,9 +538,9 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alpha() const noexcept -> u8
+  [[nodiscard]] auto alpha() const noexcept -> Uint8
   {
-    u8 alpha{0xFF};
+    Uint8 alpha{0xFF};
     SDL_GetSurfaceAlphaMod(m_surface, &alpha);
     return alpha;
   }
@@ -554,9 +554,9 @@ class basic_surface final
    */
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
+    Uint8 red{};
+    Uint8 green{};
+    Uint8 blue{};
     SDL_GetSurfaceColorMod(m_surface, &red, &green, &blue);
     return color{red, green, blue};
   }

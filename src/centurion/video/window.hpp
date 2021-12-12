@@ -87,7 +87,7 @@ class basic_window final
    *
    * \since 6.0.0
    */
-  enum window_flags : u32
+  enum window_flags : Uint32
   {
     fullscreen = SDL_WINDOW_FULLSCREEN,
     opengl = SDL_WINDOW_OPENGL,
@@ -161,7 +161,7 @@ class basic_window final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_window(const not_null<cstr> title,
                         const iarea size = default_size(),
-                        const u32 flags = default_flags())
+                        const Uint32 flags = default_flags())
   {
     assert(title);
 
@@ -203,7 +203,7 @@ class basic_window final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
-                        const u32 flags = default_flags())
+                        const Uint32 flags = default_flags())
       : basic_window{title.c_str(), size, flags}
   {}
 
@@ -801,7 +801,7 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto flags() const noexcept -> u32
+  [[nodiscard]] auto flags() const noexcept -> Uint32
   {
     return SDL_GetWindowFlags(m_window);
   }
@@ -1134,7 +1134,7 @@ class basic_window final
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> Uint32
   {
     return hidden;
   }
@@ -1151,7 +1151,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto id() const noexcept -> u32
+  [[nodiscard]] auto id() const noexcept -> Uint32
   {
     return SDL_GetWindowID(m_window);
   }

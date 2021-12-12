@@ -151,7 +151,7 @@ class font_cache final
   void store_blended_wrapped_utf8(const id_type id,
                                   const not_null<cstr> string,
                                   Renderer& renderer,
-                                  const u32 wrap)
+                                  const Uint32 wrap)
   {
     assert(string);
     store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
@@ -165,7 +165,7 @@ class font_cache final
   void store_blended_wrapped_utf8(const id_type id,
                                   const std::string& string,
                                   Renderer& renderer,
-                                  const u32 wrap)
+                                  const Uint32 wrap)
   {
     store_blended_wrapped_utf8(id, string.c_str(), renderer, wrap);
   }
@@ -297,7 +297,7 @@ class font_cache final
   void store_blended_wrapped_latin1(const id_type id,
                                     const not_null<cstr> string,
                                     Renderer& renderer,
-                                    const u32 wrap)
+                                    const Uint32 wrap)
   {
     assert(string);
     store(id, renderer.render_blended_wrapped_latin1(string, get_font(), wrap));
@@ -311,7 +311,7 @@ class font_cache final
   void store_blended_wrapped_latin1(const id_type id,
                                     const std::string& string,
                                     Renderer& renderer,
-                                    const u32 wrap)
+                                    const Uint32 wrap)
   {
     store_blended_wrapped_latin1(id, string.c_str(), renderer, wrap);
   }
@@ -434,7 +434,7 @@ class font_cache final
   void store_blended_wrapped_unicode(const id_type id,
                                      const unicode_string& string,
                                      Renderer& renderer,
-                                     const u32 wrap)
+                                     const Uint32 wrap)
   {
     store(id, renderer.render_blended_wrapped_unicode(string, get_font(), wrap));
   }

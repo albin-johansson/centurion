@@ -202,7 +202,7 @@ class basic_haptic final
    * \since 5.2.0
    */
   auto play_rumble(const float strength,
-                   const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+                   const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
       -> result
   {
     return SDL_HapticRumblePlay(m_haptic,
@@ -328,7 +328,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  auto run(const effect_id id, const u32 iterations = 1) noexcept -> result
+  auto run(const effect_id id, const Uint32 iterations = 1) noexcept -> result
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }

@@ -49,7 +49,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const u32 id) noexcept
+  void set_window_id(const Uint32 id) noexcept
   {
     m_event.windowID = id;
   }
@@ -61,7 +61,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const u32 which) noexcept
+  void set_which(const Uint32 which) noexcept
   {
     m_event.which = which;
   }
@@ -77,7 +77,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_state(const u32 state) noexcept
+  void set_state(const Uint32 state) noexcept
   {
     m_event.state = state;
   }
@@ -90,7 +90,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_x(const i32 x) noexcept
+  void set_x(const Sint32 x) noexcept
   {
     m_event.x = x;
   }
@@ -103,7 +103,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_y(const i32 y) noexcept
+  void set_y(const Sint32 y) noexcept
   {
     m_event.y = y;
   }
@@ -115,7 +115,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_dx(const i32 dx) noexcept
+  void set_dx(const Sint32 dx) noexcept
   {
     m_event.xrel = dx;
   }
@@ -127,7 +127,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  void set_dy(const i32 dy) noexcept
+  void set_dy(const Sint32 dy) noexcept
   {
     m_event.yrel = dy;
   }
@@ -139,7 +139,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> u32
+  [[nodiscard]] auto window_id() const noexcept -> Uint32
   {
     return m_event.windowID;
   }
@@ -154,7 +154,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> u32
+  [[nodiscard]] auto which() const noexcept -> Uint32
   {
     return m_event.which;
   }
@@ -169,7 +169,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto state() const noexcept -> u32
+  [[nodiscard]] auto state() const noexcept -> Uint32
   {
     return m_event.state;
   }
@@ -195,7 +195,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> i32
+  [[nodiscard]] auto x() const noexcept -> Sint32
   {
     return m_event.x;
   }
@@ -207,7 +207,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> i32
+  [[nodiscard]] auto y() const noexcept -> Sint32
   {
     return m_event.y;
   }
@@ -219,7 +219,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dx() const noexcept -> i32
+  [[nodiscard]] auto dx() const noexcept -> Sint32
   {
     return m_event.xrel;
   }
@@ -231,7 +231,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dy() const noexcept -> i32
+  [[nodiscard]] auto dy() const noexcept -> Sint32
   {
     return m_event.yrel;
   }

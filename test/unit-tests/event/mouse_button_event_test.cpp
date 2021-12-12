@@ -13,7 +13,7 @@ TEST(MouseButtonEvent, SetWindowId)
 {
   cen::mouse_button_event event;
 
-  constexpr cen::u32 id = 64;
+  constexpr Uint32 id = 64;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());
@@ -23,7 +23,7 @@ TEST(MouseButtonEvent, SetWhich)
 {
   cen::mouse_button_event event;
 
-  constexpr cen::u32 which = 17;
+  constexpr Uint32 which = 17;
   event.set_which(which);
 
   ASSERT_EQ(which, event.which());

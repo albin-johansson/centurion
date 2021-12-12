@@ -49,7 +49,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const i32 which) noexcept
+  void set_which(const Sint32 which) noexcept
   {
     m_event.which = which;
   }
@@ -65,7 +65,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> i32
+  [[nodiscard]] auto which() const noexcept -> Sint32
   {
     return m_event.which;
   }

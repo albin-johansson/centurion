@@ -19,7 +19,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-inline constexpr u32 haptic_infinity = SDL_HAPTIC_INFINITY;
+inline constexpr Uint32 haptic_infinity = SDL_HAPTIC_INFINITY;
 
 /**
  * \class haptic_effect
@@ -124,7 +124,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  void set_duration(const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+  void set_duration(const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
   {
     rep().length = duration.count();
   }
@@ -139,7 +139,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_delay<D> = 0>
-  void set_delay(const milliseconds<u16> delay) noexcept(noexcept(delay.count()))
+  void set_delay(const milliseconds<Uint16> delay) noexcept(noexcept(delay.count()))
   {
     rep().delay = delay.count();
   }
@@ -151,9 +151,9 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto duration() const -> milliseconds<u32>
+  [[nodiscard]] auto duration() const -> milliseconds<Uint32>
   {
-    return milliseconds<u32>{rep().length};
+    return milliseconds<Uint32>{rep().length};
   }
 
   /**
@@ -166,9 +166,9 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_delay<D> = 0>
-  [[nodiscard]] auto delay() const -> milliseconds<u16>
+  [[nodiscard]] auto delay() const -> milliseconds<Uint16>
   {
-    return milliseconds<u16>{rep().delay};
+    return milliseconds<Uint16>{rep().delay};
   }
 
   /// \} End of replay functions
@@ -186,7 +186,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  void set_button(const u16 button) noexcept
+  void set_button(const Uint16 button) noexcept
   {
     rep().button = button;
   }
@@ -201,7 +201,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  void set_interval(const milliseconds<u16> interval) noexcept(noexcept(interval.count()))
+  void set_interval(const milliseconds<Uint16> interval) noexcept(noexcept(interval.count()))
   {
     rep().interval = interval.count();
   }
@@ -216,7 +216,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  [[nodiscard]] auto button() const noexcept -> u16
+  [[nodiscard]] auto button() const noexcept -> Uint16
   {
     return rep().button;
   }
@@ -231,9 +231,9 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  [[nodiscard]] auto interval() const -> milliseconds<u16>
+  [[nodiscard]] auto interval() const -> milliseconds<Uint16>
   {
-    return milliseconds<u16>{rep().interval};
+    return milliseconds<Uint16>{rep().interval};
   }
 
   /// \} End of trigger functions
@@ -251,7 +251,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_attack_level(const u16 level) noexcept
+  void set_attack_level(const Uint16 level) noexcept
   {
     rep().attack_level = level;
   }
@@ -266,7 +266,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_fade_level(const u16 level) noexcept
+  void set_fade_level(const Uint16 level) noexcept
   {
     rep().fade_level = level;
   }
@@ -283,7 +283,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_attack_duration(const milliseconds<u16> duration) noexcept(noexcept(duration.count()))
+  void set_attack_duration(const milliseconds<Uint16> duration) noexcept(noexcept(duration.count()))
   {
     rep().attack_length = duration.count();
   }
@@ -298,7 +298,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_fade_duration(const milliseconds<u16> duration) noexcept(noexcept(duration.count()))
+  void set_fade_duration(const milliseconds<Uint16> duration) noexcept(noexcept(duration.count()))
   {
     rep().fade_length = duration.count();
   }
@@ -315,7 +315,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  [[nodiscard]] auto attack_level() const noexcept -> u16
+  [[nodiscard]] auto attack_level() const noexcept -> Uint16
   {
     return rep().attack_level;
   }
@@ -330,7 +330,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  [[nodiscard]] auto fade_level() const noexcept -> u16
+  [[nodiscard]] auto fade_level() const noexcept -> Uint16
   {
     return rep().fade_level;
   }
@@ -345,9 +345,9 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
+  [[nodiscard]] auto attack_duration() const -> milliseconds<Uint16>
   {
-    return milliseconds<u16>{rep().attack_length};
+    return milliseconds<Uint16>{rep().attack_length};
   }
 
   /**
@@ -360,9 +360,9 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
+  [[nodiscard]] auto fade_duration() const -> milliseconds<Uint16>
   {
-    return milliseconds<u16>{rep().fade_length};
+    return milliseconds<Uint16>{rep().fade_length};
   }
 
   /// \} End of envelope functions
@@ -374,7 +374,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto type() const noexcept -> u16
+  [[nodiscard]] auto type() const noexcept -> Uint16
   {
     return rep().type;
   }

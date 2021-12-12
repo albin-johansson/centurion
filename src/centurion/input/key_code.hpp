@@ -276,7 +276,7 @@ class key_code final
    *
    * \return the internal key code.
    *
-   * \note `SDL_Keycode` is just an alias for `i32`.
+   * \note `SDL_Keycode` is just an alias for `Sint32`.
    *
    * \since 5.0.0
    */

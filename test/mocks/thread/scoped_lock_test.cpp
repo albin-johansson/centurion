@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "core_mocks.hpp"
 #include "concurrency.hpp"
+#include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 
 class ScopedLockTest : public testing::Test {

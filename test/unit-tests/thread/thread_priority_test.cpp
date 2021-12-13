@@ -2,8 +2,8 @@
 
 #include <iostream>  // clog
 
-#include "core/common.hpp"
 #include "concurrency.hpp"
+#include "core/common.hpp"
 
 TEST(ThreadPriority, Values)
 {

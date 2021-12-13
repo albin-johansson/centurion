@@ -1,5 +1,3 @@
-#include "math.hpp"
-
 #include <gtest/gtest.h>
 
 #include <cmath>        // abs, sqrt
@@ -7,6 +5,7 @@
 #include <type_traits>  // ...
 
 #include "core/logging.hpp"
+#include "math.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::Point>);

@@ -5,7 +5,7 @@
 
 #include "core/common.hpp"
 #include "core_mocks.hpp"
-#include "system/system.hpp"
+#include "system.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

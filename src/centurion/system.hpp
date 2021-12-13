@@ -10,10 +10,10 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/sdl_string.hpp"
-#include "../core/time.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/sdl_string.hpp"
+#include "core/time.hpp"
 
 namespace cen {
 

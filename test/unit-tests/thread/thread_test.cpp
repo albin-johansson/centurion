@@ -3,8 +3,8 @@
 #include <iostream>
 #include <type_traits>
 
-#include "core/logging.hpp"
 #include "concurrency.hpp"
+#include "core/logging.hpp"
 
 namespace {
 

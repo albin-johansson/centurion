@@ -4,7 +4,7 @@
 
 #include <iostream>  // clog
 
-#include "system/system.hpp"
+#include "system.hpp"
 
 TEST(PixelFormat, Values)
 {

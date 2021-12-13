@@ -16,7 +16,7 @@ inline constexpr auto fontPath = "resources/daniel.ttf";
 
 TEST(FontCache, FontConstructor)
 {
-  cen::font font{fontPath, 12};
+  cen::Font font{fontPath, 12};
   ASSERT_NO_THROW(cen::font_cache{std::move(font)});
 }
 
@@ -331,5 +331,5 @@ TEST_F(FontCacheTest, GetStored)
 TEST_F(FontCacheTest, GetFont)
 {
   const auto& font = m_cache.get_font();
-  ASSERT_EQ(font.family_name(), std::string("Daniel"));
+  ASSERT_EQ(font.GetFamilyName(), std::string("Daniel"));
 }

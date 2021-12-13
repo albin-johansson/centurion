@@ -56,7 +56,7 @@ class font_cache final {
    */
   struct glyph_data final {
     texture cached;         ///< The cached texture.
-    glyph_metrics metrics;  ///< The metrics of the glyph.
+    GlyphMetrics metrics;  ///< The metrics of the glyph.
   };
 
   /// \name Construction
@@ -71,7 +71,7 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  explicit font_cache(font&& font) noexcept : m_font{std::move(font)} {}
+  explicit font_cache(Font&& font) noexcept : m_font{std::move(font)} {}
 
   /**
    * \brief Creates an empty font cache, and creates the associated font in-place.
@@ -559,13 +559,13 @@ class font_cache final {
    * \since 5.0.0
    */
   template <typename Renderer>
-  void add_glyph(Renderer& renderer, const unicode glyph)
+  void add_glyph(Renderer& renderer, const Unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
+    if (has(glyph) || !m_font.IsGlyphProvided(glyph)) {
       return;
     }
 
-    glyph_data data{create_glyph_texture(renderer, glyph), m_font.get_metrics(glyph).value()};
+    glyph_data data{create_glyph_texture(renderer, glyph), m_font.GetMetrics(glyph).value()};
     m_glyphs.try_emplace(glyph, std::move(data));
   }
 
@@ -587,7 +587,7 @@ class font_cache final {
    * \since 5.0.0
    */
   template <typename Renderer>
-  void add_range(Renderer& renderer, const unicode begin, const unicode end)
+  void add_range(Renderer& renderer, const Unicode begin, const Unicode end)
   {
     for (auto ch = begin; ch < end; ++ch) {
       add_glyph(renderer, ch);
@@ -658,7 +658,7 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto has(const unicode glyph) const noexcept -> bool
+  [[nodiscard]] auto has(const Unicode glyph) const noexcept -> bool
   {
     return m_glyphs.count(glyph);
   }
@@ -674,7 +674,7 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto at(const unicode glyph) const -> const glyph_data&
+  [[nodiscard]] auto at(const Unicode glyph) const -> const glyph_data&
   {
     return m_glyphs.at(glyph);
   }
@@ -692,7 +692,7 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](unicode glyph) const -> const glyph_data& { return at(glyph); }
+  [[nodiscard]] auto operator[](Unicode glyph) const -> const glyph_data& { return at(glyph); }
 
   /**
    * \brief Returns the data associated with the specified glyph, if it exists.
@@ -710,7 +710,7 @@ class font_cache final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
+  [[nodiscard]] auto try_at(const Unicode glyph) const -> const glyph_data*
   {
     if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
       return &it->second;
@@ -729,16 +729,16 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_font() noexcept -> font& { return m_font; }
+  [[nodiscard]] auto get_font() noexcept -> Font& { return m_font; }
 
   /**
    * \copydoc get_font
    */
-  [[nodiscard]] auto get_font() const noexcept -> const font& { return m_font; }
+  [[nodiscard]] auto get_font() const noexcept -> const Font& { return m_font; }
 
  private:
-  font m_font;
-  std::unordered_map<unicode, glyph_data> m_glyphs;
+  Font m_font;
+  std::unordered_map<Unicode, glyph_data> m_glyphs;
   std::unordered_map<id_type, texture> m_strings;
 
   /**
@@ -754,7 +754,7 @@ class font_cache final {
    * \since 5.0.0
    */
   template <typename Renderer>
-  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph) -> texture
+  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const Unicode glyph) -> texture
   {
     const auto color = renderer.get_color().get();
     const Surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};

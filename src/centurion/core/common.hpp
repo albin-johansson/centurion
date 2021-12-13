@@ -121,6 +121,8 @@ using uint = unsigned int;
 /// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
+using Unicode = Uint16;
+
 /// \} End of integer aliases
 
 // TODO use _t suffix instead of _v in the SFINAE aliases

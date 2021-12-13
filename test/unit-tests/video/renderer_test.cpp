@@ -19,7 +19,7 @@ class RendererTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    m_font = std::make_unique<cen::font>("resources/daniel.ttf", 12);
+    m_font = std::make_unique<cen::Font>("resources/daniel.ttf", 12);
     m_window = std::make_unique<cen::window>();
 
     m_renderer = std::make_unique<cen::renderer>(*m_window);
@@ -34,7 +34,7 @@ class RendererTest : public testing::Test {
     m_font.reset();
   }
 
-  inline static std::unique_ptr<cen::font> m_font;
+  inline static std::unique_ptr<cen::Font> m_font;
   inline static std::unique_ptr<cen::window> m_window;
   inline static std::unique_ptr<cen::renderer> m_renderer;
   inline static std::unique_ptr<cen::texture> m_texture;
@@ -196,8 +196,8 @@ TEST_F(RendererTest, AddFont)
   const auto id = 7;
   const auto path = "resources/daniel.ttf";
 
-  m_renderer->add_font(id, cen::font{path, 12});
-  ASSERT_NO_THROW(m_renderer->add_font(id, cen::font{path, 12}));
+  m_renderer->add_font(id, cen::Font{path, 12});
+  ASSERT_NO_THROW(m_renderer->add_font(id, cen::Font{path, 12}));
 
   ASSERT_NO_THROW(m_renderer->get_font(id));
   ASSERT_TRUE(m_renderer->has_font(id));

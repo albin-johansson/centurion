@@ -603,7 +603,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const char* str, const font& font) -> texture
+  [[nodiscard]] auto render_blended_utf8(const char* str, const Font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
@@ -613,7 +613,7 @@ class basic_renderer final {
    * \see render_blended_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font) -> texture
+  [[nodiscard]] auto render_blended_utf8(const std::string& str, const Font& font) -> texture
   {
     return render_blended_utf8(str.c_str(), font);
   }
@@ -645,7 +645,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_wrapped_utf8(const char* str,
-                                                 const font& font,
+                                                 const Font& font,
                                                  const Uint32 wrap) -> texture
   {
     assert(str);
@@ -658,7 +658,7 @@ class basic_renderer final {
    * \since 5.3.0
    */
   [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
-                                                 const font& font,
+                                                 const Font& font,
                                                  const Uint32 wrap) -> texture
   {
     return render_blended_wrapped_utf8(str.c_str(), font, wrap);
@@ -689,7 +689,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   [[nodiscard]] auto render_shaded_utf8(const char* str,
-                                        const font& font,
+                                        const Font& font,
                                         const Color& background) -> texture
   {
     assert(str);
@@ -702,7 +702,7 @@ class basic_renderer final {
    * \since 5.3.0
    */
   [[nodiscard]] auto render_shaded_utf8(const std::string& str,
-                                        const font& font,
+                                        const Font& font,
                                         const Color& background) -> texture
   {
     return render_shaded_utf8(str.c_str(), font, background);
@@ -730,7 +730,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const char* str, const font& font) -> texture
+  [[nodiscard]] auto render_solid_utf8(const char* str, const Font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
@@ -740,7 +740,7 @@ class basic_renderer final {
    * \see render_solid_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font) -> texture
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const Font& font) -> texture
   {
     return render_solid_utf8(str.c_str(), font);
   }
@@ -767,7 +767,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_latin1(const char* str, const font& font) -> texture
+  [[nodiscard]] auto render_blended_latin1(const char* str, const Font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderText_Blended(font.get(), str, get_color().get()));
@@ -777,7 +777,7 @@ class basic_renderer final {
    * \see render_blended_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font) -> texture
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const Font& font) -> texture
   {
     return render_blended_latin1(str.c_str(), font);
   }
@@ -809,7 +809,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_wrapped_latin1(const char* str,
-                                                   const font& font,
+                                                   const Font& font,
                                                    const Uint32 wrap) -> texture
   {
     assert(str);
@@ -822,7 +822,7 @@ class basic_renderer final {
    * \since 5.3.0
    */
   [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
-                                                   const font& font,
+                                                   const Font& font,
                                                    const Uint32 wrap) -> texture
   {
     return render_blended_wrapped_latin1(str.c_str(), font, wrap);
@@ -853,7 +853,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   [[nodiscard]] auto render_shaded_latin1(const char* str,
-                                          const font& font,
+                                          const Font& font,
                                           const Color& background) -> texture
   {
     assert(str);
@@ -866,7 +866,7 @@ class basic_renderer final {
    * \since 5.3.0
    */
   [[nodiscard]] auto render_shaded_latin1(const std::string& str,
-                                          const font& font,
+                                          const Font& font,
                                           const Color& background) -> texture
   {
     return render_shaded_latin1(str.c_str(), font, background);
@@ -894,7 +894,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const char* str, const font& font) -> texture
+  [[nodiscard]] auto render_solid_latin1(const char* str, const Font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
@@ -904,7 +904,7 @@ class basic_renderer final {
    * \see render_solid_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font) -> texture
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const Font& font) -> texture
   {
     return render_solid_latin1(str.c_str(), font);
   }
@@ -929,7 +929,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
+  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const Font& font)
       -> texture
   {
     return render_text(TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
@@ -960,7 +960,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
-                                                    const font& font,
+                                                    const Font& font,
                                                     const Uint32 wrap) -> texture
   {
     return render_text(
@@ -990,7 +990,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
-                                           const font& font,
+                                           const Font& font,
                                            const Color& background) -> texture
   {
     return render_text(
@@ -1017,7 +1017,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
+  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const Font& font)
       -> texture
   {
     return render_text(TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
@@ -1042,10 +1042,10 @@ class basic_renderer final {
     if (const auto* data = cache.try_at(glyph)) {
       const auto& [texture, metrics] = *data;
 
-      const auto outline = cache.get_font().outline();
+      const auto outline = cache.get_font().GetOutline();
 
       // SDL_ttf handles the y-axis alignment
-      const auto x = position.x() + metrics.minX - outline;
+      const auto x = position.x() + metrics.min_x - outline;
       const auto y = position.y() - outline;
 
       render(texture, ipoint{x, y});
@@ -1084,7 +1084,7 @@ class basic_renderer final {
     const auto& font = cache.get_font();
 
     const auto originalX = position.x();
-    const auto lineSkip = font.line_skip();
+    const auto lineSkip = font.GetLineSkip();
 
     for (const unicode glyph : str) {
       if (glyph == '\n') {
@@ -1550,7 +1550,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const std::size_t id, font&& font)
+  void add_font(const std::size_t id, Font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end()) {
@@ -1610,14 +1610,14 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) -> font&
+  [[nodiscard]] auto get_font(const std::size_t id) -> Font&
   {
     return m_renderer.fonts.at(id);
   }
 
   /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
+  [[nodiscard]] auto get_font(const std::size_t id) const -> const Font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -2116,7 +2116,7 @@ class basic_renderer final {
     frect translation{};
 
 #ifndef CENTURION_NO_SDL_TTF
-    std::unordered_map<std::size_t, font> fonts{};
+    std::unordered_map<std::size_t, Font> fonts{};
 #endif  // CENTURION_NO_SDL_TTF
   };
 

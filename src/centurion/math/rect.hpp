@@ -31,7 +31,7 @@ class RectTraits final {
   inline constexpr static bool floating = std::is_floating_point_v<T>;
 
   using value_type = std::conditional_t<integral, int, float>;
-  using point_type = std::conditional_t<integral, ipoint, fpoint>;
+  using point_type = std::conditional_t<integral, Point, FPoint>;
   using area_type = std::conditional_t<integral, iarea, farea>;
   using rect_type = std::conditional_t<integral, SDL_Rect, SDL_FRect>;
 };
@@ -63,7 +63,7 @@ class BasicRect final {
   {}
 
   constexpr BasicRect(const point_type& position, const area_type& size) noexcept
-      : m_rect{position.x(), position.y(), size.width, size.height}
+      : m_rect{position.GetX(), position.GetY(), size.width, size.height}
   {}
 
   constexpr explicit BasicRect(const rect_type& rect) noexcept : m_rect{rect} {}
@@ -85,7 +85,10 @@ class BasicRect final {
     m_rect.y = y;
   }
 
-  constexpr void SetPosition(const point_type& pos) noexcept { SetPosition(pos.x(), pos.y()); }
+  constexpr void SetPosition(const point_type& pos) noexcept
+  {
+    SetPosition(pos.GetX(), pos.GetY());
+  }
 
   constexpr void SetWidth(const value_type width) noexcept { m_rect.w = width; }
   constexpr void SetHeight(const value_type height) noexcept { m_rect.h = height; }
@@ -146,9 +149,9 @@ class BasicRect final {
 
   [[nodiscard]] constexpr auto Contains(const point_type& point) const noexcept -> bool
   {
-    const auto px = point.x();
-    const auto py = point.y();
-    return !(px < GetX() || py < GetY() || px > GetMaxX() || py > GetMaxY());
+    const auto x = point.GetX();
+    const auto y = point.GetY();
+    return !(x < GetX() || y < GetY() || x > GetMaxX() || y > GetMaxY());
   }
 
   [[nodiscard]] constexpr auto HasArea() const noexcept -> bool

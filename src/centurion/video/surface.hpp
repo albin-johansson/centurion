@@ -321,10 +321,10 @@ class BasicSurface final {
     }
   }
 
-  [[nodiscard]] auto InBounds(const ipoint point) const noexcept -> bool
+  [[nodiscard]] auto InBounds(const Point point) const noexcept -> bool
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= GetWidth() ||
-             point.y() >= GetHeight());
+    const Rect bounds{0, 0, GetWidth(), GetHeight()};
+    return bounds.Contains(point);
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE

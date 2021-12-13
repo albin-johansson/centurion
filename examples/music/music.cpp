@@ -122,7 +122,7 @@ class music_example final
       const auto oldY = y;
 
       y += 25;
-      return cen::ipoint{x, oldY};
+      return cen::Point{x, oldY};
     };
 
     m_renderer.clear_with(cen::colors::steel_blue);
@@ -131,7 +131,7 @@ class music_example final
       m_renderer.render(texture, position_of(texture));
     }
 
-    constexpr cen::ipoint offset{0, 25};
+    constexpr cen::Point offset{0, 25};
     if (cen::Music::IsPlaying() && !cen::Music::IsFading()) {
       m_renderer.render(*m_tex_playing_music, position_of(*m_tex_playing_music) + offset);
     }

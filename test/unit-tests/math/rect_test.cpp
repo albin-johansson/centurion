@@ -60,12 +60,12 @@ TEST(Rect, SDLRectConstructor)
 
 TEST(Rect, PositionAndSizeConstructor)
 {
-  const cen::fpoint pos{123.5f, 81.4f};
+  const cen::FPoint pos{123.5f, 81.4f};
   const cen::farea size{921.8f, 512.6f};
   const cen::FRect rect{pos, size};
 
-  ASSERT_EQ(rect.GetX(), pos.x());
-  ASSERT_EQ(rect.GetY(), pos.y());
+  ASSERT_EQ(rect.GetX(), pos.GetX());
+  ASSERT_EQ(rect.GetY(), pos.GetY());
   ASSERT_EQ(rect.GetWidth(), size.width);
   ASSERT_EQ(rect.GetHeight(), size.height);
 
@@ -133,7 +133,7 @@ TEST(Rect, SetPosition)
 {
   cen::FRect rect;
 
-  const cen::fpoint pos{742.3f, 377.2f};
+  const cen::FPoint pos{742.3f, 377.2f};
   rect.SetPosition(pos);
 
   ASSERT_EQ(rect.GetPosition(), pos);
@@ -382,8 +382,8 @@ TEST(Rect, Center)
   const cen::Rect rect{{x, y}, {w, h}};
   const auto center = rect.GetCenter();
 
-  ASSERT_EQ(center.x(), x + (w / 2));
-  ASSERT_EQ(center.y(), y + (h / 2));
+  ASSERT_EQ(center.GetX(), x + (w / 2));
+  ASSERT_EQ(center.GetY(), y + (h / 2));
 }
 
 TEST(Rect, Data)

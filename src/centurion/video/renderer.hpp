@@ -325,13 +325,15 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept -> result
+  auto draw_line(const BasicPoint<U>& start, const BasicPoint<U>& end) noexcept -> result
   {
-    if constexpr (basic_point<U>::integral) {
-      return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
+    if constexpr (BasicPoint<U>::integral) {
+      return SDL_RenderDrawLine(get(), start.GetX(), start.GetY(), end.GetX(), end.GetY()) ==
+             0;
     }
     else {
-      return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
+      return SDL_RenderDrawLineF(get(), start.GetX(), start.GetY(), end.GetX(), end.GetY()) ==
+             0;
     }
   }
 
@@ -390,13 +392,13 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename U>
-  auto draw_point(const basic_point<U>& point) noexcept -> result
+  auto draw_point(const BasicPoint<U>& point) noexcept -> result
   {
-    if constexpr (basic_point<U>::integral) {
-      return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
+    if constexpr (BasicPoint<U>::integral) {
+      return SDL_RenderDrawPoint(get(), point.GetX(), point.GetY()) == 0;
     }
     else {
-      return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
+      return SDL_RenderDrawPointF(get(), point.GetX(), point.GetY()) == 0;
     }
   }
 
@@ -411,16 +413,16 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename U>
-  void draw_circle(const basic_point<U>& position, const float radius) noexcept
+  void draw_circle(const BasicPoint<U>& position, const float radius) noexcept
   {
-    using value_t = typename basic_point<U>::value_type;
+    using value_t = typename BasicPoint<U>::value_type;
 
     auto error = -radius;
     auto x = radius - 0.5f;
     auto y = 0.5f;
 
-    const auto cx = static_cast<float>(position.x()) - 0.5f;
-    const auto cy = static_cast<float>(position.y()) - 0.5f;
+    const auto cx = static_cast<float>(position.GetX()) - 0.5f;
+    const auto cy = static_cast<float>(position.GetY()) - 0.5f;
 
     while (x >= y) {
       draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
@@ -461,10 +463,10 @@ class basic_renderer final {
    *
    * \since 6.0.0
    */
-  void fill_circle(const fpoint center, const float radius)
+  void fill_circle(const FPoint center, const float radius)
   {
-    const auto cx = center.x();
-    const auto cy = center.y();
+    const auto cx = center.GetX();
+    const auto cy = center.GetY();
 
     for (auto dy = 1.0f; dy <= radius; dy += 1.0f) {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
@@ -533,7 +535,7 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto draw_point_t(const basic_point<U>& point) noexcept -> result
+  auto draw_point_t(const BasicPoint<U>& point) noexcept -> result
   {
     return draw_point(translate(point));
   }
@@ -552,7 +554,7 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_circle_t(const basic_point<U>& position, const float radius) noexcept
+  void draw_circle_t(const BasicPoint<U>& position, const float radius) noexcept
   {
     draw_circle(translate(position), radius);
   }
@@ -569,7 +571,7 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void fill_circle_t(const fpoint center, const float radius)
+  void fill_circle_t(const FPoint center, const float radius)
   {
     fill_circle(translate(center), radius);
   }
@@ -1037,7 +1039,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position) -> int
+  auto render_glyph(const font_cache& cache, const unicode glyph, const Point position) -> int
   {
     if (const auto* data = cache.try_at(glyph)) {
       const auto& [texture, metrics] = *data;
@@ -1045,15 +1047,15 @@ class basic_renderer final {
       const auto outline = cache.get_font().GetOutline();
 
       // SDL_ttf handles the y-axis alignment
-      const auto x = position.x() + metrics.min_x - outline;
-      const auto y = position.y() - outline;
+      const auto x = position.GetX() + metrics.min_x - outline;
+      const auto y = position.GetY() - outline;
 
-      render(texture, ipoint{x, y});
+      render(texture, Point{x, y});
 
       return x + metrics.advance;
     }
     else {
-      return position.x();
+      return position.GetX();
     }
   }
 
@@ -1079,21 +1081,21 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename String>
-  void render_text(const font_cache& cache, const String& str, ipoint position)
+  void render_text(const font_cache& cache, const String& str, Point position)
   {
     const auto& font = cache.get_font();
 
-    const auto originalX = position.x();
+    const auto originalX = position.GetX();
     const auto lineSkip = font.GetLineSkip();
 
-    for (const unicode glyph : str) {
+    for (const Unicode glyph : str) {
       if (glyph == '\n') {
-        position.set_x(originalX);
-        position.set_y(position.y() + lineSkip);
+        position.SetX(originalX);
+        position.SetY(position.GetY() + lineSkip);
       }
       else {
         const auto x = render_glyph(cache, glyph, position);
-        position.set_x(x);
+        position.SetX(x);
       }
     }
   }
@@ -1119,16 +1121,16 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename P, typename U>
-  auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+  auto render(const basic_texture<U>& texture, const BasicPoint<P>& position) noexcept
       -> result
   {
-    if constexpr (basic_point<P>::floating) {
-      const auto size = cast<cen::farea>(texture.size());
-      const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
+    if constexpr (BasicPoint<P>::floating) {
+      const auto size = cast<farea>(texture.size());
+      const SDL_FRect dst{position.GetX(), position.GetY(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else {
-      const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
+      const SDL_Rect dst{position.GetX(), position.GetY(), texture.width(), texture.height()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
   }
@@ -1253,12 +1255,12 @@ class basic_renderer final {
               const Rect& source,
               const BasicRect<R>& destination,
               const double angle,
-              const basic_point<P>& center) noexcept -> result
+              const BasicPoint<P>& center) noexcept -> result
   {
-    static_assert(std::is_same_v<typename BasicRect<R>::value_type,
-                                 typename basic_point<P>::value_type>,
-                  "Destination rectangle and center point must have the same "
-                  "value types (int or float)!");
+    static_assert(
+        std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
+        "Destination rectangle and center point must have the same "
+        "value types (int or float)!");
 
     if constexpr (BasicRect<R>::floating) {
       return SDL_RenderCopyExF(get(),
@@ -1304,13 +1306,13 @@ class basic_renderer final {
               const Rect& source,
               const BasicRect<R>& destination,
               const double angle,
-              const basic_point<P>& center,
+              const BasicPoint<P>& center,
               const SDL_RendererFlip flip) noexcept -> result
   {
-    static_assert(std::is_same_v<typename BasicRect<R>::value_type,
-                                 typename basic_point<P>::value_type>,
-                  "Destination rectangle and center point must have the same "
-                  "value types (int or float)!");
+    static_assert(
+        std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
+        "Destination rectangle and center point must have the same "
+        "value types (int or float)!");
 
     if constexpr (BasicRect<R>::floating) {
       return SDL_RenderCopyExF(get(),
@@ -1353,7 +1355,7 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+  auto render_t(const basic_texture<U>& texture, const BasicPoint<P>& position) noexcept
       -> result
   {
     return render(texture, translate(position));
@@ -1460,7 +1462,7 @@ class basic_renderer final {
                 const Rect& source,
                 const BasicRect<R>& destination,
                 const double angle,
-                const basic_point<P>& center) noexcept -> result
+                const BasicPoint<P>& center) noexcept -> result
   {
     return render(texture, source, translate(destination), angle, center);
   }
@@ -1489,7 +1491,7 @@ class basic_renderer final {
                 const Rect& source,
                 const BasicRect<R>& destination,
                 const double angle,
-                const basic_point<P>& center,
+                const BasicPoint<P>& center,
                 const SDL_RendererFlip flip) noexcept -> result
   {
     return render(texture, source, translate(destination), angle, center, flip);
@@ -2130,15 +2132,15 @@ class basic_renderer final {
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept -> basic_point<U>
+  [[nodiscard]] auto translate(const BasicPoint<U>& point) const noexcept -> BasicPoint<U>
   {
-    using value_type = typename basic_point<U>::value_type;
+    using value_type = typename BasicPoint<U>::value_type;
 
     const auto& translation = m_renderer.translation;
-    const auto x = point.x() - static_cast<value_type>(translation.GetX());
-    const auto y = point.y() - static_cast<value_type>(translation.GetY());
+    const auto x = point.GetX() - static_cast<value_type>(translation.GetX());
+    const auto y = point.GetY() - static_cast<value_type>(translation.GetY());
 
-    return basic_point<U>{x, y};
+    return BasicPoint<U>{x, y};
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>

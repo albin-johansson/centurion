@@ -8,6 +8,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
+#include "../core/common.hpp"
 #include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -16,409 +17,122 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/common.hpp"
-
 namespace cen {
 
 /// \addtogroup math
 /// \{
 
-/**
- * \brief Provides traits used by the `basic_point` class.
- *
- * \tparam T the representation type. Must be convertible to `int` or `float`.
- *
- * \since 5.0.0
- *
- * \see `basic_point`
- * \see `ipoint`
- * \see `fpoint`
- */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
-class point_traits final {
+class PointTraits final {
  public:
-  /// \brief Indicates whether or not the point has integral components.
-  /// \deprecated Since 6.4.0, use `integral` instead.
-  /// \since 5.0.0
-  inline constexpr static bool isIntegral [[deprecated]] = std::is_integral_v<T>;
-
-  /// \brief Indicates whether or not the point has floating-point components.
-  /// \deprecated Since 6.4.0, use `floating` instead.
-  /// \since 5.0.0
-  inline constexpr static bool isFloating [[deprecated]] = std::is_floating_point_v<T>;
-
-  /// \brief Indicates whether or not the point has integral components.
-  /// \since 6.4.0
   inline constexpr static bool integral = std::is_integral_v<T>;
-
-  /// \brief Indicates whether or not the point has floating-point components.
-  /// \since 6.4.0
   inline constexpr static bool floating = std::is_floating_point_v<T>;
 
-  /// \brief The actual representation type, i.e. `int` or `float`.
-  /// \since 5.0.0
   using value_type = std::conditional_t<integral, int, float>;
-
-  /// \brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
-  /// \since 5.0.0
   using point_type = std::conditional_t<integral, SDL_Point, SDL_FPoint>;
 };
 
 template <typename T>
-class basic_point;
+class BasicPoint;
 
-/**
- * \typedef ipoint
- *
- * \brief Alias for an integral point.
- *
- * \details This type corresponds to `SDL_Point`.
- *
- * \since 5.0.0
- */
-using ipoint = basic_point<int>;
+using Point = BasicPoint<int>;
+using FPoint = BasicPoint<float>;
 
-/**
- * \typedef fpoint
- *
- * \brief Alias for a floating-point point.
- *
- * \details This type corresponds to `SDL_FPoint`.
- *
- * \since 5.0.0
- */
-using fpoint = basic_point<float>;
-
-/**
- * \class basic_point
- *
- * \brief Represents a two-dimensional point.
- *
- * \serializable
- *
- * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
- * representation is specified by the type parameter.
- *
- * \note This point class will only use `int` or `float` as the actual internal
- * representation.
- *
- * \tparam T the representation type. Must be convertible to `int` or `float`.
- *
- * \since 5.0.0
- *
- * \see `ipoint`
- * \see `fpoint`
- * \see `point()`
- * \see `distance()`
- */
 template <typename T>
-class basic_point final {
+class BasicPoint final {
  public:
-  /// \copydoc point_traits::isIntegral
-  inline constexpr static bool isIntegral [[deprecated]] = point_traits<T>::isIntegral;
+  inline constexpr static bool integral = PointTraits<T>::integral;
+  inline constexpr static bool floating = PointTraits<T>::floating;
 
-  /// \copydoc point_traits::isFloating
-  inline constexpr static bool isFloating [[deprecated]] = point_traits<T>::isFloating;
+  using value_type = typename PointTraits<T>::value_type;
+  using point_type = typename PointTraits<T>::point_type;
 
-  /// \copydoc point_traits::integral
-  inline constexpr static bool integral = point_traits<T>::integral;
+  constexpr BasicPoint() noexcept = default;
 
-  /// \copydoc point_traits::floating
-  inline constexpr static bool floating = point_traits<T>::floating;
+  constexpr BasicPoint(const value_type x, const value_type y) noexcept : mPoint{x, y} {}
 
-  /// \copydoc point_traits::value_type
-  using value_type = typename point_traits<T>::value_type;
+  constexpr explicit BasicPoint(const point_type point) noexcept : mPoint{point} {}
 
-  /// \copydoc point_traits::point_type
-  using point_type = typename point_traits<T>::point_type;
+  constexpr void SetX(const value_type x) noexcept { mPoint.x = x; }
+  constexpr void SetY(const value_type y) noexcept { mPoint.y = y; }
 
-  /// \name Construction
-  /// \{
+  [[nodiscard]] constexpr auto GetX() const noexcept -> value_type { return mPoint.x; }
+  [[nodiscard]] constexpr auto GetY() const noexcept -> value_type { return mPoint.y; }
 
-  /**
-   * \brief Creates a zero-initialized point.
-   *
-   * \since 5.0.0
-   */
-  constexpr basic_point() noexcept = default;
+  [[nodiscard]] constexpr auto get() noexcept -> point_type& { return mPoint; }
+  [[nodiscard]] constexpr auto get() const noexcept -> const point_type& { return mPoint; }
 
-  /**
-   * \brief Creates a point with the specified coordinates.
-   *
-   * \param x the x-coordinate that will be used.
-   * \param y the y-coordinate that will be used.
-   *
-   * \since 5.0.0
-   */
-  constexpr basic_point(const value_type x, const value_type y) noexcept
-  {
-    m_point.x = x;
-    m_point.y = y;
-  };
+  [[nodiscard]] auto data() noexcept -> point_type* { return &mPoint; }
+  [[nodiscard]] auto data() const noexcept -> const point_type* { return &mPoint; }
 
-  /// \} End of construction
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the x-coordinate of the point.
-   *
-   * \param x the new x-coordinate.
-   *
-   * \since 5.0.0
-   */
-  constexpr void set_x(const value_type x) noexcept { m_point.x = x; }
-
-  /**
-   * \brief Sets the y-coordinate of the point.
-   *
-   * \param y the new y-coordinate.
-   *
-   * \since 5.0.0
-   */
-  constexpr void set_y(const value_type y) noexcept { m_point.y = y; }
-
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the x-coordinate of the point.
-   *
-   * \return the x-coordinate.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr auto x() const noexcept -> value_type { return m_point.x; }
-
-  /**
-   * \brief Returns the y-coordinate of the point.
-   *
-   * \return the y-coordinate.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr auto y() const noexcept -> value_type { return m_point.y; }
-
-  /**
-   * \brief Returns the internal point representation.
-   *
-   * \return a reference to the internal representation.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr auto get() noexcept -> point_type& { return m_point; }
-
-  /// \copydoc get
-  [[nodiscard]] constexpr auto get() const noexcept -> const point_type& { return m_point; }
-
-  /**
-   * \brief Returns a pointer to the internal point representation.
-   *
-   * \note Don't cache the returned pointer.
-   *
-   * \return a pointer to the point representation.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto data() noexcept -> point_type* { return &m_point; }
-
-  /// \copydoc data
-  [[nodiscard]] auto data() const noexcept -> const point_type* { return &m_point; }
-
-  /// \} End of getters
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Converts to the internal representation.
-   *
-   * \return a copy of the internal point.
-   *
-   * \see `cen::cast`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr explicit operator point_type() const noexcept { return m_point; }
-
-  /// \copydoc data()
-  [[nodiscard]] explicit operator point_type*() noexcept { return data(); }
-
-  /// \copydoc data()
-  [[nodiscard]] explicit operator const point_type*() const noexcept { return data(); }
-
-  /// \} End of conversions
-
-  /**
-   * \brief Serializes the point.
-   *
-   * \details This function expects that the archive provides an overloaded `operator()`,
-   * used for serializing data. This API is based on the Cereal serialization library.
-   *
-   * \tparam Archive the type of the archive.
-   *
-   * \param archive the archive used to serialize the point.
-   *
-   * \since 5.3.0
-   */
   template <typename Archive>
   void serialize(Archive& archive)
   {
-    archive(m_point.x, m_point.y);
+    archive(mPoint.x, mPoint.y);
   }
 
  private:
-  point_type m_point{0, 0};
+  point_type mPoint{};
 };
 
-/// \name Point-related functions
-/// \{
-
-/**
- * \brief Creates a point instance with automatically deduced precision.
- *
- * \note The only supported precisions for points are `int` and `float`, so this function
- * will cast the supplied values to the corresponding type. For example, if you supply two
- * doubles to this function, the returned point will use float as the precision.
- *
- * \tparam T the deduced precision type, must be a numerical type other than `bool`.
- *
- * \param x the x-coordinate of the point.
- * \param y the y-coordinate of the point.
- *
- * \return the created point.
- *
- * \since 6.0.0
- */
-template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
-    -> basic_point<typename point_traits<T>::value_type>
-{
-  using value_type = typename point_traits<T>::value_type;
-  return basic_point<value_type>{static_cast<value_type>(x), static_cast<value_type>(y)};
-}
-
-/**
- * \brief Returns the distance between two points.
- *
- * \tparam T the representation type used by the points.
- *
- * \param from the first point.
- * \param to the second point.
- *
- * \return the distance between the two points.
- *
- * \since 5.0.0
- */
+/* Returns the distance between two points. */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
-    typename point_traits<T>::value_type
+[[nodiscard]] auto GetDistance(const BasicPoint<T> from, const BasicPoint<T> to) noexcept ->
+    typename BasicPoint<T>::value_type
 {
-  if constexpr (basic_point<T>::integral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+  if constexpr (BasicPoint<T>::integral) {
+    const auto xDiff = std::abs(from.GetX() - to.GetX());
+    const auto yDiff = std::abs(from.GetY() - to.GetY());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::abs(from.GetX() - to.GetX()) + std::abs(from.GetY() - to.GetY()));
   }
 }
 
-/// \} End of point-related functions
-
-/// \name String conversions
-/// \{
-
-[[nodiscard]] inline auto to_string(const ipoint point) -> std::string
+[[nodiscard]] inline auto to_string(const Point point) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+  return std::format("Point(x: {}, y: {})", point.GetX(), point.GetY());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
+  return "Point(x: " + std::to_string(point.GetX()) + ", y: " + std::to_string(point.GetY()) +
+         ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-[[nodiscard]] inline auto to_string(const fpoint point) -> std::string
+[[nodiscard]] inline auto to_string(const FPoint point) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+  return std::format("FPoint(x: {}, y: {})", point.GetX(), point.GetY());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
+  return "FPoint(x: " + std::to_string(point.GetX()) + ", y: " + std::to_string(point.GetY()) +
+         ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
-
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
 
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostream&
+auto operator<<(std::ostream& stream, const BasicPoint<T>& point) -> std::ostream&
 {
   return stream << to_string(point);
 }
 
-/// \} End of streaming
-
-/// \name Point cast specializations
-/// \{
-
-/**
- * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
- *
- * \details This function casts the coordinates of the supplied point to `int`, and uses
- * the obtained values to create an `ipoint` instance.
- *
- * \param from the point that will be converted.
- *
- * \return an `ipoint` instance that corresponds to the supplied `fpoint`.
- *
- * \since 5.0.0
- */
 template <>
-[[nodiscard]] constexpr auto cast(const fpoint& from) noexcept -> ipoint
+[[nodiscard]] constexpr auto cast(const FPoint& from) noexcept -> Point
 {
-  const auto x = static_cast<int>(from.x());
-  const auto y = static_cast<int>(from.y());
-  return ipoint{x, y};
+  const auto x = static_cast<int>(from.GetX());
+  const auto y = static_cast<int>(from.GetY());
+  return Point{x, y};
 }
 
-/**
- * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
- *
- * \details This function casts the coordinates of the supplied point to `float`, and uses
- * the obtained values to create an `fpoint` instance.
- *
- * \param from the point that will be converted.
- *
- * \return an `fpoint` instance that corresponds to the supplied `ipoint`.
- *
- * \since 5.0.0
- */
 template <>
-[[nodiscard]] constexpr auto cast(const ipoint& from) noexcept -> fpoint
+[[nodiscard]] constexpr auto cast(const Point& from) noexcept -> FPoint
 {
-  const auto x = static_cast<float>(from.x());
-  const auto y = static_cast<float>(from.y());
-  return fpoint{x, y};
+  const auto x = static_cast<float>(from.GetX());
+  const auto y = static_cast<float>(from.GetY());
+  return FPoint{x, y};
 }
 
-/**
- * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
- *
- * \details This function casts the coordinates of the supplied point to `int`, and uses
- * the obtained values to create an `SDL_Point` instance.
- *
- * \param from the point that will be converted.
- *
- * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
- *
- * \since 5.0.0
- */
 template <>
 [[nodiscard]] constexpr auto cast(const SDL_FPoint& from) noexcept -> SDL_Point
 {
@@ -427,18 +141,6 @@ template <>
   return SDL_Point{x, y};
 }
 
-/**
- * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
- *
- * \details This function casts the coordinates of the supplied point to `float`, and uses
- * the obtained values to create an `SDL_FPoint` instance.
- *
- * \param from the point that will be converted.
- *
- * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
- *
- * \since 5.0.0
- */
 template <>
 [[nodiscard]] constexpr auto cast(const SDL_Point& from) noexcept -> SDL_FPoint
 {
@@ -447,45 +149,33 @@ template <>
   return SDL_FPoint{x, y};
 }
 
-/// \} End of point cast specializations
-
-/// \name Point addition and subtraction operators
-/// \{
-
 template <typename T>
-[[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
+[[nodiscard]] constexpr auto operator+(const BasicPoint<T>& a, const BasicPoint<T>& b) noexcept
+    -> BasicPoint<T>
 {
-  return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
+  return {a.GetX() + b.GetX(), a.GetY() + b.GetY()};
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
+[[nodiscard]] constexpr auto operator-(const BasicPoint<T>& a, const BasicPoint<T>& b) noexcept
+    -> BasicPoint<T>
 {
-  return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
-}
-
-/// \} End of point addition and subtraction operators
-
-/// \name Point comparison operators
-/// \{
-
-template <typename T>
-[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
-                                        const basic_point<T> rhs) noexcept -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+  return {a.GetX() - b.GetX(), a.GetY() - b.GetY()};
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
-                                        const basic_point<T> rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const BasicPoint<T> a, const BasicPoint<T> b) noexcept
+    -> bool
 {
-  return !(lhs == rhs);
+  return a.GetX() == b.GetX() && a.GetY() == b.GetY();
 }
 
-/// \} End of point comparison operators
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const BasicPoint<T> a, const BasicPoint<T> b) noexcept
+    -> bool
+{
+  return !(a == b);
+}
 
 /// \} End of group math
 

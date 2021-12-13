@@ -9,83 +9,66 @@
 #include "core/logging.hpp"
 #include "serialization_utils.hpp"
 
-static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);
-static_assert(std::is_nothrow_destructible_v<cen::ipoint>);
-static_assert(std::is_nothrow_copy_constructible_v<cen::ipoint>);
-static_assert(std::is_nothrow_copy_assignable_v<cen::ipoint>);
-static_assert(std::is_nothrow_move_constructible_v<cen::ipoint>);
-static_assert(std::is_nothrow_move_assignable_v<cen::ipoint>);
+static_assert(std::is_nothrow_default_constructible_v<cen::Point>);
+static_assert(std::is_nothrow_destructible_v<cen::Point>);
+static_assert(std::is_nothrow_copy_constructible_v<cen::Point>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::Point>);
+static_assert(std::is_nothrow_move_constructible_v<cen::Point>);
+static_assert(std::is_nothrow_move_assignable_v<cen::Point>);
 
-static_assert(std::is_nothrow_default_constructible_v<cen::fpoint>);
-static_assert(std::is_nothrow_destructible_v<cen::fpoint>);
-static_assert(std::is_nothrow_copy_constructible_v<cen::fpoint>);
-static_assert(std::is_nothrow_copy_assignable_v<cen::fpoint>);
-static_assert(std::is_nothrow_move_constructible_v<cen::fpoint>);
-static_assert(std::is_nothrow_move_assignable_v<cen::fpoint>);
+static_assert(std::is_nothrow_default_constructible_v<cen::FPoint>);
+static_assert(std::is_nothrow_destructible_v<cen::FPoint>);
+static_assert(std::is_nothrow_copy_constructible_v<cen::FPoint>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::FPoint>);
+static_assert(std::is_nothrow_move_constructible_v<cen::FPoint>);
+static_assert(std::is_nothrow_move_assignable_v<cen::FPoint>);
 
-static_assert(cen::fpoint::floating);
-static_assert(!cen::ipoint::floating);
+static_assert(cen::FPoint::floating);
+static_assert(!cen::Point::floating);
 
-static_assert(cen::ipoint::integral);
-static_assert(!cen::fpoint::integral);
+static_assert(cen::Point::integral);
+static_assert(!cen::FPoint::integral);
 
-TEST(Point, Point)
+TEST(Point, GetDistanceUnitXStep)
 {
-  // clang-format off
-  static_assert(std::is_same_v<decltype(cen::point(1, 1)), cen::ipoint>);
-  static_assert(std::is_same_v<decltype(cen::point(1u, 1u)), cen::ipoint>);
-  static_assert(std::is_same_v<decltype(cen::point(1.0f, 1.0f)), cen::fpoint>);
-  static_assert(std::is_same_v<decltype(cen::point(1.0, 1.0)), cen::fpoint>);
-  // clang-format on
+  const cen::Point a{0, 123};
+  const cen::Point b{1, 123};
 
-  const auto ipoint = cen::point(123, 456);
-  const auto fpoint = cen::point(12.3f, 45.6f);
-
-  ASSERT_EQ(123, ipoint.x());
-  ASSERT_EQ(456, ipoint.y());
-  ASSERT_EQ(12.3f, fpoint.x());
-  ASSERT_EQ(45.6f, fpoint.y());
+  ASSERT_EQ(cen::GetDistance(a, b), 1);
+  ASSERT_EQ(cen::GetDistance(b, a), 1);
 }
 
-TEST(Point, DistanceUnitXStep)
+TEST(Point, GetDistanceUnitYStep)
 {
-  const cen::ipoint a{0, 123};
-  const cen::ipoint b{1, 123};
+  const cen::Point a{123, 0};
+  const cen::Point b{123, 1};
 
-  ASSERT_EQ(cen::distance(a, b), 1);
-  ASSERT_EQ(cen::distance(b, a), 1);
+  ASSERT_EQ(cen::GetDistance(a, b), 1);
+  ASSERT_EQ(cen::GetDistance(b, a), 1);
 }
 
-TEST(Point, DistanceUnitYStep)
+TEST(Point, GetDistance)
 {
-  const cen::ipoint a{123, 0};
-  const cen::ipoint b{123, 1};
+  const cen::FPoint a{189.2f, 86.9f};
+  const cen::FPoint b{66.5f, 36.6f};
 
-  ASSERT_EQ(cen::distance(a, b), 1);
-  ASSERT_EQ(cen::distance(b, a), 1);
-}
+  const auto expected =
+      std::sqrt(std::abs(a.GetX() - b.GetX()) + std::abs(a.GetY() - b.GetY()));
 
-TEST(Point, Distance)
-{
-  const cen::fpoint a{189.2f, 86.9f};
-  const cen::fpoint b{66.5f, 36.6f};
-
-  const auto expected = std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
-
-  ASSERT_EQ(cen::distance(a, b), expected);
-  ASSERT_EQ(cen::distance(b, a), expected);
+  ASSERT_EQ(cen::GetDistance(a, b), expected);
+  ASSERT_EQ(cen::GetDistance(b, a), expected);
 }
 
 TEST(Point, EqualityOperatorReflexivity)
 {
-  const cen::fpoint point;
+  const cen::FPoint point;
   ASSERT_EQ(point, point);
 }
 
 TEST(Point, EqualityOperatorComparisonSame)
 {
-  const cen::fpoint fst{211.5f, 823.1f};
-  const cen::fpoint snd{fst};
+  const cen::FPoint fst{211.5f, 823.1f};
+  const cen::FPoint snd{fst};
   ASSERT_EQ(fst, snd);
   ASSERT_EQ(snd, fst);
   ASSERT_FALSE(fst != snd);
@@ -94,110 +77,97 @@ TEST(Point, EqualityOperatorComparisonSame)
 
 TEST(Point, EqualityOperatorComparisonDifferent)
 {
-  const cen::fpoint fst{531.5f, 8313.4f};
-  const cen::fpoint snd{34.2f, 173.3f};
+  const cen::FPoint fst{531.5f, 8313.4f};
+  const cen::FPoint snd{34.2f, 173.3f};
   ASSERT_NE(fst, snd);
   ASSERT_NE(snd, fst);
 }
 
 TEST(Point, InequalityOperatorSelf)
 {
-  const cen::fpoint point;
+  const cen::FPoint point;
   ASSERT_FALSE(point != point);
 }
 
 TEST(Point, InequalityOperatorDifferent)
 {
-  const cen::fpoint fst{8392.5f, 12452.4f};
-  const cen::fpoint snd{5236.2f, 321.3f};
+  const cen::FPoint fst{8392.5f, 12452.4f};
+  const cen::FPoint snd{5236.2f, 321.3f};
   ASSERT_NE(fst, snd);
   ASSERT_NE(snd, fst);
 }
 
 TEST(Point, InequalityOperatorEqual)
 {
-  const cen::fpoint fst{211.5f, 823.1f};
-  const cen::fpoint snd{fst};
+  const cen::FPoint fst{211.5f, 823.1f};
+  const cen::FPoint snd{fst};
   ASSERT_FALSE(fst != snd);
   ASSERT_FALSE(snd != fst);
 }
 
 TEST(Point, AdditionOperator)
 {
-  const cen::fpoint fst{62.4f, 381.3f};
-  const cen::fpoint snd{779.3f, 819.3f};
+  const cen::FPoint fst{62.4f, 381.3f};
+  const cen::FPoint snd{779.3f, 819.3f};
 
-  const auto expectedX = fst.x() + snd.x();
-  const auto expectedY = fst.y() + snd.y();
+  const auto expectedX = fst.GetX() + snd.GetX();
+  const auto expectedY = fst.GetY() + snd.GetY();
 
   const auto fstSnd = fst + snd;
-  ASSERT_EQ(fstSnd.x(), expectedX);
-  ASSERT_EQ(fstSnd.y(), expectedY);
+  ASSERT_EQ(fstSnd.GetX(), expectedX);
+  ASSERT_EQ(fstSnd.GetY(), expectedY);
 
   const auto sndFst = snd + fst;
-  ASSERT_EQ(sndFst.x(), expectedX);
-  ASSERT_EQ(sndFst.y(), expectedY);
+  ASSERT_EQ(sndFst.GetX(), expectedX);
+  ASSERT_EQ(sndFst.GetY(), expectedY);
 }
 
 TEST(Point, SubtractionOperator)
 {
-  const cen::fpoint fst{673, 123};
-  const cen::fpoint snd{-547, 451};
+  const cen::FPoint fst{673, 123};
+  const cen::FPoint snd{-547, 451};
 
   const auto fstSnd = fst - snd;
-  ASSERT_EQ(fstSnd.x(), fst.x() - snd.x());
-  ASSERT_EQ(fstSnd.y(), fst.y() - snd.y());
+  ASSERT_EQ(fstSnd.GetX(), fst.GetX() - snd.GetX());
+  ASSERT_EQ(fstSnd.GetY(), fst.GetY() - snd.GetY());
 
   const auto sndFst = snd - fst;
-  ASSERT_EQ(sndFst.x(), snd.x() - fst.x());
-  ASSERT_EQ(sndFst.y(), snd.y() - fst.y());
+  ASSERT_EQ(sndFst.GetX(), snd.GetX() - fst.GetX());
+  ASSERT_EQ(sndFst.GetY(), snd.GetY() - fst.GetY());
 
   ASSERT_NE(fstSnd, sndFst);
 }
 
 TEST(Point, IPointToFPoint)
 {
-  const cen::ipoint source{684, 912};
-  const auto result = cen::cast<cen::fpoint>(source);
+  const cen::Point source{684, 912};
+  const auto result = cen::cast<cen::FPoint>(source);
 
-  ASSERT_EQ(result.x(), static_cast<float>(source.x()));
-  ASSERT_EQ(result.y(), static_cast<float>(source.y()));
+  ASSERT_EQ(result.GetX(), static_cast<float>(source.GetX()));
+  ASSERT_EQ(result.GetY(), static_cast<float>(source.GetY()));
 }
 
 TEST(Point, FPointToIPoint)
 {
-  const cen::fpoint source{58.8f, 123.4f};
-  const auto result = cen::cast<cen::ipoint>(source);
+  const cen::FPoint source{58.8f, 123.4f};
+  const auto result = cen::cast<cen::Point>(source);
 
-  ASSERT_EQ(result.x(), static_cast<int>(source.x()));
-  ASSERT_EQ(result.y(), static_cast<int>(source.y()));
-}
-
-TEST(Point, ConversionToPointer)
-{
-  cen::fpoint point{3813.3f, 892.5f};
-
-  auto* ptr = static_cast<SDL_FPoint*>(point);
-  ASSERT_EQ(point.x(), ptr->x);
-  ASSERT_EQ(point.y(), ptr->y);
-
-  const auto* cptr = static_cast<const SDL_FPoint*>(point);
-  ASSERT_EQ(point.x(), cptr->x);
-  ASSERT_EQ(point.y(), cptr->y);
+  ASSERT_EQ(result.GetX(), static_cast<int>(source.GetX()));
+  ASSERT_EQ(result.GetY(), static_cast<int>(source.GetY()));
 }
 
 TEST(Point, Get)
 {
-  const cen::fpoint point{3923.3f, 7718.1f};
+  const cen::FPoint point{3923.3f, 7718.1f};
   const auto& ptr = point.get();
 
-  ASSERT_EQ(point.x(), ptr.x);
-  ASSERT_EQ(point.y(), ptr.y);
+  ASSERT_EQ(point.GetX(), ptr.x);
+  ASSERT_EQ(point.GetY(), ptr.y);
 }
 
 TEST(Point, Data)
 {
-  const cen::ipoint ip{123, 456};
+  const cen::Point ip{123, 456};
   ASSERT_TRUE(ip.data());
   ASSERT_EQ(123, ip.data()->x);
   ASSERT_EQ(456, ip.data()->y);
@@ -205,19 +175,19 @@ TEST(Point, Data)
 
 TEST(Point, ToString)
 {
-  const cen::ipoint ip{123, 456};
+  const cen::Point ip{123, 456};
   cen::log_info_raw(cen::to_string(ip));
 
-  const cen::fpoint fp{12.3f, 45.6f};
+  const cen::FPoint fp{12.3f, 45.6f};
   cen::log_info_raw(cen::to_string(fp));
 }
 
 TEST(Point, StreamOperator)
 {
-  const cen::ipoint ip{123, 456};
+  const cen::Point ip{123, 456};
   std::clog << ip << '\n';
 
-  const cen::fpoint fp{12.3f, 45.6f};
+  const cen::FPoint fp{12.3f, 45.6f};
   std::clog << fp << '\n';
 }
 
@@ -225,9 +195,9 @@ TEST(Point, Serialization)
 {
   const auto x = 839.9f;
   const auto y = 931.5f;
-  serialize_save("point.binary", cen::fpoint{x, y});
+  serialize_save("point.binary", cen::FPoint{x, y});
 
-  const auto point = serialize_create<cen::fpoint>("point.binary");
-  ASSERT_EQ(x, point.x());
-  ASSERT_EQ(y, point.y());
+  const auto point = serialize_create<cen::FPoint>("point.binary");
+  ASSERT_EQ(x, point.GetX());
+  ASSERT_EQ(y, point.GetY());
 }

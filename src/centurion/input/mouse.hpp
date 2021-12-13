@@ -201,7 +201,7 @@ class mouse final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto position() const noexcept -> ipoint { return {m_mouseX, m_mouseY}; }
+  [[nodiscard]] auto position() const noexcept -> Point { return {m_mouseX, m_mouseY}; }
 
   /**
    * \brief Returns the logical width used by the mouse state instance.

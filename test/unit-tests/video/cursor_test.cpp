@@ -29,10 +29,10 @@ TEST(Cursor, SystemCursorConstructor)
 TEST(Cursor, SurfaceConstructor)
 {
   const cen::Surface surface{"resources/panda.png"};
-  const cen::ipoint hotspot{12, 14};
+  const cen::Point hotspot{12, 14};
   ASSERT_NO_THROW(cen::Cursor(surface, hotspot));
 
-  const cen::ipoint outside{8341, 2342};
+  const cen::Point outside{8341, 2342};
   ASSERT_THROW(cen::Cursor(surface, outside), cen::SDLError);
 }
 

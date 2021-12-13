@@ -88,12 +88,12 @@ TEST_F(RendererTest, TranslatedFillRect)
 TEST_F(RendererTest, TranslatedRenderWithPoint)
 {
   {
-    const cen::ipoint pos{12, 34};
+    const cen::Point pos{12, 34};
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, pos));
   }
 
   {
-    const cen::fpoint pos{56, 78};
+    const cen::FPoint pos{56, 78};
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, pos));
   }
 }
@@ -153,7 +153,7 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::ipoint center{15, 12};
+    const cen::Point center{15, 12};
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center));
   }
@@ -162,7 +162,7 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::fpoint center{15, 12};
+    const cen::FPoint center{15, 12};
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center));
   }
@@ -174,7 +174,7 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::ipoint center{15, 12};
+    const cen::Point center{15, 12};
     const auto flip = SDL_FLIP_HORIZONTAL;
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
@@ -184,7 +184,7 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::fpoint center{15, 12};
+    const cen::FPoint center{15, 12};
     const auto flip = SDL_FLIP_VERTICAL;
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
@@ -352,7 +352,7 @@ TEST_F(RendererTest, Capture)
   m_renderer->fill_rect(cen::Rect{20, 20, 150, 100});
 
   m_renderer->set_color(cen::colors::black);
-  m_renderer->draw_circle(cen::point(300.0, 200.0), 30);
+  m_renderer->draw_circle(cen::FPoint{300.0, 200.0}, 30);
 
   m_renderer->set_color(cen::colors::maroon);
   m_renderer->fill_circle({400, 300}, 35);

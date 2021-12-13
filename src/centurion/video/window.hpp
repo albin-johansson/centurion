@@ -537,9 +537,9 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  void set_position(const ipoint position) noexcept
+  void set_position(const Point position) noexcept
   {
-    SDL_SetWindowPosition(m_window, position.x(), position.y());
+    SDL_SetWindowPosition(m_window, position.GetX(), position.GetY());
   }
 
   /**
@@ -549,7 +549,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> int { return position().x(); }
+  [[nodiscard]] auto x() const noexcept -> int { return position().GetX(); }
 
   /**
    * \brief Returns the y-coordinate of the window position.
@@ -558,7 +558,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> int { return position().y(); }
+  [[nodiscard]] auto y() const noexcept -> int { return position().GetY(); }
 
   /**
    * \brief Returns the current position of the window.
@@ -569,7 +569,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto position() const noexcept -> ipoint
+  [[nodiscard]] auto position() const noexcept -> Point
   {
     int x{};
     int y{};

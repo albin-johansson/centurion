@@ -137,11 +137,11 @@ void validate_render_function(const Fake& fake, Args&&... args)
 
   if constexpr (sizeof...(Args) >= 4) {
     const auto& center = std::get<3>(tuple);
-    static_assert(std::is_same_v<const cen::ipoint&, decltype(center)> ||
-                  std::is_same_v<const cen::fpoint&, decltype(center)>);
+    static_assert(std::is_same_v<const cen::Point&, decltype(center)> ||
+                  std::is_same_v<const cen::FPoint&, decltype(center)>);
 
-    ASSERT_EQ(center.x(), fake.arg5_val->x);
-    ASSERT_EQ(center.y(), fake.arg5_val->y);
+    ASSERT_EQ(center.GetX(), fake.arg5_val->x);
+    ASSERT_EQ(center.GetY(), fake.arg5_val->y);
   }
 
   if constexpr (sizeof...(Args) >= 5) {
@@ -213,8 +213,8 @@ TEST_F(RendererTest, FillRect)
 
 TEST_F(RendererTest, DrawPoint)
 {
-  const cen::ipoint ipoint;
-  const cen::fpoint fpoint;
+  const cen::Point ipoint;
+  const cen::FPoint fpoint;
 
   m_renderer.draw_point(ipoint);
   m_renderer.draw_point(fpoint);
@@ -247,25 +247,25 @@ TEST_F(RendererTest, FillWith)
 TEST_F(RendererTest, DrawLine)
 {
   {
-    const cen::ipoint start{12, 34};
-    const cen::ipoint end{56, 78};
+    const cen::Point start{12, 34};
+    const cen::Point end{56, 78};
     m_renderer.draw_line(start, end);
 
-    ASSERT_EQ(start.x(), SDL_RenderDrawLine_fake.arg1_val);
-    ASSERT_EQ(start.y(), SDL_RenderDrawLine_fake.arg2_val);
-    ASSERT_EQ(end.x(), SDL_RenderDrawLine_fake.arg3_val);
-    ASSERT_EQ(end.y(), SDL_RenderDrawLine_fake.arg4_val);
+    ASSERT_EQ(start.GetX(), SDL_RenderDrawLine_fake.arg1_val);
+    ASSERT_EQ(start.GetY(), SDL_RenderDrawLine_fake.arg2_val);
+    ASSERT_EQ(end.GetX(), SDL_RenderDrawLine_fake.arg3_val);
+    ASSERT_EQ(end.GetY(), SDL_RenderDrawLine_fake.arg4_val);
   }
 
   {
-    const cen::fpoint start{12, 34};
-    const cen::fpoint end{56, 78};
+    const cen::FPoint start{12, 34};
+    const cen::FPoint end{56, 78};
     m_renderer.draw_line(start, end);
 
-    ASSERT_EQ(start.x(), SDL_RenderDrawLineF_fake.arg1_val);
-    ASSERT_EQ(start.y(), SDL_RenderDrawLineF_fake.arg2_val);
-    ASSERT_EQ(end.x(), SDL_RenderDrawLineF_fake.arg3_val);
-    ASSERT_EQ(end.y(), SDL_RenderDrawLineF_fake.arg4_val);
+    ASSERT_EQ(start.GetX(), SDL_RenderDrawLineF_fake.arg1_val);
+    ASSERT_EQ(start.GetY(), SDL_RenderDrawLineF_fake.arg2_val);
+    ASSERT_EQ(end.GetX(), SDL_RenderDrawLineF_fake.arg3_val);
+    ASSERT_EQ(end.GetY(), SDL_RenderDrawLineF_fake.arg4_val);
   }
 
   ASSERT_EQ(1u, SDL_RenderDrawLine_fake.call_count);
@@ -275,26 +275,26 @@ TEST_F(RendererTest, DrawLine)
 TEST_F(RendererTest, DrawLines)
 {
   {
-    std::array<cen::ipoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
+    std::array<cen::Point, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
     m_renderer.draw_lines(points);
     ASSERT_EQ(1u, SDL_RenderDrawLines_fake.call_count);
     ASSERT_EQ(0u, SDL_RenderDrawLinesF_fake.call_count);
 
     for (auto i = 0u; i < points.size(); ++i) {
-      ASSERT_EQ(points.at(i).x(), SDL_RenderDrawLines_fake.arg1_val[i].x);
-      ASSERT_EQ(points.at(i).y(), SDL_RenderDrawLines_fake.arg1_val[i].y);
+      ASSERT_EQ(points.at(i).GetX(), SDL_RenderDrawLines_fake.arg1_val[i].x);
+      ASSERT_EQ(points.at(i).GetY(), SDL_RenderDrawLines_fake.arg1_val[i].y);
     }
   }
 
   {
-    std::array<cen::fpoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
+    std::array<cen::FPoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
     m_renderer.draw_lines(points);
     ASSERT_EQ(1u, SDL_RenderDrawLines_fake.call_count);
     ASSERT_EQ(1u, SDL_RenderDrawLinesF_fake.call_count);
 
     for (auto i = 0u; i < points.size(); ++i) {
-      ASSERT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
-      ASSERT_EQ(points.at(i).y(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
+      ASSERT_EQ(points.at(i).GetX(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
+      ASSERT_EQ(points.at(i).GetY(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
     }
   }
 }
@@ -302,12 +302,12 @@ TEST_F(RendererTest, DrawLines)
 TEST_F(RendererTest, RenderWithPoint)
 {
   {
-    const cen::ipoint pos{12, 34};
+    const cen::Point pos{12, 34};
     m_renderer.render(m_texture, pos);
   }
 
   {
-    const cen::fpoint pos{56, 78};
+    const cen::FPoint pos{56, 78};
     m_renderer.render(m_texture, pos);
   }
 
@@ -383,7 +383,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::ipoint center{15, 12};
+    const cen::Point center{15, 12};
 
     m_renderer.render(m_texture, src, dst, angle, center);
     validate_render_function(SDL_RenderCopyEx_fake, src, dst, angle, center);
@@ -393,7 +393,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::fpoint center{15, 12};
+    const cen::FPoint center{15, 12};
 
     m_renderer.render(m_texture, src, dst, angle, center);
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle, center);
@@ -409,7 +409,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::ipoint center{15, 12};
+    const cen::Point center{15, 12};
     const auto flip = SDL_FLIP_HORIZONTAL;
 
     m_renderer.render(m_texture, src, dst, angle, center, flip);
@@ -420,7 +420,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     const cen::Rect src{{12, 34}, {56, 78}};
     const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
-    const cen::fpoint center{15, 12};
+    const cen::FPoint center{15, 12};
     const auto flip = SDL_FLIP_VERTICAL;
 
     m_renderer.render(m_texture, src, dst, angle, center, flip);

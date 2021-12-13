@@ -22,7 +22,7 @@ TEST(Mouse, Defaults)
   ASSERT_EQ(0, mouse.x());
   ASSERT_EQ(0, mouse.y());
 
-  ASSERT_EQ(cen::ipoint{}, mouse.position());
+  ASSERT_EQ(cen::Point{}, mouse.position());
 }
 
 TEST(Mouse, Update)

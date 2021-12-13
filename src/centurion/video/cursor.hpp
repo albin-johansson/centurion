@@ -50,8 +50,8 @@ class BasicCursor final {
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
-  BasicCursor(const Surface& surface, const ipoint& hotspot)
-      : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
+  BasicCursor(const Surface& surface, const Point& hotspot)
+      : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.GetX(), hotspot.GetY())}
   {
     if (!mCursor) {
       throw SDLError{};

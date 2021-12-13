@@ -269,9 +269,7 @@ class BasicSurface final {
 
   [[nodiscard]] auto GetHeight() const noexcept -> int { return mSurface->h; }
 
-  [[nodiscard]] auto GetSize() const noexcept -> Area {
-    return Area{GetWidth(), GetHeight()};
-  }
+  [[nodiscard]] auto GetSize() const noexcept -> Area { return Area{GetWidth(), GetHeight()}; }
 
   /* Returns the pitch, i.e. the length of a row of pixels in bytes */
   [[nodiscard]] auto GetPitch() const noexcept -> int { return mSurface->pitch; }

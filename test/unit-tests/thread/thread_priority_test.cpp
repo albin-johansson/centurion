@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "system/concurrency.hpp"
+#include "concurrency.hpp"
 
 TEST(ThreadPriority, Values)
 {

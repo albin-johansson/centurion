@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "system/concurrency.hpp"
+#include "concurrency.hpp"
 
 TEST(Mutex, LockAndUnlock)
 {

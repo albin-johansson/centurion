@@ -1,5 +1,5 @@
-#ifndef CENTURION_THREAD_CONCURRENCY_HPP_
-#define CENTURION_THREAD_CONCURRENCY_HPP_
+#ifndef CENTURION_CONCURRENCY_HPP_
+#define CENTURION_CONCURRENCY_HPP_
 
 #include <SDL.h>
 
@@ -460,4 +460,4 @@ inline auto operator<<(std::ostream& stream, const Thread& thread) -> std::ostre
 
 }  // namespace cen
 
-#endif  // CENTURION_THREAD_CONCURRENCY_HPP_
+#endif  // CENTURION_CONCURRENCY_HPP_

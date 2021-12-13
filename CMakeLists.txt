@@ -151,7 +151,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/system/platform.hpp
                src/centurion/system/shared_object.hpp
 
-               src/centurion/system/concurrency.hpp
+               src/centurion/concurrency.hpp
 
                src/centurion/video/blend_factor.hpp
                src/centurion/video/blend_mode.hpp

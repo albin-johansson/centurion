@@ -55,7 +55,7 @@ class font_cache final {
    * \since 5.0.0
    */
   struct glyph_data final {
-    texture cached;         ///< The cached texture.
+    texture cached;        ///< The cached texture.
     GlyphMetrics metrics;  ///< The metrics of the glyph.
   };
 

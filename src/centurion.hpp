@@ -101,7 +101,7 @@
 #include "centurion/input/touch_device_type.hpp"
 #include "centurion/math.hpp"
 #include "centurion/system/byte_order.hpp"
-#include "centurion/system/concurrency.hpp"
+#include "centurion/concurrency.hpp"
 #include "centurion/system/cpu.hpp"
 #include "centurion/system/locale.hpp"
 #include "centurion/system/platform.hpp"

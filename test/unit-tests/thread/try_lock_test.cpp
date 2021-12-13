@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include "system/concurrency.hpp"
+#include "concurrency.hpp"
 
 static_assert(!std::is_copy_constructible_v<cen::TryLock>);
 static_assert(!std::is_copy_assignable_v<cen::TryLock>);

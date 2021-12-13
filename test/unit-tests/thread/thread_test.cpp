@@ -4,7 +4,7 @@
 #include <type_traits>
 
 #include "core/logging.hpp"
-#include "system/concurrency.hpp"
+#include "concurrency.hpp"
 
 namespace {
 

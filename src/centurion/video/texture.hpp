@@ -153,7 +153,7 @@ class basic_texture final {
    * \since 4.0.0
    */
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const surface& surface)
+  basic_texture(const Renderer& renderer, const Surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!m_texture) {
@@ -217,9 +217,9 @@ class basic_texture final {
     assert(path);
 
     constexpr auto blendMode = blend_mode::blend;
-    const auto surface = cen::surface::with_format(path, blendMode, format);
+    const auto surface = cen::Surface::WithFormat(path, blendMode, format);
 
-    basic_texture texture{renderer, format, texture_access::streaming, surface.size()};
+    basic_texture texture{renderer, format, texture_access::streaming, surface.GetSize()};
     texture.set_blend_mode(blendMode);
 
     Uint32* pixels{};
@@ -228,8 +228,8 @@ class basic_texture final {
     }
 
     const auto maxCount =
-        static_cast<std::size_t>(surface.pitch()) * static_cast<std::size_t>(surface.height());
-    SDL_memcpy(pixels, surface.pixels(), maxCount);
+        static_cast<std::size_t>(surface.GetPitch()) * static_cast<std::size_t>(surface.GetHeight());
+    SDL_memcpy(pixels, surface.GetPixelData(), maxCount);
 
     texture.unlock();
 

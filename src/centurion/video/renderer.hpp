@@ -218,19 +218,21 @@ class basic_renderer final {
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto capture(const pixel_format format) const -> surface
+  [[nodiscard]] auto capture(const pixel_format format) const -> Surface
   {
-    surface image{output_size(), format};
+    Surface image{output_size(), format};
 
-    if (!image.lock()) {
+    if (!image.Lock()) {
       throw SDLError{};
     }
 
-    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1) {
+    if (const auto res =
+            SDL_RenderReadPixels(get(), nullptr, 0, image.GetPixelData(), image.GetPitch());
+        res == -1) {
       throw SDLError{};
     }
 
-    image.unlock();
+    image.Unlock();
     return image;
   }
 
@@ -2122,7 +2124,7 @@ class basic_renderer final {
 
   [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
   {
-    surface surface{s};
+    Surface surface{s};
     texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};
     return texture;
   }

@@ -3,15 +3,26 @@
 
 #include <SDL.h>
 
+#include "../core/common.hpp"
+#include "../core/exception.hpp"
 #include "../core/features.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../math/area.hpp"
+#include "../math/rect.hpp"
+#include "blend_mode.hpp"
+#include "color.hpp"
+#include "colors.hpp"
+#include "pixel_format_info.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
 #endif  // CENTURION_NO_SDL_IMAGE
 
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string, to_string
+#include <cassert>   // assert
+#include <optional>  // optional, nullopt
+#include <ostream>   // ostream
+#include <string>    // string, to_string
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -19,544 +30,205 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../detail/stdlib.hpp"
-#include "../math/area.hpp"
-#include "../math/rect.hpp"
-#include "blend_mode.hpp"
-#include "color.hpp"
-#include "pixel_format_info.hpp"
-
 namespace cen {
 
 /// \addtogroup video
 /// \{
 
 template <typename T>
-class basic_surface;
+class BasicSurface;
 
-/**
- * \typedef surface
- *
- * \brief Represents an owning surface.
- *
- * \since 5.0.0
- */
-using surface = basic_surface<detail::owning_type>;
+using Surface = BasicSurface<detail::owning_type>;
+using SurfaceHandle = BasicSurface<detail::handle_type>;
 
-/**
- * \typedef surface_handle
- *
- * \brief Represents a non-owning surface.
- *
- * \since 5.0.0
- */
-using surface_handle = basic_surface<detail::handle_type>;
-
-/**
- * \class basic_surface
- *
- * \brief Represents a non-accelerated image.
- *
- * \ownerhandle `surface`/`surface_handle`
- *
- * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
- * representation that can be manipulated, unlike textures. There is no support
- * for directly rendering surfaces. However, surfaces can be converted to textures, which
- * in turn can be rendered.
- *
- * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \since 4.0.0
- *
- * \see `surface`
- * \see `surface_handle`
- */
 template <typename T>
-class basic_surface final {
+class BasicSurface final {
  public:
-  /// \name Construction
-  /// \{
-
-  // clang-format off
-
-  /**
-   * \brief Creates a surface from a pointer to an SDL surface.
-   *
-   * \note Depending on the type of the surface, ownership of the supplied SDL
-   * surface might be claimed.
-   *
-   * \param surface a pointer to the associated surface.
-   *
-   * \since 4.0.0
-   */
-  explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
-      : m_surface{surface}
+  /* Creates a surface based on existing surface, ownership is claimed by owning surfaces */
+  explicit BasicSurface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
+      : mSurface{surface}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_surface)
-      {
-        throw Error{"Cannot create surface from null pointer!"};
+    if constexpr (detail::is_owning<T>()) {
+      if (!mSurface) {
+        throw Error{"Cannot create owning surface from null pointer!"};
       }
     }
   }
 
-  // clang-format on
-
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  /**
-   * \brief Creates a surface based on the image at the specified path.
-   *
-   * \tparam BB dummy parameter for SFINAE.
-   *
-   * \param file the file path of the image file that will be loaded, can't
-   * be null.
-   *
-   * \throws img_error if the surface cannot be created.
-   *
-   * \since 4.0.0
-   */
+  /* Creates a surface based on the image at the specified file path */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_surface(const char* file) : m_surface{IMG_Load(file)}
+  explicit BasicSurface(const char* file) : mSurface{IMG_Load(file)}
   {
-    if (!m_surface) {
+    if (!mSurface) {
       throw IMGError{};
     }
   }
 
-  /**
-   * \brief Creates a surface based on the image at the specified path.
-   *
-   * \tparam BB dummy parameter for SFINAE.
-   *
-   * \param file the file path of the image file that will be loaded.
-   *
-   * \throws img_error if the surface cannot be created.
-   *
-   * \since 5.3.0
-   */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
+  explicit BasicSurface(const std::string& file) : BasicSurface{file.c_str()}
   {}
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
-  /**
-   * \brief Creates a surface with the specified dimensions and pixel format.
-   *
-   * \tparam BB dummy parameter for SFINAE.
-   *
-   * \param size the size of the surface.
-   * \param pixelFormat the pixel format that will be used by the surface.
-   *
-   * \throws sdl_error if the surface cannot be created.
-   *
-   * \since 5.3.0
-   */
+  /* Creates a blank surface with the specified size and format */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  basic_surface(const iarea size, const pixel_format pixelFormat)
-      : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
-                                                 size.width,
-                                                 size.height,
-                                                 0,
-                                                 to_underlying(pixelFormat))}
+  BasicSurface(const iarea& size, const pixel_format format)
+      : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
+                                                size.width,
+                                                size.height,
+                                                0,
+                                                to_underlying(format))}
   {
-    if (!m_surface) {
+    if (!mSurface) {
       throw SDLError{};
     }
   }
 
-  /**
-   * \brief Creates and returns a surface with the specified characteristics.
-   *
-   * \tparam BB dummy parameter for SFINAE.
-   *
-   * \param file the file path of the image that the surface will be based on.
-   * \param blendMode the blend mode that will be used.
-   * \param pixelFormat the pixel format that will be used.
-   *
-   * \return an owning surface, with the specified blend mode and pixel format.
-   *
-   * \since 5.2.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto with_format(const char* file,
-                                        const blend_mode blendMode,
-                                        const pixel_format pixelFormat) -> basic_surface
-  {
-    assert(file);
-
-    basic_surface source{file};
-    source.set_blend_mode(blendMode);
-
-    return source.convert(pixelFormat);
-  }
-
-  /**
-   * \see with_format()
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto with_format(const std::string& file,
-                                        const blend_mode blendMode,
-                                        const pixel_format pixelFormat) -> basic_surface
-  {
-    return with_format(file.c_str(), blendMode, pixelFormat);
-  }
-
-  /**
-   * \brief Creates and returns a surface based on a BMP file.
-   *
-   * \tparam BB dummy parameter for SFINAE.
-   *
-   * \param file the path to the BMP file that contains the surface data.
-   *
-   * \return the created surface.
-   *
-   * \throws sdl_error if the surface couldn't be loaded.
-   *
-   * \since 5.3.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_bmp(const char* file) -> basic_surface
-  {
-    assert(file);
-    return basic_surface{SDL_LoadBMP(file)};
-  }
-
-  /**
-   * \see from_bmp()
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
-  {
-    return from_bmp(file.c_str());
-  }
-
-  /**
-   * \brief Creates a copy of the supplied surface.
-   *
-   * \param other the surface that will be copied.
-   *
-   * \since 4.0.0
-   */
-  basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
+  BasicSurface(const BasicSurface& other) noexcept(!detail::is_owning<T>())
   {
     if constexpr (detail::is_owning<T>()) {
-      copy(other);
+      Copy(other);
     }
     else {
-      m_surface = other.get();
+      mSurface = other.get();
     }
   }
 
-  /**
-   * \brief Creates a surface by moving the supplied surface.
-   *
-   * \param other the surface that will be moved.
-   *
-   * \since 4.0.0
-   */
-  basic_surface(basic_surface&& other) noexcept = default;
+  BasicSurface(BasicSurface&& other) noexcept = default;
 
-  /// \} End of construction
-
-  /**
-   * \brief Copies the supplied surface.
-   *
-   * \param other the surface that will be copied.
-   *
-   * \throws sdl_error if the supplied surface couldn't be copied.
-   *
-   * \since 4.0.0
-   */
-  auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
-      -> basic_surface&
+  auto operator=(const BasicSurface& other) noexcept(!detail::is_owning<T>()) -> BasicSurface&
   {
     if (this != &other) {
       if constexpr (detail::is_owning<T>()) {
-        copy(other);
+        Copy(other);
       }
       else {
-        m_surface = other.get();
+        mSurface = other.get();
       }
     }
+
     return *this;
   }
 
-  /**
-   * \brief Moves the supplied surface into this surface.
-   *
-   * \param other the surface that will be moved.
-   *
-   * \return the surface that claimed the supplied surface.
-   *
-   * \since 4.0.0
-   */
-  auto operator=(basic_surface&& other) noexcept -> basic_surface& = default;
+  auto operator=(BasicSurface&& other) noexcept -> BasicSurface& = default;
 
-  /// \name Save functions
-  /// \{
+  /* Creates a blank surface with the specified blend mode and pixel format */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto WithFormat(const char* file,
+                                       const blend_mode mode,
+                                       const pixel_format format) -> BasicSurface
+  {
+    assert(file);
 
-  /**
-   * \brief Saves the surface as a BMP image.
-   *
-   * \param file the file path that the surface data will be saved at.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto save_as_bmp(const char* file) const noexcept -> result
+    BasicSurface source{file};
+    source.SetBlendMode(mode);
+
+    return source.ConvertTo(format);
+  }
+
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto WithFormat(const std::string& file,
+                                       const blend_mode mode,
+                                       const pixel_format format) -> BasicSurface
+  {
+    return WithFormat(file.c_str(), mode, format);
+  }
+
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto FromBMP(const char* file) -> BasicSurface
+  {
+    assert(file);
+    return BasicSurface{SDL_LoadBMP(file)};
+  }
+
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto FromBMP(const std::string& file) -> BasicSurface
+  {
+    return FromBMP(file.c_str());
+  }
+
+  auto SaveAsBMP(const char* file) const noexcept -> result
   {
     assert(file);
     return SDL_SaveBMP(get(), file) != -1;
   }
 
-  /**
-   * \see save_as_bmp()
-   * \since 6.0.0
-   */
-  auto save_as_bmp(const std::string& file) const noexcept -> result  // NOLINT
+  auto SaveAsBMP(const std::string& file) const noexcept -> result  // NOLINT
   {
-    return save_as_bmp(file.c_str());
+    return SaveAsBMP(file.c_str());
   }
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  /**
-   * \brief Saves the surface as a PNG image.
-   *
-   * \param file the file path that the surface data will be saved at.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   *
-   * \since 6.0.0
-   */
-  auto save_as_png(const char* file) const noexcept -> result
+  auto SaveAsPNG(const char* file) const noexcept -> result
   {
     assert(file);
     return IMG_SavePNG(get(), file) != -1;
   }
 
-  /**
-   * \see save_as_png()
-   * \since 6.0.0
-   */
-  auto save_as_png(const std::string& file) const noexcept -> result  // NOLINT
+  auto SaveAsPNG(const std::string& file) const noexcept -> result
   {
-    return save_as_png(file.c_str());
+    return SaveAsPNG(file.c_str());
   }
 
-  /**
-   * \brief Saves the surface as a JPG image.
-   *
-   * \note The quality parameter is supplied to libjpeg in the SDL
-   * implementation, but the limitations on its values are unknown at the time
-   * of writing.
-   *
-   * \param file the file path that the surface data will be saved at.
-   * \param quality the quality of the JPG image.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   *
-   * \since 6.0.0
-   */
-  auto save_as_jpg(const char* file, const int quality) const noexcept -> result
+  /* Save as JPG image, the quality parameter is passed on to libjpeg by SDL */
+  auto SaveAsJPG(const char* file, const int quality) const noexcept -> result
   {
     assert(file);
     return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
-  /**
-   * \see save_as_jpg()
-   * \since 6.0.0
-   */
-  auto save_as_jpg(const std::string& file, const int quality) const noexcept -> result
+  auto SaveAsJPG(const std::string& file, const int quality) const noexcept -> result
   {
-    return save_as_jpg(file.c_str(), quality);
+    return SaveAsJPG(file.c_str(), quality);
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
-  /// \} End of save functions
-
-  /// \name Locking
-  /// \{
-
-  /**
-   * \brief Attempts to lock the surface, so that the associated pixel data can
-   * be modified.
-   *
-   * \details This function has no effect if `must_lock()` returns `false`.
-   *
-   * \return `success` if the locking of the surface was successful or if
-   * locking isn't required for modifying the surface; `failure` if something
-   * went wrong.
-   *
-   * \since 4.0.0
-   */
-  auto lock() noexcept -> result
+  /* Attempts to lock the access to the surface pixel data */
+  auto Lock() noexcept -> result
   {
-    if (must_lock()) {
-      return SDL_LockSurface(m_surface) == 0;
+    if (MustLock()) {
+      return SDL_LockSurface(mSurface) == 0;
     }
     else {
       return true;
     }
   }
 
-  /**
-   * \brief Unlocks the surface.
-   *
-   * \details This function has no effect if `must_lock()` returns `false`.
-   *
-   * \since 4.0.0
-   */
-  void unlock() noexcept
+  void Unlock() noexcept
   {
-    if (must_lock()) {
-      SDL_UnlockSurface(m_surface);
+    if (MustLock()) {
+      SDL_UnlockSurface(mSurface);
     }
   }
 
-  /**
-   * \brief Indicates whether or not the surface must be locked before modifying
-   * the pixel data associated with the surface.
-   *
-   * \return `true` if the surface must be locked before modification; `false`
-   * otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto must_lock() const noexcept -> bool { return SDL_MUSTLOCK(m_surface); }
+  void SetAlphaMod(const Uint8 alpha) noexcept { SDL_SetSurfaceAlphaMod(mSurface, alpha); }
 
-  /// \} End of locking
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the alpha component modulation value.
-   *
-   * \param alpha the new alpha component value, in the range [0, 255].
-   *
-   * \since 4.0.0
-   */
-  void set_alpha(const Uint8 alpha) noexcept { SDL_SetSurfaceAlphaMod(m_surface, alpha); }
-
-  /**
-   * \brief Sets the color modulation that will be used by the surface.
-   *
-   * \param color the color that represents the color modulation that will be
-   * used.
-   *
-   * \since 4.0.0
-   */
-  void set_color_mod(const Color& color) noexcept
+  void SetColorMod(const Color& color) noexcept
   {
-    SDL_SetSurfaceColorMod(m_surface, color.GetRed(), color.GetGreen(), color.GetBlue());
+    SDL_SetSurfaceColorMod(mSurface, color.GetRed(), color.GetGreen(), color.GetBlue());
   }
 
-  /**
-   * \brief Sets the blend mode that will be used by the surface.
-   *
-   * \param mode the blend mode that will be used.
-   *
-   * \since 4.0.0
-   */
-  void set_blend_mode(const blend_mode mode) noexcept
+  void SetBlendMode(const blend_mode mode) noexcept
   {
-    SDL_SetSurfaceBlendMode(m_surface, static_cast<SDL_BlendMode>(mode));
+    SDL_SetSurfaceBlendMode(mSurface, static_cast<SDL_BlendMode>(mode));
   }
 
-  /**
-   * \brief Sets the value of the RLE acceleration hint.
-   *
-   * \param enabled `true` if the RLE optimization hint should be enabled;
-   * `false` otherwise.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   *
-   * \see is_rle_enabled()
-   *
-   * \since 5.2.0
-   */
-  auto set_rle_hint(const bool enabled) noexcept -> result
+  /* Configure RLE acceleration hint. */
+  auto SetRLE(const bool enabled) noexcept -> result
   {
-    return SDL_SetSurfaceRLE(m_surface, enabled ? 1 : 0) == 0;
+    return SDL_SetSurfaceRLE(mSurface, enabled ? 1 : 0) == 0;
   }
 
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the alpha component modulation of the surface.
-   *
-   * \return the alpha modulation value, in the range [0, 255].
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto alpha() const noexcept -> Uint8
+  /* Creates a copy of the surface using another pixel format */
+  [[nodiscard]] auto ConvertTo(const pixel_format format) const -> BasicSurface
   {
-    Uint8 alpha{0xFF};
-    SDL_GetSurfaceAlphaMod(m_surface, &alpha);
-    return alpha;
-  }
-
-  /**
-   * \brief Returns the color modulation of the surface.
-   *
-   * \return a color that represents the color modulation of the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto color_mod() const noexcept -> Color
-  {
-    Uint8 red{};
-    Uint8 green{};
-    Uint8 blue{};
-    SDL_GetSurfaceColorMod(m_surface, &red, &green, &blue);
-    return Color{red, green, blue};
-  }
-
-  /**
-   * \brief Returns the blend mode that is being used by the surface.
-   *
-   * \return the blend mode that the surface uses.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
-  {
-    SDL_BlendMode mode{};
-    SDL_GetSurfaceBlendMode(m_surface, &mode);
-    return static_cast<blend_mode>(mode);
-  }
-
-  /**
-   * \brief Creates and returns a surface based on this surface with the
-   * specified pixel format.
-   *
-   * \param format the pixel format that will be used by the new surface.
-   *
-   * \return a surface based on this surface with the specified
-   * pixel format.
-   *
-   * \throws sdl_error if the surface cannot be created.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
-  {
-    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0)) {
-      basic_surface result{converted};
-      result.set_blend_mode(get_blend_mode());
+    if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, to_underlying(format), 0)) {
+      BasicSurface result{converted};
+      result.SetBlendMode(GetBlendMode());
       return result;
     }
     else {
@@ -564,217 +236,84 @@ class basic_surface final {
     }
   }
 
-  /**
-   * \brief Returns the width of the surface.
-   *
-   * \return the width of the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto width() const noexcept -> int { return m_surface->w; }
+  /* Does the surface need to be locked before modifying the pixel data? */
+  [[nodiscard]] auto MustLock() const noexcept -> bool { return SDL_MUSTLOCK(mSurface); }
 
-  /**
-   * \brief Returns the height of the surface.
-   *
-   * \return the height of the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto height() const noexcept -> int { return m_surface->h; }
-
-  /**
-   * \brief Returns the size of the surface.
-   *
-   * \return the size of the surface.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto size() const noexcept -> iarea { return iarea{width(), height()}; }
-
-  /**
-   * \brief Returns the pitch (the length of a row of pixels in bytes) of the
-   * surface.
-   *
-   * \return the pitch of the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto pitch() const noexcept -> int { return m_surface->pitch; }
-
-  /**
-   * \brief Returns a pointer to the pixel data of the surface.
-   *
-   * \details It's possible to modify the surface through the returned pointer.
-   *
-   * \return a pointer to the pixel data of the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto pixels() noexcept -> void* { return m_surface->pixels; }
-
-  /**
-   * \brief Returns a pointer to the pixel data of the surface.
-   *
-   * \return a pointer to the pixel data of the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto pixels() const noexcept -> const void* { return m_surface->pixels; }
-
-  /**
-   * \brief Returns a pointer to the pixel data of the surface.
-   *
-   * \return a pointer to the pixel data of the surface.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto data() noexcept -> void* { return pixels(); }
-
-  /**
-   * \copydoc data()
-   */
-  [[nodiscard]] auto data() const noexcept -> const void* { return pixels(); }
-
-  /**
-   * \brief Returns the pixel format info associated with the surface.
-   *
-   * \return the associated pixel format info.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto format_info() const noexcept -> pixel_format_info_handle
+  [[nodiscard]] auto GetAlpha() const noexcept -> Uint8
   {
-    return pixel_format_info_handle{m_surface->format};
+    Uint8 alpha{0xFF};
+    SDL_GetSurfaceAlphaMod(mSurface, &alpha);
+    return alpha;
   }
 
-  /**
-   * \brief Returns the clipping information associated with the surface.
-   *
-   * \return the clipping information associated with the surface.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto clip() const noexcept -> irect
+  [[nodiscard]] auto GetColorMod() const noexcept -> Color
   {
-    const auto rect = m_surface->clip_rect;
-    return {{rect.x, rect.y}, {rect.w, rect.h}};
+    Uint8 red{};
+    Uint8 green{};
+    Uint8 blue{};
+    if (SDL_GetSurfaceColorMod(mSurface, &red, &green, &blue) == 0) {
+      return Color{red, green, blue};
+    }
+    else {
+      return colors::white;
+    }
   }
+
+  [[nodiscard]] auto GetBlendMode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetSurfaceBlendMode(mSurface, &mode);
+    return static_cast<blend_mode>(mode);
+  }
+
+  [[nodiscard]] auto GetWidth() const noexcept -> int { return mSurface->w; }
+
+  [[nodiscard]] auto GetHeight() const noexcept -> int { return mSurface->h; }
+
+  [[nodiscard]] auto GetSize() const noexcept -> iarea
+  {
+    return iarea{GetWidth(), GetHeight()};
+  }
+
+  /* Returns the pitch, i.e. the length of a row of pixels in bytes */
+  [[nodiscard]] auto GetPitch() const noexcept -> int { return mSurface->pitch; }
+
+  [[nodiscard]] auto GetPixelData() noexcept -> void* { return mSurface->pixels; }
+
+  [[nodiscard]] auto GetPixelData() const noexcept -> const void* { return mSurface->pixels; }
+
+  [[nodiscard]] auto GetFormatInfo() const noexcept -> pixel_format_info_handle
+  {
+    return pixel_format_info_handle{mSurface->format};
+  }
+
+  [[nodiscard]] auto GetClip() const noexcept -> irect { return irect{mSurface->clip_rect}; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  /**
-   * \brief Indicates whether or not the surface is RLE-enabled.
-   *
-   * \return `true` if the surface is RLE-enabled; `false` otherwise.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto is_rle_enabled() const noexcept -> bool
+  [[nodiscard]] auto HasRLE() const noexcept -> bool
   {
-    return SDL_HasSurfaceRLE(m_surface) == SDL_TRUE;
+    return SDL_HasSurfaceRLE(mSurface) == SDL_TRUE;
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  /**
-   * \brief Returns a pointer to the associated `SDL_Surface`.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated `SDL_Surface`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Surface* { return m_surface.get(); }
-
-  /// \} End of getters
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Indicates whether or not a surface handle holds a non-null pointer.
-   *
-   * \tparam BB dummy parameter for SFINAE.
-   *
-   * \return `true` if the surface handle holds a non-null pointer; `false`
-   * otherwise.
-   *
-   * \since 5.0.0
-   */
   template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
-    return m_surface != nullptr;
+    return mSurface != nullptr;
   }
 
-  /**
-   * \brief Converts to `SDL_Surface*`.
-   *
-   * \return a pointer to the associated `SDL_Surface`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] explicit operator SDL_Surface*() noexcept { return get(); }
-
-  /**
-   * \brief Converts to `const SDL_Surface*`.
-   *
-   * \return a pointer to the associated `SDL_Surface`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] explicit operator const SDL_Surface*() const noexcept { return get(); }
-
-  /// \} End of conversions
+  [[nodiscard]] auto get() const noexcept -> SDL_Surface* { return mSurface.get(); }
 
  private:
-  struct deleter final {
-    void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
-  };
-  detail::pointer_manager<T, SDL_Surface, deleter> m_surface;
+  detail::Pointer<T, SDL_Surface> mSurface;
 
-  /**
-   * \brief Copies the contents of the supplied surface instance into this
-   * instance.
-   *
-   * \param other the instance that will be copied.
-   *
-   * \throws sdl_error if the surface cannot be copied.
-   *
-   * \since 4.0.0
-   */
-  void copy(const basic_surface& other) { m_surface.reset(other.copy_surface()); }
+  void Copy(const BasicSurface& other) { mSurface.reset(other.DuplicateSurface()); }
 
-  /**
-   * \brief Indicates whether or not the supplied point is within the bounds of
-   * the surface.
-   *
-   * \param point the point that will be checked.
-   *
-   * \return `true` if the point is within the bounds of the surface; `false`
-   * otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
+  [[nodiscard]] auto DuplicateSurface() const -> owner<SDL_Surface*>
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() || point.y() >= height());
-  }
-
-  /**
-   * \brief Creates and returns copy of the associated `SDL_Surface`.
-   *
-   * \return a copy of the associated `SDL_Surface`, the returned pointer won't
-   * be null.
-   *
-   * \throws sdl_error if the copy couldn't be created.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
-  {
-    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
+    if (auto* copy = SDL_DuplicateSurface(mSurface)) {
       return copy;
     }
     else {
@@ -782,37 +321,35 @@ class basic_surface final {
     }
   }
 
+  [[nodiscard]] auto InBounds(const ipoint point) const noexcept -> bool
+  {
+    return !(point.x() < 0 || point.y() < 0 || point.x() >= GetWidth() ||
+             point.y() >= GetHeight());
+  }
+
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
  public:
-  basic_surface() = default;
+  BasicSurface() = default;
+
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /// \name String conversions
 /// \{
 
-/**
- * \brief Returns a textual representation of a surface.
- *
- * \param surface the surface that will be converted.
- *
- * \return a textual representation of the surface.
- *
- * \since 5.0.0
- */
 template <typename T>
-[[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
+[[nodiscard]] auto to_string(const BasicSurface<T>& surface) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("surface{{data: {}, width: {}, height: {}}}",
+  return std::format("Surface{{data: {}, width: {}, height: {}}}",
                      detail::address_of(surface.get()),
                      surface.width(),
                      surface.height());
 #else
-  return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + std::to_string(surface.width()) +
-         ", height: " + std::to_string(surface.height()) + "}";
+  return "Surface{data: " + detail::address_of(surface.get()) +
+         ", width: " + std::to_string(surface.GetWidth()) +
+         ", height: " + std::to_string(surface.GetHeight()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -821,18 +358,8 @@ template <typename T>
 /// \name Streaming
 /// \{
 
-/**
- * \brief Prints a textual representation of a surface.
- *
- * \param stream the stream that will be used.
- * \param surface the surface that will be printed.
- *
- * \return the used stream.
- *
- * \since 5.0.0
- */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
+auto operator<<(std::ostream& stream, const BasicSurface<T>& surface) -> std::ostream&
 {
   return stream << to_string(surface);
 }

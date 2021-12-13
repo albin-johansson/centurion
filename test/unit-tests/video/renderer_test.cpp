@@ -360,13 +360,13 @@ TEST_F(RendererTest, Capture)
   m_renderer->present();
 
   const auto snapshot = m_renderer->capture(m_window->get_pixel_format());
-  ASSERT_TRUE(snapshot.save_as_bmp("snapshot.bmp"));
+  ASSERT_TRUE(snapshot.SaveAsBMP("snapshot.bmp"));
 
   {  // We take the opportunity to do some surface tests as well
-    ASSERT_NO_THROW(cen::surface::from_bmp("snapshot.bmp"s));
-    ASSERT_NO_THROW(cen::surface::with_format("resources/panda.png"s,
-                                              m_renderer->get_blend_mode(),
-                                              m_window->get_pixel_format()));
+    ASSERT_NO_THROW(cen::Surface::FromBMP("snapshot.bmp"s));
+    ASSERT_NO_THROW(cen::Surface::WithFormat("resources/panda.png"s,
+                                             m_renderer->get_blend_mode(),
+                                             m_window->get_pixel_format()));
   }
 
   m_window->hide();

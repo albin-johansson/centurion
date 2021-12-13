@@ -31,7 +31,7 @@ class SurfaceTest : public testing::Test {
     RESET_FAKE(SDL_DuplicateSurface)
   }
 
-  cen::surface m_surface;
+  cen::Surface m_surface;
 };
 
 TEST_F(SurfaceTest, Convert)
@@ -42,7 +42,7 @@ TEST_F(SurfaceTest, Convert)
 
 TEST_F(SurfaceTest, Copy)
 {
-  cen::surface dst;
+  cen::Surface dst;
   ASSERT_THROW(dst = m_surface, cen::SDLError);
   ASSERT_EQ(1u, SDL_DuplicateSurface_fake.call_count);
 }
@@ -52,8 +52,8 @@ TEST_F(SurfaceTest, SetRLEHint)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SetSurfaceRLE, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_surface.set_rle_hint(true));
-  ASSERT_TRUE(m_surface.set_rle_hint(true));
+  ASSERT_FALSE(m_surface.SetRLE(true));
+  ASSERT_TRUE(m_surface.SetRLE(true));
 
   ASSERT_EQ(2u, SDL_SetSurfaceRLE_fake.call_count);
 }
@@ -65,8 +65,8 @@ TEST_F(SurfaceTest, IsRLEEnabled)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasSurfaceRLE, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_surface.is_rle_enabled());
-  ASSERT_TRUE(m_surface.is_rle_enabled());
+  ASSERT_FALSE(m_surface.HasRLE());
+  ASSERT_TRUE(m_surface.HasRLE());
 
   ASSERT_EQ(2u, SDL_HasSurfaceRLE_fake.call_count);
 }

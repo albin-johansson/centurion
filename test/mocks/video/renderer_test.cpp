@@ -116,8 +116,8 @@ void validate_render_function(const Fake& fake, Args&&... args)
 
   ASSERT_EQ(src.x(), fake.arg2_val->x);
   ASSERT_EQ(src.y(), fake.arg2_val->y);
-  ASSERT_EQ(src.width(), fake.arg2_val->w);
-  ASSERT_EQ(src.height(), fake.arg2_val->h);
+  ASSERT_EQ(src.GetWidth(), fake.arg2_val->w);
+  ASSERT_EQ(src.GetHeight(), fake.arg2_val->h);
 
   const auto& dst = std::get<1>(tuple);
   static_assert(std::is_same_v<const cen::irect&, decltype(src)> ||
@@ -125,8 +125,8 @@ void validate_render_function(const Fake& fake, Args&&... args)
 
   ASSERT_EQ(dst.x(), fake.arg3_val->x);
   ASSERT_EQ(dst.y(), fake.arg3_val->y);
-  ASSERT_EQ(dst.width(), fake.arg3_val->w);
-  ASSERT_EQ(dst.height(), fake.arg3_val->h);
+  ASSERT_EQ(dst.GetWidth(), fake.arg3_val->w);
+  ASSERT_EQ(dst.GetHeight(), fake.arg3_val->h);
 
   if constexpr (sizeof...(Args) >= 3) {
     const auto angle = std::get<2>(tuple);

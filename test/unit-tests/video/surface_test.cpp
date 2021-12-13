@@ -13,91 +13,91 @@
 #include "video/colors.hpp"
 #include "video/window.hpp"
 
-static_assert(std::is_copy_constructible_v<cen::surface>);
-static_assert(std::is_copy_assignable_v<cen::surface>);
+static_assert(std::is_copy_constructible_v<cen::Surface>);
+static_assert(std::is_copy_assignable_v<cen::Surface>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::surface>);
-static_assert(std::is_nothrow_move_assignable_v<cen::surface>);
+static_assert(std::is_nothrow_move_constructible_v<cen::Surface>);
+static_assert(std::is_nothrow_move_assignable_v<cen::Surface>);
 
-static_assert(std::is_copy_constructible_v<cen::surface_handle>);
-static_assert(std::is_copy_assignable_v<cen::surface_handle>);
+static_assert(std::is_copy_constructible_v<cen::SurfaceHandle>);
+static_assert(std::is_copy_assignable_v<cen::SurfaceHandle>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::surface_handle>);
-static_assert(std::is_nothrow_move_assignable_v<cen::surface_handle>);
+static_assert(std::is_nothrow_move_constructible_v<cen::SurfaceHandle>);
+static_assert(std::is_nothrow_move_assignable_v<cen::SurfaceHandle>);
 
 using namespace std::string_literals;
 
 class SurfaceTest : public testing::Test {
  protected:
-  static void SetUpTestSuite() { m_surface = std::make_unique<cen::surface>(m_path); }
+  static void SetUpTestSuite() { surface = std::make_unique<cen::Surface>(path); }
 
-  static void TearDownTestSuite() { m_surface.reset(); }
+  static void TearDownTestSuite() { surface.reset(); }
 
-  inline constexpr static auto m_path = "resources/panda.png";
-  inline static std::unique_ptr<cen::surface> m_surface;
+  inline constexpr static auto path = "resources/panda.png";
+  inline static std::unique_ptr<cen::Surface> surface;
 };
 
 TEST_F(SurfaceTest, PathConstructor)
 {
-  ASSERT_THROW(cen::surface(""), cen::Error);
-  ASSERT_THROW(cen::surface(""s), cen::Error);
-  ASSERT_NO_THROW(cen::surface{m_path});
+  ASSERT_THROW(cen::Surface(""), cen::Error);
+  ASSERT_THROW(cen::Surface(""s), cen::Error);
+  ASSERT_NO_THROW(cen::Surface{path});
 }
 
 TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
 {
-  ASSERT_NO_THROW(cen::surface(IMG_Load(m_path)));
+  ASSERT_NO_THROW(cen::Surface(IMG_Load(path)));
 
   SDL_Surface* ptr{};
-  ASSERT_THROW(cen::surface{ptr}, cen::Error);
+  ASSERT_THROW(cen::Surface{ptr}, cen::Error);
 }
 
 TEST_F(SurfaceTest, SizePixelFormatConstructor)
 {
   cen::window window;
-  cen::surface surface{{10, 10}, window.get_pixel_format()};
-  ASSERT_EQ(10, surface.width());
-  ASSERT_EQ(10, surface.height());
-  ASSERT_EQ(window.get_pixel_format(), surface.format_info().format());
+  cen::Surface surface{{10, 10}, window.get_pixel_format()};
+  ASSERT_EQ(10, surface.GetWidth());
+  ASSERT_EQ(10, surface.GetHeight());
+  ASSERT_EQ(window.get_pixel_format(), surface.GetFormatInfo().format());
 }
 
 TEST_F(SurfaceTest, CopyConstructor)
 {
-  const cen::surface copy{*m_surface};
+  const cen::Surface copy{*surface};
 
-  ASSERT_NE(m_surface->get(), copy.get());
-  ASSERT_TRUE(m_surface->get());
+  ASSERT_NE(surface->get(), copy.get());
+  ASSERT_TRUE(surface->get());
   ASSERT_TRUE(copy.get());
 }
 
 TEST_F(SurfaceTest, MoveConstructor)
 {
-  cen::surface surface{*m_surface};
-  const cen::surface other{std::move(surface)};
+  cen::Surface copy{*surface};
+  const cen::Surface moved{std::move(copy)};
 
-  ASSERT_FALSE(surface.get());
-  ASSERT_TRUE(other.get());
+  ASSERT_FALSE(copy.get());
+  ASSERT_TRUE(moved.get());
 }
 
 TEST_F(SurfaceTest, CopyAssignment)
 {
-  cen::surface destination = *m_surface;
+  cen::Surface destination = *surface;
 
-  ASSERT_NE(m_surface->get(), destination.get());
-  ASSERT_TRUE(m_surface->get());
+  ASSERT_NE(surface->get(), destination.get());
+  ASSERT_TRUE(surface->get());
   ASSERT_TRUE(destination.get());
 }
 
 TEST_F(SurfaceTest, MoveSelfAssignment)
 {
-  *m_surface = std::move(*m_surface);
-  ASSERT_TRUE(m_surface->get());
+  *surface = std::move(*surface);
+  ASSERT_TRUE(surface->get());
 }
 
 TEST_F(SurfaceTest, MoveAssignment)
 {
-  cen::surface source{*m_surface};
-  cen::surface destination = std::move(source);
+  cen::Surface source{*surface};
+  cen::Surface destination = std::move(source);
 
   ASSERT_FALSE(source.get());
   ASSERT_TRUE(destination.get());
@@ -105,133 +105,121 @@ TEST_F(SurfaceTest, MoveAssignment)
 
 TEST_F(SurfaceTest, SaveAsBMP)
 {
-  ASSERT_TRUE(m_surface->save_as_bmp("surface_as_bmp.bmp"s));
+  ASSERT_TRUE(surface->SaveAsBMP("surface_as_bmp.bmp"s));
 }
 
 TEST_F(SurfaceTest, SaveAsPNG)
 {
-  ASSERT_TRUE(m_surface->save_as_png("surface_as_png.png"s));
+  ASSERT_TRUE(surface->SaveAsPNG("surface_as_png.png"s));
 }
 
 TEST_F(SurfaceTest, SaveAsJPG)
 {
-  ASSERT_TRUE(m_surface->save_as_jpg("surface_as_jpg.jpg"s, 25));
+  ASSERT_TRUE(surface->SaveAsJPG("surface_as_jpg.jpg"s, 25));
 }
 
 TEST_F(SurfaceTest, SetAlpha)
 {
-  const auto previous = m_surface->alpha();
+  const auto previous = surface->GetAlpha();
 
   constexpr auto alpha = 0xCF;
-  m_surface->set_alpha(alpha);
+  surface->SetAlphaMod(alpha);
 
-  ASSERT_EQ(alpha, m_surface->alpha());
+  ASSERT_EQ(alpha, surface->GetAlpha());
 
-  m_surface->set_alpha(previous);
+  surface->SetAlphaMod(previous);
 }
 
 TEST_F(SurfaceTest, SetColorMod)
 {
-  const auto previous = m_surface->color_mod();
+  const auto previous = surface->GetColorMod();
+  ASSERT_EQ(cen::colors::white, previous);
 
   constexpr auto color = cen::colors::hot_pink;
-  m_surface->set_color_mod(color);
+  surface->SetColorMod(color);
 
-  ASSERT_EQ(color, m_surface->color_mod());
+  ASSERT_EQ(color, surface->GetColorMod());
 
-  m_surface->set_color_mod(previous);
+  surface->SetColorMod(previous);
 }
 
 TEST_F(SurfaceTest, SetBlendMode)
 {
-  const auto previous = m_surface->get_blend_mode();
+  const auto previous = surface->GetBlendMode();
 
   constexpr auto mode = cen::blend_mode::mod;
-  m_surface->set_blend_mode(mode);
+  surface->SetBlendMode(mode);
 
-  ASSERT_EQ(mode, m_surface->get_blend_mode());
+  ASSERT_EQ(mode, surface->GetBlendMode());
 
-  m_surface->set_blend_mode(previous);
+  surface->SetBlendMode(previous);
 }
 
 TEST_F(SurfaceTest, Width)
 {
-  ASSERT_EQ(200, m_surface->width());
+  ASSERT_EQ(200, surface->GetWidth());
 }
 
 TEST_F(SurfaceTest, Height)
 {
-  ASSERT_EQ(150, m_surface->height());
+  ASSERT_EQ(150, surface->GetHeight());
 }
 
 TEST_F(SurfaceTest, Size)
 {
-  const auto size = m_surface->size();
+  const auto size = surface->GetSize();
   ASSERT_EQ(200, size.width);
   ASSERT_EQ(150, size.height);
 }
 
 TEST_F(SurfaceTest, Pitch)
 {
-  ASSERT_EQ(4 * m_surface->width(), m_surface->pitch());
+  ASSERT_EQ(4 * surface->GetWidth(), surface->GetPitch());
 }
 
 TEST_F(SurfaceTest, Clip)
 {
   constexpr cen::irect rect{{48, 29}, {34, 89}};
 
-  m_surface->get()->clip_rect = rect.get();
-  ASSERT_EQ(rect, m_surface->clip());
+  surface->get()->clip_rect = rect.get();
+  ASSERT_EQ(rect, surface->GetClip());
 }
 
-TEST_F(SurfaceTest, Pixels)
+TEST_F(SurfaceTest, GetPixelData)
 {
-  ASSERT_TRUE(m_surface->pixels());
+  ASSERT_TRUE(surface->GetPixelData());
 
-  const auto& cSurface = *m_surface;
-  ASSERT_TRUE(cSurface.pixels());
+  const auto& cSurface = *surface;
+  ASSERT_TRUE(cSurface.GetPixelData());
 }
 
-TEST_F(SurfaceTest, Data)
+TEST_F(SurfaceTest, ConvertTo)
 {
-  ASSERT_TRUE(m_surface->data());
+  cen::Surface source{path};
+  source.SetBlendMode(cen::blend_mode::blend);
+  source.SetAlphaMod(0xAE);
+  source.SetColorMod(cen::colors::red);
 
-  const auto& cSurface = *m_surface;
-  ASSERT_TRUE(cSurface.data());
-}
+  const auto format = cen::pixel_format::rgba8888;
+  const cen::Surface converted = source.ConvertTo(format);
 
-TEST_F(SurfaceTest, Convert)
-{
-  cen::surface source{m_path};
-  source.set_blend_mode(cen::blend_mode::blend);
-  source.set_alpha(0xAE);
-  source.set_color_mod(cen::colors::red);
-
-  const auto pixelFormat = cen::pixel_format::rgba8888;
-  const cen::surface converted = source.convert(pixelFormat);
-
-  ASSERT_EQ(source.get_blend_mode(), converted.get_blend_mode());
-  ASSERT_EQ(source.alpha(), converted.alpha());
-  ASSERT_EQ(source.color_mod(), converted.color_mod());
+  ASSERT_EQ(format, converted.GetFormatInfo().format());
+  ASSERT_EQ(source.GetBlendMode(), converted.GetBlendMode());
+  ASSERT_EQ(source.GetAlpha(), converted.GetAlpha());
+  ASSERT_EQ(source.GetColorMod(), converted.GetColorMod());
 }
 
 TEST_F(SurfaceTest, Get)
 {
-  ASSERT_TRUE(m_surface->get());
-}
-
-TEST_F(SurfaceTest, ConvertToPointer)
-{
-  ASSERT_TRUE(m_surface->operator SDL_Surface*());
-  ASSERT_TRUE(m_surface->operator const SDL_Surface*());
+  ASSERT_TRUE(surface->get());
 }
 
 TEST_F(SurfaceTest, ToString)
 {
-  cen::log_info_raw(cen::to_string(*m_surface));
+  cen::log_info_raw(cen::to_string(*surface));
 }
 
 TEST_F(SurfaceTest, StreamOperator)
 {
-  std::clog << *m_surface << '\n';
+  std::clog << *surface << '\n';
 }

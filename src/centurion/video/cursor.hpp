@@ -82,7 +82,7 @@ class basic_cursor final {
    * \since 4.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  basic_cursor(const surface& surface, const ipoint hotspot)
+  basic_cursor(const Surface& surface, const ipoint hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
     if (!m_cursor) {

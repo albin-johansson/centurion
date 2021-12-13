@@ -373,7 +373,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  void set_icon(const surface& icon) noexcept { SDL_SetWindowIcon(m_window, icon.get()); }
+  void set_icon(const Surface& icon) noexcept { SDL_SetWindowIcon(m_window, icon.get()); }
 
   /**
    * \brief Sets the title of the window.
@@ -1130,9 +1130,9 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_surface() noexcept -> surface_handle
+  [[nodiscard]] auto get_surface() noexcept -> SurfaceHandle
   {
-    return surface_handle{SDL_GetWindowSurface(m_window)};
+    return SurfaceHandle{SDL_GetWindowSurface(m_window)};
   }
 
   /**

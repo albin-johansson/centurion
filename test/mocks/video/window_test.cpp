@@ -239,7 +239,7 @@ TEST_F(WindowTest, SetSize)
 
 TEST_F(WindowTest, SetIcon)
 {
-  const cen::surface icon;
+  const cen::Surface icon;
   m_window.set_icon(icon);
   ASSERT_EQ(1u, SDL_SetWindowIcon_fake.call_count);
 }

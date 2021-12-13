@@ -67,8 +67,8 @@ struct blend_task final {
  * \see `blend_op`
  *
  * \see `SDL_ComposeCustomBlendMode()`
- * \see `basic_renderer::set_blend_mode()`
- * \see `basic_texture::set_blend_mode()`
+ * \see `basic_renderer::SetBlendMode()`
+ * \see `basic_texture::SetBlendMode()`
  *
  * \since 6.3.0
  */

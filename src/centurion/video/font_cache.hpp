@@ -757,7 +757,7 @@ class font_cache final {
   [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph) -> texture
   {
     const auto color = renderer.get_color().get();
-    const surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
+    const Surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
     return texture{renderer, src};
   }
 

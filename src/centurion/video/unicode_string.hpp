@@ -20,7 +20,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-using unicode = Uint16;
+using unicode [[deprecated]] = Uint16;
 
 /**
  * \class unicode_string
@@ -29,27 +29,27 @@ using unicode = Uint16;
  *
  * \serializable
  *
- * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
+ * \details This class is a wrapper around a `std::vector<Unicode>`, that provides a
  * similar interface to that of `std::string`.
  */
 class unicode_string final {
  public:
-  using value_type = std::vector<unicode>::value_type;
+  using value_type = std::vector<Unicode>::value_type;
 
-  using pointer = std::vector<unicode>::pointer;
-  using const_pointer = std::vector<unicode>::const_pointer;
+  using pointer = std::vector<Unicode>::pointer;
+  using const_pointer = std::vector<Unicode>::const_pointer;
 
-  using reference = std::vector<unicode>::reference;
-  using const_reference = std::vector<unicode>::const_reference;
+  using reference = std::vector<Unicode>::reference;
+  using const_reference = std::vector<Unicode>::const_reference;
 
-  using iterator = std::vector<unicode>::iterator;
-  using const_iterator = std::vector<unicode>::const_iterator;
+  using iterator = std::vector<Unicode>::iterator;
+  using const_iterator = std::vector<Unicode>::const_iterator;
 
-  using reverse_iterator = std::vector<unicode>::reverse_iterator;
-  using const_reverse_iterator = std::vector<unicode>::const_reverse_iterator;
+  using reverse_iterator = std::vector<Unicode>::reverse_iterator;
+  using const_reverse_iterator = std::vector<Unicode>::const_reverse_iterator;
 
-  using size_type = std::vector<unicode>::size_type;
-  using difference_type = std::vector<unicode>::difference_type;
+  using size_type = std::vector<Unicode>::size_type;
+  using difference_type = std::vector<Unicode>::difference_type;
 
   /// \name Construction
   /// \{
@@ -68,7 +68,7 @@ class unicode_string final {
    *
    * \since 5.0.0
    */
-  unicode_string(std::initializer_list<unicode> codes)
+  unicode_string(std::initializer_list<Unicode> codes)
   {
     reserve(codes.size() + 1);
     m_data.insert(m_data.end(), codes.begin(), codes.end());
@@ -97,13 +97,13 @@ class unicode_string final {
    *
    * \since 5.0.0
    */
-  void append(const unicode ch) { m_data.insert(m_data.end() - 1, ch); }
+  void append(const Unicode ch) { m_data.insert(m_data.end() - 1, ch); }
 
   /**
    * \brief Appends a series of glyphs to the string.
    *
-   * \tparam First the type of the first glyph, always `unicode`.
-   * \tparam Character the types of the other glyphs, always `unicode`.
+   * \tparam First the type of the first glyph, always `Unicode`.
+   * \tparam Character the types of the other glyphs, always `Unicode`.
    *
    * \param code the pack of glyphs that will be added, cannot be empty.
    *
@@ -113,13 +113,13 @@ class unicode_string final {
   void append(Character... code)
   {
     static_assert(sizeof...(Character) != 0, "Function requires at least 1 argument!");
-    static_assert((std::is_same_v<unicode, std::decay_t<Character>> && ...),
-                  "Cannot append values that aren't of type \"unicode\"!");
+    static_assert((std::is_same_v<Unicode, std::decay_t<Character>> && ...),
+                  "Cannot append values that aren't of type \"Unicode\"!");
     (append(code), ...);
   }
 
-  /// \copydoc append(unicode)
-  void operator+=(const unicode ch) { append(ch); }
+  /// \copydoc append(Unicode)
+  void operator+=(const Unicode ch) { append(ch); }
 
   /**
    * \brief Removes the last element from the string.
@@ -275,7 +275,7 @@ class unicode_string final {
   }
 
  private:
-  std::vector<unicode> m_data;
+  std::vector<Unicode> m_data;
 };
 
 /// \name Unicode string comparison operators
@@ -325,36 +325,36 @@ class unicode_string final {
   return !(lhs == rhs);
 }
 
-/// \} End of unicode string comparison operators
+/// \} End of Unicode string comparison operators
 
 namespace literals {
 
 /**
- * \brief Creates a `unicode` value from a `char`.
+ * \brief Creates a `Unicode` value from a `char`.
  *
- * \param c the character used to create the unicode value.
+ * \param c the character used to create the Unicode value.
  *
- * \return a `unicode` value.
+ * \return a `Unicode` value.
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(const char c) noexcept -> unicode
+constexpr auto operator""_uni(const char c) noexcept -> Unicode
 {
-  return static_cast<unicode>(c);
+  return static_cast<Unicode>(c);
 }
 
 /**
- * \brief Creates a `unicode` value from a integral value.
+ * \brief Creates a `Unicode` value from a integral value.
  *
- * \param i the integer used to create the unicode value.
+ * \param i the integer used to create the Unicode value.
  *
- * \return a `unicode` value.
+ * \return a `Unicode` value.
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(const ulonglong i) noexcept -> unicode
+constexpr auto operator""_uni(const ulonglong i) noexcept -> Unicode
 {
-  return static_cast<unicode>(i);
+  return static_cast<Unicode>(i);
 }
 
 }  // namespace literals

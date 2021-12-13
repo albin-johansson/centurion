@@ -178,7 +178,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/scale_mode.hpp
                src/centurion/video/screen.hpp
                src/centurion/video/surface.hpp
-               src/centurion/video/system_cursor.hpp
                src/centurion/video/texture.hpp
                src/centurion/video/texture_access.hpp
                src/centurion/video/unicode_string.hpp

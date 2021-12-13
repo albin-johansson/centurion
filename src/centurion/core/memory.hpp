@@ -16,7 +16,7 @@
 namespace cen {
 
 template <typename T>
-struct Deleter;
+struct Deleter; /* Intentionally missing general definition  */
 
 template <>
 struct Deleter<SDL_Window> final {

@@ -19,26 +19,23 @@
 
 namespace cen::detail {
 
-// clang-format off
-
 /* Clamps a value in the range [min, max] */
 template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value, const T& min, const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max) noexcept(noexcept(value < min)) -> T
 {
   assert(min <= max);
   if (value < min) {
     return min;
   }
-  else if (value > max) {
+  else if (max < value) {
     return max;
   }
   else {
     return value;
   }
 }
-
-// clang-format on
 
 template <typename T>
 [[nodiscard]] constexpr auto min(const T& a, const T& b) noexcept(noexcept(a < b)) -> T

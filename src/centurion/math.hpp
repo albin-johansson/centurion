@@ -150,30 +150,30 @@ class BasicRect final {
                       const value_type y,
                       const value_type width,
                       const value_type height) noexcept
-      : m_rect{x, y, width, height}
+      : mRect{x, y, width, height}
   {}
 
   constexpr BasicRect(const point_type& position, const area_type& size) noexcept
-      : m_rect{position.GetX(), position.GetY(), size.width, size.height}
+      : mRect{position.GetX(), position.GetY(), size.width, size.height}
   {}
 
-  constexpr explicit BasicRect(const rect_type& rect) noexcept : m_rect{rect} {}
+  constexpr explicit BasicRect(const rect_type& rect) noexcept : mRect{rect} {}
 
-  constexpr void SetX(const value_type x) noexcept { m_rect.x = x; }
-  constexpr void SetY(const value_type y) noexcept { m_rect.y = y; }
+  constexpr void SetX(const value_type x) noexcept { mRect.x = x; }
+  constexpr void SetY(const value_type y) noexcept { mRect.y = y; }
 
-  constexpr void SetMaxX(const value_type maxX) noexcept { m_rect.x = maxX - m_rect.w; }
-  constexpr void SetMaxY(const value_type maxY) noexcept { m_rect.y = maxY - m_rect.h; }
+  constexpr void SetMaxX(const value_type maxX) noexcept { mRect.x = maxX - mRect.w; }
+  constexpr void SetMaxY(const value_type maxY) noexcept { mRect.y = maxY - mRect.h; }
 
-  constexpr void OffsetX(const value_type offset) noexcept { m_rect.x += offset; }
-  constexpr void OffsetY(const value_type offset) noexcept { m_rect.y += offset; }
-  constexpr void OffsetWidth(const value_type offset) noexcept { m_rect.w += offset; }
-  constexpr void OffsetHeight(const value_type offset) noexcept { m_rect.h += offset; }
+  constexpr void OffsetX(const value_type offset) noexcept { mRect.x += offset; }
+  constexpr void OffsetY(const value_type offset) noexcept { mRect.y += offset; }
+  constexpr void OffsetWidth(const value_type offset) noexcept { mRect.w += offset; }
+  constexpr void OffsetHeight(const value_type offset) noexcept { mRect.h += offset; }
 
   constexpr void SetPosition(const value_type x, const value_type y) noexcept
   {
-    m_rect.x = x;
-    m_rect.y = y;
+    mRect.x = x;
+    mRect.y = y;
   }
 
   constexpr void SetPosition(const point_type& pos) noexcept
@@ -181,31 +181,31 @@ class BasicRect final {
     SetPosition(pos.GetX(), pos.GetY());
   }
 
-  constexpr void SetWidth(const value_type width) noexcept { m_rect.w = width; }
-  constexpr void SetHeight(const value_type height) noexcept { m_rect.h = height; }
+  constexpr void SetWidth(const value_type width) noexcept { mRect.w = width; }
+  constexpr void SetHeight(const value_type height) noexcept { mRect.h = height; }
 
   constexpr void SetSize(const value_type width, const value_type height) noexcept
   {
-    m_rect.w = width;
-    m_rect.h = height;
+    mRect.w = width;
+    mRect.h = height;
   }
 
   constexpr void SetSize(const area_type& size) noexcept { SetSize(size.width, size.height); }
 
-  [[nodiscard]] constexpr auto GetX() const noexcept -> value_type { return m_rect.x; }
-  [[nodiscard]] constexpr auto GetY() const noexcept -> value_type { return m_rect.y; }
+  [[nodiscard]] constexpr auto GetX() const noexcept -> value_type { return mRect.x; }
+  [[nodiscard]] constexpr auto GetY() const noexcept -> value_type { return mRect.y; }
 
   [[nodiscard]] constexpr auto GetPosition() const noexcept -> point_type
   {
-    return point_type{m_rect.x, m_rect.y};
+    return point_type{mRect.x, mRect.y};
   }
 
-  [[nodiscard]] constexpr auto GetWidth() const noexcept -> value_type { return m_rect.w; }
-  [[nodiscard]] constexpr auto GetHeight() const noexcept -> value_type { return m_rect.h; }
+  [[nodiscard]] constexpr auto GetWidth() const noexcept -> value_type { return mRect.w; }
+  [[nodiscard]] constexpr auto GetHeight() const noexcept -> value_type { return mRect.h; }
 
   [[nodiscard]] constexpr auto GetSize() const noexcept -> area_type
   {
-    return area_type{m_rect.w, m_rect.h};
+    return area_type{mRect.w, mRect.h};
   }
 
   [[nodiscard]] constexpr auto GetMaxX() const noexcept -> value_type
@@ -250,20 +250,20 @@ class BasicRect final {
     return (GetWidth() > 0) && (GetHeight() > 0);
   }
 
-  [[nodiscard]] auto data() noexcept -> rect_type* { return &m_rect; }
-  [[nodiscard]] auto data() const noexcept -> const rect_type* { return &m_rect; }
+  [[nodiscard]] auto data() noexcept -> rect_type* { return &mRect; }
+  [[nodiscard]] auto data() const noexcept -> const rect_type* { return &mRect; }
 
-  [[nodiscard]] constexpr auto get() noexcept -> rect_type& { return m_rect; }
-  [[nodiscard]] constexpr auto get() const noexcept -> const rect_type& { return m_rect; }
+  [[nodiscard]] constexpr auto get() noexcept -> rect_type& { return mRect; }
+  [[nodiscard]] constexpr auto get() const noexcept -> const rect_type& { return mRect; }
 
   template <typename Archive>
   void serialize(Archive& archive)
   {
-    archive(m_rect.x, m_rect.y, m_rect.w, m_rect.h);
+    archive(mRect.x, mRect.y, mRect.w, mRect.h);
   }
 
  private:
-  rect_type m_rect{0, 0, 0, 0};
+  rect_type mRect{0, 0, 0, 0};
 };
 
 template <typename T>

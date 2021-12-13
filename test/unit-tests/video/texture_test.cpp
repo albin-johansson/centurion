@@ -100,23 +100,6 @@ TEST_F(TextureTest, Streaming)
   ASSERT_TRUE(texture.is_streaming());
 }
 
-TEST_F(TextureTest, SetPixel)
-{
-  constexpr auto format = cen::pixel_format::rgba8888;
-  constexpr auto color = cen::colors::black;
-
-  auto texture = cen::texture::streaming(*m_renderer, m_path, format);
-  const auto [width, height] = texture.size();
-
-  ASSERT_NO_THROW(texture.set_pixel({-1, -1}, color));
-  ASSERT_NO_THROW(texture.set_pixel({-1, 0}, color));
-  ASSERT_NO_THROW(texture.set_pixel({0, -1}, color));
-  ASSERT_NO_THROW(texture.set_pixel({width, 0}, color));
-  ASSERT_NO_THROW(texture.set_pixel({0, height}, color));
-  ASSERT_NO_THROW(texture.set_pixel({width, height}, color));
-  ASSERT_NO_THROW(texture.set_pixel({45, 23}, color));
-}
-
 TEST_F(TextureTest, SetBlendMode)
 {
   const auto previous = m_texture->get_blend_mode();

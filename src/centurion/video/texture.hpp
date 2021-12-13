@@ -28,7 +28,6 @@
 #include "../math/point.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
-#include "pixel_format_info.hpp"
 #include "scale_mode.hpp"
 #include "surface.hpp"
 #include "texture_access.hpp"
@@ -253,41 +252,6 @@ class basic_texture final {
 
   /// \name Setters
   /// \{
-
-  /**
-   * \brief Sets the color of the pixel at the specified coordinate.
-   *
-   * \details This function has no effect if the texture access isn't `streaming` or if
-   * the coordinate is out-of-bounds.
-   *
-   * \param pixel the pixel that will be changed.
-   * \param color the new color of the pixel.
-   *
-   * \since 4.0.0
-   */
-  void set_pixel(const ipoint pixel, const Color& color)
-  {
-    if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
-        (pixel.x() >= width()) || (pixel.y() >= height())) {
-      return;
-    }
-
-    Uint32* pixels{};
-    int pitch{};
-    if (!lock(&pixels, &pitch)) {
-      return;
-    }
-
-    const int nPixels = (pitch / 4) * height();
-    const int index = (pixel.y() * width()) + pixel.x();
-
-    if ((index >= 0) && (index < nPixels)) {
-      const pixel_format_info info{format()};
-      pixels[index] = info.rgba_to_pixel(color);
-    }
-
-    unlock();
-  }
 
   /**
    * \brief Sets the alpha value of the texture.

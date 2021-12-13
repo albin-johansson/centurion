@@ -440,35 +440,6 @@ class basic_surface final {
   /// \{
 
   /**
-   * \brief Sets the color of the pixel at the specified coordinate.
-   *
-   * \details This function has no effect if the coordinate is out-of-bounds or if
-   * something goes wrong when attempting to modify the pixel data.
-   *
-   * \param pixel the pixel that will be changed.
-   * \param color the new color of the pixel.
-   *
-   * \since 4.0.0
-   */
-  void set_pixel(const ipoint pixel, const Color& color) noexcept
-  {
-    if (!in_bounds(pixel) || !lock()) {
-      return;
-    }
-
-    const int nPixels = (m_surface->pitch / 4) * height();
-    const int index = (pixel.y() * width()) + pixel.x();
-
-    if ((index >= 0) && (index < nPixels)) {
-      const auto info = format_info();
-      auto* pixels = reinterpret_cast<Uint32*>(m_surface->pixels);
-      pixels[index] = info.rgba_to_pixel(color);
-    }
-
-    unlock();
-  }
-
-  /**
    * \brief Sets the alpha component modulation value.
    *
    * \param alpha the new alpha component value, in the range [0, 255].

@@ -118,18 +118,6 @@ TEST_F(SurfaceTest, SaveAsJPG)
   ASSERT_TRUE(m_surface->save_as_jpg("surface_as_jpg.jpg"s, 25));
 }
 
-TEST_F(SurfaceTest, SetPixel)
-{
-  constexpr auto color = cen::colors::red;
-
-  ASSERT_NO_THROW(m_surface->set_pixel({-1, 0}, color));
-  ASSERT_NO_THROW(m_surface->set_pixel({0, -1}, color));
-  ASSERT_NO_THROW(m_surface->set_pixel({m_surface->width(), 0}, color));
-  ASSERT_NO_THROW(m_surface->set_pixel({0, m_surface->height()}, color));
-
-  ASSERT_NO_THROW(m_surface->set_pixel({43, 12}, color));
-}
-
 TEST_F(SurfaceTest, SetAlpha)
 {
   const auto previous = m_surface->alpha();

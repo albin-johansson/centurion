@@ -2,21 +2,21 @@
 
 #include "system/system.hpp"
 
-TEST(Clipboard, HasClipboardText)
+TEST(Clipboard, HasClipboard)
 {
-  ASSERT_TRUE(cen::set_clipboard_text(""));
-  ASSERT_FALSE(cen::has_clipboard_text());
+  ASSERT_TRUE(cen::SetClipboard(""));
+  ASSERT_FALSE(cen::HasClipboard());
 
-  ASSERT_TRUE(cen::set_clipboard_text("foobar"));
-  ASSERT_TRUE(cen::has_clipboard_text());
+  ASSERT_TRUE(cen::SetClipboard("foobar"));
+  ASSERT_TRUE(cen::HasClipboard());
 }
 
-TEST(Clipboard, SetClipboardText)
+TEST(Clipboard, SetClipboard)
 {
-  ASSERT_TRUE(cen::set_clipboard_text("foo"));
-  ASSERT_EQ(cen::get_clipboard_text(), "foo");
+  ASSERT_TRUE(cen::SetClipboard("foo"));
+  ASSERT_EQ(cen::GetClipboard(), "foo");
 
   using namespace std::string_literals;
-  ASSERT_TRUE(cen::set_clipboard_text("bar"s));
-  ASSERT_EQ(cen::get_clipboard_text(), "bar");
+  ASSERT_TRUE(cen::SetClipboard("bar"s));
+  ASSERT_EQ(cen::GetClipboard(), "bar");
 }

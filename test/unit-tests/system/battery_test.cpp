@@ -2,12 +2,12 @@
 
 #include "system/system.hpp"
 
-TEST(Battery, BatteryPercentage)
+TEST(Battery, GetBatteryPercentage)
 {
-  ASSERT_NO_THROW(cen::battery_percentage());
+  ASSERT_NO_THROW(cen::GetBatteryPercentage());
 
-  const auto percentage = cen::battery_percentage();
-  ASSERT_EQ(percentage.has_value(), cen::battery_available());
+  const auto percentage = cen::GetBatteryPercentage();
+  ASSERT_EQ(percentage.has_value(), cen::IsBatteryAvailable());
 
   if (percentage) {
     int actual = -1;
@@ -17,23 +17,23 @@ TEST(Battery, BatteryPercentage)
   }
 }
 
-TEST(Battery, BatterySeconds)
+TEST(Battery, GetBatterySeconds)
 {
-  ASSERT_NO_THROW(cen::battery_seconds());
+  ASSERT_NO_THROW(cen::GetBatterySeconds());
 
   int actual = -1;
   SDL_GetPowerInfo(&actual, nullptr);
 
-  if (const auto secs = cen::battery_seconds()) {
+  if (const auto secs = cen::GetBatterySeconds()) {
     ASSERT_EQ(cen::seconds<int>{actual}, secs.value());
   }
 }
 
-TEST(Battery, BatteryMinutes)
+TEST(Battery, GetBatteryMinutes)
 {
-  ASSERT_NO_THROW(cen::battery_minutes());
+  ASSERT_NO_THROW(cen::GetBatteryMinutes());
 
-  if (const auto minutes = cen::battery_minutes()) {
+  if (const auto minutes = cen::GetBatteryMinutes()) {
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 
@@ -44,36 +44,28 @@ TEST(Battery, BatteryMinutes)
 
 TEST(Battery, QueryBattery)
 {
-  ASSERT_NO_THROW(cen::query_battery());
+  ASSERT_NO_THROW(cen::QueryBattery());
 
-  const auto state = cen::query_battery();
+  const auto state = cen::QueryBattery();
   const auto actual = SDL_GetPowerInfo(nullptr, nullptr);
 
   ASSERT_EQ(actual, static_cast<SDL_PowerState>(state));
 }
 
-TEST(Battery, BatteryExists)
+TEST(Battery, IsBatteryAvailable)
 {
-  const auto state = cen::query_battery();
-  const auto exists = state == cen::power_state::on_battery ||
-                      state == cen::power_state::charged ||
-                      state == cen::power_state::charging;
-  ASSERT_EQ(exists, cen::battery_exists());
+  const auto state = cen::QueryBattery();
+  const auto exists = state == cen::PowerState::OnBattery ||
+                      state == cen::PowerState::Charged || state == cen::PowerState::Charging;
+  ASSERT_EQ(exists, cen::IsBatteryAvailable());
 }
 
-TEST(Battery, BatteryCharging)
+TEST(Battery, IsBatteryCharging)
 {
-  ASSERT_EQ(cen::query_battery() == cen::power_state::charging, cen::battery_charging());
+  ASSERT_EQ(cen::QueryBattery() == cen::PowerState::Charging, cen::IsBatteryCharging());
 }
 
-TEST(Battery, BatteryCharged)
+TEST(Battery, IsBatteryCharged)
 {
-  ASSERT_EQ(cen::query_battery() == cen::power_state::charged, cen::battery_charged());
-}
-
-TEST(Battery, BatteryAvailable)
-{
-  const auto state = cen::query_battery();
-  ASSERT_EQ(state != cen::power_state::unknown && state != cen::power_state::no_battery,
-            cen::battery_available());
+  ASSERT_EQ(cen::QueryBattery() == cen::PowerState::Charged, cen::IsBatteryCharged());
 }

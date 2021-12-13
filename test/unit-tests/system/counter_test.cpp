@@ -2,33 +2,33 @@
 
 #include "system/system.hpp"
 
-TEST(Counter, Frequency)
+TEST(Counter, GetFrequency)
 {
-  ASSERT_EQ(SDL_GetPerformanceFrequency(), cen::frequency());
+  ASSERT_EQ(SDL_GetPerformanceFrequency(), cen::GetFrequency());
 }
 
 TEST(Counter, Now)
 {
-  ASSERT_NO_THROW(cen::now());
+  ASSERT_NO_THROW(cen::Now());
 }
 
 TEST(Counter, NowInSeconds)
 {
-  ASSERT_NO_THROW(cen::now_in_seconds<double>());
+  ASSERT_NO_THROW(cen::NowInSeconds<double>());
 }
 
-TEST(Counter, Ticks)
+TEST(Counter, GetTicks)
 {
   using namespace cen::literals::legacy;
-  ASSERT_GT(cen::ticks(), 0_ms);
+  ASSERT_GT(cen::GetTicks(), 0_ms);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-TEST(Counter, Ticks64)
+TEST(Counter, GetTicks64)
 {
   using namespace cen::literals;
-  ASSERT_GT(cen::ticks64(), 0_ms);
+  ASSERT_GT(cen::GetTicks64(), 0_ms);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

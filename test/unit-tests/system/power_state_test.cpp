@@ -7,22 +7,22 @@
 
 TEST(PowerState, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::power_state::unknown), SDL_POWERSTATE_UNKNOWN);
-  ASSERT_EQ(cen::to_underlying(cen::power_state::on_battery), SDL_POWERSTATE_ON_BATTERY);
-  ASSERT_EQ(cen::to_underlying(cen::power_state::no_battery), SDL_POWERSTATE_NO_BATTERY);
-  ASSERT_EQ(cen::to_underlying(cen::power_state::charging), SDL_POWERSTATE_CHARGING);
-  ASSERT_EQ(cen::to_underlying(cen::power_state::charged), SDL_POWERSTATE_CHARGED);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::Unknown), SDL_POWERSTATE_UNKNOWN);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::OnBattery), SDL_POWERSTATE_ON_BATTERY);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::NoBattery), SDL_POWERSTATE_NO_BATTERY);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::Charging), SDL_POWERSTATE_CHARGING);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::Charged), SDL_POWERSTATE_CHARGED);
 }
 
 TEST(PowerState, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::power_state>(6)), cen::Error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::PowerState>(6)), cen::Error);
 
-  ASSERT_EQ("unknown", cen::to_string(cen::power_state::unknown));
-  ASSERT_EQ("on_battery", cen::to_string(cen::power_state::on_battery));
-  ASSERT_EQ("no_battery", cen::to_string(cen::power_state::no_battery));
-  ASSERT_EQ("charging", cen::to_string(cen::power_state::charging));
-  ASSERT_EQ("charged", cen::to_string(cen::power_state::charged));
+  ASSERT_EQ("Unknown", cen::to_string(cen::PowerState::Unknown));
+  ASSERT_EQ("OnBattery", cen::to_string(cen::PowerState::OnBattery));
+  ASSERT_EQ("NoBattery", cen::to_string(cen::PowerState::NoBattery));
+  ASSERT_EQ("Charging", cen::to_string(cen::PowerState::Charging));
+  ASSERT_EQ("Charged", cen::to_string(cen::PowerState::Charged));
 
-  std::clog << "Power state example: " << cen::power_state::on_battery << '\n';
+  std::clog << "Power state example: " << cen::PowerState::OnBattery << '\n';
 }

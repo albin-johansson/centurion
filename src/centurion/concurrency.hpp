@@ -262,7 +262,7 @@ class Thread final {
    */
   template <is_stateless_callable Callable>
   [[nodiscard]] static auto Init([[maybe_unused]] Callable&& task, const char* name = "thread")
-      -> thread
+      -> Thread
   {
     assert(name);
 
@@ -304,7 +304,7 @@ class Thread final {
   template <typename T = void, is_stateless_callable<T*> Callable>
   [[nodiscard]] static auto Init([[maybe_unused]] Callable&& task,
                                  T* userData = nullptr,
-                                 const char* name = "thread") -> thread
+                                 const char* name = "thread") -> Thread
   {
     assert(name);
 

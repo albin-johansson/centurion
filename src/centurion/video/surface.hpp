@@ -44,7 +44,7 @@ template <typename T>
 class BasicSurface final {
  public:
   /* Creates a surface based on existing surface, ownership is claimed by owning surfaces */
-  explicit BasicSurface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
+  explicit BasicSurface(MaybeOwner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
       : mSurface{surface}
   {
     if constexpr (detail::is_owning<T>()) {
@@ -78,7 +78,7 @@ class BasicSurface final {
                                                 size.width,
                                                 size.height,
                                                 0,
-                                                to_underlying(format))}
+                                                ToUnderlying(format))}
   {
     if (!mSurface) {
       throw SDLError{};
@@ -148,38 +148,38 @@ class BasicSurface final {
     return FromBMP(file.c_str());
   }
 
-  auto SaveAsBMP(const char* file) const noexcept -> result
+  auto SaveAsBMP(const char* file) const noexcept -> Result
   {
     assert(file);
     return SDL_SaveBMP(get(), file) != -1;
   }
 
-  auto SaveAsBMP(const std::string& file) const noexcept -> result  // NOLINT
+  auto SaveAsBMP(const std::string& file) const noexcept -> Result  // NOLINT
   {
     return SaveAsBMP(file.c_str());
   }
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  auto SaveAsPNG(const char* file) const noexcept -> result
+  auto SaveAsPNG(const char* file) const noexcept -> Result
   {
     assert(file);
     return IMG_SavePNG(get(), file) != -1;
   }
 
-  auto SaveAsPNG(const std::string& file) const noexcept -> result
+  auto SaveAsPNG(const std::string& file) const noexcept -> Result
   {
     return SaveAsPNG(file.c_str());
   }
 
   /* Save as JPG image, the quality parameter is passed on to libjpeg by SDL */
-  auto SaveAsJPG(const char* file, const int quality) const noexcept -> result
+  auto SaveAsJPG(const char* file, const int quality) const noexcept -> Result
   {
     assert(file);
     return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
-  auto SaveAsJPG(const std::string& file, const int quality) const noexcept -> result
+  auto SaveAsJPG(const std::string& file, const int quality) const noexcept -> Result
   {
     return SaveAsJPG(file.c_str(), quality);
   }
@@ -187,7 +187,7 @@ class BasicSurface final {
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Attempts to lock the access to the surface pixel data */
-  auto Lock() noexcept -> result
+  auto Lock() noexcept -> Result
   {
     if (MustLock()) {
       return SDL_LockSurface(mSurface) == 0;
@@ -217,7 +217,7 @@ class BasicSurface final {
   }
 
   /* Configure RLE acceleration hint. */
-  auto SetRLE(const bool enabled) noexcept -> result
+  auto SetRLE(const bool enabled) noexcept -> Result
   {
     return SDL_SetSurfaceRLE(mSurface, enabled ? 1 : 0) == 0;
   }
@@ -225,7 +225,7 @@ class BasicSurface final {
   /* Creates a copy of the surface using another pixel format */
   [[nodiscard]] auto ConvertTo(const pixel_format format) const -> BasicSurface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, to_underlying(format), 0)) {
+    if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, ToUnderlying(format), 0)) {
       BasicSurface result{converted};
       result.SetBlendMode(GetBlendMode());
       return result;
@@ -307,7 +307,7 @@ class BasicSurface final {
 
   void Copy(const BasicSurface& other) { mSurface.reset(other.DuplicateSurface()); }
 
-  [[nodiscard]] auto DuplicateSurface() const -> owner<SDL_Surface*>
+  [[nodiscard]] auto DuplicateSurface() const -> Owner<SDL_Surface*>
   {
     if (auto* copy = SDL_DuplicateSurface(mSurface)) {
       return copy;

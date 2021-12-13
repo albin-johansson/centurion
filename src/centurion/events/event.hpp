@@ -114,7 +114,7 @@ class event final {
    * \since 5.1.0
    */
   template <typename T>
-  static auto push(const common_event<T>& event) noexcept -> result
+  static auto push(const common_event<T>& event) noexcept -> Result
   {
     auto sdlEvent = as_sdl_event(event);
     return SDL_PushEvent(&sdlEvent) >= 0;
@@ -214,7 +214,7 @@ class event final {
    */
   [[nodiscard]] static auto queue_count(const event_type type) noexcept -> std::optional<int>
   {
-    const auto id = to_underlying(type);
+    const auto id = ToUnderlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
     if (num != -1) {
       return num;

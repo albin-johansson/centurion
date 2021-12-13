@@ -39,7 +39,7 @@ TEST(SensorEvent, AsSDLEvent)
   const cen::sensor_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.sensor.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.sensor.type, cen::ToUnderlying(event.type()));
   ASSERT_EQ(sdl.sensor.which, event.which());
   ASSERT_EQ(sdl.sensor.timestamp, event.time());
 }

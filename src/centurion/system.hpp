@@ -359,13 +359,13 @@ template <typename T>
   return GetMemoryMB() / 1'000;
 }
 
-inline auto SetClipboard(const char* text) noexcept -> result
+inline auto SetClipboard(const char* text) noexcept -> Result
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
 }
 
-inline auto SetClipboard(const std::string& text) noexcept -> result
+inline auto SetClipboard(const std::string& text) noexcept -> Result
 {
   return SetClipboard(text.c_str());
 }
@@ -384,13 +384,13 @@ inline auto SetClipboard(const std::string& text) noexcept -> result
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-inline auto OpenURL(const char* url) noexcept -> result
+inline auto OpenURL(const char* url) noexcept -> Result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
 }
 
-inline auto OpenURL(const std::string& url) noexcept -> result
+inline auto OpenURL(const std::string& url) noexcept -> Result
 {
   return OpenURL(url.c_str());
 }

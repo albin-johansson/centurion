@@ -59,7 +59,7 @@ class Mutex final {
   }
 
   /* Attempts to lock the mutex, blocks if the mutex is unavailable. */
-  auto Lock() noexcept -> result { return SDL_LockMutex(get()) == 0; }
+  auto Lock() noexcept -> Result { return SDL_LockMutex(get()) == 0; }
 
   /*  Attempts to lock the mutex, returns if the mutex is unavailable. */
   auto TryLock() noexcept -> LockStatus
@@ -68,7 +68,7 @@ class Mutex final {
   }
 
   /*  Attempts to unlock the mutex. */
-  auto Unlock() noexcept -> result { return SDL_UnlockMutex(get()) == 0; }
+  auto Unlock() noexcept -> Result { return SDL_UnlockMutex(get()) == 0; }
 
   [[nodiscard]] auto get() noexcept -> SDL_mutex* { return mMutex.get(); }
 
@@ -158,13 +158,13 @@ class Condition final {
   }
 
   /* Wakes up one of the threads waiting on the condition variable. */
-  auto Signal() noexcept -> result { return SDL_CondSignal(mCond.get()) == 0; }
+  auto Signal() noexcept -> Result { return SDL_CondSignal(mCond.get()) == 0; }
 
   /* Wakes up all threads that are waiting on the condition variable. */
-  auto Broadcast() noexcept -> result { return SDL_CondBroadcast(mCond.get()) == 0; }
+  auto Broadcast() noexcept -> Result { return SDL_CondBroadcast(mCond.get()) == 0; }
 
   /* Waits until the condition variable is signaled. */
-  auto Wait(Mutex& mutex) noexcept -> result
+  auto Wait(Mutex& mutex) noexcept -> Result
   {
     return SDL_CondWait(mCond.get(), mutex.get()) == 0;
   }
@@ -191,7 +191,7 @@ class Semaphore final {
   }
 
   /* Waits until a token is available. */
-  auto Acquire() noexcept -> result { return SDL_SemWait(mSemaphore.get()) == 0; }
+  auto Acquire() noexcept -> Result { return SDL_SemWait(mSemaphore.get()) == 0; }
 
   /* Waits until a token is available for a limited time. */
   auto Acquire(const milliseconds<Uint32> ms) noexcept(noexcept(ms.count())) -> LockStatus
@@ -206,7 +206,7 @@ class Semaphore final {
   }
 
   /* Returns a token to the semaphore and notifies waiting threads. */
-  auto Release() noexcept -> result { return SDL_SemPost(mSemaphore.get()) == 0; }
+  auto Release() noexcept -> Result { return SDL_SemPost(mSemaphore.get()) == 0; }
 
   [[nodiscard]] auto GetTokens() const noexcept -> Uint32
   {
@@ -363,7 +363,7 @@ class Thread final {
     return status;
   }
 
-  static auto SetPriority(const ThreadPriority priority) noexcept -> result
+  static auto SetPriority(const ThreadPriority priority) noexcept -> Result
   {
     const auto prio = static_cast<SDL_ThreadPriority>(priority);
     return SDL_SetThreadPriority(prio) == 0;

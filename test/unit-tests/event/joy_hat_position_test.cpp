@@ -9,15 +9,15 @@ TEST(JoyHatPosition, Values)
 {
   ASSERT_EQ(9, cen::joy_hat_position_count());
 
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::left_up), SDL_HAT_LEFTUP);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::left), SDL_HAT_LEFT);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::left_down), SDL_HAT_LEFTDOWN);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::up), SDL_HAT_UP);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::centered), SDL_HAT_CENTERED);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::down), SDL_HAT_DOWN);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::right_up), SDL_HAT_RIGHTUP);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::right), SDL_HAT_RIGHT);
-  ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::right_down), SDL_HAT_RIGHTDOWN);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::left_up), SDL_HAT_LEFTUP);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::left), SDL_HAT_LEFT);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::left_down), SDL_HAT_LEFTDOWN);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::up), SDL_HAT_UP);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::centered), SDL_HAT_CENTERED);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::down), SDL_HAT_DOWN);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::right_up), SDL_HAT_RIGHTUP);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::right), SDL_HAT_RIGHT);
+  ASSERT_EQ(cen::ToUnderlying(cen::joy_hat_position::right_down), SDL_HAT_RIGHTDOWN);
 }
 
 TEST(JoyHatPosition, ToString)

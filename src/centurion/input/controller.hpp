@@ -225,7 +225,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(MaybeOwner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
     if constexpr (detail::is_owning<T>()) 
@@ -413,7 +413,7 @@ class basic_controller final {
    *
    * \since 6.2.0
    */
-  auto send_effect(const void* data, const int size) -> result
+  auto send_effect(const void* data, const int size) -> Result
   {
     return SDL_GameControllerSendEffect(m_controller, data, size) == 0;
   }
@@ -679,7 +679,7 @@ class basic_controller final {
   auto rumble(const Uint16 lo,
               const Uint16 hi,
               const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
-      -> result
+      -> Result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -709,7 +709,7 @@ class basic_controller final {
   auto rumble_triggers(const Uint16 lo,
                        const Uint16 hi,
                        const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
-      -> result
+      -> Result
   {
     return SDL_GameControllerRumbleTriggers(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -1017,7 +1017,7 @@ class basic_controller final {
    *
    * \since 5.2.0
    */
-  auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept -> result
+  auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept -> Result
   {
     const auto value = static_cast<SDL_SensorType>(type);
     const auto state = enabled ? SDL_TRUE : SDL_FALSE;
@@ -1121,7 +1121,7 @@ class basic_controller final {
    *
    * \since 5.2.0
    */
-  auto set_led(const Color& color) noexcept -> result
+  auto set_led(const Color& color) noexcept -> Result
   {
     return SDL_GameControllerSetLED(m_controller,
                                     color.GetRed(),

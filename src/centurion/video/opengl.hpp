@@ -160,7 +160,7 @@ class basic_gl_context final {
    *
    * \since 6.0.0
    */
-  explicit basic_gl_context(maybe_owner<SDL_GLContext> context) noexcept(!detail::is_owning<T>())
+  explicit basic_gl_context(MaybeOwner<SDL_GLContext> context) noexcept(!detail::is_owning<T>())
       : m_context{context}
   {
     if constexpr (detail::is_owning<T>()) {
@@ -211,7 +211,7 @@ class basic_gl_context final {
    * \since 6.0.0
    */
   template <typename U>
-  auto make_current(basic_window<U>& window) -> result
+  auto make_current(basic_window<U>& window) -> Result
   {
     assert(window.is_opengl());
     return SDL_GL_MakeCurrent(window.get(), m_context.get()) == 0;
@@ -485,7 +485,7 @@ inline void reset_attributes() noexcept
  *
  * \since 6.0.0
  */
-inline auto set(const gl_attribute attr, const int value) noexcept -> result
+inline auto set(const gl_attribute attr, const int value) noexcept -> Result
 {
   return SDL_GL_SetAttribute(static_cast<SDL_GLattr>(attr), value) == 0;
 }
@@ -521,9 +521,9 @@ inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
  *
  * \since 6.0.0
  */
-inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> result
+inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> Result
 {
-  return SDL_GL_SetSwapInterval(to_underlying(interval)) == 0;
+  return SDL_GL_SetSwapInterval(ToUnderlying(interval)) == 0;
 }
 
 /**
@@ -623,7 +623,7 @@ auto bind(basic_texture<T>& texture) noexcept -> std::optional<FArea>
  * \since 6.1.0
  */
 template <typename T>
-auto unbind(basic_texture<T>& texture) noexcept -> result
+auto unbind(basic_texture<T>& texture) noexcept -> Result
 {
   return SDL_GL_UnbindTexture(texture.get()) == 0;
 }

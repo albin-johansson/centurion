@@ -71,6 +71,6 @@ TEST(JoyAxisEvent, AsSDLEvent)
   const cen::joy_axis_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.jaxis.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.jaxis.type, cen::ToUnderlying(event.type()));
   ASSERT_EQ(sdl.jaxis.timestamp, event.time());
 }

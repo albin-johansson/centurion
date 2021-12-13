@@ -22,6 +22,6 @@ TEST(QuitEvent, AsSDLEvent)
   const cen::quit_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.quit.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.quit.type, cen::ToUnderlying(event.type()));
   ASSERT_EQ(sdl.quit.timestamp, event.time());
 }

@@ -63,7 +63,7 @@ class File final {
   File(const std::string& path, const FileMode mode) noexcept : File{path.c_str(), mode} {}
 
   template <typename T>
-  auto Write(not_null<const T*> data, const std::size_t count) noexcept -> std::size_t
+  auto Write(NotNull<const T*> data, const std::size_t count) noexcept -> std::size_t
   {
     assert(mContext);
     return SDL_RWwrite(get(), data, sizeof(T), count);
@@ -87,43 +87,43 @@ class File final {
 
   // clang-format on
 
-  auto WriteByte(const Uint8 value) noexcept -> result
+  auto WriteByte(const Uint8 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteU8(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const Uint16 value) noexcept -> result
+  auto WriteNativeAsLittleEndian(const Uint16 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteLE16(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const Uint32 value) noexcept -> result
+  auto WriteNativeAsLittleEndian(const Uint32 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteLE32(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const Uint64 value) noexcept -> result
+  auto WriteNativeAsLittleEndian(const Uint64 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteLE64(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const Uint16 value) noexcept -> result
+  auto WriteNativeAsBigEndian(const Uint16 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteBE16(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const Uint32 value) noexcept -> result
+  auto WriteNativeAsBigEndian(const Uint32 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteBE32(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const Uint64 value) noexcept -> result
+  auto WriteNativeAsBigEndian(const Uint64 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteBE64(mContext.get(), value) == 1;
@@ -133,7 +133,7 @@ class File final {
       -> std::optional<Sint64>
   {
     assert(mContext);
-    const auto result = SDL_RWseek(mContext.get(), offset, to_underlying(mode));
+    const auto result = SDL_RWseek(mContext.get(), offset, ToUnderlying(mode));
     if (result != -1) {
       return result;
     }

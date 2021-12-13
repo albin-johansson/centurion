@@ -72,7 +72,7 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
+  explicit basic_texture(MaybeOwner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
       : m_texture{source}
   {
     if constexpr (detail::is_owning<T>())
@@ -180,8 +180,8 @@ class basic_texture final {
                 const texture_access access,
                 const Area size)
       : m_texture{SDL_CreateTexture(renderer.get(),
-                                    to_underlying(format),
-                                    to_underlying(access),
+                                    ToUnderlying(format),
+                                    ToUnderlying(access),
                                     size.width,
                                     size.height)}
   {
@@ -487,7 +487,7 @@ class basic_texture final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
+  [[nodiscard]] auto release() noexcept -> Owner<SDL_Texture*>
   {
     return m_texture.release();
   }
@@ -559,7 +559,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  auto lock(Uint32** pixels, int* pitch = nullptr) noexcept -> result
+  auto lock(Uint32** pixels, int* pitch = nullptr) noexcept -> Result
   {
     if (pitch) {
       return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;

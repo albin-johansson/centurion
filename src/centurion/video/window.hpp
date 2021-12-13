@@ -129,7 +129,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(MaybeOwner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
     if constexpr (detail::is_owning<T>()) {
@@ -284,7 +284,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  auto update_surface() noexcept -> result { return SDL_UpdateWindowSurface(m_window) == 0; }
+  auto update_surface() noexcept -> Result { return SDL_UpdateWindowSurface(m_window) == 0; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
@@ -297,7 +297,7 @@ class basic_window final {
    *
    * \since 6.2.0
    */
-  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> Result
   {
     return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
   }
@@ -318,7 +318,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  auto set_fullscreen(const bool enabled) noexcept -> result
+  auto set_fullscreen(const bool enabled) noexcept -> Result
   {
     return SDL_SetWindowFullscreen(m_window, enabled ? fullscreen : 0) == 0;
   }
@@ -335,7 +335,7 @@ class basic_window final {
    *
    * \since 4.0.0
    */
-  auto set_fullscreen_desktop(const bool enabled) noexcept -> result
+  auto set_fullscreen_desktop(const bool enabled) noexcept -> Result
   {
     return SDL_SetWindowFullscreen(m_window, enabled ? fullscreen_desktop : 0) == 0;
   }
@@ -408,7 +408,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  auto set_opacity(const float opacity) noexcept -> result
+  auto set_opacity(const float opacity) noexcept -> Result
   {
     return SDL_SetWindowOpacity(m_window, opacity) == 0;
   }
@@ -442,7 +442,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  auto set_brightness(const float brightness) noexcept -> result
+  auto set_brightness(const float brightness) noexcept -> Result
   {
     return SDL_SetWindowBrightness(m_window, detail::clamp(brightness, 0.0f, 1.0f)) == 0;
   }
@@ -458,7 +458,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capture) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> Result
   {
     return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }

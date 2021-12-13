@@ -81,13 +81,13 @@ class Music final {
 
   static void Rewind() noexcept { Mix_RewindMusic(); }
 
-  auto FadeIn(const Ms ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
+  auto FadeIn(const Ms ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> Result
   {
     assert(ms.count() > 0);
     return Mix_FadeInMusic(mMusic.get(), detail::max(nLoops, forever), ms.count()) == 0;
   }
 
-  static auto FadeOut(const Ms ms) noexcept(noexcept(ms.count())) -> result
+  static auto FadeOut(const Ms ms) noexcept(noexcept(ms.count())) -> Result
   {
     assert(ms.count() > 0);
     if (!IsFading()) {
@@ -113,7 +113,7 @@ class Music final {
     return status == FadeStatus::In || status == FadeStatus::Out;
   }
 
-  static auto SetPosition(const double position) noexcept -> result
+  static auto SetPosition(const double position) noexcept -> Result
   {
     return Mix_SetMusicPosition(position) == 0;
   }

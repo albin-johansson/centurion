@@ -69,7 +69,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
    */
   void set_button(const mouse_button button) noexcept
   {
-    m_event.button = to_underlying(button);
+    m_event.button = ToUnderlying(button);
   }
 
   /**
@@ -79,7 +79,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_state(const button_state state) noexcept { m_event.state = to_underlying(state); }
+  void set_state(const button_state state) noexcept { m_event.state = ToUnderlying(state); }
 
   /**
    * \brief Sets the amount of clicks associated with the event.

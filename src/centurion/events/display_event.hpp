@@ -50,7 +50,7 @@ class display_event final : public common_event<SDL_DisplayEvent> {
    */
   void set_event_id(const display_event_id id) noexcept
   {
-    m_event.event = static_cast<Uint8>(to_underlying(id));
+    m_event.event = static_cast<Uint8>(ToUnderlying(id));
   }
 
   /**

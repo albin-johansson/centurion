@@ -242,14 +242,14 @@ class unicode_string final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc()) -> reference
+  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc) -> reference
   {
     assert(index < m_data.size());
     return m_data[index];
   }
 
   /// \copydoc operator[]
-  [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc())
+  [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc)
       -> const_reference
   {
     assert(index < m_data.size());

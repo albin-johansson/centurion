@@ -58,7 +58,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
    */
   void set_position(const joy_hat_position value) noexcept
   {
-    m_event.value = to_underlying(value);
+    m_event.value = ToUnderlying(value);
   }
 
   /**

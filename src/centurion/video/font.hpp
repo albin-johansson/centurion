@@ -114,7 +114,7 @@ class Font final {
 
   void SetFontHinting(const FontHint hint) noexcept
   {
-    TTF_SetFontHinting(mFont.get(), to_underlying(hint));
+    TTF_SetFontHinting(mFont.get(), ToUnderlying(hint));
   }
 
   [[nodiscard]] auto IsBold() const noexcept -> bool

@@ -28,117 +28,44 @@ namespace cen {
 /// \addtogroup core
 /// \{
 
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
+#ifdef NDEBUG
+inline constexpr bool is_debug_build = false;
+inline constexpr bool is_release_build = true;
 #else
-  return false;
+inline constexpr bool is_debug_build = true;
+inline constexpr bool is_release_build = false;
 #endif  // NDEBUG
-}
 
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
 #ifdef _MSC_VER
-  return true;
+inline constexpr bool on_msvc = true;
 #else
-  return false;
+inline constexpr bool on_msvc = false;
 #endif  // _MSC_VER
-}
 
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
 #ifdef __GNUC__
-  return true;
+inline constexpr bool on_gcc = true;
 #else
-  return false;
+inline constexpr bool on_gcc = false;
 #endif  // __GNUC__
-}
 
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
 #ifdef __clang__
-  return true;
+inline constexpr bool on_clang = true;
 #else
-  return false;
+inline constexpr bool on_clang = false;
 #endif  // __clang__
-}
 
-/// \name Integer aliases
-/// \{
-
-/// Alias for an unsigned integer.
 using uint = unsigned int;
-
-/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
-
 using Unicode = Uint16;
-
-/// \} End of integer aliases
 
 // TODO use _t suffix instead of _v in the SFINAE aliases
 
-// clang-format off
+template <typename T>
+inline constexpr bool is_number =
+    !std::is_same_v<T, bool> && (std::is_integral_v<T> || std::is_floating_point_v<T>);
 
 template <typename T>
-inline constexpr bool is_number = !std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>);
-
-// clang-format on
-
-/// Enables a template if the type is a pointer.
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;  // TODO
+using enable_if_pointer_t = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
@@ -147,90 +74,31 @@ using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args>
 template <typename T>
 using enable_if_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
-/// \brief Tag used to indicate that a pointer cannot be null.
-/// \since 5.0.0
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
+template <typename T, enable_if_pointer_t<T> = 0>
+using NotNull = T;
 
-/**
- * \brief Tag used to denote ownership of raw pointers directly in code.
- *
- * \details If a function takes an `owner<T*>` as a parameter, then the function will
- * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
- * then ownership is transferred to the caller.
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using owner = T;
+template <typename T, enable_if_pointer_t<T> = 0>
+using Owner = T;
 
-/**
- * \brief Tag used to denote conditional ownership of raw pointers directly in code.
- *
- * \details This is primarily used in constructors of owner/handle classes, where the
- * owner version will claim ownership of the pointer, whilst the handle does not.
- *
- * \since 6.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using maybe_owner = T;
+template <typename T, enable_if_pointer_t<T> = 0>
+using MaybeOwner = T;
 
-/**
- * \brief Converts an enum value to an integral value using the underlying type.
- *
- * \ingroup core
- *
- * \note If you're using C++23, see `std::to_underlying()`.
- *
- * \tparam Enum the enum type.
- *
- * \param value the enum value that will be converted.
- *
- * \return the value of the enum, in the underlying type.
- *
- * \since 6.0.0
- */
+/* Converts an enum value to the underlying integral value. */
 template <typename Enum, enable_if_enum_t<Enum> = 0>
-[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+[[nodiscard]] constexpr auto ToUnderlying(const Enum value) noexcept
     -> std::underlying_type_t<Enum>
 {
   return static_cast<std::underlying_type_t<Enum>>(value);
 }
 
-/**
- * \brief Casts a value to a value of another type.
- *
- * \ingroup core
- *
- * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for various Centurion
- * and SDL types. This is useful because it isn't always possible to implement conversion
- * operators as members.
- *
- * \tparam To the type of the value that will be converted.
- * \tparam From the type that the value will be casted to.
- *
- * \param from the value that will be converted.
- *
- * \return the result of casting the supplied value to the specified type.
- *
- * \since 5.0.0
- */
+/* Casts a value to a value of another type. */
 template <typename To, typename From>
 [[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
 {
   return static_cast<To>(from);
 }
 
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container to query the size of.
- *
- * \return the size of the container as an `int` value.
- *
- * \since 5.3.0
- */
+/* Obtains the size of a container as an `int`. */
 template <typename T>
 [[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
     -> int
@@ -238,23 +106,13 @@ template <typename T>
   return static_cast<int>(container.size());
 }
 
-/**
- * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
- *
- * \param string the string that will be checked.
- *
- * \return the supplied string if it isn't null; "n/a" otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto str_or_na(const char* string) noexcept -> const char*
+/* Simply returns the string if it isn't null, returning a placeholder otherwise. */
+[[nodiscard]] inline auto str_or_na(const char* str) noexcept -> const char*
 {
-  return string ? string : "n/a";
+  return str ? str : "N/A";
 }
 
 /**
- * \class result
- *
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
@@ -289,7 +147,7 @@ template <typename T>
  *
  * \since 6.0.0
  */
-class result final {
+class Result final {
  public:
   /**
    * \brief Creates a result.
@@ -298,68 +156,29 @@ class result final {
    *
    * \since 6.0.0
    */
-  constexpr result(const bool success) noexcept  // NOLINT implicit
-      : m_success{success}
+  constexpr Result(const bool success) noexcept  // NOLINT implicit
+      : mSuccess{success}
   {}
 
-  /// \name Comparison operators
-  /// \{
-
-  /**
-   * \brief Indicates whether or not two results have the same success value.
-   *
-   * \param other the other result.
-   *
-   * \return `true` if the results are equal; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] constexpr auto operator==(const result other) const noexcept -> bool
-  {
-    return m_success == other.m_success;
-  }
-
-  /**
-   * \brief Indicates whether or not two results don't have the same success value.
-   *
-   * \param other the other result.
-   *
-   * \return `true` if the results aren't equal; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept -> bool
-  {
-    return !(*this == other);
-  }
-
-  /// \} End of comparison operators
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Indicates whether or not the result is successful.
-   *
-   * \return `true` if the result is successful; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] constexpr explicit operator bool() const noexcept { return m_success; }
-
-  /// \} End of conversions
+  /* Indicates whether the result is successful. */
+  [[nodiscard]] constexpr explicit operator bool() const noexcept { return mSuccess; }
 
  private:
-  bool m_success{};
+  bool mSuccess{};
 };
 
-/// Represents a successful result.
-/// \since 6.0.0
-inline constexpr result success{true};
+[[nodiscard]] constexpr auto operator==(const Result a, const Result b) noexcept -> bool
+{
+  return a.operator bool() == b.operator bool();
+}
 
-/// Represents a failure of some kind.
-/// \since 6.0.0
-inline constexpr result failure{false};
+[[nodiscard]] constexpr auto operator!=(const Result a, const Result b) noexcept -> bool
+{
+  return !(a == b);
+}
+
+inline constexpr Result success{true};
+inline constexpr Result failure{false};
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -368,49 +187,15 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-/// \name String conversions
-/// \{
-
-/**
- * \brief Returns a string that represents a result value.
- *
- * \note The returned string is in a slightly different format compared to other Centurion
- * components.
- *
- * \param result the value that will be converted.
- *
- * \return `"success"` for a successful result; `"failure"` otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto to_string(const result result) -> std::string
+[[nodiscard]] inline auto to_string(const Result result) -> std::string
 {
   return result ? "success" : "failure";
 }
 
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a result value using a stream.
- *
- * \param stream the stream that will be used.
- * \param result the result value that will be printed.
- *
- * \return the used stream.
- *
- * \since 6.0.0
- */
-inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const Result result) -> std::ostream&
 {
   return stream << to_string(result);
 }
-
-/// \} End of streaming
-
-/// \} End of group core
 
 namespace literals {
 /// \addtogroup core

@@ -78,7 +78,7 @@ class common_event {
    *
    * \since 4.0.0
    */
-  void set_type(const event_type type) noexcept { m_event.type = to_underlying(type); }
+  void set_type(const event_type type) noexcept { m_event.type = ToUnderlying(type); }
 
   /**
    * \brief Returns the timestamp associated with the creation of the event.

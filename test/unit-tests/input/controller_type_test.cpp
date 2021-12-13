@@ -11,22 +11,22 @@ TEST(ControllerType, Values)
 {
   using type = cen::controller_type;
 
-  ASSERT_EQ(cen::to_underlying(type::unknown), SDL_CONTROLLER_TYPE_UNKNOWN);
-  ASSERT_EQ(cen::to_underlying(type::xbox_360), SDL_CONTROLLER_TYPE_XBOX360);
-  ASSERT_EQ(cen::to_underlying(type::xbox_one), SDL_CONTROLLER_TYPE_XBOXONE);
-  ASSERT_EQ(cen::to_underlying(type::ps3), SDL_CONTROLLER_TYPE_PS3);
-  ASSERT_EQ(cen::to_underlying(type::ps4), SDL_CONTROLLER_TYPE_PS4);
-  ASSERT_EQ(cen::to_underlying(type::nintendo_switch_pro),
+  ASSERT_EQ(cen::ToUnderlying(type::unknown), SDL_CONTROLLER_TYPE_UNKNOWN);
+  ASSERT_EQ(cen::ToUnderlying(type::xbox_360), SDL_CONTROLLER_TYPE_XBOX360);
+  ASSERT_EQ(cen::ToUnderlying(type::xbox_one), SDL_CONTROLLER_TYPE_XBOXONE);
+  ASSERT_EQ(cen::ToUnderlying(type::ps3), SDL_CONTROLLER_TYPE_PS3);
+  ASSERT_EQ(cen::ToUnderlying(type::ps4), SDL_CONTROLLER_TYPE_PS4);
+  ASSERT_EQ(cen::ToUnderlying(type::nintendo_switch_pro),
             SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(cen::to_underlying(type::ps5), SDL_CONTROLLER_TYPE_PS5);
-  ASSERT_EQ(cen::to_underlying(type::virt), SDL_CONTROLLER_TYPE_VIRTUAL);
+  ASSERT_EQ(cen::ToUnderlying(type::ps5), SDL_CONTROLLER_TYPE_PS5);
+  ASSERT_EQ(cen::ToUnderlying(type::virt), SDL_CONTROLLER_TYPE_VIRTUAL);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-  ASSERT_EQ(cen::to_underlying(type::amazon_luna), SDL_CONTROLLER_TYPE_AMAZON_LUNA);
-  ASSERT_EQ(cen::to_underlying(type::google_stadia), SDL_CONTROLLER_TYPE_GOOGLE_STADIA);
+  ASSERT_EQ(cen::ToUnderlying(type::amazon_luna), SDL_CONTROLLER_TYPE_AMAZON_LUNA);
+  ASSERT_EQ(cen::ToUnderlying(type::google_stadia), SDL_CONTROLLER_TYPE_GOOGLE_STADIA);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 }
 

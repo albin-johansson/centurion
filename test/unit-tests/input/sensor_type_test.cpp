@@ -7,10 +7,10 @@
 
 TEST(SensorType, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::sensor_type::invalid), SDL_SENSOR_INVALID);
-  ASSERT_EQ(cen::to_underlying(cen::sensor_type::unknown), SDL_SENSOR_UNKNOWN);
-  ASSERT_EQ(cen::to_underlying(cen::sensor_type::accelerometer), SDL_SENSOR_ACCEL);
-  ASSERT_EQ(cen::to_underlying(cen::sensor_type::gyroscope), SDL_SENSOR_GYRO);
+  ASSERT_EQ(cen::ToUnderlying(cen::sensor_type::invalid), SDL_SENSOR_INVALID);
+  ASSERT_EQ(cen::ToUnderlying(cen::sensor_type::unknown), SDL_SENSOR_UNKNOWN);
+  ASSERT_EQ(cen::ToUnderlying(cen::sensor_type::accelerometer), SDL_SENSOR_ACCEL);
+  ASSERT_EQ(cen::ToUnderlying(cen::sensor_type::gyroscope), SDL_SENSOR_GYRO);
 }
 
 TEST(SensorType, ToString)

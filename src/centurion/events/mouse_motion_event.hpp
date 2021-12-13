@@ -153,7 +153,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
    */
   [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
   {
-    return m_event.state & SDL_BUTTON(to_underlying(button));
+    return m_event.state & SDL_BUTTON(ToUnderlying(button));
   }
 
   /**

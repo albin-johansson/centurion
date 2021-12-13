@@ -9,14 +9,14 @@ using axis = cen::controller_axis;
 
 TEST(ControllerAxis, Values)
 {
-  ASSERT_EQ(cen::to_underlying(axis::invalid), SDL_CONTROLLER_AXIS_INVALID);
-  ASSERT_EQ(cen::to_underlying(axis::left_x), SDL_CONTROLLER_AXIS_LEFTX);
-  ASSERT_EQ(cen::to_underlying(axis::left_y), SDL_CONTROLLER_AXIS_LEFTY);
-  ASSERT_EQ(cen::to_underlying(axis::right_x), SDL_CONTROLLER_AXIS_RIGHTX);
-  ASSERT_EQ(cen::to_underlying(axis::right_y), SDL_CONTROLLER_AXIS_RIGHTY);
-  ASSERT_EQ(cen::to_underlying(axis::trigger_left), SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-  ASSERT_EQ(cen::to_underlying(axis::trigger_right), SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-  ASSERT_EQ(cen::to_underlying(axis::max), SDL_CONTROLLER_AXIS_MAX);
+  ASSERT_EQ(cen::ToUnderlying(axis::invalid), SDL_CONTROLLER_AXIS_INVALID);
+  ASSERT_EQ(cen::ToUnderlying(axis::left_x), SDL_CONTROLLER_AXIS_LEFTX);
+  ASSERT_EQ(cen::ToUnderlying(axis::left_y), SDL_CONTROLLER_AXIS_LEFTY);
+  ASSERT_EQ(cen::ToUnderlying(axis::right_x), SDL_CONTROLLER_AXIS_RIGHTX);
+  ASSERT_EQ(cen::ToUnderlying(axis::right_y), SDL_CONTROLLER_AXIS_RIGHTY);
+  ASSERT_EQ(cen::ToUnderlying(axis::trigger_left), SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  ASSERT_EQ(cen::ToUnderlying(axis::trigger_right), SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  ASSERT_EQ(cen::ToUnderlying(axis::max), SDL_CONTROLLER_AXIS_MAX);
 }
 
 TEST(ControllerAxis, ToString)

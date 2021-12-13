@@ -7,12 +7,12 @@
 
 TEST(LogPriority, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::log_priority::info), SDL_LOG_PRIORITY_INFO);
-  ASSERT_EQ(cen::to_underlying(cen::log_priority::warn), SDL_LOG_PRIORITY_WARN);
-  ASSERT_EQ(cen::to_underlying(cen::log_priority::debug), SDL_LOG_PRIORITY_DEBUG);
-  ASSERT_EQ(cen::to_underlying(cen::log_priority::verbose), SDL_LOG_PRIORITY_VERBOSE);
-  ASSERT_EQ(cen::to_underlying(cen::log_priority::critical), SDL_LOG_PRIORITY_CRITICAL);
-  ASSERT_EQ(cen::to_underlying(cen::log_priority::error), SDL_LOG_PRIORITY_ERROR);
+  ASSERT_EQ(cen::ToUnderlying(cen::log_priority::info), SDL_LOG_PRIORITY_INFO);
+  ASSERT_EQ(cen::ToUnderlying(cen::log_priority::warn), SDL_LOG_PRIORITY_WARN);
+  ASSERT_EQ(cen::ToUnderlying(cen::log_priority::debug), SDL_LOG_PRIORITY_DEBUG);
+  ASSERT_EQ(cen::ToUnderlying(cen::log_priority::verbose), SDL_LOG_PRIORITY_VERBOSE);
+  ASSERT_EQ(cen::ToUnderlying(cen::log_priority::critical), SDL_LOG_PRIORITY_CRITICAL);
+  ASSERT_EQ(cen::ToUnderlying(cen::log_priority::error), SDL_LOG_PRIORITY_ERROR);
 }
 
 TEST(LogPriority, ToString)

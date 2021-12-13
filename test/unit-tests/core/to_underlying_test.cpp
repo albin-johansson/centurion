@@ -17,16 +17,16 @@ enum class bar : bar_type {
   c = 'x'
 };
 
-static_assert(std::is_same_v<foo_type, decltype(cen::to_underlying(foo::a))>);
-static_assert(std::is_same_v<bar_type, decltype(cen::to_underlying(bar::a))>);
+static_assert(std::is_same_v<foo_type, decltype(cen::ToUnderlying(foo::a))>);
+static_assert(std::is_same_v<bar_type, decltype(cen::ToUnderlying(bar::a))>);
 
 TEST(ToUnderlying, ToUnderlying)
 {
-  ASSERT_EQ(27u, cen::to_underlying(foo::a));
-  ASSERT_EQ(42u, cen::to_underlying(foo::b));
-  ASSERT_EQ(123u, cen::to_underlying(foo::c));
+  ASSERT_EQ(27u, cen::ToUnderlying(foo::a));
+  ASSERT_EQ(42u, cen::ToUnderlying(foo::b));
+  ASSERT_EQ(123u, cen::ToUnderlying(foo::c));
 
-  ASSERT_EQ('a', cen::to_underlying(bar::a));
-  ASSERT_EQ('1', cen::to_underlying(bar::b));
-  ASSERT_EQ('x', cen::to_underlying(bar::c));
+  ASSERT_EQ('a', cen::ToUnderlying(bar::a));
+  ASSERT_EQ('1', cen::ToUnderlying(bar::b));
+  ASSERT_EQ('x', cen::ToUnderlying(bar::c));
 }

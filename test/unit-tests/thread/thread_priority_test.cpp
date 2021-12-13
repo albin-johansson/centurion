@@ -7,10 +7,10 @@
 
 TEST(ThreadPriority, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Low), SDL_THREAD_PRIORITY_LOW);
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Normal), SDL_THREAD_PRIORITY_NORMAL);
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::High), SDL_THREAD_PRIORITY_HIGH);
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Critical),
+  ASSERT_EQ(cen::ToUnderlying(cen::ThreadPriority::Low), SDL_THREAD_PRIORITY_LOW);
+  ASSERT_EQ(cen::ToUnderlying(cen::ThreadPriority::Normal), SDL_THREAD_PRIORITY_NORMAL);
+  ASSERT_EQ(cen::ToUnderlying(cen::ThreadPriority::High), SDL_THREAD_PRIORITY_HIGH);
+  ASSERT_EQ(cen::ToUnderlying(cen::ThreadPriority::Critical),
             SDL_THREAD_PRIORITY_TIME_CRITICAL);
 }
 

@@ -7,9 +7,9 @@
 
 TEST(LockStatus, Values)
 {
-  ASSERT_EQ(0, cen::to_underlying(cen::LockStatus::Success));
-  ASSERT_EQ(SDL_MUTEX_TIMEDOUT, cen::to_underlying(cen::LockStatus::TimedOut));
-  ASSERT_EQ(-1, cen::to_underlying(cen::LockStatus::Error));
+  ASSERT_EQ(0, cen::ToUnderlying(cen::LockStatus::Success));
+  ASSERT_EQ(SDL_MUTEX_TIMEDOUT, cen::ToUnderlying(cen::LockStatus::TimedOut));
+  ASSERT_EQ(-1, cen::ToUnderlying(cen::LockStatus::Error));
 }
 
 TEST(LockStatus, ToString)

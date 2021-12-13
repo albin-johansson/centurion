@@ -130,7 +130,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
+  explicit basic_renderer(MaybeOwner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
     if constexpr (detail::is_owning<T>())
@@ -177,7 +177,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto clear() noexcept -> result { return SDL_RenderClear(get()) == 0; }
+  auto clear() noexcept -> Result { return SDL_RenderClear(get()) == 0; }
 
   /**
    * \brief Clears the rendering target with the specified color.
@@ -280,7 +280,7 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_rect(const BasicRect<U>& rect) noexcept -> result
+  auto draw_rect(const BasicRect<U>& rect) noexcept -> Result
   {
     if constexpr (BasicRect<U>::integral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
@@ -302,7 +302,7 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename U>
-  auto fill_rect(const BasicRect<U>& rect) noexcept -> result
+  auto fill_rect(const BasicRect<U>& rect) noexcept -> Result
   {
     if constexpr (BasicRect<U>::integral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
@@ -325,7 +325,7 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_line(const BasicPoint<U>& start, const BasicPoint<U>& end) noexcept -> result
+  auto draw_line(const BasicPoint<U>& start, const BasicPoint<U>& end) noexcept -> Result
   {
     if constexpr (BasicPoint<U>::integral) {
       return SDL_RenderDrawLine(get(), start.GetX(), start.GetY(), end.GetX(), end.GetY()) ==
@@ -359,7 +359,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename Container>
-  auto draw_lines(const Container& container) noexcept -> result
+  auto draw_lines(const Container& container) noexcept -> Result
   {
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
@@ -392,7 +392,7 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename U>
-  auto draw_point(const BasicPoint<U>& point) noexcept -> result
+  auto draw_point(const BasicPoint<U>& point) noexcept -> Result
   {
     if constexpr (BasicPoint<U>::integral) {
       return SDL_RenderDrawPoint(get(), point.GetX(), point.GetY()) == 0;
@@ -495,7 +495,7 @@ class basic_renderer final {
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  auto draw_rect_t(const BasicRect<R>& rect) noexcept -> result
+  auto draw_rect_t(const BasicRect<R>& rect) noexcept -> Result
   {
     return draw_rect(translate(rect));
   }
@@ -515,7 +515,7 @@ class basic_renderer final {
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  auto fill_rect_t(const BasicRect<R>& rect) noexcept -> result
+  auto fill_rect_t(const BasicRect<R>& rect) noexcept -> Result
   {
     return fill_rect(translate(rect));
   }
@@ -535,7 +535,7 @@ class basic_renderer final {
    * \since 6.0.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto draw_point_t(const BasicPoint<U>& point) noexcept -> result
+  auto draw_point_t(const BasicPoint<U>& point) noexcept -> Result
   {
     return draw_point(translate(point));
   }
@@ -1122,7 +1122,7 @@ class basic_renderer final {
    */
   template <typename P, typename U>
   auto render(const basic_texture<U>& texture, const BasicPoint<P>& position) noexcept
-      -> result
+      -> Result
   {
     if constexpr (BasicPoint<P>::floating) {
       const auto size = cast<FArea>(texture.size());
@@ -1150,7 +1150,7 @@ class basic_renderer final {
    */
   template <typename P, typename U>
   auto render(const basic_texture<U>& texture, const BasicRect<P>& destination) noexcept
-      -> result
+      -> Result
   {
     if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
@@ -1180,7 +1180,7 @@ class basic_renderer final {
   template <typename P, typename U>
   auto render(const basic_texture<U>& texture,
               const Rect& source,
-              const BasicRect<P>& destination) noexcept -> result
+              const BasicRect<P>& destination) noexcept -> Result
   {
     if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
@@ -1210,7 +1210,7 @@ class basic_renderer final {
   auto render(const basic_texture<U>& texture,
               const Rect& source,
               const BasicRect<P>& destination,
-              const double angle) noexcept -> result
+              const double angle) noexcept -> Result
   {
     if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyExF(get(),
@@ -1255,7 +1255,7 @@ class basic_renderer final {
               const Rect& source,
               const BasicRect<R>& destination,
               const double angle,
-              const BasicPoint<P>& center) noexcept -> result
+              const BasicPoint<P>& center) noexcept -> Result
   {
     static_assert(
         std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
@@ -1307,7 +1307,7 @@ class basic_renderer final {
               const BasicRect<R>& destination,
               const double angle,
               const BasicPoint<P>& center,
-              const SDL_RendererFlip flip) noexcept -> result
+              const SDL_RendererFlip flip) noexcept -> Result
   {
     static_assert(
         std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
@@ -1356,7 +1356,7 @@ class basic_renderer final {
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture, const BasicPoint<P>& position) noexcept
-      -> result
+      -> Result
   {
     return render(texture, translate(position));
   }
@@ -1378,7 +1378,7 @@ class basic_renderer final {
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture, const BasicRect<P>& destination) noexcept
-      -> result
+      -> Result
   {
     return render(texture, translate(destination));
   }
@@ -1405,7 +1405,7 @@ class basic_renderer final {
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture,
                 const Rect& source,
-                const BasicRect<P>& destination) noexcept -> result
+                const BasicRect<P>& destination) noexcept -> Result
   {
     return render(texture, source, translate(destination));
   }
@@ -1432,7 +1432,7 @@ class basic_renderer final {
   auto render_t(const basic_texture<U>& texture,
                 const Rect& source,
                 const BasicRect<P>& destination,
-                const double angle) noexcept -> result
+                const double angle) noexcept -> Result
   {
     return render(texture, source, translate(destination), angle);
   }
@@ -1462,7 +1462,7 @@ class basic_renderer final {
                 const Rect& source,
                 const BasicRect<R>& destination,
                 const double angle,
-                const BasicPoint<P>& center) noexcept -> result
+                const BasicPoint<P>& center) noexcept -> Result
   {
     return render(texture, source, translate(destination), angle, center);
   }
@@ -1492,7 +1492,7 @@ class basic_renderer final {
                 const BasicRect<R>& destination,
                 const double angle,
                 const BasicPoint<P>& center,
-                const SDL_RendererFlip flip) noexcept -> result
+                const SDL_RendererFlip flip) noexcept -> Result
   {
     return render(texture, source, translate(destination), angle, center, flip);
   }
@@ -1656,7 +1656,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_color(const Color& color) noexcept -> result
+  auto set_color(const Color& color) noexcept -> Result
   {
     return SDL_SetRenderDrawColor(get(),
                                   color.GetRed(),
@@ -1676,7 +1676,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_clip(const std::optional<Rect> area) noexcept -> result
+  auto set_clip(const std::optional<Rect> area) noexcept -> Result
   {
     return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
   }
@@ -1690,7 +1690,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_viewport(const Rect viewport) noexcept -> result
+  auto set_viewport(const Rect viewport) noexcept -> Result
   {
     return SDL_RenderSetViewport(get(), viewport.data()) == 0;
   }
@@ -1704,7 +1704,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_blend_mode(const blend_mode mode) noexcept -> result
+  auto set_blend_mode(const blend_mode mode) noexcept -> Result
   {
     return SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode)) == 0;
   }
@@ -1721,7 +1721,7 @@ class basic_renderer final {
    * \since 3.0.0
    */
   template <typename U>
-  auto set_target(basic_texture<U>& target) noexcept -> result
+  auto set_target(basic_texture<U>& target) noexcept -> Result
   {
     assert(target.is_target());
     return SDL_SetRenderTarget(get(), target.get()) == 0;
@@ -1735,7 +1735,7 @@ class basic_renderer final {
    *
    * \since 6.0.0
    */
-  auto reset_target() noexcept -> result { return SDL_SetRenderTarget(get(), nullptr) == 0; }
+  auto reset_target() noexcept -> Result { return SDL_SetRenderTarget(get(), nullptr) == 0; }
 
   /**
    * \brief Sets the rendering scale.
@@ -1750,7 +1750,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_scale(const float xScale, const float yScale) noexcept -> result
+  auto set_scale(const float xScale, const float yScale) noexcept -> Result
   {
     assert(xScale > 0);
     assert(yScale > 0);
@@ -1772,7 +1772,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_logical_size(const Area size) noexcept -> result
+  auto set_logical_size(const Area size) noexcept -> Result
   {
     assert(size.width >= 0);
     assert(size.height >= 0);
@@ -1791,7 +1791,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_logical_integer_scaling(const bool enabled) noexcept -> result
+  auto set_logical_integer_scaling(const bool enabled) noexcept -> Result
   {
     return SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled)) == 0;
   }
@@ -2124,7 +2124,7 @@ class basic_renderer final {
 
   std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
 
-  [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
+  [[nodiscard]] auto render_text(Owner<SDL_Surface*> s) -> texture
   {
     Surface surface{s};
     texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};

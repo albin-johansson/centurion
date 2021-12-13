@@ -8,11 +8,11 @@
 
 TEST(MouseButton, Values)
 {
-  ASSERT_EQ(SDL_BUTTON_LEFT, cen::to_underlying(cen::mouse_button::left));
-  ASSERT_EQ(SDL_BUTTON_MIDDLE, cen::to_underlying(cen::mouse_button::middle));
-  ASSERT_EQ(SDL_BUTTON_RIGHT, cen::to_underlying(cen::mouse_button::right));
-  ASSERT_EQ(SDL_BUTTON_X1, cen::to_underlying(cen::mouse_button::x1));
-  ASSERT_EQ(SDL_BUTTON_X2, cen::to_underlying(cen::mouse_button::x2));
+  ASSERT_EQ(SDL_BUTTON_LEFT, cen::ToUnderlying(cen::mouse_button::left));
+  ASSERT_EQ(SDL_BUTTON_MIDDLE, cen::ToUnderlying(cen::mouse_button::middle));
+  ASSERT_EQ(SDL_BUTTON_RIGHT, cen::ToUnderlying(cen::mouse_button::right));
+  ASSERT_EQ(SDL_BUTTON_X1, cen::ToUnderlying(cen::mouse_button::x1));
+  ASSERT_EQ(SDL_BUTTON_X2, cen::ToUnderlying(cen::mouse_button::x2));
 }
 
 TEST(MouseButton, ToString)

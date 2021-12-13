@@ -313,7 +313,7 @@ class Color final {
   [[nodiscard]] static auto FromNorm(float red,
                                      float green,
                                      float blue,
-                                     float alpha = 1.0f) noexcept(on_msvc()) -> Color
+                                     float alpha = 1.0f) noexcept(on_msvc) -> Color
   {
     red = detail::clamp(red, 0.0f, 1.0f);
     green = detail::clamp(green, 0.0f, 1.0f);

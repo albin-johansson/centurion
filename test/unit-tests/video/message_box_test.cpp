@@ -130,7 +130,7 @@ TEST(MessageBox, ColorSchemeClass)
 
     const auto check = [&](cen::message_box::color_id id, const cen::Color& color) {
       scheme.set_color(id, color);
-      ASSERT_EQ(color, cen::Color{scheme.get()->colors[cen::to_underlying(id)]});
+      ASSERT_EQ(color, cen::Color{scheme.get()->colors[cen::ToUnderlying(id)]});
     };
 
     check(cen::message_box::color_id::background, cen::colors::pink);

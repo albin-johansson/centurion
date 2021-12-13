@@ -103,9 +103,9 @@ class keyboard final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_held(const scan_code& code) const noexcept(on_msvc()) -> bool
+  [[nodiscard]] auto is_held(const scan_code& code) const noexcept(on_msvc) -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc()) {
+    return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc) {
       return m_states[sc] && m_previous[sc];
     });
   }
@@ -124,7 +124,7 @@ class keyboard final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_held(const key_code& code) const noexcept(on_msvc()) -> bool
+  [[nodiscard]] auto is_held(const key_code& code) const noexcept(on_msvc) -> bool
   {
     return is_held(code.to_scan_code());
   }
@@ -141,9 +141,9 @@ class keyboard final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_pressed(const scan_code& code) const noexcept(on_msvc()) -> bool
+  [[nodiscard]] auto just_pressed(const scan_code& code) const noexcept(on_msvc) -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc()) {
+    return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc) {
       return m_states[sc] && !m_previous[sc];
     });
   }
@@ -162,7 +162,7 @@ class keyboard final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_pressed(const key_code& code) const noexcept(on_msvc()) -> bool
+  [[nodiscard]] auto just_pressed(const key_code& code) const noexcept(on_msvc) -> bool
   {
     return just_pressed(code.to_scan_code());
   }
@@ -179,9 +179,9 @@ class keyboard final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc()) -> bool
+  [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc) -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc()) {
+    return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc) {
       return !m_states[sc] && m_previous[sc];
     });
   }
@@ -200,7 +200,7 @@ class keyboard final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_released(const key_code& code) const noexcept(on_msvc()) -> bool
+  [[nodiscard]] auto just_released(const key_code& code) const noexcept(on_msvc) -> bool
   {
     return just_released(code.to_scan_code());
   }

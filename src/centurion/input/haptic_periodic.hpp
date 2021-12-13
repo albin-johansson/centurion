@@ -66,7 +66,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    */
   void set_type(const periodic_type type) noexcept
   {
-    representation().type = to_underlying(type);
+    representation().type = ToUnderlying(type);
   }
 
   /**

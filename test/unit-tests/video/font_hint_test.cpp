@@ -7,10 +7,10 @@
 
 TEST(FontHint, Values)
 {
-  ASSERT_EQ(TTF_HINTING_NORMAL, cen::to_underlying(cen::FontHint::Normal));
-  ASSERT_EQ(TTF_HINTING_LIGHT, cen::to_underlying(cen::FontHint::Light));
-  ASSERT_EQ(TTF_HINTING_MONO, cen::to_underlying(cen::FontHint::Mono));
-  ASSERT_EQ(TTF_HINTING_NONE, cen::to_underlying(cen::FontHint::None));
+  ASSERT_EQ(TTF_HINTING_NORMAL, cen::ToUnderlying(cen::FontHint::Normal));
+  ASSERT_EQ(TTF_HINTING_LIGHT, cen::ToUnderlying(cen::FontHint::Light));
+  ASSERT_EQ(TTF_HINTING_MONO, cen::ToUnderlying(cen::FontHint::Mono));
+  ASSERT_EQ(TTF_HINTING_NONE, cen::ToUnderlying(cen::FontHint::None));
 }
 
 TEST(FontHint, ToString)

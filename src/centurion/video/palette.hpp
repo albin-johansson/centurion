@@ -75,7 +75,7 @@ class palette final {
    *
    * \since 6.0.0
    */
-  auto set_color(const int index, const Color& color) noexcept -> result
+  auto set_color(const int index, const Color& color) noexcept -> Result
   {
     assert(index >= 0);
     assert(index < size());

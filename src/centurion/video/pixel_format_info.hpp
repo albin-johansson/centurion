@@ -82,7 +82,7 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+  explicit basic_pixel_format_info(MaybeOwner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
       : m_format{format}
   {
     if constexpr (detail::is_owning<B>())
@@ -109,7 +109,7 @@ class basic_pixel_format_info final {
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(to_underlying(format))}
+      : m_format{SDL_AllocFormat(ToUnderlying(format))}
   {
     if (!m_format) {
       throw SDLError{};

@@ -9,31 +9,31 @@ using button = cen::controller_button;
 
 TEST(ControllerButton, Values)
 {
-  ASSERT_EQ(cen::to_underlying(button::invalid), SDL_CONTROLLER_BUTTON_INVALID);
-  ASSERT_EQ(cen::to_underlying(button::a), SDL_CONTROLLER_BUTTON_A);
-  ASSERT_EQ(cen::to_underlying(button::b), SDL_CONTROLLER_BUTTON_B);
-  ASSERT_EQ(cen::to_underlying(button::x), SDL_CONTROLLER_BUTTON_X);
-  ASSERT_EQ(cen::to_underlying(button::y), SDL_CONTROLLER_BUTTON_Y);
-  ASSERT_EQ(cen::to_underlying(button::back), SDL_CONTROLLER_BUTTON_BACK);
-  ASSERT_EQ(cen::to_underlying(button::guide), SDL_CONTROLLER_BUTTON_GUIDE);
-  ASSERT_EQ(cen::to_underlying(button::start), SDL_CONTROLLER_BUTTON_START);
-  ASSERT_EQ(cen::to_underlying(button::left_stick), SDL_CONTROLLER_BUTTON_LEFTSTICK);
-  ASSERT_EQ(cen::to_underlying(button::right_stick), SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-  ASSERT_EQ(cen::to_underlying(button::left_shoulder), SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-  ASSERT_EQ(cen::to_underlying(button::right_shoulder), SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-  ASSERT_EQ(cen::to_underlying(button::dpad_up), SDL_CONTROLLER_BUTTON_DPAD_UP);
-  ASSERT_EQ(cen::to_underlying(button::dpad_down), SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-  ASSERT_EQ(cen::to_underlying(button::dpad_right), SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-  ASSERT_EQ(cen::to_underlying(button::dpad_left), SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-  ASSERT_EQ(cen::to_underlying(button::max), SDL_CONTROLLER_BUTTON_MAX);
+  ASSERT_EQ(cen::ToUnderlying(button::invalid), SDL_CONTROLLER_BUTTON_INVALID);
+  ASSERT_EQ(cen::ToUnderlying(button::a), SDL_CONTROLLER_BUTTON_A);
+  ASSERT_EQ(cen::ToUnderlying(button::b), SDL_CONTROLLER_BUTTON_B);
+  ASSERT_EQ(cen::ToUnderlying(button::x), SDL_CONTROLLER_BUTTON_X);
+  ASSERT_EQ(cen::ToUnderlying(button::y), SDL_CONTROLLER_BUTTON_Y);
+  ASSERT_EQ(cen::ToUnderlying(button::back), SDL_CONTROLLER_BUTTON_BACK);
+  ASSERT_EQ(cen::ToUnderlying(button::guide), SDL_CONTROLLER_BUTTON_GUIDE);
+  ASSERT_EQ(cen::ToUnderlying(button::start), SDL_CONTROLLER_BUTTON_START);
+  ASSERT_EQ(cen::ToUnderlying(button::left_stick), SDL_CONTROLLER_BUTTON_LEFTSTICK);
+  ASSERT_EQ(cen::ToUnderlying(button::right_stick), SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+  ASSERT_EQ(cen::ToUnderlying(button::left_shoulder), SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  ASSERT_EQ(cen::ToUnderlying(button::right_shoulder), SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+  ASSERT_EQ(cen::ToUnderlying(button::dpad_up), SDL_CONTROLLER_BUTTON_DPAD_UP);
+  ASSERT_EQ(cen::ToUnderlying(button::dpad_down), SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+  ASSERT_EQ(cen::ToUnderlying(button::dpad_right), SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+  ASSERT_EQ(cen::ToUnderlying(button::dpad_left), SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+  ASSERT_EQ(cen::ToUnderlying(button::max), SDL_CONTROLLER_BUTTON_MAX);
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(cen::to_underlying(button::misc1), SDL_CONTROLLER_BUTTON_MISC1);
-  ASSERT_EQ(cen::to_underlying(button::paddle1), SDL_CONTROLLER_BUTTON_PADDLE1);
-  ASSERT_EQ(cen::to_underlying(button::paddle2), SDL_CONTROLLER_BUTTON_PADDLE2);
-  ASSERT_EQ(cen::to_underlying(button::paddle3), SDL_CONTROLLER_BUTTON_PADDLE3);
-  ASSERT_EQ(cen::to_underlying(button::paddle4), SDL_CONTROLLER_BUTTON_PADDLE4);
-  ASSERT_EQ(cen::to_underlying(button::touchpad), SDL_CONTROLLER_BUTTON_TOUCHPAD);
+  ASSERT_EQ(cen::ToUnderlying(button::misc1), SDL_CONTROLLER_BUTTON_MISC1);
+  ASSERT_EQ(cen::ToUnderlying(button::paddle1), SDL_CONTROLLER_BUTTON_PADDLE1);
+  ASSERT_EQ(cen::ToUnderlying(button::paddle2), SDL_CONTROLLER_BUTTON_PADDLE2);
+  ASSERT_EQ(cen::ToUnderlying(button::paddle3), SDL_CONTROLLER_BUTTON_PADDLE3);
+  ASSERT_EQ(cen::ToUnderlying(button::paddle4), SDL_CONTROLLER_BUTTON_PADDLE4);
+  ASSERT_EQ(cen::ToUnderlying(button::touchpad), SDL_CONTROLLER_BUTTON_TOUCHPAD);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }
 

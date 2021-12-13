@@ -147,7 +147,7 @@ class basic_joystick final {
    *
    * \throws cen_error if the supplied pointer is null and the joystick is owning.
    */
-  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<T>())
+  explicit basic_joystick(MaybeOwner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<T>())
       : m_joystick{joystick}
   {
     if constexpr (detail::is_owning<T>())
@@ -240,7 +240,7 @@ class basic_joystick final {
   auto rumble(const Uint16 lowFreq,
               const Uint16 highFreq,
               const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
-      -> result
+      -> Result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -266,7 +266,7 @@ class basic_joystick final {
   auto rumble_triggers(const Uint16 left,
                        const Uint16 right,
                        const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
-      -> result
+      -> Result
   {
     return SDL_JoystickRumbleTriggers(m_joystick,
                                       left,
@@ -286,7 +286,7 @@ class basic_joystick final {
    *
    * \since 5.2.0
    */
-  auto set_led(const Color& color) noexcept -> result
+  auto set_led(const Color& color) noexcept -> Result
   {
     return SDL_JoystickSetLED(m_joystick, color.GetRed(), color.GetGreen(), color.GetBlue()) ==
            0;
@@ -323,7 +323,7 @@ class basic_joystick final {
    *
    * \since 6.2.0
    */
-  auto send_effect(const void* data, const int size) -> result
+  auto send_effect(const void* data, const int size) -> Result
   {
     return SDL_JoystickSendEffect(m_joystick, data, size) == 0;
   }
@@ -372,7 +372,7 @@ class basic_joystick final {
    *
    * \since 5.2.0
    */
-  static auto detach_virtual(const int index) noexcept -> result
+  static auto detach_virtual(const int index) noexcept -> Result
   {
     return SDL_JoystickDetachVirtual(index) == 0;
   }
@@ -387,7 +387,7 @@ class basic_joystick final {
    *
    * \since 5.2.0
    */
-  auto set_virtual_axis(const int axis, const Sint16 value) noexcept -> result
+  auto set_virtual_axis(const int axis, const Sint16 value) noexcept -> Result
   {
     return SDL_JoystickSetVirtualAxis(m_joystick, axis, value) == 0;
   }
@@ -402,9 +402,9 @@ class basic_joystick final {
    *
    * \since 5.2.0
    */
-  auto set_virtual_button(const int button, const button_state state) noexcept -> result
+  auto set_virtual_button(const int button, const button_state state) noexcept -> Result
   {
-    return SDL_JoystickSetVirtualButton(m_joystick, button, to_underlying(state)) == 0;
+    return SDL_JoystickSetVirtualButton(m_joystick, button, ToUnderlying(state)) == 0;
   }
 
   /**
@@ -417,9 +417,9 @@ class basic_joystick final {
    *
    * \since 5.2.0
    */
-  auto set_virtual_hat(const int hat, const hat_state state) noexcept -> result
+  auto set_virtual_hat(const int hat, const hat_state state) noexcept -> Result
   {
-    return SDL_JoystickSetVirtualHat(m_joystick, hat, to_underlying(state)) == 0;
+    return SDL_JoystickSetVirtualHat(m_joystick, hat, ToUnderlying(state)) == 0;
   }
 
   /**

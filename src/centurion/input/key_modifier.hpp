@@ -106,7 +106,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] constexpr auto operator~(const key_mod mods) noexcept -> key_mod
 {
-  return static_cast<key_mod>(~to_underlying(mods));
+  return static_cast<key_mod>(~ToUnderlying(mods));
 }
 
 /**
@@ -121,7 +121,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept -> key_mod
 {
-  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
+  return static_cast<key_mod>(ToUnderlying(a) | ToUnderlying(b));
 }
 
 /**
@@ -136,7 +136,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept -> key_mod
 {
-  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
+  return static_cast<key_mod>(ToUnderlying(a) & ToUnderlying(b));
 }
 
 /// \} End of key modifier bitwise operators
@@ -173,11 +173,11 @@ inline void set_modifiers(const key_mod mods) noexcept
     return "none";
   }
 
-  const auto mask = to_underlying(mods);
+  const auto mask = ToUnderlying(mods);
   std::stringstream stream;
 
   auto check = [&stream, mask, count = 0](const key_mod mod, const char* name) mutable {
-    if (mask & to_underlying(mod)) {
+    if (mask & ToUnderlying(mod)) {
       if (count != 0) {
         stream << ',';
       }
@@ -243,7 +243,7 @@ namespace detail {
     return !currentMask;
   }
   else {
-    return currentMask & to_underlying(modifiers);
+    return currentMask & ToUnderlying(modifiers);
   }
 }
 
@@ -254,7 +254,7 @@ namespace detail {
     return !currentMask;
   }
 
-  const auto mask = to_underlying(modifiers);
+  const auto mask = ToUnderlying(modifiers);
   const auto hits = currentMask & mask;
 
   if (hits != mask) {
@@ -273,7 +273,7 @@ namespace detail {
     return !currentMask;
   }
 
-  const auto mask = to_underlying(modifiers);
+  const auto mask = ToUnderlying(modifiers);
 
   const auto hits = currentMask & mask;
   const auto others = currentMask & ~hits;

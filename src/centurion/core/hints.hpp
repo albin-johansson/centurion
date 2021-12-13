@@ -22,7 +22,7 @@ enum class hint_priority {
 
 inline auto set_hint(const char* name,
                      const char* value,
-                     const hint_priority priority = hint_priority::normal) noexcept -> result
+                     const hint_priority priority = hint_priority::normal) noexcept -> Result
 {
   assert(name);
   assert(value);
@@ -31,7 +31,7 @@ inline auto set_hint(const char* name,
 
 inline auto set_hint(const char* name,
                      const bool value,
-                     const hint_priority priority = hint_priority::normal) noexcept -> result
+                     const hint_priority priority = hint_priority::normal) noexcept -> Result
 {
   return set_hint(name, value ? "1" : "0", priority);
 }

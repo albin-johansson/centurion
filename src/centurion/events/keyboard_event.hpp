@@ -70,7 +70,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    */
   void set_button_state(const button_state state) noexcept
   {
-    m_event.state = to_underlying(state);
+    m_event.state = ToUnderlying(state);
   }
 
   /**
@@ -84,10 +84,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
   void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
     if (active) {
-      m_event.keysym.mod |= to_underlying(modifiers);
+      m_event.keysym.mod |= ToUnderlying(modifiers);
     }
     else {
-      m_event.keysym.mod &= ~to_underlying(modifiers);
+      m_event.keysym.mod &= ~ToUnderlying(modifiers);
     }
   }
 

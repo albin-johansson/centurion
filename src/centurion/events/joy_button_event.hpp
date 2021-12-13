@@ -67,7 +67,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_state(const button_state state) noexcept { m_event.state = to_underlying(state); }
+  void set_state(const button_state state) noexcept { m_event.state = ToUnderlying(state); }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.

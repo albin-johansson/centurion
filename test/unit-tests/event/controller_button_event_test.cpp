@@ -99,6 +99,6 @@ TEST(ControllerButtonEvent, AsSDLEvent)
   const cen::controller_button_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.cbutton.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.cbutton.type, cen::ToUnderlying(event.type()));
   ASSERT_EQ(sdl.cbutton.timestamp, event.time());
 }

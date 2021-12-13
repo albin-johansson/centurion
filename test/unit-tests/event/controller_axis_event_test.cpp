@@ -79,6 +79,6 @@ TEST(ControllerAxisEvent, AsSDLEvent)
   const cen::controller_axis_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.caxis.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.caxis.type, cen::ToUnderlying(event.type()));
   ASSERT_EQ(sdl.caxis.timestamp, event.time());
 }

@@ -52,7 +52,7 @@ class haptic_direction final {
    */
   void set_type(const haptic_direction_type type) noexcept
   {
-    m_direction.type = to_underlying(type);
+    m_direction.type = ToUnderlying(type);
   }
 
   /**

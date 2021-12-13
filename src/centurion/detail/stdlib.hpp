@@ -61,7 +61,7 @@ template <typename T>
 }
 
 template <typename T = int>
-[[nodiscard]] auto stoi(const std::string_view str, const int base = 10) noexcept(on_msvc())
+[[nodiscard]] auto stoi(const std::string_view str, const int base = 10) noexcept(on_msvc)
     -> std::optional<T>
 {
   /* We don't check if the compiler provides <charconv> here because all major compilers we
@@ -96,7 +96,7 @@ template <typename T = int>
   if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc()) {
+    if constexpr (on_msvc) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 

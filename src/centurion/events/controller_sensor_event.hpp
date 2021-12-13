@@ -62,10 +62,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  void set_sensor(const sensor_type sensor) noexcept
-  {
-    m_event.sensor = to_underlying(sensor);
-  }
+  void set_sensor(const sensor_type sensor) noexcept { m_event.sensor = ToUnderlying(sensor); }
 
   /**
    * \brief Sets the sensor values associated with the event.

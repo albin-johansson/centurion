@@ -40,7 +40,7 @@ class BasicSoundEffect final {
 
   inline constexpr static int forever = -1;
 
-  explicit BasicSoundEffect(maybe_owner<Mix_Chunk*> sound) noexcept(!detail::is_owning<T>())
+  explicit BasicSoundEffect(MaybeOwner<Mix_Chunk*> sound) noexcept(!detail::is_owning<T>())
       : mChunk{sound}
   {
     if constexpr (detail::is_owning<T>()) {
@@ -66,7 +66,7 @@ class BasicSoundEffect final {
   explicit BasicSoundEffect(const SoundEffect& owner) noexcept : mChunk{owner.get()}
   {}
 
-  auto Play(const int iterations = 0) noexcept -> result
+  auto Play(const int iterations = 0) noexcept -> Result
   {
     mChannel = Mix_PlayChannel(mChannel, mChunk.get(), detail::max(iterations, forever));
     return mChannel != -1;

@@ -37,7 +37,7 @@ class sdl_string final {
    *
    * \since 5.0.0
    */
-  explicit sdl_string(owner<char*> str) noexcept : m_str{str} {}
+  explicit sdl_string(Owner<char*> str) noexcept : m_str{str} {}
 
   /**
    * \brief Returns the internal string, which might be null.

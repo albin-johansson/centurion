@@ -91,7 +91,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
    */
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
-    m_event.direction = to_underlying(direction);
+    m_event.direction = ToUnderlying(direction);
   }
 
   /**

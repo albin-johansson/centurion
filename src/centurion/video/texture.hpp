@@ -227,8 +227,8 @@ class basic_texture final {
       throw SDLError{};
     }
 
-    const auto maxCount =
-        static_cast<std::size_t>(surface.GetPitch()) * static_cast<std::size_t>(surface.GetHeight());
+    const auto maxCount = static_cast<std::size_t>(surface.GetPitch()) *
+                          static_cast<std::size_t>(surface.GetHeight());
     SDL_memcpy(pixels, surface.GetPixelData(), maxCount);
 
     texture.unlock();

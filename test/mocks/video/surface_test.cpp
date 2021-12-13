@@ -34,9 +34,9 @@ class SurfaceTest : public testing::Test {
   cen::Surface m_surface;
 };
 
-TEST_F(SurfaceTest, Convert)
+TEST_F(SurfaceTest, ConvertTo)
 {
-  ASSERT_THROW(m_surface.convert(cen::pixel_format::rgba8888), cen::SDLError);
+  ASSERT_THROW(m_surface.ConvertTo(cen::pixel_format::rgba8888), cen::SDLError);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 

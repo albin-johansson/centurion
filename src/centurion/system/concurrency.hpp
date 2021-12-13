@@ -30,7 +30,7 @@
 
 namespace cen {
 
-/// \addtogroup thread
+/// \addtogroup system
 /// \{
 
 using ThreadID = SDL_threadID;
@@ -456,7 +456,7 @@ inline auto operator<<(std::ostream& stream, const Thread& thread) -> std::ostre
   return stream << to_string(thread);
 }
 
-/// \} End of group thread
+/// \} End of group system
 
 }  // namespace cen
 

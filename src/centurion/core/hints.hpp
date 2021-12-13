@@ -24,8 +24,7 @@ inline auto set_hint(const char* name,
 {
   assert(name);
   assert(value);
-  return SDL_SetHintWithPriority(name, value, static_cast<SDL_HintPriority>(priority)) ==
-         SDL_TRUE;
+  return SDL_SetHintWithPriority(name, value, static_cast<SDL_HintPriority>(priority));
 }
 
 inline auto set_hint(const char* name,

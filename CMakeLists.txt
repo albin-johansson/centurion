@@ -72,16 +72,12 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/core/time.hpp
                src/centurion/core/version.hpp
 
-               src/centurion/detail/any_eq.hpp
                src/centurion/detail/array_utils.hpp
                src/centurion/detail/convert_bool.hpp
-               src/centurion/detail/czstring_compare.hpp
-               src/centurion/detail/hints_impl.hpp
                src/centurion/detail/owner_handle_api.hpp
                src/centurion/detail/sdl_deleter.hpp
                src/centurion/detail/sdl_version_at_least.hpp
                src/centurion/detail/stack_resource.hpp
-               src/centurion/detail/static_bimap.hpp
                src/centurion/detail/tuple_type_index.hpp
 
                src/centurion/events/audio_device_event.hpp

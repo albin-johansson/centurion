@@ -20,10 +20,8 @@ set(SOURCE_FILES
     core/version_test.cpp
 
     detail/address_of_test.cpp
-    detail/any_eq_test.cpp
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp
-    detail/czstring_eq_test.cpp
     detail/from_string_test.cpp
     detail/max_test.cpp
     detail/min_test.cpp

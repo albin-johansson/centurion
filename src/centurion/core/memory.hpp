@@ -11,7 +11,8 @@
 #include <SDL_ttf.h>
 #endif  // CENTURION_NO_SDL_TTF
 
-#include <memory>  // unique_ptr
+#include <cstddef>  // size_t
+#include <memory>   // unique_ptr
 
 namespace cen {
 
@@ -121,6 +122,37 @@ struct Deleter<TTF_Font> final {
 
 template <typename T>
 using Managed = std::unique_ptr<T, Deleter<T>>;
+
+/* Represents a block of memory, allocated in SIMD-friendly way. */
+class SIMDBlock final {
+ public:
+  /* Attempts to allocate a block of SIMD-friendly memory. */
+  explicit SIMDBlock(const std::size_t size) noexcept : mData{SDL_SIMDAlloc(size)} {}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  void Reallocate(const std::size_t size) noexcept
+  {
+    /* We temporarily release the ownership of the pointer in order to avoid a double
+       delete, since the reallocation will free the previously allocated memory. */
+    auto* ptr = mData.release();
+    mData.reset(SDL_SIMDRealloc(ptr, size));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  [[nodiscard]] auto data() noexcept -> void* { return mData.get(); }
+  [[nodiscard]] auto data() const noexcept -> const void* { return mData.get(); }
+
+  /* Indicates whether the internal pointer is not null. */
+  explicit operator bool() const noexcept { return mData != nullptr; }
+
+ private:
+  struct deleter final {
+    void operator()(void* ptr) noexcept { SDL_SIMDFree(ptr); }
+  };
+  std::unique_ptr<void, deleter> mData;
+};
 
 }  // namespace cen
 

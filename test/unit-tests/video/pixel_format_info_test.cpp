@@ -5,7 +5,7 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
-#include "system/cpu.hpp"
+#include "system/system.hpp"
 #include "video/colors.hpp"
 
 class PixelFormatInfoTest : public testing::Test {

@@ -20,8 +20,6 @@ namespace cen {
 /// \addtogroup system
 /// \{
 
-/// \brief Represents different battery power states.
-/// \since 3.0.0
 enum class power_state {
   unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
   on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
@@ -30,8 +28,17 @@ enum class power_state {
   charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
 };
 
-/// \name Counter functions
-/// \{
+/* Indicates whether the CPU uses big-endian byte ordering. */
+[[nodiscard]] constexpr auto IsBigEndian() noexcept -> bool
+{
+  return SDL_BYTEORDER == SDL_BIG_ENDIAN;
+}
+
+/* Indicates whether the CPU uses little-endian byte ordering. */
+[[nodiscard]] constexpr auto IsLittleEndian() noexcept -> bool
+{
+  return SDL_BYTEORDER == SDL_LIL_ENDIAN;
+}
 
 /**
  * \brief Returns the frequency of the system high-performance counter.
@@ -103,11 +110,6 @@ template <typename T>
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
-
-/// \} End of counter functions
-
-/// \name Battery functions
-/// \{
 
 /**
  * \brief Returns the seconds of battery life that is remaining.
@@ -242,11 +244,6 @@ template <typename T>
   return state != power_state::no_battery && state != power_state::unknown;
 }
 
-/// \} End of battery functions
-
-/// \name RAM functions
-/// \{
-
 /**
  * \brief Returns the total amount of system RAM, in megabytes.
  *
@@ -270,11 +267,6 @@ template <typename T>
 {
   return memory_mb() / 1'000;
 }
-
-/// \} End of RAM functions
-
-/// \name Clipboard functions
-/// \{
 
 /**
  * \brief Indicates whether or not the clipboard exists and that it contains non-empty text.
@@ -334,36 +326,14 @@ inline auto set_clipboard_text(const std::string& text) noexcept -> result
   return set_clipboard_text(text.c_str());
 }
 
-/// \} End of clipboard functions
-
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-/**
- * \brief Attempts to open a URL using a web browser or even a file manager for local
- * files.
- *
- * \note This function will return `success` if there was at least an "attempt" to open
- * the specified URL, but it doesn't mean that the URL was successfully loaded.
- *
- * \remarks This function will differ greatly in its effects depending on the current
- * platform.
- *
- * \param url the URL that should be opened, cannot be null.
- *
- * \return `success` if there was an attempt to open the URL; `failure` otherwise.
- *
- * \since 5.2.0
- */
 inline auto open_url(const char* url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
 }
 
-/**
- * \see open_url()
- * \since 5.3.0
- */
 inline auto open_url(const std::string& url) noexcept -> result
 {
   return open_url(url.c_str());
@@ -371,23 +341,6 @@ inline auto open_url(const std::string& url) noexcept -> result
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-/// \name String conversions
-/// \{
-
-/**
- * \brief Returns a textual version of the supplied power state.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(power_state::on_battery) == "on_battery"`.
- *
- * \param state the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
 [[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
   switch (state) {
@@ -411,29 +364,10 @@ inline auto open_url(const std::string& url) noexcept -> result
   }
 }
 
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a power state enumerator.
- *
- * \param stream the output stream that will be used.
- * \param state the enumerator that will be printed.
- *
- * \see `to_string(power_state)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
 inline auto operator<<(std::ostream& stream, const power_state state) -> std::ostream&
 {
   return stream << to_string(state);
 }
-
-/// \} End of streaming
 
 /// \} End of group system
 

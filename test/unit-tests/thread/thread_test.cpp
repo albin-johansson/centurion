@@ -1,112 +1,109 @@
-#include "thread/thread.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>
 #include <type_traits>
 
 #include "core/logging.hpp"
+#include "system/concurrency.hpp"
 
 namespace {
 
 auto dummy = [](void*) noexcept -> int {
   using namespace cen::literals;
-  cen::thread::sleep(2_ms);
+  cen::Thread::Sleep(2_ms);
   return 0;
 };
 
 }  // namespace
 
-static_assert(std::is_same_v<cen::thread_id, SDL_threadID>);
-static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
+static_assert(std::is_same_v<cen::ThreadID, SDL_threadID>);
 
-static_assert(!std::is_copy_constructible_v<cen::thread>);
-static_assert(!std::is_copy_assignable_v<cen::thread>);
+static_assert(!std::is_copy_constructible_v<cen::Thread>);
+static_assert(!std::is_copy_assignable_v<cen::Thread>);
 
 TEST(Thread, Detach)
 {
-  cen::thread thread{dummy};
-  thread.detach();
+  cen::Thread thread{dummy};
+  thread.Detach();
 
-  ASSERT_FALSE(thread.joinable());
-  ASSERT_FALSE(thread.was_joined());
-  ASSERT_TRUE(thread.was_detached());
+  ASSERT_FALSE(thread.IsJoinable());
+  ASSERT_FALSE(thread.IsJoined());
+  ASSERT_TRUE(thread.IsDetached());
 
-  ASSERT_NO_THROW(thread.detach());
+  ASSERT_NO_THROW(thread.Detach());
 }
 
 TEST(Thread, Join)
 {
-  cen::thread thread{dummy};
-  thread.join();
+  cen::Thread thread{dummy};
+  thread.Join();
 
-  ASSERT_FALSE(thread.joinable());
-  ASSERT_TRUE(thread.was_joined());
-  ASSERT_FALSE(thread.was_detached());
+  ASSERT_FALSE(thread.IsJoinable());
+  ASSERT_TRUE(thread.IsJoined());
+  ASSERT_FALSE(thread.IsDetached());
 
-  ASSERT_EQ(thread.join(), 0);
+  ASSERT_EQ(thread.Join(), 0);
 }
 
-TEST(Thread, Joinable)
+TEST(Thread, IsJoinable)
 {
-  {  // Shouldn't be joinable after join
-    cen::thread thread{dummy};
-    ASSERT_TRUE(thread.joinable());
+  {  // Shouldn't be IsJoinable after join
+    cen::Thread thread{dummy};
+    ASSERT_TRUE(thread.IsJoinable());
 
-    thread.join();
-    ASSERT_FALSE(thread.joinable());
+    thread.Join();
+    ASSERT_FALSE(thread.IsJoinable());
   }
 
-  {  // Shouldn't be joinable after detach
-    cen::thread thread{dummy};
-    ASSERT_TRUE(thread.joinable());
+  {  // Shouldn't be IsJoinable after detach
+    cen::Thread thread{dummy};
+    ASSERT_TRUE(thread.IsJoinable());
 
-    thread.detach();
-    ASSERT_FALSE(thread.joinable());
+    thread.Detach();
+    ASSERT_FALSE(thread.IsJoinable());
   }
 }
 
-TEST(Thread, WasJoined)
+TEST(Thread, IsJoined)
 {
-  cen::thread thread{dummy};
-  ASSERT_FALSE(thread.was_joined());
+  cen::Thread thread{dummy};
+  ASSERT_FALSE(thread.IsJoined());
 
-  thread.join();
-  ASSERT_TRUE(thread.was_joined());
+  thread.Join();
+  ASSERT_TRUE(thread.IsJoined());
 }
 
-TEST(Thread, WasDetached)
+TEST(Thread, IsDetached)
 {
-  cen::thread thread{dummy};
-  ASSERT_FALSE(thread.was_detached());
+  cen::Thread thread{dummy};
+  ASSERT_FALSE(thread.IsDetached());
 
-  thread.detach();
-  ASSERT_TRUE(thread.was_detached());
+  thread.Detach();
+  ASSERT_TRUE(thread.IsDetached());
 }
 
 TEST(Thread, GetId)
 {
-  cen::thread thread{dummy};
-  ASSERT_EQ(thread.get_id(), SDL_GetThreadID(thread.get()));
+  cen::Thread thread{dummy};
+  ASSERT_EQ(thread.GetID(), SDL_GetThreadID(thread.get()));
 }
 
-TEST(Thread, Name)
+TEST(Thread, GetName)
 {
   {  // Custom name
-    const auto name = "foobar";
-    const cen::thread thread{dummy, name};
-    ASSERT_EQ(thread.name(), name);
+    const cen::Thread thread{dummy, "foobar"};
+    ASSERT_EQ(thread.GetName(), "foobar");
   }
 
   {  // Default name
-    const cen::thread thread{dummy};
-    ASSERT_EQ(thread.name(), "thread");
+    const cen::Thread thread{dummy};
+    ASSERT_EQ(thread.GetName(), "thread");
   }
 }
 
 TEST(Thread, Get)
 {
-  cen::thread thread{dummy};
+  cen::Thread thread{dummy};
   ASSERT_TRUE(thread.get());
 
   const auto& cThread = thread;
@@ -116,29 +113,29 @@ TEST(Thread, Get)
 TEST(Thread, Sleep)
 {
   using ms = cen::milliseconds<Uint32>;
-  ASSERT_NO_THROW(cen::thread::sleep(ms{2}));
-  ASSERT_NO_THROW(cen::thread::sleep(ms{0}));
+  ASSERT_NO_THROW(cen::Thread::Sleep(ms{2}));
+  ASSERT_NO_THROW(cen::Thread::Sleep(ms{0}));
 }
 
 TEST(Thread, SetPriority)
 {
-  ASSERT_TRUE(cen::thread::set_priority(cen::thread_priority::low));
+  ASSERT_TRUE(cen::Thread::SetPriority(cen::ThreadPriority::Low));
 }
 
 TEST(Thread, CurrentId)
 {
-  ASSERT_EQ(cen::thread::current_id(), SDL_ThreadID());
+  ASSERT_EQ(cen::Thread::GetCurrentID(), SDL_ThreadID());
 }
 
 TEST(Thread, ToString)
 {
-  cen::thread thread{dummy, "myThread"};
+  cen::Thread thread{dummy, "myThread"};
   cen::log_info_raw(cen::to_string(thread));
 }
 
 TEST(Thread, StreamOperator)
 {
-  cen::thread thread{dummy, "myThread"};
+  cen::Thread thread{dummy, "myThread"};
   std::clog << cen::to_string(thread) << '\n';
 }
 
@@ -147,22 +144,22 @@ TEST(Thread, StreamOperator)
 TEST(Thread, Init)
 {
   {  // No arguments
-    auto thread = cen::thread::init([] {});
-    ASSERT_TRUE(thread.joinable());
-    ASSERT_EQ(0, thread.join());
+    auto thread = cen::Thread::Init([] {});
+    ASSERT_TRUE(thread.IsJoinable());
+    ASSERT_EQ(0, thread.Join());
   }
 
   {  // No arguments but returns integer
-    auto thread = cen::thread::init([] { return 42; });
-    ASSERT_TRUE(thread.joinable());
-    ASSERT_EQ(42, thread.join());
+    auto thread = cen::Thread::Init([] { return 42; });
+    ASSERT_TRUE(thread.IsJoinable());
+    ASSERT_EQ(42, thread.Join());
   }
 
   {  // With user data
     int i = 123;
-    auto thread = cen::thread::init([](int* data) { return *data; }, &i);
-    ASSERT_TRUE(thread.joinable());
-    ASSERT_EQ(123, thread.join());
+    auto thread = cen::Thread::Init([](int* data) { return *data; }, &i);
+    ASSERT_TRUE(thread.IsJoinable());
+    ASSERT_EQ(123, thread.Join());
   }
 }
 

@@ -1,41 +1,39 @@
-#include "thread/condition.hpp"
-
 #include <gtest/gtest.h>
 
-#include "thread/thread.hpp"
+#include "system/concurrency.hpp"
 
 TEST(Condition, Signal)
 {
-  cen::condition cond;
-  ASSERT_TRUE(cond.signal());
+  cen::Condition cond;
+  ASSERT_TRUE(cond.Signal());
 }
 
 TEST(Condition, Broadcast)
 {
-  cen::condition cond;
-  ASSERT_TRUE(cond.broadcast());
+  cen::Condition cond;
+  ASSERT_TRUE(cond.Broadcast());
 }
 
 TEST(Condition, Wait)
 {
-  cen::mutex mutex;
-  cen::condition cond;
+  cen::Mutex mutex;
+  cen::Condition cond;
 
-  ASSERT_TRUE(mutex.lock());
+  ASSERT_TRUE(mutex.Lock());
 
-  cen::thread thread{[](void* data) {
-                       auto* cond = reinterpret_cast<cen::condition*>(data);
+  cen::Thread thread{[](void* data) {
+                       auto* cond = reinterpret_cast<cen::Condition*>(data);
 
                        using ms = cen::milliseconds<Uint32>;
-                       cen::thread::sleep(ms{50});
+                       cen::Thread::Sleep(ms{50});
 
-                       cond->signal();
+                       cond->Signal();
 
                        return 0;
                      },
                      "thread",
                      &cond};
 
-  ASSERT_TRUE(cond.wait(mutex));
-  ASSERT_TRUE(mutex.unlock());
+  ASSERT_TRUE(cond.Wait(mutex));
+  ASSERT_TRUE(mutex.Unlock());
 }

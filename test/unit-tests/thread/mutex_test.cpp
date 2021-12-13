@@ -1,25 +1,25 @@
-#include "thread/mutex.hpp"
-
 #include <gtest/gtest.h>
+
+#include "system/concurrency.hpp"
 
 TEST(Mutex, LockAndUnlock)
 {
-  cen::mutex mutex;
+  cen::Mutex mutex;
 
-  ASSERT_TRUE(mutex.lock());
-  ASSERT_TRUE(mutex.unlock());
+  ASSERT_TRUE(mutex.Lock());
+  ASSERT_TRUE(mutex.Unlock());
 }
 
 TEST(Mutex, TryLock)
 {
-  cen::mutex mutex;
+  cen::Mutex mutex;
 
-  ASSERT_EQ(mutex.try_lock(), cen::lock_status::success);
-  ASSERT_TRUE(mutex.unlock());
+  ASSERT_EQ(mutex.TryLock(), cen::LockStatus::Success);
+  ASSERT_TRUE(mutex.Unlock());
 }
 
 TEST(Mutex, Get)
 {
-  cen::mutex mutex;
+  cen::Mutex mutex;
   ASSERT_TRUE(mutex.get());
 }

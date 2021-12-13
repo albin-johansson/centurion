@@ -1,8 +1,7 @@
-#include "thread/semaphore.hpp"
-
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "system/concurrency.hpp"
 #include "thread_mocks.hpp"
 
 class SemaphoreTest : public testing::Test {
@@ -16,5 +15,5 @@ class SemaphoreTest : public testing::Test {
 
 TEST_F(SemaphoreTest, Constructor)
 {
-  ASSERT_THROW(cen::semaphore{0}, cen::SDLError);
+  ASSERT_THROW(cen::Semaphore{0}, cen::SDLError);
 }

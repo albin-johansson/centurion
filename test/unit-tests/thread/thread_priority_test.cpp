@@ -1,33 +1,27 @@
-#include "thread/thread_priority.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
+#include "core/common.hpp"
+#include "system/concurrency.hpp"
+
 TEST(ThreadPriority, Values)
 {
-  ASSERT_EQ(cen::thread_priority::low, SDL_THREAD_PRIORITY_LOW);
-  ASSERT_EQ(cen::thread_priority::normal, SDL_THREAD_PRIORITY_NORMAL);
-  ASSERT_EQ(cen::thread_priority::high, SDL_THREAD_PRIORITY_HIGH);
-  ASSERT_EQ(cen::thread_priority::critical, SDL_THREAD_PRIORITY_TIME_CRITICAL);
-
-  ASSERT_EQ(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::low);
-  ASSERT_EQ(SDL_THREAD_PRIORITY_NORMAL, cen::thread_priority::normal);
-  ASSERT_EQ(SDL_THREAD_PRIORITY_HIGH, cen::thread_priority::high);
-  ASSERT_EQ(SDL_THREAD_PRIORITY_TIME_CRITICAL, cen::thread_priority::critical);
-
-  ASSERT_NE(cen::thread_priority::high, SDL_THREAD_PRIORITY_TIME_CRITICAL);
-  ASSERT_NE(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::normal);
+  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Low), SDL_THREAD_PRIORITY_LOW);
+  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Normal), SDL_THREAD_PRIORITY_NORMAL);
+  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::High), SDL_THREAD_PRIORITY_HIGH);
+  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Critical),
+            SDL_THREAD_PRIORITY_TIME_CRITICAL);
 }
 
 TEST(ThreadPriority, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::thread_priority>(5)), cen::Error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::ThreadPriority>(5)), cen::Error);
 
-  ASSERT_EQ("low", cen::to_string(cen::thread_priority::low));
-  ASSERT_EQ("normal", cen::to_string(cen::thread_priority::normal));
-  ASSERT_EQ("high", cen::to_string(cen::thread_priority::high));
-  ASSERT_EQ("critical", cen::to_string(cen::thread_priority::critical));
+  ASSERT_EQ("Low", cen::to_string(cen::ThreadPriority::Low));
+  ASSERT_EQ("Normal", cen::to_string(cen::ThreadPriority::Normal));
+  ASSERT_EQ("High", cen::to_string(cen::ThreadPriority::High));
+  ASSERT_EQ("Critical", cen::to_string(cen::ThreadPriority::Critical));
 
-  std::clog << "Thread priority example: " << cen::thread_priority::high << '\n';
+  std::clog << "Thread priority example: " << cen::ThreadPriority::High << '\n';
 }

@@ -1,14 +1,14 @@
-#include "thread/scoped_lock.hpp"
-
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
-static_assert(!std::is_copy_constructible_v<cen::scoped_lock>);
-static_assert(!std::is_copy_assignable_v<cen::scoped_lock>);
+#include "system/concurrency.hpp"
+
+static_assert(!std::is_copy_constructible_v<cen::ScopedLock>);
+static_assert(!std::is_copy_assignable_v<cen::ScopedLock>);
 
 TEST(ScopedLock, Construction)
 {
-  cen::mutex mutex;
-  ASSERT_NO_THROW(cen::scoped_lock{mutex});
+  cen::Mutex mutex;
+  ASSERT_NO_THROW(cen::ScopedLock{mutex});
 }

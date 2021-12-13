@@ -1,36 +1,36 @@
-#include "thread/try_lock.hpp"
-
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
-static_assert(!std::is_copy_constructible_v<cen::try_lock>);
-static_assert(!std::is_copy_assignable_v<cen::try_lock>);
+#include "system/concurrency.hpp"
+
+static_assert(!std::is_copy_constructible_v<cen::TryLock>);
+static_assert(!std::is_copy_assignable_v<cen::TryLock>);
 
 TEST(TryLock, BasicUsage)
 {
-  cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::Mutex mutex;
+  cen::TryLock lock{mutex};
 
-  ASSERT_TRUE(lock.success());
+  ASSERT_TRUE(lock.DidLock());
 }
 
 TEST(TryLock, GetStatus)
 {
-  cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::Mutex mutex;
+  cen::TryLock lock{mutex};
 
-  ASSERT_EQ(cen::lock_status::success, lock.get_status());
+  ASSERT_EQ(cen::LockStatus::Success, lock.GetStatus());
 
-  ASSERT_TRUE(lock.success());
-  ASSERT_FALSE(lock.timed_out());
-  ASSERT_FALSE(lock.error());
+  ASSERT_TRUE(lock.DidLock());
+  ASSERT_FALSE(lock.DidTimeOut());
+  ASSERT_FALSE(lock.DidFail());
 }
 
 TEST(TryLock, BoolConversion)
 {
-  cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::Mutex mutex;
+  cen::TryLock lock{mutex};
 
   ASSERT_TRUE(lock);
 }

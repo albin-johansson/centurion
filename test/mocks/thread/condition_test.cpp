@@ -1,8 +1,7 @@
-#include "thread/condition.hpp"
-
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "system/concurrency.hpp"
 #include "thread_mocks.hpp"
 
 class ConditionTest : public testing::Test {
@@ -16,5 +15,5 @@ class ConditionTest : public testing::Test {
 
 TEST_F(ConditionTest, Constructor)
 {
-  ASSERT_THROW(cen::condition{}, cen::SDLError);
+  ASSERT_THROW(cen::Condition{}, cen::SDLError);
 }

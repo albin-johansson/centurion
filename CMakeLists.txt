@@ -158,14 +158,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/system/platform.hpp
                src/centurion/system/shared_object.hpp
 
-               src/centurion/thread/condition.hpp
-               src/centurion/thread/lock_status.hpp
-               src/centurion/thread/mutex.hpp
-               src/centurion/thread/scoped_lock.hpp
-               src/centurion/thread/semaphore.hpp
-               src/centurion/thread/thread.hpp
-               src/centurion/thread/thread_priority.hpp
-               src/centurion/thread/try_lock.hpp
+               src/centurion/system/concurrency.hpp
 
                src/centurion/video/blend_factor.hpp
                src/centurion/video/blend_mode.hpp

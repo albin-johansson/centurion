@@ -145,6 +145,5 @@
 #include "centurion/video/unicode_string.hpp"
 #include "centurion/video/vulkan.hpp"
 #include "centurion/video/window.hpp"
-#include "centurion/video/window_utils.hpp"
 
 #endif  // CENTURION_HPP_

@@ -1,9 +1,8 @@
-#include "video/window_utils.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "video/window.hpp"
 
 extern "C"
 {

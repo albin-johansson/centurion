@@ -195,7 +195,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/unicode_string.hpp
                src/centurion/video/vulkan.hpp
                src/centurion/video/window.hpp
-               src/centurion/video/window_utils.hpp
                )
 
 target_include_directories(${CENTURION_LIB_TARGET}

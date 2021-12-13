@@ -155,57 +155,6 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 
 /// \} End of streaming
 
-/// \name Blend mode comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two blend mode values are the same;
- *
- * \param lhs the left-hand side blend mode value.
- * \param rhs the right-hand side blend mode value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_BlendMode>(lhs) == rhs;
-}
-
-/// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
-    -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two blend mode values aren't the same;
- *
- * \param lhs the left-hand side blend mode value.
- * \param rhs the right-hand side blend mode value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of blend mode comparison operators
-
 /// \} End of group video
 
 }  // namespace cen

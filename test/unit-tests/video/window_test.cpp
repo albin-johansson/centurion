@@ -7,7 +7,6 @@
 
 #include "core/logging.hpp"
 #include "video/screen.hpp"
-#include "video/window_utils.hpp"
 
 class WindowTest : public testing::Test {
  protected:

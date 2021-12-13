@@ -15,7 +15,6 @@
 #include "../core/features.hpp"
 #include "../core/memory.hpp"
 #include "../core/time.hpp"
-#include "../detail/any_eq.hpp"
 #include "../detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

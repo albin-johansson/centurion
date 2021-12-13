@@ -14,8 +14,7 @@
 
 #include "../core/common.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/area.hpp"
-#include "../math/point.hpp"
+#include "../math.hpp"
 
 namespace cen {
 
@@ -84,7 +83,7 @@ class mouse final {
    *
    * \since 5.3.0
    */
-  void update(const iarea size) noexcept { update(size.width, size.height); }
+  void update(const Area size) noexcept { update(size.width, size.height); }
 
   /**
    * \brief Resets the screen and logical dimensions of the mouse state instance.
@@ -134,7 +133,7 @@ class mouse final {
    *
    * \since 5.3.0
    */
-  void set_logical_size(const iarea size) noexcept
+  void set_logical_size(const Area size) noexcept
   {
     set_logical_width(size.width);
     set_logical_height(size.height);
@@ -228,7 +227,7 @@ class mouse final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto logical_size() const noexcept -> iarea
+  [[nodiscard]] auto logical_size() const noexcept -> Area
   {
     return {m_logicalWidth, m_logicalHeight};
   }

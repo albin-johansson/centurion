@@ -8,8 +8,7 @@
 #include "../core/features.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/area.hpp"
-#include "../math/rect.hpp"
+#include "../math.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
 #include "colors.hpp"
@@ -74,7 +73,7 @@ class BasicSurface final {
 
   /* Creates a blank surface with the specified size and format */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  BasicSurface(const iarea& size, const pixel_format format)
+  BasicSurface(const Area& size, const pixel_format format)
       : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
                                                 size.width,
                                                 size.height,
@@ -270,9 +269,8 @@ class BasicSurface final {
 
   [[nodiscard]] auto GetHeight() const noexcept -> int { return mSurface->h; }
 
-  [[nodiscard]] auto GetSize() const noexcept -> iarea
-  {
-    return iarea{GetWidth(), GetHeight()};
+  [[nodiscard]] auto GetSize() const noexcept -> Area {
+    return Area{GetWidth(), GetHeight()};
   }
 
   /* Returns the pitch, i.e. the length of a row of pixels in bytes */

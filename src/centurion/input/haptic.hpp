@@ -21,7 +21,7 @@
 #include "../core/time.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/vector3.hpp"
+#include "../math.hpp"
 #include "haptic_effect.hpp"
 #include "haptic_feature.hpp"
 #include "joystick.hpp"

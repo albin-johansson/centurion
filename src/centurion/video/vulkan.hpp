@@ -13,7 +13,7 @@
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
 #include "../core/features.hpp"
-#include "../math/area.hpp"
+#include "../math.hpp"
 #include "window.hpp"
 
 namespace cen {
@@ -128,7 +128,7 @@ inline auto required_extensions() -> std::optional<std::vector<const char*>>
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> iarea
+[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> Area
 {
   assert(window.is_vulkan());
 

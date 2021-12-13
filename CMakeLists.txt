@@ -60,6 +60,8 @@ endif ()
 add_library(${CENTURION_LIB_TARGET} INTERFACE)
 
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
+               src/centurion/math.hpp
+
                src/centurion/audio/music.hpp
                src/centurion/audio/sound_effect.hpp
 
@@ -142,11 +144,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/sensor.hpp
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
-
-               src/centurion/math/area.hpp
-               src/centurion/math/point.hpp
-               src/centurion/math/rect.hpp
-               src/centurion/math/vector3.hpp
 
                src/centurion/system/byte_order.hpp
                src/centurion/system/cpu.hpp

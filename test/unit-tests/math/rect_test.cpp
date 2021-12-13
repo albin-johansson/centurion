@@ -1,11 +1,10 @@
-#include "math/rect.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>     // clog
 #include <type_traits>  // ...
 
 #include "core/logging.hpp"
+#include "math.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::FRect>);
@@ -61,7 +60,7 @@ TEST(Rect, SDLRectConstructor)
 TEST(Rect, PositionAndSizeConstructor)
 {
   const cen::FPoint pos{123.5f, 81.4f};
-  const cen::farea size{921.8f, 512.6f};
+  const cen::FArea size{921.8f, 512.6f};
   const cen::FRect rect{pos, size};
 
   ASSERT_EQ(rect.GetX(), pos.GetX());
@@ -163,7 +162,7 @@ TEST(Rect, SetSize)
 {
   cen::FRect rect;
 
-  const cen::farea size{345.8f, 289.7f};
+  const cen::FArea size{345.8f, 289.7f};
   rect.SetSize(size);
 
   ASSERT_EQ(rect.GetSize(), size);

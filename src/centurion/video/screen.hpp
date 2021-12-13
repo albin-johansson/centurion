@@ -9,8 +9,7 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../math/area.hpp"
-#include "../math/rect.hpp"
+#include "../math.hpp"
 #include "pixel_format.hpp"
 
 namespace cen {
@@ -325,10 +324,10 @@ namespace cen::screen {
  *
  * \since 4.1.0
  */
-[[nodiscard]] inline auto size(const int index = 0) noexcept -> std::optional<iarea>
+[[nodiscard]] inline auto size(const int index = 0) noexcept -> std::optional<Area>
 {
   if (const auto mode = display_mode(index)) {
-    return iarea{mode->w, mode->h};
+    return Area{mode->w, mode->h};
   }
   else {
     return std::nullopt;

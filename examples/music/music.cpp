@@ -6,7 +6,7 @@ namespace {
 using event_dispatcher = cen::event_dispatcher<cen::quit_event, cen::keyboard_event>;
 
 constexpr cen::usize font_id = 7;
-constexpr cen::iarea window_size = cen::window::default_size();
+constexpr cen::Area window_size = cen::window::default_size();
 
 constexpr auto msg_zero = "\"0\" to play the click one time.";
 constexpr auto msg_one = "\"1\" to play the click one time.";

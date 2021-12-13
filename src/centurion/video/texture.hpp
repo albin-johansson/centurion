@@ -24,8 +24,7 @@
 #include "../core/exception.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/area.hpp"
-#include "../math/point.hpp"
+#include "../math.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
 #include "scale_mode.hpp"
@@ -179,7 +178,7 @@ class basic_texture final {
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
-                const iarea size)
+                const Area size)
       : m_texture{SDL_CreateTexture(renderer.get(),
                                     to_underlying(format),
                                     to_underlying(access),
@@ -370,7 +369,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> iarea
+  [[nodiscard]] auto size() const noexcept -> Area
   {
     int width{};
     int height{};

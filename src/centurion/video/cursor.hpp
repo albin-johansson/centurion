@@ -8,7 +8,7 @@
 
 #include "../core/exception.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../math/point.hpp"
+#include "../math.hpp"
 #include "surface.hpp"
 
 namespace cen {

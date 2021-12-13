@@ -17,7 +17,7 @@
 #include "../core/features.hpp"
 #include "../core/memory.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/area.hpp"
+#include "../math.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -226,11 +226,11 @@ class Font final {
   }
 
   /* Returns the size of a rendered string. */
-  [[nodiscard]] auto CalcSize(const char* str) const noexcept -> std::optional<iarea>
+  [[nodiscard]] auto CalcSize(const char* str) const noexcept -> std::optional<Area>
   {
     assert(str);
 
-    iarea size{};
+    Area size{};
     if (TTF_SizeText(mFont.get(), str, &size.width, &size.height) != -1) {
       return size;
     }
@@ -239,7 +239,7 @@ class Font final {
     }
   }
 
-  [[nodiscard]] auto CalcSize(const std::string& str) const noexcept -> std::optional<iarea>
+  [[nodiscard]] auto CalcSize(const std::string& str) const noexcept -> std::optional<Area>
   {
     return CalcSize(str.c_str());
   }

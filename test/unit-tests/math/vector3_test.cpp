@@ -1,14 +1,13 @@
-#include "math/vector3.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/logging.hpp"
+#include "math.hpp"
 #include "serialization_utils.hpp"
 
-using float3 = cen::vector3<float>;
-using int3 = cen::vector3<int>;
+using float3 = cen::BasicVector3<float>;
+using int3 = cen::BasicVector3<int>;
 
 TEST(Vector3, Defaults)
 {
@@ -98,9 +97,9 @@ TEST(Vector3, Serialization)
   const auto x = 7842;
   const auto y = 3234;
   const auto z = -1295;
-  serialize_save("vector3.binary", int3{x, y, z});
+  serialize_save("BasicVector3.binary", int3{x, y, z});
 
-  const auto vector = serialize_create<int3>("vector3.binary");
+  const auto vector = serialize_create<int3>("BasicVector3.binary");
   ASSERT_EQ(x, vector.x);
   ASSERT_EQ(y, vector.y);
   ASSERT_EQ(z, vector.z);

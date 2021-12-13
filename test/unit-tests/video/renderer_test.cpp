@@ -7,7 +7,7 @@
 
 #include "core/exception.hpp"
 #include "core/logging.hpp"
-#include "math/rect.hpp"
+#include "math.hpp"
 #include "video/colors.hpp"
 #include "video/font.hpp"
 #include "video/graphics_drivers.hpp"
@@ -282,7 +282,7 @@ TEST_F(RendererTest, SetScale)
 TEST_F(RendererTest, SetLogicalSize)
 {
   const auto old = m_renderer->logical_size();
-  constexpr cen::iarea size{12, 34};
+  constexpr cen::Area size{12, 34};
 
   m_renderer->set_logical_size(size);
   ASSERT_EQ(size.width, m_renderer->logical_width());

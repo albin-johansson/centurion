@@ -76,7 +76,7 @@ TEST_F(TextureTest, CustomizationConstructor)
   constexpr auto access = cen::texture_access::no_lock;
   constexpr auto width = 145;
   constexpr auto height = 85;
-  constexpr cen::iarea size{width, height};
+  constexpr cen::Area size{width, height};
 
   const cen::texture texture{*m_renderer, format, access, size};
 

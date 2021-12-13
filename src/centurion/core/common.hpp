@@ -129,17 +129,16 @@ using Unicode = Uint16;
 
 // clang-format off
 
-/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+inline constexpr bool is_number = !std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
+                                             std::is_floating_point_v<T>);
 
 // clang-format on
 
 /// Enables a template if the type is a pointer.
 template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;  // TODO
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
@@ -414,7 +413,6 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 /// \} End of group core
 
 namespace literals {
-
 /// \addtogroup core
 /// \{
 

@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../core/common.hpp"
-#include "../math/vector3.hpp"
+#include "../math.hpp"
 #include "haptic_direction_type.hpp"
 
 namespace cen {
@@ -21,7 +21,7 @@ namespace cen {
  */
 class haptic_direction final {
  public:
-  using direction_type = vector3<Sint32>;
+  using direction_type = BasicVector3<Sint32>;
 
   /**
    * \brief Creates a haptic direction of the specified type.

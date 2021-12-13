@@ -15,8 +15,7 @@
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/area.hpp"
-#include "../math/rect.hpp"
+#include "../math.hpp"
 #include "flash_op.hpp"
 #include "pixel_format.hpp"
 #include "renderer.hpp"
@@ -159,7 +158,7 @@ class basic_window final {
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_window(const char* title,
-                        const iarea size = default_size(),
+                        const Area size = default_size(),
                         const Uint32 flags = default_flags())
   {
     assert(title);
@@ -201,7 +200,7 @@ class basic_window final {
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_window(const std::string& title,
-                        const iarea size = default_size(),
+                        const Area size = default_size(),
                         const Uint32 flags = default_flags())
       : basic_window{title.c_str(), size, flags}
   {}
@@ -619,7 +618,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  void set_size(const iarea size) noexcept
+  void set_size(const Area size) noexcept
   {
     assert(size.width > 0);
     assert(size.height > 0);
@@ -635,7 +634,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  void set_min_size(const iarea size) noexcept
+  void set_min_size(const Area size) noexcept
   {
     assert(size.width > 0);
     assert(size.height > 0);
@@ -651,7 +650,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  void set_max_size(const iarea size) noexcept
+  void set_max_size(const Area size) noexcept
   {
     assert(size.width > 0);
     assert(size.height > 0);
@@ -686,9 +685,9 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> iarea
+  [[nodiscard]] auto size() const noexcept -> Area
   {
-    iarea size{};
+    Area size{};
     SDL_GetWindowSize(m_window, &size.width, &size.height);
     return size;
   }
@@ -700,9 +699,9 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto min_size() const noexcept -> iarea
+  [[nodiscard]] auto min_size() const noexcept -> Area
   {
-    iarea size{};
+    Area size{};
     SDL_GetWindowMinimumSize(m_window, &size.width, &size.height);
     return size;
   }
@@ -714,9 +713,9 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto max_size() const noexcept -> iarea
+  [[nodiscard]] auto max_size() const noexcept -> Area
   {
-    iarea size{};
+    Area size{};
     SDL_GetWindowMaximumSize(m_window, &size.width, &size.height);
     return size;
   }
@@ -731,7 +730,7 @@ class basic_window final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
+  [[nodiscard]] constexpr static auto default_size() noexcept -> Area
   {
     return {800, 600};
   }
@@ -1364,7 +1363,7 @@ template <typename T>
  * \since 6.0.0
  */
 [[nodiscard]] inline auto make_window_and_renderer(
-    const iarea size = window::default_size(),
+    const Area size = window::default_size(),
     const Uint32 flags = window::default_flags()) -> std::pair<window, renderer>
 {
   cen::window window{"Centurion window", size, flags};

@@ -16,7 +16,7 @@
 #include "../core/exception.hpp"
 #include "../core/features.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../math/area.hpp"
+#include "../math.hpp"
 #include "texture.hpp"
 #include "window.hpp"
 
@@ -454,7 +454,7 @@ void swap(basic_window<T>& window) noexcept
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> iarea
+[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> Area
 {
   assert(window.is_opengl());
 
@@ -599,12 +599,12 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
  * \since 6.1.0
  */
 template <typename T>
-auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
+auto bind(basic_texture<T>& texture) noexcept -> std::optional<FArea>
 {
   float width{};
   float height{};
   if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0) {
-    return farea{width, height};
+    return FArea{width, height};
   }
   else {
     return std::nullopt;

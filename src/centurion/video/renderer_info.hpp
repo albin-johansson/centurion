@@ -19,7 +19,7 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../math/area.hpp"
+#include "../math.hpp"
 #include "pixel_format.hpp"
 #include "renderer.hpp"
 
@@ -171,7 +171,7 @@ class renderer_info final {
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto max_texture_size() const noexcept -> iarea
+  [[nodiscard]] auto max_texture_size() const noexcept -> Area
   {
     return {max_texture_width(), max_texture_height()};
   }

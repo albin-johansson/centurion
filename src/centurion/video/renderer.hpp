@@ -26,7 +26,7 @@
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
-#include "../math/rect.hpp"
+#include "../math.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
 #include "colors.hpp"
@@ -1125,7 +1125,7 @@ class basic_renderer final {
       -> result
   {
     if constexpr (BasicPoint<P>::floating) {
-      const auto size = cast<farea>(texture.size());
+      const auto size = cast<FArea>(texture.size());
       const SDL_FRect dst{position.GetX(), position.GetY(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
@@ -1772,7 +1772,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_logical_size(const iarea size) noexcept -> result
+  auto set_logical_size(const Area size) noexcept -> result
   {
     assert(size.width >= 0);
     assert(size.height >= 0);
@@ -1859,9 +1859,9 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto logical_size() const noexcept -> iarea
+  [[nodiscard]] auto logical_size() const noexcept -> Area
   {
-    iarea size{};
+    Area size{};
     SDL_RenderGetLogicalSize(get(), &size.width, &size.height);
     return size;
   }
@@ -1969,9 +1969,9 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto output_size() const noexcept -> iarea
+  [[nodiscard]] auto output_size() const noexcept -> Area
   {
-    iarea size{};
+    Area size{};
     SDL_GetRendererOutputSize(get(), &size.width, &size.height);
     return size;
   }

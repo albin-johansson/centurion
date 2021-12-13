@@ -67,7 +67,7 @@ TEST(Mouse, SetLogicalHeight)
 TEST(Mouse, SetLogicalSize)
 {
   cen::mouse mouse;
-  const cen::iarea size{823, 569};
+  const cen::Area size{823, 569};
 
   mouse.set_logical_size(size);
   ASSERT_EQ(size, mouse.logical_size());

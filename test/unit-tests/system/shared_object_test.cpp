@@ -1,8 +1,8 @@
-#include "system/shared_object.hpp"
-
 #include <gtest/gtest.h>
+
+#include "system.hpp"
 
 TEST(SharedObject, Constructor)
 {
-  ASSERT_THROW(cen::shared_object{"foo"}, cen::SDLError);
+  ASSERT_THROW(cen::SharedObject{"foo"}, cen::SDLError);
 }

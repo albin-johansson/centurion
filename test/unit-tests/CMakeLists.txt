@@ -107,7 +107,6 @@ set(SOURCE_FILES
     system/counter_test.cpp
     system/cpu_test.cpp
     system/locale_test.cpp
-    system/platform_id_test.cpp
     system/platform_test.cpp
     system/power_state_test.cpp
     system/ram_test.cpp

@@ -145,11 +145,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
 
-               src/centurion/system/byte_order.hpp
-               src/centurion/system/locale.hpp
-               src/centurion/system/platform.hpp
-               src/centurion/system/shared_object.hpp
-
                src/centurion/concurrency.hpp
 
                src/centurion/video/blend_factor.hpp

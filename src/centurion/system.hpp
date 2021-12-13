@@ -5,6 +5,8 @@
 
 #include <cassert>      // assert
 #include <chrono>       // duration_cast
+#include <cstddef>      // size_t
+#include <memory>       // unique_ptr
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
@@ -14,11 +16,54 @@
 #include "core/exception.hpp"
 #include "core/sdl_string.hpp"
 #include "core/time.hpp"
+#include "detail/sdl_deleter.hpp"
+#include "detail/stdlib.hpp"
 
 namespace cen {
 
 /// \addtogroup system
 /// \{
+
+#ifdef __linux__
+inline constexpr bool on_linux = true;
+#else
+inline constexpr bool on_linux = false;
+#endif  // __linux__
+
+#ifdef __APPLE__
+inline constexpr bool on_apple = true;
+#else
+inline constexpr bool on_apple = false;
+#endif  // __APPLE__
+
+#ifdef _WIN32
+inline constexpr bool on_win32 = true;
+#else
+inline constexpr bool on_win32 = false;
+#endif  // _WIN32
+
+#ifdef _WIN64
+inline constexpr bool on_win64 = true;
+#else
+inline constexpr bool on_win64 = false;
+#endif  // _WIN64
+
+inline constexpr bool on_windows = on_win32 || on_win64;
+
+#ifdef __ANDROID__
+inline constexpr bool on_android = true;
+#else
+inline constexpr bool on_android = false;
+#endif  // __ANDROID__
+
+enum class Platform {
+  Unknown,
+  Windows,
+  MacOS,
+  Linux,
+  IOS, /* Apple iOS */
+  Android
+};
 
 enum class PowerState {
   Unknown = SDL_POWERSTATE_UNKNOWN,      /* The status is unknown. */
@@ -27,6 +72,113 @@ enum class PowerState {
   Charging = SDL_POWERSTATE_CHARGING,    /* Charging the battery. */
   Charged = SDL_POWERSTATE_CHARGED       /* Plugged in and charged. */
 };
+
+/* Represents a shared object, such as dynamic libraries. */
+class SharedObject final {
+ public:
+  /* Loads a shared object. */
+  explicit SharedObject(const char* object) : mObject{SDL_LoadObject(object)}
+  {
+    if (!mObject) {
+      throw SDLError{};
+    }
+  }
+
+  explicit SharedObject(const std::string& object) : SharedObject{object.c_str()} {}
+
+  /* Attempts to load a C function with a specific name. */
+  template <typename T>
+  [[nodiscard]] auto LoadFunction(const char* name) const noexcept -> T*
+  {
+    assert(name);
+    return reinterpret_cast<T*>(SDL_LoadFunction(mObject.get(), name));
+  }
+
+  template <typename T>
+  [[nodiscard]] auto LoadFunction(const std::string& name) const noexcept -> T*
+  {
+    return LoadFunction<T>(name.c_str());
+  }
+
+ private:
+  struct deleter final {
+    void operator()(void* object) noexcept { SDL_UnloadObject(object); }
+  };
+  std::unique_ptr<void, deleter> mObject;
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+
+ public:
+  SharedObject() = default;
+
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup system
+/// \{
+
+class Locale final {
+ public:
+  /* Returns the current preferred locales on the system. */
+  [[nodiscard]] static auto GetPreferred() noexcept -> Locale
+  {
+    return Locale{SDL_GetPreferredLocales()};
+  }
+
+  /* Indicates whether a language (and optionally a country) is a part of the locale. */
+  [[nodiscard]] auto HasLanguage(const char* language,
+                                 const char* country = nullptr) const noexcept -> bool
+  {
+    assert(language);
+
+    if (const auto* array = mLocales.get()) {
+      for (auto index = 0u; array[index].language; ++index) {
+        const auto& item = array[index];
+
+        if (country && item.country) {
+          if (detail::cmp(language, item.language) && detail::cmp(country, item.country)) {
+            return true;
+          }
+        }
+        else {
+          if (detail::cmp(language, item.language)) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /* Returns the amount of entries in the locale. */
+  [[nodiscard]] auto GetSize() const noexcept -> std::size_t
+  {
+    std::size_t result{0};
+
+    if (const auto* array = mLocales.get()) {
+      for (auto index = 0u; array[index].language; ++index) {
+        ++result;
+      }
+    }
+
+    return result;
+  }
+
+  /* Indicates whether the locale contains a non-null pointer. */
+  explicit operator bool() const noexcept { return mLocales != nullptr; }
+
+ private:
+  std::unique_ptr<SDL_Locale, detail::sdl_deleter> mLocales;
+
+  explicit Locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
+};
+
+/// \} End of group system
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 /* Indicates whether the CPU uses little-endian byte ordering. */
 [[nodiscard]] constexpr auto IsLittleEndian() noexcept -> bool
@@ -38,6 +190,70 @@ enum class PowerState {
 [[nodiscard]] constexpr auto IsBigEndian() noexcept -> bool
 {
   return SDL_BYTEORDER == SDL_BIG_ENDIAN;
+}
+
+[[nodiscard]] inline auto GetPlatformName() -> std::optional<std::string>
+{
+  std::string name{SDL_GetPlatform()};
+  if (name != "Unknown") {
+    return name;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetCurrentPlatform() noexcept -> Platform
+{
+  const auto name = GetPlatformName();
+  if (name == "Windows") {
+    return Platform::Windows;
+  }
+  else if (name == "Mac OS X") {
+    return Platform::MacOS;
+  }
+  else if (name == "Linux") {
+    return Platform::Linux;
+  }
+  else if (name == "iOS") {
+    return Platform::IOS;
+  }
+  else if (name == "Android") {
+    return Platform::Android;
+  }
+  else {
+    return Platform::Unknown;
+  }
+}
+
+[[nodiscard]] inline auto IsWindows() noexcept -> bool
+{
+  return GetCurrentPlatform() == Platform::Windows;
+}
+
+[[nodiscard]] inline auto IsMacOS() noexcept -> bool
+{
+  return GetCurrentPlatform() == Platform::MacOS;
+}
+
+[[nodiscard]] inline auto IsLinux() noexcept -> bool
+{
+  return GetCurrentPlatform() == Platform::Linux;
+}
+
+[[nodiscard]] inline auto IsIOS() noexcept -> bool
+{
+  return GetCurrentPlatform() == Platform::IOS;
+}
+
+[[nodiscard]] inline auto IsAndroid() noexcept -> bool
+{
+  return GetCurrentPlatform() == Platform::Android;
+}
+
+[[nodiscard]] inline auto IsTablet() noexcept -> bool
+{
+  return SDL_IsTablet() == SDL_TRUE;
 }
 
 /* Returns the current value of the high-performance counter. */
@@ -181,6 +397,95 @@ inline auto OpenURL(const std::string& url) noexcept -> result
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+/** Swaps the byte order of the specified value. */
+[[nodiscard]] inline auto SwapByteOrder(const Uint16 value) noexcept -> Uint16
+{
+  return SDL_Swap16(value);
+}
+
+[[nodiscard]] inline auto SwapByteOrder(const Uint32 value) noexcept -> Uint32
+{
+  return SDL_Swap32(value);
+}
+
+[[nodiscard]] inline auto SwapByteOrder(const Uint64 value) noexcept -> Uint64
+{
+  return SDL_Swap64(value);
+}
+
+[[nodiscard]] inline auto SwapByteOrder(const float value) noexcept -> float
+{
+  return SDL_SwapFloat(value);
+}
+
+/* Swaps a big endian value to a little endian value. */
+[[nodiscard]] inline auto SwapBigEndian(const Uint16 value) noexcept -> Uint16
+{
+  return SDL_SwapBE16(value);
+}
+
+[[nodiscard]] inline auto SwapBigEndian(const Uint32 value) noexcept -> Uint32
+{
+  return SDL_SwapBE32(value);
+}
+
+[[nodiscard]] inline auto SwapBigEndian(const Uint64 value) noexcept -> Uint64
+{
+  return SDL_SwapBE64(value);
+}
+
+[[nodiscard]] inline auto SwapBigEndian(const float value) noexcept -> float
+{
+  return SDL_SwapFloatBE(value);
+}
+
+/* Swaps a little endian value to a big endian value. */
+[[nodiscard]] inline auto SwapLittleEndian(const Uint16 value) noexcept -> Uint16
+{
+  return SDL_SwapLE16(value);
+}
+
+[[nodiscard]] inline auto SwapLittleEndian(const Uint32 value) noexcept -> Uint32
+{
+  return SDL_SwapLE32(value);
+}
+
+[[nodiscard]] inline auto SwapLittleEndian(const Uint64 value) noexcept -> Uint64
+{
+  return SDL_SwapLE64(value);
+}
+
+[[nodiscard]] inline auto SwapLittleEndian(const float value) noexcept -> float
+{
+  return SDL_SwapFloatLE(value);
+}
+
+[[nodiscard]] inline auto to_string(const Platform id) -> std::string_view
+{
+  switch (id) {
+    case Platform::Unknown:
+      return "Unknown";
+
+    case Platform::Windows:
+      return "Windows";
+
+    case Platform::MacOS:
+      return "MacOS";
+
+    case Platform::Linux:
+      return "Linux";
+
+    case Platform::IOS:
+      return "IOS";
+
+    case Platform::Android:
+      return "Android";
+
+    default:
+      throw Error{"Did not recognize platform!"};
+  }
+}
+
 [[nodiscard]] constexpr auto to_string(const PowerState state) -> std::string_view
 {
   switch (state) {
@@ -202,6 +507,11 @@ inline auto OpenURL(const std::string& url) noexcept -> result
     default:
       throw Error{"Did not recognize power state!"};
   }
+}
+
+inline auto operator<<(std::ostream& stream, const Platform id) -> std::ostream&
+{
+  return stream << to_string(id);
 }
 
 inline auto operator<<(std::ostream& stream, const PowerState state) -> std::ostream&

@@ -1,8 +1,7 @@
-#include "system/shared_object.hpp"
-
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "system.hpp"
 
 extern "C"
 {
@@ -21,7 +20,7 @@ class SharedObjectTest : public testing::Test {
     RESET_FAKE(SDL_LoadFunction)
   }
 
-  cen::shared_object m_object;
+  cen::SharedObject object;
 };
 
 TEST_F(SharedObjectTest, LoadFunction)
@@ -29,7 +28,7 @@ TEST_F(SharedObjectTest, LoadFunction)
   using namespace std::string_literals;
   const auto name = "foo"s;
 
-  auto* ptr [[maybe_unused]] = m_object.load_function<void(int, float)>(name);
+  auto* ptr [[maybe_unused]] = object.LoadFunction<void(int, float)>(name);
 
   ASSERT_EQ(1u, SDL_LoadFunction_fake.call_count);
   ASSERT_EQ(name, SDL_LoadFunction_fake.arg1_val);

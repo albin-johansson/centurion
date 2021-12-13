@@ -1,6 +1,6 @@
-#include "system/byte_order.hpp"
-
 #include <gtest/gtest.h>
+
+#include "system.hpp"
 
 using namespace cen::literals;
 

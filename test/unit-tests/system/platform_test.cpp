@@ -1,59 +1,66 @@
-#include "system/platform.hpp"
-
 #include <gtest/gtest.h>
 
-#include <string>
+#include <iostream>  // clog
+#include <string>    // string
+
+#include "system.hpp"
+
+TEST(Platform, PlatformEnum)
+{
+  ASSERT_THROW(cen::to_string(static_cast<cen::Platform>(7)), cen::Error);
+
+  ASSERT_EQ("Unknown", cen::to_string(cen::Platform::Unknown));
+  ASSERT_EQ("Windows", cen::to_string(cen::Platform::Windows));
+  ASSERT_EQ("MacOS", cen::to_string(cen::Platform::MacOS));
+  ASSERT_EQ("Linux", cen::to_string(cen::Platform::Linux));
+  ASSERT_EQ("IOS", cen::to_string(cen::Platform::IOS));
+  ASSERT_EQ("Android", cen::to_string(cen::Platform::Android));
+
+  std::clog << "Platform ID example: " << cen::Platform::Windows << '\n';
+}
 
 TEST(Platform, IsWindows)
 {
-  ASSERT_EQ(cen::current_platform() == cen::platform_id::windows, cen::is_windows());
+  ASSERT_EQ(cen::GetCurrentPlatform() == cen::Platform::Windows, cen::IsWindows());
+  ASSERT_EQ(cen::on_windows, cen::IsWindows());
+  ASSERT_EQ(cen::on_win32 || cen::on_win64, cen::IsWindows());
 
-  constexpr auto isWin32 = cen::ifdef_win32();
-  constexpr auto isWin64 = cen::ifdef_win64();
-  ASSERT_EQ(cen::is_windows(), isWin32 || isWin64);
-
-  // Check that win64 -> win32
-  ASSERT_TRUE(!isWin64 || (isWin64 && isWin32));
+  /* win64 implies win32 */
+  ASSERT_TRUE(!cen::on_win64 || (cen::on_win64 && cen::on_win32));
 }
 
-TEST(Platform, IsMacOSX)
+TEST(Platform, IsMacOS)
 {
-  ASSERT_EQ(cen::current_platform() == cen::platform_id::mac_osx, cen::is_mac_osx());
-
-  constexpr auto isApple = cen::ifdef_apple();
-  ASSERT_EQ(cen::is_mac_osx(), isApple);
+  ASSERT_EQ(cen::GetCurrentPlatform() == cen::Platform::MacOS, cen::IsMacOS());
+  ASSERT_EQ(cen::on_apple, cen::IsMacOS());
 }
 
 TEST(Platform, IsLinux)
 {
-  ASSERT_EQ(cen::current_platform() == cen::platform_id::linux_os, cen::is_linux());
-
-  constexpr auto isLinux = cen::ifdef_linux();
-  ASSERT_EQ(cen::is_linux(), isLinux);
+  ASSERT_EQ(cen::GetCurrentPlatform() == cen::Platform::Linux, cen::IsLinux());
+  ASSERT_EQ(cen::on_linux, cen::IsLinux());
 }
 
 TEST(Platform, IsIOS)
 {
-  ASSERT_EQ(cen::current_platform() == cen::platform_id::ios, cen::is_ios());
+  ASSERT_EQ(cen::GetCurrentPlatform() == cen::Platform::IOS, cen::IsIOS());
 
-  // Check that iOS -> Apple
-  ASSERT_TRUE(!cen::is_ios() || (cen::is_ios() && cen::ifdef_apple()));
+  /* iOS implies Apple */
+  ASSERT_TRUE(!cen::IsIOS() || (cen::IsIOS() && cen::on_apple));
 }
 
 TEST(Platform, IsAndroid)
 {
-  ASSERT_EQ(cen::current_platform() == cen::platform_id::android, cen::is_android());
-
-  constexpr auto isAndroid = cen::ifdef_android();
-  ASSERT_EQ(cen::is_android(), isAndroid);
+  ASSERT_EQ(cen::GetCurrentPlatform() == cen::Platform::Android, cen::IsAndroid());
+  ASSERT_EQ(cen::on_android, cen::IsAndroid());
 }
 
-TEST(Platform, PlatformName)
+TEST(Platform, GetPlatformName)
 {
-  ASSERT_EQ(std::string{SDL_GetPlatform()}, *cen::platform_name());
+  ASSERT_EQ(std::string{SDL_GetPlatform()}, cen::GetPlatformName().value());
 }
 
 TEST(Platform, IsTablet)
 {
-  ASSERT_EQ(SDL_IsTablet(), cen::is_tablet());
+  ASSERT_EQ(SDL_IsTablet(), cen::IsTablet());
 }

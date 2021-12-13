@@ -78,7 +78,7 @@ class sdl_string final {
   explicit operator bool() const noexcept { return m_str.operator bool(); }
 
  private:
-  std::unique_ptr<char, detail::sdl_deleter<char>> m_str;
+  std::unique_ptr<char, detail::sdl_deleter> m_str;
 };
 
 /// \} End of group core

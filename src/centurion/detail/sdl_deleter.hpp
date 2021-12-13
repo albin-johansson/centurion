@@ -6,9 +6,8 @@
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename T>
 struct sdl_deleter final {
-  void operator()(T* ptr) noexcept { SDL_free(ptr); }
+  void operator()(void* ptr) noexcept { SDL_free(ptr); }
 };
 
 }  // namespace cen::detail

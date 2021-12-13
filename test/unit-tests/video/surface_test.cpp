@@ -179,7 +179,7 @@ TEST_F(SurfaceTest, Pitch)
 
 TEST_F(SurfaceTest, Clip)
 {
-  constexpr cen::irect rect{{48, 29}, {34, 89}};
+  constexpr cen::Rect rect{{48, 29}, {34, 89}};
 
   surface->get()->clip_rect = rect.get();
   ASSERT_EQ(rect, surface->GetClip());

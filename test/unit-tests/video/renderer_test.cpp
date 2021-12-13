@@ -56,7 +56,7 @@ TEST_F(RendererTest, SetTranslationViewport)
 {
   const auto old = m_renderer->translation_viewport();
 
-  constexpr cen::frect viewport{{12, 34}, {56, 78}};
+  constexpr cen::FRect viewport{{12, 34}, {56, 78}};
 
   m_renderer->set_translation_viewport(viewport);
   ASSERT_EQ(viewport, m_renderer->translation_viewport());
@@ -67,10 +67,10 @@ TEST_F(RendererTest, SetTranslationViewport)
 TEST_F(RendererTest, TranslationViewport)
 {
   const auto viewport = m_renderer->translation_viewport();
-  ASSERT_EQ(0, viewport.x());
-  ASSERT_EQ(0, viewport.y());
-  ASSERT_EQ(0, viewport.width());
-  ASSERT_EQ(0, viewport.height());
+  ASSERT_EQ(0, viewport.GetX());
+  ASSERT_EQ(0, viewport.GetY());
+  ASSERT_EQ(0, viewport.GetWidth());
+  ASSERT_EQ(0, viewport.GetHeight());
 }
 
 TEST_F(RendererTest, TranslatedDrawRect)
@@ -101,12 +101,12 @@ TEST_F(RendererTest, TranslatedRenderWithPoint)
 TEST_F(RendererTest, TranslatedRenderWithRectangle)
 {
   {
-    const cen::irect rect{{12, 34}, {56, 78}};
+    const cen::Rect rect{{12, 34}, {56, 78}};
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, rect));
   }
 
   {
-    const cen::frect rect{{21, 43}, {65, 87}};
+    const cen::FRect rect{{21, 43}, {65, 87}};
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, rect));
   }
 }
@@ -114,15 +114,15 @@ TEST_F(RendererTest, TranslatedRenderWithRectangle)
 TEST_F(RendererTest, TranslatedRenderWithSourceDestination)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst));
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst));
   }
@@ -131,16 +131,16 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestination)
 TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngle)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle));
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
 
     ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle));
@@ -150,8 +150,8 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngle)
 TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::ipoint center{15, 12};
 
@@ -159,8 +159,8 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::fpoint center{15, 12};
 
@@ -171,8 +171,8 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
 TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::ipoint center{15, 12};
     const auto flip = SDL_FLIP_HORIZONTAL;
@@ -181,8 +181,8 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::fpoint center{15, 12};
     const auto flip = SDL_FLIP_VERTICAL;
@@ -243,7 +243,7 @@ TEST_F(RendererTest, SetColor)
 
 TEST_F(RendererTest, SetClip)
 {
-  constexpr cen::irect clip{{12, 34}, {56, 78}};
+  constexpr cen::Rect clip{{12, 34}, {56, 78}};
 
   m_renderer->set_clip(clip);
   ASSERT_TRUE(m_renderer->clip().has_value());
@@ -255,7 +255,7 @@ TEST_F(RendererTest, SetClip)
 
 TEST_F(RendererTest, SetViewport)
 {
-  constexpr cen::irect viewport{{12, 34}, {56, 78}};
+  constexpr cen::Rect viewport{{12, 34}, {56, 78}};
 
   m_renderer->set_viewport(viewport);
   ASSERT_EQ(viewport, m_renderer->viewport());
@@ -349,7 +349,7 @@ TEST_F(RendererTest, Capture)
   m_renderer->clear_with(cen::colors::pink);
 
   m_renderer->set_color(cen::colors::green);
-  m_renderer->fill_rect(cen::rect(20, 20, 150, 100));
+  m_renderer->fill_rect(cen::Rect{20, 20, 150, 100});
 
   m_renderer->set_color(cen::colors::black);
   m_renderer->draw_circle(cen::point(300.0, 200.0), 30);

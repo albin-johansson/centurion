@@ -280,9 +280,9 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_rect(const basic_rect<U>& rect) noexcept -> result
+  auto draw_rect(const BasicRect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::integral) {
+    if constexpr (BasicRect<U>::integral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
     else {
@@ -302,9 +302,9 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename U>
-  auto fill_rect(const basic_rect<U>& rect) noexcept -> result
+  auto fill_rect(const BasicRect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::integral) {
+    if constexpr (BasicRect<U>::integral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
     else {
@@ -493,7 +493,7 @@ class basic_renderer final {
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  auto draw_rect_t(const basic_rect<R>& rect) noexcept -> result
+  auto draw_rect_t(const BasicRect<R>& rect) noexcept -> result
   {
     return draw_rect(translate(rect));
   }
@@ -513,7 +513,7 @@ class basic_renderer final {
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  auto fill_rect_t(const basic_rect<R>& rect) noexcept -> result
+  auto fill_rect_t(const BasicRect<R>& rect) noexcept -> result
   {
     return fill_rect(translate(rect));
   }
@@ -1147,10 +1147,10 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename P, typename U>
-  auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+  auto render(const basic_texture<U>& texture, const BasicRect<P>& destination) noexcept
       -> result
   {
-    if constexpr (basic_rect<P>::floating) {
+    if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
     else {
@@ -1177,10 +1177,10 @@ class basic_renderer final {
    */
   template <typename P, typename U>
   auto render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<P>& destination) noexcept -> result
+              const Rect& source,
+              const BasicRect<P>& destination) noexcept -> result
   {
-    if constexpr (basic_rect<P>::floating) {
+    if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
     }
     else {
@@ -1206,11 +1206,11 @@ class basic_renderer final {
    */
   template <typename P, typename U>
   auto render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<P>& destination,
+              const Rect& source,
+              const BasicRect<P>& destination,
               const double angle) noexcept -> result
   {
-    if constexpr (basic_rect<P>::floating) {
+    if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -1250,17 +1250,17 @@ class basic_renderer final {
    */
   template <typename R, typename P, typename U>
   auto render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<R>& destination,
+              const Rect& source,
+              const BasicRect<R>& destination,
               const double angle,
               const basic_point<P>& center) noexcept -> result
   {
-    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+    static_assert(std::is_same_v<typename BasicRect<R>::value_type,
                                  typename basic_point<P>::value_type>,
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::floating) {
+    if constexpr (BasicRect<R>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -1301,18 +1301,18 @@ class basic_renderer final {
    */
   template <typename R, typename P, typename U>
   auto render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<R>& destination,
+              const Rect& source,
+              const BasicRect<R>& destination,
               const double angle,
               const basic_point<P>& center,
               const SDL_RendererFlip flip) noexcept -> result
   {
-    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+    static_assert(std::is_same_v<typename BasicRect<R>::value_type,
                                  typename basic_point<P>::value_type>,
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::floating) {
+    if constexpr (BasicRect<R>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -1375,7 +1375,7 @@ class basic_renderer final {
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto render_t(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+  auto render_t(const basic_texture<U>& texture, const BasicRect<P>& destination) noexcept
       -> result
   {
     return render(texture, translate(destination));
@@ -1402,8 +1402,8 @@ class basic_renderer final {
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<P>& destination) noexcept -> result
+                const Rect& source,
+                const BasicRect<P>& destination) noexcept -> result
   {
     return render(texture, source, translate(destination));
   }
@@ -1428,8 +1428,8 @@ class basic_renderer final {
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<P>& destination,
+                const Rect& source,
+                const BasicRect<P>& destination,
                 const double angle) noexcept -> result
   {
     return render(texture, source, translate(destination), angle);
@@ -1457,8 +1457,8 @@ class basic_renderer final {
    */
   template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<R>& destination,
+                const Rect& source,
+                const BasicRect<R>& destination,
                 const double angle,
                 const basic_point<P>& center) noexcept -> result
   {
@@ -1486,8 +1486,8 @@ class basic_renderer final {
    */
   template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   auto render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<R>& destination,
+                const Rect& source,
+                const BasicRect<R>& destination,
                 const double angle,
                 const basic_point<P>& center,
                 const SDL_RendererFlip flip) noexcept -> result
@@ -1511,7 +1511,7 @@ class basic_renderer final {
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void set_translation_viewport(const frect& viewport) noexcept
+  void set_translation_viewport(const FRect& viewport) noexcept
   {
     m_renderer.translation = viewport;
   }
@@ -1526,7 +1526,7 @@ class basic_renderer final {
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
+  [[nodiscard]] auto translation_viewport() const noexcept -> const FRect&
   {
     return m_renderer.translation;
   }
@@ -1674,7 +1674,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_clip(const std::optional<irect> area) noexcept -> result
+  auto set_clip(const std::optional<Rect> area) noexcept -> result
   {
     return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
   }
@@ -1688,7 +1688,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_viewport(const irect viewport) noexcept -> result
+  auto set_viewport(const Rect viewport) noexcept -> result
   {
     return SDL_RenderSetViewport(get(), viewport.data()) == 0;
   }
@@ -1917,11 +1917,11 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
+  [[nodiscard]] auto clip() const noexcept -> std::optional<Rect>
   {
-    irect rect{};
+    Rect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area()) {
+    if (!rect.HasArea()) {
       return std::nullopt;
     }
     else {
@@ -2042,9 +2042,9 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto viewport() const noexcept -> irect
+  [[nodiscard]] auto viewport() const noexcept -> Rect
   {
-    irect viewport{};
+    Rect viewport{};
     SDL_RenderGetViewport(get(), viewport.data());
     return viewport;
   }
@@ -2113,7 +2113,7 @@ class basic_renderer final {
     {}
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
-    frect translation{};
+    FRect translation{};
 
 #ifndef CENTURION_NO_SDL_TTF
     std::unordered_map<std::size_t, Font> fonts{};
@@ -2135,16 +2135,16 @@ class basic_renderer final {
     using value_type = typename basic_point<U>::value_type;
 
     const auto& translation = m_renderer.translation;
-    const auto x = point.x() - static_cast<value_type>(translation.x());
-    const auto y = point.y() - static_cast<value_type>(translation.y());
+    const auto x = point.x() - static_cast<value_type>(translation.GetX());
+    const auto y = point.y() - static_cast<value_type>(translation.GetY());
 
     return basic_point<U>{x, y};
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept -> basic_rect<U>
+  [[nodiscard]] auto translate(const BasicRect<U>& rect) const noexcept -> BasicRect<U>
   {
-    return basic_rect<U>{translate(rect.position()), rect.size()};
+    return BasicRect<U>{translate(rect.GetPosition()), rect.GetSize()};
   }
 };
 

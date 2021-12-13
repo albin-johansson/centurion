@@ -434,9 +434,9 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<irect>
+[[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<Rect>
 {
-  irect result;
+  Rect result;
   if (SDL_GetDisplayBounds(index, result.data()) == 0) {
     return result;
   }
@@ -458,9 +458,9 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept -> std::optional<irect>
+[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept -> std::optional<Rect>
 {
-  irect result;
+  Rect result;
   if (SDL_GetDisplayUsableBounds(index, result.data()) == 0) {
     return result;
   }

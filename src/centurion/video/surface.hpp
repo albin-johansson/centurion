@@ -287,7 +287,7 @@ class BasicSurface final {
     return pixel_format_info_handle{mSurface->format};
   }
 
-  [[nodiscard]] auto GetClip() const noexcept -> irect { return irect{mSurface->clip_rect}; }
+  [[nodiscard]] auto GetClip() const noexcept -> Rect { return Rect{mSurface->clip_rect}; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

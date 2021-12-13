@@ -112,21 +112,21 @@ void validate_render_function(const Fake& fake, Args&&... args)
   const auto tuple = std::make_tuple(args...);
 
   const auto& src = std::get<0>(tuple);
-  static_assert(std::is_same_v<const cen::irect&, decltype(src)>);
+  static_assert(std::is_same_v<const cen::Rect&, decltype(src)>);
 
-  ASSERT_EQ(src.x(), fake.arg2_val->x);
-  ASSERT_EQ(src.y(), fake.arg2_val->y);
-  ASSERT_EQ(src.width(), fake.arg2_val->w);
-  ASSERT_EQ(src.height(), fake.arg2_val->h);
+  ASSERT_EQ(src.GetX(), fake.arg2_val->x);
+  ASSERT_EQ(src.GetY(), fake.arg2_val->y);
+  ASSERT_EQ(src.GetWidth(), fake.arg2_val->w);
+  ASSERT_EQ(src.GetHeight(), fake.arg2_val->h);
 
   const auto& dst = std::get<1>(tuple);
-  static_assert(std::is_same_v<const cen::irect&, decltype(src)> ||
-                std::is_same_v<const cen::frect&, decltype(src)>);
+  static_assert(std::is_same_v<const cen::Rect&, decltype(src)> ||
+                std::is_same_v<const cen::FRect&, decltype(src)>);
 
-  ASSERT_EQ(dst.x(), fake.arg3_val->x);
-  ASSERT_EQ(dst.y(), fake.arg3_val->y);
-  ASSERT_EQ(dst.width(), fake.arg3_val->w);
-  ASSERT_EQ(dst.height(), fake.arg3_val->h);
+  ASSERT_EQ(dst.GetX(), fake.arg3_val->x);
+  ASSERT_EQ(dst.GetY(), fake.arg3_val->y);
+  ASSERT_EQ(dst.GetWidth(), fake.arg3_val->w);
+  ASSERT_EQ(dst.GetHeight(), fake.arg3_val->h);
 
   if constexpr (sizeof...(Args) >= 3) {
     const auto angle = std::get<2>(tuple);
@@ -181,12 +181,12 @@ TEST_F(RendererTest, Present)
 TEST_F(RendererTest, DrawRect)
 {
   {
-    constexpr cen::irect rect;
+    constexpr cen::Rect rect;
     m_renderer.draw_rect(rect);
   }
 
   {
-    constexpr cen::frect rect;
+    constexpr cen::FRect rect;
     m_renderer.draw_rect(rect);
   }
 
@@ -197,14 +197,14 @@ TEST_F(RendererTest, DrawRect)
 TEST_F(RendererTest, FillRect)
 {
   {
-    constexpr cen::irect rect;
+    constexpr cen::Rect rect;
     m_renderer.fill_rect(rect);
     ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
     ASSERT_EQ(0u, SDL_RenderFillRectF_fake.call_count);
   }
 
   {
-    constexpr cen::frect rect;
+    constexpr cen::FRect rect;
     m_renderer.fill_rect(rect);
     ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
     ASSERT_EQ(1u, SDL_RenderFillRectF_fake.call_count);
@@ -318,12 +318,12 @@ TEST_F(RendererTest, RenderWithPoint)
 TEST_F(RendererTest, RenderWithRectangle)
 {
   {
-    const cen::irect rect{{12, 34}, {56, 78}};
+    const cen::Rect rect{{12, 34}, {56, 78}};
     m_renderer.render(m_texture, rect);
   }
 
   {
-    const cen::frect rect{{21, 43}, {65, 87}};
+    const cen::FRect rect{{21, 43}, {65, 87}};
     m_renderer.render(m_texture, rect);
   }
 
@@ -334,16 +334,16 @@ TEST_F(RendererTest, RenderWithRectangle)
 TEST_F(RendererTest, RenderWithSourceDestination)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
 
     m_renderer.render(m_texture, src, dst);
     validate_render_function(SDL_RenderCopy_fake, src, dst);
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
 
     m_renderer.render(m_texture, src, dst);
     validate_render_function(SDL_RenderCopyF_fake, src, dst);
@@ -356,8 +356,8 @@ TEST_F(RendererTest, RenderWithSourceDestination)
 TEST_F(RendererTest, RenderWithSourceDestinationAngle)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
 
     m_renderer.render(m_texture, src, dst, angle);
@@ -365,8 +365,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngle)
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
 
     m_renderer.render(m_texture, src, dst, angle);
@@ -380,8 +380,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngle)
 TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::ipoint center{15, 12};
 
@@ -390,8 +390,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::fpoint center{15, 12};
 
@@ -406,8 +406,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
 TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
 {
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::irect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::Rect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::ipoint center{15, 12};
     const auto flip = SDL_FLIP_HORIZONTAL;
@@ -417,8 +417,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
   }
 
   {
-    const cen::irect src{{12, 34}, {56, 78}};
-    const cen::frect dst{{21, 43}, {65, 87}};
+    const cen::Rect src{{12, 34}, {56, 78}};
+    const cen::FRect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::fpoint center{15, 12};
     const auto flip = SDL_FLIP_VERTICAL;
@@ -452,7 +452,7 @@ TEST_F(RendererTest, SetClip)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_RenderSetClipRect, values.data(), cen::isize(values));
 
-  const auto rect = cen::rect(42, 27, 123, 321);
+  const cen::Rect rect{42, 27, 123, 321};
   ASSERT_EQ(cen::failure, m_renderer.set_clip(rect));
   ASSERT_EQ(cen::success, m_renderer.set_clip(rect));
   ASSERT_EQ(2u, SDL_RenderSetClipRect_fake.call_count);
@@ -463,7 +463,7 @@ TEST_F(RendererTest, SetViewport)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_RenderSetViewport, values.data(), cen::isize(values));
 
-  const auto rect = cen::rect(12, 34, 56, 78);
+  const cen::Rect rect{12, 34, 56, 78};
   ASSERT_EQ(cen::failure, m_renderer.set_viewport(rect));
   ASSERT_EQ(cen::success, m_renderer.set_viewport(rect));
   ASSERT_EQ(2u, SDL_RenderSetViewport_fake.call_count);
@@ -474,7 +474,7 @@ TEST_F(RendererTest, SetBlendMode)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SetRenderDrawBlendMode, values.data(), cen::isize(values));
 
-  const auto rect = cen::rect(12, 34, 56, 78);
+  const cen::Rect rect{12, 34, 56, 78};
   ASSERT_EQ(cen::failure, m_renderer.set_blend_mode(cen::blend_mode::blend));
   ASSERT_EQ(cen::success, m_renderer.set_blend_mode(cen::blend_mode::blend));
   ASSERT_EQ(2u, SDL_SetRenderDrawBlendMode_fake.call_count);

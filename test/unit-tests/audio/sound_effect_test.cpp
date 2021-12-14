@@ -1,11 +1,10 @@
-#include "audio/sound_effect.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 #include <type_traits>
 
+#include "audio.hpp"
 #include "core/exception.hpp"
 
 static_assert(std::is_final_v<cen::SoundEffect>);

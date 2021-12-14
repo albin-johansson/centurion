@@ -11,30 +11,30 @@ class RendererHandleTest : public testing::Test {
  protected:
   [[maybe_unused]] static void SetUpTestSuite()
   {
-    m_window = std::make_unique<cen::window>();
-    m_renderer = std::make_unique<cen::renderer>(*m_window);
+    window = std::make_unique<cen::window>();
+    renderer = std::make_unique<cen::Renderer>(*window);
   }
 
   [[maybe_unused]] static void TearDownTestSuite()
   {
-    m_renderer.reset();
-    m_window.reset();
+    renderer.reset();
+    window.reset();
   }
 
-  inline static std::unique_ptr<cen::window> m_window;
-  inline static std::unique_ptr<cen::renderer> m_renderer;
+  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Renderer> renderer;
 };
 
 TEST_F(RendererHandleTest, RawPointerConstructor)
 {
   {  // Null pointer
-    cen::renderer_handle handle{nullptr};
+    cen::RendererHandle handle{nullptr};
     ASSERT_FALSE(handle);
     ASSERT_FALSE(handle.get());
   }
 
   {  // Valid pointer
-    const cen::renderer_handle handle{m_renderer->get()};
+    const cen::RendererHandle handle{renderer->get()};
 
     ASSERT_TRUE(handle);
     ASSERT_TRUE(handle.get());
@@ -43,7 +43,7 @@ TEST_F(RendererHandleTest, RawPointerConstructor)
 
 TEST_F(RendererHandleTest, FromOwningRenderer)
 {
-  const cen::renderer_handle handle{*m_renderer};
+  const cen::RendererHandle handle{*renderer};
 
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
@@ -51,7 +51,7 @@ TEST_F(RendererHandleTest, FromOwningRenderer)
 
 TEST_F(RendererHandleTest, ToStringAndStreamOperator)
 {
-  const cen::renderer_handle handle{*m_renderer};
+  const cen::RendererHandle handle{*renderer};
 
   std::clog << handle << '\n';
   cen::log_info_raw(cen::to_string(handle));

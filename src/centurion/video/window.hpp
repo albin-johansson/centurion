@@ -152,7 +152,7 @@ class basic_window final {
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
-   * \see `default_flags()`
+   * \see `GetDefaultFlags()`
    *
    * \since 3.0.0
    */
@@ -194,7 +194,7 @@ class basic_window final {
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
-   * \see `default_flags()`
+   * \see `GetDefaultFlags()`
    *
    * \since 5.3.0
    */
@@ -1341,9 +1341,9 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto get_renderer(const basic_window<T>& window) noexcept -> renderer_handle
+[[nodiscard]] auto get_renderer(const basic_window<T>& window) noexcept -> RendererHandle
 {
-  return renderer_handle{SDL_GetRenderer(window.get())};
+  return RendererHandle{SDL_GetRenderer(window.get())};
 }
 
 /**
@@ -1364,10 +1364,10 @@ template <typename T>
  */
 [[nodiscard]] inline auto make_window_and_renderer(
     const Area size = window::default_size(),
-    const Uint32 flags = window::default_flags()) -> std::pair<window, renderer>
+    const Uint32 flags = window::default_flags()) -> std::pair<window, Renderer>
 {
   cen::window window{"Centurion window", size, flags};
-  cen::renderer renderer{window};
+  cen::Renderer renderer{window};
   return std::make_pair(std::move(window), std::move(renderer));
 }
 

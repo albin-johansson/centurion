@@ -141,7 +141,7 @@ class palette final {
   /**
    * \brief Returns the version of the palette.
    *
-   * \note This value can be incremented by `set_color()`.
+   * \note This value can be incremented by `SetColor()`.
    *
    * \return the current version of the palette.
    *

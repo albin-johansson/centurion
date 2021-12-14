@@ -59,7 +59,7 @@ TEST_F(RendererInfoTest, Foo)
   std::array functions{get_renderer_info};
   SET_CUSTOM_FAKE_SEQ(SDL_GetRendererInfo, functions.data(), cen::isize(functions));
 
-  cen::renderer_handle handle{nullptr};
+  cen::RendererHandle handle{nullptr};
 
   const auto info = cen::get_info(handle);
   ASSERT_TRUE(info);

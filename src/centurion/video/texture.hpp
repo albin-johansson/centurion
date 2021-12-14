@@ -215,7 +215,7 @@ class basic_texture final {
   {
     assert(path);
 
-    constexpr auto blendMode = blend_mode::blend;
+    constexpr auto blendMode = BlendMode::blend;
     const auto surface = cen::Surface::WithFormat(path, blendMode, format);
 
     basic_texture texture{renderer, format, texture_access::streaming, surface.GetSize()};
@@ -268,7 +268,7 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  void set_blend_mode(const blend_mode mode) noexcept
+  void set_blend_mode(const BlendMode mode) noexcept
   {
     SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
   }
@@ -434,11 +434,11 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
+  [[nodiscard]] auto get_blend_mode() const noexcept -> BlendMode
   {
     SDL_BlendMode mode{};
     SDL_GetTextureBlendMode(m_texture, &mode);
-    return static_cast<blend_mode>(mode);
+    return static_cast<BlendMode>(mode);
   }
 
   /**

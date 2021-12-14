@@ -24,7 +24,7 @@ namespace cen {
  *
  * \see `SDL_BlendMode`
  */
-enum class blend_mode {
+enum class BlendMode {
   none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
   blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
   add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
@@ -73,7 +73,7 @@ struct blend_task final {
  * \since 6.3.0
  */
 [[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
-                                             const blend_task& alpha) noexcept -> blend_mode
+                                             const blend_task& alpha) noexcept -> BlendMode
 {
   const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
                                               static_cast<SDL_BlendFactor>(color.dst),
@@ -81,7 +81,7 @@ struct blend_task final {
                                               static_cast<SDL_BlendFactor>(alpha.src),
                                               static_cast<SDL_BlendFactor>(alpha.dst),
                                               static_cast<SDL_BlendOperation>(alpha.op));
-  return static_cast<blend_mode>(res);
+  return static_cast<BlendMode>(res);
 }
 
 /// \name String conversions
@@ -101,27 +101,27 @@ struct blend_task final {
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const BlendMode mode) -> std::string_view
 {
   switch (mode) {
-    case blend_mode::none:
+    case BlendMode::none:
       return "none";
 
-    case blend_mode::blend:
+    case BlendMode::blend:
       return "blend";
 
-    case blend_mode::add:
+    case BlendMode::add:
       return "add";
 
-    case blend_mode::mod:
+    case BlendMode::mod:
       return "mod";
 
-    case blend_mode::invalid:
+    case BlendMode::invalid:
       return "invalid";
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-    case blend_mode::mul:
+    case BlendMode::mul:
       return "mul";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -148,7 +148,7 @@ struct blend_task final {
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const BlendMode mode) -> std::ostream&
 {
   return stream << to_string(mode);
 }

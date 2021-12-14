@@ -11,26 +11,26 @@ class TextureHandleTest : public testing::Test {
   static void SetUpTestSuite()
   {
     constexpr auto path = "resources/panda.png";
-    m_window = std::make_unique<cen::window>();
-    m_renderer = std::make_unique<cen::renderer>(*m_window);
-    m_texture = std::make_unique<cen::texture>(*m_renderer, path);
+    window = std::make_unique<cen::window>();
+    renderer = std::make_unique<cen::Renderer>(*window);
+    texture = std::make_unique<cen::texture>(*renderer, path);
   }
 
   static void TearDownTestSuite()
   {
-    m_texture.reset();
-    m_renderer.reset();
-    m_window.reset();
+    texture.reset();
+    renderer.reset();
+    window.reset();
   }
 
-  inline static std::unique_ptr<cen::window> m_window;
-  inline static std::unique_ptr<cen::renderer> m_renderer;
-  inline static std::unique_ptr<cen::texture> m_texture;
+  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Renderer> renderer;
+  inline static std::unique_ptr<cen::texture> texture;
 };
 
 TEST_F(TextureHandleTest, FromTexture)
 {
-  cen::texture_handle handle{*m_texture};
+  cen::texture_handle handle{*texture};
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
 }
@@ -41,7 +41,7 @@ TEST_F(TextureHandleTest, FromRawPointer)
   ASSERT_FALSE(bad);
   ASSERT_FALSE(bad.get());
 
-  cen::texture_handle good{m_texture->get()};
+  cen::texture_handle good{texture->get()};
   ASSERT_TRUE(good);
   ASSERT_TRUE(good.get());
 }

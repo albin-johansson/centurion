@@ -106,7 +106,7 @@ class font_cache final {
    * \param string the string that will be cached.
    * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_utf8()`
+   * \see `basic_renderer::RenderBlendedUTF8()`
    *
    * \since 5.0.0
    */
@@ -114,7 +114,7 @@ class font_cache final {
   void store_blended_utf8(const id_type id, const char* string, Renderer& renderer)
   {
     assert(string);
-    store(id, renderer.render_blended_utf8(string, get_font()));
+    store(id, renderer.RenderBlendedUTF8(string, get_font()));
   }
 
   /**
@@ -140,7 +140,7 @@ class font_cache final {
    * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_utf8()`
+   * \see `basic_renderer::RenderBlendedWrappedUTF8()`
    *
    * \since 5.0.0
    */
@@ -151,7 +151,7 @@ class font_cache final {
                                   const Uint32 wrap)
   {
     assert(string);
-    store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
+    store(id, renderer.RenderBlendedWrappedUTF8(string, get_font(), wrap));
   }
 
   /**
@@ -180,7 +180,7 @@ class font_cache final {
    * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_utf8()`
+   * \see `basic_renderer::RenderShadedUTF8()`
    *
    * \since 5.0.0
    */
@@ -191,7 +191,7 @@ class font_cache final {
                          const Color& background)
   {
     assert(string);
-    store(id, renderer.render_shaded_utf8(string, get_font(), background));
+    store(id, renderer.RenderShadedUTF8(string, get_font(), background));
   }
 
   /**
@@ -219,7 +219,7 @@ class font_cache final {
    * \param string the string that will be cached.
    * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_utf8()`
+   * \see `basic_renderer::RenderSolidUTF8()`
    *
    * \since 5.0.0
    */
@@ -227,7 +227,7 @@ class font_cache final {
   void store_solid_utf8(const id_type id, const char* string, Renderer& renderer)
   {
     assert(string);
-    store(id, renderer.render_solid_utf8(string, get_font()));
+    store(id, renderer.RenderSolidUTF8(string, get_font()));
   }
 
   /**
@@ -252,7 +252,7 @@ class font_cache final {
    * \param string the string that will be cached.
    * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_latin1()`
+   * \see `basic_renderer::RenderBlendedLatin1()`
    *
    * \since 5.0.0
    */
@@ -260,7 +260,7 @@ class font_cache final {
   void store_blended_latin1(const id_type id, const char* string, Renderer& renderer)
   {
     assert(string);
-    store(id, renderer.render_blended_latin1(string, get_font()));
+    store(id, renderer.RenderBlendedLatin1(string, get_font()));
   }
 
   /**
@@ -286,7 +286,7 @@ class font_cache final {
    * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_latin1()`
+   * \see `basic_renderer::RenderBlendedWrappedLatin1()`
    *
    * \since 5.0.0
    */
@@ -297,7 +297,7 @@ class font_cache final {
                                     const Uint32 wrap)
   {
     assert(string);
-    store(id, renderer.render_blended_wrapped_latin1(string, get_font(), wrap));
+    store(id, renderer.RenderBlendedWrappedLatin1(string, get_font(), wrap));
   }
 
   /**
@@ -326,7 +326,7 @@ class font_cache final {
    * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_latin1()`
+   * \see `basic_renderer::RenderShadedLatin1()`
    *
    * \since 5.0.0
    */
@@ -337,7 +337,7 @@ class font_cache final {
                            const Color& background)
   {
     assert(string);
-    store(id, renderer.render_shaded_latin1(string, get_font(), background));
+    store(id, renderer.RenderShadedLatin1(string, get_font(), background));
   }
 
   /**
@@ -365,7 +365,7 @@ class font_cache final {
    * \param string the string that will be cached.
    * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_latin1()`
+   * \see `basic_renderer::RenderSolidLatin1()`
    *
    * \since 5.0.0
    */
@@ -373,7 +373,7 @@ class font_cache final {
   void store_solid_latin1(const id_type id, const char* string, Renderer& renderer)
   {
     assert(string);
-    store(id, renderer.render_solid_latin1(string, get_font()));
+    store(id, renderer.RenderSolidLatin1(string, get_font()));
   }
 
   /**
@@ -398,7 +398,7 @@ class font_cache final {
    * \param string the string that will be cached.
    * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_unicode()`
+   * \see `basic_renderer::RenderBlendedUnicode()`
    *
    * \since 5.0.0
    */
@@ -407,7 +407,7 @@ class font_cache final {
                              const unicode_string& string,
                              Renderer& renderer)
   {
-    store(id, renderer.render_blended_unicode(string, get_font()));
+    store(id, renderer.RenderBlendedUnicode(string, get_font()));
   }
 
   /**
@@ -423,7 +423,7 @@ class font_cache final {
    * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_unicode()`
+   * \see `basic_renderer::RenderBlendedWrappedUnicode()`
    *
    * \since 5.0.0
    */
@@ -433,7 +433,7 @@ class font_cache final {
                                      Renderer& renderer,
                                      const Uint32 wrap)
   {
-    store(id, renderer.render_blended_wrapped_unicode(string, get_font(), wrap));
+    store(id, renderer.RenderBlendedWrappedUnicode(string, get_font(), wrap));
   }
 
   /**
@@ -449,7 +449,7 @@ class font_cache final {
    * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_unicode()`
+   * \see `basic_renderer::RenderShadedUnicode()`
    *
    * \since 5.0.0
    */
@@ -459,7 +459,7 @@ class font_cache final {
                             Renderer& renderer,
                             const Color& background)
   {
-    store(id, renderer.render_shaded_unicode(string, get_font(), background));
+    store(id, renderer.RenderShadedUnicode(string, get_font(), background));
   }
 
   /**
@@ -474,14 +474,14 @@ class font_cache final {
    * \param string the string that will be cached.
    * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_unicode()`
+   * \see `basic_renderer::RenderSolidUnicode()`
    *
    * \since 5.0.0
    */
   template <typename Renderer>
   void store_solid_unicode(const id_type id, const unicode_string& string, Renderer& renderer)
   {
-    store(id, renderer.render_solid_unicode(string, get_font()));
+    store(id, renderer.RenderSolidUnicode(string, get_font()));
   }
 
   /**
@@ -756,7 +756,7 @@ class font_cache final {
   template <typename Renderer>
   [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const Unicode glyph) -> texture
   {
-    const auto color = renderer.get_color().get();
+    const auto color = renderer.GetColor().get();
     const Surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
     return texture{renderer, src};
   }

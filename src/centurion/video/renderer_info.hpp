@@ -39,7 +39,7 @@ namespace cen {
  */
 class renderer_info final {
   template <typename T>
-  friend auto get_info(const basic_renderer<T>& renderer) noexcept
+  friend auto get_info(const BasicRenderer<T>& renderer) noexcept
       -> std::optional<renderer_info>;
 
  public:
@@ -48,7 +48,7 @@ class renderer_info final {
    *
    * \return a mask of the supported renderer flags.
    *
-   * \see `basic_renderer::renderer_flags`
+   * \see `basic_renderer::RendererFlags`
    *
    * \since 6.0.0
    */
@@ -246,7 +246,7 @@ inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept
+[[nodiscard]] auto get_info(const BasicRenderer<T>& renderer) noexcept
     -> std::optional<renderer_info>
 {
   SDL_RendererInfo info;

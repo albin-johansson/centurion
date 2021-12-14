@@ -147,7 +147,7 @@ TEST_F(SurfaceTest, SetBlendMode)
 {
   const auto previous = surface->GetBlendMode();
 
-  constexpr auto mode = cen::blend_mode::mod;
+  constexpr auto mode = cen::BlendMode::mod;
   surface->SetBlendMode(mode);
 
   ASSERT_EQ(mode, surface->GetBlendMode());
@@ -196,7 +196,7 @@ TEST_F(SurfaceTest, GetPixelData)
 TEST_F(SurfaceTest, ConvertTo)
 {
   cen::Surface source{path};
-  source.SetBlendMode(cen::blend_mode::blend);
+  source.SetBlendMode(cen::BlendMode::blend);
   source.SetAlphaMod(0xAE);
   source.SetColorMod(cen::colors::red);
 

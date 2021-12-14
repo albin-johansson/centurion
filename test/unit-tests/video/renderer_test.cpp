@@ -19,375 +19,173 @@ class RendererTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    m_font = std::make_unique<cen::Font>("resources/daniel.ttf", 12);
-    m_window = std::make_unique<cen::window>();
+    font = std::make_unique<cen::Font>("resources/daniel.ttf", 12);
+    window = std::make_unique<cen::window>();
 
-    m_renderer = std::make_unique<cen::renderer>(*m_window);
-    m_texture = std::make_unique<cen::texture>(*m_renderer, "resources/panda.png");
+    renderer = std::make_unique<cen::Renderer>(*window);
+    texture = std::make_unique<cen::texture>(*renderer, "resources/panda.png");
   }
 
   static void TearDownTestSuite()
   {
-    m_texture.reset();
-    m_renderer.reset();
-    m_window.reset();
-    m_font.reset();
+    texture.reset();
+    renderer.reset();
+    window.reset();
+    font.reset();
   }
 
-  inline static std::unique_ptr<cen::Font> m_font;
-  inline static std::unique_ptr<cen::window> m_window;
-  inline static std::unique_ptr<cen::renderer> m_renderer;
-  inline static std::unique_ptr<cen::texture> m_texture;
+  inline static std::unique_ptr<cen::Font> font;
+  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Renderer> renderer;
+  inline static std::unique_ptr<cen::texture> texture;
 };
 
 TEST_F(RendererTest, PointerConstructor)
 {
   SDL_Renderer* renderer{};
-  ASSERT_THROW(cen::renderer{renderer}, cen::Error);
+  ASSERT_THROW(cen::Renderer{renderer}, cen::Error);
 }
 
 TEST_F(RendererTest, FlagsConstructor)
 {
   // This throws because there is already a renderer associated with the window
-  ASSERT_THROW(cen::renderer{*m_window}, cen::SDLError);
-}
-
-TEST_F(RendererTest, SetTranslationViewport)
-{
-  const auto old = m_renderer->translation_viewport();
-
-  constexpr cen::FRect viewport{{12, 34}, {56, 78}};
-
-  m_renderer->set_translation_viewport(viewport);
-  ASSERT_EQ(viewport, m_renderer->translation_viewport());
-
-  m_renderer->set_translation_viewport(old);
-}
-
-TEST_F(RendererTest, TranslationViewport)
-{
-  const auto viewport = m_renderer->translation_viewport();
-  ASSERT_EQ(0, viewport.GetX());
-  ASSERT_EQ(0, viewport.GetY());
-  ASSERT_EQ(0, viewport.GetWidth());
-  ASSERT_EQ(0, viewport.GetHeight());
-}
-
-TEST_F(RendererTest, TranslatedDrawRect)
-{
-  ASSERT_NO_THROW(m_renderer->draw_rect_t<int>({{12, 34}, {56, 78}}));
-  ASSERT_NO_THROW(m_renderer->draw_rect_t<float>({{12, 34}, {56, 78}}));
-}
-
-TEST_F(RendererTest, TranslatedFillRect)
-{
-  ASSERT_NO_THROW(m_renderer->fill_rect_t<int>({{12, 34}, {56, 78}}));
-  ASSERT_NO_THROW(m_renderer->fill_rect_t<float>({{12, 34}, {56, 78}}));
-}
-
-TEST_F(RendererTest, TranslatedRenderWithPoint)
-{
-  {
-    const cen::Point pos{12, 34};
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, pos));
-  }
-
-  {
-    const cen::FPoint pos{56, 78};
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, pos));
-  }
-}
-
-TEST_F(RendererTest, TranslatedRenderWithRectangle)
-{
-  {
-    const cen::Rect rect{{12, 34}, {56, 78}};
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, rect));
-  }
-
-  {
-    const cen::FRect rect{{21, 43}, {65, 87}};
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, rect));
-  }
-}
-
-TEST_F(RendererTest, TranslatedRenderWithSourceDestination)
-{
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::Rect dst{{21, 43}, {65, 87}};
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst));
-  }
-
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::FRect dst{{21, 43}, {65, 87}};
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst));
-  }
-}
-
-TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngle)
-{
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::Rect dst{{21, 43}, {65, 87}};
-    const auto angle = 12.3;
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle));
-  }
-
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::FRect dst{{21, 43}, {65, 87}};
-    const auto angle = 12.3;
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle));
-  }
-}
-
-TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
-{
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::Rect dst{{21, 43}, {65, 87}};
-    const auto angle = 12.3;
-    const cen::Point center{15, 12};
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center));
-  }
-
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::FRect dst{{21, 43}, {65, 87}};
-    const auto angle = 12.3;
-    const cen::FPoint center{15, 12};
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center));
-  }
-}
-
-TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
-{
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::Rect dst{{21, 43}, {65, 87}};
-    const auto angle = 12.3;
-    const cen::Point center{15, 12};
-    const auto flip = SDL_FLIP_HORIZONTAL;
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
-  }
-
-  {
-    const cen::Rect src{{12, 34}, {56, 78}};
-    const cen::FRect dst{{21, 43}, {65, 87}};
-    const auto angle = 12.3;
-    const cen::FPoint center{15, 12};
-    const auto flip = SDL_FLIP_VERTICAL;
-
-    ASSERT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
-  }
-}
-
-TEST_F(RendererTest, AddFont)
-{
-  const auto id = 7;
-  const auto path = "resources/daniel.ttf";
-
-  m_renderer->add_font(id, cen::Font{path, 12});
-  ASSERT_NO_THROW(m_renderer->add_font(id, cen::Font{path, 12}));
-
-  ASSERT_NO_THROW(m_renderer->get_font(id));
-  ASSERT_TRUE(m_renderer->has_font(id));
-
-  m_renderer->remove_font(id);
-}
-
-TEST_F(RendererTest, EmplaceFont)
-{
-  const auto id = 7;
-  const auto path = "resources/daniel.ttf";
-
-  m_renderer->emplace_font(id, path, 12);
-  ASSERT_NO_THROW(m_renderer->emplace_font(id, path, 12));
-
-  ASSERT_NO_THROW(m_renderer->get_font(id));
-  ASSERT_TRUE(m_renderer->has_font(id));
-
-  m_renderer->remove_font(id);
-}
-
-TEST_F(RendererTest, RemoveFont)
-{
-  ASSERT_NO_THROW(m_renderer->remove_font(0));
-
-  m_renderer->emplace_font(12, "resources/daniel.ttf", 12);
-  ASSERT_TRUE(m_renderer->has_font(12));
-
-  m_renderer->remove_font(12);
-  ASSERT_FALSE(m_renderer->has_font(12));
+  ASSERT_THROW(cen::Renderer{*window}, cen::SDLError);
 }
 
 TEST_F(RendererTest, SetColor)
 {
-  constexpr auto color = cen::colors::magenta;
-  m_renderer->set_color(color);
-
-  ASSERT_EQ(color.GetRed(), m_renderer->get_color().GetRed());
-  ASSERT_EQ(color.GetGreen(), m_renderer->get_color().GetGreen());
-  ASSERT_EQ(color.GetBlue(), m_renderer->get_color().GetBlue());
-  ASSERT_EQ(color.GetAlpha(), m_renderer->get_color().GetAlpha());
+  renderer->SetColor(cen::colors::magenta);
+  ASSERT_EQ(cen::colors::magenta, renderer->GetColor());
 }
 
 TEST_F(RendererTest, SetClip)
 {
   constexpr cen::Rect clip{{12, 34}, {56, 78}};
 
-  m_renderer->set_clip(clip);
-  ASSERT_TRUE(m_renderer->clip().has_value());
-  ASSERT_EQ(clip, m_renderer->clip().value());
+  renderer->SetClip(clip);
+  ASSERT_TRUE(renderer->GetClip().has_value());
+  ASSERT_EQ(clip, renderer->GetClip().value());
 
-  m_renderer->set_clip(std::nullopt);
-  ASSERT_FALSE(m_renderer->clip().has_value());
+  renderer->SetClip(std::nullopt);
+  ASSERT_FALSE(renderer->GetClip().has_value());
 }
 
 TEST_F(RendererTest, SetViewport)
 {
   constexpr cen::Rect viewport{{12, 34}, {56, 78}};
 
-  m_renderer->set_viewport(viewport);
-  ASSERT_EQ(viewport, m_renderer->viewport());
+  renderer->SetViewport(viewport);
+  ASSERT_EQ(viewport, renderer->GetViewport());
 }
 
 TEST_F(RendererTest, SetBlendMode)
 {
-  m_renderer->set_blend_mode(cen::blend_mode::blend);
-  ASSERT_EQ(cen::blend_mode::blend, m_renderer->get_blend_mode());
+  renderer->SetBlendMode(cen::BlendMode::blend);
+  ASSERT_EQ(cen::BlendMode::blend, renderer->GetBlendMode());
 }
 
 TEST_F(RendererTest, SetScale)
 {
   const auto xScale = 0.8f;
   const auto yScale = 0.6f;
-  m_renderer->set_scale(xScale, yScale);
+  renderer->SetScale(xScale, yScale);
 
-  ASSERT_EQ(xScale, m_renderer->x_scale());
-  ASSERT_EQ(yScale, m_renderer->y_scale());
+  const auto [x, y] = renderer->GetScale();
+  ASSERT_EQ(xScale, x);
+  ASSERT_EQ(yScale, y);
 
-  m_renderer->set_scale(1, 1);
+  renderer->SetScale(1, 1);
 }
 
 TEST_F(RendererTest, SetLogicalSize)
 {
-  const auto old = m_renderer->logical_size();
+  const auto old = renderer->GetLogicalSize();
   constexpr cen::Area size{12, 34};
 
-  m_renderer->set_logical_size(size);
-  ASSERT_EQ(size.width, m_renderer->logical_width());
-  ASSERT_EQ(size.height, m_renderer->logical_height());
+  renderer->SetLogicalSize(size);
+  ASSERT_EQ(size.width, renderer->GetLogicalSize().width);
+  ASSERT_EQ(size.height, renderer->GetLogicalSize().height);
 
-  m_renderer->set_logical_size(old);
+  renderer->SetLogicalSize(old);
 }
 
 TEST_F(RendererTest, SetLogicalIntegerScaling)
 {
-  m_renderer->set_logical_integer_scaling(true);
-  ASSERT_TRUE(m_renderer->is_using_integer_logical_scaling());
+  renderer->SetLogicalIntegerScaling(true);
+  ASSERT_TRUE(renderer->IsUsingIntegerLogicalScaling());
 
-  m_renderer->set_logical_integer_scaling(false);
-  ASSERT_FALSE(m_renderer->is_using_integer_logical_scaling());
+  renderer->SetLogicalIntegerScaling(false);
+  ASSERT_FALSE(renderer->IsUsingIntegerLogicalScaling());
 }
 
 TEST_F(RendererTest, GetRenderTarget)
 {
-  ASSERT_EQ(nullptr, m_renderer->get_render_target().get());
+  ASSERT_EQ(nullptr, renderer->GetRenderTarget().get());
 }
 
-TEST_F(RendererTest, LogicalWidth)
+TEST_F(RendererTest, GetLogicalSize)
 {
-  ASSERT_EQ(0, m_renderer->logical_width());
+  ASSERT_EQ(0, renderer->GetLogicalSize().width);
+  ASSERT_EQ(0, renderer->GetLogicalSize().height);
 }
 
-TEST_F(RendererTest, LogicalHeight)
+TEST_F(RendererTest, GetScale)
 {
-  ASSERT_EQ(0, m_renderer->logical_height());
+  ASSERT_EQ(1, renderer->GetScale().first);
+  ASSERT_EQ(1, renderer->GetScale().second);
 }
 
-TEST_F(RendererTest, LogicalSize)
+TEST_F(RendererTest, GetClip)
 {
-  ASSERT_EQ(0, m_renderer->logical_size().width);
-  ASSERT_EQ(0, m_renderer->logical_size().height);
-}
-
-TEST_F(RendererTest, XScale)
-{
-  ASSERT_EQ(1, m_renderer->x_scale());
-}
-
-TEST_F(RendererTest, YScale)
-{
-  ASSERT_EQ(1, m_renderer->y_scale());
-}
-
-TEST_F(RendererTest, Scale)
-{
-  ASSERT_EQ(1, m_renderer->scale().first);
-  ASSERT_EQ(1, m_renderer->scale().second);
-}
-
-TEST_F(RendererTest, Clip)
-{
-  ASSERT_FALSE(m_renderer->clip().has_value());
+  ASSERT_FALSE(renderer->GetClip().has_value());
 }
 
 TEST_F(RendererTest, Capture)
 {
-  m_window->show();
+  window->show();
 
-  m_renderer->clear_with(cen::colors::pink);
+  renderer->ClearWith(cen::colors::pink);
 
-  m_renderer->set_color(cen::colors::green);
-  m_renderer->fill_rect(cen::Rect{20, 20, 150, 100});
+  renderer->SetColor(cen::colors::green);
+  renderer->FillRect(cen::Rect{20, 20, 150, 100});
 
-  m_renderer->set_color(cen::colors::black);
-  m_renderer->draw_circle(cen::FPoint{300.0, 200.0}, 30);
+  renderer->SetColor(cen::colors::black);
+  renderer->DrawCircle(cen::FPoint{300.0, 200.0}, 30);
 
-  m_renderer->set_color(cen::colors::maroon);
-  m_renderer->fill_circle({400, 300}, 35);
+  renderer->SetColor(cen::colors::maroon);
+  renderer->FillCircle({400, 300}, 35);
 
-  m_renderer->present();
+  renderer->Present();
 
-  const auto snapshot = m_renderer->capture(m_window->get_pixel_format());
+  const auto snapshot = renderer->Capture(window->get_pixel_format());
   ASSERT_TRUE(snapshot.SaveAsBMP("snapshot.bmp"));
 
   {  // We take the opportunity to do some surface tests as well
     ASSERT_NO_THROW(cen::Surface::FromBMP("snapshot.bmp"s));
     ASSERT_NO_THROW(cen::Surface::WithFormat("resources/panda.png"s,
-                                             m_renderer->get_blend_mode(),
-                                             m_window->get_pixel_format()));
+                                             renderer->GetBlendMode(),
+                                             window->get_pixel_format()));
   }
 
-  m_window->hide();
+  window->hide();
 }
 
 TEST_F(RendererTest, ToString)
 {
-  cen::log_info_raw(cen::to_string(*m_renderer));
+  cen::log_info_raw(cen::to_string(*renderer));
 }
 
 TEST_F(RendererTest, StreamOperator)
 {
-  std::clog << *m_renderer << '\n';
+  std::clog << *renderer << '\n';
 }
 
 TEST_F(RendererTest, RendererFlagsEnum)
 {
   ASSERT_EQ(SDL_RENDERER_ACCELERATED,
-            static_cast<SDL_RendererFlags>(cen::renderer::accelerated));
-  ASSERT_EQ(SDL_RENDERER_SOFTWARE, static_cast<SDL_RendererFlags>(cen::renderer::software));
+            static_cast<SDL_RendererFlags>(cen::Renderer::Accelerated));
+  ASSERT_EQ(SDL_RENDERER_SOFTWARE, static_cast<SDL_RendererFlags>(cen::Renderer::Software));
   ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE,
-            static_cast<SDL_RendererFlags>(cen::renderer::target_textures));
-  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, static_cast<SDL_RendererFlags>(cen::renderer::vsync));
+            static_cast<SDL_RendererFlags>(cen::Renderer::TargetTextures));
+  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, static_cast<SDL_RendererFlags>(cen::Renderer::VSync));
 }

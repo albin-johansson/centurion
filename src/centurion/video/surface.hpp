@@ -116,7 +116,7 @@ class BasicSurface final {
   /* Creates a blank surface with the specified blend mode and pixel format */
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const char* file,
-                                       const blend_mode mode,
+                                       const BlendMode mode,
                                        const pixel_format format) -> BasicSurface
   {
     assert(file);
@@ -129,7 +129,7 @@ class BasicSurface final {
 
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const std::string& file,
-                                       const blend_mode mode,
+                                       const BlendMode mode,
                                        const pixel_format format) -> BasicSurface
   {
     return WithFormat(file.c_str(), mode, format);
@@ -211,7 +211,7 @@ class BasicSurface final {
     SDL_SetSurfaceColorMod(mSurface, color.GetRed(), color.GetGreen(), color.GetBlue());
   }
 
-  void SetBlendMode(const blend_mode mode) noexcept
+  void SetBlendMode(const BlendMode mode) noexcept
   {
     SDL_SetSurfaceBlendMode(mSurface, static_cast<SDL_BlendMode>(mode));
   }
@@ -258,11 +258,11 @@ class BasicSurface final {
     }
   }
 
-  [[nodiscard]] auto GetBlendMode() const noexcept -> blend_mode
+  [[nodiscard]] auto GetBlendMode() const noexcept -> BlendMode
   {
     SDL_BlendMode mode{};
     SDL_GetSurfaceBlendMode(mSurface, &mode);
-    return static_cast<blend_mode>(mode);
+    return static_cast<BlendMode>(mode);
   }
 
   [[nodiscard]] auto GetWidth() const noexcept -> int { return mSurface->w; }

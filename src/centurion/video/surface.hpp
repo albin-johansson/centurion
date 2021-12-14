@@ -44,7 +44,7 @@ template <typename T>
 class BasicSurface final {
  public:
   /* Creates a surface based on existing surface, ownership is claimed by owning surfaces */
-  explicit BasicSurface(MaybeOwner<SDL_Surface*> surface) noexcept(!detail::is_owner<T>)
+  explicit BasicSurface(MaybeOwner<SDL_Surface*> surface) noexcept(detail::is_handle<T>)
       : mSurface{surface}
   {
     if constexpr (detail::is_owner<T>) {
@@ -85,7 +85,7 @@ class BasicSurface final {
     }
   }
 
-  BasicSurface(const BasicSurface& other) noexcept(!detail::is_owner<T>)
+  BasicSurface(const BasicSurface& other) noexcept(detail::is_handle<T>)
   {
     if constexpr (detail::is_owner<T>) {
       Copy(other);
@@ -97,7 +97,7 @@ class BasicSurface final {
 
   BasicSurface(BasicSurface&& other) noexcept = default;
 
-  auto operator=(const BasicSurface& other) noexcept(!detail::is_owner<T>) -> BasicSurface&
+  auto operator=(const BasicSurface& other) noexcept(detail::is_handle<T>) -> BasicSurface&
   {
     if (this != &other) {
       if constexpr (detail::is_owner<T>) {

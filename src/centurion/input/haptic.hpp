@@ -84,7 +84,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(MaybeOwner<SDL_Haptic*> haptic) noexcept(!detail::is_owner<T>)
+  explicit basic_haptic(MaybeOwner<SDL_Haptic*> haptic) noexcept(detail::is_handle<T>)
       : m_haptic{haptic}
   {
     if constexpr (detail::is_owner<T>) {

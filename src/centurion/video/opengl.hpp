@@ -160,7 +160,7 @@ class basic_gl_context final {
    *
    * \since 6.0.0
    */
-  explicit basic_gl_context(MaybeOwner<SDL_GLContext> context) noexcept(!detail::is_owner<T>)
+  explicit basic_gl_context(MaybeOwner<SDL_GLContext> context) noexcept(detail::is_handle<T>)
       : m_context{context}
   {
     if constexpr (detail::is_owner<T>) {
@@ -185,7 +185,7 @@ class basic_gl_context final {
    * \since 6.0.0
    */
   template <typename U>
-  explicit basic_gl_context(basic_window<U>& window) noexcept(!detail::is_owner<T>)
+  explicit basic_gl_context(basic_window<U>& window) noexcept(detail::is_handle<T>)
       : m_context{SDL_GL_CreateContext(window.get())}
   {
     if constexpr (detail::is_owner<T>) {

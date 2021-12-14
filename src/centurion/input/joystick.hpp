@@ -147,7 +147,7 @@ class basic_joystick final {
    *
    * \throws cen_error if the supplied pointer is null and the joystick is owning.
    */
-  explicit basic_joystick(MaybeOwner<SDL_Joystick*> joystick) noexcept(!detail::is_owner<T>)
+  explicit basic_joystick(MaybeOwner<SDL_Joystick*> joystick) noexcept(detail::is_handle<T>)
       : m_joystick{joystick}
   {
     if constexpr (detail::is_owner<T>)

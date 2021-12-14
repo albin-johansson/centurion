@@ -187,7 +187,7 @@ class BasicSoundEffect final {
 
   inline constexpr static int forever = -1;
 
-  explicit BasicSoundEffect(MaybeOwner<Mix_Chunk*> sound) noexcept(!detail::is_owner<T>)
+  explicit BasicSoundEffect(MaybeOwner<Mix_Chunk*> sound) noexcept(detail::is_handle<T>)
       : mChunk{sound}
   {
     if constexpr (detail::is_owner<T>) {

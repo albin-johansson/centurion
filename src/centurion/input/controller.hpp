@@ -225,7 +225,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  explicit basic_controller(MaybeOwner<SDL_GameController*> controller) noexcept(!detail::is_owner<T>)
+  explicit basic_controller(MaybeOwner<SDL_GameController*> controller) noexcept(detail::is_handle<T>)
       : m_controller{controller}
   {
     if constexpr (detail::is_owner<T>)

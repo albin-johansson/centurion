@@ -72,7 +72,7 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  explicit basic_texture(MaybeOwner<SDL_Texture*> source) noexcept(!detail::is_owner<T>)
+  explicit basic_texture(MaybeOwner<SDL_Texture*> source) noexcept(detail::is_handle<T>)
       : m_texture{source}
   {
     if constexpr (detail::is_owner<T>)

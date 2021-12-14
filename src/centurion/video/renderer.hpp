@@ -57,7 +57,7 @@ class BasicRenderer final {
     VSync = SDL_RENDERER_PRESENTVSYNC             ///< Renderer Uses VSync
   };
 
-  explicit BasicRenderer(MaybeOwner<SDL_Renderer*> renderer) noexcept(!detail::is_owner<T>)
+  explicit BasicRenderer(MaybeOwner<SDL_Renderer*> renderer) noexcept(detail::is_handle<T>)
       : mRenderer{renderer}
   {
     if constexpr (detail::is_owner<T>) {

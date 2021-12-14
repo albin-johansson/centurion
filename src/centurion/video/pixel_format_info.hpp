@@ -82,7 +82,7 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(MaybeOwner<SDL_PixelFormat*> format) noexcept(!detail::is_owner<B>)
+  explicit basic_pixel_format_info(MaybeOwner<SDL_PixelFormat*> format) noexcept(detail::is_handle<B>)
       : m_format{format}
   {
     if constexpr (detail::is_owner<B>)

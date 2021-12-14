@@ -129,7 +129,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  explicit basic_window(MaybeOwner<SDL_Window*> window) noexcept(!detail::is_owner<T>)
+  explicit basic_window(MaybeOwner<SDL_Window*> window) noexcept(detail::is_handle<T>)
       : m_window{window}
   {
     if constexpr (detail::is_owner<T>) {

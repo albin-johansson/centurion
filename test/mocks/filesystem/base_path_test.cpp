@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
-#include "filesystem/paths.hpp"
+#include "filesystem.hpp"
 
 extern "C"
 {
@@ -20,6 +20,6 @@ class BasePathTest : public testing::Test {
 
 TEST_F(BasePathTest, FunctionCall)
 {
-  const auto path [[maybe_unused]] = cen::base_path();
+  const auto path [[maybe_unused]] = cen::GetBasePath();
   ASSERT_EQ(1u, SDL_GetBasePath_fake.call_count);
 }

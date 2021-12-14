@@ -277,12 +277,12 @@ template <typename T>
 [[nodiscard]] auto GetDistance(const BasicPoint<T> from, const BasicPoint<T> to) noexcept ->
     typename BasicPoint<T>::value_type
 {
+  const auto distance = std::sqrt(std::abs(from.GetX() - to.GetX()) + std::abs(from.GetY() - to.GetY()));
   if constexpr (BasicPoint<T>::integral) {
-    const auto dist = std::sqrt(std::abs(from.GetX() - to.GetX()) + std::abs(from.GetY() - to.GetY()));
-    return static_cast<int>(std::round(dist));
+    return static_cast<int>(std::round(distance));
   }
   else {
-    return std::sqrt(std::abs(from.GetX() - to.GetX()) + std::abs(from.GetY() - to.GetY()));
+    return distance;
   }
 }
 

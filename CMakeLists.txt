@@ -62,6 +62,7 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
                src/centurion/concurrency.hpp
+               src/centurion/filesystem.hpp
                src/centurion/math.hpp
                src/centurion/system.hpp
 
@@ -116,9 +117,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/events/user_event.hpp
                src/centurion/events/window_event.hpp
                src/centurion/events/window_event_id.hpp
-
-               src/centurion/filesystem/file.hpp
-               src/centurion/filesystem/paths.hpp
 
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp

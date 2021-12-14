@@ -1,12 +1,10 @@
-#include "filesystem/file.hpp"
-
 #include <gtest/gtest.h>
 
 #include <array>    // array
 #include <cstddef>  // size_t
 #include <vector>   // vector
 
-#include "filesystem/paths.hpp"
+#include "filesystem.hpp"
 
 using namespace cen::literals;
 

@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "filesystem/file.hpp"
+#include "filesystem.hpp"
 
 TEST(SeekMode, Values)
 {

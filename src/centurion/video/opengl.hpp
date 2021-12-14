@@ -129,10 +129,10 @@ template <typename T>
 class basic_gl_context;
 
 ///< An owning OpenGL context.
-using gl_context = basic_gl_context<detail::owning_type>;
+using gl_context = basic_gl_context<detail::OwnerTag>;
 
 ///< A non-owning OpenGL context.
-using gl_context_handle = basic_gl_context<detail::handle_type>;
+using gl_context_handle = basic_gl_context<detail::HandleTag>;
 
 /**
  * \class basic_context
@@ -160,10 +160,10 @@ class basic_gl_context final {
    *
    * \since 6.0.0
    */
-  explicit basic_gl_context(MaybeOwner<SDL_GLContext> context) noexcept(!detail::is_owning<T>())
+  explicit basic_gl_context(MaybeOwner<SDL_GLContext> context) noexcept(!detail::is_owner<T>)
       : m_context{context}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!m_context) {
         throw Error{"Can't create OpenGL context from null pointer!"};
       }
@@ -185,10 +185,10 @@ class basic_gl_context final {
    * \since 6.0.0
    */
   template <typename U>
-  explicit basic_gl_context(basic_window<U>& window) noexcept(!detail::is_owning<T>())
+  explicit basic_gl_context(basic_window<U>& window) noexcept(!detail::is_owner<T>)
       : m_context{SDL_GL_CreateContext(window.get())}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!m_context) {
         throw SDLError{};
       }

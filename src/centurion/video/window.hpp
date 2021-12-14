@@ -42,7 +42,7 @@ class basic_window;
  *
  * \since 5.0.0
  */
-using window = basic_window<detail::owning_type>;
+using window = basic_window<detail::OwnerTag>;
 
 /**
  * \typedef window_handle
@@ -51,7 +51,7 @@ using window = basic_window<detail::owning_type>;
  *
  * \since 5.0.0
  */
-using window_handle = basic_window<detail::handle_type>;
+using window_handle = basic_window<detail::HandleTag>;
 
 /**
  * \class basic_window
@@ -129,10 +129,10 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  explicit basic_window(MaybeOwner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(MaybeOwner<SDL_Window*> window) noexcept(!detail::is_owner<T>)
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!m_window) {
         throw Error{"Cannot create window from null pointer!"};
       }
@@ -156,7 +156,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit basic_window(const char* title,
                         const Area size = default_size(),
                         const Uint32 flags = default_flags())
@@ -198,7 +198,7 @@ class basic_window final {
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit basic_window(const std::string& title,
                         const Area size = default_size(),
                         const Uint32 flags = default_flags())
@@ -215,7 +215,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -226,7 +226,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -729,7 +729,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> Area
   {
     return {800, 600};
@@ -1032,7 +1032,7 @@ class basic_window final {
     return check_flag(skip_taskbar);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> Uint32
   {
     return hidden;
@@ -1205,7 +1205,7 @@ class basic_window final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -1214,10 +1214,7 @@ class basic_window final {
   /// \} End of conversions
 
  private:
-  struct deleter final {
-    void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
-  };
-  detail::pointer_manager<T, SDL_Window, deleter> m_window;
+  detail::Pointer<T, SDL_Window> m_window;
 };
 
 /// \name String conversions

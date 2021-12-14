@@ -41,7 +41,7 @@ class basic_haptic;
  *
  * \since 5.2.0
  */
-using haptic = basic_haptic<detail::owning_type>;
+using haptic = basic_haptic<detail::OwnerTag>;
 
 /**
  * \typedef haptic_handle
@@ -50,7 +50,7 @@ using haptic = basic_haptic<detail::owning_type>;
  *
  * \since 5.2.0
  */
-using haptic_handle = basic_haptic<detail::handle_type>;
+using haptic_handle = basic_haptic<detail::HandleTag>;
 
 /**
  * \class basic_haptic
@@ -84,10 +84,10 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(MaybeOwner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<T>())
+  explicit basic_haptic(MaybeOwner<SDL_Haptic*> haptic) noexcept(!detail::is_owner<T>)
       : m_haptic{haptic}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!m_haptic) {
         throw Error{"Null haptic pointer!"};
       }
@@ -105,7 +105,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic) {
@@ -120,7 +120,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit basic_haptic(const haptic& owner) noexcept : m_haptic{owner.get()}
   {}
 
@@ -137,7 +137,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename U, typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick) -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {
@@ -159,7 +159,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromMouse()) {
@@ -829,7 +829,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_haptic != nullptr;
@@ -847,10 +847,7 @@ class basic_haptic final {
   [[nodiscard]] auto get() const noexcept -> SDL_Haptic* { return m_haptic.get(); }
 
  private:
-  struct deleter final {
-    void operator()(SDL_Haptic* haptic) noexcept { SDL_HapticClose(haptic); }
-  };
-  detail::pointer_manager<T, SDL_Haptic, deleter> m_haptic;
+  detail::Pointer<T, SDL_Haptic> m_haptic;
 
   /**
    * \brief Indicates whether or not the haptic device supports the specified features.

@@ -103,7 +103,7 @@ class basic_joystick;
  *
  * \since 5.0.0
  */
-using joystick = basic_joystick<detail::owning_type>;
+using joystick = basic_joystick<detail::OwnerTag>;
 
 /**
  * \typedef joystick_handle
@@ -112,7 +112,7 @@ using joystick = basic_joystick<detail::owning_type>;
  *
  * \since 5.0.0
  */
-using joystick_handle = basic_joystick<detail::handle_type>;
+using joystick_handle = basic_joystick<detail::HandleTag>;
 
 /**
  * \class basic_joystick
@@ -147,10 +147,10 @@ class basic_joystick final {
    *
    * \throws cen_error if the supplied pointer is null and the joystick is owning.
    */
-  explicit basic_joystick(MaybeOwner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<T>())
+  explicit basic_joystick(MaybeOwner<SDL_Joystick*> joystick) noexcept(!detail::is_owner<T>)
       : m_joystick{joystick}
   {
-    if constexpr (detail::is_owning<T>())
+    if constexpr (detail::is_owner<T>)
     {
       if (!m_joystick)
       {
@@ -168,7 +168,7 @@ class basic_joystick final {
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
     if (!m_joystick) {
@@ -181,7 +181,7 @@ class basic_joystick final {
    *
    * \param owner the owning joystick instance.
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit basic_joystick(const joystick& owner) noexcept : m_joystick{owner.get()}
   {}
 
@@ -194,7 +194,7 @@ class basic_joystick final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -212,7 +212,7 @@ class basic_joystick final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -1073,7 +1073,7 @@ class basic_joystick final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -1091,15 +1091,7 @@ class basic_joystick final {
   [[nodiscard]] auto get() const noexcept -> SDL_Joystick* { return m_joystick.get(); }
 
  private:
-  struct deleter final {
-    void operator()(SDL_Joystick* joystick) noexcept
-    {
-      if (SDL_JoystickGetAttached(joystick)) {
-        SDL_JoystickClose(joystick);
-      }
-    }
-  };
-  detail::pointer_manager<T, SDL_Joystick, deleter> m_joystick;
+  detail::Pointer<T, SDL_Joystick> m_joystick;
 };
 
 /// \name String conversions

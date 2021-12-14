@@ -50,11 +50,11 @@ class basic_sensor;
 
 /// \brief Represents an owning sensor device.
 /// \since 5.2.0
-using sensor = basic_sensor<detail::owning_type>;
+using sensor = basic_sensor<detail::OwnerTag>;
 
 /// \brief Represents a non-owning sensor device.
 /// \since 5.2.0
-using sensor_handle = basic_sensor<detail::handle_type>;
+using sensor_handle = basic_sensor<detail::HandleTag>;
 
 /**
  * \brief Represents a sensor device.
@@ -84,10 +84,10 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(MaybeOwner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
+  explicit basic_sensor(MaybeOwner<SDL_Sensor*> sensor) noexcept(!detail::is_owner<T>)
       : m_sensor{sensor}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!m_sensor) {
         throw Error{"Null sensor pointer!"};
       }
@@ -103,7 +103,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor) {
@@ -118,7 +118,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit basic_sensor(const sensor& owner) noexcept : m_sensor{owner.get()}
   {}
 
@@ -339,7 +339,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_sensor != nullptr;
@@ -348,10 +348,7 @@ class basic_sensor final {
   /// \} End of conversions
 
  private:
-  struct deleter final {
-    void operator()(SDL_Sensor* sensor) noexcept { SDL_SensorClose(sensor); }
-  };
-  detail::pointer_manager<T, SDL_Sensor, deleter> m_sensor;
+  detail::Pointer<T, SDL_Sensor> m_sensor;
 };
 
 /// \name String conversions

@@ -177,8 +177,8 @@ class Music final {
 template <typename T>
 class BasicSoundEffect;
 
-using SoundEffect = BasicSoundEffect<detail::owning_type>;
-using SoundEffectHandle = BasicSoundEffect<detail::handle_type>;
+using SoundEffect = BasicSoundEffect<detail::OwnerTag>;
+using SoundEffectHandle = BasicSoundEffect<detail::HandleTag>;
 
 template <typename T>
 class BasicSoundEffect final {
@@ -187,17 +187,17 @@ class BasicSoundEffect final {
 
   inline constexpr static int forever = -1;
 
-  explicit BasicSoundEffect(MaybeOwner<Mix_Chunk*> sound) noexcept(!detail::is_owning<T>())
+  explicit BasicSoundEffect(MaybeOwner<Mix_Chunk*> sound) noexcept(!detail::is_owner<T>)
       : mChunk{sound}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!mChunk) {
         throw MixError{};
       }
     }
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicSoundEffect(const char* file) : mChunk{Mix_LoadWAV(file)}
   {
     if (!mChunk) {
@@ -205,11 +205,11 @@ class BasicSoundEffect final {
     }
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicSoundEffect(const std::string& file) : BasicSoundEffect{file.c_str()}
   {}
 
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit BasicSoundEffect(const SoundEffect& owner) noexcept : mChunk{owner.get()}
   {}
 
@@ -253,7 +253,7 @@ class BasicSoundEffect final {
     return (mChannel != GetUndefinedChannel()) && Mix_Playing(mChannel);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto IsAnyPlaying() noexcept -> bool
   {
     return Mix_Playing(GetUndefinedChannel());
@@ -268,19 +268,19 @@ class BasicSoundEffect final {
 
   [[nodiscard]] constexpr static auto GetMaxVolume() noexcept -> int { return MIX_MAX_VOLUME; }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto GetDecoder(const int index) noexcept -> const char*
   {
     return Mix_GetChunkDecoder(index);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto HasDecoder(const char* name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto GetDecoderCount() noexcept -> int
   {
     return Mix_GetNumChunkDecoders();

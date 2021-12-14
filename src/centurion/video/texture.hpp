@@ -39,8 +39,8 @@ namespace cen {
 template <typename T>
 class basic_texture;
 
-using texture = basic_texture<detail::owning_type>;
-using texture_handle = basic_texture<detail::handle_type>;
+using texture = basic_texture<detail::OwnerTag>;
+using texture_handle = basic_texture<detail::HandleTag>;
 
 /**
  * \class basic_texture
@@ -72,10 +72,10 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  explicit basic_texture(MaybeOwner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
+  explicit basic_texture(MaybeOwner<SDL_Texture*> source) noexcept(!detail::is_owner<T>)
       : m_texture{source}
   {
-    if constexpr (detail::is_owning<T>())
+    if constexpr (detail::is_owner<T>)
     {
       if (!m_texture)
       {
@@ -93,7 +93,7 @@ class basic_texture final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
@@ -111,7 +111,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   basic_texture(const Renderer& renderer, const char* path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -132,7 +132,7 @@ class basic_texture final {
    *
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
@@ -151,7 +151,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   basic_texture(const Renderer& renderer, const Surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -174,7 +174,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
@@ -208,7 +208,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const char* path,
                                       const pixel_format format) -> basic_texture
@@ -239,7 +239,7 @@ class basic_texture final {
    * \see streaming()
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
                                       const pixel_format format) -> basic_texture
@@ -486,7 +486,7 @@ class basic_texture final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] auto release() noexcept -> Owner<SDL_Texture*>
   {
     return m_texture.release();
@@ -513,7 +513,7 @@ class basic_texture final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_texture != nullptr;
@@ -540,10 +540,7 @@ class basic_texture final {
   /// \} End of conversions
 
  private:
-  struct deleter final {
-    void operator()(SDL_Texture* texture) noexcept { SDL_DestroyTexture(texture); }
-  };
-  detail::pointer_manager<T, SDL_Texture, deleter> m_texture;
+  detail::Pointer<T, SDL_Texture> m_texture;
 
   /**
    * \brief Locks the texture for write-only pixel access.

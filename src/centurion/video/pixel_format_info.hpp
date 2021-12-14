@@ -36,7 +36,7 @@ class basic_pixel_format_info;
  *
  * \since 5.2.0
  */
-using pixel_format_info = basic_pixel_format_info<detail::owning_type>;
+using pixel_format_info = basic_pixel_format_info<detail::OwnerTag>;
 
 /**
  * \typedef pixel_format_info_handle
@@ -45,7 +45,7 @@ using pixel_format_info = basic_pixel_format_info<detail::owning_type>;
  *
  * \since 5.2.0
  */
-using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
+using pixel_format_info_handle = basic_pixel_format_info<detail::HandleTag>;
 
 /**
  * \class basic_pixel_format_info
@@ -82,10 +82,10 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(MaybeOwner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+  explicit basic_pixel_format_info(MaybeOwner<SDL_PixelFormat*> format) noexcept(!detail::is_owner<B>)
       : m_format{format}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owner<B>)
     {
       if (!m_format)
       {
@@ -107,7 +107,7 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename BB = B, detail::EnableOwner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(ToUnderlying(format))}
   {
@@ -123,7 +123,7 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename BB = B, detail::EnableHandle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -259,7 +259,7 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename BB = B, detail::EnableHandle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;
@@ -268,10 +268,7 @@ class basic_pixel_format_info final {
   /// \} End of conversions
 
  private:
-  struct deleter final {
-    void operator()(SDL_PixelFormat* format) noexcept { SDL_FreeFormat(format); }
-  };
-  detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
+  detail::Pointer<B, SDL_PixelFormat> m_format;
 };
 
 /// \name String conversions

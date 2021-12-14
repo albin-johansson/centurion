@@ -158,7 +158,7 @@ class basic_controller;
  *
  * \since 5.0.0
  */
-using controller = basic_controller<detail::owning_type>;
+using controller = basic_controller<detail::OwnerTag>;
 
 /**
  * \typedef controller_handle
@@ -167,7 +167,7 @@ using controller = basic_controller<detail::owning_type>;
  *
  * \since 5.0.0
  */
-using controller_handle = basic_controller<detail::handle_type>;
+using controller_handle = basic_controller<detail::HandleTag>;
 
 /**
  * \class basic_controller
@@ -225,10 +225,10 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  explicit basic_controller(MaybeOwner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(MaybeOwner<SDL_GameController*> controller) noexcept(!detail::is_owner<T>)
       : m_controller{controller}
   {
-    if constexpr (detail::is_owning<T>()) 
+    if constexpr (detail::is_owner<T>)
     {
       if (!m_controller) 
       {
@@ -246,7 +246,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit basic_controller(const controller& owner) noexcept : m_controller{owner.get()}
   {}
 
@@ -270,7 +270,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit basic_controller(const int index = 0) : m_controller{SDL_GameControllerOpen(index)}
   {
     if (!m_controller) {
@@ -292,7 +292,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
@@ -316,7 +316,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
@@ -1323,7 +1323,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;
@@ -1332,13 +1332,7 @@ class basic_controller final {
   /// \} End of conversions
 
  private:
-  struct deleter final {
-    void operator()(SDL_GameController* controller) noexcept
-    {
-      SDL_GameControllerClose(controller);
-    }
-  };
-  detail::pointer_manager<T, SDL_GameController, deleter> m_controller;
+  detail::Pointer<T, SDL_GameController> m_controller;
 };
 
 /// \name String conversions

@@ -44,8 +44,8 @@ namespace cen {
 template <typename T>
 class BasicRenderer;
 
-using Renderer = BasicRenderer<detail::owning_type>;
-using RendererHandle = BasicRenderer<detail::handle_type>;
+using Renderer = BasicRenderer<detail::OwnerTag>;
+using RendererHandle = BasicRenderer<detail::HandleTag>;
 
 template <typename T>
 class BasicRenderer final {
@@ -57,17 +57,17 @@ class BasicRenderer final {
     VSync = SDL_RENDERER_PRESENTVSYNC             ///< Renderer Uses VSync
   };
 
-  explicit BasicRenderer(MaybeOwner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
+  explicit BasicRenderer(MaybeOwner<SDL_Renderer*> renderer) noexcept(!detail::is_owner<T>)
       : mRenderer{renderer}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!get()) {
         throw Error{"Cannot create renderer from null pointer!"};
       }
     }
   }
 
-  template <typename Window, typename TT = T, detail::is_owner<TT> = 0>
+  template <typename Window, typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicRenderer(const Window& window, const Uint32 flags = GetDefaultFlags())
       : mRenderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
@@ -76,7 +76,7 @@ class BasicRenderer final {
     }
   }
 
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit BasicRenderer(const Renderer& owner) noexcept : mRenderer{owner.get()}
   {}
 
@@ -690,7 +690,7 @@ class BasicRenderer final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer* { return mRenderer.get(); }
 
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mRenderer != nullptr;

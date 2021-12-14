@@ -37,17 +37,17 @@ namespace cen {
 template <typename T>
 class BasicSurface;
 
-using Surface = BasicSurface<detail::owning_type>;
-using SurfaceHandle = BasicSurface<detail::handle_type>;
+using Surface = BasicSurface<detail::OwnerTag>;
+using SurfaceHandle = BasicSurface<detail::HandleTag>;
 
 template <typename T>
 class BasicSurface final {
  public:
   /* Creates a surface based on existing surface, ownership is claimed by owning surfaces */
-  explicit BasicSurface(MaybeOwner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
+  explicit BasicSurface(MaybeOwner<SDL_Surface*> surface) noexcept(!detail::is_owner<T>)
       : mSurface{surface}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       if (!mSurface) {
         throw Error{"Cannot create owning surface from null pointer!"};
       }
@@ -57,7 +57,7 @@ class BasicSurface final {
 #ifndef CENTURION_NO_SDL_IMAGE
 
   /* Creates a surface based on the image at the specified file path */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicSurface(const char* file) : mSurface{IMG_Load(file)}
   {
     if (!mSurface) {
@@ -65,14 +65,14 @@ class BasicSurface final {
     }
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicSurface(const std::string& file) : BasicSurface{file.c_str()}
   {}
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Creates a blank surface with the specified size and format */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   BasicSurface(const Area& size, const pixel_format format)
       : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
                                                 size.width,
@@ -85,9 +85,9 @@ class BasicSurface final {
     }
   }
 
-  BasicSurface(const BasicSurface& other) noexcept(!detail::is_owning<T>())
+  BasicSurface(const BasicSurface& other) noexcept(!detail::is_owner<T>)
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owner<T>) {
       Copy(other);
     }
     else {
@@ -97,10 +97,10 @@ class BasicSurface final {
 
   BasicSurface(BasicSurface&& other) noexcept = default;
 
-  auto operator=(const BasicSurface& other) noexcept(!detail::is_owning<T>()) -> BasicSurface&
+  auto operator=(const BasicSurface& other) noexcept(!detail::is_owner<T>) -> BasicSurface&
   {
     if (this != &other) {
-      if constexpr (detail::is_owning<T>()) {
+      if constexpr (detail::is_owner<T>) {
         Copy(other);
       }
       else {
@@ -114,7 +114,7 @@ class BasicSurface final {
   auto operator=(BasicSurface&& other) noexcept -> BasicSurface& = default;
 
   /* Creates a blank surface with the specified blend mode and pixel format */
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const char* file,
                                        const BlendMode mode,
                                        const pixel_format format) -> BasicSurface
@@ -127,7 +127,7 @@ class BasicSurface final {
     return source.ConvertTo(format);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const std::string& file,
                                        const BlendMode mode,
                                        const pixel_format format) -> BasicSurface
@@ -135,14 +135,14 @@ class BasicSurface final {
     return WithFormat(file.c_str(), mode, format);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto FromBMP(const char* file) -> BasicSurface
   {
     assert(file);
     return BasicSurface{SDL_LoadBMP(file)};
   }
 
-  template <typename TT = T, detail::is_owner<TT> = 0>
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto FromBMP(const std::string& file) -> BasicSurface
   {
     return FromBMP(file.c_str());
@@ -294,7 +294,7 @@ class BasicSurface final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  template <typename TT = T, detail::is_handle<TT> = 0>
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mSurface != nullptr;

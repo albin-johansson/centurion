@@ -183,19 +183,6 @@ class Color final {
     return Color{r, g, b};
   }
 
-  /**
-   * \brief Creates a color from a hexadecimal RGB color string.
-   *
-   * \details The supplied string must feature a leading '#' character, and be 7
-   * characters long.
-   *
-   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
-   *
-   * \return a corresponding color; `std::nullopt` if something goes wrong.
-   *
-   * \see `FromRGBA()`
-   * \see `FromARGB()`
-   */
   [[nodiscard]] static auto FromRGB(const std::string_view rgb) -> std::optional<Color>
   {
     if (rgb.length() != 7 || rgb.at(0) != '#') {
@@ -220,19 +207,6 @@ class Color final {
     }
   }
 
-  /**
-   * \brief Creates a color from a hexadecimal RGBA color string.
-   *
-   * \details The supplied string must feature a leading '#' character, and be 9
-   * characters long.
-   *
-   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
-   *
-   * \return a corresponding color; `std::nullopt` if something goes wrong.
-   *
-   * \see `FromRGB()`
-   * \see `FromARGB()`
-   */
   [[nodiscard]] static auto FromRGBA(const std::string_view rgba) -> std::optional<Color>
   {
     if (rgba.length() != 9 || rgba.at(0) != '#') {
@@ -259,19 +233,6 @@ class Color final {
     }
   }
 
-  /**
-   * \brief Creates a color from a hexadecimal ARGB color string.
-   *
-   * \details The supplied string must feature a leading '#' character, and be 9
-   * characters long.
-   *
-   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
-   *
-   * \return a corresponding color; `std::nullopt` if something goes wrong.
-   *
-   * \see `FromRGB()`
-   * \see `FromRGBA()`
-   */
   [[nodiscard]] static auto FromARGB(const std::string_view argb) -> std::optional<Color>
   {
     if (argb.length() != 9 || argb.at(0) != '#') {
@@ -298,18 +259,6 @@ class Color final {
     }
   }
 
-  /**
-   * \brief Creates a color from normalized color component values.
-   *
-   * \note The color components will be clamped to the range [0, 1].
-   *
-   * \param red the red component value, in the range [0, 1].
-   * \param green the green component value, in the range [0, 1].
-   * \param blue the blue component value, in the range [0, 1].
-   * \param alpha the alpha component value, in the range [0, 1].
-   *
-   * \return a color with the supplied color components.
-   */
   [[nodiscard]] static auto FromNorm(float red,
                                      float green,
                                      float blue,
@@ -341,19 +290,13 @@ class Color final {
   }
 
   constexpr void SetRed(const Uint8 red) noexcept { mColor.r = red; }
-
   constexpr void SetGreen(const Uint8 green) noexcept { mColor.g = green; }
-
   constexpr void SetBlue(const Uint8 blue) noexcept { mColor.b = blue; }
-
   constexpr void SetAlpha(const Uint8 alpha) noexcept { mColor.a = alpha; }
 
   [[nodiscard]] constexpr auto GetRed() const noexcept -> Uint8 { return mColor.r; }
-
   [[nodiscard]] constexpr auto GetGreen() const noexcept -> Uint8 { return mColor.g; }
-
   [[nodiscard]] constexpr auto GetBlue() const noexcept -> Uint8 { return mColor.b; }
-
   [[nodiscard]] constexpr auto GetAlpha() const noexcept -> Uint8 { return mColor.a; }
 
   [[nodiscard]] constexpr auto GetRedNorm() const noexcept -> float
@@ -376,18 +319,7 @@ class Color final {
     return static_cast<float>(mColor.a) / 255.0f;
   }
 
-  /**
-   * \brief Returns a hexadecimal RGB color string that represents the color.
-   *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
-   *
-   * \return a hexadecimal color string representation, on the format "#RRGGBB".
-   *
-   * \see `AsRGBA()`
-   * \see `AsARGB()`
-   *
-   * \since 6.1.0
-   */
+  /* Returns a hexadecimal RGB code representation, on the format "#RRGGBB". */
   [[nodiscard]] auto AsRGB() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -405,18 +337,7 @@ class Color final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
   }
 
-  /**
-   * \brief Returns a hexadecimal RGBA color string that represents the color.
-   *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
-   *
-   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
-   *
-   * \see `AsRGB()`
-   * \see `AsARGB()`
-   *
-   * \since 6.1.0
-   */
+  /* Returns a hexadecimal RGBA code representation, on the format "#RRGGBBAA". */
   [[nodiscard]] auto AsRGBA() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -439,18 +360,7 @@ class Color final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
   }
 
-  /**
-   * \brief Returns a hexadecimal ARGB color string that represents the color.
-   *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
-   *
-   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
-   *
-   * \see `AsRGB()`
-   * \see `AsRGBA()`
-   *
-   * \since 6.1.0
-   */
+  /* Returns a hexadecimal ARGB code representation, on the format "#AARRGGBB". */
   [[nodiscard]] auto AsARGB() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT

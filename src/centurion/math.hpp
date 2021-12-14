@@ -278,9 +278,7 @@ template <typename T>
     typename BasicPoint<T>::value_type
 {
   if constexpr (BasicPoint<T>::integral) {
-    const auto xDiff = std::abs(from.GetX() - to.GetX());
-    const auto yDiff = std::abs(from.GetY() - to.GetY());
-    const auto dist = std::sqrt(xDiff + yDiff);
+    const auto dist = std::sqrt(std::abs(from.GetX() - to.GetX()) + std::abs(from.GetY() - to.GetY()));
     return static_cast<int>(std::round(dist));
   }
   else {

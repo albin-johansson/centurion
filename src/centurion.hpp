@@ -107,7 +107,6 @@
 #include "centurion/video/color.hpp"
 #include "centurion/video/colors.hpp"
 #include "centurion/video/cursor.hpp"
-#include "centurion/video/flash_op.hpp"
 #include "centurion/video/font.hpp"
 #include "centurion/video/font_cache.hpp"
 #include "centurion/video/graphics_drivers.hpp"

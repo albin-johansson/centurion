@@ -10,6 +10,16 @@
 
 namespace cen {
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+enum class FlashOp {
+  Cancel = SDL_FLASH_CANCEL,             /* Cancel any current flashing. */
+  Briefly = SDL_FLASH_BRIEFLY,           /* Briefly flash the window. */
+  UntilFocused = SDL_FLASH_UNTIL_FOCUSED /* Flash the window until it's focused. */
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
 enum class BlendMode {
   none = SDL_BLENDMODE_NONE,   /* No blending. */
   blend = SDL_BLENDMODE_BLEND, /* Alpha blending. */
@@ -68,6 +78,27 @@ struct blend_task final {
                                               static_cast<SDL_BlendOperation>(alpha.op));
   return static_cast<BlendMode>(res);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+[[nodiscard]] constexpr auto to_string(const FlashOp op) -> std::string_view
+{
+  switch (op) {
+    case FlashOp::Cancel:
+      return "Cancel";
+
+    case FlashOp::Briefly:
+      return "Briefly";
+
+    case FlashOp::UntilFocused:
+      return "UntilFocused";
+
+    default:
+      throw Error{"Did not recognize window flash operation!"};
+  }
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 [[nodiscard]] constexpr auto to_string(const BlendMode mode) -> std::string_view
 {
@@ -159,6 +190,15 @@ struct blend_task final {
       throw Error{"Did not recognize blend operation!"};
   }
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+inline auto operator<<(std::ostream& stream, const FlashOp op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 inline auto operator<<(std::ostream& stream, const BlendMode mode) -> std::ostream&
 {

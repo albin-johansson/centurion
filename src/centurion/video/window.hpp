@@ -17,7 +17,6 @@
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"
 #include "../video.hpp"
-#include "flash_op.hpp"
 #include "renderer.hpp"
 #include "surface.hpp"
 
@@ -297,7 +296,7 @@ class basic_window final {
    *
    * \since 6.2.0
    */
-  auto flash(const flash_op op = flash_op::briefly) noexcept -> Result
+  auto flash(const FlashOp op = FlashOp::Briefly) noexcept -> Result
   {
     return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
   }

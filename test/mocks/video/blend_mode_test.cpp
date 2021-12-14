@@ -1,9 +1,8 @@
-#include "video/blend_mode.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "video.hpp"
 
 extern "C"
 {

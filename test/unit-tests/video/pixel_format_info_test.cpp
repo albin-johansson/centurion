@@ -1,10 +1,9 @@
-#include "video/pixel_format_info.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
+#include "pixels.hpp"
 #include "system.hpp"
 #include "video/colors.hpp"
 

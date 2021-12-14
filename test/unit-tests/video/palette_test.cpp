@@ -1,10 +1,9 @@
-#include "video/palette.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/logging.hpp"
+#include "pixels.hpp"
 #include "video/colors.hpp"
 
 TEST(Palette, Constructor)

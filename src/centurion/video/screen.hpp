@@ -10,7 +10,7 @@
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
 #include "../math.hpp"
-#include "pixel_format.hpp"
+#include "../pixels.hpp"
 
 namespace cen {
 

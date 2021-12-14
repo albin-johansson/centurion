@@ -64,7 +64,10 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/concurrency.hpp
                src/centurion/filesystem.hpp
                src/centurion/math.hpp
+               src/centurion/pixels.hpp
+               src/centurion/render.hpp
                src/centurion/system.hpp
+               src/centurion/video.hpp
 
                src/centurion/core/common.hpp
                src/centurion/core/exception.hpp
@@ -145,9 +148,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
 
                src/centurion/concurrency.hpp
 
-               src/centurion/video/blend_factor.hpp
-               src/centurion/video/blend_mode.hpp
-               src/centurion/video/blend_op.hpp
                src/centurion/video/button_order.hpp
                src/centurion/video/color.hpp
                src/centurion/video/colors.hpp
@@ -159,11 +159,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/message_box.hpp
                src/centurion/video/message_box_type.hpp
                src/centurion/video/opengl.hpp
-               src/centurion/video/palette.hpp
-               src/centurion/video/pixel_format.hpp
-               src/centurion/video/pixel_format_info.hpp
                src/centurion/video/renderer.hpp
-               src/centurion/video/renderer_info.hpp
                src/centurion/video/scale_mode.hpp
                src/centurion/video/screen.hpp
                src/centurion/video/surface.hpp

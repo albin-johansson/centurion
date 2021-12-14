@@ -2,17 +2,16 @@
 
 #include <iostream>  // clog
 
-#include "video/blend_mode.hpp"
+#include "core/common.hpp"
+#include "video.hpp"
 
 TEST(BlendOp, Values)
 {
-  ASSERT_EQ(SDL_BLENDOPERATION_ADD, cen::blend_op::add);
-  ASSERT_EQ(SDL_BLENDOPERATION_SUBTRACT, cen::blend_op::sub);
-  ASSERT_EQ(SDL_BLENDOPERATION_REV_SUBTRACT, cen::blend_op::reverse_sub);
-  ASSERT_EQ(SDL_BLENDOPERATION_MINIMUM, cen::blend_op::min);
-  ASSERT_EQ(SDL_BLENDOPERATION_MAXIMUM, cen::blend_op::max);
-
-  ASSERT_NE(cen::blend_op::sub, SDL_BLENDOPERATION_MINIMUM);
+  ASSERT_EQ(SDL_BLENDOPERATION_ADD, cen::ToUnderlying(cen::blend_op::add));
+  ASSERT_EQ(SDL_BLENDOPERATION_SUBTRACT, cen::ToUnderlying(cen::blend_op::sub));
+  ASSERT_EQ(SDL_BLENDOPERATION_REV_SUBTRACT, cen::ToUnderlying(cen::blend_op::reverse_sub));
+  ASSERT_EQ(SDL_BLENDOPERATION_MINIMUM, cen::ToUnderlying(cen::blend_op::min));
+  ASSERT_EQ(SDL_BLENDOPERATION_MAXIMUM, cen::ToUnderlying(cen::blend_op::max));
 }
 
 TEST(BlendOp, ToString)

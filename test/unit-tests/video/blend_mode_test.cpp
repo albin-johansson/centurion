@@ -1,10 +1,9 @@
-#include "video/blend_mode.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/common.hpp"
+#include "video.hpp"
 
 TEST(BlendMode, Values)
 {

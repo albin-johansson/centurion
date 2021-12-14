@@ -9,10 +9,10 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"
-#include "blend_mode.hpp"
+#include "../pixels.hpp"
+#include "../video.hpp"
 #include "color.hpp"
 #include "colors.hpp"
-#include "pixel_format_info.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>

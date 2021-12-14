@@ -27,7 +27,7 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"
-#include "blend_mode.hpp"
+#include "../video.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "font.hpp"

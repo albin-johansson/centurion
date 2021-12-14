@@ -1,5 +1,3 @@
-#include "video/renderer_info.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -7,6 +5,7 @@
 #include <iostream>  // cout
 
 #include "core_mocks.hpp"
+#include "render.hpp"
 
 extern "C"
 {
@@ -61,26 +60,26 @@ TEST_F(RendererInfoTest, Foo)
 
   cen::RendererHandle handle{nullptr};
 
-  const auto info = cen::get_info(handle);
+  const auto info = cen::GetInfo(handle);
   ASSERT_TRUE(info);
 
-  ASSERT_STREQ(name, info->name());
+  ASSERT_STREQ(name, info->GetName());
 
-  ASSERT_EQ(flags, info->supported_flags());
-  ASSERT_TRUE(info->has_vsync());
-  ASSERT_TRUE(info->has_hardware_acceleration());
-  ASSERT_FALSE(info->has_target_textures());
-  ASSERT_FALSE(info->has_software_renderer());
+  ASSERT_EQ(flags, info->GetSupportedFlags());
+  ASSERT_TRUE(info->HasVSync());
+  ASSERT_TRUE(info->HasHardwareAcceleration());
+  ASSERT_FALSE(info->HasTargetTextures());
+  ASSERT_FALSE(info->HasSoftwareRenderer());
 
-  ASSERT_EQ(max_texture_width, info->max_texture_width());
-  ASSERT_EQ(max_texture_height, info->max_texture_height());
-  ASSERT_EQ(max_texture_width, info->max_texture_size().width);
-  ASSERT_EQ(max_texture_height, info->max_texture_size().height);
+  ASSERT_EQ(max_texture_width, info->GetMaxTextureWidth());
+  ASSERT_EQ(max_texture_height, info->GetMaxTextureHeight());
+  ASSERT_EQ(max_texture_width, info->GetMaxTextureSize().width);
+  ASSERT_EQ(max_texture_height, info->GetMaxTextureSize().height);
 
-  ASSERT_EQ(num_texture_formats, info->format_count());
-  ASSERT_EQ(texture_format_0, static_cast<Uint32>(info->format(0)));
-  ASSERT_EQ(texture_format_1, static_cast<Uint32>(info->format(1)));
-  ASSERT_EQ(texture_format_2, static_cast<Uint32>(info->format(2)));
+  ASSERT_EQ(num_texture_formats, info->GetPixelFormats());
+  ASSERT_EQ(texture_format_0, static_cast<Uint32>(info->GetFormat(0)));
+  ASSERT_EQ(texture_format_1, static_cast<Uint32>(info->GetFormat(1)));
+  ASSERT_EQ(texture_format_2, static_cast<Uint32>(info->GetFormat(2)));
 
   std::clog << *info << '\n';
 }

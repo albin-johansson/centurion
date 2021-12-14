@@ -16,8 +16,8 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"
+#include "../video.hpp"
 #include "flash_op.hpp"
-#include "pixel_format.hpp"
 #include "renderer.hpp"
 #include "surface.hpp"
 

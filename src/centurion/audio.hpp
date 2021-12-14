@@ -178,7 +178,6 @@ template <typename T>
 class BasicSoundEffect;
 
 using SoundEffect = BasicSoundEffect<detail::owning_type>;
-
 using SoundEffectHandle = BasicSoundEffect<detail::handle_type>;
 
 template <typename T>

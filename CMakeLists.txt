@@ -60,10 +60,10 @@ endif ()
 add_library(${CENTURION_LIB_TARGET} INTERFACE)
 
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
+               src/centurion/audio.hpp
+               src/centurion/concurrency.hpp
                src/centurion/math.hpp
-
-               src/centurion/audio/music.hpp
-               src/centurion/audio/sound_effect.hpp
+               src/centurion/system.hpp
 
                src/centurion/core/common.hpp
                src/centurion/core/exception.hpp

@@ -1,11 +1,10 @@
-#include "audio/music.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>     // clog
 #include <memory>       // unique_ptr
 #include <type_traits>  // ...
 
+#include "audio.hpp"
 #include "core/logging.hpp"
 
 static_assert(std::is_final_v<cen::Music>);

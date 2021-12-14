@@ -1,10 +1,9 @@
-#include "audio/music.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
+#include "audio.hpp"
 #include "core_mocks.hpp"
 #include "mixer_mocks.hpp"
 

@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "audio/music.hpp"
+#include "audio.hpp"
 #include "core/common.hpp"
 
 TEST(FadeStatus, Values)

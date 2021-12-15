@@ -403,9 +403,7 @@ class font_cache final {
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_unicode(const id_type id,
-                             const UnicodeString& string,
-                             Renderer& renderer)
+  void store_blended_unicode(const id_type id, const UnicodeString& string, Renderer& renderer)
   {
     store(id, renderer.RenderBlendedUnicode(string, get_font()));
   }

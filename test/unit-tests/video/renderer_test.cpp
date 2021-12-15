@@ -1,5 +1,3 @@
-#include "video/renderer.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
@@ -8,6 +6,7 @@
 #include "core/exception.hpp"
 #include "core/logging.hpp"
 #include "math.hpp"
+#include "render.hpp"
 #include "video/colors.hpp"
 #include "video/font.hpp"
 #include "video/graphics_drivers.hpp"

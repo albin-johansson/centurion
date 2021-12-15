@@ -1,5 +1,3 @@
-#include "video/renderer.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -8,6 +6,7 @@
 #include <type_traits>  // is_same_v
 
 #include "core_mocks.hpp"
+#include "render.hpp"
 
 extern "C"
 {

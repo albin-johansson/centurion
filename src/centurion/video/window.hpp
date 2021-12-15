@@ -17,7 +17,7 @@
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"
 #include "../video.hpp"
-#include "renderer.hpp"
+#include "render.hpp"
 #include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

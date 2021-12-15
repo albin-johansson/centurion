@@ -4,7 +4,7 @@
 #include <memory>    // unique_ptr
 
 #include "core/logging.hpp"
-#include "video/renderer.hpp"
+#include "render.hpp"
 #include "video/window.hpp"
 
 class RendererHandleTest : public testing::Test {

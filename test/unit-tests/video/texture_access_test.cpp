@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "texture.hpp"
+#include "render.hpp"
 
 TEST(TextureAccess, Values)
 {

@@ -11,9 +11,9 @@
 #include <utility>        // move, forward
 
 #include "../core/common.hpp"
+#include "../render.hpp"
 #include "../texture.hpp"
 #include "font.hpp"
-#include "renderer.hpp"
 #include "surface.hpp"
 #include "unicode_string.hpp"
 

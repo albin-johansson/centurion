@@ -159,8 +159,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/message_box.hpp
                src/centurion/video/message_box_type.hpp
                src/centurion/video/opengl.hpp
-               src/centurion/video/renderer.hpp
-               src/centurion/video/scale_mode.hpp
                src/centurion/video/screen.hpp
                src/centurion/video/surface.hpp
                src/centurion/video/unicode_string.hpp

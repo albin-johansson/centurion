@@ -6,8 +6,8 @@
 #include <memory>       // unique_ptr
 #include <string_view>  // string_view
 
+#include "render.hpp"
 #include "video/font.hpp"
-#include "video/renderer.hpp"
 #include "video/window.hpp"
 
 class FontCacheTest : public testing::Test {

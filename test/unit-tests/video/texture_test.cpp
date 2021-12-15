@@ -1,5 +1,3 @@
-#include "texture.hpp"
-
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
@@ -9,8 +7,8 @@
 
 #include "core/exception.hpp"
 #include "core/logging.hpp"
+#include "render.hpp"
 #include "video/colors.hpp"
-#include "video/renderer.hpp"
 #include "video/window.hpp"
 
 static_assert(std::is_final_v<cen::Texture>);
@@ -224,14 +222,14 @@ TEST_F(TextureTest, SetScaleMode)
 {
   const auto previous = texture->GetScaleMode();
 
-  texture->SetScaleMode(cen::scale_mode::nearest);
-  ASSERT_EQ(cen::scale_mode::nearest, texture->GetScaleMode());
+  texture->SetScaleMode(cen::ScaleMode::Nearest);
+  ASSERT_EQ(cen::ScaleMode::Nearest, texture->GetScaleMode());
 
-  texture->SetScaleMode(cen::scale_mode::linear);
-  ASSERT_EQ(cen::scale_mode::linear, texture->GetScaleMode());
+  texture->SetScaleMode(cen::ScaleMode::Linear);
+  ASSERT_EQ(cen::ScaleMode::Linear, texture->GetScaleMode());
 
-  texture->SetScaleMode(cen::scale_mode::best);
-  ASSERT_EQ(cen::scale_mode::best, texture->GetScaleMode());
+  texture->SetScaleMode(cen::ScaleMode::Best);
+  ASSERT_EQ(cen::ScaleMode::Best, texture->GetScaleMode());
 
   texture->SetScaleMode(previous);
 }

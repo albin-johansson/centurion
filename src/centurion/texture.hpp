@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_TEXTURE_HPP_
-#define CENTURION_VIDEO_TEXTURE_HPP_
+#ifndef CENTURION_TEXTURE_HPP_
+#define CENTURION_TEXTURE_HPP_
 
 #include <SDL.h>
 
@@ -21,7 +21,6 @@
 #include "math.hpp"
 #include "video.hpp"
 #include "video/color.hpp"
-#include "video/scale_mode.hpp"
 #include "video/surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -37,6 +36,16 @@ enum class TextureAccess {
   Streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
   Target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+enum class ScaleMode {
+  Nearest = SDL_ScaleModeNearest,
+  Linear = SDL_ScaleModeLinear,
+  Best = SDL_ScaleModeBest
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 template <typename T>
 class BasicTexture;
@@ -157,7 +166,7 @@ class BasicTexture final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  void SetScaleMode(const scale_mode mode) noexcept
+  void SetScaleMode(const ScaleMode mode) noexcept
   {
     SDL_SetTextureScaleMode(mTexture, static_cast<SDL_ScaleMode>(mode));
   }
@@ -238,11 +247,11 @@ class BasicTexture final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  [[nodiscard]] auto GetScaleMode() const noexcept -> scale_mode
+  [[nodiscard]] auto GetScaleMode() const noexcept -> ScaleMode
   {
     SDL_ScaleMode mode{};
     SDL_GetTextureScaleMode(mTexture, &mode);
-    return static_cast<scale_mode>(mode);
+    return static_cast<ScaleMode>(mode);
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -299,6 +308,37 @@ class BasicTexture final {
   }
 }
 
+inline auto operator<<(std::ostream& stream, const TextureAccess access) -> std::ostream&
+{
+  return stream << to_string(access);
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+[[nodiscard]] constexpr auto to_string(const ScaleMode mode) -> std::string_view
+{
+  switch (mode) {
+    case ScaleMode::Nearest:
+      return "Nearest";
+
+    case ScaleMode::Linear:
+      return "Linear";
+
+    case ScaleMode::Best:
+      return "Best";
+
+    default:
+      throw Error{"Did not recognize scale mode!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const ScaleMode mode) -> std::ostream&
+{
+  return stream << to_string(mode);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
 template <typename T>
 [[nodiscard]] auto to_string(const BasicTexture<T>& texture) -> std::string
 {
@@ -314,11 +354,6 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-inline auto operator<<(std::ostream& stream, const TextureAccess access) -> std::ostream&
-{
-  return stream << to_string(access);
-}
-
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicTexture<T>& texture) -> std::ostream&
 {
@@ -327,4 +362,4 @@ auto operator<<(std::ostream& stream, const BasicTexture<T>& texture) -> std::os
 
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_TEXTURE_HPP_
+#endif  // CENTURION_TEXTURE_HPP_

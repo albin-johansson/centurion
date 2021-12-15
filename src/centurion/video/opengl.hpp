@@ -17,7 +17,7 @@
 #include "../core/features.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../math.hpp"
-#include "texture.hpp"
+#include "../texture.hpp"
 #include "window.hpp"
 
 namespace cen {

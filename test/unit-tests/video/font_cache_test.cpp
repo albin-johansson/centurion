@@ -10,36 +10,9 @@
 #include "video/renderer.hpp"
 #include "video/window.hpp"
 
-namespace {
-inline constexpr auto fontPath = "resources/daniel.ttf";
-}
-
-TEST(FontCache, FontConstructor)
-{
-  cen::Font font{fontPath, 12};
-  ASSERT_NO_THROW(cen::font_cache{std::move(font)});
-}
-
-TEST(FontCache, InPlaceConstructor)
-{
-  ASSERT_NO_THROW(cen::font_cache(fontPath, 12));
-
-  // Font constructor exceptions
-  ASSERT_THROW(cen::font_cache("", 12), cen::TTFError);
-  ASSERT_THROW(cen::font_cache(fontPath, 0), cen::Error);
-}
-
 class FontCacheTest : public testing::Test {
  protected:
-  using id_type = cen::font_cache::id_type;
-
-  using unicode_signature = void(id_type, const cen::UnicodeString&);
-  using unicode_store_fn = std::function<unicode_signature>;
-
-  using normal_signature = void(id_type, const char*);
-  using normal_store_fn = std::function<normal_signature>;
-
-  FontCacheTest() : testing::Test{}, m_cache{fontPath, 12} {}
+  FontCacheTest() : testing::Test{}, cache{"resources/daniel.ttf", 12} {}
 
   static void SetUpTestSuite()
   {
@@ -53,283 +26,230 @@ class FontCacheTest : public testing::Test {
     window.reset();
   }
 
-  void test_store_utf_8(const normal_store_fn& store) { test_store(store, 54, "UTF-8_<!?+="); }
-
-  void test_store_latin_1(const normal_store_fn& store)
-  {
-    test_store(store, 27, "latin1_<!?+=");
-  }
-
-  void test_store_unicode(const unicode_store_fn& store)
-  {
-    test_store(store, 77, cen::UnicodeString{'b', 'a', 'r'});
-  }
+  const char* utf8_string = "UTF-8_<!?+=";
+  const char* latin1_string = "latin1_<!?+=";
+  const cen::UnicodeString unicode_string{'b', 'a', 'r'};
 
   inline static std::unique_ptr<cen::window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
-  cen::font_cache m_cache;
-
- private:
-  template <typename T, typename S>
-  void test_store(const T& store, const id_type id, const S& str)
-  {
-    ASSERT_FALSE(m_cache.has_stored(id));
-
-    store(id, str);
-    ASSERT_TRUE(m_cache.has_stored(id));
-
-    ASSERT_NO_THROW(store(id, str));
-  }
+  cen::FontCache cache;
 };
+
+TEST_F(FontCacheTest, Constructors)
+{
+  using namespace std::string_literals;
+  EXPECT_ANY_THROW(cen::FontCache("foo.ttf"s, 12));
+  EXPECT_ANY_THROW(cen::FontCache("foo.ttf", 12));
+}
 
 TEST_F(FontCacheTest, StoreBlendedUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
-    m_cache.store_blended_unicode(id, str, *renderer);
-  });
+  // TODO
 }
 
-TEST_F(FontCacheTest, StoreBlendedWrappedUnicode)
+TEST_F(FontCacheTest, StoreWrappedUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
-    m_cache.store_blended_wrapped_unicode(id, str, *renderer, 100);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreSolidUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
-    m_cache.store_solid_unicode(id, str, *renderer);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreShadedUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
-    m_cache.store_shaded_unicode(id, str, *renderer, cen::colors::pink);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreBlendedUTF8)
 {
-  test_store_utf_8([this](const id_type id, const char* str) {
-    m_cache.store_blended_utf8(id, str, *renderer);
-  });
+  // TODO
 }
 
-TEST_F(FontCacheTest, StoreBlendedWrappedUTF8)
+TEST_F(FontCacheTest, StoreWrappedUTF8)
 {
-  test_store_utf_8([this](const id_type id, const char* str) {
-    m_cache.store_blended_wrapped_utf8(id, str, *renderer, 80);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreSolidUTF8)
 {
-  test_store_utf_8([this](const id_type id, const char* str) {
-    m_cache.store_solid_utf8(id, str, *renderer);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreShadedUTF8)
 {
-  test_store_utf_8([this](const id_type id, const char* str) {
-    m_cache.store_shaded_utf8(id, str, *renderer, cen::colors::cyan);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreBlendedLatin1)
 {
-  test_store_latin_1([this](const id_type id, const char* str) {
-    m_cache.store_blended_latin1(id, str, *renderer);
-  });
+  // TODO
 }
 
-TEST_F(FontCacheTest, StoreBlendedWrappedLatin1)
+TEST_F(FontCacheTest, StoreWrappedLatin1)
 {
-  test_store_latin_1([this](const id_type id, const char* str) {
-    m_cache.store_blended_wrapped_latin1(id, str, *renderer, 120);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreSolidLatin1)
 {
-  test_store_latin_1([this](const id_type id, const char* str) {
-    m_cache.store_solid_latin1(id, str, *renderer);
-  });
+  // TODO
 }
 
 TEST_F(FontCacheTest, StoreShadedLatin1)
 {
-  test_store_latin_1([this](const id_type id, const char* str) {
-    m_cache.store_shaded_latin1(id, str, *renderer, cen::colors::aqua);
-  });
+  // TODO
 }
 
-TEST_F(FontCacheTest, Has)
+TEST_F(FontCacheTest, HasGlyph)
 {
-  m_cache.add_basic_latin(*renderer);
+  cache.StoreBasicLatinGlyphs(*renderer);
 
-  {  // Lowercase latin alphabet
-    ASSERT_TRUE(m_cache.has('a'));
-    ASSERT_TRUE(m_cache.has('b'));
-    ASSERT_TRUE(m_cache.has('c'));
-    ASSERT_TRUE(m_cache.has('d'));
-    ASSERT_TRUE(m_cache.has('e'));
-    ASSERT_TRUE(m_cache.has('f'));
-    ASSERT_TRUE(m_cache.has('g'));
-    ASSERT_TRUE(m_cache.has('h'));
-    ASSERT_TRUE(m_cache.has('i'));
-    ASSERT_TRUE(m_cache.has('j'));
-    ASSERT_TRUE(m_cache.has('k'));
-    ASSERT_TRUE(m_cache.has('l'));
-    ASSERT_TRUE(m_cache.has('m'));
-    ASSERT_TRUE(m_cache.has('n'));
-    ASSERT_TRUE(m_cache.has('o'));
-    ASSERT_TRUE(m_cache.has('p'));
-    ASSERT_TRUE(m_cache.has('q'));
-    ASSERT_TRUE(m_cache.has('r'));
-    ASSERT_TRUE(m_cache.has('s'));
-    ASSERT_TRUE(m_cache.has('t'));
-    ASSERT_TRUE(m_cache.has('u'));
-    ASSERT_TRUE(m_cache.has('v'));
-    ASSERT_TRUE(m_cache.has('x'));
-    ASSERT_TRUE(m_cache.has('y'));
-    ASSERT_TRUE(m_cache.has('z'));
-  }
+  /* Lowercase latin alphabet */
+  ASSERT_TRUE(cache.HasGlyph('a'));
+  ASSERT_TRUE(cache.HasGlyph('b'));
+  ASSERT_TRUE(cache.HasGlyph('c'));
+  ASSERT_TRUE(cache.HasGlyph('d'));
+  ASSERT_TRUE(cache.HasGlyph('e'));
+  ASSERT_TRUE(cache.HasGlyph('f'));
+  ASSERT_TRUE(cache.HasGlyph('g'));
+  ASSERT_TRUE(cache.HasGlyph('h'));
+  ASSERT_TRUE(cache.HasGlyph('i'));
+  ASSERT_TRUE(cache.HasGlyph('j'));
+  ASSERT_TRUE(cache.HasGlyph('k'));
+  ASSERT_TRUE(cache.HasGlyph('l'));
+  ASSERT_TRUE(cache.HasGlyph('m'));
+  ASSERT_TRUE(cache.HasGlyph('n'));
+  ASSERT_TRUE(cache.HasGlyph('o'));
+  ASSERT_TRUE(cache.HasGlyph('p'));
+  ASSERT_TRUE(cache.HasGlyph('q'));
+  ASSERT_TRUE(cache.HasGlyph('r'));
+  ASSERT_TRUE(cache.HasGlyph('s'));
+  ASSERT_TRUE(cache.HasGlyph('t'));
+  ASSERT_TRUE(cache.HasGlyph('u'));
+  ASSERT_TRUE(cache.HasGlyph('v'));
+  ASSERT_TRUE(cache.HasGlyph('x'));
+  ASSERT_TRUE(cache.HasGlyph('y'));
+  ASSERT_TRUE(cache.HasGlyph('z'));
 
-  {  // Uppercase latin alphabet
-    ASSERT_TRUE(m_cache.has('A'));
-    ASSERT_TRUE(m_cache.has('B'));
-    ASSERT_TRUE(m_cache.has('C'));
-    ASSERT_TRUE(m_cache.has('D'));
-    ASSERT_TRUE(m_cache.has('E'));
-    ASSERT_TRUE(m_cache.has('F'));
-    ASSERT_TRUE(m_cache.has('G'));
-    ASSERT_TRUE(m_cache.has('H'));
-    ASSERT_TRUE(m_cache.has('I'));
-    ASSERT_TRUE(m_cache.has('J'));
-    ASSERT_TRUE(m_cache.has('K'));
-    ASSERT_TRUE(m_cache.has('L'));
-    ASSERT_TRUE(m_cache.has('M'));
-    ASSERT_TRUE(m_cache.has('N'));
-    ASSERT_TRUE(m_cache.has('O'));
-    ASSERT_TRUE(m_cache.has('P'));
-    ASSERT_TRUE(m_cache.has('Q'));
-    ASSERT_TRUE(m_cache.has('R'));
-    ASSERT_TRUE(m_cache.has('S'));
-    ASSERT_TRUE(m_cache.has('T'));
-    ASSERT_TRUE(m_cache.has('U'));
-    ASSERT_TRUE(m_cache.has('V'));
-    ASSERT_TRUE(m_cache.has('X'));
-    ASSERT_TRUE(m_cache.has('Y'));
-    ASSERT_TRUE(m_cache.has('Z'));
-  }
+  /* Uppercase latin alphabet */
+  ASSERT_TRUE(cache.HasGlyph('A'));
+  ASSERT_TRUE(cache.HasGlyph('B'));
+  ASSERT_TRUE(cache.HasGlyph('C'));
+  ASSERT_TRUE(cache.HasGlyph('D'));
+  ASSERT_TRUE(cache.HasGlyph('E'));
+  ASSERT_TRUE(cache.HasGlyph('F'));
+  ASSERT_TRUE(cache.HasGlyph('G'));
+  ASSERT_TRUE(cache.HasGlyph('H'));
+  ASSERT_TRUE(cache.HasGlyph('I'));
+  ASSERT_TRUE(cache.HasGlyph('J'));
+  ASSERT_TRUE(cache.HasGlyph('K'));
+  ASSERT_TRUE(cache.HasGlyph('L'));
+  ASSERT_TRUE(cache.HasGlyph('M'));
+  ASSERT_TRUE(cache.HasGlyph('N'));
+  ASSERT_TRUE(cache.HasGlyph('O'));
+  ASSERT_TRUE(cache.HasGlyph('P'));
+  ASSERT_TRUE(cache.HasGlyph('Q'));
+  ASSERT_TRUE(cache.HasGlyph('R'));
+  ASSERT_TRUE(cache.HasGlyph('S'));
+  ASSERT_TRUE(cache.HasGlyph('T'));
+  ASSERT_TRUE(cache.HasGlyph('U'));
+  ASSERT_TRUE(cache.HasGlyph('V'));
+  ASSERT_TRUE(cache.HasGlyph('X'));
+  ASSERT_TRUE(cache.HasGlyph('Y'));
+  ASSERT_TRUE(cache.HasGlyph('Z'));
 
-  {  // ASCII digits
-    ASSERT_TRUE(m_cache.has('0'));
-    ASSERT_TRUE(m_cache.has('1'));
-    ASSERT_TRUE(m_cache.has('2'));
-    ASSERT_TRUE(m_cache.has('3'));
-    ASSERT_TRUE(m_cache.has('4'));
-    ASSERT_TRUE(m_cache.has('5'));
-    ASSERT_TRUE(m_cache.has('6'));
-    ASSERT_TRUE(m_cache.has('7'));
-    ASSERT_TRUE(m_cache.has('8'));
-    ASSERT_TRUE(m_cache.has('9'));
-  }
+  /* ASCII digits */
+  ASSERT_TRUE(cache.HasGlyph('0'));
+  ASSERT_TRUE(cache.HasGlyph('1'));
+  ASSERT_TRUE(cache.HasGlyph('2'));
+  ASSERT_TRUE(cache.HasGlyph('3'));
+  ASSERT_TRUE(cache.HasGlyph('4'));
+  ASSERT_TRUE(cache.HasGlyph('5'));
+  ASSERT_TRUE(cache.HasGlyph('6'));
+  ASSERT_TRUE(cache.HasGlyph('7'));
+  ASSERT_TRUE(cache.HasGlyph('8'));
+  ASSERT_TRUE(cache.HasGlyph('9'));
 
-  {  // ASCII punctuation and symbols
-    ASSERT_TRUE(m_cache.has(' '));
-    ASSERT_TRUE(m_cache.has('!'));
-    ASSERT_TRUE(m_cache.has('"'));
-    ASSERT_TRUE(m_cache.has('#'));
-    ASSERT_TRUE(m_cache.has('$'));
-    ASSERT_TRUE(m_cache.has('%'));
-    ASSERT_TRUE(m_cache.has('&'));
-    ASSERT_TRUE(m_cache.has('\''));
-    ASSERT_TRUE(m_cache.has('('));
-    ASSERT_TRUE(m_cache.has(')'));
-    ASSERT_TRUE(m_cache.has('*'));
-    ASSERT_TRUE(m_cache.has('+'));
-    ASSERT_TRUE(m_cache.has(','));
-    ASSERT_TRUE(m_cache.has('-'));
-    ASSERT_TRUE(m_cache.has('.'));
-    ASSERT_TRUE(m_cache.has('/'));
-    ASSERT_TRUE(m_cache.has(':'));
-    ASSERT_TRUE(m_cache.has(';'));
-    ASSERT_TRUE(m_cache.has('<'));
-    ASSERT_TRUE(m_cache.has('='));
-    ASSERT_TRUE(m_cache.has('>'));
-    ASSERT_TRUE(m_cache.has('?'));
-    ASSERT_TRUE(m_cache.has('@'));
-    ASSERT_TRUE(m_cache.has('['));
-    ASSERT_TRUE(m_cache.has('\\'));
-    ASSERT_TRUE(m_cache.has(']'));
-    ASSERT_TRUE(m_cache.has('^'));
-    ASSERT_TRUE(m_cache.has('_'));
-    ASSERT_TRUE(m_cache.has('`'));
-    ASSERT_TRUE(m_cache.has('{'));
-    ASSERT_TRUE(m_cache.has('|'));
-    ASSERT_TRUE(m_cache.has('}'));
-    ASSERT_TRUE(m_cache.has('~'));
-  }
+  /* ASCII punctuation and symbols */
+  ASSERT_TRUE(cache.HasGlyph(' '));
+  ASSERT_TRUE(cache.HasGlyph('!'));
+  ASSERT_TRUE(cache.HasGlyph('"'));
+  ASSERT_TRUE(cache.HasGlyph('#'));
+  ASSERT_TRUE(cache.HasGlyph('$'));
+  ASSERT_TRUE(cache.HasGlyph('%'));
+  ASSERT_TRUE(cache.HasGlyph('&'));
+  ASSERT_TRUE(cache.HasGlyph('\''));
+  ASSERT_TRUE(cache.HasGlyph('('));
+  ASSERT_TRUE(cache.HasGlyph(')'));
+  ASSERT_TRUE(cache.HasGlyph('*'));
+  ASSERT_TRUE(cache.HasGlyph('+'));
+  ASSERT_TRUE(cache.HasGlyph(','));
+  ASSERT_TRUE(cache.HasGlyph('-'));
+  ASSERT_TRUE(cache.HasGlyph('.'));
+  ASSERT_TRUE(cache.HasGlyph('/'));
+  ASSERT_TRUE(cache.HasGlyph(':'));
+  ASSERT_TRUE(cache.HasGlyph(';'));
+  ASSERT_TRUE(cache.HasGlyph('<'));
+  ASSERT_TRUE(cache.HasGlyph('='));
+  ASSERT_TRUE(cache.HasGlyph('>'));
+  ASSERT_TRUE(cache.HasGlyph('?'));
+  ASSERT_TRUE(cache.HasGlyph('@'));
+  ASSERT_TRUE(cache.HasGlyph('['));
+  ASSERT_TRUE(cache.HasGlyph('\\'));
+  ASSERT_TRUE(cache.HasGlyph(']'));
+  ASSERT_TRUE(cache.HasGlyph('^'));
+  ASSERT_TRUE(cache.HasGlyph('_'));
+  ASSERT_TRUE(cache.HasGlyph('`'));
+  ASSERT_TRUE(cache.HasGlyph('{'));
+  ASSERT_TRUE(cache.HasGlyph('|'));
+  ASSERT_TRUE(cache.HasGlyph('}'));
+  ASSERT_TRUE(cache.HasGlyph('~'));
 }
 
-TEST_F(FontCacheTest, At)
+TEST_F(FontCacheTest, GetGlyph)
 {
-  m_cache.add_basic_latin(*renderer);
+  cache.StoreBasicLatinGlyphs(*renderer);
 
-  const auto& [texture, metrics] = m_cache.at('a');
+  const auto& [texture, metrics] = cache.GetGlyph('a');
   ASSERT_TRUE(texture.get());
 
-  ASSERT_ANY_THROW(m_cache.at(256));
+  ASSERT_ANY_THROW(cache.GetGlyph(256));
 }
 
-TEST_F(FontCacheTest, TryAt)
+TEST_F(FontCacheTest, TryGetGlyph)
 {
-  m_cache.add_basic_latin(*renderer);
-  ASSERT_TRUE(m_cache.try_at('a'));
-  ASSERT_TRUE(m_cache.try_at(0x20));
-  ASSERT_TRUE(m_cache.try_at(0x7E));
-  ASSERT_FALSE(m_cache.try_at(0x7F));
+  cache.StoreBasicLatinGlyphs(*renderer);
+  ASSERT_TRUE(cache.TryGetGlyph('a'));
+  ASSERT_TRUE(cache.TryGetGlyph(0x20));
+  ASSERT_TRUE(cache.TryGetGlyph(0x7E));
+  ASSERT_FALSE(cache.TryGetGlyph(0x7F));
 }
 
-TEST_F(FontCacheTest, SubscriptOperator)
+TEST_F(FontCacheTest, GetString)
 {
-  m_cache.add_basic_latin(*renderer);
+  cache.StoreLatin1Glyphs(*renderer);
 
-  const auto& [texture, metrics] = m_cache['t'];
-  ASSERT_TRUE(texture.get());
+  const auto id = cache.StoreBlendedLatin1(*renderer, "bar!?<,.", cen::colors::white);
+  ASSERT_TRUE(cache.HasString(id));
 
-  ASSERT_ANY_THROW(m_cache[256]);
+  ASSERT_TRUE(cache.GetString(id).get());
+  ASSERT_ANY_THROW(cache.GetString(id + 1));
 }
 
-TEST_F(FontCacheTest, TryGetStored)
+TEST_F(FontCacheTest, TryGetString)
 {
-  m_cache.add_basic_latin(*renderer);
+  cache.StoreBasicLatinGlyphs(*renderer);
 
-  constexpr auto id = 12;
-  m_cache.store_blended_latin1(id, "bar!?<,.", *renderer);
+  const auto id = cache.StoreBlendedLatin1(*renderer, "bar!?<,.", cen::colors::white);
 
-  ASSERT_TRUE(m_cache.try_get_stored(id));
-  ASSERT_FALSE(m_cache.try_get_stored(id + 1));
-}
-
-TEST_F(FontCacheTest, GetStored)
-{
-  m_cache.add_latin1(*renderer);
-
-  constexpr auto id = 42;
-
-  m_cache.store_blended_latin1(id, "bar!?<,.", *renderer);
-
-  ASSERT_TRUE(m_cache.get_stored(id).get());
-  ASSERT_ANY_THROW(m_cache.get_stored(id + 1));
+  ASSERT_NE(cache.TryGetString(id), nullptr);
+  ASSERT_EQ(cache.TryGetString(id + 1), nullptr);
 }
 
 TEST_F(FontCacheTest, GetFont)
 {
-  const auto& font = m_cache.get_font();
-  ASSERT_EQ(font.GetFamilyName(), std::string("Daniel"));
+  const auto& font = cache.GetFont();
+  ASSERT_STREQ("Daniel", font.GetFamilyName());
 }

@@ -27,13 +27,11 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"
+#include "../texture.hpp"
 #include "../video.hpp"
 #include "color.hpp"
 #include "colors.hpp"
-#include "font.hpp"
-#include "font_cache.hpp"
 #include "surface.hpp"
-#include "texture.hpp"
 #include "unicode_string.hpp"
 
 namespace cen {
@@ -230,186 +228,8 @@ class BasicRenderer final {
     }
   }
 
-#ifndef CENTURION_NO_SDL_TTF
-
-  [[nodiscard]] auto RenderBlendedUTF8(const char* str, const Font& font) -> Texture
-  {
-    assert(str);
-    return ToTexture(TTF_RenderUTF8_Blended(font.get(), str, GetColor().get()));
-  }
-
-  [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const Font& font) -> Texture
-  {
-    return RenderBlendedUTF8(str.c_str(), font);
-  }
-
-  [[nodiscard]] auto RenderBlendedWrappedUTF8(const char* str,
-                                              const Font& font,
-                                              const Uint32 wrap) -> Texture
-  {
-    assert(str);
-    return ToTexture(TTF_RenderUTF8_Blended_Wrapped(font.get(), str, GetColor().get(), wrap));
-  }
-
-  [[nodiscard]] auto RenderBlendedWrappedUTF8(const std::string& str,
-                                              const Font& font,
-                                              const Uint32 wrap) -> Texture
-  {
-    return RenderBlendedWrappedUTF8(str.c_str(), font, wrap);
-  }
-
-  [[nodiscard]] auto RenderShadedUTF8(const char* str,
-                                      const Font& font,
-                                      const Color& background) -> Texture
-  {
-    assert(str);
-    return ToTexture(
-        TTF_RenderUTF8_Shaded(font.get(), str, GetColor().get(), background.get()));
-  }
-
-  [[nodiscard]] auto RenderShadedUTF8(const std::string& str,
-                                      const Font& font,
-                                      const Color& background) -> Texture
-  {
-    return RenderShadedUTF8(str.c_str(), font, background);
-  }
-
-  [[nodiscard]] auto RenderSolidUTF8(const char* str, const Font& font) -> Texture
-  {
-    assert(str);
-    return ToTexture(TTF_RenderUTF8_Solid(font.get(), str, GetColor().get()));
-  }
-
-  [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const Font& font) -> Texture
-  {
-    return RenderSolidUTF8(str.c_str(), font);
-  }
-
-  [[nodiscard]] auto RenderBlendedLatin1(const char* str, const Font& font) -> Texture
-  {
-    assert(str);
-    return ToTexture(TTF_RenderText_Blended(font.get(), str, GetColor().get()));
-  }
-
-  [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const Font& font) -> Texture
-  {
-    return RenderBlendedLatin1(str.c_str(), font);
-  }
-
-  [[nodiscard]] auto RenderBlendedWrappedLatin1(const char* str,
-                                                const Font& font,
-                                                const Uint32 wrap) -> Texture
-  {
-    assert(str);
-    return ToTexture(TTF_RenderText_Blended_Wrapped(font.get(), str, GetColor().get(), wrap));
-  }
-
-  [[nodiscard]] auto RenderBlendedWrappedLatin1(const std::string& str,
-                                                const Font& font,
-                                                const Uint32 wrap) -> Texture
-  {
-    return RenderBlendedWrappedLatin1(str.c_str(), font, wrap);
-  }
-
-  [[nodiscard]] auto RenderShadedLatin1(const char* str,
-                                        const Font& font,
-                                        const Color& background) -> Texture
-  {
-    assert(str);
-    return ToTexture(
-        TTF_RenderText_Shaded(font.get(), str, GetColor().get(), background.get()));
-  }
-
-  [[nodiscard]] auto RenderShadedLatin1(const std::string& str,
-                                        const Font& font,
-                                        const Color& background) -> Texture
-  {
-    return RenderShadedLatin1(str.c_str(), font, background);
-  }
-
-  [[nodiscard]] auto RenderSolidLatin1(const char* str, const Font& font) -> Texture
-  {
-    assert(str);
-    return ToTexture(TTF_RenderText_Solid(font.get(), str, GetColor().get()));
-  }
-
-  [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const Font& font) -> Texture
-  {
-    return RenderSolidLatin1(str.c_str(), font);
-  }
-
-  [[nodiscard]] auto RenderBlendedUnicode(const UnicodeString& str, const Font& font)
-      -> Texture
-  {
-    return ToTexture(TTF_RenderUNICODE_Blended(font.get(), str.data(), GetColor().get()));
-  }
-
-  [[nodiscard]] auto RenderBlendedWrappedUnicode(const UnicodeString& str,
-                                                 const Font& font,
-                                                 const Uint32 wrap) -> Texture
-  {
-    return ToTexture(
-        TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), GetColor().get(), wrap));
-  }
-
-  [[nodiscard]] auto RenderShadedUnicode(const UnicodeString& str,
-                                         const Font& font,
-                                         const Color& background) -> Texture
-  {
-    return ToTexture(
-        TTF_RenderUNICODE_Shaded(font.get(), str.data(), GetColor().get(), background.get()));
-  }
-
-  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const Font& font) -> Texture
-  {
-    return ToTexture(TTF_RenderUNICODE_Solid(font.get(), str.data(), GetColor().get()));
-  }
-
-  auto RenderGlyph(const font_cache& cache, const Unicode glyph, const Point position) -> int
-  {
-    if (const auto* data = cache.try_at(glyph)) {
-      const auto& [texture, metrics] = *data;
-
-      const auto outline = cache.get_font().GetOutline();
-
-      // SDL_ttf handles the y-axis alignment
-      const auto x = position.GetX() + metrics.min_x - outline;
-      const auto y = position.GetY() - outline;
-
-      Render(texture, Point{x, y});
-
-      return x + metrics.advance;
-    }
-    else {
-      return position.GetX();
-    }
-  }
-
-  template <typename String>
-  void RenderText(const font_cache& cache, const String& str, Point position)
-  {
-    const auto& font = cache.get_font();
-
-    const auto originalX = position.GetX();
-    const auto lineSkip = font.GetLineSkip();
-
-    for (const Unicode glyph : str) {
-      if (glyph == '\n') {
-        position.SetX(originalX);
-        position.SetY(position.GetY() + lineSkip);
-      }
-      else {
-        const auto x = RenderGlyph(cache, glyph, position);
-        position.SetX(x);
-      }
-    }
-  }
-
-#endif  // CENTURION_NO_SDL_TTF
-
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture, const BasicPoint<P>& position) noexcept
-      -> Result
+  auto Render(const BasicTexture<U>& texture, const BasicPoint<P>& position) noexcept -> Result
   {
     if constexpr (BasicPoint<P>::floating) {
       const auto size = cast<FArea>(texture.GetSize());
@@ -417,7 +237,8 @@ class BasicRenderer final {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else {
-      const SDL_Rect dst{position.GetX(), position.GetY(),
+      const SDL_Rect dst{position.GetX(),
+                         position.GetY(),
                          texture.GetWidth(),
                          texture.GetHeight()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
@@ -558,6 +379,8 @@ class BasicRenderer final {
     image.Unlock();
     return image;
   }
+
+  // TODO ToTexture(const Surface&) -> Texture
 
   auto SetColor(const Color& color) noexcept -> Result
   {
@@ -700,13 +523,6 @@ class BasicRenderer final {
 
  private:
   detail::Pointer<T, SDL_Renderer> mRenderer;
-
-  [[nodiscard]] auto ToTexture(Owner<SDL_Surface*> s) -> Texture
-  {
-    Surface surface{s};
-    Texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};
-    return texture;
-  }
 };
 
 template <typename T>

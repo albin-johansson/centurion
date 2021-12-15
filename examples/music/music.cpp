@@ -70,12 +70,11 @@ class music_example final {
     mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_halt, color));
 
     mTexPlayingMusic =
-        cen::Texture{mRenderer,
-                     mFont.RenderBlendedLatin1(msg_playing, cen::colors::lime_green)};
+        mRenderer.ToTexture(mFont.RenderBlendedLatin1(msg_playing, cen::colors::lime_green));
     mTexFadingMusic =
-        cen::Texture{mRenderer, mFont.RenderBlendedLatin1(msg_fading, cen::colors::hot_pink)};
+        mRenderer.ToTexture(mFont.RenderBlendedLatin1(msg_fading, cen::colors::hot_pink));
     mTexNoMusic =
-        cen::Texture{mRenderer, mFont.RenderBlendedLatin1(msg_no_music, cen::colors::red)};
+        mRenderer.ToTexture(mFont.RenderBlendedLatin1(msg_no_music, cen::colors::red));
   }
 
   void on_quit_event(const cen::quit_event&) { m_running = false; }

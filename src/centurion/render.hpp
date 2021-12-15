@@ -375,7 +375,11 @@ class BasicRenderer final {
     return image;
   }
 
-  // TODO ToTexture(const Surface&) -> Texture
+  template <typename U>
+  [[nodiscard]] auto ToTexture(const BasicSurface<U>& surface) const -> Texture
+  {
+    return Texture{*this, surface};
+  }
 
   auto SetColor(const Color& color) noexcept -> Result
   {

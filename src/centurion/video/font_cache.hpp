@@ -289,7 +289,7 @@ class FontCache final {
   [[nodiscard]] auto CreateGlyphTexture(BasicRenderer<T>& renderer, const Unicode glyph)
       -> Texture
   {
-    return Texture{renderer, mFont.RenderBlendedGlyph(glyph, renderer.GetColor())};
+    return renderer.ToTexture(mFont.RenderBlendedGlyph(glyph, renderer.GetColor()));
   }
 
   template <typename T>
@@ -298,7 +298,7 @@ class FontCache final {
     const auto id = mNextStringId;
     assert(mStrings.find(id) == mStrings.end());
 
-    mStrings.try_emplace(id, Texture{renderer, surface});
+    mStrings.try_emplace(id, renderer.ToTexture(surface));
     ++mNextStringId;
 
     return id;

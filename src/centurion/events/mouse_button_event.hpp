@@ -67,10 +67,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_button(const mouse_button button) noexcept
-  {
-    m_event.button = ToUnderlying(button);
-  }
+  void set_button(const MouseButton button) noexcept { m_event.button = ToUnderlying(button); }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -134,9 +131,9 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto button() const noexcept -> mouse_button
+  [[nodiscard]] auto button() const noexcept -> MouseButton
   {
-    return static_cast<mouse_button>(m_event.button);
+    return static_cast<MouseButton>(m_event.button);
   }
 
   /**

@@ -33,7 +33,7 @@ TEST(MouseButtonEvent, SetButton)
 {
   cen::mouse_button_event event;
 
-  constexpr auto button = cen::mouse_button::right;
+  constexpr auto button = cen::MouseButton::Right;
   event.set_button(button);
 
   ASSERT_EQ(button, event.button());

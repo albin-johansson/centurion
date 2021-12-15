@@ -84,12 +84,12 @@ TEST(MouseMotionEvent, Pressed)
   cen::mouse_motion_event event;
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
 
-  ASSERT_TRUE(event.pressed(cen::mouse_button::left));
-  ASSERT_TRUE(event.pressed(cen::mouse_button::middle));
+  ASSERT_TRUE(event.pressed(cen::MouseButton::Left));
+  ASSERT_TRUE(event.pressed(cen::MouseButton::Middle));
 
-  ASSERT_FALSE(event.pressed(cen::mouse_button::right));
-  ASSERT_FALSE(event.pressed(cen::mouse_button::x1));
-  ASSERT_FALSE(event.pressed(cen::mouse_button::x2));
+  ASSERT_FALSE(event.pressed(cen::MouseButton::Right));
+  ASSERT_FALSE(event.pressed(cen::MouseButton::X1));
+  ASSERT_FALSE(event.pressed(cen::MouseButton::X2));
 }
 
 TEST(MouseMotionEvent, WindowId)

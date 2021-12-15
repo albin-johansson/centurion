@@ -38,243 +38,115 @@ enum class SystemCursor {
   Hand = SDL_SYSTEM_CURSOR_HAND
 };
 
-enum class mouse_button : Uint8 {
-  left = SDL_BUTTON_LEFT,
-  middle = SDL_BUTTON_MIDDLE,
-  right = SDL_BUTTON_RIGHT,
-  x1 = SDL_BUTTON_X1,
-  x2 = SDL_BUTTON_X2
+enum class MouseButton : Uint8 {
+  Left = SDL_BUTTON_LEFT,
+  Middle = SDL_BUTTON_MIDDLE,
+  Right = SDL_BUTTON_RIGHT,
+  X1 = SDL_BUTTON_X1,
+  X2 = SDL_BUTTON_X2
 };
 
 /* Provides information about the mouse state. */
-class mouse final {
+class Mouse final {
  public:
-  mouse() noexcept = default;
+  Mouse() noexcept = default;
 
-  /**
-   * \brief Updates the mouse state. The window width and height will be adjusted to be at
-   * least 1.
-   *
-   * \param windowWidth the current window width, set to 1 by default.
-   * \param windowHeight the current window height, set to 1 by default.
-   *
-   * \since 3.0.0
-   */
-  void update(const int windowWidth = 1, const int windowHeight = 1) noexcept
+  void Update(const Area& windowSize) noexcept
   {
-    m_oldX = m_mouseX;
-    m_oldY = m_mouseY;
-    m_prevLeftPressed = m_leftPressed;
-    m_prevRightPressed = m_rightPressed;
+    mPreviousPosition = mCurrentPosition;
+    mPreviousMask = mCurrentMask;
 
-    {
-      const Uint32 mask = SDL_GetMouseState(&m_mouseX, &m_mouseY);
-      m_leftPressed = mask & SDL_BUTTON(SDL_BUTTON_LEFT);
-      m_rightPressed = mask & SDL_BUTTON(SDL_BUTTON_RIGHT);
-    }
+    int x{};
+    int y{};
+    mCurrentMask = SDL_GetMouseState(&x, &y);
 
     {
       const auto xRatio =
-          static_cast<float>(m_mouseX) / static_cast<float>(detail::max(windowWidth, 1));
-      const auto adjustedX = xRatio * static_cast<float>(m_logicalWidth);
-
+          static_cast<float>(x) / static_cast<float>(detail::max(windowSize.width, 1));
       const auto yRatio =
-          static_cast<float>(m_mouseY) / static_cast<float>(detail::max(windowHeight, 1));
-      const auto adjustedY = yRatio * static_cast<float>(m_logicalHeight);
+          static_cast<float>(y) / static_cast<float>(detail::max(windowSize.height, 1));
 
-      m_mouseX = static_cast<int>(adjustedX);
-      m_mouseY = static_cast<int>(adjustedY);
+      mCurrentPosition.SetX(static_cast<int>(xRatio * mLogicalSize.width));
+      mCurrentPosition.SetY(static_cast<int>(yRatio * mLogicalSize.height));
     }
   }
 
-  /**
-   * \brief Updates the mouse state.
-   *
-   * \param size the size of the window.
-   *
-   * \since 5.3.0
-   */
-  void update(const Area size) noexcept { update(size.width, size.height); }
-
-  /**
-   * \brief Resets the screen and logical dimensions of the mouse state instance.
-   *
-   * \since 3.0.0
-   */
-  void reset() noexcept
+  void ResetLogicalSize() noexcept
   {
-    m_logicalWidth = 1;
-    m_logicalHeight = 1;
+    mLogicalSize.width = 1;
+    mLogicalSize.height = 1;
   }
 
-  /**
-   * \brief Sets the logical width that will be used to determine the mouse position.
-   *
-   * \details The supplied value will be adjusted to be at least 1.
-   *
-   * \param logicalWidth the logical width that will be used to determine the mouse
-   * position.
-   *
-   * \since 3.0.0
-   */
-  void set_logical_width(const int logicalWidth) noexcept
+  void SetLogicalSize(const FArea& size) noexcept
   {
-    m_logicalWidth = detail::max(logicalWidth, 1);
+    mLogicalSize.width = detail::max(size.width, 1.0f);
+    mLogicalSize.height = detail::max(size.height, 1.0f);
   }
 
-  /**
-   * \brief Sets the logical height that will be used to determine the mouse position.
-   *
-   * \details The supplied value will be adjusted to be at least 1.
-   *
-   * \param logicalHeight the logical height that will be used to determine the mouse
-   * position.
-   *
-   * \since 3.0.0
-   */
-  void set_logical_height(const int logicalHeight) noexcept
+  [[nodiscard]] auto GetPosition() const noexcept -> Point { return mCurrentPosition; }
+
+  [[nodiscard]] auto GetX() const noexcept -> int { return mCurrentPosition.GetX(); }
+
+  [[nodiscard]] auto GetY() const noexcept -> int { return mCurrentPosition.GetY(); }
+
+  [[nodiscard]] auto GetLogicalSize() const noexcept -> FArea { return mLogicalSize; }
+
+  [[nodiscard]] auto GetLogicalWidth() const noexcept -> float { return mLogicalSize.width; }
+
+  [[nodiscard]] auto GetLogicalHeight() const noexcept -> float { return mLogicalSize.height; }
+
+  [[nodiscard]] auto IsLeftButtonPressed() const noexcept -> bool
   {
-    m_logicalHeight = detail::max(logicalHeight, 1);
+    return IsButtonPressed(SDL_BUTTON_LMASK);
   }
 
-  /**
-   * \brief Sets the current logical window size.
-   *
-   * \param size the logical size that will be used to determine the mouse position.
-   *
-   * \since 5.3.0
-   */
-  void set_logical_size(const Area size) noexcept
+  [[nodiscard]] auto IsMiddleButtonPressed() const noexcept -> bool
   {
-    set_logical_width(size.width);
-    set_logical_height(size.height);
+    return IsButtonPressed(SDL_BUTTON_MMASK);
   }
 
-  /**
-   * \brief Indicates whether or not the left mouse button was released.
-   *
-   * \return `true` if the left mouse button was released; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto was_left_button_released() const noexcept -> bool
+  [[nodiscard]] auto IsRightButtonPressed() const noexcept -> bool
   {
-    return !m_leftPressed && m_prevLeftPressed;
+    return IsButtonPressed(SDL_BUTTON_RMASK);
   }
 
-  /**
-   * \brief Indicates whether or not the right mouse button was released.
-   *
-   * \return `true` if the right mouse button was released; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto was_right_button_released() const noexcept -> bool
+  [[nodiscard]] auto WasLeftButtonReleased() const noexcept -> bool
   {
-    return !m_rightPressed && m_prevRightPressed;
+    return WasButtonReleased(SDL_BUTTON_LMASK);
   }
 
-  /**
-   * \brief Indicates whether or not the mouse was moved.
-   *
-   * \return `true` if the mouse was moved; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto was_moved() const noexcept -> bool
+  [[nodiscard]] auto WasMiddleButtonReleased() const noexcept -> bool
   {
-    return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
+    return WasButtonReleased(SDL_BUTTON_MMASK);
   }
 
-  /**
-   * \brief Returns the x-coordinate of the mouse.
-   *
-   * \return the x-coordinate of the mouse.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto x() const noexcept -> int { return m_mouseX; }
-
-  /**
-   * \brief Returns the y-coordinate of the mouse.
-   *
-   * \return the y-coordinate of the mouse.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto y() const noexcept -> int { return m_mouseY; }
-
-  /**
-   * \brief Returns the position of the mouse.
-   *
-   * \return the current position of the mouse cursor.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto position() const noexcept -> Point { return {m_mouseX, m_mouseY}; }
-
-  /**
-   * \brief Returns the logical width used by the mouse state instance.
-   *
-   * \return the logical width used by the mouse state instance, 1 is used by default.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto logical_width() const noexcept -> int { return m_logicalWidth; }
-
-  /**
-   * \brief Returns the logical height used by the mouse state instance.
-   *
-   * \return the logical height used by the mouse state instance, 1 is used by default.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto logical_height() const noexcept -> int { return m_logicalHeight; }
-
-  /**
-   * \brief Returns the logical size used by the mouse state instance.
-   *
-   * \return the logical size used.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto logical_size() const noexcept -> Area
+  [[nodiscard]] auto WasRightButtonReleased() const noexcept -> bool
   {
-    return {m_logicalWidth, m_logicalHeight};
+    return WasButtonReleased(SDL_BUTTON_RMASK);
   }
 
-  /**
-   * \brief Indicates whether or not the left mouse button is currently pressed.
-   *
-   * \return `true` if the left mouse button is pressed; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_left_button_pressed() const noexcept -> bool { return m_leftPressed; }
-
-  /**
-   * \brief Indicates whether or not the right mouse button is currently pressed.
-   *
-   * \return `true` if the right mouse button is pressed; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_right_button_pressed() const noexcept -> bool
+  [[nodiscard]] auto WasMoved() const noexcept -> bool
   {
-    return m_rightPressed;
+    return (mCurrentPosition.GetX() != mPreviousPosition.GetX()) ||
+           (mCurrentPosition.GetY() != mPreviousPosition.GetY());
   }
 
  private:
-  int m_mouseX{};
-  int m_mouseY{};
-  int m_oldX{};
-  int m_oldY{};
-  int m_logicalWidth{1};
-  int m_logicalHeight{1};
-  bool m_leftPressed{};
-  bool m_rightPressed{};
-  bool m_prevLeftPressed{};
-  bool m_prevRightPressed{};
+  Point mCurrentPosition{};
+  Point mPreviousPosition{};
+  FArea mLogicalSize{1, 1};
+  Uint32 mCurrentMask{};
+  Uint32 mPreviousMask{};
+
+  [[nodiscard]] auto IsButtonPressed(const Uint32 mask) const noexcept -> bool
+  {
+    return mCurrentMask & mask;
+  }
+
+  [[nodiscard]] auto WasButtonReleased(const Uint32 mask) const noexcept -> bool
+  {
+    return !(mCurrentMask & mask) && mPreviousMask & mask;
+  }
 };
 
 template <typename T>
@@ -359,36 +231,37 @@ class BasicCursor final {
   detail::Pointer<T, SDL_Cursor> mCursor;
 };
 
-[[nodiscard]] inline auto to_string(const mouse& mouse) -> std::string
+[[nodiscard]] inline auto to_string(const Mouse& mouse) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
+  return std::format("Mouse(x: {}, y: {})", mouse.GetX(), mouse.GetY());
 #else
-  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) + "}";
+  return "Mouse(x: " + std::to_string(mouse.GetX()) + ", y: " + std::to_string(mouse.GetY()) +
+         ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const Mouse& mouse) -> std::ostream&
 {
   return stream << to_string(mouse);
 }
 
-[[nodiscard]] constexpr auto to_string(const mouse_button button) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const MouseButton button) -> std::string_view
 {
   switch (button) {
-    case mouse_button::left:
+    case MouseButton::Left:
       return "left";
 
-    case mouse_button::middle:
+    case MouseButton::Middle:
       return "middle";
 
-    case mouse_button::right:
+    case MouseButton::Right:
       return "right";
 
-    case mouse_button::x1:
+    case MouseButton::X1:
       return "x1";
 
-    case mouse_button::x2:
+    case MouseButton::X2:
       return "x2";
 
     default:
@@ -396,7 +269,7 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
   }
 }
 
-inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const MouseButton button) -> std::ostream&
 {
   return stream << to_string(button);
 }

@@ -215,7 +215,7 @@ class basic_texture final {
   {
     assert(path);
 
-    constexpr auto blendMode = BlendMode::blend;
+    constexpr auto blendMode = BlendMode::Blend;
     const auto surface = cen::Surface::WithFormat(path, blendMode, format);
 
     basic_texture texture{renderer, format, texture_access::streaming, surface.GetSize()};

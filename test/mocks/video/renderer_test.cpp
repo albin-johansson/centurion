@@ -478,8 +478,8 @@ TEST_F(RendererTest, SetBlendMode)
   SET_RETURN_SEQ(SDL_SetRenderDrawBlendMode, values.data(), cen::isize(values));
 
   const cen::Rect rect{12, 34, 56, 78};
-  ASSERT_EQ(cen::failure, renderer.SetBlendMode(cen::BlendMode::blend));
-  ASSERT_EQ(cen::success, renderer.SetBlendMode(cen::BlendMode::blend));
+  ASSERT_EQ(cen::failure, renderer.SetBlendMode(cen::BlendMode::Blend));
+  ASSERT_EQ(cen::success, renderer.SetBlendMode(cen::BlendMode::Blend));
   ASSERT_EQ(2u, SDL_SetRenderDrawBlendMode_fake.call_count);
 }
 

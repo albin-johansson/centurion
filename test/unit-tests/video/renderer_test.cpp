@@ -80,8 +80,8 @@ TEST_F(RendererTest, SetViewport)
 
 TEST_F(RendererTest, SetBlendMode)
 {
-  renderer->SetBlendMode(cen::BlendMode::blend);
-  ASSERT_EQ(cen::BlendMode::blend, renderer->GetBlendMode());
+  renderer->SetBlendMode(cen::BlendMode::Blend);
+  ASSERT_EQ(cen::BlendMode::Blend, renderer->GetBlendMode());
 }
 
 TEST_F(RendererTest, SetScale)

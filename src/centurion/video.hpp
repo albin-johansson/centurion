@@ -21,54 +21,54 @@ enum class FlashOp {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 enum class BlendMode {
-  none = SDL_BLENDMODE_NONE,   /* No blending. */
-  blend = SDL_BLENDMODE_BLEND, /* Alpha blending. */
-  add = SDL_BLENDMODE_ADD,     /* Additive blending. */
-  mod = SDL_BLENDMODE_MOD,     /* Color modulation. */
+  None = SDL_BLENDMODE_NONE,   /* No blending. */
+  Blend = SDL_BLENDMODE_BLEND, /* Alpha blending. */
+  Add = SDL_BLENDMODE_ADD,     /* Additive blending. */
+  Mod = SDL_BLENDMODE_MOD,     /* Color modulation. */
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  mul = SDL_BLENDMODE_MUL, /* Color multiplication. */
+  Mul = SDL_BLENDMODE_MUL, /* Color multiplication. */
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  invalid = SDL_BLENDMODE_INVALID
+  Invalid = SDL_BLENDMODE_INVALID
 };
 
-enum class blend_factor {
-  zero = SDL_BLENDFACTOR_ZERO,
-  one = SDL_BLENDFACTOR_ONE,
+enum class BlendFactor {
+  Zero = SDL_BLENDFACTOR_ZERO,
+  One = SDL_BLENDFACTOR_ONE,
 
-  src_color = SDL_BLENDFACTOR_SRC_COLOR,
-  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+  SrcColor = SDL_BLENDFACTOR_SRC_COLOR,
+  OneMinusSrcColor = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
 
-  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
-  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+  SrcAlpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  OneMinusSrcAlpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
 
-  dst_color = SDL_BLENDFACTOR_DST_COLOR,
-  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+  DstColor = SDL_BLENDFACTOR_DST_COLOR,
+  OneMinusDstColor = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
 
-  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
-  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+  DstAlpha = SDL_BLENDFACTOR_DST_ALPHA,
+  OneMinusDstAlpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
 };
 
-enum class blend_op {
-  add = SDL_BLENDOPERATION_ADD,
-  sub = SDL_BLENDOPERATION_SUBTRACT,
-  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
-  min = SDL_BLENDOPERATION_MINIMUM,
-  max = SDL_BLENDOPERATION_MAXIMUM
+enum class BlendOp {
+  Add = SDL_BLENDOPERATION_ADD,
+  Sub = SDL_BLENDOPERATION_SUBTRACT,
+  ReverseSub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  Min = SDL_BLENDOPERATION_MINIMUM,
+  Max = SDL_BLENDOPERATION_MAXIMUM
 };
 
 /* Describes how a blend mode factors should be combined. */
-struct blend_task final {
-  blend_factor src;  ///< The blend factor applied to the source pixels.
-  blend_factor dst;  ///< The blend factor applied to the destination pixels.
-  blend_op op;       ///< The operation used to combine the source and destination pixels.
+struct BlendTask final {
+  BlendFactor src;  ///< The blend factor applied to the source pixels.
+  BlendFactor dst;  ///< The blend factor applied to the destination pixels.
+  BlendOp op;       ///< The operation used to combine the source and destination pixels.
 };
 
-[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
-                                             const blend_task& alpha) noexcept -> BlendMode
+[[nodiscard]] inline auto compose_blend_mode(const BlendTask& color,
+                                             const BlendTask& alpha) noexcept -> BlendMode
 {
   const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
                                               static_cast<SDL_BlendFactor>(color.dst),
@@ -103,25 +103,25 @@ struct blend_task final {
 [[nodiscard]] constexpr auto to_string(const BlendMode mode) -> std::string_view
 {
   switch (mode) {
-    case BlendMode::none:
-      return "none";
+    case BlendMode::None:
+      return "None";
 
-    case BlendMode::blend:
-      return "blend";
+    case BlendMode::Blend:
+      return "Blend";
 
-    case BlendMode::add:
-      return "add";
+    case BlendMode::Add:
+      return "Add";
 
-    case BlendMode::mod:
-      return "mod";
+    case BlendMode::Mod:
+      return "Mod";
 
-    case BlendMode::invalid:
-      return "invalid";
+    case BlendMode::Invalid:
+      return "Invalid";
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-    case BlendMode::mul:
-      return "mul";
+    case BlendMode::Mul:
+      return "Mul";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -130,61 +130,61 @@ struct blend_task final {
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const BlendFactor factor) -> std::string_view
 {
   switch (factor) {
-    case blend_factor::zero:
-      return "zero";
+    case BlendFactor::Zero:
+      return "Zero";
 
-    case blend_factor::one:
-      return "one";
+    case BlendFactor::One:
+      return "One";
 
-    case blend_factor::src_color:
-      return "src_color";
+    case BlendFactor::SrcColor:
+      return "SrcColor";
 
-    case blend_factor::one_minus_src_color:
-      return "one_minus_src_color";
+    case BlendFactor::OneMinusSrcColor:
+      return "OneMinusSrcColor";
 
-    case blend_factor::src_alpha:
-      return "src_alpha";
+    case BlendFactor::SrcAlpha:
+      return "SrcAlpha";
 
-    case blend_factor::one_minus_src_alpha:
-      return "one_minus_src_alpha";
+    case BlendFactor::OneMinusSrcAlpha:
+      return "OneMinusSrcAlpha";
 
-    case blend_factor::dst_color:
-      return "dst_color";
+    case BlendFactor::DstColor:
+      return "DstColor";
 
-    case blend_factor::one_minus_dst_color:
-      return "one_minus_dst_color";
+    case BlendFactor::OneMinusDstColor:
+      return "OneMinusDstColor";
 
-    case blend_factor::dst_alpha:
-      return "dst_alpha";
+    case BlendFactor::DstAlpha:
+      return "DstAlpha";
 
-    case blend_factor::one_minus_dst_alpha:
-      return "one_minus_dst_alpha";
+    case BlendFactor::OneMinusDstAlpha:
+      return "OneMinusDstAlpha";
 
     default:
       throw Error{"Did not recognize blend factor!"};
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const BlendOp op) -> std::string_view
 {
   switch (op) {
-    case blend_op::add:
-      return "add";
+    case BlendOp::Add:
+      return "Add";
 
-    case blend_op::sub:
-      return "sub";
+    case BlendOp::Sub:
+      return "Sub";
 
-    case blend_op::reverse_sub:
-      return "reverse_sub";
+    case BlendOp::ReverseSub:
+      return "ReverseSub";
 
-    case blend_op::min:
-      return "min";
+    case BlendOp::Min:
+      return "Min";
 
-    case blend_op::max:
-      return "max";
+    case BlendOp::Max:
+      return "Max";
 
     default:
       throw Error{"Did not recognize blend operation!"};
@@ -205,12 +205,12 @@ inline auto operator<<(std::ostream& stream, const BlendMode mode) -> std::ostre
   return stream << to_string(mode);
 }
 
-inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const BlendFactor factor) -> std::ostream&
 {
   return stream << to_string(factor);
 }
 
-inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const BlendOp op) -> std::ostream&
 {
   return stream << to_string(op);
 }

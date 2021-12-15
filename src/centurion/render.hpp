@@ -595,6 +595,28 @@ template <typename T>
   }
 }
 
+[[nodiscard]] inline auto GetRenderDrivers() noexcept -> int
+{
+  return SDL_GetNumRenderDrivers();
+}
+
+[[nodiscard]] inline auto GetVideoDrivers() noexcept -> int
+{
+  return SDL_GetNumVideoDrivers();
+}
+
+[[nodiscard]] inline auto GetRenderDriverInfo(const int index) noexcept
+    -> std::optional<SDL_RendererInfo>
+{
+  SDL_RendererInfo info{};
+  if (SDL_GetRenderDriverInfo(index, &info) == 0) {
+    return info;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
 template <typename T>
 [[nodiscard]] auto to_string(const BasicRenderer<T>& renderer) -> std::string
 {

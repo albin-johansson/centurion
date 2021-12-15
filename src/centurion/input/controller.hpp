@@ -890,9 +890,9 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
+  [[nodiscard]] auto get_joystick() noexcept -> JoystickHandle
   {
-    return joystick_handle{SDL_GameControllerGetJoystick(m_controller)};
+    return JoystickHandle{SDL_GameControllerGetJoystick(m_controller)};
   }
 
   /**

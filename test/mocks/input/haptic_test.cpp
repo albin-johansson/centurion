@@ -103,7 +103,7 @@ TEST_F(HapticTest, PointerConstructor)
 
 TEST_F(HapticTest, FromJoystick)
 {
-  cen::joystick_handle handle{nullptr};
+  cen::JoystickHandle handle{nullptr};
   ASSERT_THROW(cen::haptic::from_joystick(handle), cen::SDLError);
   ASSERT_EQ(1u, SDL_HapticOpenFromJoystick_fake.call_count);
 }
@@ -372,7 +372,7 @@ TEST_F(HapticTest, IsJoystickHaptic)
   std::array values{-1, 0, 1};
   SET_RETURN_SEQ(SDL_JoystickIsHaptic, values.data(), cen::isize(values));
 
-  const cen::joystick_handle joystick{nullptr};
+  const cen::JoystickHandle joystick{nullptr};
 
   ASSERT_FALSE(cen::haptic::is_joystick_haptic(joystick));
   ASSERT_FALSE(cen::haptic::is_joystick_haptic(joystick));

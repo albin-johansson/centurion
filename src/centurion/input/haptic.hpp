@@ -138,7 +138,7 @@ class basic_haptic final {
    * \since 5.2.0
    */
   template <typename U, typename TT = T, detail::EnableOwner<TT> = 0>
-  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick) -> basic_haptic
+  [[nodiscard]] static auto from_joystick(const BasicJoystick<U>& joystick) -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {
       return basic_haptic{ptr};
@@ -792,7 +792,7 @@ class basic_haptic final {
    * \since 5.2.0
    */
   template <typename U>
-  [[nodiscard]] static auto is_joystick_haptic(const basic_joystick<U>& joystick) noexcept
+  [[nodiscard]] static auto is_joystick_haptic(const BasicJoystick<U>& joystick) noexcept
       -> bool
   {
     return SDL_JoystickIsHaptic(joystick.get()) == SDL_TRUE;

@@ -338,13 +338,13 @@ class BasicRenderer final {
     return RenderSolidLatin1(str.c_str(), font);
   }
 
-  [[nodiscard]] auto RenderBlendedUnicode(const unicode_string& str, const Font& font)
+  [[nodiscard]] auto RenderBlendedUnicode(const UnicodeString& str, const Font& font)
       -> texture
   {
     return ToTexture(TTF_RenderUNICODE_Blended(font.get(), str.data(), GetColor().get()));
   }
 
-  [[nodiscard]] auto RenderBlendedWrappedUnicode(const unicode_string& str,
+  [[nodiscard]] auto RenderBlendedWrappedUnicode(const UnicodeString& str,
                                                  const Font& font,
                                                  const Uint32 wrap) -> texture
   {
@@ -352,7 +352,7 @@ class BasicRenderer final {
         TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), GetColor().get(), wrap));
   }
 
-  [[nodiscard]] auto RenderShadedUnicode(const unicode_string& str,
+  [[nodiscard]] auto RenderShadedUnicode(const UnicodeString& str,
                                          const Font& font,
                                          const Color& background) -> texture
   {
@@ -360,7 +360,7 @@ class BasicRenderer final {
         TTF_RenderUNICODE_Shaded(font.get(), str.data(), GetColor().get(), background.get()));
   }
 
-  [[nodiscard]] auto RenderSolidUnicode(const unicode_string& str, const Font& font) -> texture
+  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const Font& font) -> texture
   {
     return ToTexture(TTF_RenderUNICODE_Solid(font.get(), str.data(), GetColor().get()));
   }

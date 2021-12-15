@@ -33,7 +33,7 @@ class FontCacheTest : public testing::Test {
  protected:
   using id_type = cen::font_cache::id_type;
 
-  using unicode_signature = void(id_type, const cen::unicode_string&);
+  using unicode_signature = void(id_type, const cen::UnicodeString&);
   using unicode_store_fn = std::function<unicode_signature>;
 
   using normal_signature = void(id_type, const char*);
@@ -62,7 +62,7 @@ class FontCacheTest : public testing::Test {
 
   void test_store_unicode(const unicode_store_fn& store)
   {
-    test_store(store, 77, cen::unicode_string{'b', 'a', 'r'});
+    test_store(store, 77, cen::UnicodeString{'b', 'a', 'r'});
   }
 
   inline static std::unique_ptr<cen::window> window;
@@ -84,28 +84,28 @@ class FontCacheTest : public testing::Test {
 
 TEST_F(FontCacheTest, StoreBlendedUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
+  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
     m_cache.store_blended_unicode(id, str, *renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreBlendedWrappedUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
+  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
     m_cache.store_blended_wrapped_unicode(id, str, *renderer, 100);
   });
 }
 
 TEST_F(FontCacheTest, StoreSolidUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
+  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
     m_cache.store_solid_unicode(id, str, *renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreShadedUnicode)
 {
-  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
+  test_store_unicode([this](const id_type id, const cen::UnicodeString& str) {
     m_cache.store_shaded_unicode(id, str, *renderer, cen::colors::pink);
   });
 }

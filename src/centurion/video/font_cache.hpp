@@ -404,7 +404,7 @@ class font_cache final {
    */
   template <typename Renderer>
   void store_blended_unicode(const id_type id,
-                             const unicode_string& string,
+                             const UnicodeString& string,
                              Renderer& renderer)
   {
     store(id, renderer.RenderBlendedUnicode(string, get_font()));
@@ -429,7 +429,7 @@ class font_cache final {
    */
   template <typename Renderer>
   void store_blended_wrapped_unicode(const id_type id,
-                                     const unicode_string& string,
+                                     const UnicodeString& string,
                                      Renderer& renderer,
                                      const Uint32 wrap)
   {
@@ -455,7 +455,7 @@ class font_cache final {
    */
   template <typename Renderer>
   void store_shaded_unicode(const id_type id,
-                            const unicode_string& string,
+                            const UnicodeString& string,
                             Renderer& renderer,
                             const Color& background)
   {
@@ -479,7 +479,7 @@ class font_cache final {
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_unicode(const id_type id, const unicode_string& string, Renderer& renderer)
+  void store_solid_unicode(const id_type id, const UnicodeString& string, Renderer& renderer)
   {
     store(id, renderer.RenderSolidUnicode(string, get_font()));
   }

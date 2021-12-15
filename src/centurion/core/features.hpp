@@ -1,17 +1,14 @@
 #ifndef CENTURION_CORE_FEATURES_HPP_
 #define CENTURION_CORE_FEATURES_HPP_
 
-/// \addtogroup core
-/// \{
-
-// Do we have general C++20 support?
+/* Do we have general C++20 support? */
 #if __cplusplus >= 202002L
 #define CENTURION_HAS_FEATURE_CPP20 1
 #else
 #define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
-// C++20 nodiscard constructors
+/* C++20 nodiscard constructors */
 #if nodiscard >= 201907L
 #define CENTURION_NODISCARD_CTOR [[nodiscard]]
 #else
@@ -73,7 +70,5 @@
 #endif  // __cpp_lib_to_chars >= 201611L
 
 #endif  // __has_include
-
-/// \} End of group core
 
 #endif  // CENTURION_CORE_FEATURES_HPP_

@@ -139,7 +139,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/key_modifier.hpp
                src/centurion/input/keyboard.hpp
                src/centurion/input/keycodes.hpp
-               src/centurion/input/mouse.hpp
+               src/centurion/mouse.hpp
                src/centurion/input/mouse_button.hpp
                src/centurion/input/scan_code.hpp
                src/centurion/input/scancodes.hpp

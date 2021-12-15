@@ -1,10 +1,10 @@
-#ifndef CENTURION_INPUT_MOUSE_HPP_
-#define CENTURION_INPUT_MOUSE_HPP_
+#ifndef CENTURION_MOUSE_HPP_
+#define CENTURION_MOUSE_HPP_
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#include "../core/features.hpp"
+#include "core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -12,9 +12,9 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/common.hpp"
-#include "../detail/stdlib.hpp"
-#include "../math.hpp"
+#include "core/common.hpp"
+#include "detail/stdlib.hpp"
+#include "math.hpp"
 
 namespace cen {
 
@@ -313,4 +313,4 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
 
 }  // namespace cen
 
-#endif  // CENTURION_INPUT_MOUSE_HPP_
+#endif  // CENTURION_MOUSE_HPP_

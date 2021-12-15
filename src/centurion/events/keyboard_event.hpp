@@ -68,7 +68,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  void set_button_state(const button_state state) noexcept
+  void set_button_state(const ButtonState state) noexcept
   {
     m_event.state = ToUnderlying(state);
   }
@@ -225,9 +225,9 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto state() const noexcept -> button_state
+  [[nodiscard]] auto state() const noexcept -> ButtonState
   {
-    return static_cast<button_state>(m_event.state);
+    return static_cast<ButtonState>(m_event.state);
   }
 
   /**
@@ -242,7 +242,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto released() const noexcept -> bool
   {
-    return state() == button_state::released;
+    return state() == ButtonState::Released;
   }
 
   /**
@@ -257,7 +257,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto pressed() const noexcept -> bool
   {
-    return state() == button_state::pressed;
+    return state() == ButtonState::Pressed;
   }
 
   /**

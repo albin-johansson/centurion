@@ -67,7 +67,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_state(const button_state state) noexcept { m_event.state = ToUnderlying(state); }
+  void set_state(const ButtonState state) noexcept { m_event.state = ToUnderlying(state); }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -94,9 +94,9 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto state() const noexcept -> button_state
+  [[nodiscard]] auto state() const noexcept -> ButtonState
   {
-    return static_cast<button_state>(m_event.state);
+    return static_cast<ButtonState>(m_event.state);
   }
 
   /**
@@ -108,7 +108,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    */
   [[nodiscard]] auto pressed() const noexcept -> bool
   {
-    return state() == button_state::pressed;
+    return state() == ButtonState::Pressed;
   }
 
   /**
@@ -120,7 +120,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    */
   [[nodiscard]] auto released() const noexcept -> bool
   {
-    return state() == button_state::released;
+    return state() == ButtonState::Released;
   }
 };
 

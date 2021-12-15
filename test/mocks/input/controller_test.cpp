@@ -263,8 +263,8 @@ TEST_F(ControllerTest, GetState)
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::button_state::released, m_controller.get_state(cen::controller_button::a));
-  ASSERT_EQ(cen::button_state::pressed, m_controller.get_state(cen::controller_button::a));
+  ASSERT_EQ(cen::ButtonState::Released, m_controller.get_state(cen::controller_button::a));
+  ASSERT_EQ(cen::ButtonState::Pressed, m_controller.get_state(cen::controller_button::a));
 }
 
 TEST_F(ControllerTest, IsPressed)

@@ -8,16 +8,16 @@
 
 TEST(ButtonState, Values)
 {
-  ASSERT_EQ(SDL_RELEASED, cen::ToUnderlying(cen::button_state::released));
-  ASSERT_EQ(SDL_PRESSED, cen::ToUnderlying(cen::button_state::pressed));
+  ASSERT_EQ(SDL_RELEASED, cen::ToUnderlying(cen::ButtonState::Released));
+  ASSERT_EQ(SDL_PRESSED, cen::ToUnderlying(cen::ButtonState::Pressed));
 }
 
 TEST(ButtonState, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::button_state>(3)), cen::Error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::ButtonState>(3)), cen::Error);
 
-  ASSERT_EQ("released", cen::to_string(cen::button_state::released));
-  ASSERT_EQ("pressed", cen::to_string(cen::button_state::pressed));
+  ASSERT_EQ("Released", cen::to_string(cen::ButtonState::Released));
+  ASSERT_EQ("Pressed", cen::to_string(cen::ButtonState::Pressed));
 
-  std::clog << "Button state example: " << cen::button_state::pressed << '\n';
+  std::clog << "Button state example: " << cen::ButtonState::Pressed << '\n';
 }

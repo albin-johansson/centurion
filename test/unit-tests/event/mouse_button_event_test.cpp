@@ -43,7 +43,7 @@ TEST(MouseButtonEvent, SetState)
 {
   cen::mouse_button_event event;
 
-  constexpr auto state = cen::button_state::released;
+  constexpr auto state = cen::ButtonState::Released;
   event.set_state(state);
 
   ASSERT_EQ(state, event.state());

@@ -71,15 +71,15 @@ TEST(KeyboardEvent, SetButtonState)
 {
   cen::keyboard_event event;
 
-  event.set_button_state(cen::button_state::pressed);
+  event.set_button_state(cen::ButtonState::Pressed);
   ASSERT_TRUE(event.pressed());
   ASSERT_FALSE(event.released());
-  ASSERT_EQ(cen::button_state::pressed, event.state());
+  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
 
-  event.set_button_state(cen::button_state::released);
+  event.set_button_state(cen::ButtonState::Released);
   ASSERT_TRUE(event.released());
   ASSERT_FALSE(event.pressed());
-  ASSERT_EQ(cen::button_state::released, event.state());
+  ASSERT_EQ(cen::ButtonState::Released, event.state());
 }
 
 TEST(KeyboardEvent, IsActive)
@@ -188,7 +188,7 @@ TEST(KeyboardEvent, State)
 {
   {  // Default button state
     const cen::keyboard_event event;
-    ASSERT_EQ(cen::button_state::released, event.state());
+    ASSERT_EQ(cen::ButtonState::Released, event.state());
   }
 
   {  // Check valid state
@@ -198,7 +198,7 @@ TEST(KeyboardEvent, State)
     sdl.state = SDL_PRESSED;
 
     const cen::keyboard_event event{sdl};
-    ASSERT_EQ(cen::button_state::pressed, event.state());
+    ASSERT_EQ(cen::ButtonState::Pressed, event.state());
   }
 }
 
@@ -210,7 +210,7 @@ TEST(KeyboardEvent, Released)
 
     const cen::keyboard_event event{sdl};
     ASSERT_TRUE(event.released());
-    ASSERT_EQ(cen::button_state::released, event.state());
+    ASSERT_EQ(cen::ButtonState::Released, event.state());
   }
 
   {  // Not released
@@ -230,7 +230,7 @@ TEST(KeyboardEvent, Pressed)
 
     const cen::keyboard_event event{sdl};
     ASSERT_TRUE(event.pressed());
-    ASSERT_EQ(cen::button_state::pressed, event.state());
+    ASSERT_EQ(cen::ButtonState::Pressed, event.state());
   }
 
   {  // Not pressed

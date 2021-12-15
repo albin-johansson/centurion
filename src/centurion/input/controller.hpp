@@ -535,12 +535,12 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_state(const controller_button button) const noexcept -> button_state
+  [[nodiscard]] auto get_state(const controller_button button) const noexcept -> ButtonState
   {
     const auto state =
         SDL_GameControllerGetButton(m_controller,
                                     static_cast<SDL_GameControllerButton>(button));
-    return static_cast<button_state>(state);
+    return static_cast<ButtonState>(state);
   }
 
   /**
@@ -554,7 +554,7 @@ class basic_controller final {
    */
   [[nodiscard]] auto is_pressed(const controller_button button) const noexcept -> bool
   {
-    return get_state(button) == button_state::pressed;
+    return get_state(button) == ButtonState::Pressed;
   }
 
   /**
@@ -568,7 +568,7 @@ class basic_controller final {
    */
   [[nodiscard]] auto is_released(const controller_button button) const noexcept -> bool
   {
-    return get_state(button) == button_state::released;
+    return get_state(button) == ButtonState::Released;
   }
 
   /**
@@ -986,7 +986,7 @@ class basic_controller final {
                                                          &result.x,
                                                          &result.y,
                                                          &result.pressure);
-    result.state = static_cast<button_state>(state);
+    result.state = static_cast<ButtonState>(state);
 
     if (res != -1) {
       return result;

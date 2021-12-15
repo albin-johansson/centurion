@@ -42,7 +42,7 @@ TEST(Joystick, VirtualAPI)
   ASSERT_EQ(nHats, joystick.GetHats());
 
   ASSERT_TRUE(joystick.SetVirtualAxis(0, 123));
-  ASSERT_TRUE(joystick.SetVirtualButton(0, cen::button_state::pressed));
+  ASSERT_TRUE(joystick.SetVirtualButton(0, cen::ButtonState::Pressed));
   ASSERT_TRUE(joystick.SetVirtualHat(0, cen::HatState::Centered));
 
   ASSERT_TRUE(cen::Joystick::DetachVirtual(*index));

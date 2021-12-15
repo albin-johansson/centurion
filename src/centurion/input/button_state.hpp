@@ -11,81 +11,29 @@
 
 namespace cen {
 
-/// \addtogroup input
-/// \{
-
-/**
- * \enum button_state
- *
- * \ingroup input
- *
- * \brief Represents the two possible states for a button.
- *
- * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
- *
- * \since 3.1.0
- */
-enum class button_state : Uint8 {
-  released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
-  pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
+enum class ButtonState : Uint8 {
+  Released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
+  Pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
 };
 
-/// \name String conversions
-/// \{
-
-/**
- * \brief Returns a textual version of the supplied button state.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(button_state::released) == "released"`.
- *
- * \param state the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const ButtonState state) -> std::string_view
 {
   switch (state) {
-    case button_state::released:
-      return "released";
+    case ButtonState::Released:
+      return "Released";
 
-    case button_state::pressed:
-      return "pressed";
+    case ButtonState::Pressed:
+      return "Pressed";
 
     default:
       throw Error{"Did not recognize button state!"};
   }
 }
 
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a button state enumerator.
- *
- * \param stream the output stream that will be used.
- * \param state the enumerator that will be printed.
- *
- * \see `to_string(button_state)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const button_state state) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const ButtonState state) -> std::ostream&
 {
   return stream << to_string(state);
 }
-
-/// \} End of streaming
-
-/// \} End of group input
 
 }  // namespace cen
 

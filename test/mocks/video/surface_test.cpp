@@ -36,7 +36,9 @@ class SurfaceTest : public testing::Test {
 
 TEST_F(SurfaceTest, ConvertTo)
 {
-  ASSERT_THROW(m_surface.ConvertTo(cen::pixel_format::rgba8888), cen::SDLError);
+  ASSERT_THROW(
+      { const auto s [[maybe_unused]] = m_surface.ConvertTo(cen::pixel_format::rgba8888); },
+      cen::SDLError);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 

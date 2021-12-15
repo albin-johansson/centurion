@@ -1,10 +1,9 @@
-#include "video/cursor.hpp"
-
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
 #include "core/exception.hpp"
+#include "mouse.hpp"
 
 static_assert(std::is_move_constructible_v<cen::Cursor>);
 static_assert(std::is_move_assignable_v<cen::Cursor>);

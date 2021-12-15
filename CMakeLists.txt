@@ -140,7 +140,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/keyboard.hpp
                src/centurion/input/keycodes.hpp
                src/centurion/mouse.hpp
-               src/centurion/input/mouse_button.hpp
                src/centurion/input/scan_code.hpp
                src/centurion/input/scancodes.hpp
                src/centurion/input/sensor.hpp
@@ -152,7 +151,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/button_order.hpp
                src/centurion/video/color.hpp
                src/centurion/video/colors.hpp
-               src/centurion/video/cursor.hpp
                src/centurion/video/font.hpp
                src/centurion/video/font_cache.hpp
                src/centurion/video/graphics_drivers.hpp

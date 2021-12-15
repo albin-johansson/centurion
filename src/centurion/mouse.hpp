@@ -1,10 +1,19 @@
 #ifndef CENTURION_MOUSE_HPP_
 #define CENTURION_MOUSE_HPP_
 
-#include <ostream>  // ostream
-#include <string>   // string, to_string
+#include <SDL.h>
 
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+#include "core/common.hpp"
+#include "core/exception.hpp"
 #include "core/features.hpp"
+#include "detail/owner_handle_api.hpp"
+#include "detail/stdlib.hpp"
+#include "math.hpp"
+#include "video/surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -12,32 +21,34 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "core/common.hpp"
-#include "detail/stdlib.hpp"
-#include "math.hpp"
-
 namespace cen {
 
-/// \addtogroup input
-/// \{
+enum class SystemCursor {
+  Arrow = SDL_SYSTEM_CURSOR_ARROW,
+  IBeam = SDL_SYSTEM_CURSOR_IBEAM,
+  Wait = SDL_SYSTEM_CURSOR_WAIT,
+  Crosshair = SDL_SYSTEM_CURSOR_CROSSHAIR,
+  WaitArrow = SDL_SYSTEM_CURSOR_WAITARROW,
+  Size_NW_SE = SDL_SYSTEM_CURSOR_SIZENWSE,
+  Size_NE_SW = SDL_SYSTEM_CURSOR_SIZENESW,
+  Size_W_E = SDL_SYSTEM_CURSOR_SIZEWE,
+  Size_N_S = SDL_SYSTEM_CURSOR_SIZENS,
+  SizeAll = SDL_SYSTEM_CURSOR_SIZEALL,
+  No = SDL_SYSTEM_CURSOR_NO,
+  Hand = SDL_SYSTEM_CURSOR_HAND
+};
 
-/**
- * \class mouse
- *
- * \brief Provides information about the mouse state, which is an alternative to dealing
- * with mouse events.
- *
- * \since 3.0.0
- *
- * \see `keyboard`
- */
+enum class mouse_button : Uint8 {
+  left = SDL_BUTTON_LEFT,
+  middle = SDL_BUTTON_MIDDLE,
+  right = SDL_BUTTON_RIGHT,
+  x1 = SDL_BUTTON_X1,
+  x2 = SDL_BUTTON_X2
+};
+
+/* Provides information about the mouse state. */
 class mouse final {
  public:
-  /**
-   * \brief Creates a `mouse` instance.
-   *
-   * \since 3.0.0
-   */
   mouse() noexcept = default;
 
   /**
@@ -266,18 +277,88 @@ class mouse final {
   bool m_prevRightPressed{};
 };
 
-/// \name String conversions
-/// \{
+template <typename T>
+class BasicCursor;
 
-/**
- * \brief Returns a textual representation of a mouse.
- *
- * \param mouse the mouse instance that will be converted.
- *
- * \return a string that represents the mouse.
- *
- * \since 6.2.0
- */
+using Cursor = BasicCursor<detail::OwnerTag>;
+using CursorHandle = BasicCursor<detail::HandleTag>;
+
+template <typename T>
+class BasicCursor final {
+ public:
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  explicit BasicCursor(const SystemCursor cursor)
+      : mCursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
+  {
+    if (!mCursor) {
+      throw SDLError{};
+    }
+  }
+
+  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  BasicCursor(const Surface& surface, const Point& hotspot)
+      : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.GetX(), hotspot.GetY())}
+  {
+    if (!mCursor) {
+      throw SDLError{};
+    }
+  }
+
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  explicit BasicCursor(SDL_Cursor* cursor) noexcept : mCursor{cursor}
+  {}
+
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  explicit BasicCursor(const Cursor& owner) noexcept : mCursor{owner.get()}
+  {}
+
+  void Enable() noexcept { SDL_SetCursor(mCursor); }
+
+  /* Resets the active cursor to the system default. */
+  static void Reset() noexcept { SDL_SetCursor(SDL_GetDefaultCursor()); }
+
+  static void ForceRedraw() noexcept { SDL_SetCursor(nullptr); }
+
+  static void SetVisible(const bool visible) noexcept
+  {
+    SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+  }
+
+  [[nodiscard]] static auto GetDefault() noexcept -> CursorHandle
+  {
+    return CursorHandle{SDL_GetDefaultCursor()};
+  }
+
+  [[nodiscard]] static auto GetCurrent() noexcept -> CursorHandle
+  {
+    return CursorHandle{SDL_GetCursor()};
+  }
+
+  [[nodiscard]] static auto IsVisible() noexcept -> bool
+  {
+    return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
+  }
+
+  [[nodiscard]] constexpr static auto GetSystemCursors() noexcept -> int
+  {
+    return SDL_NUM_SYSTEM_CURSORS;
+  }
+
+  /* Indicates whether this cursor is currently active. */
+  [[nodiscard]] auto IsEnabled() const noexcept -> bool { return SDL_GetCursor() == get(); }
+
+  [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return mCursor.get(); }
+
+  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  explicit operator bool() const noexcept
+  {
+    return mCursor != nullptr;
+  }
+
+ private:
+  detail::Pointer<T, SDL_Cursor> mCursor;
+};
+
 [[nodiscard]] inline auto to_string(const mouse& mouse) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -287,29 +368,87 @@ class mouse final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a mouse.
- *
- * \param stream the output stream that will be used.
- * \param mouse the mouse that will be printed.
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
 inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream&
 {
   return stream << to_string(mouse);
 }
 
-/// \} End of streaming
+[[nodiscard]] constexpr auto to_string(const mouse_button button) -> std::string_view
+{
+  switch (button) {
+    case mouse_button::left:
+      return "left";
 
-/// \} End of group input
+    case mouse_button::middle:
+      return "middle";
+
+    case mouse_button::right:
+      return "right";
+
+    case mouse_button::x1:
+      return "x1";
+
+    case mouse_button::x2:
+      return "x2";
+
+    default:
+      throw Error{"Did not recognize mouse button!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::ostream&
+{
+  return stream << to_string(button);
+}
+
+[[nodiscard]] constexpr auto to_string(const SystemCursor cursor) -> std::string_view
+{
+  switch (cursor) {
+    case SystemCursor::Arrow:
+      return "Arrow";
+
+    case SystemCursor::IBeam:
+      return "IBeam";
+
+    case SystemCursor::Wait:
+      return "Wait";
+
+    case SystemCursor::Crosshair:
+      return "Crosshair";
+
+    case SystemCursor::WaitArrow:
+      return "WaitArrow";
+
+    case SystemCursor::Size_NW_SE:
+      return "Size_NW_SE";
+
+    case SystemCursor::Size_NE_SW:
+      return "Size_NE_SW";
+
+    case SystemCursor::Size_W_E:
+      return "Size_W_E";
+
+    case SystemCursor::Size_N_S:
+      return "Size_N_S";
+
+    case SystemCursor::SizeAll:
+      return "SizeAll";
+
+    case SystemCursor::No:
+      return "No";
+
+    case SystemCursor::Hand:
+      return "Hand";
+
+    default:
+      throw Error{"Did not recognize system cursor!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const SystemCursor cursor) -> std::ostream&
+{
+  return stream << to_string(cursor);
+}
 
 }  // namespace cen
 

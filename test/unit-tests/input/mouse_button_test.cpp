@@ -1,10 +1,9 @@
-#include "input/mouse_button.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/common.hpp"
+#include "mouse.hpp"
 
 TEST(MouseButton, Values)
 {

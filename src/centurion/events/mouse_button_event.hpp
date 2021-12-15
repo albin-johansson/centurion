@@ -5,7 +5,7 @@
 
 #include "../core/common.hpp"
 #include "../input/button_state.hpp"
-#include "../input/mouse_button.hpp"
+#include "../mouse.hpp"
 #include "common_event.hpp"
 
 namespace cen {

@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "video/cursor.hpp"
+#include "mouse.hpp"
 
 TEST(SystemCursor, Values)
 {

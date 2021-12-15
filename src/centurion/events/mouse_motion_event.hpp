@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../core/common.hpp"
-#include "../input/mouse_button.hpp"
+#include "../mouse.hpp"
 #include "common_event.hpp"
 
 namespace cen {

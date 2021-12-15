@@ -3,7 +3,7 @@
 
 namespace {
 
-using event_dispatcher = cen::event_dispatcher<cen::quit_event, cen::keyboard_event>;
+using event_dispatcher = cen::EventDispatcher<cen::quit_event, cen::keyboard_event>;
 
 constexpr cen::Area window_size = cen::window::default_size();
 

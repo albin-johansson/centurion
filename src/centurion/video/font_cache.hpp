@@ -55,7 +55,7 @@ class font_cache final {
    * \since 5.0.0
    */
   struct glyph_data final {
-    texture cached;        ///< The cached texture.
+    Texture cached;        ///< The cached texture.
     GlyphMetrics metrics;  ///< The metrics of the glyph.
   };
 
@@ -509,7 +509,7 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_stored(const id_type id) const -> const texture&
+  [[nodiscard]] auto get_stored(const id_type id) const -> const Texture&
   {
     return m_strings.at(id);
   }
@@ -527,7 +527,7 @@ class font_cache final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto try_get_stored(const id_type id) const noexcept -> const texture*
+  [[nodiscard]] auto try_get_stored(const id_type id) const noexcept -> const Texture*
   {
     const auto iterator = m_strings.find(id);
     if (iterator != m_strings.end()) {
@@ -737,7 +737,7 @@ class font_cache final {
  private:
   Font m_font;
   std::unordered_map<Unicode, glyph_data> m_glyphs;
-  std::unordered_map<id_type, texture> m_strings;
+  std::unordered_map<id_type, Texture> m_strings;
 
   /**
    * \brief Creates and returns a texture for the specified glyph.
@@ -752,14 +752,14 @@ class font_cache final {
    * \since 5.0.0
    */
   template <typename Renderer>
-  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const Unicode glyph) -> texture
+  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const Unicode glyph) -> Texture
   {
     const auto color = renderer.GetColor().get();
     const Surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
     return texture{renderer, src};
   }
 
-  void store(const id_type id, texture&& texture)
+  void store(const id_type id, Texture&& texture)
   {
     if (const auto it = m_strings.find(id); it != m_strings.end()) {
       m_strings.erase(it);

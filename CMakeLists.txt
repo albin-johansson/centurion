@@ -67,6 +67,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/pixels.hpp
                src/centurion/render.hpp
                src/centurion/system.hpp
+               src/centurion/texture.hpp
                src/centurion/video.hpp
 
                src/centurion/core/common.hpp
@@ -162,7 +163,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/scale_mode.hpp
                src/centurion/video/screen.hpp
                src/centurion/video/surface.hpp
-               src/centurion/video/texture.hpp
                src/centurion/video/texture_access.hpp
                src/centurion/video/unicode_string.hpp
                src/centurion/video/vulkan.hpp

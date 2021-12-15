@@ -3,7 +3,7 @@
 #include <memory>  // unique_ptr
 
 #include "video/renderer.hpp"
-#include "video/texture.hpp"
+#include "texture.hpp"
 #include "video/window.hpp"
 
 class TextureHandleTest : public testing::Test {
@@ -13,7 +13,7 @@ class TextureHandleTest : public testing::Test {
     constexpr auto path = "resources/panda.png";
     window = std::make_unique<cen::window>();
     renderer = std::make_unique<cen::Renderer>(*window);
-    texture = std::make_unique<cen::texture>(*renderer, path);
+    texture = std::make_unique<cen::Texture>(*renderer, path);
   }
 
   static void TearDownTestSuite()
@@ -25,23 +25,23 @@ class TextureHandleTest : public testing::Test {
 
   inline static std::unique_ptr<cen::window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
-  inline static std::unique_ptr<cen::texture> texture;
+  inline static std::unique_ptr<cen::Texture> texture;
 };
 
 TEST_F(TextureHandleTest, FromTexture)
 {
-  cen::texture_handle handle{*texture};
+  cen::TextureHandle handle{*texture};
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
 }
 
 TEST_F(TextureHandleTest, FromRawPointer)
 {
-  cen::texture_handle bad{nullptr};
+  cen::TextureHandle bad{nullptr};
   ASSERT_FALSE(bad);
   ASSERT_FALSE(bad.get());
 
-  cen::texture_handle good{texture->get()};
+  cen::TextureHandle good{texture->get()};
   ASSERT_TRUE(good);
   ASSERT_TRUE(good.get());
 }

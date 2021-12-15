@@ -599,7 +599,7 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> Resul
  * \since 6.1.0
  */
 template <typename T>
-auto bind(basic_texture<T>& texture) noexcept -> std::optional<FArea>
+auto bind(BasicTexture<T>& texture) noexcept -> std::optional<FArea>
 {
   float width{};
   float height{};
@@ -623,7 +623,7 @@ auto bind(basic_texture<T>& texture) noexcept -> std::optional<FArea>
  * \since 6.1.0
  */
 template <typename T>
-auto unbind(basic_texture<T>& texture) noexcept -> Result
+auto unbind(BasicTexture<T>& texture) noexcept -> Result
 {
   return SDL_GL_UnbindTexture(texture.get()) == 0;
 }

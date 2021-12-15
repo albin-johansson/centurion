@@ -232,20 +232,20 @@ class BasicRenderer final {
 
 #ifndef CENTURION_NO_SDL_TTF
 
-  [[nodiscard]] auto RenderBlendedUTF8(const char* str, const Font& font) -> texture
+  [[nodiscard]] auto RenderBlendedUTF8(const char* str, const Font& font) -> Texture
   {
     assert(str);
     return ToTexture(TTF_RenderUTF8_Blended(font.get(), str, GetColor().get()));
   }
 
-  [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const Font& font) -> texture
+  [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const Font& font) -> Texture
   {
     return RenderBlendedUTF8(str.c_str(), font);
   }
 
   [[nodiscard]] auto RenderBlendedWrappedUTF8(const char* str,
                                               const Font& font,
-                                              const Uint32 wrap) -> texture
+                                              const Uint32 wrap) -> Texture
   {
     assert(str);
     return ToTexture(TTF_RenderUTF8_Blended_Wrapped(font.get(), str, GetColor().get(), wrap));
@@ -253,14 +253,14 @@ class BasicRenderer final {
 
   [[nodiscard]] auto RenderBlendedWrappedUTF8(const std::string& str,
                                               const Font& font,
-                                              const Uint32 wrap) -> texture
+                                              const Uint32 wrap) -> Texture
   {
     return RenderBlendedWrappedUTF8(str.c_str(), font, wrap);
   }
 
   [[nodiscard]] auto RenderShadedUTF8(const char* str,
                                       const Font& font,
-                                      const Color& background) -> texture
+                                      const Color& background) -> Texture
   {
     assert(str);
     return ToTexture(
@@ -269,36 +269,36 @@ class BasicRenderer final {
 
   [[nodiscard]] auto RenderShadedUTF8(const std::string& str,
                                       const Font& font,
-                                      const Color& background) -> texture
+                                      const Color& background) -> Texture
   {
     return RenderShadedUTF8(str.c_str(), font, background);
   }
 
-  [[nodiscard]] auto RenderSolidUTF8(const char* str, const Font& font) -> texture
+  [[nodiscard]] auto RenderSolidUTF8(const char* str, const Font& font) -> Texture
   {
     assert(str);
     return ToTexture(TTF_RenderUTF8_Solid(font.get(), str, GetColor().get()));
   }
 
-  [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const Font& font) -> texture
+  [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const Font& font) -> Texture
   {
     return RenderSolidUTF8(str.c_str(), font);
   }
 
-  [[nodiscard]] auto RenderBlendedLatin1(const char* str, const Font& font) -> texture
+  [[nodiscard]] auto RenderBlendedLatin1(const char* str, const Font& font) -> Texture
   {
     assert(str);
     return ToTexture(TTF_RenderText_Blended(font.get(), str, GetColor().get()));
   }
 
-  [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const Font& font) -> texture
+  [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const Font& font) -> Texture
   {
     return RenderBlendedLatin1(str.c_str(), font);
   }
 
   [[nodiscard]] auto RenderBlendedWrappedLatin1(const char* str,
                                                 const Font& font,
-                                                const Uint32 wrap) -> texture
+                                                const Uint32 wrap) -> Texture
   {
     assert(str);
     return ToTexture(TTF_RenderText_Blended_Wrapped(font.get(), str, GetColor().get(), wrap));
@@ -306,14 +306,14 @@ class BasicRenderer final {
 
   [[nodiscard]] auto RenderBlendedWrappedLatin1(const std::string& str,
                                                 const Font& font,
-                                                const Uint32 wrap) -> texture
+                                                const Uint32 wrap) -> Texture
   {
     return RenderBlendedWrappedLatin1(str.c_str(), font, wrap);
   }
 
   [[nodiscard]] auto RenderShadedLatin1(const char* str,
                                         const Font& font,
-                                        const Color& background) -> texture
+                                        const Color& background) -> Texture
   {
     assert(str);
     return ToTexture(
@@ -322,31 +322,31 @@ class BasicRenderer final {
 
   [[nodiscard]] auto RenderShadedLatin1(const std::string& str,
                                         const Font& font,
-                                        const Color& background) -> texture
+                                        const Color& background) -> Texture
   {
     return RenderShadedLatin1(str.c_str(), font, background);
   }
 
-  [[nodiscard]] auto RenderSolidLatin1(const char* str, const Font& font) -> texture
+  [[nodiscard]] auto RenderSolidLatin1(const char* str, const Font& font) -> Texture
   {
     assert(str);
     return ToTexture(TTF_RenderText_Solid(font.get(), str, GetColor().get()));
   }
 
-  [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const Font& font) -> texture
+  [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const Font& font) -> Texture
   {
     return RenderSolidLatin1(str.c_str(), font);
   }
 
   [[nodiscard]] auto RenderBlendedUnicode(const UnicodeString& str, const Font& font)
-      -> texture
+      -> Texture
   {
     return ToTexture(TTF_RenderUNICODE_Blended(font.get(), str.data(), GetColor().get()));
   }
 
   [[nodiscard]] auto RenderBlendedWrappedUnicode(const UnicodeString& str,
                                                  const Font& font,
-                                                 const Uint32 wrap) -> texture
+                                                 const Uint32 wrap) -> Texture
   {
     return ToTexture(
         TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), GetColor().get(), wrap));
@@ -354,13 +354,13 @@ class BasicRenderer final {
 
   [[nodiscard]] auto RenderShadedUnicode(const UnicodeString& str,
                                          const Font& font,
-                                         const Color& background) -> texture
+                                         const Color& background) -> Texture
   {
     return ToTexture(
         TTF_RenderUNICODE_Shaded(font.get(), str.data(), GetColor().get(), background.get()));
   }
 
-  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const Font& font) -> texture
+  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const Font& font) -> Texture
   {
     return ToTexture(TTF_RenderUNICODE_Solid(font.get(), str.data(), GetColor().get()));
   }
@@ -408,22 +408,24 @@ class BasicRenderer final {
 #endif  // CENTURION_NO_SDL_TTF
 
   template <typename P, typename U>
-  auto Render(const basic_texture<U>& texture, const BasicPoint<P>& position) noexcept
+  auto Render(const BasicTexture<U>& texture, const BasicPoint<P>& position) noexcept
       -> Result
   {
     if constexpr (BasicPoint<P>::floating) {
-      const auto size = cast<FArea>(texture.size());
+      const auto size = cast<FArea>(texture.GetSize());
       const SDL_FRect dst{position.GetX(), position.GetY(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else {
-      const SDL_Rect dst{position.GetX(), position.GetY(), texture.width(), texture.height()};
+      const SDL_Rect dst{position.GetX(), position.GetY(),
+                         texture.GetWidth(),
+                         texture.GetHeight()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
   }
 
   template <typename P, typename U>
-  auto Render(const basic_texture<U>& texture, const BasicRect<P>& destination) noexcept
+  auto Render(const BasicTexture<U>& texture, const BasicRect<P>& destination) noexcept
       -> Result
   {
     if constexpr (BasicRect<P>::floating) {
@@ -435,7 +437,7 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const basic_texture<U>& texture,
+  auto Render(const BasicTexture<U>& texture,
               const Rect& source,
               const BasicRect<P>& destination) noexcept -> Result
   {
@@ -448,7 +450,7 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const basic_texture<U>& texture,
+  auto Render(const BasicTexture<U>& texture,
               const Rect& source,
               const BasicRect<P>& destination,
               const double angle) noexcept -> Result
@@ -474,7 +476,7 @@ class BasicRenderer final {
   }
 
   template <typename R, typename P, typename U>
-  auto Render(const basic_texture<U>& texture,
+  auto Render(const BasicTexture<U>& texture,
               const Rect& source,
               const BasicRect<R>& destination,
               const double angle,
@@ -506,7 +508,7 @@ class BasicRenderer final {
   }
 
   template <typename R, typename P, typename U>
-  auto Render(const basic_texture<U>& texture,
+  auto Render(const BasicTexture<U>& texture,
               const Rect& source,
               const BasicRect<R>& destination,
               const double angle,
@@ -582,9 +584,9 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto SetTarget(basic_texture<U>& target) noexcept -> Result
+  auto SetTarget(BasicTexture<U>& target) noexcept -> Result
   {
-    assert(target.is_target());
+    assert(target.IsTarget());
     return SDL_SetRenderTarget(get(), target.get()) == 0;
   }
 
@@ -609,9 +611,9 @@ class BasicRenderer final {
     return SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled)) == 0;
   }
 
-  [[nodiscard]] auto GetRenderTarget() noexcept -> texture_handle
+  [[nodiscard]] auto GetRenderTarget() noexcept -> TextureHandle
   {
-    return texture_handle{SDL_GetRenderTarget(get())};
+    return TextureHandle{SDL_GetRenderTarget(get())};
   }
 
   [[nodiscard]] auto GetLogicalSize() const noexcept -> Area
@@ -699,10 +701,10 @@ class BasicRenderer final {
  private:
   detail::Pointer<T, SDL_Renderer> mRenderer;
 
-  [[nodiscard]] auto ToTexture(Owner<SDL_Surface*> s) -> texture
+  [[nodiscard]] auto ToTexture(Owner<SDL_Surface*> s) -> Texture
   {
     Surface surface{s};
-    texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};
+    Texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};
     return texture;
   }
 };

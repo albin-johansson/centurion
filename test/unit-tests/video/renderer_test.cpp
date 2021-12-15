@@ -23,7 +23,7 @@ class RendererTest : public testing::Test {
     window = std::make_unique<cen::window>();
 
     renderer = std::make_unique<cen::Renderer>(*window);
-    texture = std::make_unique<cen::texture>(*renderer, "resources/panda.png");
+    texture = std::make_unique<cen::Texture>(*renderer, "resources/panda.png");
   }
 
   static void TearDownTestSuite()
@@ -37,7 +37,7 @@ class RendererTest : public testing::Test {
   inline static std::unique_ptr<cen::Font> font;
   inline static std::unique_ptr<cen::window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
-  inline static std::unique_ptr<cen::texture> texture;
+  inline static std::unique_ptr<cen::Texture> texture;
 };
 
 TEST_F(RendererTest, PointerConstructor)

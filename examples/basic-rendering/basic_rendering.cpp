@@ -10,7 +10,7 @@ int main(int, char**)
   auto [window, renderer] = cen::make_window_and_renderer();
 
   // Here we assume the existence of an image and font
-  const cen::texture image{renderer, RESOURCE_DIR "panda.png"};
+  const cen::Texture image{renderer, RESOURCE_DIR "panda.png"};
   const cen::font font{RESOURCE_DIR "daniel.ttf", 36};
   window.show();
 

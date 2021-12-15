@@ -118,7 +118,6 @@
 #include "centurion/video/scale_mode.hpp"
 #include "centurion/video/screen.hpp"
 #include "centurion/video/surface.hpp"
-#include "centurion/video/texture_access.hpp"
 #include "centurion/video/unicode_string.hpp"
 #include "centurion/video/vulkan.hpp"
 #include "centurion/video/window.hpp"

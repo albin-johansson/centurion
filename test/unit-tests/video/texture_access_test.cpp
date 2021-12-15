@@ -1,10 +1,9 @@
-#include "video/texture_access.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/common.hpp"
+#include "texture.hpp"
 
 TEST(TextureAccess, Values)
 {

@@ -23,7 +23,6 @@
 #include "video/color.hpp"
 #include "video/scale_mode.hpp"
 #include "video/surface.hpp"
-#include "video/texture_access.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

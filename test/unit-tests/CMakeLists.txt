@@ -113,6 +113,13 @@ set(SOURCE_FILES
     math/point_test.cpp
     math/vector3_test.cpp
 
+    message-box/mb_button_flags_test.cpp
+    message-box/mb_button_order_test.cpp
+    message-box/mb_color_scheme.cpp
+    message-box/mb_color_type_test.cpp
+    message-box/mb_type_test.cpp
+    message-box/message_box_test.cpp
+
     mouse/cursor_test.cpp
     mouse/mouse_button_test.cpp
     mouse/mouse_test.cpp
@@ -152,13 +159,8 @@ set(SOURCE_FILES
     video/blend_factor_test.cpp
     video/blend_mode_test.cpp
     video/blend_op_test.cpp
-    video/button_order_test.cpp
     video/color_test.cpp
     video/flash_op_test.cpp
-    video/message_box_color_id_test.cpp
-    video/message_box_default_button_test.cpp
-    video/message_box_test.cpp
-    video/message_box_type_test.cpp
     video/screen_orientation_test.cpp
     video/screen_test.cpp
     video/surface_test.cpp

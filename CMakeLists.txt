@@ -64,16 +64,22 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/concurrency.hpp
                src/centurion/endian.hpp
                src/centurion/filesystem.hpp
+               src/centurion/font.hpp
                src/centurion/keyboard.hpp
                src/centurion/locale.hpp
                src/centurion/math.hpp
+               src/centurion/message_box.hpp
                src/centurion/mouse.hpp
+               src/centurion/opengl.hpp
                src/centurion/pixels.hpp
                src/centurion/power.hpp
                src/centurion/render.hpp
+               src/centurion/surface.hpp
                src/centurion/system.hpp
                src/centurion/texture.hpp
+               src/centurion/unicode.hpp
                src/centurion/video.hpp
+               src/centurion/vulkan.hpp
 
                src/centurion/core/common.hpp
                src/centurion/core/exception.hpp
@@ -140,25 +146,13 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_periodic.hpp
                src/centurion/input/haptic_ramp.hpp
                src/centurion/input/joystick.hpp
-               src/centurion/keyboard.hpp
-               src/centurion/mouse.hpp
                src/centurion/input/sensor.hpp
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
 
-               src/centurion/concurrency.hpp
-
-               src/centurion/video/button_order.hpp
                src/centurion/video/color.hpp
                src/centurion/video/colors.hpp
-               src/centurion/font.hpp
-               src/centurion/video/message_box.hpp
-               src/centurion/video/message_box_type.hpp
-               src/centurion/opengl.hpp
                src/centurion/video/screen.hpp
-               src/centurion/surface.hpp
-               src/centurion/unicode.hpp
-               src/centurion/vulkan.hpp
                src/centurion/video/window.hpp
                )
 

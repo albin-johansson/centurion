@@ -1,4 +1,4 @@
-#include "video/message_box.hpp"
+#include "message_box.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -30,7 +30,7 @@ TEST_F(MessageBoxTest, ShowStatic)
   const std::string message{"bar"};
 
   {  // With defaults
-    cen::message_box::show(title, message);
+    cen::MessageBox::Show(title, message);
     ASSERT_EQ(1u, SDL_ShowSimpleMessageBox_fake.call_count);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -44,7 +44,7 @@ TEST_F(MessageBoxTest, ShowStatic)
   }
 
   {  // With custom type
-    cen::message_box::show(title, message, cen::message_box_type::error);
+    cen::MessageBox::Show(title, message, cen::MessageBoxType::Error);
     ASSERT_EQ(2u, SDL_ShowSimpleMessageBox_fake.call_count);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -58,10 +58,10 @@ TEST_F(MessageBoxTest, ShowStatic)
   }
 
   {  // With custom type and button order
-    cen::message_box::show(title,
-                           message,
-                           cen::message_box_type::error,
-                           cen::button_order::right_to_left);
+    cen::MessageBox::Show(title,
+                          message,
+                          cen::MessageBoxType::Error,
+                          cen::MessageBoxButtonOrder::RightToLeft);
     ASSERT_EQ(3u, SDL_ShowSimpleMessageBox_fake.call_count);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -77,12 +77,12 @@ TEST_F(MessageBoxTest, ShowStatic)
 
 TEST_F(MessageBoxTest, Show)
 {
-  cen::message_box mb;
+  cen::MessageBox mb;
 
-  mb.show();
+  mb.Show();
   ASSERT_EQ(1u, SDL_ShowMessageBox_fake.call_count);
 
   cen::window_handle window{nullptr};
-  mb.show(window);
+  mb.Show(window);
   ASSERT_EQ(2u, SDL_ShowMessageBox_fake.call_count);
 }

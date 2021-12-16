@@ -76,7 +76,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  void set_period(const milliseconds<Uint16> period) noexcept(noexcept(period.count()))
+  void set_period(const U16_Millis period) noexcept(noexcept(period.count()))
   {
     representation().period = period.count();
   }
@@ -121,9 +121,9 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto period() const -> milliseconds<Uint16>
+  [[nodiscard]] auto period() const -> U16_Millis
   {
-    return milliseconds<Uint16>{representation().period};
+    return U16_Millis{representation().period};
   }
 
   /**

@@ -7,9 +7,9 @@
 #include "core_mocks.hpp"
 #include "mixer_mocks.hpp"
 
-using music_finished_callback = void(SDLCALL*)(void);
-using hook_music_callback = void(SDLCALL*)(void*, Uint8*, int);
-using ms = cen::milliseconds<int>;
+using music_finished_callback = void (*)();
+using hook_music_callback = void (*)(void*, Uint8*, int);
+using ms = cen::Millis<int>;
 
 extern "C"
 {

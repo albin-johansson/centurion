@@ -24,8 +24,8 @@ TEST(Condition, Wait)
   cen::Thread thread{[](void* data) {
                        auto* cond = reinterpret_cast<cen::Condition*>(data);
 
-                       using ms = cen::milliseconds<Uint32>;
-                       cen::Thread::Sleep(ms{50});
+                       using namespace cen::literals::time_literals;
+                       cen::Thread::Sleep(50_ms);
 
                        cond->Signal();
 

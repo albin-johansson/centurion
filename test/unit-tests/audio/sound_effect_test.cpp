@@ -16,7 +16,7 @@ static_assert(std::is_nothrow_move_assignable_v<cen::SoundEffect>);
 static_assert(!std::is_copy_constructible_v<cen::SoundEffect>);
 static_assert(!std::is_copy_assignable_v<cen::SoundEffect>);
 
-using ms = cen::milliseconds<int>;
+using ms = cen::Millis<int>;
 
 inline constexpr auto path = "resources/click.wav";
 

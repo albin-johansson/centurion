@@ -49,7 +49,6 @@ enum class FadeStatus {
 
 class Music final {
  public:
-  using Ms = milliseconds<int>;
   using MusicHookCallback = void (*)(void*, Uint8*, int);
 
   inline constexpr static int forever = -1;
@@ -85,17 +84,19 @@ class Music final {
 
   static void Rewind() noexcept { Mix_RewindMusic(); }
 
-  auto FadeIn(const Ms ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> Result
+  auto FadeIn(const Millis<int> duration,
+              const int nLoops = 0) noexcept(noexcept(duration.count())) -> Result
   {
-    assert(ms.count() > 0);
-    return Mix_FadeInMusic(mMusic.get(), detail::max(nLoops, forever), ms.count()) == 0;
+    assert(duration.count() > 0);
+    return Mix_FadeInMusic(mMusic.get(), detail::max(nLoops, forever), duration.count()) == 0;
   }
 
-  static auto FadeOut(const Ms ms) noexcept(noexcept(ms.count())) -> Result
+  static auto FadeOut(const Millis<int> duration) noexcept(noexcept(duration.count()))
+      -> Result
   {
-    assert(ms.count() > 0);
+    assert(duration.count() > 0);
     if (!IsFading()) {
-      return Mix_FadeOutMusic(ms.count()) != 0;
+      return Mix_FadeOutMusic(duration.count()) != 0;
     }
     else {
       return failure;
@@ -183,8 +184,6 @@ using SoundEffectHandle = BasicSoundEffect<detail::HandleTag>;
 template <typename T>
 class BasicSoundEffect final {
  public:
-  using Ms = milliseconds<int>;
-
   inline constexpr static int forever = -1;
 
   explicit BasicSoundEffect(MaybeOwner<Mix_Chunk*> sound) noexcept(detail::is_handle<T>)
@@ -227,19 +226,19 @@ class BasicSoundEffect final {
     }
   }
 
-  void FadeIn(const Ms ms) noexcept(noexcept(ms.count()))
+  void FadeIn(const Millis<int> duration) noexcept(noexcept(duration.count()))
   {
-    assert(ms.count() > 0);
+    assert(duration.count() > 0);
     if (!IsPlaying()) {
-      mChannel = Mix_FadeInChannel(mChannel, get(), 0, ms.count());
+      mChannel = Mix_FadeInChannel(mChannel, get(), 0, duration.count());
     }
   }
 
-  void FadeOut(const Ms ms) noexcept(noexcept(ms.count()))  // NOLINT
+  void FadeOut(const Millis<int> duration) noexcept(noexcept(duration.count()))  // NOLINT
   {
-    assert(ms.count() > 0);
+    assert(duration.count() > 0);
     if (IsPlaying()) {
-      Mix_FadeOutChannel(mChannel, ms.count());
+      Mix_FadeOutChannel(mChannel, duration.count());
     }
   }
 

@@ -15,7 +15,6 @@ set(SOURCE_FILES
     core/log_test.cpp
     core/result_test.cpp
     core/sdl_string_test.cpp
-    core/time_test.cpp
     core/to_underlying_test.cpp
     core/version_test.cpp
 

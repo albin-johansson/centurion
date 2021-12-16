@@ -198,8 +198,7 @@ class basic_haptic final {
    * \since 5.2.0
    */
   auto play_rumble(const float strength,
-                   const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
-      -> Result
+                   const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_HapticRumblePlay(m_haptic,
                                 detail::clamp(strength, 0.0f, 1.0f),

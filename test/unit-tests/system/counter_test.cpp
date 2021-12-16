@@ -14,21 +14,11 @@ TEST(Counter, Now)
 
 TEST(Counter, NowInSeconds)
 {
-  ASSERT_NO_THROW(cen::NowInSeconds<double>());
+  ASSERT_NO_THROW(cen::NowInSeconds());
 }
 
 TEST(Counter, GetTicks)
 {
-  using namespace cen::literals::legacy;
+  using namespace cen::literals::time_literals;
   ASSERT_GT(cen::GetTicks(), 0_ms);
 }
-
-#if SDL_VERSION_ATLEAST(2, 0, 18)
-
-TEST(Counter, GetTicks64)
-{
-  using namespace cen::literals;
-  ASSERT_GT(cen::GetTicks64(), 0_ms);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

@@ -84,7 +84,7 @@ TEST_F(MusicTest, Pause)
   cen::Music::Pause();
   ASSERT_TRUE(cen::Music::IsPaused());
 
-  music->FadeIn(cen::milliseconds<int>{100});
+  music->FadeIn(cen::Millis<int>{100});
 
   cen::Music::Pause();
   ASSERT_TRUE(cen::Music::IsPaused());
@@ -100,7 +100,7 @@ TEST_F(MusicTest, Halt)
   ASSERT_FALSE(cen::Music::IsPlaying());
   ASSERT_FALSE(cen::Music::IsFading());
 
-  music->FadeIn(cen::milliseconds<int>{100});
+  music->FadeIn(cen::Millis<int>{100});
   cen::Music::Halt();
 
   ASSERT_FALSE(cen::Music::IsPlaying());
@@ -113,7 +113,7 @@ TEST_F(MusicTest, FadeIn)
 
   cen::Music::Halt();
 
-  music->FadeIn(cen::milliseconds<int>{100});
+  music->FadeIn(cen::Millis<int>{100});
   ASSERT_TRUE(cen::Music::IsFading());
 
   cen::Music::Halt();
@@ -123,9 +123,9 @@ TEST_F(MusicTest, FadeOut)
 {
   ASSERT_FALSE(cen::Music::IsFading());
 
-  ASSERT_NO_THROW(cen::Music::FadeOut(cen::milliseconds<int>{100}));
+  ASSERT_NO_THROW(cen::Music::FadeOut(cen::Millis<int>{100}));
 
-  music->FadeIn(cen::milliseconds<int>{100});
+  music->FadeIn(cen::Millis<int>{100});
   ASSERT_TRUE(cen::Music::IsFading());
 
   cen::Music::Halt();
@@ -165,7 +165,7 @@ TEST_F(MusicTest, IsPlaying)
 
   cen::Music::Halt();
 
-  music->FadeIn(cen::milliseconds<int>{100});
+  music->FadeIn(cen::Millis<int>{100});
   ASSERT_TRUE(cen::Music::IsPlaying());
 
   cen::Music::Halt();
@@ -189,11 +189,11 @@ TEST_F(MusicTest, IsFading)
 
   cen::Music::Halt();
 
-  music->FadeIn(cen::milliseconds<int>{200});
+  music->FadeIn(cen::Millis<int>{200});
   ASSERT_TRUE(cen::Music::IsFading());
 
   // This should have no effect, since the Music is fading in
-  cen::Music::FadeOut(cen::milliseconds<int>{50});
+  cen::Music::FadeOut(cen::Millis<int>{50});
   ASSERT_EQ(cen::FadeStatus::In, cen::Music::GetFadeStatus());
 
   cen::Music::Halt();
@@ -214,7 +214,7 @@ TEST_F(MusicTest, FadeStatus)
   ASSERT_EQ(cen::FadeStatus::None, cen::Music::GetFadeStatus());
   ASSERT_FALSE(cen::Music::IsFading());
 
-  music->FadeIn(cen::milliseconds<int>{100});
+  music->FadeIn(cen::Millis<int>{100});
   ASSERT_EQ(cen::FadeStatus::In, cen::Music::GetFadeStatus());
   ASSERT_TRUE(cen::Music::IsFading());
   ASSERT_TRUE(cen::Music::IsPlaying());
@@ -223,7 +223,7 @@ TEST_F(MusicTest, FadeStatus)
   cen::Music::Halt();
 
   music->Play();
-  cen::Music::FadeOut(cen::milliseconds<int>{100});
+  cen::Music::FadeOut(cen::Millis<int>{100});
   ASSERT_EQ(cen::FadeStatus::Out, cen::Music::GetFadeStatus());
   ASSERT_TRUE(cen::Music::IsFading());
   ASSERT_TRUE(cen::Music::IsPlaying());

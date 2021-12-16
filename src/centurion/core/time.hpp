@@ -4,111 +4,52 @@
 #include <SDL.h>
 
 #include <chrono>  // duration
-#include <ratio>   // milli, micro, nano
+#include <ratio>   // ratio, milli, micro, nano
 
 #include "common.hpp"
 
 namespace cen {
 
-/// \addtogroup core
-/// \{
-
-/// \name Time (std::chrono) aliases
-/// \{
-
-/// \brief Templated alias for durations in seconds.
 template <typename T>
-using seconds = std::chrono::duration<T>;
+using Seconds = std::chrono::duration<T>;
 
-/// \brief Templated alias for durations in milliseconds.
 template <typename T>
-using milliseconds = std::chrono::duration<T, std::milli>;
+using Millis = std::chrono::duration<T, std::milli>;
 
-/// \brief Templated alias for durations in microseconds.
 template <typename T>
-using microseconds = std::chrono::duration<T, std::micro>;
+using Micros = std::chrono::duration<T, std::micro>;
 
-/// \brief Templated alias for durations in nanoseconds.
 template <typename T>
-using nanoseconds = std::chrono::duration<T, std::nano>;
+using Nanos = std::chrono::duration<T, std::nano>;
 
-/// \brief Templated alias for durations in minutes.
 template <typename T>
-using minutes = std::chrono::duration<T, std::ratio<60>>;
+using Minutes = std::chrono::duration<T, std::ratio<60>>;
 
-/* Uint32-based convenience chrono aliases*/
-using u32_s = seconds<Uint32>;
-using u32_ms = milliseconds<Uint32>;
-using u32_us = microseconds<Uint32>;
-using u32_ns = nanoseconds<Uint32>;
-
-/* Uint64-based convenience chrono aliases */
-using u64_s = seconds<Uint64>;
-using u64_ms = milliseconds<Uint64>;
-using u64_us = microseconds<Uint64>;
-using u64_ns = nanoseconds<Uint64>;
-
-/// \} End of time (std::chrono) aliases
+using U16_Millis = Millis<Uint16>;
+using U32_Millis = Millis<Uint32>;
+using U64_Millis = Millis<Uint64>;
 
 namespace literals {
 inline namespace time_literals {
 
-namespace legacy {
+#if SDL_VERSION_ATLEAST(2, 0, 18)
 
-[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(u32_ns{}))
-    -> u32_ns
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U64_Millis
 {
-  return u32_ns{static_cast<Uint32>(value)};
+  return U64_Millis{static_cast<Uint64>(ms)};
 }
 
-[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(u32_us{}))
-    -> u32_us
+#else
+
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U32_Millis
 {
-  return u32_us{static_cast<Uint32>(value)};
+  return U32_Millis{static_cast<Uint32>(ms)};
 }
 
-[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(u32_ms{}))
-    -> u32_ms
-{
-  return u32_ms{static_cast<Uint32>(value)};
-}
-
-[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(u32_s{}))
-    -> u32_s
-{
-  return u32_s{static_cast<Uint32>(value)};
-}
-
-}  // namespace legacy
-
-[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(u64_ns{}))
-    -> u64_ns
-{
-  return u64_ns{static_cast<Uint64>(value)};
-}
-
-[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(u64_us{}))
-    -> u64_us
-{
-  return u64_us{static_cast<Uint64>(value)};
-}
-
-[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(u64_ms{}))
-    -> u64_ms
-{
-  return u64_ms{static_cast<Uint64>(value)};
-}
-
-[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(u64_s{}))
-    -> u64_s
-{
-  return u64_s{static_cast<Uint64>(value)};
-}
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 }  // namespace time_literals
 }  // namespace literals
-
-/// \} End of group core
 
 }  // namespace cen
 

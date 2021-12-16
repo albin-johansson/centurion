@@ -112,9 +112,9 @@ TEST(Thread, Get)
 
 TEST(Thread, Sleep)
 {
-  using ms = cen::milliseconds<Uint32>;
-  ASSERT_NO_THROW(cen::Thread::Sleep(ms{2}));
-  ASSERT_NO_THROW(cen::Thread::Sleep(ms{0}));
+  using namespace cen::literals::time_literals;
+  ASSERT_NO_THROW(cen::Thread::Sleep(2_ms));
+  ASSERT_NO_THROW(cen::Thread::Sleep(0_ms));
 }
 
 TEST(Thread, SetPriority)

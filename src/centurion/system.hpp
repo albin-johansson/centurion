@@ -21,9 +21,6 @@
 
 namespace cen {
 
-/// \addtogroup system
-/// \{
-
 #ifdef __linux__
 inline constexpr bool on_linux = true;
 #else
@@ -116,9 +113,6 @@ class SharedObject final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-/// \addtogroup system
-/// \{
-
 class Locale final {
  public:
   /* Returns the current preferred locales on the system. */
@@ -175,8 +169,6 @@ class Locale final {
 
   explicit Locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
 };
-
-/// \} End of group system
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -269,35 +261,38 @@ class Locale final {
 }
 
 /* Returns the value of the high-performance counter in seconds. */
-template <typename T>
-[[nodiscard]] auto NowInSeconds() noexcept(noexcept(seconds<T>{})) -> seconds<T>
+[[nodiscard]] inline auto NowInSeconds() noexcept(noexcept(Seconds<double>{}))
+    -> Seconds<double>
 {
-  return seconds<T>{static_cast<T>(Now()) / static_cast<T>(GetFrequency())};
-}
-
-/* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(u32_ms{Uint32{}})) -> u32_ms
-{
-  return u32_ms{SDL_GetTicks()};
+  return Seconds<double>{static_cast<double>(Now()) / static_cast<double>(GetFrequency())};
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
 /* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard]] inline auto GetTicks64() noexcept(noexcept(u64_ms{Uint64{}})) -> u64_ms
+[[nodiscard]] inline auto GetTicks() noexcept(noexcept(U64_Millis{Uint64{}})) -> U64_Millis
 {
-  return u64_ms{SDL_GetTicks64()};
+  return U64_Millis{SDL_GetTicks64()};
+}
+
+#else
+
+/* Returns the amount of milliseconds since SDL was initialized. */
+[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(U32_Millis{Uint32{}}))
+    -> U32_Millis
+{
+  return U32_Millis{SDL_GetTicks()};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 /* Returns the seconds of remaining battery life. */
-[[nodiscard]] inline auto GetBatterySeconds() -> std::optional<seconds<int>>
+[[nodiscard]] inline auto GetBatterySeconds() -> std::optional<Seconds<int>>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft != -1) {
-    return seconds<int>{secondsLeft};
+    return Seconds<int>{secondsLeft};
   }
   else {
     return std::nullopt;
@@ -305,10 +300,10 @@ template <typename T>
 }
 
 /* Returns the minutes of remaining battery life. */
-[[nodiscard]] inline auto GetBatteryMinutes() -> std::optional<minutes<int>>
+[[nodiscard]] inline auto GetBatteryMinutes() -> std::optional<Minutes<int>>
 {
   if (const auto secondsLeft = GetBatterySeconds()) {
-    return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
+    return std::chrono::duration_cast<Minutes<int>>(*secondsLeft);
   }
   else {
     return std::nullopt;
@@ -518,8 +513,6 @@ inline auto operator<<(std::ostream& stream, const PowerState state) -> std::ost
 {
   return stream << to_string(state);
 }
-
-/// \} End of group system
 
 }  // namespace cen
 

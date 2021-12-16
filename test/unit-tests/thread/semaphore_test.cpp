@@ -15,14 +15,14 @@ TEST(Semaphore, Acquire)
 
 TEST(Semaphore, AcquireMilliseconds)
 {
-  using ms = cen::milliseconds<Uint32>;
+  using namespace cen::literals::time_literals;
 
   cen::Semaphore semaphore{0u};
 
-  ASSERT_EQ(semaphore.Acquire(ms{1}), cen::LockStatus::TimedOut);
+  ASSERT_EQ(semaphore.Acquire(1_ms), cen::LockStatus::TimedOut);
   ASSERT_TRUE(semaphore.Release());
 
-  ASSERT_EQ(semaphore.Acquire(ms{1}), cen::LockStatus::Success);
+  ASSERT_EQ(semaphore.Acquire(1_ms), cen::LockStatus::Success);
 }
 
 TEST(Semaphore, TryAcquire)

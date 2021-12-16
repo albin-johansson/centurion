@@ -25,7 +25,7 @@ TEST(Battery, GetBatterySeconds)
   SDL_GetPowerInfo(&actual, nullptr);
 
   if (const auto secs = cen::GetBatterySeconds()) {
-    ASSERT_EQ(cen::seconds<int>{actual}, secs.value());
+    ASSERT_EQ(cen::Seconds<int>{actual}, secs.value());
   }
 }
 
@@ -37,8 +37,8 @@ TEST(Battery, GetBatteryMinutes)
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 
-    const cen::seconds<int> s{actual};
-    ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(s), minutes.value());
+    const cen::Seconds<int> s{actual};
+    ASSERT_EQ(std::chrono::duration_cast<cen::Minutes<int>>(s), minutes.value());
   }
 }
 

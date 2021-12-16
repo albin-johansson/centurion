@@ -678,8 +678,7 @@ class basic_controller final {
    */
   auto rumble(const Uint16 lo,
               const Uint16 hi,
-              const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
-      -> Result
+              const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -708,7 +707,7 @@ class basic_controller final {
    */
   auto rumble_triggers(const Uint16 lo,
                        const Uint16 hi,
-                       const milliseconds<Uint32> duration) noexcept(noexcept(duration.count()))
+                       const U32_Millis duration) noexcept(noexcept(duration.count()))
       -> Result
   {
     return SDL_GameControllerRumbleTriggers(m_controller, lo, hi, duration.count()) == 0;
@@ -723,7 +722,7 @@ class basic_controller final {
    *
    * \since 5.0.0
    */
-  void stop_rumble() noexcept { rumble(0, 0, milliseconds<Uint32>::zero()); }
+  void stop_rumble() noexcept { rumble(0, 0, U32_Millis::zero()); }
 
   /// \} End of rumble functions
 

@@ -68,7 +68,7 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  void set_sample_period(const milliseconds<Uint16> period) noexcept(noexcept(period.count()))
+  void set_sample_period(const U16_Millis period) noexcept(noexcept(period.count()))
   {
     representation().period = period.count();
   }
@@ -113,9 +113,9 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto sample_period() const -> milliseconds<Uint16>
+  [[nodiscard]] auto sample_period() const -> U16_Millis
   {
-    return milliseconds<Uint16>{representation().period};
+    return U16_Millis{representation().period};
   }
 
   /**

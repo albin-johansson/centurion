@@ -7,7 +7,7 @@
 #include "core_mocks.hpp"
 #include "mixer_mocks.hpp"
 
-using ms = cen::milliseconds<int>;
+using ms = cen::Millis<int>;
 
 extern "C"
 {

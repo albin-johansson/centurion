@@ -120,17 +120,18 @@ set(SOURCE_FILES
     pixels/pixel_format_info_test.cpp
     pixels/pixel_format_test.cpp
 
+    power/battery_test.cpp
+    power/power_state_test.cpp
+
     render/renderer_handle_test.cpp
     render/renderer_test.cpp
 
-    system/battery_test.cpp
     system/byte_order_test.cpp
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
     system/locale_test.cpp
     system/platform_test.cpp
-    system/power_state_test.cpp
     system/ram_test.cpp
     system/shared_object_test.cpp
     system/simd_block_test.cpp

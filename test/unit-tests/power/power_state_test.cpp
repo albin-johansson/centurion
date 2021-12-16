@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "system.hpp"
+#include "power.hpp"
 
 TEST(PowerState, Values)
 {

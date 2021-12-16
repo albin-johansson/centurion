@@ -1,8 +1,8 @@
+#include "locale.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
-
-#include "system.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

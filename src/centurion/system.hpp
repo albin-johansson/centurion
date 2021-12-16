@@ -62,14 +62,6 @@ enum class Platform {
   Android
 };
 
-enum class PowerState {
-  Unknown = SDL_POWERSTATE_UNKNOWN,      /* The status is unknown. */
-  OnBattery = SDL_POWERSTATE_ON_BATTERY, /* Not plugged in and running on battery. */
-  NoBattery = SDL_POWERSTATE_NO_BATTERY, /* No battery available. */
-  Charging = SDL_POWERSTATE_CHARGING,    /* Charging the battery. */
-  Charged = SDL_POWERSTATE_CHARGED       /* Plugged in and charged. */
-};
-
 /* Represents a shared object, such as dynamic libraries. */
 class SharedObject final {
  public:
@@ -110,67 +102,6 @@ class SharedObject final {
 
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-class Locale final {
- public:
-  /* Returns the current preferred locales on the system. */
-  [[nodiscard]] static auto GetPreferred() noexcept -> Locale
-  {
-    return Locale{SDL_GetPreferredLocales()};
-  }
-
-  /* Indicates whether a language (and optionally a country) is a part of the locale. */
-  [[nodiscard]] auto HasLanguage(const char* language,
-                                 const char* country = nullptr) const noexcept -> bool
-  {
-    assert(language);
-
-    if (const auto* array = mLocales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
-        const auto& item = array[index];
-
-        if (country && item.country) {
-          if (detail::cmp(language, item.language) && detail::cmp(country, item.country)) {
-            return true;
-          }
-        }
-        else {
-          if (detail::cmp(language, item.language)) {
-            return true;
-          }
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /* Returns the amount of entries in the locale. */
-  [[nodiscard]] auto GetSize() const noexcept -> std::size_t
-  {
-    std::size_t result{0};
-
-    if (const auto* array = mLocales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
-        ++result;
-      }
-    }
-
-    return result;
-  }
-
-  /* Indicates whether the locale contains a non-null pointer. */
-  explicit operator bool() const noexcept { return mLocales != nullptr; }
-
- private:
-  std::unique_ptr<SDL_Locale, detail::sdl_deleter> mLocales;
-
-  explicit Locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 /* Indicates whether the CPU uses little-endian byte ordering. */
 [[nodiscard]] constexpr auto IsLittleEndian() noexcept -> bool
@@ -286,64 +217,6 @@ class Locale final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
-/* Returns the seconds of remaining battery life. */
-[[nodiscard]] inline auto GetBatterySeconds() -> std::optional<Seconds<int>>
-{
-  int secondsLeft = -1;
-  SDL_GetPowerInfo(&secondsLeft, nullptr);
-  if (secondsLeft != -1) {
-    return Seconds<int>{secondsLeft};
-  }
-  else {
-    return std::nullopt;
-  }
-}
-
-/* Returns the minutes of remaining battery life. */
-[[nodiscard]] inline auto GetBatteryMinutes() -> std::optional<Minutes<int>>
-{
-  if (const auto secondsLeft = GetBatterySeconds()) {
-    return std::chrono::duration_cast<Minutes<int>>(*secondsLeft);
-  }
-  else {
-    return std::nullopt;
-  }
-}
-
-/* Returns the percentage of remaining battery life. */
-[[nodiscard]] inline auto GetBatteryPercentage() noexcept -> std::optional<int>
-{
-  int percentageLeft = -1;
-  SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft != -1) {
-    return percentageLeft;
-  }
-  else {
-    return std::nullopt;
-  }
-}
-
-[[nodiscard]] inline auto QueryBattery() noexcept -> PowerState
-{
-  return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
-}
-
-[[nodiscard]] inline auto IsBatteryAvailable() noexcept -> bool
-{
-  const auto state = QueryBattery();
-  return state != PowerState::NoBattery && state != PowerState::Unknown;
-}
-
-[[nodiscard]] inline auto IsBatteryCharging() noexcept -> bool
-{
-  return QueryBattery() == PowerState::Charging;
-}
-
-[[nodiscard]] inline auto IsBatteryCharged() noexcept -> bool
-{
-  return QueryBattery() == PowerState::Charged;
-}
-
 [[nodiscard]] inline auto GetMemoryMB() noexcept -> int
 {
   return SDL_GetSystemRAM();
@@ -392,69 +265,6 @@ inline auto OpenURL(const std::string& url) noexcept -> Result
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-/** Swaps the byte order of the specified value. */
-[[nodiscard]] inline auto SwapByteOrder(const Uint16 value) noexcept -> Uint16
-{
-  return SDL_Swap16(value);
-}
-
-[[nodiscard]] inline auto SwapByteOrder(const Uint32 value) noexcept -> Uint32
-{
-  return SDL_Swap32(value);
-}
-
-[[nodiscard]] inline auto SwapByteOrder(const Uint64 value) noexcept -> Uint64
-{
-  return SDL_Swap64(value);
-}
-
-[[nodiscard]] inline auto SwapByteOrder(const float value) noexcept -> float
-{
-  return SDL_SwapFloat(value);
-}
-
-/* Swaps a big endian value to a little endian value. */
-[[nodiscard]] inline auto SwapBigEndian(const Uint16 value) noexcept -> Uint16
-{
-  return SDL_SwapBE16(value);
-}
-
-[[nodiscard]] inline auto SwapBigEndian(const Uint32 value) noexcept -> Uint32
-{
-  return SDL_SwapBE32(value);
-}
-
-[[nodiscard]] inline auto SwapBigEndian(const Uint64 value) noexcept -> Uint64
-{
-  return SDL_SwapBE64(value);
-}
-
-[[nodiscard]] inline auto SwapBigEndian(const float value) noexcept -> float
-{
-  return SDL_SwapFloatBE(value);
-}
-
-/* Swaps a little endian value to a big endian value. */
-[[nodiscard]] inline auto SwapLittleEndian(const Uint16 value) noexcept -> Uint16
-{
-  return SDL_SwapLE16(value);
-}
-
-[[nodiscard]] inline auto SwapLittleEndian(const Uint32 value) noexcept -> Uint32
-{
-  return SDL_SwapLE32(value);
-}
-
-[[nodiscard]] inline auto SwapLittleEndian(const Uint64 value) noexcept -> Uint64
-{
-  return SDL_SwapLE64(value);
-}
-
-[[nodiscard]] inline auto SwapLittleEndian(const float value) noexcept -> float
-{
-  return SDL_SwapFloatLE(value);
-}
-
 [[nodiscard]] inline auto to_string(const Platform id) -> std::string_view
 {
   switch (id) {
@@ -481,37 +291,9 @@ inline auto OpenURL(const std::string& url) noexcept -> Result
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const PowerState state) -> std::string_view
-{
-  switch (state) {
-    case PowerState::Unknown:
-      return "Unknown";
-
-    case PowerState::OnBattery:
-      return "OnBattery";
-
-    case PowerState::NoBattery:
-      return "NoBattery";
-
-    case PowerState::Charging:
-      return "Charging";
-
-    case PowerState::Charged:
-      return "Charged";
-
-    default:
-      throw Error{"Did not recognize power state!"};
-  }
-}
-
 inline auto operator<<(std::ostream& stream, const Platform id) -> std::ostream&
 {
   return stream << to_string(id);
-}
-
-inline auto operator<<(std::ostream& stream, const PowerState state) -> std::ostream&
-{
-  return stream << to_string(state);
 }
 
 }  // namespace cen

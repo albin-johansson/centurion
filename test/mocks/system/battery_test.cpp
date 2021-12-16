@@ -4,7 +4,7 @@
 #include <array>  // array
 
 #include "core_mocks.hpp"
-#include "system.hpp"
+#include "power.hpp"
 
 extern "C"
 {

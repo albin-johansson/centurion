@@ -62,9 +62,14 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
                src/centurion/concurrency.hpp
+               src/centurion/endian.hpp
                src/centurion/filesystem.hpp
+               src/centurion/keyboard.hpp
+               src/centurion/locale.hpp
                src/centurion/math.hpp
+               src/centurion/mouse.hpp
                src/centurion/pixels.hpp
+               src/centurion/power.hpp
                src/centurion/render.hpp
                src/centurion/system.hpp
                src/centurion/texture.hpp

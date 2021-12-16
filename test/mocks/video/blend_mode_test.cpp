@@ -34,7 +34,7 @@ TEST_F(BlendModeTest, ComposeBlendMode)
   const cen::BlendTask alpha = {cen::BlendFactor::SrcAlpha,
                                 cen::BlendFactor::OneMinusDstAlpha,
                                 cen::BlendOp::Sub};
-  const auto mode = cen::compose_blend_mode(color, alpha);
+  const auto mode = cen::ComposeBlendMode(color, alpha);
 
   ASSERT_EQ(1u, SDL_ComposeCustomBlendMode_fake.call_count);
 

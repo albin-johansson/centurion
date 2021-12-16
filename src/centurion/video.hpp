@@ -3,10 +3,15 @@
 
 #include <SDL.h>
 
+#include <optional>     // optional, nullopt
 #include <ostream>      // ostream
+#include <string>       // string
 #include <string_view>  // string_view
 
+#include "core/common.hpp"
 #include "core/exception.hpp"
+#include "math.hpp"
+#include "pixels.hpp"
 
 namespace cen {
 
@@ -60,6 +65,14 @@ enum class BlendOp {
   Max = SDL_BLENDOPERATION_MAXIMUM
 };
 
+enum class DisplayOrientation {
+  Unknown = SDL_ORIENTATION_UNKNOWN,
+  Landscape = SDL_ORIENTATION_LANDSCAPE,
+  LandscapeFlipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
+  Portrait = SDL_ORIENTATION_PORTRAIT,
+  PortraitFlipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
+};
+
 /* Describes how a blend mode factors should be combined. */
 struct BlendTask final {
   BlendFactor src;  ///< The blend factor applied to the source pixels.
@@ -67,8 +80,14 @@ struct BlendTask final {
   BlendOp op;       ///< The operation used to combine the source and destination pixels.
 };
 
-[[nodiscard]] inline auto compose_blend_mode(const BlendTask& color,
-                                             const BlendTask& alpha) noexcept -> BlendMode
+struct DPI final {
+  float diagonal{};
+  float horizontal{};
+  float vertical{};
+};
+
+[[nodiscard]] inline auto ComposeBlendMode(const BlendTask& color,
+                                           const BlendTask& alpha) noexcept -> BlendMode
 {
   const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
                                               static_cast<SDL_BlendFactor>(color.dst),
@@ -77,6 +96,120 @@ struct BlendTask final {
                                               static_cast<SDL_BlendFactor>(alpha.dst),
                                               static_cast<SDL_BlendOperation>(alpha.op));
   return static_cast<BlendMode>(res);
+}
+
+inline void SetScreenSaverEnabled(const bool enabled) noexcept
+{
+  if (enabled) {
+    SDL_EnableScreenSaver();
+  }
+  else {
+    SDL_DisableScreenSaver();
+  }
+}
+
+[[nodiscard]] inline auto IsScreenSaverEnabled() noexcept -> bool
+{
+  return SDL_IsScreenSaverEnabled();
+}
+
+[[nodiscard]] inline auto GetNumDisplays() noexcept -> int
+{
+  return SDL_GetNumVideoDisplays();
+}
+
+[[nodiscard]] inline auto GetDisplayName(const int index = 0) -> std::optional<std::string>
+{
+  if (const char* name = SDL_GetDisplayName(index)) {
+    return std::string{name};
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplayOrientation(const int index = 0) noexcept
+    -> DisplayOrientation
+{
+  return static_cast<DisplayOrientation>(SDL_GetDisplayOrientation(index));
+}
+
+[[nodiscard]] inline auto GetDisplayMode(const int index = 0) noexcept
+    -> std::optional<SDL_DisplayMode>
+{
+  SDL_DisplayMode mode{};
+  if (SDL_GetDesktopDisplayMode(index, &mode) == 0) {
+    return mode;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplayRefreshRate(const int index = 0) noexcept
+    -> std::optional<int>
+{
+  if (const auto mode = GetDisplayMode(index)) {
+    return mode->refresh_rate;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplayPixelFormat(const int index = 0) noexcept
+    -> std::optional<pixel_format>
+{
+  if (const auto mode = GetDisplayMode(index)) {
+    return static_cast<pixel_format>(mode->format);
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplaySize(const int index = 0) noexcept -> std::optional<Area>
+{
+  if (const auto mode = GetDisplayMode(index)) {
+    return Area{mode->w, mode->h};
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplayDPI(const int index = 0) noexcept -> std::optional<DPI>
+{
+  DPI info;
+  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0) {
+    return info;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplayBounds(const int index = 0) noexcept -> std::optional<Rect>
+{
+  Rect result;
+  if (SDL_GetDisplayBounds(index, result.data()) == 0) {
+    return result;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto GetDisplayUsableBounds(const int index = 0) noexcept
+    -> std::optional<Rect>
+{
+  Rect result;
+  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0) {
+    return result;
+  }
+  else {
+    return std::nullopt;
+  }
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
@@ -191,6 +324,30 @@ struct BlendTask final {
   }
 }
 
+[[nodiscard]] constexpr auto to_string(const DisplayOrientation orientation)
+    -> std::string_view
+{
+  switch (orientation) {
+    case DisplayOrientation::Unknown:
+      return "Unknown";
+
+    case DisplayOrientation::Landscape:
+      return "Landscape";
+
+    case DisplayOrientation::LandscapeFlipped:
+      return "LandscapeFlipped";
+
+    case DisplayOrientation::Portrait:
+      return "Portrait";
+
+    case DisplayOrientation::PortraitFlipped:
+      return "PortraitFlipped";
+
+    default:
+      throw Error{"Did not recognize display orientation!"};
+  }
+}
+
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
 inline auto operator<<(std::ostream& stream, const FlashOp op) -> std::ostream&
@@ -213,6 +370,12 @@ inline auto operator<<(std::ostream& stream, const BlendFactor factor) -> std::o
 inline auto operator<<(std::ostream& stream, const BlendOp op) -> std::ostream&
 {
   return stream << to_string(op);
+}
+
+inline auto operator<<(std::ostream& stream, const DisplayOrientation orientation)
+    -> std::ostream&
+{
+  return stream << to_string(orientation);
 }
 
 }  // namespace cen

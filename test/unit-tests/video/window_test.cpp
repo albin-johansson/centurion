@@ -6,7 +6,7 @@
 #include <memory>    // unique_ptr
 
 #include "core/logging.hpp"
-#include "video/screen.hpp"
+#include "video.hpp"
 
 class WindowTest : public testing::Test {
  protected:

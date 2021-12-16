@@ -8,6 +8,15 @@ set(SOURCE_FILES
     typed_test_macros.hpp
     test_main.cpp
 
+    concurrency/condition_test.cpp
+    concurrency/lock_status_test.cpp
+    concurrency/mutex_test.cpp
+    concurrency/scoped_lock_test.cpp
+    concurrency/semaphore_test.cpp
+    concurrency/thread_priority_test.cpp
+    concurrency/thread_test.cpp
+    concurrency/try_lock_test.cpp
+
     core/exception_test.cpp
     core/features_test.cpp
     core/log_category_test.cpp
@@ -68,6 +77,9 @@ set(SOURCE_FILES
     filesystem/seek_mode_test.cpp
 
     font/font_bundle_test.cpp
+    font/font_cache_test.cpp
+    font/font_hint_test.cpp
+    font/font_test.cpp
 
     hints/hint_priority_test.cpp
     hints/hints_test.cpp
@@ -89,8 +101,6 @@ set(SOURCE_FILES
     input/key_code_tests.cpp
     input/key_modifier_test.cpp
     input/keyboard_test.cpp
-    input/mouse_button_test.cpp
-    input/mouse_test.cpp
     input/scan_code_tests.cpp
     input/sensor_test.cpp
     input/sensor_type_test.cpp
@@ -101,6 +111,16 @@ set(SOURCE_FILES
     math/rect_test.cpp
     math/point_test.cpp
     math/vector3_test.cpp
+
+    mouse/cursor_test.cpp
+    mouse/mouse_button_test.cpp
+    mouse/mouse_test.cpp
+
+    pixels/pixel_format_info_test.cpp
+    pixels/pixel_format_test.cpp
+
+    render/renderer_handle_test.cpp
+    render/renderer_test.cpp
 
     system/battery_test.cpp
     system/byte_order_test.cpp
@@ -114,50 +134,34 @@ set(SOURCE_FILES
     system/shared_object_test.cpp
     system/simd_block_test.cpp
 
-    thread/condition_test.cpp
-    thread/lock_status_test.cpp
-    thread/mutex_test.cpp
-    thread/scoped_lock_test.cpp
-    thread/semaphore_test.cpp
-    thread/thread_priority_test.cpp
-    thread/thread_test.cpp
-    thread/try_lock_test.cpp
-
-    video/gl/gl_attribute_test.cpp
-    video/gl/gl_swap_interval_test.cpp
+    texture/texture_access_test.cpp
+    texture/texture_handle_test.cpp
+    texture/texture_test.cpp
 
     video/blend_factor_test.cpp
     video/blend_mode_test.cpp
     video/blend_op_test.cpp
     video/button_order_test.cpp
     video/color_test.cpp
-    video/cursor_test.cpp
     video/flash_op_test.cpp
-    video/font_cache_test.cpp
-    video/font_hint_test.cpp
-    video/font_test.cpp
     video/graphics_drivers_test.cpp
     video/message_box_color_id_test.cpp
     video/message_box_default_button_test.cpp
     video/message_box_test.cpp
     video/message_box_type_test.cpp
     video/palette_test.cpp
-    video/pixel_format_info_test.cpp
-    video/pixel_format_test.cpp
-    video/renderer_test.cpp
-    video/renderer_handle_test.cpp
     video/scale_mode_test.cpp
     video/screen_orientation_test.cpp
     video/screen_test.cpp
     video/surface_test.cpp
     video/system_cursor_test.cpp
     video/surface_handle_test.cpp
-    video/texture_test.cpp
     video/unicode_string_test.cpp
-    video/texture_handle_test.cpp
-    video/texture_access_test.cpp
     video/window_test.cpp
     video/window_handle_test.cpp
+
+    video/gl/gl_attribute_test.cpp
+    video/gl/gl_swap_interval_test.cpp
     )
 
 if (CEN_AUDIO)

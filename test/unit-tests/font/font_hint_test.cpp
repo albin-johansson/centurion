@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "video/font.hpp"
+#include "font.hpp"
 
 TEST(FontHint, Values)
 {

@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_VULKAN_HPP_
-#define CENTURION_VIDEO_VULKAN_HPP_
+#ifndef CENTURION_VULKAN_HPP_
+#define CENTURION_VULKAN_HPP_
 
 #ifndef CENTURION_NO_VULKAN
 
@@ -10,11 +10,11 @@
 #include <optional>  // optional, nullopt
 #include <vector>    // vector
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/features.hpp"
-#include "../math.hpp"
-#include "window.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
+#include "math.hpp"
+#include "video/window.hpp"
 
 namespace cen {
 
@@ -145,4 +145,4 @@ template <typename T>
 }  // namespace cen
 
 #endif  // CENTURION_NO_VULKAN
-#endif  // CENTURION_VIDEO_VULKAN_HPP_
+#endif  // CENTURION_VULKAN_HPP_

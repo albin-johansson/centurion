@@ -5,7 +5,7 @@
 #include <string_view>  // string_view
 
 #include "render.hpp"
-#include "video/font.hpp"
+#include "font.hpp"
 #include "video/window.hpp"
 
 class FontCacheTest : public testing::Test {

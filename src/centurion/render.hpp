@@ -23,8 +23,8 @@
 #include "video.hpp"
 #include "video/color.hpp"
 #include "video/colors.hpp"
-#include "video/surface.hpp"
-#include "video/unicode_string.hpp"
+#include "surface.hpp"
+#include "unicode.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

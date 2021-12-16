@@ -13,7 +13,7 @@
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
-#include "video/surface.hpp"
+#include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

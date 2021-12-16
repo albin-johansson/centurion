@@ -116,13 +116,19 @@ set(SOURCE_FILES
     mouse/cursor_test.cpp
     mouse/mouse_button_test.cpp
     mouse/mouse_test.cpp
+    mouse/system_cursor_test.cpp
 
+    opengl/gl_attribute_test.cpp
+    opengl/gl_swap_interval_test.cpp
+
+    pixels/palette_test.cpp
     pixels/pixel_format_info_test.cpp
     pixels/pixel_format_test.cpp
 
     power/battery_test.cpp
     power/power_state_test.cpp
 
+    render/graphics_drivers_test.cpp
     render/renderer_handle_test.cpp
     render/renderer_test.cpp
 
@@ -136,9 +142,12 @@ set(SOURCE_FILES
     system/shared_object_test.cpp
     system/simd_block_test.cpp
 
+    texture/scale_mode_test.cpp
     texture/texture_access_test.cpp
     texture/texture_handle_test.cpp
     texture/texture_test.cpp
+
+    unicode/unicode_string_test.cpp
 
     video/blend_factor_test.cpp
     video/blend_mode_test.cpp
@@ -146,24 +155,16 @@ set(SOURCE_FILES
     video/button_order_test.cpp
     video/color_test.cpp
     video/flash_op_test.cpp
-    video/graphics_drivers_test.cpp
     video/message_box_color_id_test.cpp
     video/message_box_default_button_test.cpp
     video/message_box_test.cpp
     video/message_box_type_test.cpp
-    video/palette_test.cpp
-    video/scale_mode_test.cpp
     video/screen_orientation_test.cpp
     video/screen_test.cpp
     video/surface_test.cpp
-    video/system_cursor_test.cpp
     video/surface_handle_test.cpp
-    video/unicode_string_test.cpp
     video/window_test.cpp
     video/window_handle_test.cpp
-
-    video/gl/gl_attribute_test.cpp
-    video/gl/gl_swap_interval_test.cpp
     )
 
 if (CEN_AUDIO)

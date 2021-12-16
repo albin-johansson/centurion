@@ -5,7 +5,7 @@
 #include <string>  // string
 
 #include "core_mocks.hpp"
-#include "video/opengl.hpp"
+#include "opengl.hpp"
 
 using namespace std::string_literals;
 

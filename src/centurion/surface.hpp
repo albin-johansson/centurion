@@ -1,18 +1,18 @@
-#ifndef CENTURION_VIDEO_SURFACE_HPP_
-#define CENTURION_VIDEO_SURFACE_HPP_
+#ifndef CENTURION_SURFACE_HPP_
+#define CENTURION_SURFACE_HPP_
 
 #include <SDL.h>
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/features.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../detail/stdlib.hpp"
-#include "../math.hpp"
-#include "../pixels.hpp"
-#include "../video.hpp"
-#include "color.hpp"
-#include "colors.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
+#include "detail/owner_handle_api.hpp"
+#include "detail/stdlib.hpp"
+#include "math.hpp"
+#include "pixels.hpp"
+#include "video.hpp"
+#include "video/color.hpp"
+#include "video/colors.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -366,4 +366,4 @@ auto operator<<(std::ostream& stream, const BasicSurface<T>& surface) -> std::os
 
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_SURFACE_HPP_
+#endif  // CENTURION_SURFACE_HPP_

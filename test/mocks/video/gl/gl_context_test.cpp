@@ -4,7 +4,7 @@
 #include <array>  // array
 
 #include "core_mocks.hpp"
-#include "video/opengl.hpp"
+#include "opengl.hpp"
 
 extern "C"
 {

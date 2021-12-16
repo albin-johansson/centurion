@@ -8,7 +8,7 @@
 #include "math.hpp"
 #include "render.hpp"
 #include "video/colors.hpp"
-#include "video/font.hpp"
+#include "font.hpp"
 #include "video/window.hpp"
 
 using namespace std::string_literals;

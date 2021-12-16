@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "video/opengl.hpp"
+#include "opengl.hpp"
 
 TEST(GLSwapInterval, Values)
 {

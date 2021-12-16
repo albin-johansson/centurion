@@ -33,6 +33,7 @@
 #include "centurion/concurrency.hpp"
 #include "centurion/endian.hpp"
 #include "centurion/filesystem.hpp"
+#include "centurion/font.hpp"
 #include "centurion/keyboard.hpp"
 #include "centurion/locale.hpp"
 #include "centurion/math.hpp"
@@ -40,9 +41,12 @@
 #include "centurion/pixels.hpp"
 #include "centurion/power.hpp"
 #include "centurion/render.hpp"
+#include "centurion/surface.hpp"
 #include "centurion/system.hpp"
 #include "centurion/texture.hpp"
+#include "centurion/unicode.hpp"
 #include "centurion/video.hpp"
+#include "centurion/vulkan.hpp"
 
 //
 
@@ -108,14 +112,10 @@
 #include "centurion/video/button_order.hpp"
 #include "centurion/video/color.hpp"
 #include "centurion/video/colors.hpp"
-#include "centurion/video/font.hpp"
 #include "centurion/video/message_box.hpp"
 #include "centurion/video/message_box_type.hpp"
-#include "centurion/video/opengl.hpp"
+#include "centurion/opengl.hpp"
 #include "centurion/video/screen.hpp"
-#include "centurion/video/surface.hpp"
-#include "centurion/video/unicode_string.hpp"
-#include "centurion/video/vulkan.hpp"
 #include "centurion/video/window.hpp"
 
 #endif  // CENTURION_HPP_

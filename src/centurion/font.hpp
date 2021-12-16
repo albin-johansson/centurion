@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_FONT_HPP_
-#define CENTURION_VIDEO_FONT_HPP_
+#ifndef CENTURION_FONT_HPP_
+#define CENTURION_FONT_HPP_
 
 #ifndef CENTURION_NO_SDL_TTF
 
@@ -17,17 +17,17 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/features.hpp"
-#include "../core/memory.hpp"
-#include "../detail/stdlib.hpp"
-#include "../math.hpp"
-#include "../render.hpp"
-#include "../texture.hpp"
-#include "color.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
+#include "core/memory.hpp"
+#include "detail/stdlib.hpp"
+#include "math.hpp"
+#include "render.hpp"
+#include "texture.hpp"
+#include "video/color.hpp"
 #include "surface.hpp"
-#include "unicode_string.hpp"
+#include "unicode.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -864,4 +864,4 @@ inline auto operator<<(std::ostream& stream, const Font& font) -> std::ostream&
 }  // namespace cen
 
 #endif  // CENTURION_NO_SDL_TTF
-#endif  // CENTURION_VIDEO_FONT_HPP_
+#endif  // CENTURION_FONT_HPP_

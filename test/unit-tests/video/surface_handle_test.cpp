@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "video/surface.hpp"
+#include "surface.hpp"
 
 namespace {
 inline constexpr auto path = "resources/panda.png";

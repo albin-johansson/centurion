@@ -1,4 +1,4 @@
-#include "video/unicode_string.hpp"
+#include "unicode.hpp"
 
 #include <gtest/gtest.h>
 

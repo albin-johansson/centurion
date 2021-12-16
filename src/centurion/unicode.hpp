@@ -1,12 +1,12 @@
-#ifndef CENTURION_VIDEO_UNICODE_STRING_HPP_
-#define CENTURION_VIDEO_UNICODE_STRING_HPP_
+#ifndef CENTURION_UNICODE_HPP_
+#define CENTURION_UNICODE_HPP_
 
 #include <cassert>           // assert
 #include <initializer_list>  // initializer_list
 #include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
-#include "../core/common.hpp"
+#include "core/common.hpp"
 
 namespace cen {
 
@@ -134,4 +134,4 @@ class UnicodeString final {
 
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_UNICODE_STRING_HPP_
+#endif  // CENTURION_UNICODE_HPP_

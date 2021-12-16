@@ -151,14 +151,14 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/button_order.hpp
                src/centurion/video/color.hpp
                src/centurion/video/colors.hpp
-               src/centurion/video/font.hpp
+               src/centurion/font.hpp
                src/centurion/video/message_box.hpp
                src/centurion/video/message_box_type.hpp
-               src/centurion/video/opengl.hpp
+               src/centurion/opengl.hpp
                src/centurion/video/screen.hpp
-               src/centurion/video/surface.hpp
-               src/centurion/video/unicode_string.hpp
-               src/centurion/video/vulkan.hpp
+               src/centurion/surface.hpp
+               src/centurion/unicode.hpp
+               src/centurion/vulkan.hpp
                src/centurion/video/window.hpp
                )
 

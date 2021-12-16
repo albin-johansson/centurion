@@ -21,7 +21,7 @@
 #include "math.hpp"
 #include "video.hpp"
 #include "video/color.hpp"
-#include "video/surface.hpp"
+#include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

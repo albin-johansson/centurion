@@ -1,4 +1,4 @@
-#include "video/surface.hpp"
+#include "surface.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

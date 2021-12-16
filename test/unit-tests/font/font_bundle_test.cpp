@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "video/font.hpp"
+#include "font.hpp"
 
 TEST(FontBundle, Usage)
 {

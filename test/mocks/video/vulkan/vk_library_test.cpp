@@ -5,7 +5,7 @@
 
 #include "core/common.hpp"
 #include "core_mocks.hpp"
-#include "video/vulkan.hpp"
+#include "vulkan.hpp"
 
 extern "C"
 {

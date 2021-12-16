@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_OPENGL_HPP_
-#define CENTURION_VIDEO_OPENGL_HPP_
+#ifndef CENTURION_OPENGL_HPP_
+#define CENTURION_OPENGL_HPP_
 
 #ifndef CENTURION_NO_OPENGL
 
@@ -12,13 +12,13 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/features.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../math.hpp"
-#include "../texture.hpp"
-#include "window.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
+#include "detail/owner_handle_api.hpp"
+#include "math.hpp"
+#include "texture.hpp"
+#include "video/window.hpp"
 
 namespace cen {
 
@@ -636,4 +636,4 @@ auto unbind(BasicTexture<T>& texture) noexcept -> Result
 }  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
-#endif  // CENTURION_VIDEO_OPENGL_HPP_
+#endif  // CENTURION_OPENGL_HPP_

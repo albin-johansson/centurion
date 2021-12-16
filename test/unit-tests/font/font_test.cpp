@@ -1,4 +1,4 @@
-#include "video/font.hpp"
+#include "font.hpp"
 
 #include <gtest/gtest.h>
 

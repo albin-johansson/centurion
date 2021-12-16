@@ -82,7 +82,7 @@ TEST_F(MessageBoxTest, Show)
   mb.Show();
   ASSERT_EQ(1u, SDL_ShowMessageBox_fake.call_count);
 
-  cen::window_handle window{nullptr};
+  cen::WindowHandle window{nullptr};
   mb.Show(window);
   ASSERT_EQ(2u, SDL_ShowMessageBox_fake.call_count);
 }

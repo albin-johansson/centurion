@@ -39,14 +39,14 @@ TEST_F(VulkanCoreTest, GetInstanceProcAddr)
 
 TEST_F(VulkanCoreTest, CreateSurface)
 {
-  std::array flags{Uint32{cen::window::vulkan}};
+  std::array flags{Uint32{cen::Window::Vulkan}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_Vulkan_CreateSurface, values.data(), cen::isize(values));
 
   VkInstance instance{};
-  cen::window_handle window{nullptr};
+  cen::WindowHandle window{nullptr};
   VkSurfaceKHR surface;
 
   ASSERT_EQ(cen::failure, cen::vk::create_surface(window, instance, &surface));
@@ -65,10 +65,10 @@ TEST_F(VulkanCoreTest, RequiredExtensions)
 
 TEST_F(VulkanCoreTest, DrawableSize)
 {
-  std::array flags{Uint32{cen::window::vulkan}};
+  std::array flags{Uint32{cen::Window::Vulkan}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  cen::window_handle window{nullptr};
+  cen::WindowHandle window{nullptr};
   const auto size [[maybe_unused]] = cen::vk::drawable_size(window);
   ASSERT_EQ(1u, SDL_Vulkan_GetDrawableSize_fake.call_count);
 }

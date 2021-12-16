@@ -126,17 +126,17 @@ template <typename T>
  * \code{cpp}
  *   cen::window window;
  *
- *   if (window.set_opacity(0.4f))
+ *   if (window.SetOpacity(0.4f))
  *   {
  *     // Success!
  *   }
  *
- *   if (window.set_opacity(0.4f) == cen::success)
+ *   if (window.SetOpacity(0.4f) == cen::success)
  *   {
  *     // Success!
  *   }
  *
- *   if (window.set_opacity(0.4f) == cen::failure)
+ *   if (window.SetOpacity(0.4f) == cen::failure)
  *   {
  *     // Failure!
  *   }

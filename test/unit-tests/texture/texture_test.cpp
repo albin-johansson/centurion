@@ -23,7 +23,7 @@ class TextureTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    window = std::make_unique<cen::window>();
+    window = std::make_unique<cen::Window>();
     renderer = std::make_unique<cen::Renderer>(*window);
     texture = std::make_unique<cen::Texture>(*renderer, path);
   }
@@ -35,7 +35,7 @@ class TextureTest : public testing::Test {
     window.reset();
   }
 
-  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
   inline static std::unique_ptr<cen::Texture> texture;
 
@@ -87,7 +87,7 @@ TEST_F(TextureTest, CustomizationConstructor)
 TEST_F(TextureTest, Streaming)
 {
   using namespace std::string_literals;
-  const auto format = window->get_pixel_format();
+  const auto format = window->GetPixelFormat();
 
   ASSERT_THROW(cen::Texture::streaming(*renderer, "abc"s, format), cen::Error);
 
@@ -147,7 +147,7 @@ TEST_F(TextureTest, Release)
 TEST_F(TextureTest, IsStatic)
 {
   const cen::Texture texture{*renderer,
-                             window->get_pixel_format(),
+                             window->GetPixelFormat(),
                              cen::TextureAccess::Static,
                              {10, 10}};
   ASSERT_TRUE(texture.IsStatic());
@@ -157,7 +157,7 @@ TEST_F(TextureTest, IsStreaming)
 {
   ASSERT_FALSE(texture->IsStreaming());
 
-  const auto format = window->get_pixel_format();
+  const auto format = window->GetPixelFormat();
   const cen::Texture streamingTexture = cen::Texture::streaming(*renderer, path, format);
   ASSERT_TRUE(streamingTexture.IsStreaming());
 }
@@ -166,7 +166,7 @@ TEST_F(TextureTest, IsTarget)
 {
   ASSERT_FALSE(texture->IsTarget());
 
-  const auto format = window->get_pixel_format();
+  const auto format = window->GetPixelFormat();
   const cen::Texture target{*renderer, format, cen::TextureAccess::Target, {10, 10}};
   ASSERT_TRUE(target.IsTarget());
 }

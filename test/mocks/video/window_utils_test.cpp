@@ -29,31 +29,31 @@ class WindowUtilsTest : public testing::Test {
 
 TEST_F(WindowUtilsTest, GetGrabbedWindow)
 {
-  auto window [[maybe_unused]] = cen::get_grabbed_window();
+  auto window [[maybe_unused]] = cen::GetGrabbedWindow();
   ASSERT_EQ(1u, SDL_GetGrabbedWindow_fake.call_count);
 }
 
 TEST_F(WindowUtilsTest, MouseFocusWindow)
 {
-  auto window [[maybe_unused]] = cen::mouse_focus_window();
+  auto window [[maybe_unused]] = cen::GetMouseFocusWindow();
   ASSERT_EQ(1u, SDL_GetMouseFocus_fake.call_count);
 }
 
 TEST_F(WindowUtilsTest, KeyboardFocusWindow)
 {
-  auto window [[maybe_unused]] = cen::keyboard_focus_window();
+  auto window [[maybe_unused]] = cen::GetKeyboardFocusWindow();
   ASSERT_EQ(1u, SDL_GetKeyboardFocus_fake.call_count);
 }
 
 TEST_F(WindowUtilsTest, GetWindow)
 {
-  auto window [[maybe_unused]] = cen::get_window(0);
+  auto window [[maybe_unused]] = cen::GetWindow(0);
   ASSERT_EQ(1u, SDL_GetWindowFromID_fake.call_count);
 }
 
 TEST_F(WindowUtilsTest, GetRenderer)
 {
-  cen::window_handle window{nullptr};
-  auto renderer [[maybe_unused]] = cen::get_renderer(window);
+  cen::WindowHandle window{nullptr};
+  auto renderer [[maybe_unused]] = cen::GetRenderer(window);
   ASSERT_EQ(1u, SDL_GetRenderer_fake.call_count);
 }

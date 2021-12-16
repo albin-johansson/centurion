@@ -9,10 +9,10 @@ int main(int, char**)
   const cen::TTFLibrary ttf;
 
   /* Create a window and an associated renderer */
-  auto [window, renderer] = cen::make_window_and_renderer();
+  auto [window, renderer] = cen::MakeWindowAndRenderer();
 
   /* Make sure our window is visible */
-  window.show();
+  window.Show();
 
   cen::event event;
   bool running = true;
@@ -34,7 +34,7 @@ int main(int, char**)
   }
 
   /* Make the window invisible again, this might not be necessary, but it doesn't hurt */
-  window.hide();
+  window.Hide();
 
   return 0;
 }

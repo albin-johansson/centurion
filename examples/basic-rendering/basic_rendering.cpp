@@ -7,12 +7,12 @@ int main(int, char**)
   const cen::TTFLibrary ttf;
 
   // Create our window and renderer
-  auto [window, renderer] = cen::make_window_and_renderer();
+  auto [window, renderer] = cen::MakeWindowAndRenderer();
 
   // Here we assume the existence of an image and font
   const cen::Texture image{renderer, RESOURCE_DIR "panda.png"};
   const cen::Font font{RESOURCE_DIR "daniel.ttf", 36};
-  window.show();
+  window.Show();
 
   // Render a string to a texture, which in turn can be rendered to our render target
   cen::Texture text{renderer, font.RenderBlendedUTF8("Hello world!", cen::colors::white)};
@@ -49,7 +49,7 @@ int main(int, char**)
 
   using namespace cen::literals;  // For _ms literal
   cen::Thread::Sleep(2000_ms);    // Wait for 2 seconds so that we can see the result
-  window.hide();
+  window.Hide();
 
   return 0;
 }

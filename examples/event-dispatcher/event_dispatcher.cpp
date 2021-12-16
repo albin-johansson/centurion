@@ -31,7 +31,7 @@ class Game final {
 
   auto run() -> int
   {
-    m_window.show();
+    m_window.Show();
 
     while (m_running) {
       // All we need to do each frame to handle events is to poll the event dispatcher
@@ -40,12 +40,12 @@ class Game final {
       // Game logic goes here...
     }
 
-    m_window.hide();
+    m_window.Hide();
     return 0;
   }
 
  private:
-  cen::window m_window;
+  cen::Window m_window;
   event_dispatcher m_dispatcher;
   bool m_running{true};
 

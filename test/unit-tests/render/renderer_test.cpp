@@ -18,7 +18,7 @@ class RendererTest : public testing::Test {
   static void SetUpTestSuite()
   {
     font = std::make_unique<cen::Font>("resources/daniel.ttf", 12);
-    window = std::make_unique<cen::window>();
+    window = std::make_unique<cen::Window>();
 
     renderer = std::make_unique<cen::Renderer>(*window);
     texture = std::make_unique<cen::Texture>(*renderer, "resources/panda.png");
@@ -33,7 +33,7 @@ class RendererTest : public testing::Test {
   }
 
   inline static std::unique_ptr<cen::Font> font;
-  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
   inline static std::unique_ptr<cen::Texture> texture;
 };
@@ -140,7 +140,7 @@ TEST_F(RendererTest, GetClip)
 
 TEST_F(RendererTest, Capture)
 {
-  window->show();
+  window->Show();
 
   renderer->ClearWith(cen::colors::pink);
 
@@ -155,17 +155,17 @@ TEST_F(RendererTest, Capture)
 
   renderer->Present();
 
-  const auto snapshot = renderer->Capture(window->get_pixel_format());
+  const auto snapshot = renderer->Capture(window->GetPixelFormat());
   ASSERT_TRUE(snapshot.SaveAsBMP("snapshot.bmp"));
 
   {  // We take the opportunity to do some surface tests as well
     ASSERT_NO_THROW(cen::Surface::FromBMP("snapshot.bmp"s));
     ASSERT_NO_THROW(cen::Surface::WithFormat("resources/panda.png"s,
                                              renderer->GetBlendMode(),
-                                             window->get_pixel_format()));
+                                             window->GetPixelFormat()));
   }
 
-  window->hide();
+  window->Hide();
 }
 
 TEST_F(RendererTest, ToString)

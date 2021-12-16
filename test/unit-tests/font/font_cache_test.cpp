@@ -14,7 +14,7 @@ class FontCacheTest : public testing::Test {
 
   static void SetUpTestSuite()
   {
-    window = std::make_unique<cen::window>();
+    window = std::make_unique<cen::Window>();
     renderer = std::make_unique<cen::Renderer>(*window);
   }
 
@@ -28,7 +28,7 @@ class FontCacheTest : public testing::Test {
   const char* latin1_string = "latin1_<!?+=";
   const cen::UnicodeString unicode_string{'b', 'a', 'r'};
 
-  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
   cen::FontCache cache;
 };

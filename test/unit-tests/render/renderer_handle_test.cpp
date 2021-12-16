@@ -11,7 +11,7 @@ class RendererHandleTest : public testing::Test {
  protected:
   [[maybe_unused]] static void SetUpTestSuite()
   {
-    window = std::make_unique<cen::window>();
+    window = std::make_unique<cen::Window>();
     renderer = std::make_unique<cen::Renderer>(*window);
   }
 
@@ -21,7 +21,7 @@ class RendererHandleTest : public testing::Test {
     window.reset();
   }
 
-  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
 };
 

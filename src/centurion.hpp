@@ -111,7 +111,6 @@
 #include "centurion/video/color.hpp"
 #include "centurion/video/colors.hpp"
 #include "centurion/video/font.hpp"
-#include "centurion/video/font_cache.hpp"
 #include "centurion/video/message_box.hpp"
 #include "centurion/video/message_box_type.hpp"
 #include "centurion/video/opengl.hpp"

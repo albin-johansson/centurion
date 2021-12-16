@@ -1,5 +1,3 @@
-#include "video/font_cache.hpp"
-
 #include <gtest/gtest.h>
 
 #include <functional>   // function

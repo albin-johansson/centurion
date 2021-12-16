@@ -152,7 +152,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/color.hpp
                src/centurion/video/colors.hpp
                src/centurion/video/font.hpp
-               src/centurion/video/font_cache.hpp
                src/centurion/video/message_box.hpp
                src/centurion/video/message_box_type.hpp
                src/centurion/video/opengl.hpp

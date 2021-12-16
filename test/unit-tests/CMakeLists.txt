@@ -67,6 +67,8 @@ set(SOURCE_FILES
     filesystem/preferred_path_test.cpp
     filesystem/seek_mode_test.cpp
 
+    font/font_bundle_test.cpp
+
     hints/hint_priority_test.cpp
     hints/hints_test.cpp
 

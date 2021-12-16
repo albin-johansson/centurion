@@ -7,6 +7,8 @@
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
+#include <cstring>        // strcmp
+#include <filesystem>     // path
 #include <memory>         // unique_ptr
 #include <optional>       // optional
 #include <ostream>        // ostream
@@ -704,6 +706,112 @@ class FontCache final {
     ++mNextStringId;
 
     return id;
+  }
+};
+
+/**
+ * Utility for handling fonts of various sizes.
+ *
+ * Note, this class stores `FontCache` instances, so the `GetCache`/`GetFont`-functions operate
+ * on the same underlying fonts.
+ */
+class FontBundle final {
+ public:
+  /* Attempts to load a font in a specific size, and returns the font ID */
+  auto LoadFont(const char* path, const int size) -> std::size_t
+  {
+    assert(path);
+    if (const auto id = GetID(path)) {
+      mPacks[*id].caches.try_emplace(size, Font{path, size});
+      return *id;
+    }
+    else {
+      const auto newId = mNextFontId;
+
+      auto& pack = mPacks[newId];
+      pack.path = path;
+      pack.caches.try_emplace(size, Font{path, size});
+
+      ++mNextFontId;
+
+      return newId;
+    }
+  }
+
+  [[nodiscard]] auto HasFont(const std::string_view path) const -> bool
+  {
+    return GetID(path).has_value();
+  }
+
+  [[nodiscard]] auto HasFont(const std::size_t id) const -> bool
+  {
+    return mPacks.find(id) != mPacks.end();
+  }
+
+  [[nodiscard]] auto HasFont(const std::size_t id, const int size) const -> bool
+  {
+    if (const auto pack = mPacks.find(id); pack != mPacks.end()) {
+      return pack->second.caches.find(size) != pack->second.caches.end();
+    }
+    else {
+      return false;
+    }
+  }
+
+  [[nodiscard]] auto GetCache(const std::size_t id, const int size) -> FontCache&
+  {
+    return mPacks.at(id).caches.at(size);
+  }
+
+  [[nodiscard]] auto GetCache(const std::size_t id, const int size) const -> const FontCache&
+  {
+    return mPacks.at(id).caches.at(size);
+  }
+
+  /* Shorthand for `GetCache(id, size).GetFont()` */
+  [[nodiscard]] auto GetFont(const std::size_t id, const int size) -> Font&
+  {
+    return GetCache(id, size).GetFont();
+  }
+
+  [[nodiscard]] auto GetFont(const std::size_t id, const int size) const -> const Font&
+  {
+    return GetCache(id, size).GetFont();
+  }
+
+  [[nodiscard]] auto GetNumUniqueFonts() const -> std::size_t { return mPacks.size(); }
+
+  [[nodiscard]] auto GetNumFonts() const -> std::size_t
+  {
+    std::size_t count = 0;
+
+    for (const auto& [id, pack] : mPacks) {
+      count += pack.caches.size();
+    }
+
+    return count;
+  }
+
+ private:
+  struct FontPack final {
+    std::string path;
+    std::unordered_map<int, FontCache> caches; /* Size -> Cache */
+  };
+
+  std::unordered_map<std::size_t, FontPack> mPacks;
+  std::size_t mNextFontId{1};
+
+  [[nodiscard]] auto GetID(const std::string_view path) const -> std::optional<std::size_t>
+  {
+    for (const auto& [id, pack] : mPacks) {
+      if (!pack.caches.empty()) {
+        if (pack.path == path) {
+          return id;
+        }
+      }
+    }
+
+    return std::nullopt;
   }
 };
 

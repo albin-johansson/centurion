@@ -135,13 +135,8 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_periodic.hpp
                src/centurion/input/haptic_ramp.hpp
                src/centurion/input/joystick.hpp
-               src/centurion/input/key_code.hpp
-               src/centurion/input/key_modifier.hpp
-               src/centurion/input/keyboard.hpp
-               src/centurion/input/keycodes.hpp
+               src/centurion/keyboard.hpp
                src/centurion/mouse.hpp
-               src/centurion/input/scan_code.hpp
-               src/centurion/input/scancodes.hpp
                src/centurion/input/sensor.hpp
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp

@@ -5,9 +5,7 @@
 
 #include "../core/common.hpp"
 #include "../input/button_state.hpp"
-#include "../input/key_code.hpp"
-#include "../input/key_modifier.hpp"
-#include "../input/scan_code.hpp"
+#include "../keyboard.hpp"
 #include "common_event.hpp"
 
 namespace cen {
@@ -50,7 +48,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  void set_scan_code(const scan_code& code) noexcept { m_event.keysym.scancode = code.get(); }
+  void set_scan_code(const ScanCode& code) noexcept { m_event.keysym.scancode = code.get(); }
 
   /**
    * \brief Sets the key code that is associated with the event.
@@ -59,7 +57,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  void set_key_code(const key_code& code) noexcept { m_event.keysym.sym = code.get(); }
+  void set_key_code(const KeyCode& code) noexcept { m_event.keysym.sym = code.get(); }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -81,7 +79,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_mod modifiers, const bool active) noexcept
+  void set_modifier(const KeyMod modifiers, const bool active) noexcept
   {
     if (active) {
       m_event.keysym.mod |= ToUnderlying(modifiers);
@@ -122,7 +120,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto is_active(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_active(const ScanCode& code) const noexcept -> bool
   {
     return m_event.keysym.scancode == code.get();
   }
@@ -138,7 +136,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto is_active(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_active(const KeyCode& code) const noexcept -> bool
   {
     return static_cast<SDL_KeyCode>(m_event.keysym.sym) == code.get();
   }
@@ -152,44 +150,44 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
-   * \see `is_only_active(key_mod)`
-   * \see `is_only_any_of_active(key_mod)`
+   * \see `IsOnlyActive(KeyMod)`
+   * \see `IsOnlyAnyOfActive(KeyMod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
+  [[nodiscard]] auto is_active(const KeyMod modifiers) const noexcept -> bool
   {
-    return detail::is_active(modifiers, m_event.keysym.mod);
+    return detail::IsActive(modifiers, m_event.keysym.mod);
   }
 
   /**
    * \brief Indicates whether or not the specified modifiers are solely active.
    *
-   * \details This function differs from `is_active(key_mod)` in that this function
+   * \details This function differs from `IsActive(KeyMod)` in that this function
    * will return `false` if modifiers other than those specified are active. For example,
    * if the `shift` and `alt` modifiers are being pressed, then
-   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
+   * `IsOnlyActive(cen::KeyMod::shift)` would evaluate to `false`.
    *
    * \param modifiers the modifiers to check for.
    *
    * \return `true` if *only* the specified modifiers are active; false otherwise.
    *
-   * \see `is_active(key_mod)`
+   * \see `IsActive(KeyMod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
+  [[nodiscard]] auto is_only_active(const KeyMod modifiers) const noexcept -> bool
   {
-    return detail::is_only_active(modifiers, m_event.keysym.mod);
+    return detail::IsOnlyActive(modifiers, m_event.keysym.mod);
   }
 
   /**
    * \brief Indicates whether or not only any of the specified modifiers are active.
    *
-   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * \details This function is very similar to `IsOnlyActive()`, but differs in that not
    * all of the specified modifiers need to be active for this function to return `true`.
    * For example, if you supply `shift` to this function, and only the left shift key is
-   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * being pressed, then `IsOnlyAnyOfActive(cen::KeyMod::shift)` would evaluate
    * to `true`. However, if some other modifiers were also being pressed other than the
    * left shift key, the same function call would instead evaluate to `false`.
    *
@@ -198,13 +196,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    * \return `true` if *any* of the specified modifiers are active, but no other
    * modifiers; false otherwise.
    *
-   * \see `is_only_active(key_mod)`
+   * \see `IsOnlyActive(KeyMod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
+  [[nodiscard]] auto is_only_any_of_active(const KeyMod modifiers) const noexcept -> bool
   {
-    return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
+    return detail::IsOnlyAnyOfActive(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -267,13 +265,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto scan() const noexcept -> scan_code { return m_event.keysym.scancode; }
+  [[nodiscard]] auto scan() const noexcept -> ScanCode { return m_event.keysym.scancode; }
 
   /**
    * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_scan_code() const noexcept -> scan_code { return scan(); }
+  [[nodiscard]] auto get_scan_code() const noexcept -> ScanCode { return scan(); }
 
   /**
    * \brief Returns the key code that is associated with the event.
@@ -282,7 +280,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto key() const noexcept -> key_code
+  [[nodiscard]] auto key() const noexcept -> KeyCode
   {
     return static_cast<SDL_KeyCode>(m_event.keysym.sym);
   }
@@ -291,7 +289,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_key_code() const noexcept -> key_code { return key(); }
+  [[nodiscard]] auto get_key_code() const noexcept -> KeyCode { return key(); }
 
   /**
    * \brief Returns the ID of the window associated with the event.

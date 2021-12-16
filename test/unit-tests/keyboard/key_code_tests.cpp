@@ -3,45 +3,44 @@
 #include <iostream>
 
 #include "core/logging.hpp"
-#include "input/key_code.hpp"
-#include "input/keycodes.hpp"
+#include "keyboard.hpp"
 #include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)
 {
-  cen::key_code code;
+  cen::KeyCode code;
   ASSERT_EQ(SDLK_UNKNOWN, code.get());
 }
 
 TEST(KeyCode, SDLKeycodeContructor)
 {
   const auto key = SDLK_x;
-  const cen::key_code code{key};
+  const cen::KeyCode code{key};
   ASSERT_EQ(key, code.get());
 }
 
 TEST(KeyCode, SDLScancodeContructor)
 {
   const auto scan = SDL_SCANCODE_Y;
-  const cen::key_code code{scan};
-  ASSERT_EQ(scan, code.operator SDL_Scancode());
+  const cen::KeyCode code{scan};
+  ASSERT_EQ(scan, code.ToScanCode());
 }
 
-TEST(KeyCode, CZStringConstructor)
+TEST(KeyCode, CStringConstructor)
 {
   {  // Good name
-    const cen::key_code code{"5"};
+    const cen::KeyCode code{"5"};
     ASSERT_EQ(SDLK_5, code.get());
     ASSERT_EQ(cen::keycodes::five, code);
-    ASSERT_EQ("5", code.name());
+    ASSERT_EQ("5", code.GetName());
   }
 
   {  // Bad name
-    const cen::key_code code{"foobar"};
+    const cen::KeyCode code{"foobar"};
     ASSERT_EQ(SDLK_UNKNOWN, code.get());
     ASSERT_EQ(cen::keycodes::unknown, code);
-    ASSERT_TRUE(code.name().empty());
-    ASSERT_TRUE(code.unknown());
+    ASSERT_TRUE(code.GetName().empty());
+    ASSERT_TRUE(code.IsUnknown());
   }
 }
 
@@ -50,24 +49,24 @@ TEST(KeyCode, StdStringConstructor)
   using namespace std::string_literals;
 
   {  // Good name
-    const cen::key_code code{"5"s};
+    const cen::KeyCode code{"5"s};
     ASSERT_EQ(SDLK_5, code.get());
     ASSERT_EQ(cen::keycodes::five, code);
-    ASSERT_EQ("5", code.name());
+    ASSERT_EQ("5", code.GetName());
   }
 
   {  // Bad name
-    const cen::key_code code{"foobar"s};
+    const cen::KeyCode code{"foobar"s};
     ASSERT_EQ(SDLK_UNKNOWN, code.get());
     ASSERT_EQ(cen::keycodes::unknown, code);
-    ASSERT_TRUE(code.name().empty());
-    ASSERT_TRUE(code.unknown());
+    ASSERT_TRUE(code.GetName().empty());
+    ASSERT_TRUE(code.IsUnknown());
   }
 }
 
 TEST(KeyCode, SDLKeycodeAssignmentOperator)
 {
-  cen::key_code code;
+  cen::KeyCode code;
   code = SDLK_o;
 
   ASSERT_EQ(SDLK_o, code.get());
@@ -76,7 +75,7 @@ TEST(KeyCode, SDLKeycodeAssignmentOperator)
 
 TEST(KeyCode, SDLScancodeAssignmentOperator)
 {
-  cen::key_code code;
+  cen::KeyCode code;
   code = SDL_SCANCODE_U;
 
   ASSERT_EQ(SDL_GetKeyFromScancode(SDL_SCANCODE_U), code.get());
@@ -85,21 +84,21 @@ TEST(KeyCode, SDLScancodeAssignmentOperator)
 TEST(KeyCode, CZStringAssignmentOperator)
 {
   {  // Good name
-    cen::key_code code;
+    cen::KeyCode code;
     code = "Tab";
 
     ASSERT_EQ(SDLK_TAB, code.get());
     ASSERT_EQ(cen::keycodes::tab, code);
-    ASSERT_EQ("Tab", code.name());
+    ASSERT_EQ("Tab", code.GetName());
   }
 
   {  // Bad name
-    cen::key_code code;
+    cen::KeyCode code;
     code = "qwerty";
 
     ASSERT_EQ(SDLK_UNKNOWN, code.get());
     ASSERT_EQ(cen::keycodes::unknown, code);
-    ASSERT_TRUE(code.unknown());
+    ASSERT_TRUE(code.IsUnknown());
   }
 }
 
@@ -108,45 +107,45 @@ TEST(KeyCode, StrStringAssignmentOperator)
   using namespace std::string_literals;
 
   {  // Good name
-    cen::key_code code;
+    cen::KeyCode code;
     code = "Tab"s;
 
     ASSERT_EQ(SDLK_TAB, code.get());
     ASSERT_EQ(cen::keycodes::tab, code);
-    ASSERT_EQ("Tab", code.name());
+    ASSERT_EQ("Tab", code.GetName());
   }
 
   {  // Bad name
-    cen::key_code code;
+    cen::KeyCode code;
     code = "qwerty"s;
 
     ASSERT_EQ(SDLK_UNKNOWN, code.get());
     ASSERT_EQ(cen::keycodes::unknown, code);
-    ASSERT_TRUE(code.unknown());
+    ASSERT_TRUE(code.IsUnknown());
   }
 }
 
 TEST(KeyCode, Unknown)
 {
-  cen::key_code code;
-  ASSERT_TRUE(code.unknown());
+  cen::KeyCode code;
+  ASSERT_TRUE(code.IsUnknown());
 
   code = cen::keycodes::w;
-  ASSERT_FALSE(code.unknown());
+  ASSERT_FALSE(code.IsUnknown());
 }
 
 TEST(KeyCode, Name)
 {
-  cen::key_code code;
-  ASSERT_TRUE(code.name().empty());
+  cen::KeyCode code;
+  ASSERT_TRUE(code.GetName().empty());
 
   code = SDLK_z;
-  ASSERT_EQ("Z", code.name());
+  ASSERT_EQ("Z", code.GetName());
 }
 
 TEST(KeyCode, Get)
 {
-  cen::key_code code;
+  cen::KeyCode code;
   ASSERT_EQ(SDLK_UNKNOWN, code.get());
 
   code = SDLK_8;
@@ -156,53 +155,27 @@ TEST(KeyCode, Get)
 TEST(KeyCode, ToScanCode)
 {
   const auto key = cen::keycodes::p;
-  const auto scancode = key.to_scan_code();
+  const auto scancode = key.ToScanCode();
   ASSERT_EQ(SDL_GetScancodeFromKey(key.get()), scancode);
-}
-
-TEST(KeyCode, SDLKeycodeConversion)
-{
-  cen::key_code code;
-
-  const auto unknown = static_cast<SDL_Keycode>(code);
-  ASSERT_EQ(SDLK_UNKNOWN, unknown);
-
-  code = SDLK_f;
-
-  const auto f = static_cast<SDL_Keycode>(code);
-  ASSERT_EQ(SDLK_f, f);
-}
-
-TEST(KeyCode, SDLScancodeConversion)
-{
-  cen::key_code code;
-
-  const auto unknown = static_cast<SDL_Scancode>(code);
-  ASSERT_EQ(SDL_SCANCODE_UNKNOWN, unknown);
-
-  code = SDLK_RSHIFT;
-
-  const auto rshift = static_cast<SDL_Scancode>(code);
-  ASSERT_EQ(SDL_SCANCODE_RSHIFT, rshift);
 }
 
 TEST(KeyCode, EqualityOperator)
 {
   {
-    const cen::key_code code;
+    const cen::KeyCode code;
     ASSERT_EQ(code, code);
   }
 
   {
-    const cen::key_code fst{SDLK_i};
-    const cen::key_code snd{fst};
+    const cen::KeyCode fst{SDLK_i};
+    const cen::KeyCode snd{fst};
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {
-    const cen::key_code fst{SDLK_e};
-    const cen::key_code snd{SDLK_y};
+    const cen::KeyCode fst{SDLK_e};
+    const cen::KeyCode snd{SDLK_y};
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }
@@ -211,20 +184,20 @@ TEST(KeyCode, EqualityOperator)
 TEST(KeyCode, InequalityOperator)
 {
   {
-    const cen::key_code code;
+    const cen::KeyCode code;
     ASSERT_FALSE(code != code);
   }
 
   {
-    const cen::key_code fst{SDLK_w};
-    const cen::key_code snd{fst};
+    const cen::KeyCode fst{SDLK_w};
+    const cen::KeyCode snd{fst};
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {
-    const cen::key_code fst{SDLK_a};
-    const cen::key_code snd{SDLK_5};
+    const cen::KeyCode fst{SDLK_a};
+    const cen::KeyCode snd{SDLK_5};
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }
@@ -327,6 +300,6 @@ TEST(KeyCode, Serialization)
 {
   serialize_save("key_code.binary", cen::keycodes::enter);
 
-  const auto other = serialize_create<cen::key_code>("key_code.binary");
+  const auto other = serialize_create<cen::KeyCode>("key_code.binary");
   ASSERT_EQ(cen::keycodes::enter, other);
 }

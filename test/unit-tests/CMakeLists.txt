@@ -98,14 +98,15 @@ set(SOURCE_FILES
     input/joystick_power_test.cpp
     input/joystick_test.cpp
     input/joystick_type_test.cpp
-    input/key_code_tests.cpp
-    input/key_modifier_test.cpp
-    input/keyboard_test.cpp
-    input/scan_code_tests.cpp
     input/sensor_test.cpp
     input/sensor_type_test.cpp
     input/touch_device_type_test.cpp
     input/touch_test.cpp
+
+    keyboard/key_code_tests.cpp
+    keyboard/key_modifier_test.cpp
+    keyboard/keyboard_test.cpp
+    keyboard/scan_code_tests.cpp
 
     math/area_test.cpp
     math/rect_test.cpp

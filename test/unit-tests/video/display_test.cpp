@@ -112,5 +112,5 @@ TEST(Display, GetPixelFormat)
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  ASSERT_EQ(static_cast<cen::pixel_format>(mode.format), cen::GetDisplayPixelFormat());
+  ASSERT_EQ(static_cast<cen::PixelFormat>(mode.format), cen::GetDisplayPixelFormat());
 }

@@ -102,7 +102,7 @@ class BasicTexture final {
   /* Creates a texture with the specified size, format, and access. */
   template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   BasicTexture(const Renderer& renderer,
-               const pixel_format format,
+               const PixelFormat format,
                const TextureAccess access,
                const Area size)
       : mTexture{SDL_CreateTexture(renderer.get(),
@@ -120,7 +120,7 @@ class BasicTexture final {
   template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const char* path,
-                                      const pixel_format format) -> BasicTexture
+                                      const PixelFormat format) -> BasicTexture
   {
     assert(path);
 
@@ -147,7 +147,7 @@ class BasicTexture final {
   template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
-                                      const pixel_format format) -> BasicTexture
+                                      const PixelFormat format) -> BasicTexture
   {
     return streaming(renderer, path.c_str(), format);
   }
@@ -193,11 +193,11 @@ class BasicTexture final {
     return height;
   }
 
-  [[nodiscard]] auto GetFormat() const noexcept -> pixel_format
+  [[nodiscard]] auto GetFormat() const noexcept -> PixelFormat
   {
     Uint32 format{};
     SDL_QueryTexture(mTexture, &format, nullptr, nullptr, nullptr);
-    return static_cast<pixel_format>(format);
+    return static_cast<PixelFormat>(format);
   }
 
   [[nodiscard]] auto GetAccess() const noexcept -> TextureAccess

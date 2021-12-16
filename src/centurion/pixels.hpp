@@ -12,6 +12,7 @@
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
+#include "core/memory.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "video/color.hpp"
@@ -24,244 +25,144 @@
 
 namespace cen {
 
-enum class pixel_format : Uint32 {
-  unknown = SDL_PIXELFORMAT_UNKNOWN,
+enum class PixelFormat : Uint32 {
+  Unknown = SDL_PIXELFORMAT_UNKNOWN,
 
-  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
-  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
-  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
-  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
-  index8 = SDL_PIXELFORMAT_INDEX8,
+  Index1LSB = SDL_PIXELFORMAT_INDEX1LSB,
+  Index1MSB = SDL_PIXELFORMAT_INDEX1MSB,
+  Index4LSB = SDL_PIXELFORMAT_INDEX4LSB,
+  Index4MSB = SDL_PIXELFORMAT_INDEX4MSB,
+  Index8 = SDL_PIXELFORMAT_INDEX8,
 
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-  xrgb4444 = SDL_PIXELFORMAT_XRGB4444,
-  xbgr4444 = SDL_PIXELFORMAT_XBGR4444,
+  RGBA32 = SDL_PIXELFORMAT_RGBA32,
+  ARGB32 = SDL_PIXELFORMAT_ARGB32,
+  BGRA32 = SDL_PIXELFORMAT_BGRA32,
+  ABGR32 = SDL_PIXELFORMAT_ABGR32,
 
-  xrgb1555 = SDL_PIXELFORMAT_XRGB1555,
-  xbgr1555 = SDL_PIXELFORMAT_XBGR1555,
-
-  xrgb8888 = SDL_PIXELFORMAT_XRGB8888,
-  xbgr8888 = SDL_PIXELFORMAT_XBGR8888,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  rgb332 = SDL_PIXELFORMAT_RGB332,
-  rgb444 = SDL_PIXELFORMAT_RGB444,
+  RGB332 = SDL_PIXELFORMAT_RGB332,
+  RGB444 = SDL_PIXELFORMAT_RGB444,
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-  bgr444 = SDL_PIXELFORMAT_BGR444,
+  BGR444 = SDL_PIXELFORMAT_BGR444,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  rgb555 = SDL_PIXELFORMAT_RGB555,
-  bgr555 = SDL_PIXELFORMAT_BGR555,
+  RGB555 = SDL_PIXELFORMAT_RGB555,
+  BGR555 = SDL_PIXELFORMAT_BGR555,
 
-  argb4444 = SDL_PIXELFORMAT_ARGB4444,
-  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
-  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
-  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
+  ARGB4444 = SDL_PIXELFORMAT_ARGB4444,
+  RGBA4444 = SDL_PIXELFORMAT_RGBA4444,
+  ABGR4444 = SDL_PIXELFORMAT_ABGR4444,
+  BGRA4444 = SDL_PIXELFORMAT_BGRA4444,
 
-  argb1555 = SDL_PIXELFORMAT_ARGB1555,
-  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
-  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
-  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
+  ARGB1555 = SDL_PIXELFORMAT_ARGB1555,
+  RGBA5551 = SDL_PIXELFORMAT_RGBA5551,
+  ABGR1555 = SDL_PIXELFORMAT_ABGR1555,
+  BGRA5551 = SDL_PIXELFORMAT_BGRA5551,
 
-  rgb565 = SDL_PIXELFORMAT_RGB565,
-  bgr565 = SDL_PIXELFORMAT_BGR565,
+  RGB565 = SDL_PIXELFORMAT_RGB565,
+  BGR565 = SDL_PIXELFORMAT_BGR565,
 
-  rgb24 = SDL_PIXELFORMAT_RGB24,
-  bgr24 = SDL_PIXELFORMAT_BGR24,
+  RGB24 = SDL_PIXELFORMAT_RGB24,
+  BGR24 = SDL_PIXELFORMAT_BGR24,
 
-  rgb888 = SDL_PIXELFORMAT_RGB888,
-  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
-  bgr888 = SDL_PIXELFORMAT_BGR888,
-  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
+  RGB888 = SDL_PIXELFORMAT_RGB888,
+  BGR888 = SDL_PIXELFORMAT_BGR888,
 
-  argb8888 = SDL_PIXELFORMAT_ARGB8888,
-  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
-  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
-  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
+  RGBX8888 = SDL_PIXELFORMAT_RGBX8888,
+  BGRX8888 = SDL_PIXELFORMAT_BGRX8888,
 
-  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
+  ARGB8888 = SDL_PIXELFORMAT_ARGB8888,
+  RGBA8888 = SDL_PIXELFORMAT_RGBA8888,
+  ABGR8888 = SDL_PIXELFORMAT_ABGR8888,
+  BGRA8888 = SDL_PIXELFORMAT_BGRA8888,
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  rgba32 = SDL_PIXELFORMAT_RGBA8888,
-  argb32 = SDL_PIXELFORMAT_ARGB8888,
-  bgra32 = SDL_PIXELFORMAT_BGRA8888,
-  abgr32 = SDL_PIXELFORMAT_ABGR8888,
-#else
-  rgba32 = SDL_PIXELFORMAT_ABGR8888,
-  argb32 = SDL_PIXELFORMAT_BGRA8888,
-  bgra32 = SDL_PIXELFORMAT_ARGB8888,
-  abgr32 = SDL_PIXELFORMAT_RGBA8888,
-#endif
+  ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
 
-  yv12 = SDL_PIXELFORMAT_YV12,
-  iyuv = SDL_PIXELFORMAT_IYUV,
-  yuy2 = SDL_PIXELFORMAT_YUY2,
-  uyvy = SDL_PIXELFORMAT_UYVY,
-  yvyu = SDL_PIXELFORMAT_YVYU,
-  nv12 = SDL_PIXELFORMAT_NV12,
-  nv21 = SDL_PIXELFORMAT_NV21,
-  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
+  YV12 = SDL_PIXELFORMAT_YV12,
+  IYUV = SDL_PIXELFORMAT_IYUV,
+  YUY2 = SDL_PIXELFORMAT_YUY2,
+  UYVY = SDL_PIXELFORMAT_UYVY,
+  YVYU = SDL_PIXELFORMAT_YVYU,
+  NV12 = SDL_PIXELFORMAT_NV12,
+  NV21 = SDL_PIXELFORMAT_NV21,
+  ExternalOES = SDL_PIXELFORMAT_EXTERNAL_OES,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  XRGB4444 = SDL_PIXELFORMAT_XRGB4444,
+  XBGR4444 = SDL_PIXELFORMAT_XBGR4444,
+
+  XRGB1555 = SDL_PIXELFORMAT_XRGB1555,
+  XBGR1555 = SDL_PIXELFORMAT_XBGR1555,
+
+  XRGB8888 = SDL_PIXELFORMAT_XRGB8888,
+  XBGR8888 = SDL_PIXELFORMAT_XBGR8888
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 };
 
-class palette final {
+class Palette final {
  public:
   using iterator = SDL_Color*;
   using const_iterator = const SDL_Color*;
 
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a palette with the specified amount of colors.
-   *
-   * \param nColors the number of colors in the palette.
-   *
-   * \throws sdl_error if the palette couldn't be created.
-   *
-   * \since 6.0.0
-   */
-  explicit palette(const int nColors) : m_palette{SDL_AllocPalette(nColors)}
+  explicit Palette(const int nColors) : mPalette{SDL_AllocPalette(nColors)}
   {
-    if (!m_palette) {
+    if (!mPalette) {
       throw SDLError{};
     }
   }
 
-  /// \} End of construction
-
-  /**
-   * \brief Sets a color in the palette.
-   *
-   * \pre `index` must not be negative.
-   * \pre `index` must be less than the size of the palette.
-   *
-   * \param index the index of the color slot that will be changed.
-   * \param color the new color that will be used.
-   *
-   * \since 6.0.0
-   */
-  auto set_color(const int index, const Color& color) noexcept -> Result
+  auto SetColor(const int index, const Color& color) noexcept -> Result
   {
     assert(index >= 0);
-    assert(index < size());
-    return SDL_SetPaletteColors(m_palette.get(), color.data(), index, 1) == 0;
+    assert(index < GetSize());
+    return SDL_SetPaletteColors(mPalette.get(), color.data(), index, 1) == 0;
   }
 
-  /**
-   * \brief Returns the color in the palette at the specified index.
-   *
-   * \note This function returns a copy of the color, not a reference!
-   *
-   * \param index the index of color in the palette.
-   *
-   * \throws cen_error if the supplied index is out of bounds.
-   *
-   * \return a copy of the color at the specified index in the palette.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto at(const int index) const -> Color
+  [[nodiscard]] auto GetColor(const int index) const -> Color
   {
-    if (index >= 0 && index < size()) {
-      return Color{m_palette->colors[index]};
+    if (index >= 0 && index < GetSize()) {
+      return Color{mPalette->colors[index]};
     }
     else {
       throw Error{"Palette index out of bounds!"};
     }
   }
 
-  /**
-   * \brief Returns the color in the palette at the specified index.
-   *
-   * \warning This function performs no bounds checking, see `at()` for a bounds checked
-   * version of this function.
-   *
-   * \pre `index` must not be negative.
-   * \pre `index` must be less than the size of the palette.
-   *
-   * \note This function returns a copy of the color, not a reference!
-   *
-   * \param index the index of color in the palette.
-   *
-   * \return a copy of the color at the specified index in the palette.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto operator[](const int index) const noexcept -> Color
-  {
-    assert(index >= 0);
-    assert(index < size());
-    return Color{m_palette->colors[index]};
-  }
+  [[nodiscard]] auto GetSize() const noexcept -> int { return mPalette->ncolors; }
 
-  /**
-   * \brief Returns the amount of colors in the palette.
-   *
-   * \return the amount of colors in the palette.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto size() const noexcept -> int { return m_palette->ncolors; }
+  [[nodiscard]] auto GetVersion() const noexcept -> Uint32 { return mPalette->version; }
 
-  /**
-   * \brief Returns the version of the palette.
-   *
-   * \note This value can be incremented by `SetColor()`.
-   *
-   * \return the current version of the palette.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto version() const noexcept -> Uint32 { return m_palette->version; }
+  [[nodiscard]] auto data() const noexcept -> SDL_Palette* { return mPalette.get(); }
 
-  /**
-   * \brief Returns a pointer to the associated SDL palette.
-   *
-   * \warning Do not claim ownership of the returned pointer!
-   *
-   * \return a pointer to the associated SDL palette
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Palette* { return m_palette.get(); }
+  [[nodiscard]] auto get() const noexcept -> SDL_Palette* { return mPalette.get(); }
 
-  /// \name Iteration
-  /// \{
+  [[nodiscard]] auto begin() noexcept -> iterator { return mPalette->colors; }
 
-  [[nodiscard]] auto begin() noexcept -> iterator { return m_palette->colors; }
+  [[nodiscard]] auto begin() const noexcept -> const_iterator { return mPalette->colors; }
 
-  [[nodiscard]] auto begin() const noexcept -> const_iterator { return m_palette->colors; }
-
-  [[nodiscard]] auto end() noexcept -> iterator { return m_palette->colors + size(); }
+  [[nodiscard]] auto end() noexcept -> iterator { return mPalette->colors + GetSize(); }
 
   [[nodiscard]] auto end() const noexcept -> const_iterator
   {
-    return m_palette->colors + size();
+    return mPalette->colors + GetSize();
   }
 
-  /// \} End of iteration
-
  private:
-  struct deleter final {
-    void operator()(SDL_Palette* palette) noexcept { SDL_FreePalette(palette); }
-  };
-
-  std::unique_ptr<SDL_Palette, deleter> m_palette;
+  Managed<SDL_Palette> mPalette;
 };
 
 template <typename B>
-class basic_pixel_format_info;
+class BasicPixelFormatInfo;
 
-using pixel_format_info = basic_pixel_format_info<detail::OwnerTag>;
-using pixel_format_info_handle = basic_pixel_format_info<detail::HandleTag>;
+using PixelFormatInfo = BasicPixelFormatInfo<detail::OwnerTag>;
+using PixelFormatInfoHandle = BasicPixelFormatInfo<detail::HandleTag>;
 
 template <typename B>
-class basic_pixel_format_info final {
+class BasicPixelFormatInfo final {
  public:
   // clang-format off
 
-  explicit basic_pixel_format_info(MaybeOwner<SDL_PixelFormat*> format) noexcept(detail::is_handle<B>)
+  explicit BasicPixelFormatInfo(MaybeOwner<SDL_PixelFormat*> format) noexcept(detail::is_handle<B>)
       : mFormat{format}
   {
     if constexpr (detail::is_owner<B>) {
@@ -274,7 +175,7 @@ class basic_pixel_format_info final {
   // clang-format on
 
   template <typename BB = B, detail::EnableOwner<BB> = 0>
-  explicit basic_pixel_format_info(const pixel_format format)
+  explicit BasicPixelFormatInfo(const PixelFormat format)
       : mFormat{SDL_AllocFormat(ToUnderlying(format))}
   {
     if (!mFormat) {
@@ -283,11 +184,10 @@ class basic_pixel_format_info final {
   }
 
   template <typename BB = B, detail::EnableHandle<BB> = 0>
-  explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
-      : mFormat{info.get()}
+  explicit BasicPixelFormatInfo(const PixelFormatInfo& info) noexcept : mFormat{info.get()}
   {}
 
-  [[nodiscard]] auto pixel_to_rgb(const Uint32 pixel) const noexcept -> Color
+  [[nodiscard]] auto PixelToRGB(const Uint32 pixel) const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};
@@ -296,7 +196,7 @@ class basic_pixel_format_info final {
     return Color{red, green, blue};
   }
 
-  [[nodiscard]] auto pixel_to_rgba(const Uint32 pixel) const noexcept -> Color
+  [[nodiscard]] auto PixelToRGBA(const Uint32 pixel) const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};
@@ -306,12 +206,12 @@ class basic_pixel_format_info final {
     return Color{red, green, blue, alpha};
   }
 
-  [[nodiscard]] auto rgb_to_pixel(const Color& color) const noexcept -> Uint32
+  [[nodiscard]] auto RGBToPixel(const Color& color) const noexcept -> Uint32
   {
     return SDL_MapRGB(mFormat, color.GetRed(), color.GetGreen(), color.GetBlue());
   }
 
-  [[nodiscard]] auto rgba_to_pixel(const Color& color) const noexcept -> Uint32
+  [[nodiscard]] auto RGBAToPixel(const Color& color) const noexcept -> Uint32
   {
     return SDL_MapRGBA(mFormat,
                        color.GetRed(),
@@ -320,15 +220,17 @@ class basic_pixel_format_info final {
                        color.GetAlpha());
   }
 
-  [[nodiscard]] auto format() const noexcept -> pixel_format
+  [[nodiscard]] auto GetFormat() const noexcept -> PixelFormat
   {
-    return static_cast<pixel_format>(mFormat->format);
+    return static_cast<PixelFormat>(mFormat->format);
   }
 
-  [[nodiscard]] auto name() const noexcept -> const char*
+  [[nodiscard]] auto GetName() const noexcept -> const char*
   {
     return SDL_GetPixelFormatName(mFormat->format);
   }
+
+  [[nodiscard]] auto data() const noexcept -> SDL_PixelFormat* { return mFormat.get(); }
 
   [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat* { return mFormat.get(); }
 
@@ -342,180 +244,180 @@ class basic_pixel_format_info final {
   detail::Pointer<B, SDL_PixelFormat> mFormat;
 };
 
-[[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const PixelFormat format) -> std::string_view
 {
   switch (format) {
-    case pixel_format::unknown:
-      return "unknown";
+    case PixelFormat::Unknown:
+      return "Unknown";
 
-    case pixel_format::index1lsb:
-      return "index1lsb";
+    case PixelFormat::Index1LSB:
+      return "Index1LSB";
 
-    case pixel_format::index1msb:
-      return "index1msb";
+    case PixelFormat::Index1MSB:
+      return "Index1MSB";
 
-    case pixel_format::index4lsb:
-      return "index4lsb";
+    case PixelFormat::Index4LSB:
+      return "Index4LSB";
 
-    case pixel_format::index4msb:
-      return "index4msb";
+    case PixelFormat::Index4MSB:
+      return "Index4MSB";
 
-    case pixel_format::index8:
-      return "index8";
+    case PixelFormat::Index8:
+      return "Index8";
 
-    case pixel_format::rgb332:
-      return "rgb332";
+    case PixelFormat::RGB332:
+      return "RGB332";
 
-    case pixel_format::argb4444:
-      return "argb4444";
+    case PixelFormat::ARGB4444:
+      return "ARGB4444";
 
-    case pixel_format::rgba4444:
-      return "rgba4444";
+    case PixelFormat::RGBA4444:
+      return "RGBA4444";
 
-    case pixel_format::abgr4444:
-      return "abgr4444";
+    case PixelFormat::ABGR4444:
+      return "ABGR4444";
 
-    case pixel_format::bgra4444:
-      return "bgra4444";
+    case PixelFormat::BGRA4444:
+      return "BGRA4444";
 
-    case pixel_format::argb1555:
-      return "argb1555";
+    case PixelFormat::ARGB1555:
+      return "ARGB1555";
 
-    case pixel_format::rgba5551:
-      return "rgba5551";
+    case PixelFormat::RGBA5551:
+      return "RGBA5551";
 
-    case pixel_format::abgr1555:
-      return "abgr1555";
+    case PixelFormat::ABGR1555:
+      return "ABGR1555";
 
-    case pixel_format::bgra5551:
-      return "bgra5551";
+    case PixelFormat::BGRA5551:
+      return "BGRA5551";
 
-    case pixel_format::rgb565:
-      return "rgb565";
+    case PixelFormat::RGB565:
+      return "RGB565";
 
-    case pixel_format::bgr565:
-      return "bgr565";
+    case PixelFormat::BGR565:
+      return "BGR565";
 
-    case pixel_format::rgb24:
-      return "rgb24";
+    case PixelFormat::RGB24:
+      return "RGB24";
 
-    case pixel_format::bgr24:
-      return "bgr24";
+    case PixelFormat::BGR24:
+      return "BGR24";
 
-    case pixel_format::rgbx8888:
-      return "rgbx8888";
+    case PixelFormat::RGBX8888:
+      return "RGBX8888";
 
-    case pixel_format::bgrx8888:
-      return "bgrx8888";
+    case PixelFormat::BGRX8888:
+      return "BGRX8888";
 
-    case pixel_format::argb8888:
-      return "argb8888";
+    case PixelFormat::ARGB8888:
+      return "ARGB8888";
 
-    case pixel_format::rgba8888:
-      return "rgba8888";
+    case PixelFormat::RGBA8888:
+      return "RGBA8888";
 
-    case pixel_format::abgr8888:
-      return "abgr8888";
+    case PixelFormat::ABGR8888:
+      return "ABGR8888";
 
-    case pixel_format::bgra8888:
-      return "bgra8888";
+    case PixelFormat::BGRA8888:
+      return "BGRA8888";
 
-    case pixel_format::argb2101010:
-      return "argb2101010";
+    case PixelFormat::ARGB2101010:
+      return "ARGB2101010";
 
-    case pixel_format::yv12:
-      return "yv12";
+    case PixelFormat::YV12:
+      return "YV12";
 
-    case pixel_format::iyuv:
-      return "iyuv";
+    case PixelFormat::IYUV:
+      return "IYUV";
 
-    case pixel_format::yuy2:
-      return "yuy2";
+    case PixelFormat::YUY2:
+      return "YUY2";
 
-    case pixel_format::uyvy:
-      return "uyvy";
+    case PixelFormat::UYVY:
+      return "UYVY";
 
-    case pixel_format::yvyu:
-      return "yvyu";
+    case PixelFormat::YVYU:
+      return "YVYU";
 
-    case pixel_format::nv12:
-      return "nv12";
+    case PixelFormat::NV12:
+      return "NV12";
 
-    case pixel_format::nv21:
-      return "nv21";
+    case PixelFormat::NV21:
+      return "NV21";
 
-    case pixel_format::external_oes:
-      return "external_oes";
+    case PixelFormat::ExternalOES:
+      return "ExternalOES";
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-    case pixel_format::xrgb4444:
-      return "xrgb4444";
+    case PixelFormat::XRGB4444:
+      return "XRGB4444";
 
-    case pixel_format::xbgr4444:
-      return "xbgr4444";
+    case PixelFormat::XBGR4444:
+      return "XBGR4444";
 
-    case pixel_format::xrgb1555:
-      return "xrgb1555";
+    case PixelFormat::XRGB1555:
+      return "XRGB1555";
 
-    case pixel_format::xbgr1555:
-      return "xbgr1555";
+    case PixelFormat::XBGR1555:
+      return "XBGR1555";
 
-    case pixel_format::xrgb8888:
-      return "xrgb8888";
+    case PixelFormat::XRGB8888:
+      return "XRGB8888";
 
-    case pixel_format::xbgr8888:
-      return "xbgr8888";
+    case PixelFormat::XBGR8888:
+      return "XBGR8888";
 
 #elif SDL_VERSION_ATLEAST(2, 0, 12)
 
-    case pixel_format::bgr444:  // Equal to xbgr4444
-      return "bgr444";
+    case pixel_format::BGR444:
+      return "BGR444";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw Error{"Did not recognize pixel format mode!"};
+      throw Error{"Did not recognize pixel format!"};
   }
 }
 
-[[nodiscard]] inline auto to_string(const palette& palette) -> std::string
-{
-#if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("palette{{data: {}, size: {}}}",
-                     detail::address_of(palette.get()),
-                     palette.size());
-#else
-  return "palette{data: " + detail::address_of(palette.get()) +
-         ", size: " + std::to_string(palette.size()) + "}";
-#endif  // CENTURION_HAS_FEATURE_FORMAT
-}
-
-template <typename T>
-[[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
-{
-#if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("pixel_format_info{{data: {}, name: {}}}",
-                     detail::address_of(info.get()),
-                     info.name());
-#else
-  return "pixel_format_info{data: " + detail::address_of(info.get()) +
-         ", name: " + info.name() + "}";
-#endif  // CENTURION_HAS_FEATURE_FORMAT
-}
-
-inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const PixelFormat format) -> std::ostream&
 {
   return stream << to_string(format);
 }
 
-inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ostream&
+[[nodiscard]] inline auto to_string(const Palette& palette) -> std::string
+{
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("Palette(data: {}, size: {})",
+                     detail::address_of(palette.get()),
+                     palette.GetSize());
+#else
+  return "Palette(data: " + detail::address_of(palette.get()) +
+         ", size: " + std::to_string(palette.GetSize()) + ")";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+inline auto operator<<(std::ostream& stream, const Palette& palette) -> std::ostream&
 {
   return stream << to_string(palette);
 }
 
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) -> std::ostream&
+[[nodiscard]] auto to_string(const BasicPixelFormatInfo<T>& info) -> std::string
+{
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("PixelFormatInfo(data: {}, name: {})",
+                     detail::address_of(info.get()),
+                     info.GetName());
+#else
+  return "PixelFormatInfo(data: " + detail::address_of(info.get()) +
+         ", name: " + info.GetName() + ")";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+template <typename T>
+auto operator<<(std::ostream& stream, const BasicPixelFormatInfo<T>& info) -> std::ostream&
 {
   return stream << to_string(info);
 }

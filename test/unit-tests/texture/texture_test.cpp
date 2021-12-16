@@ -69,7 +69,7 @@ TEST_F(TextureTest, SurfaceConstructor)
 
 TEST_F(TextureTest, CustomizationConstructor)
 {
-  constexpr auto format = cen::pixel_format::rgba32;
+  constexpr auto format = cen::PixelFormat::RGBA32;
   constexpr auto access = cen::TextureAccess::Static;
   constexpr auto width = 145;
   constexpr auto height = 85;
@@ -176,7 +176,7 @@ TEST_F(TextureTest, GetFormat)
   Uint32 format{};
   SDL_QueryTexture(texture->get(), &format, nullptr, nullptr, nullptr);
 
-  const auto actual = static_cast<cen::pixel_format>(format);
+  const auto actual = static_cast<cen::PixelFormat>(format);
   ASSERT_EQ(actual, texture->GetFormat());
 }
 

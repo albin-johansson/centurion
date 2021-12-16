@@ -158,10 +158,10 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
 }
 
 [[nodiscard]] inline auto GetDisplayPixelFormat(const int index = 0) noexcept
-    -> std::optional<pixel_format>
+    -> std::optional<PixelFormat>
 {
   if (const auto mode = GetDisplayMode(index)) {
-    return static_cast<pixel_format>(mode->format);
+    return static_cast<PixelFormat>(mode->format);
   }
   else {
     return std::nullopt;

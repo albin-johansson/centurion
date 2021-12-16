@@ -356,7 +356,7 @@ class BasicRenderer final {
   }
 
   /* Captures a snapshot of the current rendering target as a surface. */
-  [[nodiscard]] auto Capture(const pixel_format format) const -> Surface
+  [[nodiscard]] auto Capture(const PixelFormat format) const -> Surface
   {
     Surface image{GetOutputSize(), format};
 
@@ -556,10 +556,10 @@ class RendererInfo final {
     return mInfo.num_texture_formats;
   }
 
-  [[nodiscard]] auto GetFormat(const std::size_t index) const noexcept -> pixel_format
+  [[nodiscard]] auto GetFormat(const std::size_t index) const noexcept -> PixelFormat
   {
     assert(index < GetPixelFormats());
-    return static_cast<pixel_format>(mInfo.texture_formats[index]);
+    return static_cast<PixelFormat>(mInfo.texture_formats[index]);
   }
 
   [[nodiscard]] auto GetMaxTextureSize() const noexcept -> Area

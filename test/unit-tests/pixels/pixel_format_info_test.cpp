@@ -11,62 +11,61 @@ class PixelFormatInfoTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    constexpr auto format = cen::pixel_format::rgba8888;  // Arbitrary
-    m_info = std::make_unique<cen::pixel_format_info>(format);
+    info = std::make_unique<cen::PixelFormatInfo>(cen::PixelFormat::RGBA8888);
   }
 
-  static void TearDownTestSuite() { m_info.reset(); }
+  static void TearDownTestSuite() { info.reset(); }
 
-  inline static std::unique_ptr<cen::pixel_format_info> m_info;
+  inline static std::unique_ptr<cen::PixelFormatInfo> info;
 };
 
 TEST_F(PixelFormatInfoTest, PointerConstructor)
 {
-  static_assert(!noexcept(cen::pixel_format_info{nullptr}));
-  static_assert(noexcept(cen::pixel_format_info_handle{nullptr}));
+  static_assert(!noexcept(cen::PixelFormatInfo{nullptr}));
+  static_assert(noexcept(cen::PixelFormatInfoHandle{nullptr}));
 
-  ASSERT_THROW(cen::pixel_format_info{nullptr}, cen::Error);
-  ASSERT_NO_THROW(cen::pixel_format_info_handle{nullptr});
+  ASSERT_THROW(cen::PixelFormatInfo{nullptr}, cen::Error);
+  ASSERT_NO_THROW(cen::PixelFormatInfoHandle{nullptr});
 }
 
 TEST_F(PixelFormatInfoTest, FormatConstructor)
 {
-  const auto invalid = static_cast<cen::pixel_format>(0xFFFFFFFF);
-  ASSERT_THROW(cen::pixel_format_info{invalid}, cen::SDLError);
+  const auto invalid = static_cast<cen::PixelFormat>(0xFFFFFFFF);
+  ASSERT_THROW(cen::PixelFormatInfo{invalid}, cen::SDLError);
 }
 
 TEST_F(PixelFormatInfoTest, HandleFromOwner)
 {
-  const cen::pixel_format_info_handle handle{*m_info};
+  const cen::PixelFormatInfoHandle handle{*info};
   ASSERT_TRUE(handle);
 }
 
-TEST_F(PixelFormatInfoTest, Format)
+TEST_F(PixelFormatInfoTest, GetFormat)
 {
-  ASSERT_EQ(cen::pixel_format::rgba8888, m_info->format());
+  ASSERT_EQ(cen::PixelFormat::RGBA8888, info->GetFormat());
 }
 
-TEST_F(PixelFormatInfoTest, Name)
+TEST_F(PixelFormatInfoTest, GetName)
 {
-  ASSERT_STREQ(SDL_GetPixelFormatName(m_info->get()->format), m_info->name());
+  ASSERT_STREQ(SDL_GetPixelFormatName(info->get()->format), info->GetName());
 }
 
 TEST_F(PixelFormatInfoTest, RGBToPixel)
 {
   constexpr auto color = cen::colors::hot_pink;
-  ASSERT_EQ(SDL_MapRGB(m_info->get(), color.GetRed(), color.GetGreen(), color.GetBlue()),
-            m_info->rgb_to_pixel(color));
+  ASSERT_EQ(SDL_MapRGB(info->get(), color.GetRed(), color.GetGreen(), color.GetBlue()),
+            info->RGBToPixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, RGBAToPixel)
 {
   constexpr auto color = cen::colors::honey_dew;
-  ASSERT_EQ(SDL_MapRGBA(m_info->get(),
+  ASSERT_EQ(SDL_MapRGBA(info->get(),
                         color.GetRed(),
                         color.GetGreen(),
                         color.GetBlue(),
                         color.GetAlpha()),
-            m_info->rgba_to_pixel(color));
+            info->RGBAToPixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGB)
@@ -74,7 +73,7 @@ TEST_F(PixelFormatInfoTest, PixelToRGB)
   constexpr auto color = cen::colors::hot_pink;
   const Uint32 pixel =
       (color.GetRed() << 24u) | (color.GetGreen() << 16u) | (color.GetBlue() << 8u);
-  ASSERT_EQ(color, m_info->pixel_to_rgb(pixel));
+  ASSERT_EQ(color, info->PixelToRGB(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGBA)
@@ -82,10 +81,10 @@ TEST_F(PixelFormatInfoTest, PixelToRGBA)
   constexpr auto color = cen::colors::aquamarine;
   const Uint32 pixel = (color.GetRed() << 24u) | (color.GetGreen() << 16u) |
                        (color.GetBlue() << 8u) | (color.GetAlpha() << 0u);
-  ASSERT_EQ(color, m_info->pixel_to_rgba(pixel));
+  ASSERT_EQ(color, info->PixelToRGBA(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, ToString)
 {
-  std::clog << *m_info << '\n';
+  std::clog << *info << '\n';
 }

@@ -72,7 +72,7 @@ class BasicSurface final {
 
   /* Creates a blank surface with the specified size and format */
   template <typename TT = T, detail::EnableOwner<TT> = 0>
-  BasicSurface(const Area& size, const pixel_format format)
+  BasicSurface(const Area& size, const PixelFormat format)
       : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
                                                 size.width,
                                                 size.height,
@@ -116,7 +116,7 @@ class BasicSurface final {
   template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const char* file,
                                        const BlendMode mode,
-                                       const pixel_format format) -> BasicSurface
+                                       const PixelFormat format) -> BasicSurface
   {
     assert(file);
 
@@ -129,7 +129,7 @@ class BasicSurface final {
   template <typename TT = T, detail::EnableOwner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const std::string& file,
                                        const BlendMode mode,
-                                       const pixel_format format) -> BasicSurface
+                                       const PixelFormat format) -> BasicSurface
   {
     return WithFormat(file.c_str(), mode, format);
   }
@@ -222,7 +222,7 @@ class BasicSurface final {
   }
 
   /* Creates a copy of the surface using another pixel format */
-  [[nodiscard]] auto ConvertTo(const pixel_format format) const -> BasicSurface
+  [[nodiscard]] auto ConvertTo(const PixelFormat format) const -> BasicSurface
   {
     if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, ToUnderlying(format), 0)) {
       BasicSurface result{converted};
@@ -277,9 +277,9 @@ class BasicSurface final {
 
   [[nodiscard]] auto GetPixelData() const noexcept -> const void* { return mSurface->pixels; }
 
-  [[nodiscard]] auto GetFormatInfo() const noexcept -> pixel_format_info_handle
+  [[nodiscard]] auto GetFormatInfo() const noexcept -> PixelFormatInfoHandle
   {
-    return pixel_format_info_handle{mSurface->format};
+    return PixelFormatInfoHandle{mSurface->format};
   }
 
   [[nodiscard]] auto GetClip() const noexcept -> Rect { return Rect{mSurface->clip_rect}; }

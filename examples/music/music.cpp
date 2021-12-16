@@ -26,8 +26,8 @@ class music_example final {
       , mSong{RESOURCE_DIR "hiddenPond.mp3"}
       , mClick{RESOURCE_DIR "click.wav"}
   {
-    mDispatcher.bind<cen::quit_event>().to<&music_example::on_quit_event>(this);
-    mDispatcher.bind<cen::keyboard_event>().to<&music_example::on_keyboard_event>(this);
+    mDispatcher.Bind<cen::quit_event>().To<&music_example::on_quit_event>(this);
+    mDispatcher.Bind<cen::keyboard_event>().To<&music_example::on_keyboard_event>(this);
 
     load_messages();
   }
@@ -37,7 +37,7 @@ class music_example final {
     mWindow.show();
 
     while (m_running) {
-      mDispatcher.poll();
+      mDispatcher.Poll();
       render();
     }
 
@@ -95,7 +95,7 @@ class music_example final {
         mClick.Play(cen::Music::forever);
       }
       else if (event.is_active(cen::scancodes::f)) {
-        mSong.FadeIn(cen::seconds<int>{5});
+        mSong.FadeIn(cen::Seconds<int>{5});
       }
       else if (event.is_active(cen::scancodes::escape)) {
         cen::Music::Halt();

@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-#include "video/colors.hpp"
+#include "video/color.hpp"
 
 static_assert(std::is_final_v<cen::MessageBox>);
 static_assert(std::is_default_constructible_v<cen::MessageBox>);

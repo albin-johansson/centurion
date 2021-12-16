@@ -16,7 +16,6 @@
 #include "core/features.hpp"
 #include "detail/stack_resource.hpp"
 #include "video/color.hpp"
-#include "video/colors.hpp"
 #include "video/window.hpp"
 
 namespace cen {

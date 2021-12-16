@@ -12,7 +12,6 @@
 #include "pixels.hpp"
 #include "video.hpp"
 #include "video/color.hpp"
-#include "video/colors.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>

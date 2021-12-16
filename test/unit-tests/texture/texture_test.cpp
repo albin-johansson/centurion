@@ -8,7 +8,7 @@
 #include "core/exception.hpp"
 #include "core/logging.hpp"
 #include "render.hpp"
-#include "video/colors.hpp"
+#include "video/color.hpp"
 #include "video/window.hpp"
 
 static_assert(std::is_final_v<cen::Texture>);

@@ -24,10 +24,10 @@
 #include "detail/stdlib.hpp"
 #include "math.hpp"
 #include "render.hpp"
-#include "texture.hpp"
-#include "video/color.hpp"
 #include "surface.hpp"
+#include "texture.hpp"
 #include "unicode.hpp"
+#include "video/color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

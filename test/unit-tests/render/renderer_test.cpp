@@ -7,7 +7,7 @@
 #include "core/logging.hpp"
 #include "math.hpp"
 #include "render.hpp"
-#include "video/colors.hpp"
+#include "video/color.hpp"
 #include "font.hpp"
 #include "video/window.hpp"
 

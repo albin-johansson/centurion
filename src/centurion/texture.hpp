@@ -19,9 +19,9 @@
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
+#include "surface.hpp"
 #include "video.hpp"
 #include "video/color.hpp"
-#include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

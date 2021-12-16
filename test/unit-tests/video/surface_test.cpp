@@ -10,7 +10,7 @@
 
 #include "core/exception.hpp"
 #include "core/logging.hpp"
-#include "video/colors.hpp"
+#include "video/color.hpp"
 #include "video/window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::Surface>);

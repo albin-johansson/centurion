@@ -4,7 +4,7 @@
 
 #include "core/logging.hpp"
 #include "pixels.hpp"
-#include "video/colors.hpp"
+#include "video/color.hpp"
 
 TEST(Palette, Constructor)
 {

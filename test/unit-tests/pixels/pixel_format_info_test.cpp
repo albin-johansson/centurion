@@ -5,7 +5,7 @@
 
 #include "pixels.hpp"
 #include "system.hpp"
-#include "video/colors.hpp"
+#include "video/color.hpp"
 
 class PixelFormatInfoTest : public testing::Test {
  protected:

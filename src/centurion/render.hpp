@@ -19,12 +19,11 @@
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
+#include "surface.hpp"
 #include "texture.hpp"
+#include "unicode.hpp"
 #include "video.hpp"
 #include "video/color.hpp"
-#include "video/colors.hpp"
-#include "surface.hpp"
-#include "unicode.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

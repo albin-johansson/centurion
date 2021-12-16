@@ -112,7 +112,6 @@
 #include "centurion/input/touch.hpp"
 #include "centurion/input/touch_device_type.hpp"
 #include "centurion/video/color.hpp"
-#include "centurion/video/colors.hpp"
 #include "centurion/video/screen.hpp"
 #include "centurion/video/window.hpp"
 

@@ -8,7 +8,7 @@
 
 #include "core/logging.hpp"
 #include "serialization_utils.hpp"
-#include "video/colors.hpp"
+#include "video/color.hpp"
 
 static_assert(std::is_final_v<cen::Color>);
 

@@ -57,7 +57,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_axis(const controller_axis axis) noexcept
+  void set_axis(const ControllerAxis axis) noexcept
   {
     m_event.axis = static_cast<Uint8>(axis);
   }
@@ -89,9 +89,9 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto axis() const noexcept -> controller_axis
+  [[nodiscard]] auto axis() const noexcept -> ControllerAxis
   {
-    return static_cast<controller_axis>(m_event.axis);
+    return static_cast<ControllerAxis>(m_event.axis);
   }
 
   /**

@@ -5,7 +5,7 @@
 #include "core/common.hpp"
 #include "input/controller.hpp"
 
-using axis = cen::controller_axis;
+using axis = cen::ControllerAxis;
 
 TEST(ControllerAxis, Values)
 {

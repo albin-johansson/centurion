@@ -6,22 +6,12 @@
 
 TEST(ControllerMappingResult, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::controller::mapping_result>(4)), cen::Error);
-  ASSERT_THROW(cen::to_string(static_cast<cen::controller_handle::mapping_result>(4)),
-               cen::Error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::ControllerMappingResult>(4)), cen::Error);
 
-  ASSERT_EQ("error", cen::to_string(cen::controller::mapping_result::error));
-  ASSERT_EQ("error", cen::to_string(cen::controller_handle::mapping_result::error));
+  ASSERT_EQ("Error", cen::to_string(cen::ControllerMappingResult::Error));
+  ASSERT_EQ("Updated", cen::to_string(cen::ControllerMappingResult::Updated));
+  ASSERT_EQ("Added", cen::to_string(cen::ControllerMappingResult::Added));
 
-  ASSERT_EQ("updated", cen::to_string(cen::controller::mapping_result::updated));
-  ASSERT_EQ("updated", cen::to_string(cen::controller_handle::mapping_result::updated));
-
-  ASSERT_EQ("added", cen::to_string(cen::controller::mapping_result::added));
-  ASSERT_EQ("added", cen::to_string(cen::controller_handle::mapping_result::added));
-
-  std::clog << "Controller mapping result example #1: "
-            << cen::controller::mapping_result::added << '\n';
-
-  std::clog << "Controller mapping result example #2: "
-            << cen::controller_handle::mapping_result::added << '\n';
+  std::clog << "Controller mapping result example: " << cen::ControllerMappingResult::Added
+            << '\n';
 }

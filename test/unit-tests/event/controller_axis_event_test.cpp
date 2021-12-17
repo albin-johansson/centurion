@@ -31,7 +31,7 @@ TEST(ControllerAxisEvent, SetAxis)
 {
   cen::controller_axis_event event;
 
-  const auto axis = cen::controller_axis::trigger_right;
+  const auto axis = cen::ControllerAxis::trigger_right;
   event.set_axis(axis);
 
   ASSERT_EQ(axis, event.axis());

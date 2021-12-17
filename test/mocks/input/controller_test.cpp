@@ -34,11 +34,6 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
-  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
   FAKE_VALUE_FUNC(Uint8,
                   SDL_GameControllerGetButton,
                   SDL_GameController*,
@@ -114,6 +109,11 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
   FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
+  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
 #if SDL_VERSION_ATLEAST(2, 0, 16)
   FAKE_VALUE_FUNC(float,
                   SDL_GameControllerGetSensorDataRate,
@@ -185,41 +185,41 @@ class ControllerTest : public testing::Test {
    * null, this doesn't matter that much since they share implementations of all
    * relevant functions.
    */
-  cen::controller_handle m_controller{nullptr};
+  cen::ControllerHandle controller{nullptr};
 };
 
 using namespace cen::literals;
 
 TEST_F(ControllerTest, Rumble)
 {
-  m_controller.rumble(0, 10, 1_ms);
+  controller.Rumble(0, 10, 1_ms);
   ASSERT_EQ(1u, SDL_GameControllerRumble_fake.call_count);
 }
 
 TEST_F(ControllerTest, StopRumble)
 {
-  m_controller.stop_rumble();
+  controller.StopRumble();
   ASSERT_EQ(0u, SDL_GameControllerRumble_fake.arg1_val);
   ASSERT_EQ(0u, SDL_GameControllerRumble_fake.arg2_val);
   ASSERT_EQ(0u, SDL_GameControllerRumble_fake.arg3_val);
 }
 
-TEST_F(ControllerTest, Product)
+TEST_F(ControllerTest, GetProduct)
 {
   std::array values{0_u16, 3_u16};
   SET_RETURN_SEQ(SDL_GameControllerGetProduct, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.product().has_value());
-  ASSERT_EQ(3, m_controller.product().value());
+  ASSERT_FALSE(controller.GetProduct().has_value());
+  ASSERT_EQ(3, controller.GetProduct().value());
 }
 
-TEST_F(ControllerTest, Vendor)
+TEST_F(ControllerTest, GetVendor)
 {
   std::array values{0_u16, 7_u16};
   SET_RETURN_SEQ(SDL_GameControllerGetVendor, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.vendor().has_value());
-  ASSERT_EQ(7, m_controller.vendor().value());
+  ASSERT_FALSE(controller.GetVendor().has_value());
+  ASSERT_EQ(7, controller.GetVendor().value());
 }
 
 TEST_F(ControllerTest, ProductVersion)
@@ -227,17 +227,17 @@ TEST_F(ControllerTest, ProductVersion)
   std::array values{0_u16, 4_u16};
   SET_RETURN_SEQ(SDL_GameControllerGetProductVersion, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.product_version().has_value());
-  ASSERT_EQ(4, m_controller.product_version().value());
+  ASSERT_FALSE(controller.GetProductVersion().has_value());
+  ASSERT_EQ(4, controller.GetProductVersion().value());
 }
 
-TEST_F(ControllerTest, Index)
+TEST_F(ControllerTest, GetIndex)
 {
   std::array values{-1, 6};
   SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.index().has_value());
-  ASSERT_EQ(6, m_controller.index().value());
+  ASSERT_FALSE(controller.GetIndex().has_value());
+  ASSERT_EQ(6, controller.GetIndex().value());
 }
 
 TEST_F(ControllerTest, IsConnected)
@@ -245,17 +245,17 @@ TEST_F(ControllerTest, IsConnected)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerGetAttached, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.is_connected());
-  ASSERT_TRUE(m_controller.is_connected());
+  ASSERT_FALSE(controller.IsConnected());
+  ASSERT_TRUE(controller.IsConnected());
 }
 
-TEST_F(ControllerTest, Name)
+TEST_F(ControllerTest, GetName)
 {
   std::array<const char*, 2> values{nullptr, "foobar"};
   SET_RETURN_SEQ(SDL_GameControllerName, values.data(), cen::isize(values));
 
-  ASSERT_EQ(nullptr, m_controller.name());
-  ASSERT_STREQ("foobar", m_controller.name());
+  ASSERT_EQ(nullptr, controller.GetName());
+  ASSERT_STREQ("foobar", controller.GetName());
 }
 
 TEST_F(ControllerTest, GetState)
@@ -263,8 +263,8 @@ TEST_F(ControllerTest, GetState)
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::ButtonState::Released, m_controller.get_state(cen::controller_button::a));
-  ASSERT_EQ(cen::ButtonState::Pressed, m_controller.get_state(cen::controller_button::a));
+  ASSERT_EQ(cen::ButtonState::Released, controller.GetState(cen::ControllerButton::a));
+  ASSERT_EQ(cen::ButtonState::Pressed, controller.GetState(cen::ControllerButton::a));
 }
 
 TEST_F(ControllerTest, IsPressed)
@@ -272,8 +272,8 @@ TEST_F(ControllerTest, IsPressed)
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.is_pressed(cen::controller_button::a));
-  ASSERT_TRUE(m_controller.is_pressed(cen::controller_button::a));
+  ASSERT_FALSE(controller.IsPressed(cen::ControllerButton::a));
+  ASSERT_TRUE(controller.IsPressed(cen::ControllerButton::a));
 }
 
 TEST_F(ControllerTest, IsReleased)
@@ -281,8 +281,8 @@ TEST_F(ControllerTest, IsReleased)
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
-  ASSERT_TRUE(m_controller.is_released(cen::controller_button::a));
-  ASSERT_FALSE(m_controller.is_released(cen::controller_button::a));
+  ASSERT_TRUE(controller.IsReleased(cen::ControllerButton::a));
+  ASSERT_FALSE(controller.IsReleased(cen::ControllerButton::a));
 }
 
 TEST_F(ControllerTest, GetAxisFromString)
@@ -290,11 +290,11 @@ TEST_F(ControllerTest, GetAxisFromString)
   std::array values{SDL_CONTROLLER_AXIS_INVALID, SDL_CONTROLLER_AXIS_RIGHTX};
   SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::controller_axis::invalid, cen::controller::get_axis(""));
-  ASSERT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""));
+  ASSERT_EQ(cen::ControllerAxis::invalid, cen::Controller::GetAxis(""));
+  ASSERT_EQ(cen::ControllerAxis::right_x, cen::Controller::GetAxis(""));
 
   using namespace std::string_literals;
-  ASSERT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""s));
+  ASSERT_EQ(cen::ControllerAxis::right_x, cen::Controller::GetAxis(""s));
 }
 
 TEST_F(ControllerTest, GetAxis)
@@ -302,61 +302,61 @@ TEST_F(ControllerTest, GetAxis)
   std::array values{123_i16, 321_i16};
   SET_RETURN_SEQ(SDL_GameControllerGetAxis, values.data(), cen::isize(values));
 
-  ASSERT_EQ(123, m_controller.get_axis(cen::controller_axis::left_x));
-  ASSERT_EQ(321, m_controller.get_axis(cen::controller_axis::left_x));
+  ASSERT_EQ(123, controller.GetAxis(cen::ControllerAxis::left_x));
+  ASSERT_EQ(321, controller.GetAxis(cen::ControllerAxis::left_x));
 }
 
 TEST_F(ControllerTest, GetJoystick)
 {
-  ASSERT_NO_THROW(m_controller.get_joystick());
+  ASSERT_NO_THROW(controller.GetJoystick());
 }
 
-TEST_F(ControllerTest, AddMapping)
+TEST_F(ControllerTest, AddControllerMapping)
 {
   std::array values{1, 0, -1};
   SET_RETURN_SEQ(SDL_GameControllerAddMapping, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::controller_handle::mapping_result::added, m_controller.add_mapping("foo"));
+  ASSERT_EQ(cen::ControllerMappingResult::Added, cen::AddControllerMapping("foo"));
 
-  ASSERT_EQ(cen::controller_handle::mapping_result::updated, m_controller.add_mapping("foo"));
+  ASSERT_EQ(cen::ControllerMappingResult::Updated, cen::AddControllerMapping("foo"));
 
-  ASSERT_EQ(cen::controller_handle::mapping_result::error, m_controller.add_mapping("foo"));
+  ASSERT_EQ(cen::ControllerMappingResult::Error, cen::AddControllerMapping("foo"));
 
   using namespace std::string_literals;
-  ASSERT_EQ(cen::controller_handle::mapping_result::error, m_controller.add_mapping("foo"s));
+  ASSERT_EQ(cen::ControllerMappingResult::Error, cen::AddControllerMapping("foo"s));
 }
 
-TEST_F(ControllerTest, LoadMappings)
+TEST_F(ControllerTest, LoadControllerMappings)
 {
   std::array values{-1, 7};
   SET_RETURN_SEQ(SDL_GameControllerAddMappingsFromRW, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::controller::load_mappings("foo").has_value());
-  ASSERT_EQ(7, cen::controller::load_mappings("foo"));
+  ASSERT_FALSE(cen::LoadControllerMappings("foo").has_value());
+  ASSERT_EQ(7, cen::LoadControllerMappings("foo"));
 
   using namespace std::string_literals;
-  ASSERT_EQ(7, cen::controller::load_mappings("foo"s));
+  ASSERT_EQ(7, cen::LoadControllerMappings("foo"s));
 }
 
-TEST_F(ControllerTest, Mapping)
+TEST_F(ControllerTest, GetMapping)
 {
-  ASSERT_EQ(nullptr, m_controller.mapping().get());
+  ASSERT_EQ(nullptr, controller.GetMapping().get());
 }
 
-TEST_F(ControllerTest, MappingJoystickIndex)
+TEST_F(ControllerTest, GetMappingJoystickIndex)
 {
-  ASSERT_EQ(nullptr, m_controller.mapping(0).get());
+  ASSERT_EQ(nullptr, controller.GetMapping(0).get());
 }
 
-TEST_F(ControllerTest, MappingJoystickGUID)
+TEST_F(ControllerTest, GetMappingJoystickGUID)
 {
   SDL_JoystickGUID id{};
-  ASSERT_EQ(nullptr, m_controller.mapping(id).get());
+  ASSERT_EQ(nullptr, controller.GetMapping(id).get());
 }
 
-TEST_F(ControllerTest, MappingByIndex)
+TEST_F(ControllerTest, GetMappingByIndex)
 {
-  ASSERT_EQ(nullptr, m_controller.mapping_by_index(0).get());
+  ASSERT_EQ(nullptr, controller.GetMappingByIndex(0).get());
 }
 
 TEST_F(ControllerTest, GetButton)
@@ -364,11 +364,11 @@ TEST_F(ControllerTest, GetButton)
   std::array values{SDL_CONTROLLER_BUTTON_INVALID, SDL_CONTROLLER_BUTTON_B};
   SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::controller_button::invalid, cen::controller::get_button(""));
-  ASSERT_EQ(cen::controller_button::b, cen::controller::get_button(""));
+  ASSERT_EQ(cen::ControllerButton::invalid, cen::Controller::GetButton(""));
+  ASSERT_EQ(cen::ControllerButton::b, cen::Controller::GetButton(""));
 
   using namespace std::string_literals;
-  ASSERT_EQ(cen::controller_button::b, cen::controller::get_button(""s));
+  ASSERT_EQ(cen::ControllerButton::b, cen::Controller::GetButton(""s));
 }
 
 TEST_F(ControllerTest, StringifyWithAxis)
@@ -376,8 +376,8 @@ TEST_F(ControllerTest, StringifyWithAxis)
   std::array<const char*, 2> values{nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetStringForAxis, values.data(), cen::isize(values));
 
-  ASSERT_EQ(nullptr, cen::controller::stringify(cen::controller_axis::left_y));
-  ASSERT_STREQ("foo", cen::controller::stringify(cen::controller_axis::left_y));
+  ASSERT_EQ(nullptr, cen::Controller::Stringify(cen::ControllerAxis::left_y));
+  ASSERT_STREQ("foo", cen::Controller::Stringify(cen::ControllerAxis::left_y));
 }
 
 TEST_F(ControllerTest, StringifyWithButton)
@@ -385,8 +385,8 @@ TEST_F(ControllerTest, StringifyWithButton)
   std::array<const char*, 2> values{nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetStringForButton, values.data(), cen::isize(values));
 
-  ASSERT_EQ(nullptr, cen::controller::stringify(cen::controller_button::x));
-  ASSERT_STREQ("foo", cen::controller::stringify(cen::controller_button::x));
+  ASSERT_EQ(nullptr, cen::Controller::Stringify(cen::ControllerButton::x));
+  ASSERT_STREQ("foo", cen::Controller::Stringify(cen::ControllerButton::x));
 }
 
 TEST_F(ControllerTest, GetBindingWithAxis)
@@ -400,8 +400,8 @@ TEST_F(ControllerTest, GetBindingWithAxis)
   std::array values{first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.get_binding(cen::controller_axis::right_x).has_value());
-  ASSERT_TRUE(m_controller.get_binding(cen::controller_axis::right_x).has_value());
+  ASSERT_FALSE(controller.GetBinding(cen::ControllerAxis::right_x).has_value());
+  ASSERT_TRUE(controller.GetBinding(cen::ControllerAxis::right_x).has_value());
 }
 
 TEST_F(ControllerTest, GetBindingWithButton)
@@ -415,29 +415,29 @@ TEST_F(ControllerTest, GetBindingWithButton)
   std::array values{first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForButton, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.get_binding(cen::controller_button::x).has_value());
-  ASSERT_TRUE(m_controller.get_binding(cen::controller_button::x).has_value());
+  ASSERT_FALSE(controller.GetBinding(cen::ControllerButton::x).has_value());
+  ASSERT_TRUE(controller.GetBinding(cen::ControllerButton::x).has_value());
 }
 
 TEST_F(ControllerTest, Update)
 {
-  cen::controller::update();
+  cen::Controller::Update();
   ASSERT_EQ(1u, SDL_GameControllerUpdate_fake.call_count);
 }
 
 TEST_F(ControllerTest, IsSupported)
 {
-  const auto supported = cen::controller::is_supported(0);
+  const auto supported = cen::Controller::IsSupported(0);
   ASSERT_EQ(1u, SDL_IsGameController_fake.call_count);
 }
 
 TEST_F(ControllerTest, SetPolling)
 {
-  cen::controller::set_polling(true);
+  cen::Controller::SetPolling(true);
   ASSERT_EQ(1u, SDL_GameControllerEventState_fake.call_count);
   ASSERT_EQ(SDL_TRUE, SDL_GameControllerEventState_fake.arg0_val);
 
-  cen::controller::set_polling(false);
+  cen::Controller::SetPolling(false);
   ASSERT_EQ(2u, SDL_GameControllerEventState_fake.call_count);
   ASSERT_EQ(SDL_FALSE, SDL_GameControllerEventState_fake.arg0_val);
 }
@@ -447,46 +447,46 @@ TEST_F(ControllerTest, IsPolling)
   std::array<int, 2> values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerEventState, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::controller::is_polling());
+  ASSERT_FALSE(cen::Controller::IsPolling());
   ASSERT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
 
-  ASSERT_TRUE(cen::controller::is_polling());
+  ASSERT_TRUE(cen::Controller::IsPolling());
   ASSERT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
 }
 
 TEST_F(ControllerTest, ToString)
 {
-  std::clog << m_controller << '\n';
+  std::clog << controller << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST_F(ControllerTest, SetPlayerIndex)
 {
-  m_controller.set_player_index(7);
+  controller.SetPlayerIndex(7);
   ASSERT_EQ(1u, SDL_GameControllerSetPlayerIndex_fake.call_count);
   ASSERT_EQ(7, SDL_GameControllerSetPlayerIndex_fake.arg1_val);
 }
 
-TEST_F(ControllerTest, Type)
+TEST_F(ControllerTest, GetType)
 {
   std::array values{SDL_CONTROLLER_TYPE_UNKNOWN,
                     SDL_CONTROLLER_TYPE_XBOX360,
                     SDL_CONTROLLER_TYPE_PS4};
   SET_RETURN_SEQ(SDL_GameControllerGetType, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::controller_type::unknown, m_controller.type());
-  ASSERT_EQ(cen::controller_type::xbox_360, m_controller.type());
-  ASSERT_EQ(cen::controller_type::ps4, m_controller.type());
+  ASSERT_EQ(cen::ControllerType::unknown, controller.GetType());
+  ASSERT_EQ(cen::ControllerType::xbox_360, controller.GetType());
+  ASSERT_EQ(cen::ControllerType::ps4, controller.GetType());
 }
 
-TEST_F(ControllerTest, TypeWithIndex)
+TEST_F(ControllerTest, GetTypeWithIndex)
 {
   std::array values{SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
   SET_RETURN_SEQ(SDL_GameControllerTypeForIndex, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::controller_type::unknown, cen::controller::type(0));
-  ASSERT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
+  ASSERT_EQ(cen::ControllerType::unknown, cen::Controller::GetType(0));
+  ASSERT_EQ(cen::ControllerType::xbox_one, cen::Controller::GetType(0));
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -495,13 +495,13 @@ TEST_F(ControllerTest, TypeWithIndex)
 
 TEST_F(ControllerTest, RumbleTriggers)
 {
-  m_controller.rumble_triggers(0, 10, 1_ms);
+  controller.RumbleTriggers(0, 10, 1_ms);
   ASSERT_EQ(1u, SDL_GameControllerRumbleTriggers_fake.call_count);
 }
 
-TEST_F(ControllerTest, Serial)
+TEST_F(ControllerTest, GetSerial)
 {
-  const auto serial [[maybe_unused]] = m_controller.serial();
+  const auto serial [[maybe_unused]] = controller.GetSerial();
   ASSERT_EQ(1u, SDL_GameControllerGetSerial_fake.call_count);
 }
 
@@ -510,8 +510,8 @@ TEST_F(ControllerTest, HasAxis)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasAxis, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.has_axis(cen::controller_axis::left_x));
-  ASSERT_TRUE(m_controller.has_axis(cen::controller_axis::left_x));
+  ASSERT_FALSE(controller.HasAxis(cen::ControllerAxis::left_x));
+  ASSERT_TRUE(controller.HasAxis(cen::ControllerAxis::left_x));
   ASSERT_EQ(2u, SDL_GameControllerHasAxis_fake.call_count);
 }
 
@@ -520,20 +520,20 @@ TEST_F(ControllerTest, HasButton)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasButton, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.has_button(cen::controller_button::x));
-  ASSERT_TRUE(m_controller.has_button(cen::controller_button::x));
+  ASSERT_FALSE(controller.HasButton(cen::ControllerButton::x));
+  ASSERT_TRUE(controller.HasButton(cen::ControllerButton::x));
   ASSERT_EQ(2u, SDL_GameControllerHasButton_fake.call_count);
 }
 
 TEST_F(ControllerTest, TouchpadCount)
 {
-  const auto count [[maybe_unused]] = m_controller.touchpad_count();
+  const auto count [[maybe_unused]] = controller.GetNumTouchpads();
   ASSERT_EQ(1u, SDL_GameControllerGetNumTouchpads_fake.call_count);
 }
 
 TEST_F(ControllerTest, TouchpadFingerCapacity)
 {
-  const auto capacity [[maybe_unused]] = m_controller.touchpad_finger_capacity(0);
+  const auto capacity [[maybe_unused]] = controller.GetTouchpadFingerCapacity(0);
   ASSERT_EQ(1u, SDL_GameControllerGetNumTouchpadFingers_fake.call_count);
 }
 
@@ -542,8 +542,8 @@ TEST_F(ControllerTest, TouchpadFingerState)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.touchpad_finger_state(0, 0));
-  ASSERT_TRUE(m_controller.touchpad_finger_state(0, 0));
+  ASSERT_FALSE(controller.GetTouchpadFingerState(0, 0));
+  ASSERT_TRUE(controller.GetTouchpadFingerState(0, 0));
   ASSERT_EQ(2u, SDL_GameControllerGetTouchpadFinger_fake.call_count);
 }
 
@@ -553,8 +553,8 @@ TEST_F(ControllerTest, SetSensorEnabled)
   SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled, values.data(), cen::isize(values));
 
   const auto type = cen::sensor_type::gyroscope;
-  ASSERT_FALSE(m_controller.set_sensor_enabled(type, true));
-  ASSERT_TRUE(m_controller.set_sensor_enabled(type, true));
+  ASSERT_FALSE(controller.SetSensorEnabled(type, true));
+  ASSERT_TRUE(controller.SetSensorEnabled(type, true));
   ASSERT_EQ(2u, SDL_GameControllerSetSensorEnabled_fake.call_count);
 }
 
@@ -563,8 +563,8 @@ TEST_F(ControllerTest, HasSensor)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasSensor, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.has_sensor(cen::sensor_type::gyroscope));
-  ASSERT_TRUE(m_controller.has_sensor(cen::sensor_type::gyroscope));
+  ASSERT_FALSE(controller.HasSensor(cen::sensor_type::gyroscope));
+  ASSERT_TRUE(controller.HasSensor(cen::sensor_type::gyroscope));
   ASSERT_EQ(2u, SDL_GameControllerHasSensor_fake.call_count);
 }
 
@@ -573,8 +573,8 @@ TEST_F(ControllerTest, IsSensorEnabled)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
-  ASSERT_TRUE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
+  ASSERT_FALSE(controller.IsSensorEnabled(cen::sensor_type::gyroscope));
+  ASSERT_TRUE(controller.IsSensorEnabled(cen::sensor_type::gyroscope));
   ASSERT_EQ(2u, SDL_GameControllerIsSensorEnabled_fake.call_count);
 }
 
@@ -583,8 +583,8 @@ TEST_F(ControllerTest, GetSensorData)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerGetSensorData, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
-  ASSERT_TRUE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
+  ASSERT_FALSE(controller.GetSensorData<3>(cen::sensor_type::gyroscope));
+  ASSERT_TRUE(controller.GetSensorData<3>(cen::sensor_type::gyroscope));
   ASSERT_EQ(2u, SDL_GameControllerGetSensorData_fake.call_count);
 }
 
@@ -593,8 +593,8 @@ TEST_F(ControllerTest, SetLED)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerSetLED, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.set_led(cen::colors::red));
-  ASSERT_TRUE(m_controller.set_led(cen::colors::red));
+  ASSERT_FALSE(controller.SetLED(cen::colors::red));
+  ASSERT_TRUE(controller.SetLED(cen::colors::red));
   ASSERT_EQ(2u, SDL_GameControllerSetLED_fake.call_count);
 }
 
@@ -603,8 +603,8 @@ TEST_F(ControllerTest, HasLED)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasLED, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.has_led());
-  ASSERT_TRUE(m_controller.has_led());
+  ASSERT_FALSE(controller.HasLED());
+  ASSERT_TRUE(controller.HasLED());
   ASSERT_EQ(2u, SDL_GameControllerHasLED_fake.call_count);
 }
 
@@ -617,10 +617,10 @@ TEST_F(ControllerTest, GetSensorDataRate)
   std::array values{0.0f, 45.3f};
   SET_RETURN_SEQ(SDL_GameControllerGetSensorDataRate, values.data(), cen::isize(values));
 
-  ASSERT_EQ(0.0f, m_controller.get_sensor_data_rate(cen::sensor_type::gyroscope));
+  ASSERT_EQ(0.0f, controller.GetSensorDataRate(cen::sensor_type::gyroscope));
   ASSERT_EQ(SDL_SENSOR_GYRO, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
 
-  ASSERT_EQ(45.3f, m_controller.get_sensor_data_rate(cen::sensor_type::accelerometer));
+  ASSERT_EQ(45.3f, controller.GetSensorDataRate(cen::sensor_type::accelerometer));
   ASSERT_EQ(SDL_SENSOR_ACCEL, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
 }
 
@@ -629,11 +629,11 @@ TEST_F(ControllerTest, SendEffect)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerSendEffect, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_controller.send_effect(nullptr, 12));
+  ASSERT_FALSE(controller.SendEffect(nullptr, 12));
   ASSERT_EQ(1u, SDL_GameControllerSendEffect_fake.call_count);
   ASSERT_EQ(12, SDL_GameControllerSendEffect_fake.arg2_val);
 
-  ASSERT_TRUE(m_controller.send_effect(nullptr, 27));
+  ASSERT_TRUE(controller.SendEffect(nullptr, 27));
   ASSERT_EQ(2u, SDL_GameControllerSendEffect_fake.call_count);
   ASSERT_EQ(27, SDL_GameControllerSendEffect_fake.arg2_val);
 }

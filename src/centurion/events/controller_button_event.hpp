@@ -50,7 +50,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    *
    * \since 4.0.0
    */
-  void set_button(const controller_button button) noexcept
+  void set_button(const ControllerButton button) noexcept
   {
     m_event.button = static_cast<Uint8>(button);
   }
@@ -81,9 +81,9 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto button() const noexcept -> controller_button
+  [[nodiscard]] auto button() const noexcept -> ControllerButton
   {
-    return static_cast<controller_button>(m_event.button);
+    return static_cast<ControllerButton>(m_event.button);
   }
 
   /**

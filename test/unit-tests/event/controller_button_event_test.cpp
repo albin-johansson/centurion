@@ -21,7 +21,7 @@ TEST(ControllerButtonEvent, SetButton)
 {
   cen::controller_button_event event;
 
-  constexpr auto button = cen::controller_button::a;
+  constexpr auto button = cen::ControllerButton::a;
   event.set_button(button);
 
   ASSERT_EQ(button, event.button());
@@ -53,7 +53,7 @@ TEST(ControllerButtonEvent, Button)
   sdl.button = SDL_CONTROLLER_BUTTON_A;
 
   const cen::controller_button_event event{sdl};
-  ASSERT_EQ(cen::controller_button::a, event.button());
+  ASSERT_EQ(cen::ControllerButton::a, event.button());
 }
 
 TEST(ControllerButtonEvent, State)

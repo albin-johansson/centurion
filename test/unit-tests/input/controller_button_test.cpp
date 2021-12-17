@@ -5,7 +5,7 @@
 #include "core/common.hpp"
 #include "input/controller.hpp"
 
-using button = cen::controller_button;
+using button = cen::ControllerButton;
 
 TEST(ControllerButton, Values)
 {

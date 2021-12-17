@@ -9,7 +9,7 @@
 #include "font.hpp"
 #include "math.hpp"
 #include "render.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 using namespace std::string_literals;
 

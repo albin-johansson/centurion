@@ -5,7 +5,7 @@
 
 #include "core/logging.hpp"
 #include "render.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 class RendererHandleTest : public testing::Test {
  protected:

@@ -50,6 +50,7 @@
 #include "centurion/unicode.hpp"
 #include "centurion/video.hpp"
 #include "centurion/vulkan.hpp"
+#include "centurion/window.hpp"
 
 //
 
@@ -112,6 +113,5 @@
 #include "centurion/input/sensor.hpp"
 #include "centurion/input/touch.hpp"
 #include "centurion/input/touch_device_type.hpp"
-#include "centurion/video/window.hpp"
 
 #endif  // CENTURION_HPP_

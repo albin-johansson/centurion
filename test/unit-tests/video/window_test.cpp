@@ -1,4 +1,4 @@
-#include "video/window.hpp"
+#include "window.hpp"
 
 #include <gtest/gtest.h>
 

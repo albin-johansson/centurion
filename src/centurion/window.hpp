@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_WINDOW_HPP_
-#define CENTURION_VIDEO_WINDOW_HPP_
+#ifndef CENTURION_WINDOW_HPP_
+#define CENTURION_WINDOW_HPP_
 
 #include <SDL.h>
 
@@ -9,16 +9,16 @@
 #include <string>    // string, to_string
 #include <utility>   // pair, make_pair, move
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/features.hpp"
-#include "../detail/convert_bool.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../detail/stdlib.hpp"
-#include "../math.hpp"
-#include "../render.hpp"
-#include "../surface.hpp"
-#include "../video.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
+#include "detail/convert_bool.hpp"
+#include "detail/owner_handle_api.hpp"
+#include "detail/stdlib.hpp"
+#include "math.hpp"
+#include "render.hpp"
+#include "surface.hpp"
+#include "video.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -484,4 +484,4 @@ template <typename T>
 
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_WINDOW_HPP_
+#endif  // CENTURION_WINDOW_HPP_

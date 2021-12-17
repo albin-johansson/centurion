@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/logging.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 TEST(WindowHandle, PointerConstructor)
 {

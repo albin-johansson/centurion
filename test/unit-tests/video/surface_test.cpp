@@ -11,7 +11,7 @@
 #include "color.hpp"
 #include "core/exception.hpp"
 #include "core/logging.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::Surface>);
 static_assert(std::is_copy_assignable_v<cen::Surface>);

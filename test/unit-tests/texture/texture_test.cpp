@@ -9,7 +9,7 @@
 #include "core/exception.hpp"
 #include "core/logging.hpp"
 #include "render.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 static_assert(std::is_final_v<cen::Texture>);
 

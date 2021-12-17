@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 extern "C"
 {

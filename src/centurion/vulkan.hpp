@@ -14,7 +14,7 @@
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "math.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 namespace cen {
 

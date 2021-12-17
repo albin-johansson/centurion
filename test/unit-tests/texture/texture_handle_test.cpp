@@ -3,7 +3,7 @@
 #include <memory>  // unique_ptr
 
 #include "render.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 class TextureHandleTest : public testing::Test {
  protected:

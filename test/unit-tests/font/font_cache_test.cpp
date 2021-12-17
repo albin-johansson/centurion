@@ -6,7 +6,7 @@
 
 #include "font.hpp"
 #include "render.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 class FontCacheTest : public testing::Test {
  protected:

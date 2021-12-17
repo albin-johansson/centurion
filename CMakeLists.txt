@@ -151,7 +151,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
 
-               src/centurion/video/window.hpp
+               src/centurion/window.hpp
                )
 
 target_include_directories(${CENTURION_LIB_TARGET}

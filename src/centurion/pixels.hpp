@@ -371,7 +371,7 @@ class BasicPixelFormatInfo final {
 
 #elif SDL_VERSION_ATLEAST(2, 0, 12)
 
-    case pixel_format::BGR444:
+    case PixelFormat::BGR444:
       return "BGR444";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

@@ -61,6 +61,7 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
+               src/centurion/color.hpp
                src/centurion/concurrency.hpp
                src/centurion/endian.hpp
                src/centurion/filesystem.hpp
@@ -150,7 +151,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
 
-               src/centurion/color.hpp
                src/centurion/video/window.hpp
                )
 

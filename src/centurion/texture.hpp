@@ -116,42 +116,6 @@ class BasicTexture final {
     }
   }
 
-  /* Creates and texture with streaming access. */
-  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
-  [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      const char* path,
-                                      const PixelFormat format) -> BasicTexture
-  {
-    assert(path);
-
-    constexpr auto blendMode = BlendMode::Blend;
-    const auto surface = cen::Surface::WithFormat(path, blendMode, format);
-
-    BasicTexture texture{renderer, format, TextureAccess::Streaming, surface.GetSize()};
-    texture.SetBlendMode(blendMode);
-
-    Uint32* pixels{};
-    if (!texture.lock(&pixels)) {
-      throw SDLError{};
-    }
-
-    const auto maxCount = static_cast<std::size_t>(surface.GetPitch()) *
-                          static_cast<std::size_t>(surface.GetHeight());
-    SDL_memcpy(pixels, surface.GetPixelData(), maxCount);
-
-    texture.unlock();
-
-    return texture;
-  }
-
-  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
-  [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      const std::string& path,
-                                      const PixelFormat format) -> BasicTexture
-  {
-    return streaming(renderer, path.c_str(), format);
-  }
-
   void SetAlpha(const Uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
 
   void SetBlendMode(const BlendMode mode) noexcept
@@ -273,22 +237,6 @@ class BasicTexture final {
 
  private:
   detail::Pointer<T, SDL_Texture> mTexture;
-
-  auto lock(Uint32** pixels, int* pitch = nullptr) noexcept -> Result
-  {
-    if (pitch) {
-      return SDL_LockTexture(mTexture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;
-    }
-    else {
-      int dummyPitch;
-      return SDL_LockTexture(mTexture,
-                             nullptr,
-                             reinterpret_cast<void**>(pixels),
-                             &dummyPitch) == 0;
-    }
-  }
-
-  void unlock() noexcept { SDL_UnlockTexture(mTexture); }
 };
 
 [[nodiscard]] constexpr auto to_string(const TextureAccess access) -> std::string_view

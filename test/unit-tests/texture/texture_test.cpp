@@ -84,19 +84,6 @@ TEST_F(TextureTest, CustomizationConstructor)
   ASSERT_EQ(height, texture.GetHeight());
 }
 
-TEST_F(TextureTest, Streaming)
-{
-  using namespace std::string_literals;
-  const auto format = window->GetPixelFormat();
-
-  ASSERT_THROW(cen::Texture::streaming(*renderer, "abc"s, format), cen::Error);
-
-  auto texture = cen::Texture::streaming(*renderer, path, format);
-  ASSERT_EQ(format, texture.GetFormat());
-  ASSERT_EQ(cen::TextureAccess::Streaming, texture.GetAccess());
-  ASSERT_TRUE(texture.IsStreaming());
-}
-
 TEST_F(TextureTest, SetBlendMode)
 {
   const auto previous = texture->GetBlendMode();
@@ -151,15 +138,6 @@ TEST_F(TextureTest, IsStatic)
                              cen::TextureAccess::Static,
                              {10, 10}};
   ASSERT_TRUE(texture.IsStatic());
-}
-
-TEST_F(TextureTest, IsStreaming)
-{
-  ASSERT_FALSE(texture->IsStreaming());
-
-  const auto format = window->GetPixelFormat();
-  const cen::Texture streamingTexture = cen::Texture::streaming(*renderer, path, format);
-  ASSERT_TRUE(streamingTexture.IsStreaming());
 }
 
 TEST_F(TextureTest, IsTarget)

@@ -6,6 +6,8 @@ TEST(FontBundle, Usage)
 {
   cen::FontBundle bundle;
 
+  ASSERT_THROW(bundle.LoadFont("foo", 12), cen::TTFError);
+
   const auto a = bundle.LoadFont("resources/daniel.ttf", 12);
   ASSERT_EQ(1, bundle.GetNumUniqueFonts());
   ASSERT_EQ(1, bundle.GetNumFonts());

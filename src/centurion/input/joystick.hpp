@@ -9,6 +9,7 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
+#include "../color.hpp"
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
 #include "../core/features.hpp"
@@ -17,7 +18,6 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
 #include "button_state.hpp"
-#include "color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

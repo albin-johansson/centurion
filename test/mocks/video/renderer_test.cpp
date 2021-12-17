@@ -62,6 +62,12 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_RenderGetIntegerScale, SDL_Renderer*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  FAKE_VALUE_FUNC(int, SDL_RenderSetVSync, SDL_Renderer*, int)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 }
 
 class RendererTest : public testing::Test {
@@ -96,6 +102,12 @@ class RendererTest : public testing::Test {
     RESET_FAKE(SDL_RenderGetIntegerScale)
     RESET_FAKE(SDL_RenderIsClipEnabled)
     RESET_FAKE(SDL_SetRenderTarget)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+    RESET_FAKE(SDL_RenderSetVSync)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
   }
 
   cen::RendererHandle renderer{nullptr};
@@ -515,3 +527,19 @@ TEST_F(RendererTest, IsClippingEnabled)
   const auto isClipping [[maybe_unused]] = renderer.IsClippingEnabled();
   ASSERT_EQ(1u, SDL_RenderIsClipEnabled_fake.call_count);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST_F(RendererTest, SetVSync)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_RenderSetVSync, values.data(), cen::isize(values));
+
+  ASSERT_EQ(cen::failure, renderer.SetVSync(false));
+  ASSERT_EQ(0, SDL_RenderSetVSync_fake.arg1_val);
+
+  ASSERT_EQ(cen::success, renderer.SetVSync(true));
+  ASSERT_EQ(1, SDL_RenderSetVSync_fake.arg1_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

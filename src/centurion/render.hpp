@@ -432,6 +432,15 @@ class BasicRenderer final {
     return SDL_RenderSetIntegerScale(get(), enabled ? SDL_TRUE : SDL_FALSE) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  auto SetVSync(const bool enabled) noexcept -> Result
+  {
+    return SDL_RenderSetVSync(get(), enabled ? 1 : 0) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
   [[nodiscard]] auto GetRenderTarget() noexcept -> TextureHandle
   {
     return TextureHandle{SDL_GetRenderTarget(get())};

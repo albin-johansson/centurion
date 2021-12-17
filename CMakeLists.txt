@@ -92,7 +92,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/core/version.hpp
 
                src/centurion/detail/array_utils.hpp
-               src/centurion/detail/convert_bool.hpp
                src/centurion/detail/owner_handle_api.hpp
                src/centurion/detail/sdl_deleter.hpp
                src/centurion/detail/sdl_version_at_least.hpp

@@ -12,7 +12,6 @@
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
-#include "detail/convert_bool.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
@@ -152,12 +151,12 @@ class BasicWindow final {
 
   void SetDecorated(const bool decorated) noexcept
   {
-    SDL_SetWindowBordered(mWindow, detail::convert_bool(decorated));
+    SDL_SetWindowBordered(mWindow, decorated ? SDL_TRUE : SDL_FALSE);
   }
 
   void SetResizable(const bool resizable) noexcept
   {
-    SDL_SetWindowResizable(mWindow, detail::convert_bool(resizable));
+    SDL_SetWindowResizable(mWindow, resizable ? SDL_TRUE : SDL_FALSE);
   }
 
   void SetIcon(const Surface& icon) noexcept { SDL_SetWindowIcon(mWindow, icon.get()); }
@@ -177,7 +176,7 @@ class BasicWindow final {
 
   void SetGrabMouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(mWindow, detail::convert_bool(grab));
+    SDL_SetWindowGrab(mWindow, grab ? SDL_TRUE : SDL_FALSE);
   }
 
   auto SetBrightness(const float brightness) noexcept -> Result
@@ -189,12 +188,12 @@ class BasicWindow final {
 
   void SetGrabKeyboard(const bool grab) noexcept
   {
-    SDL_SetWindowKeyboardGrab(mWindow, detail::convert_bool(grab));
+    SDL_SetWindowKeyboardGrab(mWindow, grab ? SDL_TRUE : SDL_FALSE);
   }
 
   void SetAlwaysOnTop(const bool enabled) noexcept
   {
-    SDL_SetWindowAlwaysOnTop(mWindow, detail::convert_bool(enabled));
+    SDL_SetWindowAlwaysOnTop(mWindow, enabled ? SDL_TRUE : SDL_FALSE);
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
@@ -241,7 +240,7 @@ class BasicWindow final {
 
   static auto SetCapturingMouse(const bool capture) noexcept -> Result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
+    return SDL_CaptureMouse(capture ? SDL_TRUE : SDL_FALSE) == 0;
   }
 
   [[nodiscard]] auto GetID() const noexcept -> Uint32 { return SDL_GetWindowID(mWindow); }

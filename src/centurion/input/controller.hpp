@@ -11,26 +11,25 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "../core/features.hpp"
-
-#if CENTURION_HAS_FEATURE_FORMAT
-
-#include <format>  // format
-
-#endif  // CENTURION_HAS_FEATURE_FORMAT
-
+#include "../color.hpp"
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
+#include "../core/features.hpp"
 #include "../core/sdl_string.hpp"
 #include "../core/time.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
 #include "button_state.hpp"
-#include "color.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
 #include "touch.hpp"
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 namespace cen {
 

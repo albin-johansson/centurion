@@ -34,84 +34,87 @@
 namespace cen {
 
 enum class ControllerButton {
-  invalid = SDL_CONTROLLER_BUTTON_INVALID,
-  a = SDL_CONTROLLER_BUTTON_A,
-  b = SDL_CONTROLLER_BUTTON_B,
-  x = SDL_CONTROLLER_BUTTON_X,
-  y = SDL_CONTROLLER_BUTTON_Y,
-  back = SDL_CONTROLLER_BUTTON_BACK,
-  guide = SDL_CONTROLLER_BUTTON_GUIDE,
-  start = SDL_CONTROLLER_BUTTON_START,
-  left_stick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
-  right_stick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
-  left_shoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-  right_shoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
-  dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
-  dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-  dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
-  dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+  Invalid = SDL_CONTROLLER_BUTTON_INVALID,
+
+  A = SDL_CONTROLLER_BUTTON_A,
+  B = SDL_CONTROLLER_BUTTON_B,
+  X = SDL_CONTROLLER_BUTTON_X,
+  Y = SDL_CONTROLLER_BUTTON_Y,
+
+  Back = SDL_CONTROLLER_BUTTON_BACK,
+  Guide = SDL_CONTROLLER_BUTTON_GUIDE,
+  Start = SDL_CONTROLLER_BUTTON_START,
+
+  LeftStick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
+  RightStick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+  LeftShoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+  RightShoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+
+  DpadUp = SDL_CONTROLLER_BUTTON_DPAD_UP,
+  DpadDown = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+  DpadLeft = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+  DpadRight = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  // clang-format off
-  misc1 = SDL_CONTROLLER_BUTTON_MISC1, ///< Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button
-  // clang-format on
+  Misc1 = SDL_CONTROLLER_BUTTON_MISC1,
 
-  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,    ///< Xbox Elite paddle P1
-  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,    ///< Xbox Elite paddle P3
-  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,    ///< Xbox Elite paddle P2
-  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,    ///< Xbox Elite paddle P4
-  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,  ///< PS4/PS5 touchpad button
+  Paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,
+  Paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,
+  Paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,
+  Paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,
+  Touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  max = SDL_CONTROLLER_BUTTON_MAX
+  Max = SDL_CONTROLLER_BUTTON_MAX
 };
 
 enum class ControllerAxis {
-  invalid = SDL_CONTROLLER_AXIS_INVALID,
-  left_x = SDL_CONTROLLER_AXIS_LEFTX,
-  left_y = SDL_CONTROLLER_AXIS_LEFTY,
-  right_x = SDL_CONTROLLER_AXIS_RIGHTX,
-  right_y = SDL_CONTROLLER_AXIS_RIGHTY,
-  trigger_left = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-  trigger_right = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-  max = SDL_CONTROLLER_AXIS_MAX
+  Invalid = SDL_CONTROLLER_AXIS_INVALID,
+
+  LeftX = SDL_CONTROLLER_AXIS_LEFTX,
+  LeftY = SDL_CONTROLLER_AXIS_LEFTY,
+  RightX = SDL_CONTROLLER_AXIS_RIGHTX,
+  RightY = SDL_CONTROLLER_AXIS_RIGHTY,
+
+  TriggerLeft = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+  TriggerRight = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+
+  Max = SDL_CONTROLLER_AXIS_MAX
 };
 
 enum class ControllerBindType {
-  none = SDL_CONTROLLER_BINDTYPE_NONE,
-  button = SDL_CONTROLLER_BINDTYPE_BUTTON,
-  axis = SDL_CONTROLLER_BINDTYPE_AXIS,
-  hat = SDL_CONTROLLER_BINDTYPE_HAT
+  None = SDL_CONTROLLER_BINDTYPE_NONE,
+  Button = SDL_CONTROLLER_BINDTYPE_BUTTON,
+  Axis = SDL_CONTROLLER_BINDTYPE_AXIS,
+  Hat = SDL_CONTROLLER_BINDTYPE_HAT
 };
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 enum class ControllerType {
-  // clang-format off
-  unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
-  xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
-  xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
-  ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
-  ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
+  Unknown = SDL_CONTROLLER_TYPE_UNKNOWN,
+
+  Xbox360 = SDL_CONTROLLER_TYPE_XBOX360,
+  XboxOne = SDL_CONTROLLER_TYPE_XBOXONE,
+  PS3 = SDL_CONTROLLER_TYPE_PS3,
+  PS4 = SDL_CONTROLLER_TYPE_PS4,
+  NintendoSwitchPro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
-  virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
+  PS5 = SDL_CONTROLLER_TYPE_PS5,
+  Virtual = SDL_CONTROLLER_TYPE_VIRTUAL,
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-  amazon_luna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,     ///< An Amazon Luna controller.
-  google_stadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA, ///< A Google Stadia controller.
+  AmazonLuna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,
+  GoogleStadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA
 
-#endif // SDL_VERSION_ATLEAST(2, 0, 16)
-
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro controller.
-  // clang-format on
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 };
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -590,78 +593,78 @@ inline auto LoadControllerMappings(const std::string& file) noexcept -> std::opt
 [[nodiscard]] constexpr auto to_string(const ControllerButton button) -> std::string_view
 {
   switch (button) {
-    case ControllerButton::invalid:
-      return "invalid";
+    case ControllerButton::Invalid:
+      return "Invalid";
 
-    case ControllerButton::a:
-      return "a";
+    case ControllerButton::A:
+      return "A";
 
-    case ControllerButton::b:
-      return "b";
+    case ControllerButton::B:
+      return "B";
 
-    case ControllerButton::x:
-      return "x";
+    case ControllerButton::X:
+      return "X";
 
-    case ControllerButton::y:
-      return "y";
+    case ControllerButton::Y:
+      return "Y";
 
-    case ControllerButton::back:
-      return "back";
+    case ControllerButton::Back:
+      return "Back";
 
-    case ControllerButton::guide:
-      return "guide";
+    case ControllerButton::Guide:
+      return "Guide";
 
-    case ControllerButton::start:
-      return "start";
+    case ControllerButton::Start:
+      return "Start";
 
-    case ControllerButton::left_stick:
-      return "left_stick";
+    case ControllerButton::LeftStick:
+      return "LeftStick";
 
-    case ControllerButton::right_stick:
-      return "right_stick";
+    case ControllerButton::RightStick:
+      return "RightStick";
 
-    case ControllerButton::left_shoulder:
-      return "left_shoulder";
+    case ControllerButton::LeftShoulder:
+      return "LeftShoulder";
 
-    case ControllerButton::right_shoulder:
-      return "right_shoulder";
+    case ControllerButton::RightShoulder:
+      return "RightShoulder";
 
-    case ControllerButton::dpad_up:
-      return "dpad_up";
+    case ControllerButton::DpadUp:
+      return "DpadUp";
 
-    case ControllerButton::dpad_down:
-      return "dpad_down";
+    case ControllerButton::DpadDown:
+      return "DpadDown";
 
-    case ControllerButton::dpad_left:
-      return "dpad_left";
+    case ControllerButton::DpadLeft:
+      return "DpadLeft";
 
-    case ControllerButton::dpad_right:
-      return "dpad_right";
+    case ControllerButton::DpadRight:
+      return "DpadRight";
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-    case ControllerButton::misc1:
-      return "misc1";
+    case ControllerButton::Misc1:
+      return "Misc1";
 
-    case ControllerButton::paddle1:
-      return "paddle1";
+    case ControllerButton::Paddle1:
+      return "Paddle1";
 
-    case ControllerButton::paddle2:
-      return "paddle2";
+    case ControllerButton::Paddle2:
+      return "Paddle2";
 
-    case ControllerButton::paddle3:
-      return "paddle3";
+    case ControllerButton::Paddle3:
+      return "Paddle3";
 
-    case ControllerButton::paddle4:
-      return "paddle4";
+    case ControllerButton::Paddle4:
+      return "Paddle4";
 
-    case ControllerButton::touchpad:
-      return "touchpad";
+    case ControllerButton::Touchpad:
+      return "Touchpad";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-    case ControllerButton::max:
-      return "max";
+    case ControllerButton::Max:
+      return "Max";
 
     default:
       throw Error{"Did not recognize controller button!"};
@@ -676,29 +679,29 @@ inline auto operator<<(std::ostream& stream, const ControllerButton button) -> s
 [[nodiscard]] constexpr auto to_string(const ControllerAxis axis) -> std::string_view
 {
   switch (axis) {
-    case ControllerAxis::invalid:
-      return "invalid";
+    case ControllerAxis::Invalid:
+      return "Invalid";
 
-    case ControllerAxis::left_x:
-      return "left_x";
+    case ControllerAxis::LeftX:
+      return "LeftX";
 
-    case ControllerAxis::left_y:
-      return "left_y";
+    case ControllerAxis::LeftY:
+      return "LeftY";
 
-    case ControllerAxis::right_x:
-      return "right_x";
+    case ControllerAxis::RightX:
+      return "RightX";
 
-    case ControllerAxis::right_y:
-      return "right_y";
+    case ControllerAxis::RightY:
+      return "RightY";
 
-    case ControllerAxis::trigger_left:
-      return "trigger_left";
+    case ControllerAxis::TriggerLeft:
+      return "TriggerLeft";
 
-    case ControllerAxis::trigger_right:
-      return "trigger_right";
+    case ControllerAxis::TriggerRight:
+      return "TriggerRight";
 
-    case ControllerAxis::max:
-      return "max";
+    case ControllerAxis::Max:
+      return "Max";
 
     default:
       throw Error{"Did not recognize controller axis!"};
@@ -713,20 +716,20 @@ inline auto operator<<(std::ostream& stream, const ControllerAxis axis) -> std::
 [[nodiscard]] constexpr auto to_string(const ControllerBindType type) -> std::string_view
 {
   switch (type) {
-    case ControllerBindType::none:
-      return "none";
+    case ControllerBindType::None:
+      return "None";
 
-    case ControllerBindType::button:
-      return "button";
+    case ControllerBindType::Button:
+      return "Button";
 
-    case ControllerBindType::axis:
-      return "axis";
+    case ControllerBindType::Axis:
+      return "Axis";
 
-    case ControllerBindType::hat:
-      return "hat";
+    case ControllerBindType::Hat:
+      return "Hat";
 
     default:
-      throw Error{"Did not recognzie controller bind type!"};
+      throw Error{"Did not recognize controller bind type!"};
   }
 }
 
@@ -740,41 +743,41 @@ inline auto operator<<(std::ostream& stream, const ControllerBindType type) -> s
 [[nodiscard]] constexpr auto to_string(const ControllerType type) -> std::string_view
 {
   switch (type) {
-    case ControllerType::unknown:
-      return "unknown";
+    case ControllerType::Unknown:
+      return "Unknown";
 
-    case ControllerType::nintendo_switch_pro:
-      return "nintendo_switch_pro";
+    case ControllerType::NintendoSwitchPro:
+      return "NintendoSwitchPro";
 
-    case ControllerType::xbox_360:
-      return "xbox_360";
+    case ControllerType::Xbox360:
+      return "Xbox360";
 
-    case ControllerType::xbox_one:
-      return "xbox_one";
+    case ControllerType::XboxOne:
+      return "XboxOne";
 
-    case ControllerType::ps3:
-      return "ps3";
+    case ControllerType::PS3:
+      return "PS3";
 
-    case ControllerType::ps4:
-      return "ps4";
+    case ControllerType::PS4:
+      return "PS4";
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-    case ControllerType::ps5:
-      return "ps5";
+    case ControllerType::PS5:
+      return "PS5";
 
-    case ControllerType::virt:
-      return "virt";
+    case ControllerType::Virtual:
+      return "Virtual";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-    case ControllerType::amazon_luna:
-      return "amazon_luna";
+    case ControllerType::AmazonLuna:
+      return "AmazonLuna";
 
-    case ControllerType::google_stadia:
-      return "google_stadia";
+    case ControllerType::GoogleStadia:
+      return "GoogleStadia";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 

@@ -17,6 +17,13 @@ set(SOURCE_FILES
     concurrency/thread_test.cpp
     concurrency/try_lock_test.cpp
 
+    controller/controller_axis_test.cpp
+    controller/controller_bind_type_test.cpp
+    controller/controller_button_test.cpp
+    controller/controller_mapping_result_test.cpp
+    controller/controller_test.cpp
+    controller/controller_type_test.cpp
+
     core/exception_test.cpp
     core/features_test.cpp
     core/log_category_test.cpp
@@ -84,12 +91,6 @@ set(SOURCE_FILES
     hints/hints_test.cpp
 
     input/button_state_test.cpp
-    input/controller_axis_test.cpp
-    input/controller_bind_type_test.cpp
-    input/controller_button_test.cpp
-    input/controller_mapping_result_test.cpp
-    input/controller_test.cpp
-    input/controller_type_test.cpp
     input/haptic_direction_type_test.cpp
     input/haptic_feature_test.cpp
     input/haptic_test.cpp

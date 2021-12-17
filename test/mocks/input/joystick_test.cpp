@@ -7,7 +7,7 @@
 
 #include "core/common.hpp"
 #include "core_mocks.hpp"
-#include "video/color.hpp"
+#include "color.hpp"
 
 using namespace cen::literals;
 

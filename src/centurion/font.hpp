@@ -17,6 +17,7 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
+#include "color.hpp"
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
@@ -27,7 +28,6 @@
 #include "surface.hpp"
 #include "texture.hpp"
 #include "unicode.hpp"
-#include "video/color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

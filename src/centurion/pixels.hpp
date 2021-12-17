@@ -9,13 +9,13 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
+#include "color.hpp"
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "core/memory.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
-#include "video/color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

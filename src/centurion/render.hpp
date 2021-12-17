@@ -13,6 +13,7 @@
 #include <string_view>  // string_view
 #include <utility>      // pair
 
+#include "color.hpp"
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
@@ -23,7 +24,6 @@
 #include "texture.hpp"
 #include "unicode.hpp"
 #include "video.hpp"
-#include "video/color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

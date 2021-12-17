@@ -11,11 +11,11 @@
 #include <utility>      // move
 #include <vector>       // vector
 
+#include "color.hpp"
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "detail/stack_resource.hpp"
-#include "video/color.hpp"
 #include "video/window.hpp"
 
 namespace cen {

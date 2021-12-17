@@ -30,6 +30,7 @@
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
 #include "centurion/audio.hpp"
+#include "centurion/color.hpp"
 #include "centurion/concurrency.hpp"
 #include "centurion/endian.hpp"
 #include "centurion/filesystem.hpp"
@@ -111,7 +112,6 @@
 #include "centurion/input/sensor.hpp"
 #include "centurion/input/touch.hpp"
 #include "centurion/input/touch_device_type.hpp"
-#include "centurion/video/color.hpp"
 #include "centurion/video/window.hpp"
 
 #endif  // CENTURION_HPP_

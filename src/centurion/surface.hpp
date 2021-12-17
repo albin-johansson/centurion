@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 
+#include "color.hpp"
 #include "core/common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
@@ -11,7 +12,6 @@
 #include "math.hpp"
 #include "pixels.hpp"
 #include "video.hpp"
-#include "video/color.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>

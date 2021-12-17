@@ -150,7 +150,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
 
-               src/centurion/video/color.hpp
+               src/centurion/color.hpp
                src/centurion/video/window.hpp
                )
 

@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_COLOR_HPP_
-#define CENTURION_VIDEO_COLOR_HPP_
+#ifndef CENTURION_COLOR_HPP_
+#define CENTURION_COLOR_HPP_
 
 #include <SDL.h>
 
@@ -13,10 +13,10 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/features.hpp"
-#include "../detail/stdlib.hpp"
+#include "core/common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
+#include "detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -759,4 +759,4 @@ inline constexpr Color yellow_green{0x9A, 0xCD, 0x32};
 }  // namespace colors
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_COLOR_HPP_
+#endif  // CENTURION_COLOR_HPP_

@@ -16,8 +16,8 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
-#include "../video/color.hpp"
 #include "button_state.hpp"
+#include "color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

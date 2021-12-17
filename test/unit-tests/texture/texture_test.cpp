@@ -5,10 +5,10 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
+#include "color.hpp"
 #include "core/exception.hpp"
 #include "core/logging.hpp"
 #include "render.hpp"
-#include "video/color.hpp"
 #include "video/window.hpp"
 
 static_assert(std::is_final_v<cen::Texture>);

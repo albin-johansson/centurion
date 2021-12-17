@@ -3,9 +3,9 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
+#include "color.hpp"
 #include "pixels.hpp"
 #include "system.hpp"
-#include "video/color.hpp"
 
 class PixelFormatInfoTest : public testing::Test {
  protected:

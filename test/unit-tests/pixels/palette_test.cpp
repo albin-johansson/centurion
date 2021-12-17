@@ -2,9 +2,9 @@
 
 #include <iostream>  // clog
 
+#include "color.hpp"
 #include "core/logging.hpp"
 #include "pixels.hpp"
-#include "video/color.hpp"
 
 TEST(Palette, Constructor)
 {

@@ -3,12 +3,12 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
+#include "color.hpp"
 #include "core/exception.hpp"
 #include "core/logging.hpp"
+#include "font.hpp"
 #include "math.hpp"
 #include "render.hpp"
-#include "video/color.hpp"
-#include "font.hpp"
 #include "video/window.hpp"
 
 using namespace std::string_literals;

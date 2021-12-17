@@ -1,10 +1,9 @@
-#include "unicode.hpp"
-
 #include <gtest/gtest.h>
 
 #include <cereal/types/vector.hpp>
 
 #include "serialization_utils.hpp"
+#include "unicode.hpp"
 
 using namespace cen::literals;
 

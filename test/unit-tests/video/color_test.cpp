@@ -1,4 +1,4 @@
-#include "video/color.hpp"
+#include "color.hpp"
 
 #include <gtest/gtest.h>
 
@@ -6,9 +6,9 @@
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
+#include "color.hpp"
 #include "core/logging.hpp"
 #include "serialization_utils.hpp"
-#include "video/color.hpp"
 
 static_assert(std::is_final_v<cen::Color>);
 

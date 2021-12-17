@@ -2,7 +2,6 @@
 
 #include <iostream>  // clog
 
-#include "detail/sdl_version_at_least.hpp"
 #include "pixels.hpp"
 #include "system.hpp"
 
@@ -17,23 +16,23 @@ TEST(PixelFormat, Values)
   ASSERT_EQ(ToUnderlying(Format::Index4MSB), SDL_PIXELFORMAT_INDEX4MSB);
   ASSERT_EQ(ToUnderlying(Format::Index8), SDL_PIXELFORMAT_INDEX8);
 
-  if constexpr (cen::detail::sdl_version_at_least(2, 0, 14)) {
-    ASSERT_EQ(ToUnderlying(Format::XRGB4444), SDL_PIXELFORMAT_XRGB4444);
-    ASSERT_EQ(ToUnderlying(Format::XBGR4444), SDL_PIXELFORMAT_XBGR4444);
-    ASSERT_EQ(ToUnderlying(Format::XRGB1555), SDL_PIXELFORMAT_XRGB1555);
-    ASSERT_EQ(ToUnderlying(Format::XBGR1555), SDL_PIXELFORMAT_XBGR1555);
-    ASSERT_EQ(ToUnderlying(Format::XRGB8888), SDL_PIXELFORMAT_XRGB8888);
-    ASSERT_EQ(ToUnderlying(Format::XBGR8888), SDL_PIXELFORMAT_XBGR8888);
-  }
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  ASSERT_EQ(ToUnderlying(Format::XRGB4444), SDL_PIXELFORMAT_XRGB4444);
+  ASSERT_EQ(ToUnderlying(Format::XBGR4444), SDL_PIXELFORMAT_XBGR4444);
+  ASSERT_EQ(ToUnderlying(Format::XRGB1555), SDL_PIXELFORMAT_XRGB1555);
+  ASSERT_EQ(ToUnderlying(Format::XBGR1555), SDL_PIXELFORMAT_XBGR1555);
+  ASSERT_EQ(ToUnderlying(Format::XRGB8888), SDL_PIXELFORMAT_XRGB8888);
+  ASSERT_EQ(ToUnderlying(Format::XBGR8888), SDL_PIXELFORMAT_XBGR8888);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   ASSERT_EQ(ToUnderlying(Format::RGB332), SDL_PIXELFORMAT_RGB332);
   ASSERT_EQ(ToUnderlying(Format::RGB444), SDL_PIXELFORMAT_RGB444);
   ASSERT_EQ(ToUnderlying(Format::RGB555), SDL_PIXELFORMAT_RGB555);
   ASSERT_EQ(ToUnderlying(Format::BGR555), SDL_PIXELFORMAT_BGR555);
 
-  if constexpr (cen::detail::sdl_version_at_least(2, 0, 12)) {
-    ASSERT_EQ(ToUnderlying(Format::BGR444), SDL_PIXELFORMAT_BGR444);
-  }
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  ASSERT_EQ(ToUnderlying(Format::BGR444), SDL_PIXELFORMAT_BGR444);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   ASSERT_EQ(ToUnderlying(Format::ARGB4444), SDL_PIXELFORMAT_ARGB4444);
   ASSERT_EQ(ToUnderlying(Format::RGBA4444), SDL_PIXELFORMAT_RGBA4444);
@@ -127,17 +126,20 @@ TEST(PixelFormat, ToString)
 
   ASSERT_EQ("ExternalOES", to_string(Format::ExternalOES));
 
-  if constexpr (cen::detail::sdl_version_at_least(2, 0, 14)) {
-    ASSERT_EQ("XRGB4444", to_string(Format::XRGB4444));
-    ASSERT_EQ("XBGR4444", to_string(Format::XBGR4444));
-    ASSERT_EQ("XRGB1555", to_string(Format::XRGB1555));
-    ASSERT_EQ("XBGR1555", to_string(Format::XBGR1555));
-    ASSERT_EQ("XRGB8888", to_string(Format::XRGB8888));
-    ASSERT_EQ("XBGR8888", to_string(Format::XBGR8888));
-  }
-  else if constexpr (cen::detail::sdl_version_at_least(2, 0, 12)) {
-    ASSERT_EQ("BGR444", to_string(Format::BGR444));
-  }
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  ASSERT_EQ("XRGB4444", to_string(Format::XRGB4444));
+  ASSERT_EQ("XBGR4444", to_string(Format::XBGR4444));
+  ASSERT_EQ("XRGB1555", to_string(Format::XRGB1555));
+  ASSERT_EQ("XBGR1555", to_string(Format::XBGR1555));
+  ASSERT_EQ("XRGB8888", to_string(Format::XRGB8888));
+  ASSERT_EQ("XBGR8888", to_string(Format::XBGR8888));
+
+#elif SDL_VERSION_ATLEAST(2, 0, 12)
+
+  ASSERT_EQ("BGR444", to_string(Format::BGR444));
+
+#endif
 
   std::clog << "Pixel format example: " << Format::RGBA8888 << '\n';
 }

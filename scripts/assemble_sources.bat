@@ -1,1 +1,0 @@
-python amalgamate.py -c config.json -s ..

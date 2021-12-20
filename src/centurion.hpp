@@ -63,7 +63,6 @@
 #include "centurion/core/version.hpp"
 #include "centurion/event.hpp"
 #include "centurion/events.hpp"
-#include "centurion/events/event_dispatcher.hpp"
 #include "centurion/input/button_state.hpp"
 #include "centurion/input/controller.hpp"
 #include "centurion/input/haptic.hpp"

@@ -99,7 +99,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
 
                src/centurion/event.hpp
                src/centurion/events.hpp
-               src/centurion/events/event_dispatcher.hpp
 
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp

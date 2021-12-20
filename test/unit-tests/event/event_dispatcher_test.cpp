@@ -1,4 +1,4 @@
-#include "events/event_dispatcher.hpp"
+#include "event.hpp"
 
 #include <gtest/gtest.h>
 

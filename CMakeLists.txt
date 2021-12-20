@@ -100,7 +100,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/events/audio_device_event.hpp
                src/centurion/events/controller_events.hpp
                src/centurion/events/display_event.hpp
-               src/centurion/events/display_event_id.hpp
                src/centurion/events/dollar_gesture_event.hpp
                src/centurion/events/drop_event.hpp
                src/centurion/events/event.hpp

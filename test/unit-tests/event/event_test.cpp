@@ -64,7 +64,7 @@ static_assert(validate_event<cen::sensor_event, SDL_SensorEvent>());
 static_assert(validate_event<cen::user_event, SDL_UserEvent>());
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-static_assert(validate_event<cen::display_event, SDL_DisplayEvent>());
+static_assert(validate_event<cen::DisplayEvent, SDL_DisplayEvent>());
 static_assert(validate_event<cen::ControllerTouchpadEvent, SDL_ControllerTouchpadEvent>());
 static_assert(validate_event<cen::ControllerSensorEvent, SDL_ControllerSensorEvent>());
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

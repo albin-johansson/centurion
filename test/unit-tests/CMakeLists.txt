@@ -43,8 +43,6 @@ set(SOURCE_FILES
 
     event/audio_device_event_test.cpp
     event/common_event_test.cpp
-    event/display_event_id_test.cpp
-    event/display_event_test.cpp
     event/dollar_gesture_event_test.cpp
     event/drop_event_test.cpp
     event/event_dispatcher_test.cpp
@@ -64,6 +62,9 @@ set(SOURCE_FILES
     event/controller/controller_device_event_test.cpp
     event/controller/controller_sensor_event_test.cpp
     event/controller/controller_touchpad_event_test.cpp
+
+    event/display/display_event_id_test.cpp
+    event/display/display_event_test.cpp
 
     event/joystick/joy_axis_event_test.cpp
     event/joystick/joy_ball_event_test.cpp

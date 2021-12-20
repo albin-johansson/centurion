@@ -207,7 +207,7 @@ class Event final {
                                  user_event,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-                                 display_event,
+                                 DisplayEvent,
                                  ControllerTouchpadEvent,
                                  ControllerSensorEvent,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
@@ -237,7 +237,7 @@ class Event final {
         break;
 
       case EventType::Display:
-        mData.emplace<display_event>(mEvent.display);
+        mData.emplace<DisplayEvent>(mEvent.display);
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

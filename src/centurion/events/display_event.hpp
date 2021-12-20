@@ -3,110 +3,47 @@
 
 #include <SDL.h>
 
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
 #include "../common.hpp"
+#include "../core/exception.hpp"
 #include "event_base.hpp"
-#include "display_event_id.hpp"
 
 namespace cen {
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-/// \addtogroup event
-/// \{
+enum class DisplayEventID {
+  None = SDL_DISPLAYEVENT_NONE,
+  Orientation = SDL_DISPLAYEVENT_ORIENTATION,
+  Connected = SDL_DISPLAYEVENT_CONNECTED,
+  Disconnected = SDL_DISPLAYEVENT_DISCONNECTED,
+};
 
-/**
- * \class display_event
- *
- * \brief Represents events related to displays.
- *
- * \see `SDL_DisplayEvent`
- *
- * \since 6.3.0
- */
-class display_event final : public EventBase<SDL_DisplayEvent> {
+class DisplayEvent final : public EventBase<SDL_DisplayEvent> {
  public:
-  /**
-   * \brief Creates a display event.
-   *
-   * \since 6.3.0
-   */
-  display_event() noexcept : EventBase{EventType::Display} {}
+  DisplayEvent() noexcept : EventBase{EventType::Display} {}
 
-  /**
-   * \brief Creates a display event based an SDL event.
-   *
-   * \param event the event that will be copied.
-   *
-   * \since 6.3.0
-   */
-  explicit display_event(const SDL_DisplayEvent& event) noexcept : EventBase{event} {}
+  explicit DisplayEvent(const SDL_DisplayEvent& event) noexcept : EventBase{event} {}
 
-  /**
-   * \brief Sets the associated display event ID.
-   *
-   * \param id the associated display event subtype.
-   *
-   * \since 6.3.0
-   */
-  void set_event_id(const display_event_id id) noexcept
+  void SetEventID(const DisplayEventID id) noexcept
   {
     mEvent.event = static_cast<Uint8>(ToUnderlying(id));
   }
 
-  /**
-   * \brief Sets the associated display index.
-   *
-   * \param index the associated display index.
-   *
-   * \since 6.3.0
-   */
-  void set_index(const Uint32 index) noexcept { mEvent.display = index; }
+  void SetIndex(const Uint32 index) noexcept { mEvent.display = index; }
 
-  /**
-   * \brief Sets event type specific data.
-   *
-   * \param data the associated data value.
-   *
-   * \see `display_event_id`
-   *
-   * \since 6.3.0
-   */
-  void set_data_1(const Sint32 data) noexcept { mEvent.data1 = data; }
+  void SetData1(const Sint32 data) noexcept { mEvent.data1 = data; }
 
-  /**
-   * \brief Returns the associated display event ID.
-   *
-   * \return the associated display event subtype.
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto event_id() const noexcept -> display_event_id
+  [[nodiscard]] auto GetEventID() const noexcept -> DisplayEventID
   {
-    return static_cast<display_event_id>(mEvent.event);
+    return static_cast<DisplayEventID>(mEvent.event);
   }
 
-  /**
-   * \brief Returns the index of the associated display.
-   *
-   * \return the associated display index.
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto index() const noexcept -> Uint32 { return mEvent.display; }
+  [[nodiscard]] auto GetIndex() const noexcept -> Uint32 { return mEvent.display; }
 
-  /**
-   * \brief Returns subtype specific data.
-   *
-   * \details The returned value is the display orientation if the type of the event is
-   * equivalent to `display_event_id::orientation`.
-   *
-   * \return subtype specific data.
-   *
-   * \see `screen_orientation`
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return mEvent.data1; }
+  [[nodiscard]] auto GetData1() const noexcept -> Sint32 { return mEvent.data1; }
 };
 
 template <>
@@ -117,7 +54,30 @@ inline auto AsSDLEvent(const EventBase<SDL_DisplayEvent>& event) -> SDL_Event
   return e;
 }
 
-/// \} End of group event
+[[nodiscard]] constexpr auto to_string(const DisplayEventID id) -> std::string_view
+{
+  switch (id) {
+    case DisplayEventID::None:
+      return "None";
+
+    case DisplayEventID::Orientation:
+      return "Orientation";
+
+    case DisplayEventID::Connected:
+      return "Connected";
+
+    case DisplayEventID::Disconnected:
+      return "Disconnected";
+
+    default:
+      throw Error{"Did not recognize display event ID!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const DisplayEventID id) -> std::ostream&
+{
+  return stream << to_string(id);
+}
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

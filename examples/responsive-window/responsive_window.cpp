@@ -18,9 +18,9 @@ int main(int, char**)
   bool running = true;
 
   while (running) {
-    while (event.poll()) {
+    while (event.Poll()) {
       /* Check if the user wants to quit the application */
-      if (event.is<cen::quit_event>()) {
+      if (event.Is<cen::quit_event>()) {
         running = false;
         break;
       }

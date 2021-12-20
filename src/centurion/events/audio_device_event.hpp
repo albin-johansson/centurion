@@ -11,11 +11,11 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-class audio_device_event final : public common_event<SDL_AudioDeviceEvent> {
+class AudioDeviceEvent final : public common_event<SDL_AudioDeviceEvent> {
  public:
-  audio_device_event() noexcept : common_event{EventType::AudioDeviceAdded} {}
+  AudioDeviceEvent() noexcept : common_event{EventType::AudioDeviceAdded} {}
 
-  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept : common_event{event}
+  explicit AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept : common_event{event}
   {}
 
   void set_which(const Uint32 which) noexcept { m_event.which = which; }

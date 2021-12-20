@@ -193,7 +193,7 @@ class Event final {
  private:
   /* Behold, the beast! */
   using data_type = std::variant<std::monostate,
-                                 audio_device_event,
+                                 AudioDeviceEvent,
                                  controller_axis_event,
                                  controller_button_event,
                                  controller_device_event,
@@ -363,7 +363,7 @@ class Event final {
 
       case EventType::AudioDeviceAdded:
       case EventType::AudioDeviceRemoved:
-        mData.emplace<audio_device_event>(mEvent.adevice);
+        mData.emplace<AudioDeviceEvent>(mEvent.adevice);
         break;
 
       case EventType::SensorUpdate:

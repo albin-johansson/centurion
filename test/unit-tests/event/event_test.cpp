@@ -39,7 +39,7 @@ template <typename T, typename E>
 }  // namespace
 
 // clang-format off
-static_assert(validate_event<cen::audio_device_event, SDL_AudioDeviceEvent>());
+static_assert(validate_event<cen::AudioDeviceEvent, SDL_AudioDeviceEvent>());
 static_assert(validate_event<cen::controller_axis_event, SDL_ControllerAxisEvent>());
 static_assert(validate_event<cen::controller_button_event, SDL_ControllerButtonEvent>());
 static_assert(validate_event<cen::controller_device_event, SDL_ControllerDeviceEvent>());
@@ -193,9 +193,9 @@ TEST(Event, Is)
     const auto removed = create_event(SDL_AUDIODEVICEREMOVED);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(added.Is<cen::audio_device_event>());
-    ASSERT_TRUE(removed.Is<cen::audio_device_event>());
-    ASSERT_FALSE(wrong.Is<cen::audio_device_event>());
+    ASSERT_TRUE(added.Is<cen::AudioDeviceEvent>());
+    ASSERT_TRUE(removed.Is<cen::AudioDeviceEvent>());
+    ASSERT_FALSE(wrong.Is<cen::AudioDeviceEvent>());
   }
 
   {  // controller_axis_event

@@ -1,4 +1,4 @@
-#include "events/display_event.hpp"
+#include "event.hpp"
 
 #include <gtest/gtest.h>
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "events/event.hpp"
+#include "event.hpp"
 
 TEST(WindowEvent, Defaults)
 {

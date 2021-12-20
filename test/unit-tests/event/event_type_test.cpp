@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "common.hpp"
-#include "events/event.hpp"
+#include "event.hpp"
 
 using Type = cen::EventType;
 

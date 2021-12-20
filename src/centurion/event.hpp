@@ -1,5 +1,5 @@
-#ifndef CENTURION_EVENTS_EVENT_HPP_
-#define CENTURION_EVENTS_EVENT_HPP_
+#ifndef CENTURION_EVENT_HPP_
+#define CENTURION_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -7,24 +7,8 @@
 #include <utility>   // move
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
-#include "../common.hpp"
-#include "audio_device_event.hpp"
-#include "controller_events.hpp"
-#include "display_event.hpp"
-#include "dollar_gesture_event.hpp"
-#include "drop_event.hpp"
-#include "event_base.hpp"
-#include "joystick_events.hpp"
-#include "keyboard_event.hpp"
-#include "mouse_events.hpp"
-#include "multi_gesture_event.hpp"
-#include "quit_event.hpp"
-#include "sensor_event.hpp"
-#include "text_editing_event.hpp"
-#include "text_input_event.hpp"
-#include "touch_finger_event.hpp"
-#include "user_event.hpp"
-#include "window_event.hpp"
+#include "common.hpp"
+#include "events.hpp"
 
 namespace cen {
 

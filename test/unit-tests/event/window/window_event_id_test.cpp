@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "events/event.hpp"
+#include "event.hpp"
 
 using ID = cen::WindowEventID;
 

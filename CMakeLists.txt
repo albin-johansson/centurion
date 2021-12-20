@@ -97,26 +97,9 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/stack_resource.hpp
                src/centurion/detail/tuple_type_index.hpp
 
-               src/centurion/events/audio_device_event.hpp
-               src/centurion/events/controller_events.hpp
-               src/centurion/events/display_event.hpp
-               src/centurion/events/dollar_gesture_event.hpp
-               src/centurion/events/drop_event.hpp
-               src/centurion/events/event.hpp
-               src/centurion/events/event_base.hpp
+               src/centurion/event.hpp
+               src/centurion/events.hpp
                src/centurion/events/event_dispatcher.hpp
-               src/centurion/events/event_type.hpp
-               src/centurion/events/joystick_events.hpp
-               src/centurion/events/keyboard_event.hpp
-               src/centurion/events/mouse_events.hpp
-               src/centurion/events/multi_gesture_event.hpp
-               src/centurion/events/quit_event.hpp
-               src/centurion/events/sensor_event.hpp
-               src/centurion/events/text_editing_event.hpp
-               src/centurion/events/text_input_event.hpp
-               src/centurion/events/touch_finger_event.hpp
-               src/centurion/events/user_event.hpp
-               src/centurion/events/window_event.hpp
 
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "events/event.hpp"
+#include "event.hpp"
 
 using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing
 using common_event = cen::quit_event;

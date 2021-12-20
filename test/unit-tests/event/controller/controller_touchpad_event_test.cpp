@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "events/controller_events.hpp"
+#include "event.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

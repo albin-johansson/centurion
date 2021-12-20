@@ -63,7 +63,7 @@ class sdl_string final {
   explicit operator bool() const noexcept { return mStr.operator bool(); }
 
  private:
-  std::unique_ptr<char, detail::sdl_deleter> mStr;
+  std::unique_ptr<char, detail::SDLDeleter> mStr;
 };
 
 }  // namespace cen

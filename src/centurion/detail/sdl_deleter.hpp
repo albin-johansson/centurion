@@ -6,7 +6,7 @@
 /// \cond FALSE
 namespace cen::detail {
 
-struct sdl_deleter final {
+struct SDLDeleter final {
   void operator()(void* ptr) noexcept { SDL_free(ptr); }
 };
 

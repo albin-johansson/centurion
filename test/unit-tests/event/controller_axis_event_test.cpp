@@ -4,81 +4,46 @@
 
 TEST(ControllerAxisEvent, Defaults)
 {
-  cen::controller_axis_event event;
+  const cen::ControllerAxisEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::ControllerAxisMotion, event.GetType());
 }
 
-TEST(ControllerAxisEvent, Constructors)
-{
-  ASSERT_NO_THROW(cen::controller_axis_event{});
-
-  SDL_ControllerAxisEvent e;
-  ASSERT_NO_THROW(cen::controller_axis_event{e});
-}
-
 TEST(ControllerAxisEvent, SetWhich)
 {
-  cen::controller_axis_event event;
+  cen::ControllerAxisEvent event;
 
   const SDL_JoystickID id = 53;
-  event.set_which(id);
+  event.SetWhich(id);
 
-  ASSERT_EQ(id, event.which());
+  ASSERT_EQ(id, event.GetWhich());
 }
 
 TEST(ControllerAxisEvent, SetAxis)
 {
-  cen::controller_axis_event event;
+  cen::ControllerAxisEvent event;
 
   const auto axis = cen::ControllerAxis::TriggerRight;
-  event.set_axis(axis);
+  event.SetAxis(axis);
 
-  ASSERT_EQ(axis, event.axis());
+  ASSERT_EQ(axis, event.GetAxis());
 }
 
 TEST(ControllerAxisEvent, SetValue)
 {
-  cen::controller_axis_event event;
+  cen::ControllerAxisEvent event;
 
   const auto value = 4576;
-  event.set_value(value);
+  event.SetValue(value);
 
-  ASSERT_EQ(value, event.value());
-}
-
-TEST(ControllerAxisEvent, Which)
-{
-  SDL_ControllerAxisEvent sdl;
-  sdl.which = 54;
-
-  cen::controller_axis_event event{sdl};
-  ASSERT_EQ(sdl.which, event.which());
-}
-
-TEST(ControllerAxisEvent, Axis)
-{
-  SDL_ControllerAxisEvent sdl;
-  sdl.axis = static_cast<Uint8>(SDL_CONTROLLER_AXIS_INVALID);
-
-  cen::controller_axis_event event{sdl};
-  ASSERT_EQ(sdl.axis, static_cast<Uint8>(event.axis()));
-}
-
-TEST(ControllerAxisEvent, Value)
-{
-  SDL_ControllerAxisEvent sdl;
-  sdl.value = 1234;
-
-  cen::controller_axis_event event{sdl};
-  ASSERT_EQ(sdl.value, event.value());
+  ASSERT_EQ(value, event.GetValue());
 }
 
 TEST(ControllerAxisEvent, AsSDLEvent)
 {
-  const cen::controller_axis_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::ControllerAxisEvent event;
+  const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.caxis.type, cen::ToUnderlying(event.GetType()));
-  ASSERT_EQ(sdl.caxis.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.caxis.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.caxis.timestamp, event.GetTimestamp());
 }

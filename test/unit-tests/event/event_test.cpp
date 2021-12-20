@@ -40,9 +40,9 @@ template <typename T, typename E>
 
 // clang-format off
 static_assert(validate_event<cen::AudioDeviceEvent, SDL_AudioDeviceEvent>());
-static_assert(validate_event<cen::controller_axis_event, SDL_ControllerAxisEvent>());
-static_assert(validate_event<cen::controller_button_event, SDL_ControllerButtonEvent>());
-static_assert(validate_event<cen::controller_device_event, SDL_ControllerDeviceEvent>());
+static_assert(validate_event<cen::ControllerAxisEvent, SDL_ControllerAxisEvent>());
+static_assert(validate_event<cen::ControllerButtonEvent, SDL_ControllerButtonEvent>());
+static_assert(validate_event<cen::ControllerDeviceEvent, SDL_ControllerDeviceEvent>());
 static_assert(validate_event<cen::dollar_gesture_event, SDL_DollarGestureEvent>());
 static_assert(validate_event<cen::drop_event, SDL_DropEvent>());
 static_assert(validate_event<cen::joy_axis_event, SDL_JoyAxisEvent>());
@@ -65,8 +65,8 @@ static_assert(validate_event<cen::user_event, SDL_UserEvent>());
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 static_assert(validate_event<cen::display_event, SDL_DisplayEvent>());
-static_assert(validate_event<cen::controller_touchpad_event, SDL_ControllerTouchpadEvent>());
-static_assert(validate_event<cen::controller_sensor_event, SDL_ControllerSensorEvent>());
+static_assert(validate_event<cen::ControllerTouchpadEvent, SDL_ControllerTouchpadEvent>());
+static_assert(validate_event<cen::ControllerSensorEvent, SDL_ControllerSensorEvent>());
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 // clang-format on
@@ -202,8 +202,8 @@ TEST(Event, Is)
     const auto event = create_event(SDL_CONTROLLERAXISMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(event.Is<cen::controller_axis_event>());
-    ASSERT_FALSE(wrong.Is<cen::controller_axis_event>());
+    ASSERT_TRUE(event.Is<cen::ControllerAxisEvent>());
+    ASSERT_FALSE(wrong.Is<cen::ControllerAxisEvent>());
   }
 
   {  // controller_button_event
@@ -211,9 +211,9 @@ TEST(Event, Is)
     const auto down = create_event(SDL_CONTROLLERBUTTONDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(up.Is<cen::controller_button_event>());
-    ASSERT_TRUE(down.Is<cen::controller_button_event>());
-    ASSERT_FALSE(wrong.Is<cen::controller_button_event>());
+    ASSERT_TRUE(up.Is<cen::ControllerButtonEvent>());
+    ASSERT_TRUE(down.Is<cen::ControllerButtonEvent>());
+    ASSERT_FALSE(wrong.Is<cen::ControllerButtonEvent>());
   }
 
   {  // controller_device_event
@@ -222,10 +222,10 @@ TEST(Event, Is)
     const auto remapped = create_event(SDL_CONTROLLERDEVICEREMAPPED);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(added.Is<cen::controller_device_event>());
-    ASSERT_TRUE(removed.Is<cen::controller_device_event>());
-    ASSERT_TRUE(remapped.Is<cen::controller_device_event>());
-    ASSERT_FALSE(wrong.Is<cen::controller_device_event>());
+    ASSERT_TRUE(added.Is<cen::ControllerDeviceEvent>());
+    ASSERT_TRUE(removed.Is<cen::ControllerDeviceEvent>());
+    ASSERT_TRUE(remapped.Is<cen::ControllerDeviceEvent>());
+    ASSERT_FALSE(wrong.Is<cen::ControllerDeviceEvent>());
   }
 
   {  // dollar_gesture_event

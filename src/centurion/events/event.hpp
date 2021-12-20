@@ -10,11 +10,7 @@
 #include "../common.hpp"
 #include "audio_device_event.hpp"
 #include "event_base.hpp"
-#include "controller_axis_event.hpp"
-#include "controller_button_event.hpp"
-#include "controller_device_event.hpp"
-#include "controller_sensor_event.hpp"
-#include "controller_touchpad_event.hpp"
+#include "controller_events.hpp"
 #include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
@@ -194,9 +190,9 @@ class Event final {
   /* Behold, the beast! */
   using data_type = std::variant<std::monostate,
                                  AudioDeviceEvent,
-                                 controller_axis_event,
-                                 controller_button_event,
-                                 controller_device_event,
+                                 ControllerAxisEvent,
+                                 ControllerButtonEvent,
+                                 ControllerDeviceEvent,
                                  dollar_gesture_event,
                                  drop_event,
                                  joy_axis_event,
@@ -218,8 +214,8 @@ class Event final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                                  display_event,
-                                 controller_touchpad_event,
-                                 controller_sensor_event,
+                                 ControllerTouchpadEvent,
+                                 ControllerSensorEvent,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
                                  window_event>;
@@ -310,29 +306,29 @@ class Event final {
         break;
 
       case EventType::ControllerAxisMotion:
-        mData.emplace<controller_axis_event>(mEvent.caxis);
+        mData.emplace<ControllerAxisEvent>(mEvent.caxis);
         break;
 
       case EventType::ControllerButtonDown:
       case EventType::ControllerButtonUp:
-        mData.emplace<controller_button_event>(mEvent.cbutton);
+        mData.emplace<ControllerButtonEvent>(mEvent.cbutton);
         break;
 
       case EventType::ControllerDeviceAdded:
       case EventType::ControllerDeviceRemoved:
       case EventType::ControllerDeviceRemapped:
-        mData.emplace<controller_device_event>(mEvent.cdevice);
+        mData.emplace<ControllerDeviceEvent>(mEvent.cdevice);
         break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
       case EventType::ControllerTouchpadDown:
       case EventType::ControllerTouchpadUp:
       case EventType::ControllerTouchpadMotion:
-        mData.emplace<controller_touchpad_event>(mEvent.ctouchpad);
+        mData.emplace<ControllerTouchpadEvent>(mEvent.ctouchpad);
         break;
 
       case EventType::ControllerSensorUpdate:
-        mData.emplace<controller_sensor_event>(mEvent.csensor);
+        mData.emplace<ControllerSensorEvent>(mEvent.csensor);
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

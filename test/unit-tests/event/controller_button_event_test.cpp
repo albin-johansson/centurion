@@ -4,101 +4,49 @@
 
 TEST(ControllerButtonEvent, Defaults)
 {
-  cen::controller_button_event event;
+  const cen::ControllerButtonEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::ControllerButtonDown, event.GetType());
 }
 
-TEST(ControllerButtonEvent, Constructors)
-{
-  ASSERT_NO_THROW(cen::controller_button_event{});
-
-  SDL_ControllerButtonEvent e;
-  ASSERT_NO_THROW(cen::controller_button_event{e});
-}
-
 TEST(ControllerButtonEvent, SetButton)
 {
-  cen::controller_button_event event;
+  cen::ControllerButtonEvent event;
 
-  constexpr auto button = cen::ControllerButton::A;
-  event.set_button(button);
-
-  ASSERT_EQ(button, event.button());
+  event.SetButton(cen::ControllerButton::A);
+  ASSERT_EQ(cen::ControllerButton::A, event.GetButton());
 }
 
 TEST(ControllerButtonEvent, SetState)
 {
-  cen::controller_button_event event;
+  cen::ControllerButtonEvent event;
 
-  constexpr auto state = cen::ButtonState::Pressed;
-  event.set_state(state);
+  event.SetState(cen::ButtonState::Pressed);
 
-  ASSERT_EQ(state, event.state());
+  ASSERT_EQ(cen::ButtonState::Pressed, event.GetState());
+  ASSERT_TRUE(event.IsPressed());
+  ASSERT_FALSE(event.IsReleased());
+
+  event.SetState(cen::ButtonState::Released);
+
+  ASSERT_EQ(cen::ButtonState::Released, event.GetState());
+  ASSERT_TRUE(event.IsReleased());
+  ASSERT_FALSE(event.IsPressed());
 }
 
 TEST(ControllerButtonEvent, SetWhich)
 {
-  cen::controller_button_event event;
+  cen::ControllerButtonEvent event;
 
-  constexpr auto which = 7;
-  event.set_which(which);
-
-  ASSERT_EQ(which, event.which());
-}
-
-TEST(ControllerButtonEvent, Button)
-{
-  SDL_ControllerButtonEvent sdl;
-  sdl.button = SDL_CONTROLLER_BUTTON_A;
-
-  const cen::controller_button_event event{sdl};
-  ASSERT_EQ(cen::ControllerButton::A, event.button());
-}
-
-TEST(ControllerButtonEvent, State)
-{
-  SDL_ControllerButtonEvent sdl;
-  sdl.state = SDL_RELEASED;
-
-  const cen::controller_button_event event{sdl};
-  ASSERT_EQ(cen::ButtonState::Released, event.state());
-}
-
-TEST(ControllerButtonEvent, Released)
-{
-  SDL_ControllerButtonEvent sdl;
-  sdl.state = SDL_RELEASED;
-
-  const cen::controller_button_event event{sdl};
-  ASSERT_TRUE(event.released());
-  ASSERT_FALSE(event.pressed());
-}
-
-TEST(ControllerButtonEvent, Pressed)
-{
-  SDL_ControllerButtonEvent sdl;
-  sdl.state = SDL_PRESSED;
-
-  const cen::controller_button_event event{sdl};
-  ASSERT_TRUE(event.pressed());
-  ASSERT_FALSE(event.released());
-}
-
-TEST(ControllerButtonEvent, Which)
-{
-  SDL_ControllerButtonEvent sdl;
-  sdl.which = 16;
-
-  const cen::controller_button_event event{sdl};
-  ASSERT_EQ(16, event.which());
+  event.SetWhich(7);
+  ASSERT_EQ(7, event.GetWhich());
 }
 
 TEST(ControllerButtonEvent, AsSDLEvent)
 {
-  const cen::controller_button_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::ControllerButtonEvent event;
+  const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.cbutton.type, cen::ToUnderlying(event.GetType()));
-  ASSERT_EQ(sdl.cbutton.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.cbutton.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.cbutton.timestamp, event.GetTimestamp());
 }

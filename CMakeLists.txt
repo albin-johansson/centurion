@@ -98,17 +98,13 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/tuple_type_index.hpp
 
                src/centurion/events/audio_device_event.hpp
-               src/centurion/events/event_base.hpp
-               src/centurion/events/controller_axis_event.hpp
-               src/centurion/events/controller_button_event.hpp
-               src/centurion/events/controller_device_event.hpp
-               src/centurion/events/controller_sensor_event.hpp
-               src/centurion/events/controller_touchpad_event.hpp
+               src/centurion/events/controller_events.hpp
                src/centurion/events/display_event.hpp
                src/centurion/events/display_event_id.hpp
                src/centurion/events/dollar_gesture_event.hpp
                src/centurion/events/drop_event.hpp
                src/centurion/events/event.hpp
+               src/centurion/events/event_base.hpp
                src/centurion/events/event_dispatcher.hpp
                src/centurion/events/event_type.hpp
                src/centurion/events/joy_axis_event.hpp

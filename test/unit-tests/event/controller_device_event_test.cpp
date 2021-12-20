@@ -4,43 +4,26 @@
 
 TEST(ControllerDeviceEvent, Defaults)
 {
-  cen::controller_device_event event;
+  const cen::ControllerDeviceEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::ControllerDeviceAdded, event.GetType());
 }
 
-TEST(ControllerDeviceEvent, Constructors)
-{
-  ASSERT_NO_THROW(cen::controller_device_event{});
-
-  SDL_ControllerDeviceEvent e;
-  ASSERT_NO_THROW(cen::controller_device_event{e});
-}
-
 TEST(ControllerDeviceEvent, SetWhich)
 {
-  cen::controller_device_event event;
+  cen::ControllerDeviceEvent event;
 
   constexpr auto which = 4;
-  event.set_which(which);
+  event.SetWhich(which);
 
-  ASSERT_EQ(which, event.which());
-}
-
-TEST(ControllerDeviceEvent, Which)
-{
-  SDL_ControllerDeviceEvent sdl;
-  sdl.which = 11;
-
-  const cen::controller_device_event event{sdl};
-  ASSERT_EQ(11, event.which());
+  ASSERT_EQ(which, event.GetWhich());
 }
 
 TEST(ControllerDeviceEvent, AsSDLEvent)
 {
-  const cen::controller_device_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::ControllerDeviceEvent event;
+  const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.cdevice.type, cen::ToUnderlying(event.GetType()));
-  ASSERT_EQ(sdl.cdevice.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.cdevice.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.cdevice.timestamp, event.GetTimestamp());
 }

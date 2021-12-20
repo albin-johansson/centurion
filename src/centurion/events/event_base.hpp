@@ -24,9 +24,9 @@ class EventBase {
     SetType(type);
   }
 
-  explicit EventBase(const T& event) : mEvent{event} {}
+  explicit EventBase(const T& event) noexcept : mEvent{event} {}
 
-  explicit EventBase(T&& event) : mEvent{std::move(event)} {}
+  explicit EventBase(T&& event) noexcept : mEvent{std::move(event)} {}
 
   /// Sets the timestamp of the creation of the event. TODO U32_Millis?
   void SetTimestamp(const Uint32 timestamp) noexcept { mEvent.timestamp = timestamp; }

@@ -98,7 +98,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/tuple_type_index.hpp
 
                src/centurion/events/audio_device_event.hpp
-               src/centurion/events/common_event.hpp
+               src/centurion/events/event_base.hpp
                src/centurion/events/controller_axis_event.hpp
                src/centurion/events/controller_button_event.hpp
                src/centurion/events/controller_device_event.hpp

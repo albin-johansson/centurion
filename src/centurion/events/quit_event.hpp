@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -20,14 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class quit_event final : public common_event<SDL_QuitEvent> {
+class quit_event final : public EventBase<SDL_QuitEvent> {
  public:
   /**
    * \brief Creates a quit event.
    *
    * \since 4.0.0
    */
-  quit_event() noexcept : common_event{EventType::Quit} {}
+  quit_event() noexcept : EventBase{EventType::Quit} {}
 
   /**
    * \brief Creates a quit event based on the supplied SDL event.
@@ -36,14 +36,14 @@ class quit_event final : public common_event<SDL_QuitEvent> {
    *
    * \since 4.0.0
    */
-  explicit quit_event(const SDL_QuitEvent& event) noexcept : common_event{event} {}
+  explicit quit_event(const SDL_QuitEvent& event) noexcept : EventBase{event} {}
 };
 
 /// \name SDL event conversions
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_QuitEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.quit = event.get();

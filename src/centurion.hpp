@@ -63,7 +63,7 @@
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/core/version.hpp"
 #include "centurion/events/audio_device_event.hpp"
-#include "centurion/events/common_event.hpp"
+#include "centurion/events/event_base.hpp"
 #include "centurion/events/controller_axis_event.hpp"
 #include "centurion/events/controller_button_event.hpp"
 #include "centurion/events/controller_device_event.hpp"

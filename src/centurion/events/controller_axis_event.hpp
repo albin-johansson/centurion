@@ -5,7 +5,7 @@
 
 #include "../common.hpp"
 #include "../input/controller.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -19,14 +19,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class controller_axis_event final : public common_event<SDL_ControllerAxisEvent> {
+class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
  public:
   /**
    * \brief Creates a controller axis event of type `controller_axis_motion`.
    *
    * \since 4.0.0
    */
-  controller_axis_event() noexcept : common_event{cen::EventType::ControllerAxisMotion} {}
+  controller_axis_event() noexcept : EventBase{cen::EventType::ControllerAxisMotion} {}
 
   /**
    * \brief Creates a controller axis event that is based on the supplied SDL
@@ -37,7 +37,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    * \since 4.0.0
    */
   explicit controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -108,7 +108,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_ControllerAxisEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.caxis = event.get();

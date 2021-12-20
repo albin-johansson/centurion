@@ -5,8 +5,8 @@
 TEST(JoyDeviceEvent, Defaults)
 {
   cen::joy_device_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::JoyDeviceAdded, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::JoyDeviceAdded, event.GetType());
 }
 
 TEST(JoyDeviceEvent, SetWhich)
@@ -31,8 +31,8 @@ TEST(JoyDeviceEvent, Which)
 TEST(JoyDeviceEvent, AsSDLEvent)
 {
   const cen::joy_device_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jdevice.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.jdevice.timestamp, event.time());
+  ASSERT_EQ(sdl.jdevice.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jdevice.timestamp, event.GetTimestamp());
 }

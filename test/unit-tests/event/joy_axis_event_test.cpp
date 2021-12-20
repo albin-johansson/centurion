@@ -5,8 +5,8 @@
 TEST(JoyAxisEvent, Defaults)
 {
   cen::joy_axis_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::JoyAxisMotion, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::JoyAxisMotion, event.GetType());
 }
 
 TEST(JoyAxisEvent, SetWhich)
@@ -69,8 +69,8 @@ TEST(JoyAxisEvent, Value)
 TEST(JoyAxisEvent, AsSDLEvent)
 {
   const cen::joy_axis_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jaxis.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.jaxis.timestamp, event.time());
+  ASSERT_EQ(sdl.jaxis.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jaxis.timestamp, event.GetTimestamp());
 }

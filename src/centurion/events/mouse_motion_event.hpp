@@ -5,7 +5,7 @@
 
 #include "../common.hpp"
 #include "../mouse.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
+class mouse_motion_event final : public EventBase<SDL_MouseMotionEvent> {
  public:
   /**
    * \brief Creates a mouse motion event.
    *
    * \since 4.0.0
    */
-  mouse_motion_event() noexcept : common_event{EventType::MouseMotion} {}
+  mouse_motion_event() noexcept : EventBase{EventType::MouseMotion} {}
 
   /**
    * \brief Creates an event based on an SDL event.
@@ -37,7 +37,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
    *
    * \since 4.0.0
    */
-  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept : common_event{event}
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept : EventBase{event}
   {}
 
   /**
@@ -197,7 +197,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_MouseMotionEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.motion = event.get();

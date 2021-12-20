@@ -5,7 +5,7 @@
 
 #include "../common.hpp"
 #include "../detail/stdlib.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,7 +21,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class controller_touchpad_event final : public common_event<SDL_ControllerTouchpadEvent> {
+class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadEvent> {
  public:
   /**
    * \brief Creates a controller touchpad event with `controller_touchpad_down` as the specific
@@ -33,7 +33,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \since 6.3.0
    */
-  controller_touchpad_event() noexcept : common_event{EventType::ControllerTouchpadDown} {}
+  controller_touchpad_event() noexcept : EventBase{EventType::ControllerTouchpadDown} {}
 
   /**
    * \brief Creates a controller touchpad event based an SDL event.
@@ -43,7 +43,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    * \since 6.3.0
    */
   explicit controller_touchpad_event(const SDL_ControllerTouchpadEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -165,7 +165,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerTouchpadEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_ControllerTouchpadEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.ctouchpad = event.get();

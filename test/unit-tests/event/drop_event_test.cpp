@@ -5,8 +5,8 @@
 TEST(DropEvent, Defaults)
 {
   cen::drop_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::DropFile, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::DropFile, event.GetType());
 }
 
 TEST(DropEvent, SetWillFreeFile)
@@ -72,8 +72,8 @@ TEST(DropEvent, WindowId)
 TEST(DropEvent, AsSDLEvent)
 {
   const cen::drop_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.drop.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.drop.timestamp, event.time());
+  ASSERT_EQ(sdl.drop.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.drop.timestamp, event.GetTimestamp());
 }

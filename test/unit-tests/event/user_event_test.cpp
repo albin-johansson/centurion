@@ -60,10 +60,10 @@ TEST(UserEvent, SetData2)
 TEST(UserEvent, AsSDLEvent)
 {
   const cen::user_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.user.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.user.timestamp, event.time());
+  ASSERT_EQ(sdl.user.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.user.timestamp, event.GetTimestamp());
   ASSERT_EQ(sdl.user.code, event.code());
   ASSERT_EQ(sdl.user.windowID, event.window_id());
   ASSERT_EQ(sdl.user.data1, event.data_1());

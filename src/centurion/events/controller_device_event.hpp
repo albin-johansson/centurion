@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class controller_device_event final : public common_event<SDL_ControllerDeviceEvent> {
+class controller_device_event final : public EventBase<SDL_ControllerDeviceEvent> {
  public:
   /**
    * \brief Creates a controller device event of type `controller_device_added`.
    *
    * \since 4.0.0
    */
-  controller_device_event() noexcept : common_event{EventType::ControllerDeviceAdded} {}
+  controller_device_event() noexcept : EventBase{EventType::ControllerDeviceAdded} {}
 
   /**
    * \brief Creates a controller device event that is based on the supplied SDL
@@ -39,7 +39,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
    * \since 4.0.0
    */
   explicit controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -73,7 +73,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_ControllerDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cdevice = event.get();

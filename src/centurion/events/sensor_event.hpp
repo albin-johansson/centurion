@@ -7,7 +7,7 @@
 
 #include "../common.hpp"
 #include "../detail/array_utils.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,7 +21,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class sensor_event final : public common_event<SDL_SensorEvent> {
+class sensor_event final : public EventBase<SDL_SensorEvent> {
  public:
   using data_type = std::array<float, 6>;
 
@@ -30,7 +30,7 @@ class sensor_event final : public common_event<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  sensor_event() noexcept : common_event{EventType::SensorUpdate} {}
+  sensor_event() noexcept : EventBase{EventType::SensorUpdate} {}
 
   /**
    * \brief Creates a sensor event based on an SDL event.
@@ -39,7 +39,7 @@ class sensor_event final : public common_event<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  explicit sensor_event(const SDL_SensorEvent& event) noexcept : common_event{event} {}
+  explicit sensor_event(const SDL_SensorEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the sensor instance ID associated with the event.
@@ -81,7 +81,7 @@ class sensor_event final : public common_event<SDL_SensorEvent> {
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_SensorEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_SensorEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.sensor = event.get();

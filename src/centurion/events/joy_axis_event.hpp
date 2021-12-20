@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
+class joy_axis_event final : public EventBase<SDL_JoyAxisEvent> {
  public:
   /**
    * \brief Creates a joy axis event.
    *
    * \since 4.0.0
    */
-  joy_axis_event() noexcept : common_event{EventType::JoyAxisMotion} {}
+  joy_axis_event() noexcept : EventBase{EventType::JoyAxisMotion} {}
 
   /**
    * \brief Creates a joy axis event based on the supplied SDL joy axis event.
@@ -37,7 +37,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
    *
    * \since 4.0.0
    */
-  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : common_event{event} {}
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -98,7 +98,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_JoyAxisEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jaxis = event.get();

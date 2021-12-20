@@ -5,8 +5,8 @@
 TEST(DollarGestureEvent, Defaults)
 {
   cen::dollar_gesture_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::DollarGesture, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::DollarGesture, event.GetType());
 }
 
 TEST(DollarGestureEvent, SetTouchId)
@@ -126,8 +126,8 @@ TEST(DollarGestureEvent, Y)
 TEST(DollarGestureEvent, AsSDLEvent)
 {
   const cen::dollar_gesture_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.dgesture.type, static_cast<Uint32>(event.type()));
-  ASSERT_EQ(sdl.dgesture.timestamp, event.time());
+  ASSERT_EQ(sdl.dgesture.type, static_cast<Uint32>(event.GetType()));
+  ASSERT_EQ(sdl.dgesture.timestamp, event.GetTimestamp());
 }

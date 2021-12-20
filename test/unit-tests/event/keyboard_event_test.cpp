@@ -6,8 +6,8 @@
 TEST(KeyboardEvent, Defaults)
 {
   cen::keyboard_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::KeyDown, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::KeyDown, event.GetType());
 }
 
 TEST(KeyboardEvent, SetScanCode)
@@ -273,8 +273,8 @@ TEST(KeyboardEvent, WindowId)
 TEST(KeyboardEvent, AsSDLEvent)
 {
   const cen::keyboard_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.key.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.key.timestamp, event.time());
+  ASSERT_EQ(sdl.key.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.key.timestamp, event.GetTimestamp());
 }

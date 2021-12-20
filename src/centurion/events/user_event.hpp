@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -18,7 +18,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class user_event final : public common_event<SDL_UserEvent> {
+class user_event final : public EventBase<SDL_UserEvent> {
  public:
   /**
    * \brief Creates a user event.
@@ -28,7 +28,7 @@ class user_event final : public common_event<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  user_event() noexcept : common_event{EventType::User} {}
+  user_event() noexcept : EventBase{EventType::User} {}
 
   /**
    * \brief Creates a user event based on an SDL event.
@@ -37,7 +37,7 @@ class user_event final : public common_event<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  explicit user_event(const SDL_UserEvent& event) noexcept : common_event{event} {}
+  explicit user_event(const SDL_UserEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -113,7 +113,7 @@ class user_event final : public common_event<SDL_UserEvent> {
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_UserEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_UserEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.user = event.get();

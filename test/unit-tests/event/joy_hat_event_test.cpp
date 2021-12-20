@@ -5,8 +5,8 @@
 TEST(JoyHatEvent, Defaults)
 {
   cen::joy_hat_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::JoyHatMotion, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::JoyHatMotion, event.GetType());
 }
 
 TEST(JoyHatEvent, SetHat)
@@ -50,8 +50,8 @@ TEST(JoyHatEvent, Position)
 TEST(JoyHatEvent, AsSDLEvent)
 {
   const cen::joy_hat_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jhat.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.jhat.timestamp, event.time());
+  ASSERT_EQ(sdl.jhat.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jhat.timestamp, event.GetTimestamp());
 }

@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 #include "mouse_wheel_direction.hpp"
 
 namespace cen {
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
+class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
  public:
   /**
    * \brief Creates a mouse wheel event.
    *
    * \since 4.0.0
    */
-  mouse_wheel_event() noexcept : common_event{EventType::MouseWheel} {}
+  mouse_wheel_event() noexcept : EventBase{EventType::MouseWheel} {}
 
   /**
    * \brief Creates an event based on the supplied SDL event.
@@ -37,7 +37,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : common_event{event}
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : EventBase{event}
   {}
 
   /**
@@ -154,7 +154,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_MouseWheelEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.wheel = event.get();

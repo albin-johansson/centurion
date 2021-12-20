@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 #include "display_event_id.hpp"
 
 namespace cen {
@@ -23,14 +23,14 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class display_event final : public common_event<SDL_DisplayEvent> {
+class display_event final : public EventBase<SDL_DisplayEvent> {
  public:
   /**
    * \brief Creates a display event.
    *
    * \since 6.3.0
    */
-  display_event() noexcept : common_event{EventType::Display} {}
+  display_event() noexcept : EventBase{EventType::Display} {}
 
   /**
    * \brief Creates a display event based an SDL event.
@@ -39,7 +39,7 @@ class display_event final : public common_event<SDL_DisplayEvent> {
    *
    * \since 6.3.0
    */
-  explicit display_event(const SDL_DisplayEvent& event) noexcept : common_event{event} {}
+  explicit display_event(const SDL_DisplayEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the associated display event ID.
@@ -110,7 +110,7 @@ class display_event final : public common_event<SDL_DisplayEvent> {
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_DisplayEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_DisplayEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.display = event.get();

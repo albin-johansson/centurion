@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
+class multi_gesture_event final : public EventBase<SDL_MultiGestureEvent> {
  public:
   /**
    * \brief Creates a multi-gesture event.
    *
    * \since 4.0.0
    */
-  multi_gesture_event() noexcept : common_event{EventType::MultiGesture} {}
+  multi_gesture_event() noexcept : EventBase{EventType::MultiGesture} {}
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.
@@ -38,7 +38,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
    * \since 4.0.0
    */
   explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -167,7 +167,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MultiGestureEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_MultiGestureEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.mgesture = event.get();

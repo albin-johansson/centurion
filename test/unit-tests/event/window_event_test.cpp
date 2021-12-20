@@ -5,8 +5,8 @@
 TEST(WindowEvent, Defaults)
 {
   cen::window_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::Window, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::Window, event.GetType());
 }
 
 TEST(WindowEvent, EventId)
@@ -45,8 +45,8 @@ TEST(WindowEvent, Data2)
 TEST(WindowEvent, AsSDLEvent)
 {
   const cen::window_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.window.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.window.timestamp, event.time());
+  ASSERT_EQ(sdl.window.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.window.timestamp, event.GetTimestamp());
 }

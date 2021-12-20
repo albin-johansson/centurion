@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -20,14 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
+class dollar_gesture_event final : public EventBase<SDL_DollarGestureEvent> {
  public:
   /**
    * \brief Creates a dollar gesture event of type `dollar_gesture`.
    *
    * \since 4.0.0
    */
-  dollar_gesture_event() noexcept : common_event{EventType::DollarGesture} {}
+  dollar_gesture_event() noexcept : EventBase{EventType::DollarGesture} {}
 
   /**
    * \brief Creates a dollar gesture event that is based on the supplied SDL
@@ -38,7 +38,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
    * \since 4.0.0
    */
   explicit dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -160,7 +160,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_DollarGestureEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_DollarGestureEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.dgesture = event.get();

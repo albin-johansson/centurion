@@ -6,7 +6,7 @@
 #include <string_view>  // string_view
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -22,14 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class text_input_event final : public common_event<SDL_TextInputEvent> {
+class text_input_event final : public EventBase<SDL_TextInputEvent> {
  public:
   /**
    * \brief Creates a text input event.
    *
    * \since 4.0.0
    */
-  text_input_event() noexcept : common_event{EventType::TextInput} {}
+  text_input_event() noexcept : EventBase{EventType::TextInput} {}
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.
@@ -38,7 +38,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent> {
    *
    * \since 4.0.0
    */
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : common_event{event} {}
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -75,7 +75,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_TextInputEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_TextInputEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.text = event.get();

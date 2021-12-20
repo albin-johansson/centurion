@@ -5,8 +5,8 @@
 TEST(JoyBallEvent, Defaults)
 {
   cen::joy_ball_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::JoyBallMotion, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::JoyBallMotion, event.GetType());
 }
 
 TEST(JoyBallEvent, SetWhich)
@@ -88,8 +88,8 @@ TEST(JoyBallEvent, Dy)
 TEST(JoyBallEvent, AsSDLEvent)
 {
   const cen::joy_ball_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jball.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.jball.timestamp, event.time());
+  ASSERT_EQ(sdl.jball.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jball.timestamp, event.GetTimestamp());
 }

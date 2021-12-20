@@ -4,33 +4,32 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
 /// \addtogroup event
 /// \{
 
-class AudioDeviceEvent final : public common_event<SDL_AudioDeviceEvent> {
+class AudioDeviceEvent final : public EventBase<SDL_AudioDeviceEvent> {
  public:
-  AudioDeviceEvent() noexcept : common_event{EventType::AudioDeviceAdded} {}
+  AudioDeviceEvent() noexcept : EventBase{EventType::AudioDeviceAdded} {}
 
-  explicit AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept : common_event{event}
-  {}
+  explicit AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept : EventBase{event} {}
 
-  void set_which(const Uint32 which) noexcept { m_event.which = which; }
-  void set_capture(const bool capture) noexcept { m_event.iscapture = capture; }
+  void SetWhich(const Uint32 which) noexcept { m_event.which = which; }
+  void SetCapture(const bool capture) noexcept { m_event.iscapture = capture; }
 
-  [[nodiscard]] auto which() const noexcept -> Uint32 { return m_event.which; }
-  [[nodiscard]] auto output() const noexcept -> bool { return !capture(); }
-  [[nodiscard]] auto capture() const noexcept -> bool { return m_event.iscapture; }
+  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return m_event.which; }
+  [[nodiscard]] auto IsCapture() const noexcept -> bool { return m_event.iscapture; }
+  [[nodiscard]] auto IsOutput() const noexcept -> bool { return !IsCapture(); }
 };
 
 /// \name SDL event conversions
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_AudioDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.adevice = event.get();

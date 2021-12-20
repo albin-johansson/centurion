@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -20,14 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
+class joy_device_event final : public EventBase<SDL_JoyDeviceEvent> {
  public:
   /**
    * \brief Creates a joystick device event of type `joystick_device_added`.
    *
    * \since 4.0.0
    */
-  joy_device_event() noexcept : common_event{EventType::JoyDeviceAdded} {}
+  joy_device_event() noexcept : EventBase{EventType::JoyDeviceAdded} {}
 
   /**
    * \brief Creates a joy_device_event that is based on the supplied SDL event.
@@ -36,7 +36,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
    *
    * \since 4.0.0
    */
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : common_event{event} {}
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the joystick device index or instance ID, depending on the type
@@ -66,7 +66,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_JoyDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jdevice = event.get();

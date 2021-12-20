@@ -7,9 +7,9 @@
 TEST(DisplayEvent, Defaults)
 {
   const cen::display_event event;
-  ASSERT_EQ(cen::EventType::Display, event.type());
+  ASSERT_EQ(cen::EventType::Display, event.GetType());
   ASSERT_EQ(cen::display_event_id::none, event.event_id());
-  ASSERT_GT(event.time(), 0u);
+  ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(0u, event.index());
   ASSERT_EQ(0, event.data_1());
 }
@@ -62,12 +62,12 @@ TEST(DisplayEvent, Data1)
 TEST(DisplayEvent, AsSdlEvent)
 {
   cen::display_event event;
-  event.set_time(1'337u);
+  event.SetTimestamp(1'337u);
   event.set_index(123u);
   event.set_event_id(cen::display_event_id::connected);
   event.set_data_1(5);
 
-  const auto converted = cen::as_sdl_event(event);
+  const auto converted = cen::AsSDLEvent(event);
   ASSERT_EQ(SDL_DISPLAYEVENT, static_cast<SDL_EventType>(converted.display.type));
   ASSERT_EQ(1'337u, converted.display.timestamp);
   ASSERT_EQ(123u, converted.display.display);

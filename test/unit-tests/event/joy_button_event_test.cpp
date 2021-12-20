@@ -5,8 +5,8 @@
 TEST(JoyButtonEvent, Defaults)
 {
   cen::joy_button_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::JoyButtonDown, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::JoyButtonDown, event.GetType());
 }
 
 TEST(JoyButtonEvent, SetWhich)
@@ -87,8 +87,8 @@ TEST(JoyButtonEvent, Released)
 TEST(JoyButtonEvent, AsSDLEvent)
 {
   const cen::joy_button_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jbutton.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.jbutton.timestamp, event.time());
+  ASSERT_EQ(sdl.jbutton.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jbutton.timestamp, event.GetTimestamp());
 }

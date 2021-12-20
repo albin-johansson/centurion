@@ -5,8 +5,8 @@
 TEST(TouchFingerEvent, Defaults)
 {
   cen::touch_finger_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::FingerDown, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::FingerDown, event.GetType());
 }
 
 TEST(TouchFingerEvent, SetTouchId)
@@ -228,8 +228,8 @@ TEST(TouchFingerEvent, Pressure)
 TEST(TouchFingerEvent, AsSDLEvent)
 {
   const cen::touch_finger_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.tfinger.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.tfinger.timestamp, event.time());
+  ASSERT_EQ(sdl.tfinger.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.tfinger.timestamp, event.GetTimestamp());
 }

@@ -10,9 +10,9 @@ TEST(CommonEvent, SetTime)
   common_event event;
 
   constexpr Uint32 time = 8'934;
-  event.set_time(time);
+  event.SetTimestamp(time);
 
-  ASSERT_EQ(time, event.time());
+  ASSERT_EQ(time, event.GetTimestamp());
 }
 
 TEST(CommonEvent, SetType)
@@ -20,9 +20,9 @@ TEST(CommonEvent, SetType)
   common_event event;
 
   const auto type = cen::EventType::AppLowMemory;
-  event.set_type(type);
+  event.SetType(type);
 
-  ASSERT_EQ(type, event.type());
+  ASSERT_EQ(type, event.GetType());
 }
 
 TEST(CommonEvent, Time)
@@ -33,7 +33,7 @@ TEST(CommonEvent, Time)
   sdl.timestamp = time;
 
   const common_event event{sdl};
-  ASSERT_EQ(time, event.time());
+  ASSERT_EQ(time, event.GetTimestamp());
 }
 
 TEST(CommonEvent, Type)
@@ -42,7 +42,7 @@ TEST(CommonEvent, Type)
   sdl.type = SDL_MOUSEMOTION;
 
   const common_event event{sdl};
-  ASSERT_EQ(cen::EventType::MouseMotion, event.type());
+  ASSERT_EQ(cen::EventType::MouseMotion, event.GetType());
 }
 
 TEST(CommonEvent, Get)

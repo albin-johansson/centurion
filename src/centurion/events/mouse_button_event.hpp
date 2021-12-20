@@ -6,7 +6,7 @@
 #include "../common.hpp"
 #include "../input/button_state.hpp"
 #include "../mouse.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -22,14 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
+class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
  public:
   /**
    * \brief Creates a mouse button event of type `mouse_button_down`.
    *
    * \since 4.0.0
    */
-  mouse_button_event() noexcept : common_event{EventType::MouseButtonDown} {}
+  mouse_button_event() noexcept : EventBase{EventType::MouseButtonDown} {}
 
   /**
    * \brief Creates a mouse_button_event that is based on the supplied SDL
@@ -39,7 +39,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : common_event{event}
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : EventBase{event}
   {}
 
   /**
@@ -204,7 +204,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_MouseButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.button = event.get();

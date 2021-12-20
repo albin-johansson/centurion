@@ -6,7 +6,7 @@
 #include "../common.hpp"
 #include "../input/button_state.hpp"
 #include "../keyboard.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -23,14 +23,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class keyboard_event final : public common_event<SDL_KeyboardEvent> {
+class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
  public:
   /**
    * \brief Creates a keyboard event of type `key_down`.
    *
    * \since 4.0.0
    */
-  keyboard_event() noexcept : common_event{EventType::KeyDown} {}
+  keyboard_event() noexcept : EventBase{EventType::KeyDown} {}
 
   /**
    * \brief Creates a keyboard event based on the supplied SDL event.
@@ -39,7 +39,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : common_event{event} {}
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the scan code that is associated with the event.
@@ -305,7 +305,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_KeyboardEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.key = event.get();

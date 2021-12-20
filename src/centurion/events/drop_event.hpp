@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -20,14 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class drop_event final : public common_event<SDL_DropEvent> {
+class drop_event final : public EventBase<SDL_DropEvent> {
  public:
   /**
    * \brief Creates a drop event of type `drop_file`.
    *
    * \since 4.0.0
    */
-  drop_event() noexcept : common_event{EventType::DropFile} {}
+  drop_event() noexcept : EventBase{EventType::DropFile} {}
 
   /**
    * \brief Creates a drop event based on the supplied event.
@@ -36,7 +36,7 @@ class drop_event final : public common_event<SDL_DropEvent> {
    *
    * \since 4.0.0
    */
-  explicit drop_event(const SDL_DropEvent& event) noexcept : common_event{event} {}
+  explicit drop_event(const SDL_DropEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Destroys the drop event.
@@ -152,7 +152,7 @@ class drop_event final : public common_event<SDL_DropEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_DropEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.drop = event.get();

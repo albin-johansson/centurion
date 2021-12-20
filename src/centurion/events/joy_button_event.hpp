@@ -5,7 +5,7 @@
 
 #include "../common.hpp"
 #include "../input/button_state.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -22,14 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
+class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
  public:
   /**
    * \brief Creates a joystick button event of type `joystick_button_down`.
    *
    * \since 4.0.0
    */
-  joy_button_event() noexcept : common_event{EventType::JoyButtonDown} {}
+  joy_button_event() noexcept : EventBase{EventType::JoyButtonDown} {}
 
   /**
    * \brief Creates a joy_button_event based on the supplied event.
@@ -38,7 +38,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : common_event{event} {}
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -128,7 +128,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_JoyButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jbutton = event.get();

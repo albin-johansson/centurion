@@ -5,8 +5,8 @@
 TEST(QuitEvent, Defaults)
 {
   cen::quit_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::Quit, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::Quit, event.GetType());
 }
 
 TEST(QuitEvent, Construction)
@@ -20,8 +20,8 @@ TEST(QuitEvent, Construction)
 TEST(QuitEvent, AsSDLEvent)
 {
   const cen::quit_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.quit.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.quit.timestamp, event.time());
+  ASSERT_EQ(sdl.quit.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.quit.timestamp, event.GetTimestamp());
 }

@@ -9,7 +9,7 @@
 
 #include "../common.hpp"
 #include "audio_device_event.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 #include "controller_axis_event.hpp"
 #include "controller_button_event.hpp"
 #include "controller_device_event.hpp"
@@ -50,7 +50,7 @@ class Event final {
   }
 
   template <typename T>
-  explicit Event(const common_event<T>& event) noexcept : mEvent{as_sdl_event(event)}
+  explicit Event(const EventBase<T>& event) noexcept : mEvent{AsSDLEvent(event)}
   {
     UpdateData(event.type());
   }
@@ -65,9 +65,9 @@ class Event final {
   }
 
   template <typename T>
-  static auto Push(const common_event<T>& event) noexcept -> Result
+  static auto Push(const EventBase<T>& event) noexcept -> Result
   {
-    auto sdlEvent = as_sdl_event(event);
+    auto sdlEvent = AsSDLEvent(event);
     return SDL_PushEvent(&sdlEvent) >= 0;
   }
 

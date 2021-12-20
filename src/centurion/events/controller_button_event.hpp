@@ -5,7 +5,7 @@
 
 #include "../common.hpp"
 #include "../input/controller.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -22,14 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class controller_button_event final : public common_event<SDL_ControllerButtonEvent> {
+class controller_button_event final : public EventBase<SDL_ControllerButtonEvent> {
  public:
   /**
    * \brief Creates a controller button event of type `controller_button_down`.
    *
    * \since 4.0.0
    */
-  controller_button_event() noexcept : common_event{EventType::ControllerButtonDown} {}
+  controller_button_event() noexcept : EventBase{EventType::ControllerButtonDown} {}
 
   /**
    * \brief Creates a controller button event that is based on the supplied SDL
@@ -40,7 +40,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    * \since 4.0.0
    */
   explicit controller_button_event(const SDL_ControllerButtonEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -136,7 +136,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_ControllerButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cbutton = event.get();

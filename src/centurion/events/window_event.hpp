@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "common_event.hpp"
+#include "event_base.hpp"
 #include "window_event_id.hpp"
 
 namespace cen {
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class window_event final : public common_event<SDL_WindowEvent> {
+class window_event final : public EventBase<SDL_WindowEvent> {
  public:
   /**
    * \brief Creates a window event.
    *
    * \since 4.0.0
    */
-  window_event() noexcept : common_event{EventType::Window} {}
+  window_event() noexcept : EventBase{EventType::Window} {}
 
   /**
    * \brief Creates a window event based on the supplied SDL window event.
@@ -37,7 +37,7 @@ class window_event final : public common_event<SDL_WindowEvent> {
    *
    * \since 4.0.0
    */
-  explicit window_event(const SDL_WindowEvent& event) noexcept : common_event{event} {}
+  explicit window_event(const SDL_WindowEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Returns the event ID of this window event.
@@ -93,7 +93,7 @@ class window_event final : public common_event<SDL_WindowEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_WindowEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.window = event.get();

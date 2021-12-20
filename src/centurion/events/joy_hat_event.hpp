@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 #include "joy_hat_position.hpp"
 
 namespace cen {
@@ -22,14 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
+class joy_hat_event final : public EventBase<SDL_JoyHatEvent> {
  public:
   /**
    * \brief Creates a joy hat event.
    *
    * \since 4.0.0
    */
-  joy_hat_event() noexcept : common_event{EventType::JoyHatMotion} {}
+  joy_hat_event() noexcept : EventBase{EventType::JoyHatMotion} {}
 
   /**
    * \brief Creates a joy hat event based on the supplied SDL event.
@@ -38,7 +38,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
    *
    * \since 4.0.0
    */
-  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : common_event{event} {}
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the hat index associated with the event.
@@ -87,7 +87,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_JoyHatEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jhat = event.get();

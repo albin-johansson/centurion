@@ -5,7 +5,7 @@
 
 #include "../common.hpp"
 #include "../detail/stdlib.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
+class touch_finger_event final : public EventBase<SDL_TouchFingerEvent> {
  public:
   /**
    * \brief Creates a touch finger event of type `touch_down`.
    *
    * \since 4.0.0
    */
-  touch_finger_event() noexcept : common_event{EventType::FingerDown} {}
+  touch_finger_event() noexcept : EventBase{EventType::FingerDown} {}
 
   /**
    * \brief Creates a touch finger event that is based on the supplied SDL
@@ -38,7 +38,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
    *
    * \since 4.0.0
    */
-  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : common_event{event}
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : EventBase{event}
   {}
 
   /**
@@ -231,7 +231,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_TouchFingerEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.tfinger = event.get();

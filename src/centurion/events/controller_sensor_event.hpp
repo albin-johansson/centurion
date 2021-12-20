@@ -8,7 +8,7 @@
 #include "../common.hpp"
 #include "../detail/array_utils.hpp"
 #include "../input/sensor.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -24,7 +24,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class controller_sensor_event final : public common_event<SDL_ControllerSensorEvent> {
+class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent> {
  public:
   using data_type = std::array<float, 3>;
 
@@ -33,7 +33,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  controller_sensor_event() noexcept : common_event{EventType::ControllerSensorUpdate} {}
+  controller_sensor_event() noexcept : EventBase{EventType::ControllerSensorUpdate} {}
 
   /**
    * \brief Creates a controller sensor event based on an SDL event.
@@ -43,7 +43,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    * \since 6.3.0
    */
   explicit controller_sensor_event(const SDL_ControllerSensorEvent& event) noexcept
-      : common_event{event}
+      : EventBase{event}
   {}
 
   /**
@@ -105,7 +105,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerSensorEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_ControllerSensorEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.csensor = event.get();

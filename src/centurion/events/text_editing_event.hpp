@@ -7,7 +7,7 @@
 
 #include "../common.hpp"
 #include "../detail/stdlib.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -26,14 +26,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class text_editing_event final : public common_event<SDL_TextEditingEvent> {
+class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
  public:
   /**
    * \brief Creates a text editing event.
    *
    * \since 4.0.0
    */
-  text_editing_event() noexcept : common_event{EventType::TextEditing} { check_length(); }
+  text_editing_event() noexcept : EventBase{EventType::TextEditing} { check_length(); }
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.
@@ -42,7 +42,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : common_event{event}
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : EventBase{event}
   {
     check_length();
   }
@@ -129,7 +129,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_TextEditingEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.edit = event.get();

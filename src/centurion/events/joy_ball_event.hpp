@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "common_event.hpp"
+#include "event_base.hpp"
 
 namespace cen {
 
@@ -21,14 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
+class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
  public:
   /**
    * \brief Creates a joy ball event.
    *
    * \since 4.0.0
    */
-  joy_ball_event() noexcept : common_event{EventType::JoyBallMotion} {}
+  joy_ball_event() noexcept : EventBase{EventType::JoyBallMotion} {}
 
   /**
    * \brief Creates a joy ball event based on the supplied SDL joy ball event.
@@ -37,7 +37,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : common_event{event} {}
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : EventBase{event} {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -122,7 +122,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Event
+inline auto AsSDLEvent(const EventBase<SDL_JoyBallEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jball = event.get();

@@ -5,8 +5,8 @@
 TEST(TextInputEvent, Defaults)
 {
   cen::text_input_event event;
-  ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::EventType::TextInput, event.type());
+  ASSERT_GT(event.GetTimestamp(), 0u);
+  ASSERT_EQ(cen::EventType::TextInput, event.GetType());
 }
 
 TEST(TextInputEvent, SetWindowId)
@@ -39,8 +39,8 @@ TEST(TextInputEvent, TextUtf8)
 TEST(TextInputEvent, AsSDLEvent)
 {
   const cen::text_input_event event;
-  const auto sdl = cen::as_sdl_event(event);
+  const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.text.type, cen::ToUnderlying(event.type()));
-  ASSERT_EQ(sdl.text.timestamp, event.time());
+  ASSERT_EQ(sdl.text.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.text.timestamp, event.GetTimestamp());
 }

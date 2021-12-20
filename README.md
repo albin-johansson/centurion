@@ -6,7 +6,6 @@
 [![CI: Windows](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml)
 [![CI: Ubuntu](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml)
 [![CI: macOS](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml)
-[![codecov](https://codecov.io/gh/albin-johansson/centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/centurion)
 
 ## Introduction
 
@@ -61,8 +60,7 @@ mandatory. The extension libraries can be disabled at compile-time, by defining 
 
 ## Installation
 
-The library is distributed in two flavours, either as a _single_ amalgamated `centurion.hpp` header
-(located in the `include` folder), or simply as all the headers provided in the `src` folder. Just download the headers
+The library is distributed as a header-only library, which can be found in the `src` directory. Just download the headers
 include them in your project, and the library it's ready to be used! You will of course also need to install SDL2.
 
 ## Documentation
@@ -80,10 +78,10 @@ found [here](https://albin-johansson.github.io/centurion/).
 int main(int, char**)
 {
   /* Initialize SDL libraries */
-  const cen::SDL_core sdl;
-  const cen::SDL_image img;
-  const cen::SDL_mixer mix;
-  const cen::SDL_ttf ttf;
+  const cen::SDL sdl;
+  const cen::IMG img;
+  const cen::Mix mix;
+  const cen::TTF ttf;
     
   cen::Window window{"Centurion"};
   cen::Renderer renderer{window};

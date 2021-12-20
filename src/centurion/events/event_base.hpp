@@ -35,10 +35,7 @@ class EventBase {
 
   [[nodiscard]] auto GetTimestamp() const noexcept -> Uint32 { return m_event.timestamp; }
 
-  [[nodiscard]] auto GetType() const noexcept -> EventType
-  {
-    return static_cast<EventType>(m_event.type);
-  }
+  [[nodiscard]] auto GetType() const noexcept -> EventType { return EventType{m_event.type}; }
 
   [[nodiscard]] auto get() const noexcept -> const T& { return m_event; }
 

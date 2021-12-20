@@ -12,7 +12,7 @@
 
 #include "common.hpp"
 #include "core/features.hpp"
-#include "core/version.hpp"
+#include "version.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

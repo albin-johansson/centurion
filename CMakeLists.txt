@@ -64,6 +64,8 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/color.hpp
                src/centurion/concurrency.hpp
                src/centurion/endian.hpp
+               src/centurion/event.hpp
+               src/centurion/events.hpp
                src/centurion/filesystem.hpp
                src/centurion/font.hpp
                src/centurion/keyboard.hpp
@@ -79,6 +81,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/system.hpp
                src/centurion/texture.hpp
                src/centurion/unicode.hpp
+               src/centurion/version.hpp
                src/centurion/video.hpp
                src/centurion/vulkan.hpp
 
@@ -88,7 +91,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/core/initialization.hpp
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp
-               src/centurion/core/version.hpp
 
                src/centurion/detail/array_utils.hpp
                src/centurion/detail/owner_handle_api.hpp
@@ -96,9 +98,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/sdl_version_at_least.hpp
                src/centurion/detail/stack_resource.hpp
                src/centurion/detail/tuple_type_index.hpp
-
-               src/centurion/event.hpp
-               src/centurion/events.hpp
 
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp

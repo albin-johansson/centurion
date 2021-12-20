@@ -59,7 +59,7 @@
 #include "centurion/core/features.hpp"
 #include "centurion/core/initialization.hpp"
 #include "centurion/core/logging.hpp"
-#include "centurion/core/memory.hpp"
+#include "centurion/memory.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/core/version.hpp"
 #include "centurion/events/audio_device_event.hpp"

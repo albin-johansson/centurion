@@ -21,7 +21,7 @@
 #include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
-#include "core/memory.hpp"
+#include "memory.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
 #include "render.hpp"

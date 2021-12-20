@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "core/memory.hpp"
+#include "memory.hpp"
 
 inline int delete_count = 0;
 

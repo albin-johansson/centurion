@@ -6,7 +6,7 @@
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
 #include "../core/exception.hpp"
-#include "../core/memory.hpp"
+#include "../memory.hpp"
 
 /// \cond FALSE
 

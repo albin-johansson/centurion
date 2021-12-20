@@ -10,6 +10,7 @@
 #include <ratio>        // ratio, milli, micro, nano
 
 #include "core/features.hpp"
+#include "memory.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 

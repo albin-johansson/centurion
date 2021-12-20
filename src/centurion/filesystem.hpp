@@ -15,8 +15,8 @@
 
 #include "common.hpp"
 #include "core/exception.hpp"
-#include "core/memory.hpp"
 #include "core/sdl_string.hpp"
+#include "memory.hpp"
 
 namespace cen {
 

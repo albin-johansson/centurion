@@ -16,7 +16,7 @@
 #include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
-#include "core/memory.hpp"
+#include "memory.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 

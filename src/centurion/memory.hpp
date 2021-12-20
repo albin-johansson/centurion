@@ -1,5 +1,5 @@
-#ifndef CENTURION_CORE_MEMORY_HPP_
-#define CENTURION_CORE_MEMORY_HPP_
+#ifndef CENTURION_MEMORY_HPP_
+#define CENTURION_MEMORY_HPP_
 
 #include <SDL.h>
 
@@ -17,7 +17,7 @@
 namespace cen {
 
 template <typename T>
-struct Deleter; /* Intentionally missing general definition  */
+struct Deleter; /* Intentionally missing base definition  */
 
 template <>
 struct Deleter<SDL_Window> final {
@@ -148,12 +148,12 @@ class SIMDBlock final {
   explicit operator bool() const noexcept { return mData != nullptr; }
 
  private:
-  struct deleter final {
+  struct Deleter final {
     void operator()(void* ptr) noexcept { SDL_SIMDFree(ptr); }
   };
-  std::unique_ptr<void, deleter> mData;
+  std::unique_ptr<void, Deleter> mData;
 };
 
 }  // namespace cen
 
-#endif  // CENTURION_CORE_MEMORY_HPP_
+#endif  // CENTURION_MEMORY_HPP_

@@ -50,7 +50,7 @@ class display_event final : public EventBase<SDL_DisplayEvent> {
    */
   void set_event_id(const display_event_id id) noexcept
   {
-    m_event.event = static_cast<Uint8>(ToUnderlying(id));
+    mEvent.event = static_cast<Uint8>(ToUnderlying(id));
   }
 
   /**
@@ -60,7 +60,7 @@ class display_event final : public EventBase<SDL_DisplayEvent> {
    *
    * \since 6.3.0
    */
-  void set_index(const Uint32 index) noexcept { m_event.display = index; }
+  void set_index(const Uint32 index) noexcept { mEvent.display = index; }
 
   /**
    * \brief Sets event type specific data.
@@ -71,7 +71,7 @@ class display_event final : public EventBase<SDL_DisplayEvent> {
    *
    * \since 6.3.0
    */
-  void set_data_1(const Sint32 data) noexcept { m_event.data1 = data; }
+  void set_data_1(const Sint32 data) noexcept { mEvent.data1 = data; }
 
   /**
    * \brief Returns the associated display event ID.
@@ -82,7 +82,7 @@ class display_event final : public EventBase<SDL_DisplayEvent> {
    */
   [[nodiscard]] auto event_id() const noexcept -> display_event_id
   {
-    return static_cast<display_event_id>(m_event.event);
+    return static_cast<display_event_id>(mEvent.event);
   }
 
   /**
@@ -92,7 +92,7 @@ class display_event final : public EventBase<SDL_DisplayEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto index() const noexcept -> Uint32 { return m_event.display; }
+  [[nodiscard]] auto index() const noexcept -> Uint32 { return mEvent.display; }
 
   /**
    * \brief Returns subtype specific data.
@@ -106,7 +106,7 @@ class display_event final : public EventBase<SDL_DisplayEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return m_event.data1; }
+  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return mEvent.data1; }
 };
 
 template <>

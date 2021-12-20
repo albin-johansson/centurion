@@ -53,7 +53,7 @@ class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent
    *
    * \since 6.3.0
    */
-  void set_which(const SDL_JoystickID id) noexcept { m_event.which = id; }
+  void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
   /**
    * \brief Sets the associated sensor type.
@@ -62,7 +62,7 @@ class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent
    *
    * \since 6.3.0
    */
-  void set_sensor(const sensor_type sensor) noexcept { m_event.sensor = ToUnderlying(sensor); }
+  void set_sensor(const sensor_type sensor) noexcept { mEvent.sensor = ToUnderlying(sensor); }
 
   /**
    * \brief Sets the sensor values associated with the event.
@@ -71,7 +71,7 @@ class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent
    *
    * \since 6.3.0
    */
-  void set_data(const data_type& values) { detail::assign(values, m_event.data); }
+  void set_data(const data_type& values) { detail::assign(values, mEvent.data); }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -80,7 +80,7 @@ class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
   /**
    * \brief Returns the type of the associated sensor.
@@ -91,7 +91,7 @@ class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent
    */
   [[nodiscard]] auto sensor() const noexcept -> sensor_type
   {
-    return static_cast<sensor_type>(m_event.sensor);
+    return static_cast<sensor_type>(mEvent.sensor);
   }
 
   /**
@@ -101,7 +101,7 @@ class controller_sensor_event final : public EventBase<SDL_ControllerSensorEvent
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const -> data_type { return detail::to_array(m_event.data); }
+  [[nodiscard]] auto data() const -> data_type { return detail::to_array(mEvent.data); }
 };
 
 template <>

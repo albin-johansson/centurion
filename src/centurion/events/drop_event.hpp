@@ -48,8 +48,8 @@ class drop_event final : public EventBase<SDL_DropEvent> {
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile) {
-      SDL_free(m_event.file);
+    if (mEvent.file && m_willFreeFile) {
+      SDL_free(mEvent.file);
     }
   }
 
@@ -91,10 +91,10 @@ class drop_event final : public EventBase<SDL_DropEvent> {
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile) {
-      SDL_free(m_event.file);
+    if (mEvent.file && m_willFreeFile) {
+      SDL_free(mEvent.file);
     }
-    m_event.file = file;
+    mEvent.file = file;
   }
 
   /**
@@ -104,7 +104,7 @@ class drop_event final : public EventBase<SDL_DropEvent> {
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Indicates whether or not the associated file will be freed by
@@ -132,7 +132,7 @@ class drop_event final : public EventBase<SDL_DropEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto file() const noexcept -> char* { return m_event.file; }
+  [[nodiscard]] auto file() const noexcept -> char* { return mEvent.file; }
 
   /**
    * \brief Returns the ID of the window that is the target of the drop
@@ -142,7 +142,7 @@ class drop_event final : public EventBase<SDL_DropEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 
  private:
   bool m_willFreeFile{false};

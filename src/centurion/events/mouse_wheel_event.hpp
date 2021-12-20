@@ -47,7 +47,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -56,7 +56,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  void set_which(const Uint32 which) noexcept { m_event.which = which; }
+  void set_which(const Uint32 which) noexcept { mEvent.which = which; }
 
   /**
    * \brief Sets the horizontally scrolled distance.
@@ -68,7 +68,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  void set_x_scroll(const Sint32 xScroll) noexcept { m_event.x = xScroll; }
+  void set_x_scroll(const Sint32 xScroll) noexcept { mEvent.x = xScroll; }
 
   /**
    * \brief Sets the vertically scrolled distance.
@@ -80,7 +80,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  void set_y_scroll(const Sint32 yScroll) noexcept { m_event.y = yScroll; }
+  void set_y_scroll(const Sint32 yScroll) noexcept { mEvent.y = yScroll; }
 
   /**
    * \brief Sets the mouse wheel direction mode associated with the event.
@@ -91,7 +91,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    */
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
-    m_event.direction = ToUnderlying(direction);
+    mEvent.direction = ToUnderlying(direction);
   }
 
   /**
@@ -101,7 +101,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 
   /**
    * \brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID` if the event
@@ -111,7 +111,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Uint32 { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> Uint32 { return mEvent.which; }
 
   /**
    * \brief Returns the horizontally scrolled distance
@@ -123,7 +123,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x_scroll() const noexcept -> Sint32 { return m_event.x; }
+  [[nodiscard]] auto x_scroll() const noexcept -> Sint32 { return mEvent.x; }
 
   /**
    * \brief Returns the vertically scrolled distance.
@@ -135,7 +135,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y_scroll() const noexcept -> Sint32 { return m_event.y; }
+  [[nodiscard]] auto y_scroll() const noexcept -> Sint32 { return mEvent.y; }
 
   /**
    * \brief Returns the mouse wheel direction mode associated with the event.
@@ -146,7 +146,7 @@ class mouse_wheel_event final : public EventBase<SDL_MouseWheelEvent> {
    */
   [[nodiscard]] auto direction() const noexcept -> mouse_wheel_direction
   {
-    return static_cast<mouse_wheel_direction>(m_event.direction);
+    return static_cast<mouse_wheel_direction>(mEvent.direction);
   }
 };
 

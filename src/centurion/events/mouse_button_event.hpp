@@ -49,7 +49,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -58,7 +58,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_which(const Uint32 which) noexcept { m_event.which = which; }
+  void set_which(const Uint32 which) noexcept { mEvent.which = which; }
 
   /**
    * \brief Sets the mouse button associated with the event.
@@ -67,7 +67,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_button(const MouseButton button) noexcept { m_event.button = ToUnderlying(button); }
+  void set_button(const MouseButton button) noexcept { mEvent.button = ToUnderlying(button); }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -76,7 +76,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_state(const ButtonState state) noexcept { m_event.state = ToUnderlying(state); }
+  void set_state(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
 
   /**
    * \brief Sets the amount of clicks associated with the event.
@@ -85,7 +85,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_clicks(const Uint8 clicks) noexcept { m_event.clicks = clicks; }
+  void set_clicks(const Uint8 clicks) noexcept { mEvent.clicks = clicks; }
 
   /**
    * \brief Sets the x-coordinate of the mouse relative to the window.
@@ -94,7 +94,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_x(const Sint32 x) noexcept { m_event.x = x; }
+  void set_x(const Sint32 x) noexcept { mEvent.x = x; }
 
   /**
    * \brief Sets the y-coordinate of the mouse relative to the window.
@@ -103,7 +103,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_y(const Sint32 y) noexcept { m_event.y = y; }
+  void set_y(const Sint32 y) noexcept { mEvent.y = y; }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -112,7 +112,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 
   /**
    * \brief Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
@@ -122,7 +122,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Uint32 { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> Uint32 { return mEvent.which; }
 
   /**
    * \brief Returns the mouse button associated with the event.
@@ -133,7 +133,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    */
   [[nodiscard]] auto button() const noexcept -> MouseButton
   {
-    return static_cast<MouseButton>(m_event.button);
+    return static_cast<MouseButton>(mEvent.button);
   }
 
   /**
@@ -145,7 +145,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    */
   [[nodiscard]] auto state() const noexcept -> ButtonState
   {
-    return static_cast<ButtonState>(m_event.state);
+    return static_cast<ButtonState>(mEvent.state);
   }
 
   /**
@@ -179,7 +179,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto clicks() const noexcept -> Uint8 { return m_event.clicks; }
+  [[nodiscard]] auto clicks() const noexcept -> Uint8 { return mEvent.clicks; }
 
   /**
    * \brief Returns the x-coordinate of the mouse relative to the window.
@@ -188,7 +188,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> Sint32 { return m_event.x; }
+  [[nodiscard]] auto x() const noexcept -> Sint32 { return mEvent.x; }
 
   /**
    * \brief Returns the y-coordinate of the mouse relative to the window.
@@ -197,7 +197,7 @@ class mouse_button_event final : public EventBase<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> Sint32 { return m_event.y; }
+  [[nodiscard]] auto y() const noexcept -> Sint32 { return mEvent.y; }
 };
 
 /// \name SDL event conversions

@@ -54,7 +54,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Sets the location to begin editing from.
@@ -63,7 +63,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  void set_start(const Sint32 start) noexcept { m_event.start = start; }
+  void set_start(const Sint32 start) noexcept { mEvent.start = start; }
 
   /**
    * \brief Sets the number of characters to edit from the start point.
@@ -76,7 +76,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    */
   void set_length(const Sint32 length) noexcept
   {
-    m_event.length = detail::clamp(length, 0, 32);
+    mEvent.length = detail::clamp(length, 0, 32);
   }
 
   /**
@@ -86,7 +86,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 
   /**
    * \brief Returns the text that will be used, as a null-terminated string in
@@ -98,7 +98,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    */
   [[nodiscard]] auto text() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<const char*>(m_event.text)};
+    return std::string_view{static_cast<const char*>(mEvent.text)};
   }
 
   /**
@@ -108,7 +108,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto start() const noexcept -> Sint32 { return m_event.start; }
+  [[nodiscard]] auto start() const noexcept -> Sint32 { return mEvent.start; }
 
   /**
    * \brief Returns the number of characters to edit from the start point.
@@ -119,10 +119,10 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto length() const noexcept -> Sint32 { return m_event.length; }
+  [[nodiscard]] auto length() const noexcept -> Sint32 { return mEvent.length; }
 
  private:
-  void check_length() noexcept { m_event.length = detail::clamp(m_event.length, 0, 32); }
+  void check_length() noexcept { mEvent.length = detail::clamp(mEvent.length, 0, 32); }
 };
 
 /// \name SDL event conversions

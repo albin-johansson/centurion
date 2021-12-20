@@ -46,7 +46,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
+  void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
   /**
    * \brief Sets the joystick trackball index associated with the event.
@@ -55,7 +55,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  void set_ball(const Uint8 ball) noexcept { m_event.ball = ball; }
+  void set_ball(const Uint8 ball) noexcept { mEvent.ball = ball; }
 
   /**
    * \brief Sets the relative motion along the x-axis associated with the event.
@@ -64,7 +64,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  void set_dx(const Sint16 dx) noexcept { m_event.xrel = dx; }
+  void set_dx(const Sint16 dx) noexcept { mEvent.xrel = dx; }
 
   /**
    * \brief Sets the relative motion along the y-axis associated with the event.
@@ -73,7 +73,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  void set_dy(const Sint16 dy) noexcept { m_event.yrel = dy; }
+  void set_dy(const Sint16 dy) noexcept { mEvent.yrel = dy; }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -82,7 +82,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
   /**
    * \brief Returns the joystick trackball index associated with the event.
@@ -91,7 +91,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ball() const noexcept -> Uint8 { return m_event.ball; }
+  [[nodiscard]] auto ball() const noexcept -> Uint8 { return mEvent.ball; }
 
   /**
    * \brief Returns the relative motion along the x-axis.
@@ -103,7 +103,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dx() const noexcept -> Sint16 { return m_event.xrel; }
+  [[nodiscard]] auto dx() const noexcept -> Sint16 { return mEvent.xrel; }
 
   /**
    * \brief Returns the relative motion along the y-axis.
@@ -115,7 +115,7 @@ class joy_ball_event final : public EventBase<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dy() const noexcept -> Sint16 { return m_event.yrel; }
+  [[nodiscard]] auto dy() const noexcept -> Sint16 { return mEvent.yrel; }
 };
 
 /// \name SDL event conversions

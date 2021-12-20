@@ -47,7 +47,7 @@ class joy_hat_event final : public EventBase<SDL_JoyHatEvent> {
    *
    * \since 4.0.0
    */
-  void set_hat(const Uint8 hat) noexcept { m_event.hat = hat; }
+  void set_hat(const Uint8 hat) noexcept { mEvent.hat = hat; }
 
   /**
    * \brief Sets the joystick hat position associated with the event.
@@ -58,7 +58,7 @@ class joy_hat_event final : public EventBase<SDL_JoyHatEvent> {
    */
   void set_position(const joy_hat_position value) noexcept
   {
-    m_event.value = ToUnderlying(value);
+    mEvent.value = ToUnderlying(value);
   }
 
   /**
@@ -68,7 +68,7 @@ class joy_hat_event final : public EventBase<SDL_JoyHatEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto hat() const noexcept -> Uint8 { return m_event.hat; }
+  [[nodiscard]] auto hat() const noexcept -> Uint8 { return mEvent.hat; }
 
   /**
    * \brief Returns the position of the associated joystick hat.
@@ -79,7 +79,7 @@ class joy_hat_event final : public EventBase<SDL_JoyHatEvent> {
    */
   [[nodiscard]] auto position() const noexcept -> joy_hat_position
   {
-    return static_cast<joy_hat_position>(m_event.value);
+    return static_cast<joy_hat_position>(mEvent.value);
   }
 };
 

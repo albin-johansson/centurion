@@ -48,7 +48,7 @@ class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
+  void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
   /**
    * \brief Sets the game controller axis value associated with the event.
@@ -58,8 +58,7 @@ class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
    * \since 4.0.0
    */
   void set_axis(const ControllerAxis axis) noexcept
-  {
-    m_event.axis = static_cast<Uint8>(axis);
+  { mEvent.axis = static_cast<Uint8>(axis);
   }
 
   /**
@@ -69,7 +68,7 @@ class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
    *
    * \since 4.0.0
    */
-  void set_value(const Sint16 value) noexcept { m_event.value = value; }
+  void set_value(const Sint16 value) noexcept { mEvent.value = value; }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -78,7 +77,7 @@ class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
   /**
    * \brief Returns the game controller axis value associated with the event.
@@ -91,7 +90,7 @@ class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
    */
   [[nodiscard]] auto axis() const noexcept -> ControllerAxis
   {
-    return static_cast<ControllerAxis>(m_event.axis);
+    return static_cast<ControllerAxis>(mEvent.axis);
   }
 
   /**
@@ -101,7 +100,7 @@ class controller_axis_event final : public EventBase<SDL_ControllerAxisEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto value() const noexcept -> Sint16 { return m_event.value; }
+  [[nodiscard]] auto value() const noexcept -> Sint16 { return mEvent.value; }
 };
 
 /// \name SDL event conversions

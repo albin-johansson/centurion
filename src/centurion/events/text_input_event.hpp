@@ -47,7 +47,7 @@ class text_input_event final : public EventBase<SDL_TextInputEvent> {
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Returns the window ID associated with the event.
@@ -56,7 +56,7 @@ class text_input_event final : public EventBase<SDL_TextInputEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 
   /**
    * Returns the text that will be used, as a null-terminated string in UTF-8
@@ -67,7 +67,7 @@ class text_input_event final : public EventBase<SDL_TextInputEvent> {
    */
   [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<const char*>(m_event.text)};
+    return std::string_view{static_cast<const char*>(mEvent.text)};
   }
 };
 

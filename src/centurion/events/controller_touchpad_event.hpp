@@ -53,7 +53,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  void set_which(const SDL_JoystickID id) noexcept { m_event.which = id; }
+  void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
   /**
    * \brief Sets the touchpad index associated with the event.
@@ -62,7 +62,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  void set_touchpad_index(const Sint32 index) noexcept { m_event.touchpad = index; }
+  void set_touchpad_index(const Sint32 index) noexcept { mEvent.touchpad = index; }
 
   /**
    * \brief Sets the finger index on the touchpad associated with the event.
@@ -71,7 +71,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  void set_finger_index(const Sint32 index) noexcept { m_event.finger = index; }
+  void set_finger_index(const Sint32 index) noexcept { mEvent.finger = index; }
 
   /**
    * \brief Sets the associated x-coordinate.
@@ -82,7 +82,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  void set_x(const float x) noexcept { m_event.x = detail::clamp(x, 0.0f, 1.0f); }
+  void set_x(const float x) noexcept { mEvent.x = detail::clamp(x, 0.0f, 1.0f); }
 
   /**
    * \brief Sets the associated y-coordinate.
@@ -93,7 +93,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  void set_y(const float y) noexcept { m_event.y = detail::clamp(y, 0.0f, 1.0f); }
+  void set_y(const float y) noexcept { mEvent.y = detail::clamp(y, 0.0f, 1.0f); }
 
   /**
    * \brief Sets the associated pressure.
@@ -106,7 +106,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    */
   void set_pressure(const float pressure) noexcept
   {
-    m_event.pressure = detail::clamp(pressure, 0.0f, 1.0f);
+    mEvent.pressure = detail::clamp(pressure, 0.0f, 1.0f);
   }
 
   /**
@@ -116,7 +116,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
   /**
    * \brief Returns the touchpad index associated with the event.
@@ -125,7 +125,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto touchpad_index() const noexcept -> Sint32 { return m_event.touchpad; }
+  [[nodiscard]] auto touchpad_index() const noexcept -> Sint32 { return mEvent.touchpad; }
 
   /**
    * \brief Returns the finger index associated with the event.
@@ -134,7 +134,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto finger_index() const noexcept -> Sint32 { return m_event.finger; }
+  [[nodiscard]] auto finger_index() const noexcept -> Sint32 { return mEvent.finger; }
 
   /**
    * \brief Returns the associated x-coordinate.
@@ -143,7 +143,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto x() const noexcept -> float { return m_event.x; }
+  [[nodiscard]] auto x() const noexcept -> float { return mEvent.x; }
 
   /**
    * \brief Returns the associated y-coordinate.
@@ -152,7 +152,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto y() const noexcept -> float { return m_event.y; }
+  [[nodiscard]] auto y() const noexcept -> float { return mEvent.y; }
 
   /**
    * \brief Returns the associated pressure.
@@ -161,7 +161,7 @@ class controller_touchpad_event final : public EventBase<SDL_ControllerTouchpadE
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto pressure() const noexcept -> float { return m_event.pressure; }
+  [[nodiscard]] auto pressure() const noexcept -> float { return mEvent.pressure; }
 };
 
 template <>

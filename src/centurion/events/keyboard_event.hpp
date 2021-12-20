@@ -48,7 +48,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  void set_scan_code(const ScanCode& code) noexcept { m_event.keysym.scancode = code.get(); }
+  void set_scan_code(const ScanCode& code) noexcept { mEvent.keysym.scancode = code.get(); }
 
   /**
    * \brief Sets the key code that is associated with the event.
@@ -57,7 +57,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 5.0.0
    */
-  void set_key_code(const KeyCode& code) noexcept { m_event.keysym.sym = code.get(); }
+  void set_key_code(const KeyCode& code) noexcept { mEvent.keysym.sym = code.get(); }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -68,7 +68,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   void set_button_state(const ButtonState state) noexcept
   {
-    m_event.state = ToUnderlying(state);
+    mEvent.state = ToUnderlying(state);
   }
 
   /**
@@ -82,10 +82,10 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
   void set_modifier(const KeyMod modifiers, const bool active) noexcept
   {
     if (active) {
-      m_event.keysym.mod |= ToUnderlying(modifiers);
+      mEvent.keysym.mod |= ToUnderlying(modifiers);
     }
     else {
-      m_event.keysym.mod &= ~ToUnderlying(modifiers);
+      mEvent.keysym.mod &= ~ToUnderlying(modifiers);
     }
   }
 
@@ -98,7 +98,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  void set_repeated(const bool repeated) noexcept { m_event.repeat = repeated; }
+  void set_repeated(const bool repeated) noexcept { mEvent.repeat = repeated; }
 
   /**
    * \brief Sets the window ID that is associated with this key event.
@@ -107,7 +107,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Indicates whether or not the event is associated with the
@@ -122,7 +122,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto is_active(const ScanCode& code) const noexcept -> bool
   {
-    return m_event.keysym.scancode == code.get();
+    return mEvent.keysym.scancode == code.get();
   }
 
   /**
@@ -138,7 +138,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto is_active(const KeyCode& code) const noexcept -> bool
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym) == code.get();
+    return static_cast<SDL_KeyCode>(mEvent.keysym.sym) == code.get();
   }
 
   /**
@@ -157,7 +157,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto is_active(const KeyMod modifiers) const noexcept -> bool
   {
-    return detail::IsActive(modifiers, m_event.keysym.mod);
+    return detail::IsActive(modifiers, mEvent.keysym.mod);
   }
 
   /**
@@ -178,7 +178,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto is_only_active(const KeyMod modifiers) const noexcept -> bool
   {
-    return detail::IsOnlyActive(modifiers, m_event.keysym.mod);
+    return detail::IsOnlyActive(modifiers, mEvent.keysym.mod);
   }
 
   /**
@@ -202,7 +202,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto is_only_any_of_active(const KeyMod modifiers) const noexcept -> bool
   {
-    return detail::IsOnlyAnyOfActive(modifiers, m_event.keysym.mod);
+    return detail::IsOnlyAnyOfActive(modifiers, mEvent.keysym.mod);
   }
 
   /**
@@ -214,7 +214,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto repeated() const noexcept -> bool { return m_event.repeat; }
+  [[nodiscard]] auto repeated() const noexcept -> bool { return mEvent.repeat; }
 
   /**
    * \brief Returns the button state of the key associated with the event.
@@ -225,7 +225,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto state() const noexcept -> ButtonState
   {
-    return static_cast<ButtonState>(m_event.state);
+    return static_cast<ButtonState>(mEvent.state);
   }
 
   /**
@@ -265,7 +265,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto scan() const noexcept -> ScanCode { return m_event.keysym.scancode; }
+  [[nodiscard]] auto scan() const noexcept -> ScanCode { return mEvent.keysym.scancode; }
 
   /**
    * \brief Equivalent to `scan()`.
@@ -282,7 +282,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    */
   [[nodiscard]] auto key() const noexcept -> KeyCode
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+    return static_cast<SDL_KeyCode>(mEvent.keysym.sym);
   }
 
   /**
@@ -298,7 +298,7 @@ class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 };
 
 /// \name SDL event conversions

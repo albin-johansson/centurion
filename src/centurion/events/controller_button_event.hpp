@@ -52,7 +52,7 @@ class controller_button_event final : public EventBase<SDL_ControllerButtonEvent
    */
   void set_button(const ControllerButton button) noexcept
   {
-    m_event.button = static_cast<Uint8>(button);
+    mEvent.button = static_cast<Uint8>(button);
   }
 
   /**
@@ -62,7 +62,7 @@ class controller_button_event final : public EventBase<SDL_ControllerButtonEvent
    *
    * \since 4.0.0
    */
-  void set_state(const ButtonState state) noexcept { m_event.state = ToUnderlying(state); }
+  void set_state(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -72,7 +72,7 @@ class controller_button_event final : public EventBase<SDL_ControllerButtonEvent
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID id) noexcept { m_event.which = id; }
+  void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
   /**
    * \brief Returns the game controller button associated with the event.
@@ -83,7 +83,7 @@ class controller_button_event final : public EventBase<SDL_ControllerButtonEvent
    */
   [[nodiscard]] auto button() const noexcept -> ControllerButton
   {
-    return static_cast<ControllerButton>(m_event.button);
+    return static_cast<ControllerButton>(mEvent.button);
   }
 
   /**
@@ -95,7 +95,7 @@ class controller_button_event final : public EventBase<SDL_ControllerButtonEvent
    */
   [[nodiscard]] auto state() const noexcept -> ButtonState
   {
-    return static_cast<ButtonState>(m_event.state);
+    return static_cast<ButtonState>(mEvent.state);
   }
 
   /**
@@ -129,7 +129,7 @@ class controller_button_event final : public EventBase<SDL_ControllerButtonEvent
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 };
 
 /// \name SDL event conversions

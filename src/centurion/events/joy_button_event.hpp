@@ -47,7 +47,7 @@ class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
+  void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
   /**
    * \brief Sets the button index associated with the event.
@@ -56,7 +56,7 @@ class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_button(const Uint8 button) noexcept { m_event.button = button; }
+  void set_button(const Uint8 button) noexcept { mEvent.button = button; }
 
   /**
    * \brief Sets the button state that is associated with the button that
@@ -67,7 +67,7 @@ class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  void set_state(const ButtonState state) noexcept { m_event.state = ToUnderlying(state); }
+  void set_state(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -76,7 +76,7 @@ class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
   /**
    * \brief Returns the index of the button that changed.
@@ -85,7 +85,7 @@ class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto button() const noexcept -> Uint8 { return m_event.button; }
+  [[nodiscard]] auto button() const noexcept -> Uint8 { return mEvent.button; }
 
   /**
    * \brief Returns the state of the button associated with the event.
@@ -96,7 +96,7 @@ class joy_button_event final : public EventBase<SDL_JoyButtonEvent> {
    */
   [[nodiscard]] auto state() const noexcept -> ButtonState
   {
-    return static_cast<ButtonState>(m_event.state);
+    return static_cast<ButtonState>(mEvent.state);
   }
 
   /**

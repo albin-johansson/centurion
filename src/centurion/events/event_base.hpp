@@ -24,23 +24,23 @@ class EventBase {
     SetType(type);
   }
 
-  explicit EventBase(const T& event) : m_event{event} {}
+  explicit EventBase(const T& event) : mEvent{event} {}
 
-  explicit EventBase(T&& event) : m_event{std::move(event)} {}
+  explicit EventBase(T&& event) : mEvent{std::move(event)} {}
 
   /// Sets the timestamp of the creation of the event. TODO U32_Millis?
-  void SetTimestamp(const Uint32 timestamp) noexcept { m_event.timestamp = timestamp; }
+  void SetTimestamp(const Uint32 timestamp) noexcept { mEvent.timestamp = timestamp; }
 
-  void SetType(const EventType type) noexcept { m_event.type = ToUnderlying(type); }
+  void SetType(const EventType type) noexcept { mEvent.type = ToUnderlying(type); }
 
-  [[nodiscard]] auto GetTimestamp() const noexcept -> Uint32 { return m_event.timestamp; }
+  [[nodiscard]] auto GetTimestamp() const noexcept -> Uint32 { return mEvent.timestamp; }
 
-  [[nodiscard]] auto GetType() const noexcept -> EventType { return EventType{m_event.type}; }
+  [[nodiscard]] auto GetType() const noexcept -> EventType { return EventType{mEvent.type}; }
 
-  [[nodiscard]] auto get() const noexcept -> const T& { return m_event; }
+  [[nodiscard]] auto get() const noexcept -> const T& { return mEvent; }
 
  protected:
-  T m_event{};
+  T mEvent{};
 };
 
 /// \name SDL event conversions

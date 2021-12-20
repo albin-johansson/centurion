@@ -51,7 +51,7 @@ class window_event final : public EventBase<SDL_WindowEvent> {
    */
   [[nodiscard]] auto event_id() const noexcept -> window_event_id
   {
-    return static_cast<window_event_id>(m_event.event);
+    return static_cast<window_event_id>(mEvent.event);
   }
 
   /**
@@ -69,7 +69,7 @@ class window_event final : public EventBase<SDL_WindowEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return m_event.data1; }
+  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return mEvent.data1; }
 
   /**
    * \brief Returns the value of the second data value.
@@ -86,7 +86,7 @@ class window_event final : public EventBase<SDL_WindowEvent> {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto data_2() const noexcept -> Sint32 { return m_event.data2; }
+  [[nodiscard]] auto data_2() const noexcept -> Sint32 { return mEvent.data2; }
 };
 
 /// \name SDL event conversions

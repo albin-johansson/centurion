@@ -17,11 +17,11 @@ class AudioDeviceEvent final : public EventBase<SDL_AudioDeviceEvent> {
 
   explicit AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept : EventBase{event} {}
 
-  void SetWhich(const Uint32 which) noexcept { m_event.which = which; }
-  void SetCapture(const bool capture) noexcept { m_event.iscapture = capture; }
+  void SetWhich(const Uint32 which) noexcept { mEvent.which = which; }
+  void SetCapture(const bool capture) noexcept { mEvent.iscapture = capture; }
 
-  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return m_event.which; }
-  [[nodiscard]] auto IsCapture() const noexcept -> bool { return m_event.iscapture; }
+  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return mEvent.which; }
+  [[nodiscard]] auto IsCapture() const noexcept -> bool { return mEvent.iscapture; }
   [[nodiscard]] auto IsOutput() const noexcept -> bool { return !IsCapture(); }
 };
 

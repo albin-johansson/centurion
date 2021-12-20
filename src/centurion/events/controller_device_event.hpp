@@ -53,7 +53,7 @@ class controller_device_event final : public EventBase<SDL_ControllerDeviceEvent
    *
    * \since 4.0.0
    */
-  void set_which(const Sint32 which) noexcept { m_event.which = which; }
+  void set_which(const Sint32 which) noexcept { mEvent.which = which; }
 
   /**
    * \brief Returns the joystick device index or instance ID.
@@ -66,7 +66,7 @@ class controller_device_event final : public EventBase<SDL_ControllerDeviceEvent
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Sint32 { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> Sint32 { return mEvent.which; }
 };
 
 /// \name SDL event conversions

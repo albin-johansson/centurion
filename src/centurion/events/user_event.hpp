@@ -46,7 +46,7 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
+  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
 
   /**
    * \brief Sets the user-defined event code associated with the event.
@@ -55,7 +55,7 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  void set_code(const Sint32 code) noexcept { m_event.code = code; }
+  void set_code(const Sint32 code) noexcept { mEvent.code = code; }
 
   /**
    * \brief Sets an opaque data pointer to some user data.
@@ -64,10 +64,10 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  void set_data_1(void* data) noexcept { m_event.data1 = data; }
+  void set_data_1(void* data) noexcept { mEvent.data1 = data; }
 
   /// \copydoc set_data_1()
-  void set_data_2(void* data) noexcept { m_event.data2 = data; }
+  void set_data_2(void* data) noexcept { mEvent.data2 = data; }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -76,7 +76,7 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
 
   /**
    * \brief Returns the user-defined event code associated with the event.
@@ -85,7 +85,7 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto code() const noexcept -> Sint32 { return m_event.code; }
+  [[nodiscard]] auto code() const noexcept -> Sint32 { return mEvent.code; }
 
   /**
    * \brief Returns a pointer to the first user data slot.
@@ -94,10 +94,10 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data_1() noexcept -> void* { return m_event.data1; }
+  [[nodiscard]] auto data_1() noexcept -> void* { return mEvent.data1; }
 
   /// \copydoc data_1()
-  [[nodiscard]] auto data_1() const noexcept -> const void* { return m_event.data1; }
+  [[nodiscard]] auto data_1() const noexcept -> const void* { return mEvent.data1; }
 
   /**
    * \brief Returns a pointer to the second user data slot.
@@ -106,10 +106,10 @@ class user_event final : public EventBase<SDL_UserEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data_2() noexcept -> void* { return m_event.data2; }
+  [[nodiscard]] auto data_2() noexcept -> void* { return mEvent.data2; }
 
   /// \copydoc data_2()
-  [[nodiscard]] auto data_2() const noexcept -> const void* { return m_event.data2; }
+  [[nodiscard]] auto data_2() const noexcept -> const void* { return mEvent.data2; }
 };
 
 template <>

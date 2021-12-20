@@ -48,7 +48,7 @@ class sensor_event final : public EventBase<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  void set_which(const Sint32 id) noexcept { m_event.which = id; }
+  void set_which(const Sint32 id) noexcept { mEvent.which = id; }
 
   /**
    * \brief Sets the sensor values associated with the event.
@@ -57,7 +57,7 @@ class sensor_event final : public EventBase<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  void set_data(const data_type& values) { detail::assign(values, m_event.data); }
+  void set_data(const data_type& values) { detail::assign(values, mEvent.data); }
 
   /**
    * \brief Returns the instance ID of the associated sensor.
@@ -66,7 +66,7 @@ class sensor_event final : public EventBase<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto which() const noexcept -> Sint32 { return m_event.which; }
+  [[nodiscard]] auto which() const noexcept -> Sint32 { return mEvent.which; }
 
   /**
    * \brief Returns up to 6 values from the sensor.
@@ -77,7 +77,7 @@ class sensor_event final : public EventBase<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const -> data_type { return detail::to_array(m_event.data); }
+  [[nodiscard]] auto data() const -> data_type { return detail::to_array(mEvent.data); }
 };
 
 template <>

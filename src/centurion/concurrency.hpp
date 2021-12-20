@@ -13,7 +13,6 @@
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "core/memory.hpp"
-#include "core/time.hpp"
 #include "detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS

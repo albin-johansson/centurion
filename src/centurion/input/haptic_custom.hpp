@@ -6,7 +6,6 @@
 #include <cassert>  // assert
 
 #include "../common.hpp"
-#include "../core/time.hpp"
 #include "../detail/stdlib.hpp"
 #include "haptic_effect.hpp"
 

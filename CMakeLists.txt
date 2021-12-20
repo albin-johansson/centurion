@@ -88,7 +88,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/core/initialization.hpp
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp
-               src/centurion/core/time.hpp
                src/centurion/core/version.hpp
 
                src/centurion/detail/array_utils.hpp

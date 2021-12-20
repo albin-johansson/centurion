@@ -61,7 +61,6 @@
 #include "centurion/core/logging.hpp"
 #include "centurion/core/memory.hpp"
 #include "centurion/core/sdl_string.hpp"
-#include "centurion/core/time.hpp"
 #include "centurion/core/version.hpp"
 #include "centurion/events/audio_device_event.hpp"
 #include "centurion/events/common_event.hpp"

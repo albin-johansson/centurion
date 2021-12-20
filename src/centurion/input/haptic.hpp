@@ -18,7 +18,6 @@
 
 #include "../common.hpp"
 #include "../core/exception.hpp"
-#include "../core/time.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../math.hpp"

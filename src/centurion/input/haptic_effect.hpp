@@ -6,7 +6,6 @@
 #include <type_traits>  // enable_if_t
 
 #include "../common.hpp"
-#include "../core/time.hpp"
 #include "haptic_direction.hpp"
 
 namespace cen {

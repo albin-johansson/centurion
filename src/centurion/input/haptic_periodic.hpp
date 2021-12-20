@@ -4,7 +4,6 @@
 #include <SDL.h>
 
 #include "../common.hpp"
-#include "../core/time.hpp"
 #include "haptic_effect.hpp"
 
 namespace cen {

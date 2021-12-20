@@ -8,7 +8,7 @@
 #include <string_view>  // string_view
 
 #include "core/exception.hpp"
-#include "core/time.hpp"
+#include "common.hpp"
 
 namespace cen {
 

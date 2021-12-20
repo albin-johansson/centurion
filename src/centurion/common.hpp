@@ -6,6 +6,8 @@
 #include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
+#include <chrono>       // duration
+#include <ratio>        // ratio, milli, micro, nano
 
 #include "core/features.hpp"
 
@@ -32,6 +34,25 @@ using uint = unsigned int;
 using ulonglong = unsigned long long;
 
 using Unicode = Uint16;
+
+template <typename T>
+using Seconds = std::chrono::duration<T>;
+
+template <typename T>
+using Millis = std::chrono::duration<T, std::milli>;
+
+template <typename T>
+using Micros = std::chrono::duration<T, std::micro>;
+
+template <typename T>
+using Nanos = std::chrono::duration<T, std::nano>;
+
+template <typename T>
+using Minutes = std::chrono::duration<T, std::ratio<60>>;
+
+using U16_Millis = Millis<Uint16>;
+using U32_Millis = Millis<Uint32>;
+using U64_Millis = Millis<Uint64>;
 
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
@@ -196,6 +217,27 @@ inline auto operator<<(std::ostream& stream, const Result result) -> std::ostrea
   return stream << to_string(result);
 }
 
+namespace literals {
+inline namespace time_literals {
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U64_Millis
+{
+  return U64_Millis{static_cast<Uint64>(ms)};
+}
+
+#else
+
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U32_Millis
+{
+  return U32_Millis{static_cast<Uint32>(ms)};
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+}  // namespace time_literals
+}  // namespace literals
 }  // namespace cen
 
 #ifndef CENTURION_NO_SDL_NAMESPACE_ALIAS

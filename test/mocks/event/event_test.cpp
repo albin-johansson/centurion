@@ -30,20 +30,20 @@ class EventTest : public testing::Test {
 
 TEST_F(EventTest, Update)
 {
-  cen::event::update();
+  cen::Event::Update();
   ASSERT_EQ(1u, SDL_PumpEvents_fake.call_count);
 }
 
 TEST_F(EventTest, Push)
 {
-  cen::event event;
-  cen::event::push(event);
+  cen::Event event;
+  cen::Event::Push(event);
   ASSERT_EQ(1u, SDL_PushEvent_fake.call_count);
 }
 
 TEST_F(EventTest, Flush)
 {
-  cen::event::flush();
+  cen::Event::Flush();
   ASSERT_EQ(1u, SDL_FlushEvents_fake.call_count);
   ASSERT_EQ(SDL_FIRSTEVENT, static_cast<SDL_EventType>(SDL_FlushEvents_fake.arg0_val));
   ASSERT_EQ(SDL_LASTEVENT, static_cast<SDL_EventType>(SDL_FlushEvents_fake.arg1_val));
@@ -51,7 +51,7 @@ TEST_F(EventTest, Flush)
 
 TEST_F(EventTest, FlushAll)
 {
-  cen::event::flush_all();
+  cen::Event::FlushAll();
   ASSERT_EQ(1u, SDL_PumpEvents_fake.call_count);
   ASSERT_EQ(1u, SDL_FlushEvents_fake.call_count);
   ASSERT_EQ(SDL_FIRSTEVENT, static_cast<SDL_EventType>(SDL_FlushEvents_fake.arg0_val));
@@ -60,15 +60,15 @@ TEST_F(EventTest, FlushAll)
 
 TEST_F(EventTest, Poll)
 {
-  cen::event event;
-  event.poll();
+  cen::Event event;
+  event.Poll();
 
   ASSERT_EQ(1u, SDL_PollEvent_fake.call_count);
 }
 
 TEST_F(EventTest, QueueCount)
 {
-  const auto count [[maybe_unused]] = cen::event::queue_count();
+  const auto count [[maybe_unused]] = cen::Event::GetQueueSize();
   ASSERT_EQ(1u, SDL_PeepEvents_fake.call_count);
   ASSERT_EQ(nullptr, SDL_PeepEvents_fake.arg0_val);
   ASSERT_EQ(0, SDL_PeepEvents_fake.arg1_val);
@@ -79,7 +79,7 @@ TEST_F(EventTest, QueueCount)
 
 TEST_F(EventTest, QueueCountSpecific)
 {
-  const auto count [[maybe_unused]] = cen::event::queue_count(cen::event_type::quit);
+  const auto count [[maybe_unused]] = cen::Event::GetQueueSize(cen::event_type::quit);
 
   ASSERT_EQ(1u, SDL_PeepEvents_fake.call_count);
   ASSERT_EQ(nullptr, SDL_PeepEvents_fake.arg0_val);

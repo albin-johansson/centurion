@@ -138,7 +138,7 @@ class EventDispatcher final {
   template <typename Event>
   auto CheckFor() -> bool
   {
-    if (const auto* event = mEvent.template try_get<Event>()) {
+    if (const auto* event = mEvent.template TryGet<Event>()) {
       if (auto& function = GetSink<Event>().GetFunction()) {
         function(*event);
       }
@@ -154,7 +154,7 @@ class EventDispatcher final {
   /* Polls all events, checking for subscribed events. */
   void Poll()
   {
-    while (mEvent.poll()) {
+    while (mEvent.Poll()) {
       (CheckFor<E>() || ...); /* Use OR to exploit short-circuiting */
     }
   }
@@ -187,7 +187,7 @@ class EventDispatcher final {
  private:
   using sink_tuple = std::tuple<EventSink<E>...>;
 
-  cen::event mEvent;
+  cen::Event mEvent;
   sink_tuple mSinks;
 };
 

@@ -14,7 +14,7 @@ int main(int, char**)
   /* Make sure our window is visible */
   window.Show();
 
-  cen::event event;
+  cen::Event event;
   bool running = true;
 
   while (running) {

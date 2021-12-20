@@ -31,7 +31,7 @@ TEST(EventDispatcher, Bind)
   /* Ensure that it is possible to connect free functions, member functions, and
      lambdas as event handlers. */
 
-  cen::event::flush_all();
+  cen::Event::FlushAll();
 
   ButtonHandler handler;
   EventDispatcher dispatcher;
@@ -44,13 +44,13 @@ TEST(EventDispatcher, Bind)
       [&](const cen::window_event&) { visitedLambda = true; });
 
   cen::window_event windowEvent;
-  ASSERT_TRUE(cen::event::push(windowEvent));
+  ASSERT_TRUE(cen::Event::Push(windowEvent));
 
   cen::quit_event quitEvent;
-  ASSERT_TRUE(cen::event::push(quitEvent));
+  ASSERT_TRUE(cen::Event::Push(quitEvent));
 
   cen::controller_button_event buttonEvent;
-  ASSERT_TRUE(cen::event::push(buttonEvent));
+  ASSERT_TRUE(cen::Event::Push(buttonEvent));
 
   dispatcher.Poll();
   ASSERT_TRUE(handler.visited);

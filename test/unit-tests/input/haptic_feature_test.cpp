@@ -4,7 +4,7 @@
 
 #include <iostream>  // clog
 
-#include "core/common.hpp"
+#include "common.hpp"
 
 TEST(HapticFeature, Values)
 {

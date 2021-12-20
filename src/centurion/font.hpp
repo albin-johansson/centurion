@@ -18,7 +18,7 @@
 #include <utility>        // move, forward
 
 #include "color.hpp"
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "core/memory.hpp"

@@ -14,7 +14,7 @@
 #include <utility>      // pair
 
 #include "color.hpp"
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "detail/owner_handle_api.hpp"

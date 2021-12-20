@@ -2,7 +2,7 @@
 
 #include <array>  // array
 
-#include "core/common.hpp"
+#include "common.hpp"
 
 extern "C"
 {

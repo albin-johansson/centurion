@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/logging.hpp"
 
 TEST(LogCategory, Values)

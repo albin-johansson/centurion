@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "core/common.hpp"
+#include "common.hpp"
 
 using foo_type = cen::ulonglong;
 using bar_type = char;

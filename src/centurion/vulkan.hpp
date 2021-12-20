@@ -10,7 +10,7 @@
 #include <optional>  // optional, nullopt
 #include <vector>    // vector
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "math.hpp"

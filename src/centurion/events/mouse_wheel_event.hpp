@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "common_event.hpp"
 #include "mouse_wheel_direction.hpp"
 

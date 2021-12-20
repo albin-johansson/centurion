@@ -6,7 +6,7 @@
 #include <cassert>   // assert
 #include <optional>  // optional
 
-#include "common.hpp"
+#include "../common.hpp"
 #include "exception.hpp"
 #include "features.hpp"
 

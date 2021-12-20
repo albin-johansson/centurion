@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../math.hpp"
 #include "haptic_direction_type.hpp"
 

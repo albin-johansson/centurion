@@ -5,7 +5,7 @@
 
 #include <type_traits>  // enable_if_t
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/time.hpp"
 #include "haptic_direction.hpp"
 

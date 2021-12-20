@@ -5,7 +5,7 @@
 
 #include <cassert>  // assert
 
-#include "core/common.hpp"
+#include "../common.hpp"
 
 namespace cen {
 

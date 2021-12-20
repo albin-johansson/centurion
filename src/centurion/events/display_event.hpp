@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "common_event.hpp"
 #include "display_event_id.hpp"
 

@@ -13,7 +13,7 @@
 #include <string>    // string
 #include <string>    // string, to_string
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "core/memory.hpp"

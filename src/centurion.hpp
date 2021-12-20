@@ -29,6 +29,7 @@
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
+#include "centurion/common.hpp"
 #include "centurion/audio.hpp"
 #include "centurion/color.hpp"
 #include "centurion/concurrency.hpp"
@@ -54,7 +55,6 @@
 
 //
 
-#include "centurion/core/common.hpp"
 #include "centurion/core/exception.hpp"
 #include "centurion/core/features.hpp"
 #include "centurion/core/initialization.hpp"

@@ -20,7 +20,7 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "common.hpp"
+#include "../common.hpp"
 #include "exception.hpp"
 #include "version.hpp"
 

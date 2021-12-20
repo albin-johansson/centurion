@@ -82,7 +82,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video.hpp
                src/centurion/vulkan.hpp
 
-               src/centurion/core/common.hpp
+               src/centurion/common.hpp
                src/centurion/core/exception.hpp
                src/centurion/core/features.hpp
                src/centurion/core/initialization.hpp

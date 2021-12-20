@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "audio.hpp"
-#include "core/common.hpp"
+#include "common.hpp"
 
 TEST(MusicType, Values)
 {

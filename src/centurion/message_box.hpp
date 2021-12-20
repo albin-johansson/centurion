@@ -12,7 +12,7 @@
 #include <vector>       // vector
 
 #include "color.hpp"
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "detail/stack_resource.hpp"

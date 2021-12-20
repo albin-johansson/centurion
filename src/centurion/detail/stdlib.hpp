@@ -12,7 +12,7 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_integral_v
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/features.hpp"
 
 /// \cond FALSE

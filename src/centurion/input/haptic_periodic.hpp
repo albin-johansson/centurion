@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/time.hpp"
 #include "haptic_effect.hpp"
 

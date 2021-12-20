@@ -6,7 +6,7 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/exception.hpp"
 
 namespace cen {

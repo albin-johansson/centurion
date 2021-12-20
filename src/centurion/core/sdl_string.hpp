@@ -7,7 +7,7 @@
 #include <string>  // string
 
 #include "../detail/sdl_deleter.hpp"
-#include "common.hpp"
+#include "../common.hpp"
 
 namespace cen {
 

@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "input/joystick.hpp"
 
 TEST(HatState, Values)

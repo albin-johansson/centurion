@@ -6,7 +6,7 @@
 #include <array>     // array
 #include <iostream>  // cout
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core_mocks.hpp"
 
 extern "C"

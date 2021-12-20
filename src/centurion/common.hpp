@@ -1,5 +1,5 @@
-#ifndef CENTURION_CORE_COMMON_HPP_
-#define CENTURION_CORE_COMMON_HPP_
+#ifndef CENTURION_COMMON_HPP_
+#define CENTURION_COMMON_HPP_
 
 #include <SDL.h>
 
@@ -7,7 +7,7 @@
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
 
-#include "features.hpp"
+#include "core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -202,4 +202,4 @@ inline auto operator<<(std::ostream& stream, const Result result) -> std::ostrea
 namespace SDL = cen;
 #endif  // CENTURION_NO_SDL_NAMESPACE_ALIAS
 
-#endif  // CENTURION_CORE_COMMON_HPP_
+#endif  // CENTURION_COMMON_HPP_

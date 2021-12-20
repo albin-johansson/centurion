@@ -13,7 +13,7 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core/memory.hpp"
 #include "core/sdl_string.hpp"

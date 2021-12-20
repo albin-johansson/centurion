@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "texture.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

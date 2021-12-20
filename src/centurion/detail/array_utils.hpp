@@ -4,7 +4,7 @@
 #include <array>    // array, to_array
 #include <cstddef>  // size_t
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/features.hpp"
 
 /// \cond FALSE

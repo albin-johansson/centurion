@@ -17,7 +17,7 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/exception.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"

@@ -5,7 +5,7 @@
 
 #include <string_view>  // string_view
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../detail/stdlib.hpp"
 #include "common_event.hpp"
 

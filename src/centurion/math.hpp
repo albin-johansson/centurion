@@ -8,7 +8,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/features.hpp"
 #include "detail/stdlib.hpp"
 

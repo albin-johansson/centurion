@@ -10,7 +10,7 @@
 #include <sstream>    // stringstream
 #include <string>     // string, to_string
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/features.hpp"
 #include "core/version.hpp"
 

@@ -9,7 +9,7 @@
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "../core/features.hpp"
 #include "../detail/tuple_type_index.hpp"
 #include "event.hpp"

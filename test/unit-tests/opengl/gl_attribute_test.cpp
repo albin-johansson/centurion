@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "opengl.hpp"
 
 TEST(GLAttribute, Values)

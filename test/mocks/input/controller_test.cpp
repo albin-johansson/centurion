@@ -5,7 +5,7 @@
 
 #include <array>  // array
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "core_mocks.hpp"
 #include "color.hpp"

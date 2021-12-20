@@ -8,7 +8,7 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "core/common.hpp"
+#include "common.hpp"
 #include "core/exception.hpp"
 #include "math.hpp"
 #include "pixels.hpp"

@@ -5,7 +5,7 @@
 
 #include <utility>  // move
 
-#include "../core/common.hpp"
+#include "../common.hpp"
 #include "event_type.hpp"
 
 namespace cen {

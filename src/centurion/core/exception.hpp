@@ -17,7 +17,7 @@
 
 #include <exception>  // exception
 
-#include "common.hpp"
+#include "../common.hpp"
 
 namespace cen {
 

@@ -206,7 +206,7 @@ TEST_F(ControllerTest, StopRumble)
 
 TEST_F(ControllerTest, GetProduct)
 {
-  std::array values{0_u16, 3_u16};
+  std::array<Uint16, 2> values{0, 3};
   SET_RETURN_SEQ(SDL_GameControllerGetProduct, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.GetProduct().has_value());
@@ -215,7 +215,7 @@ TEST_F(ControllerTest, GetProduct)
 
 TEST_F(ControllerTest, GetVendor)
 {
-  std::array values{0_u16, 7_u16};
+  std::array<Uint16, 2> values{0, 7};
   SET_RETURN_SEQ(SDL_GameControllerGetVendor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.GetVendor().has_value());
@@ -224,7 +224,7 @@ TEST_F(ControllerTest, GetVendor)
 
 TEST_F(ControllerTest, ProductVersion)
 {
-  std::array values{0_u16, 4_u16};
+  std::array<Uint16, 2> values{0, 4};
   SET_RETURN_SEQ(SDL_GameControllerGetProductVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.GetProductVersion().has_value());
@@ -299,7 +299,7 @@ TEST_F(ControllerTest, GetAxisFromString)
 
 TEST_F(ControllerTest, GetAxis)
 {
-  std::array values{123_i16, 321_i16};
+  std::array<Sint16, 2> values{123, 321};
   SET_RETURN_SEQ(SDL_GameControllerGetAxis, values.data(), cen::isize(values));
 
   ASSERT_EQ(123, controller.GetAxis(cen::ControllerAxis::LeftX));

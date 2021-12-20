@@ -5,8 +5,6 @@
 #include "serialization_utils.hpp"
 #include "unicode.hpp"
 
-using namespace cen::literals;
-
 TEST(UnicodeString, Defaults)
 {
   const cen::UnicodeString str;

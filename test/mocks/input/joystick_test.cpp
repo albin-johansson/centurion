@@ -187,7 +187,7 @@ TEST_F(JoystickTest, GetTypeStatic)
 
 TEST_F(JoystickTest, GetVendor)
 {
-  std::array values{0_u16, 4_u16};
+  std::array<Uint16, 2> values{0, 4};
   SET_RETURN_SEQ(SDL_JoystickGetVendor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.GetVendor().has_value());
@@ -198,7 +198,7 @@ TEST_F(JoystickTest, GetVendor)
 
 TEST_F(JoystickTest, GetVendorStatic)
 {
-  std::array values{0_u16, 4_u16};
+  std::array<Uint16, 2> values{0, 4};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::Joystick::GetVendor(0).has_value());
@@ -209,7 +209,7 @@ TEST_F(JoystickTest, GetVendorStatic)
 
 TEST_F(JoystickTest, GetProduct)
 {
-  std::array values{0_u16, 6_u16};
+  std::array<Uint16, 2> values{0, 6};
   SET_RETURN_SEQ(SDL_JoystickGetProduct, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.GetProduct().has_value());
@@ -220,7 +220,7 @@ TEST_F(JoystickTest, GetProduct)
 
 TEST_F(JoystickTest, GetProductStatic)
 {
-  std::array values{0_u16, 8_u16};
+  std::array<Uint16, 2> values{0, 8};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::Joystick::GetProduct(0).has_value());
@@ -231,7 +231,7 @@ TEST_F(JoystickTest, GetProductStatic)
 
 TEST_F(JoystickTest, GetProductVersion)
 {
-  std::array values{0_u16, 54_u16};
+  std::array<Uint16, 2> values{0, 54};
   SET_RETURN_SEQ(SDL_JoystickGetProductVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.GetProductVersion().has_value());
@@ -242,7 +242,7 @@ TEST_F(JoystickTest, GetProductVersion)
 
 TEST_F(JoystickTest, GetProductVersionStatic)
 {
-  std::array values{0_u16, 12_u16};
+  std::array<Uint16, 2> values{0, 12};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::Joystick::GetProductVersion(0).has_value());
@@ -264,7 +264,7 @@ TEST_F(JoystickTest, GetBallAxisChange)
 
 TEST_F(JoystickTest, AxisPos)
 {
-  std::array values{0_i16, 123_i16};
+  std::array<Sint16, 2> values{0, 123};
   SET_RETURN_SEQ(SDL_JoystickGetAxis, values.data(), cen::isize(values));
 
   ASSERT_EQ(0, joystick.GetAxis(0));

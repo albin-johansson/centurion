@@ -74,7 +74,7 @@ struct BasicArea final {
   value_type height{};
 };
 
-template <typename T, enable_if_convertible_t<T, int, float> = 0>
+template <typename T, RequireConvertible<T, int, float> = 0>
 class PointTraits final {
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;
@@ -121,7 +121,7 @@ class BasicPoint final {
   point_type mPoint{};
 };
 
-template <typename T, enable_if_convertible_t<T, int, float> = 0>
+template <typename T, RequireConvertible<T, int, float> = 0>
 class RectTraits final {
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;

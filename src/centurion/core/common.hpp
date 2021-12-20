@@ -28,6 +28,11 @@ namespace cen {
 /// \addtogroup core
 /// \{
 
+using uint = unsigned int;
+using ulonglong = unsigned long long;
+
+using Unicode = Uint16;
+
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
 inline constexpr bool is_release_build = true;
@@ -54,37 +59,31 @@ inline constexpr bool on_clang = true;
 inline constexpr bool on_clang = false;
 #endif  // __clang__
 
-using uint = unsigned int;
-using ulonglong = unsigned long long;
-using Unicode = Uint16;
-
-// TODO use _t suffix instead of _v in the SFINAE aliases
-
 template <typename T>
 inline constexpr bool is_number =
     !std::is_same_v<T, bool> && (std::is_integral_v<T> || std::is_floating_point_v<T>);
 
 template <typename T>
-using enable_if_pointer_t = std::enable_if_t<std::is_pointer_v<T>, int>;
+using RequirePointer = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using RequireConvertible = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 template <typename T>
-using enable_if_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
+using RequireEnum = std::enable_if_t<std::is_enum_v<T>, int>;
 
-template <typename T, enable_if_pointer_t<T> = 0>
+template <typename T, RequirePointer<T> = 0>
 using NotNull = T;
 
-template <typename T, enable_if_pointer_t<T> = 0>
+template <typename T, RequirePointer<T> = 0>
 using Owner = T;
 
-template <typename T, enable_if_pointer_t<T> = 0>
+template <typename T, RequirePointer<T> = 0>
 using MaybeOwner = T;
 
 /* Converts an enum value to the underlying integral value. */
-template <typename Enum, enable_if_enum_t<Enum> = 0>
+template <typename Enum, RequireEnum<Enum> = 0>
 [[nodiscard]] constexpr auto ToUnderlying(const Enum value) noexcept
     -> std::underlying_type_t<Enum>
 {
@@ -197,125 +196,6 @@ inline auto operator<<(std::ostream& stream, const Result result) -> std::ostrea
   return stream << to_string(result);
 }
 
-namespace literals {
-/// \addtogroup core
-/// \{
-
-/**
- * \brief Creates an 8-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> Uint8
-{
-  return static_cast<Uint8>(value);
-}
-
-/**
- * \brief Creates a 16-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> Uint16
-{
-  return static_cast<Uint16>(value);
-}
-
-/**
- * \brief Creates a 32-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> Uint32
-{
-  return static_cast<Uint32>(value);
-}
-
-/**
- * \brief Creates a 64-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> Uint64
-{
-  return static_cast<Uint64>(value);
-}
-
-/**
- * \brief Creates an 8-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> Sint8
-{
-  return static_cast<Sint8>(value);
-}
-
-/**
- * \brief Creates a 16-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> Sint16
-{
-  return static_cast<Sint16>(value);
-}
-
-/**
- * \brief Creates a 32-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> Sint32
-{
-  return static_cast<Sint32>(value);
-}
-
-/**
- * \brief Creates a 64-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> Sint64
-{
-  return static_cast<Sint64>(value);
-}
-
-/// \} End of group core
-
-}  // namespace literals
 }  // namespace cen
 
 #ifndef CENTURION_NO_SDL_NAMESPACE_ALIAS

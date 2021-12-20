@@ -6,8 +6,6 @@
 
 #include "filesystem.hpp"
 
-using namespace cen::literals;
-
 class FileTest : public testing::Test {
  public:
   inline static const auto prefs = cen::GetPreferredPath("centurion", "tests").copy();
@@ -40,13 +38,13 @@ TEST_F(FileTest, WriteAndRead)
 
     ASSERT_TRUE(file.WriteByte(42u));
 
-    ASSERT_TRUE(file.WriteNativeAsBigEndian(12_u16));
-    ASSERT_TRUE(file.WriteNativeAsBigEndian(34_u32));
-    ASSERT_TRUE(file.WriteNativeAsBigEndian(56_u64));
+    ASSERT_TRUE(file.WriteNativeAsBigEndian(Uint16{12}));
+    ASSERT_TRUE(file.WriteNativeAsBigEndian(Uint32{34}));
+    ASSERT_TRUE(file.WriteNativeAsBigEndian(Uint64{56}));
 
-    ASSERT_TRUE(file.WriteNativeAsLittleEndian(78_u16));
-    ASSERT_TRUE(file.WriteNativeAsLittleEndian(90_u32));
-    ASSERT_TRUE(file.WriteNativeAsLittleEndian(27_u64));
+    ASSERT_TRUE(file.WriteNativeAsLittleEndian(Uint16{78}));
+    ASSERT_TRUE(file.WriteNativeAsLittleEndian(Uint32{90}));
+    ASSERT_TRUE(file.WriteNativeAsLittleEndian(Uint64{27}));
   }
 
   {

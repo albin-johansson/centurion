@@ -5,7 +5,7 @@
 TEST(SensorEvent, Defaults)
 {
   const cen::sensor_event event;
-  ASSERT_EQ(cen::event_type::sensor_update, event.type());
+  ASSERT_EQ(cen::EventType::SensorUpdate, event.type());
   ASSERT_EQ(0, event.which());
 }
 

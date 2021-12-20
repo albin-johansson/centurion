@@ -18,7 +18,6 @@
 #include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
-#include "event_type.hpp"
 #include "joy_axis_event.hpp"
 #include "joy_ball_event.hpp"
 #include "joy_button_event.hpp"
@@ -47,7 +46,7 @@ class Event final {
 
   explicit Event(const SDL_Event& event) noexcept : mEvent{event}
   {
-    UpdateData(static_cast<event_type>(event.type));
+    UpdateData(static_cast<EventType>(event.type));
   }
 
   template <typename T>
@@ -89,7 +88,7 @@ class Event final {
     const bool result = SDL_PollEvent(&mEvent);
 
     if (result) {
-      UpdateData(static_cast<event_type>(mEvent.type));
+      UpdateData(static_cast<EventType>(mEvent.type));
     }
     else {
       mData.emplace<std::monostate>();
@@ -98,13 +97,13 @@ class Event final {
     return result;
   }
 
-  [[nodiscard]] auto GetType() const noexcept -> std::optional<event_type>
+  [[nodiscard]] auto GetType() const noexcept -> std::optional<EventType>
   {
     if (IsEmpty()) {
       return std::nullopt;
     }
     else {
-      return static_cast<event_type>(mEvent.type);
+      return static_cast<EventType>(mEvent.type);
     }
   }
 
@@ -121,7 +120,7 @@ class Event final {
   }
 
   /// Returns the amount of events of a particular type in the event queue.
-  [[nodiscard]] static auto GetQueueSize(const event_type type) noexcept -> std::optional<int>
+  [[nodiscard]] static auto GetQueueSize(const EventType type) noexcept -> std::optional<int>
   {
     const auto id = ToUnderlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
@@ -134,7 +133,7 @@ class Event final {
   }
 
   /// Indicates whether there is an event of a specific type in the event queue.
-  [[nodiscard]] static auto InQueue(const event_type type) noexcept -> bool
+  [[nodiscard]] static auto InQueue(const EventType type) noexcept -> bool
   {
     return GetQueueSize(type) > 0;
   }
@@ -228,154 +227,154 @@ class Event final {
   SDL_Event mEvent{};
   data_type mData{};
 
-  void UpdateData(const event_type type) noexcept
+  void UpdateData(const EventType type) noexcept
   {
     switch (type) {
-      case event_type::quit:
+      case EventType::Quit:
         mData.emplace<quit_event>(mEvent.quit);
         break;
 
-      case event_type::app_terminating:
-      case event_type::app_low_memory:
-      case event_type::app_will_enter_background:
-      case event_type::app_did_enter_background:
-      case event_type::app_will_enter_foreground:
-      case event_type::app_did_enter_foreground:
+      case EventType::AppTerminating:
+      case EventType::AppLowMemory:
+      case EventType::AppWillEnterBackground:
+      case EventType::AppDidEnterBackground:
+      case EventType::AppWillEnterForeground:
+      case EventType::AppDidEnterForeground:
         break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-      case event_type::locale_changed:
+      case EventType::LocaleChanged:
         break;
 
-      case event_type::display:
+      case EventType::Display:
         mData.emplace<display_event>(mEvent.display);
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-      case event_type::window:
+      case EventType::Window:
         mData.emplace<window_event>(mEvent.window);
         break;
 
-      case event_type::system:
+      case EventType::System:
         break;
 
-      case event_type::key_down:
-      case event_type::key_up:
+      case EventType::KeyDown:
+      case EventType::KeyUp:
         mData.emplace<keyboard_event>(mEvent.key);
         break;
 
-      case event_type::text_editing:
+      case EventType::TextEditing:
         mData.emplace<text_editing_event>(mEvent.edit);
         break;
 
-      case event_type::text_input:
+      case EventType::TextInput:
         mData.emplace<text_input_event>(mEvent.text);
         break;
 
-      case event_type::keymap_changed:
+      case EventType::KeymapChanged:
         break;
 
-      case event_type::mouse_motion:
+      case EventType::MouseMotion:
         mData.emplace<mouse_motion_event>(mEvent.motion);
         break;
 
-      case event_type::mouse_button_down:
-      case event_type::mouse_button_up:
+      case EventType::MouseButtonDown:
+      case EventType::MouseButtonUp:
         mData.emplace<mouse_button_event>(mEvent.button);
         break;
 
-      case event_type::mouse_wheel:
+      case EventType::MouseWheel:
         mData.emplace<mouse_wheel_event>(mEvent.wheel);
         break;
 
-      case event_type::joystick_axis_motion:
+      case EventType::JoyAxisMotion:
         mData.emplace<joy_axis_event>(mEvent.jaxis);
         break;
 
-      case event_type::joystick_ball_motion:
+      case EventType::JoyBallMotion:
         mData.emplace<joy_ball_event>(mEvent.jball);
         break;
 
-      case event_type::joystick_hat_motion:
+      case EventType::JoyHatMotion:
         mData.emplace<joy_hat_event>(mEvent.jhat);
         break;
 
-      case event_type::joystick_button_down:
-      case event_type::joystick_button_up:
+      case EventType::JoyButtonDown:
+      case EventType::JoyButtonUp:
         mData.emplace<joy_button_event>(mEvent.jbutton);
         break;
 
-      case event_type::joystick_device_added:
-      case event_type::joystick_device_removed:
+      case EventType::JoyDeviceAdded:
+      case EventType::JoyDeviceRemoved:
         mData.emplace<joy_device_event>(mEvent.jdevice);
         break;
 
-      case event_type::controller_axis_motion:
+      case EventType::ControllerAxisMotion:
         mData.emplace<controller_axis_event>(mEvent.caxis);
         break;
 
-      case event_type::controller_button_down:
-      case event_type::controller_button_up:
+      case EventType::ControllerButtonDown:
+      case EventType::ControllerButtonUp:
         mData.emplace<controller_button_event>(mEvent.cbutton);
         break;
 
-      case event_type::controller_device_added:
-      case event_type::controller_device_removed:
-      case event_type::controller_device_remapped:
+      case EventType::ControllerDeviceAdded:
+      case EventType::ControllerDeviceRemoved:
+      case EventType::ControllerDeviceRemapped:
         mData.emplace<controller_device_event>(mEvent.cdevice);
         break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-      case event_type::controller_touchpad_down:
-      case event_type::controller_touchpad_up:
-      case event_type::controller_touchpad_motion:
+      case EventType::ControllerTouchpadDown:
+      case EventType::ControllerTouchpadUp:
+      case EventType::ControllerTouchpadMotion:
         mData.emplace<controller_touchpad_event>(mEvent.ctouchpad);
         break;
 
-      case event_type::controller_sensor_update:
+      case EventType::ControllerSensorUpdate:
         mData.emplace<controller_sensor_event>(mEvent.csensor);
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-      case event_type::touch_down:
-      case event_type::touch_up:
-      case event_type::touch_motion:
+      case EventType::FingerDown:
+      case EventType::FingerUp:
+      case EventType::FingerMotion:
         mData.emplace<touch_finger_event>(mEvent.tfinger);
         break;
 
-      case event_type::dollar_gesture:
-      case event_type::dollar_record:
+      case EventType::DollarGesture:
+      case EventType::DollarRecord:
         mData.emplace<dollar_gesture_event>(mEvent.dgesture);
         break;
 
-      case event_type::multi_gesture:
+      case EventType::MultiGesture:
         mData.emplace<multi_gesture_event>(mEvent.mgesture);
         break;
 
-      case event_type::clipboard_update:
+      case EventType::ClipboardUpdate:
         break;
 
-      case event_type::drop_file:
-      case event_type::drop_text:
-      case event_type::drop_begin:
-      case event_type::drop_complete:
+      case EventType::DropFile:
+      case EventType::DropText:
+      case EventType::DropBegin:
+      case EventType::DropComplete:
         mData.emplace<drop_event>(mEvent.drop);
         break;
 
-      case event_type::audio_device_added:
-      case event_type::audio_device_removed:
+      case EventType::AudioDeviceAdded:
+      case EventType::AudioDeviceRemoved:
         mData.emplace<audio_device_event>(mEvent.adevice);
         break;
 
-      case event_type::sensor_update:
+      case EventType::SensorUpdate:
         mData.emplace<sensor_event>(mEvent.sensor);
         break;
 
-      case event_type::render_targets_reset:
-      case event_type::render_device_reset:
+      case EventType::RenderTargetsReset:
+      case EventType::RenderDeviceReset:
         break;
 
-      case event_type::user:
+      case EventType::User:
         mData.emplace<user_event>(mEvent.user);
         break;
 

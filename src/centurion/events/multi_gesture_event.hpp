@@ -28,7 +28,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
    *
    * \since 4.0.0
    */
-  multi_gesture_event() noexcept : common_event{event_type::multi_gesture} {}
+  multi_gesture_event() noexcept : common_event{EventType::MultiGesture} {}
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.

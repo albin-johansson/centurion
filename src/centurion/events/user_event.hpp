@@ -23,12 +23,12 @@ class user_event final : public common_event<SDL_UserEvent> {
   /**
    * \brief Creates a user event.
    *
-   * \details Note that the event will be created using `event_type::user`, but you can use any
-   * event type value in the range [`event_type::user`, SDL_LASTEVENT - 1].
+   * \details Note that the event will be created using `EventType::User`, but you can use any
+   * event type value in the range [`EventType::User`, SDL_LASTEVENT - 1].
    *
    * \since 6.3.0
    */
-  user_event() noexcept : common_event{event_type::user} {}
+  user_event() noexcept : common_event{EventType::User} {}
 
   /**
    * \brief Creates a user event based on an SDL event.

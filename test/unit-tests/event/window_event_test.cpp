@@ -6,7 +6,7 @@ TEST(WindowEvent, Defaults)
 {
   cen::window_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::window, event.type());
+  ASSERT_EQ(cen::EventType::Window, event.type());
 }
 
 TEST(WindowEvent, EventId)

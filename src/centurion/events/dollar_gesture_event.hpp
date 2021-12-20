@@ -27,10 +27,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
    *
    * \since 4.0.0
    */
-  dollar_gesture_event() noexcept : common_event{event_type::dollar_gesture}
-  {
-    set_type(event_type::dollar_gesture);
-  }
+  dollar_gesture_event() noexcept : common_event{EventType::DollarGesture} {}
 
   /**
    * \brief Creates a dollar gesture event that is based on the supplied SDL

@@ -19,7 +19,7 @@ TEST(CommonEvent, SetType)
 {
   common_event event;
 
-  const auto type = cen::event_type::app_low_memory;
+  const auto type = cen::EventType::AppLowMemory;
   event.set_type(type);
 
   ASSERT_EQ(type, event.type());
@@ -42,7 +42,7 @@ TEST(CommonEvent, Type)
   sdl.type = SDL_MOUSEMOTION;
 
   const common_event event{sdl};
-  ASSERT_EQ(cen::event_type::mouse_motion, event.type());
+  ASSERT_EQ(cen::EventType::MouseMotion, event.type());
 }
 
 TEST(CommonEvent, Get)

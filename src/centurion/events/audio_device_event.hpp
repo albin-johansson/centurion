@@ -28,7 +28,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent> {
    *
    * \since 4.0.0
    */
-  audio_device_event() noexcept : common_event{event_type::audio_device_added} {}
+  audio_device_event() noexcept : common_event{EventType::AudioDeviceAdded} {}
 
   /**
    * \brief Creates a audio device event based on the supplied SDL event.

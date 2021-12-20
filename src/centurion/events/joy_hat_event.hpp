@@ -29,7 +29,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
    *
    * \since 4.0.0
    */
-  joy_hat_event() noexcept : common_event{event_type::joystick_hat_motion} {}
+  joy_hat_event() noexcept : common_event{EventType::JoyHatMotion} {}
 
   /**
    * \brief Creates a joy hat event based on the supplied SDL event.

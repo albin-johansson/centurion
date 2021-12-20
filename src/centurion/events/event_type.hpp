@@ -11,363 +11,262 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
+/// Represents the different event types.
+enum class EventType : Uint32 {
+  Quit = SDL_QUIT,
 
-/**
- * \enum event_type
- *
- * \brief Represents the different event types.
- *
- * \see `SDL_EventType`
- *
- * \since 3.1.0
- */
-enum class event_type : Uint32 {
-  quit = SDL_QUIT,
-
-  app_terminating = SDL_APP_TERMINATING,
-  app_low_memory = SDL_APP_LOWMEMORY,
-  app_will_enter_background = SDL_APP_WILLENTERBACKGROUND,
-  app_did_enter_background = SDL_APP_DIDENTERBACKGROUND,
-  app_will_enter_foreground = SDL_APP_WILLENTERFOREGROUND,
-  app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
+  AppTerminating = SDL_APP_TERMINATING,
+  AppLowMemory = SDL_APP_LOWMEMORY,
+  AppWillEnterBackground = SDL_APP_WILLENTERBACKGROUND,
+  AppDidEnterBackground = SDL_APP_DIDENTERBACKGROUND,
+  AppWillEnterForeground = SDL_APP_WILLENTERFOREGROUND,
+  AppDidEnterForeground = SDL_APP_DIDENTERFOREGROUND,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  locale_changed = SDL_LOCALECHANGED,
+  LocaleChanged = SDL_LOCALECHANGED,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  display = SDL_DISPLAYEVENT,
+  Display = SDL_DISPLAYEVENT,
+  Window = SDL_WINDOWEVENT,
+  System = SDL_SYSWMEVENT,
 
-  window = SDL_WINDOWEVENT,
-  system = SDL_SYSWMEVENT,
+  KeyDown = SDL_KEYDOWN,
+  KeyUp = SDL_KEYUP,
+  TextEditing = SDL_TEXTEDITING,
+  TextInput = SDL_TEXTINPUT,
+  KeymapChanged = SDL_KEYMAPCHANGED,
 
-  key_down = SDL_KEYDOWN,
-  key_up = SDL_KEYUP,
-  text_editing = SDL_TEXTEDITING,
-  text_input = SDL_TEXTINPUT,
-  keymap_changed = SDL_KEYMAPCHANGED,
+  MouseMotion = SDL_MOUSEMOTION,
+  MouseButtonDown = SDL_MOUSEBUTTONDOWN,
+  MouseButtonUp = SDL_MOUSEBUTTONUP,
+  MouseWheel = SDL_MOUSEWHEEL,
 
-  mouse_motion = SDL_MOUSEMOTION,
-  mouse_button_down = SDL_MOUSEBUTTONDOWN,
-  mouse_button_up = SDL_MOUSEBUTTONUP,
-  mouse_wheel = SDL_MOUSEWHEEL,
+  JoyAxisMotion = SDL_JOYAXISMOTION,
+  JoyBallMotion = SDL_JOYBALLMOTION,
+  JoyHatMotion = SDL_JOYHATMOTION,
+  JoyButtonDown = SDL_JOYBUTTONDOWN,
+  JoyButtonUp = SDL_JOYBUTTONUP,
+  JoyDeviceAdded = SDL_JOYDEVICEADDED,
+  JoyDeviceRemoved = SDL_JOYDEVICEREMOVED,
 
-  joystick_axis_motion = SDL_JOYAXISMOTION,
-  joystick_ball_motion = SDL_JOYBALLMOTION,
-  joystick_hat_motion = SDL_JOYHATMOTION,
-  joystick_button_down = SDL_JOYBUTTONDOWN,
-  joystick_button_up = SDL_JOYBUTTONUP,
-  joystick_device_added = SDL_JOYDEVICEADDED,
-  joystick_device_removed = SDL_JOYDEVICEREMOVED,
-
-  controller_axis_motion = SDL_CONTROLLERAXISMOTION,
-  controller_button_down = SDL_CONTROLLERBUTTONDOWN,
-  controller_button_up = SDL_CONTROLLERBUTTONUP,
-  controller_device_added = SDL_CONTROLLERDEVICEADDED,
-  controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
-  controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
+  ControllerAxisMotion = SDL_CONTROLLERAXISMOTION,
+  ControllerButtonDown = SDL_CONTROLLERBUTTONDOWN,
+  ControllerButtonUp = SDL_CONTROLLERBUTTONUP,
+  ControllerDeviceAdded = SDL_CONTROLLERDEVICEADDED,
+  ControllerDeviceRemoved = SDL_CONTROLLERDEVICEREMOVED,
+  ControllerDeviceRemapped = SDL_CONTROLLERDEVICEREMAPPED,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  controller_touchpad_down = SDL_CONTROLLERTOUCHPADDOWN,
-  controller_touchpad_up = SDL_CONTROLLERTOUCHPADUP,
-  controller_touchpad_motion = SDL_CONTROLLERTOUCHPADMOTION,
-  controller_sensor_update = SDL_CONTROLLERSENSORUPDATE,
+  ControllerTouchpadDown = SDL_CONTROLLERTOUCHPADDOWN,
+  ControllerTouchpadMotion = SDL_CONTROLLERTOUCHPADMOTION,
+  ControllerTouchpadUp = SDL_CONTROLLERTOUCHPADUP,
+  ControllerSensorUpdate = SDL_CONTROLLERSENSORUPDATE,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  touch_down = SDL_FINGERDOWN,
-  touch_up = SDL_FINGERUP,
-  touch_motion = SDL_FINGERMOTION,
+  FingerDown = SDL_FINGERDOWN,
+  FingerUp = SDL_FINGERUP,
+  FingerMotion = SDL_FINGERMOTION,
 
-  dollar_gesture = SDL_DOLLARGESTURE,
-  dollar_record = SDL_DOLLARRECORD,
-  multi_gesture = SDL_MULTIGESTURE,
+  DollarGesture = SDL_DOLLARGESTURE,
+  DollarRecord = SDL_DOLLARRECORD,
+  MultiGesture = SDL_MULTIGESTURE,
 
-  clipboard_update = SDL_CLIPBOARDUPDATE,
+  ClipboardUpdate = SDL_CLIPBOARDUPDATE,
 
-  drop_file = SDL_DROPFILE,
-  drop_text = SDL_DROPTEXT,
-  drop_begin = SDL_DROPBEGIN,
-  drop_complete = SDL_DROPCOMPLETE,
+  DropFile = SDL_DROPFILE,
+  DropText = SDL_DROPTEXT,
+  DropBegin = SDL_DROPBEGIN,
+  DropComplete = SDL_DROPCOMPLETE,
 
-  audio_device_added = SDL_AUDIODEVICEADDED,
-  audio_device_removed = SDL_AUDIODEVICEREMOVED,
+  AudioDeviceAdded = SDL_AUDIODEVICEADDED,
+  AudioDeviceRemoved = SDL_AUDIODEVICEREMOVED,
 
-  sensor_update = SDL_SENSORUPDATE,
+  SensorUpdate = SDL_SENSORUPDATE,
 
-  render_targets_reset = SDL_RENDER_TARGETS_RESET,
-  render_device_reset = SDL_RENDER_DEVICE_RESET,
+  RenderTargetsReset = SDL_RENDER_TARGETS_RESET,
+  RenderDeviceReset = SDL_RENDER_DEVICE_RESET,
 
-  user = SDL_USEREVENT
+  User = SDL_USEREVENT
 };
 
-/// \name String conversions
-/// \{
-
-/**
- * \brief Returns a textual version of the supplied event type.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(event_type::mouse_motion) == "mouse_motion"`.
- *
- * \param type the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const EventType type) -> std::string_view
 {
   switch (type) {
-    case event_type::quit:
-      return "quit";
+    case EventType::Quit:
+      return "Quit";
 
-    case event_type::app_terminating:
-      return "app_terminating";
+    case EventType::AppTerminating:
+      return "AppTerminating";
 
-    case event_type::app_low_memory:
-      return "app_low_memory";
+    case EventType::AppLowMemory:
+      return "AppLowMemory";
 
-    case event_type::app_will_enter_background:
-      return "app_will_enter_background";
+    case EventType::AppWillEnterBackground:
+      return "AppWillEnterBackground";
 
-    case event_type::app_did_enter_background:
-      return "app_did_enter_background";
+    case EventType::AppDidEnterBackground:
+      return "AppDidEnterBackground";
 
-    case event_type::app_will_enter_foreground:
-      return "app_will_enter_foreground";
+    case EventType::AppWillEnterForeground:
+      return "AppWillEnterForeground";
 
-    case event_type::app_did_enter_foreground:
-      return "app_did_enter_foreground";
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-    case event_type::locale_changed:
-      return "locale_changed";
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-    case event_type::display:
-      return "display";
-
-    case event_type::window:
-      return "window";
-
-    case event_type::system:
-      return "system";
-
-    case event_type::key_down:
-      return "key_down";
-
-    case event_type::key_up:
-      return "key_up";
-
-    case event_type::text_editing:
-      return "text_editing";
-
-    case event_type::text_input:
-      return "text_input";
-
-    case event_type::keymap_changed:
-      return "keymap_changed";
-
-    case event_type::mouse_motion:
-      return "mouse_motion";
-
-    case event_type::mouse_button_down:
-      return "mouse_button_down";
-
-    case event_type::mouse_button_up:
-      return "mouse_button_up";
-
-    case event_type::mouse_wheel:
-      return "mouse_wheel";
-
-    case event_type::joystick_axis_motion:
-      return "joystick_axis_motion";
-
-    case event_type::joystick_ball_motion:
-      return "joystick_ball_motion";
-
-    case event_type::joystick_hat_motion:
-      return "joystick_hat_motion";
-
-    case event_type::joystick_button_down:
-      return "joystick_button_down";
-
-    case event_type::joystick_button_up:
-      return "joystick_button_up";
-
-    case event_type::joystick_device_added:
-      return "joystick_device_added";
-
-    case event_type::joystick_device_removed:
-      return "joystick_device_removed";
-
-    case event_type::controller_axis_motion:
-      return "controller_axis_motion";
-
-    case event_type::controller_button_down:
-      return "controller_button_down";
-
-    case event_type::controller_button_up:
-      return "controller_button_up";
-
-    case event_type::controller_device_added:
-      return "controller_device_added";
-
-    case event_type::controller_device_removed:
-      return "controller_device_removed";
-
-    case event_type::controller_device_remapped:
-      return "controller_device_remapped";
+    case EventType::AppDidEnterForeground:
+      return "AppDidEnterForeground";
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-    case event_type::controller_touchpad_down:
-      return "controller_touchpad_down";
-
-    case event_type::controller_touchpad_up:
-      return "controller_touchpad_up";
-
-    case event_type::controller_touchpad_motion:
-      return "controller_touchpad_motion";
-
-    case event_type::controller_sensor_update:
-      return "controller_sensor_update";
+    case EventType::LocaleChanged:
+      return "LocaleChanged";
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-    case event_type::touch_down:
-      return "touch_down";
+    case EventType::Display:
+      return "Display";
 
-    case event_type::touch_up:
-      return "touch_up";
+    case EventType::Window:
+      return "Window";
 
-    case event_type::touch_motion:
-      return "touch_motion";
+    case EventType::System:
+      return "System";
 
-    case event_type::dollar_gesture:
-      return "dollar_gesture";
+    case EventType::KeyDown:
+      return "KeyDown";
 
-    case event_type::dollar_record:
-      return "dollar_record";
+    case EventType::KeyUp:
+      return "KeyUp";
 
-    case event_type::multi_gesture:
-      return "multi_gesture";
+    case EventType::TextEditing:
+      return "TextEditing";
 
-    case event_type::clipboard_update:
-      return "clipboard_update";
+    case EventType::TextInput:
+      return "TextInput";
 
-    case event_type::drop_file:
-      return "drop_file";
+    case EventType::KeymapChanged:
+      return "KeymapChanged";
 
-    case event_type::drop_text:
-      return "drop_text";
+    case EventType::MouseMotion:
+      return "MouseMotion";
 
-    case event_type::drop_begin:
-      return "drop_begin";
+    case EventType::MouseButtonDown:
+      return "MouseButtonDown";
 
-    case event_type::drop_complete:
-      return "drop_complete";
+    case EventType::MouseButtonUp:
+      return "MouseButtonUp";
 
-    case event_type::audio_device_added:
-      return "audio_device_added";
+    case EventType::MouseWheel:
+      return "MouseWheel";
 
-    case event_type::audio_device_removed:
-      return "audio_device_removed";
+    case EventType::JoyAxisMotion:
+      return "JoyAxisMotion";
 
-    case event_type::sensor_update:
-      return "sensor_update";
+    case EventType::JoyBallMotion:
+      return "JoyBallMotion";
 
-    case event_type::render_targets_reset:
-      return "render_targets_reset";
+    case EventType::JoyHatMotion:
+      return "JoyHatMotion";
 
-    case event_type::render_device_reset:
-      return "render_device_reset";
+    case EventType::JoyButtonDown:
+      return "JoyButtonDown";
 
-    case event_type::user:
-      return "user";
+    case EventType::JoyButtonUp:
+      return "JoyButtonUp";
+
+    case EventType::JoyDeviceAdded:
+      return "JoyDeviceAdded";
+
+    case EventType::JoyDeviceRemoved:
+      return "JoyDeviceRemoved";
+
+    case EventType::ControllerAxisMotion:
+      return "ControllerAxisMotion";
+
+    case EventType::ControllerButtonDown:
+      return "ControllerButtonDown";
+
+    case EventType::ControllerButtonUp:
+      return "ControllerButtonUp";
+
+    case EventType::ControllerDeviceAdded:
+      return "ControllerDeviceAdded";
+
+    case EventType::ControllerDeviceRemoved:
+      return "ControllerDeviceRemoved";
+
+    case EventType::ControllerDeviceRemapped:
+      return "ControllerDeviceRemapped";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case EventType::ControllerTouchpadDown:
+      return "ControllerTouchpadDown";
+
+    case EventType::ControllerTouchpadUp:
+      return "ControllerTouchpadUp";
+
+    case EventType::ControllerTouchpadMotion:
+      return "ControllerTouchpadMotion";
+
+    case EventType::ControllerSensorUpdate:
+      return "ControllerSensorUpdate";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+    case EventType::FingerDown:
+      return "FingerDown";
+
+    case EventType::FingerUp:
+      return "FingerUp";
+
+    case EventType::FingerMotion:
+      return "FingerMotion";
+
+    case EventType::DollarGesture:
+      return "DollarGesture";
+
+    case EventType::DollarRecord:
+      return "DollarRecord";
+
+    case EventType::MultiGesture:
+      return "MultiGesture";
+
+    case EventType::ClipboardUpdate:
+      return "ClipboardUpdate";
+
+    case EventType::DropFile:
+      return "DropFile";
+
+    case EventType::DropText:
+      return "DropText";
+
+    case EventType::DropBegin:
+      return "DropBegin";
+
+    case EventType::DropComplete:
+      return "DropComplete";
+
+    case EventType::AudioDeviceAdded:
+      return "AudioDeviceAdded";
+
+    case EventType::AudioDeviceRemoved:
+      return "AudioDeviceRemoved";
+
+    case EventType::SensorUpdate:
+      return "SensorUpdate";
+
+    case EventType::RenderTargetsReset:
+      return "RenderTargetsReset";
+
+    case EventType::RenderDeviceReset:
+      return "RenderDeviceReset";
+
+    case EventType::User:
+      return "User";
 
     default:
       throw Error{"Did not recognize event type!"};
   }
 }
 
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of an event type enumerator.
- *
- * \param stream the output stream that will be used.
- * \param type the enumerator that will be printed.
- *
- * \see `to_string(event_type)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const EventType type) -> std::ostream&
 {
   return stream << to_string(type);
 }
-
-/// \} End of streaming
-
-/// \name Event type comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two event type values are the same.
- *
- * \param lhs the left-hand side event type value
- * \param rhs the right-hand side event type value
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 3.1.0
- */
-[[nodiscard]] constexpr auto operator==(const event_type lhs, const SDL_EventType rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_EventType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs, const event_type rhs) noexcept
-    -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two event type values aren't the same.
- *
- * \param lhs the left-hand side event type value
- * \param rhs the right-hand side event type value
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 3.1.0
- */
-[[nodiscard]] constexpr auto operator!=(const event_type lhs, const SDL_EventType rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs, const event_type rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of event type comparison operators
-
-/// \} End of group event
 
 }  // namespace cen
 

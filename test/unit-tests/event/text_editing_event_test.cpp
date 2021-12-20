@@ -6,7 +6,7 @@ TEST(TextEditingEvent, Defaults)
 {
   cen::text_editing_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::text_editing, event.type());
+  ASSERT_EQ(cen::EventType::TextEditing, event.type());
 }
 
 TEST(TextEditingEvent, SetWindowId)

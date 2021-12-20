@@ -6,7 +6,7 @@ TEST(JoyAxisEvent, Defaults)
 {
   cen::joy_axis_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::joystick_axis_motion, event.type());
+  ASSERT_EQ(cen::EventType::JoyAxisMotion, event.type());
 }
 
 TEST(JoyAxisEvent, SetWhich)

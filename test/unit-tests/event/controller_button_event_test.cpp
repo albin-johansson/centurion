@@ -6,7 +6,7 @@ TEST(ControllerButtonEvent, Defaults)
 {
   cen::controller_button_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::controller_button_down, event.type());
+  ASSERT_EQ(cen::EventType::ControllerButtonDown, event.type());
 }
 
 TEST(ControllerButtonEvent, Constructors)

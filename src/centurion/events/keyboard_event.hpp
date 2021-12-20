@@ -30,7 +30,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
    *
    * \since 4.0.0
    */
-  keyboard_event() noexcept : common_event{event_type::key_down} {}
+  keyboard_event() noexcept : common_event{EventType::KeyDown} {}
 
   /**
    * \brief Creates a keyboard event based on the supplied SDL event.

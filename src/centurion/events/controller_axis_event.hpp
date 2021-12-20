@@ -26,7 +26,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  controller_axis_event() noexcept : common_event{cen::event_type::controller_axis_motion} {}
+  controller_axis_event() noexcept : common_event{cen::EventType::ControllerAxisMotion} {}
 
   /**
    * \brief Creates a controller axis event that is based on the supplied SDL

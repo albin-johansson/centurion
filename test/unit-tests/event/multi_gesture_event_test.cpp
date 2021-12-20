@@ -6,7 +6,7 @@ TEST(MultiGestureEvent, Defaults)
 {
   const cen::multi_gesture_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::multi_gesture, event.type());
+  ASSERT_EQ(cen::EventType::MultiGesture, event.type());
 }
 
 TEST(MultiGestureEvent, SetTouchId)

@@ -7,7 +7,7 @@ TEST(KeyboardEvent, Defaults)
 {
   cen::keyboard_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::key_down, event.type());
+  ASSERT_EQ(cen::EventType::KeyDown, event.type());
 }
 
 TEST(KeyboardEvent, SetScanCode)

@@ -27,7 +27,7 @@ class drop_event final : public common_event<SDL_DropEvent> {
    *
    * \since 4.0.0
    */
-  drop_event() noexcept : common_event{event_type::drop_file} {}
+  drop_event() noexcept : common_event{EventType::DropFile} {}
 
   /**
    * \brief Creates a drop event based on the supplied event.

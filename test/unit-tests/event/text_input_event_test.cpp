@@ -6,7 +6,7 @@ TEST(TextInputEvent, Defaults)
 {
   cen::text_input_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::text_input, event.type());
+  ASSERT_EQ(cen::EventType::TextInput, event.type());
 }
 
 TEST(TextInputEvent, SetWindowId)

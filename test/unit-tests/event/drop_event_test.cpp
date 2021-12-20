@@ -6,7 +6,7 @@ TEST(DropEvent, Defaults)
 {
   cen::drop_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::drop_file, event.type());
+  ASSERT_EQ(cen::EventType::DropFile, event.type());
 }
 
 TEST(DropEvent, SetWillFreeFile)

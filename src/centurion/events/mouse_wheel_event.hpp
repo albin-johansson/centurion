@@ -28,7 +28,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
    *
    * \since 4.0.0
    */
-  mouse_wheel_event() noexcept : common_event{event_type::mouse_wheel} {}
+  mouse_wheel_event() noexcept : common_event{EventType::MouseWheel} {}
 
   /**
    * \brief Creates an event based on the supplied SDL event.

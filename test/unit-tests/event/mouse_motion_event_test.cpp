@@ -6,7 +6,7 @@ TEST(MouseMotionEvent, Defaults)
 {
   cen::mouse_motion_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::mouse_motion, event.type());
+  ASSERT_EQ(cen::EventType::MouseMotion, event.type());
 }
 
 TEST(MouseMotionEvent, SetWindowId)

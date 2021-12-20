@@ -6,7 +6,7 @@ TEST(JoyButtonEvent, Defaults)
 {
   cen::joy_button_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::joystick_button_down, event.type());
+  ASSERT_EQ(cen::EventType::JoyButtonDown, event.type());
 }
 
 TEST(JoyButtonEvent, SetWhich)

@@ -30,7 +30,7 @@ class display_event final : public common_event<SDL_DisplayEvent> {
    *
    * \since 6.3.0
    */
-  display_event() noexcept : common_event{event_type::display} {}
+  display_event() noexcept : common_event{EventType::Display} {}
 
   /**
    * \brief Creates a display event based an SDL event.

@@ -29,7 +29,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent> {
    *
    * \since 4.0.0
    */
-  text_input_event() noexcept : common_event{event_type::text_input} {}
+  text_input_event() noexcept : common_event{EventType::TextInput} {}
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.

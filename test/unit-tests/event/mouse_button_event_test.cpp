@@ -6,7 +6,7 @@ TEST(MouseButtonEvent, Defaults)
 {
   cen::mouse_button_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::mouse_button_down, event.type());
+  ASSERT_EQ(cen::EventType::MouseButtonDown, event.type());
 }
 
 TEST(MouseButtonEvent, SetWindowId)

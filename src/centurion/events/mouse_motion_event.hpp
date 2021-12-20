@@ -28,7 +28,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
    *
    * \since 4.0.0
    */
-  mouse_motion_event() noexcept : common_event{event_type::mouse_motion} {}
+  mouse_motion_event() noexcept : common_event{EventType::MouseMotion} {}
 
   /**
    * \brief Creates an event based on an SDL event.

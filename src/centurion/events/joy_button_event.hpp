@@ -29,7 +29,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
    *
    * \since 4.0.0
    */
-  joy_button_event() noexcept : common_event{event_type::joystick_button_down} {}
+  joy_button_event() noexcept : common_event{EventType::JoyButtonDown} {}
 
   /**
    * \brief Creates a joy_button_event based on the supplied event.

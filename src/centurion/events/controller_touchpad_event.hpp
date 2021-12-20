@@ -27,13 +27,13 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    * \brief Creates a controller touchpad event with `controller_touchpad_down` as the specific
    * type.
    *
-   * \see `event_type::controller_touchpad_down`
-   * \see `event_type::controller_touchpad_up`
-   * \see `event_type::controller_touchpad_motion`
+   * \see `EventType::ControllerTouchpadDown`
+   * \see `EventType::ControllerTouchpadUp`
+   * \see `EventType::ControllerTouchpadMotion`
    *
    * \since 6.3.0
    */
-  controller_touchpad_event() noexcept : common_event{event_type::controller_touchpad_down} {}
+  controller_touchpad_event() noexcept : common_event{EventType::ControllerTouchpadDown} {}
 
   /**
    * \brief Creates a controller touchpad event based an SDL event.

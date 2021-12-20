@@ -30,7 +30,7 @@ class sensor_event final : public common_event<SDL_SensorEvent> {
    *
    * \since 6.3.0
    */
-  sensor_event() noexcept : common_event{event_type::sensor_update} {}
+  sensor_event() noexcept : common_event{EventType::SensorUpdate} {}
 
   /**
    * \brief Creates a sensor event based on an SDL event.

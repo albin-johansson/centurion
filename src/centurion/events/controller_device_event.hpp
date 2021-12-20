@@ -28,7 +28,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
    *
    * \since 4.0.0
    */
-  controller_device_event() noexcept : common_event{event_type::controller_device_added} {}
+  controller_device_event() noexcept : common_event{EventType::ControllerDeviceAdded} {}
 
   /**
    * \brief Creates a controller device event that is based on the supplied SDL

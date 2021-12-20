@@ -27,7 +27,7 @@ class quit_event final : public common_event<SDL_QuitEvent> {
    *
    * \since 4.0.0
    */
-  quit_event() noexcept : common_event{event_type::quit} {}
+  quit_event() noexcept : common_event{EventType::Quit} {}
 
   /**
    * \brief Creates a quit event based on the supplied SDL event.

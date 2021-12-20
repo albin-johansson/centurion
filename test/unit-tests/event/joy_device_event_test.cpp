@@ -6,7 +6,7 @@ TEST(JoyDeviceEvent, Defaults)
 {
   cen::joy_device_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::joystick_device_added, event.type());
+  ASSERT_EQ(cen::EventType::JoyDeviceAdded, event.type());
 }
 
 TEST(JoyDeviceEvent, SetWhich)

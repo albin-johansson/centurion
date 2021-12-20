@@ -6,7 +6,7 @@ TEST(TouchFingerEvent, Defaults)
 {
   cen::touch_finger_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::touch_down, event.type());
+  ASSERT_EQ(cen::EventType::FingerDown, event.type());
 }
 
 TEST(TouchFingerEvent, SetTouchId)

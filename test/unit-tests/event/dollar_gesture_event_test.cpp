@@ -6,7 +6,7 @@ TEST(DollarGestureEvent, Defaults)
 {
   cen::dollar_gesture_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::dollar_gesture, event.type());
+  ASSERT_EQ(cen::EventType::DollarGesture, event.type());
 }
 
 TEST(DollarGestureEvent, SetTouchId)

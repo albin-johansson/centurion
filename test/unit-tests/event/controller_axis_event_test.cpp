@@ -6,7 +6,7 @@ TEST(ControllerAxisEvent, Defaults)
 {
   cen::controller_axis_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::controller_axis_motion, event.type());
+  ASSERT_EQ(cen::EventType::ControllerAxisMotion, event.type());
 }
 
 TEST(ControllerAxisEvent, Constructors)

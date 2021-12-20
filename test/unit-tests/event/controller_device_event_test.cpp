@@ -6,7 +6,7 @@ TEST(ControllerDeviceEvent, Defaults)
 {
   cen::controller_device_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::controller_device_added, event.type());
+  ASSERT_EQ(cen::EventType::ControllerDeviceAdded, event.type());
 }
 
 TEST(ControllerDeviceEvent, Constructors)

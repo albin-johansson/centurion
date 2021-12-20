@@ -6,7 +6,7 @@ TEST(AudioDeviceEvent, Defaults)
 {
   cen::audio_device_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::audio_device_added, event.type());
+  ASSERT_EQ(cen::EventType::AudioDeviceAdded, event.type());
 }
 
 TEST(AudioDeviceEvent, Constructors)

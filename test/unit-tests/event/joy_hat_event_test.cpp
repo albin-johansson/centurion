@@ -6,7 +6,7 @@ TEST(JoyHatEvent, Defaults)
 {
   cen::joy_hat_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::joystick_hat_motion, event.type());
+  ASSERT_EQ(cen::EventType::JoyHatMotion, event.type());
 }
 
 TEST(JoyHatEvent, SetHat)

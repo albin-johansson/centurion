@@ -28,7 +28,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
    *
    * \since 4.0.0
    */
-  touch_finger_event() noexcept : common_event{event_type::touch_down} {}
+  touch_finger_event() noexcept : common_event{EventType::FingerDown} {}
 
   /**
    * \brief Creates a touch finger event that is based on the supplied SDL

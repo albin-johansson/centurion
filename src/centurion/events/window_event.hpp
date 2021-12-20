@@ -28,7 +28,7 @@ class window_event final : public common_event<SDL_WindowEvent> {
    *
    * \since 4.0.0
    */
-  window_event() noexcept : common_event{event_type::window} {}
+  window_event() noexcept : common_event{EventType::Window} {}
 
   /**
    * \brief Creates a window event based on the supplied SDL window event.

@@ -29,7 +29,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
    *
    * \since 4.0.0
    */
-  mouse_button_event() noexcept : common_event{event_type::mouse_button_down} {}
+  mouse_button_event() noexcept : common_event{EventType::MouseButtonDown} {}
 
   /**
    * \brief Creates a mouse_button_event that is based on the supplied SDL

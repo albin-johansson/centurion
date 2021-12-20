@@ -6,7 +6,7 @@ TEST(MouseWheelEvent, Defaults)
 {
   cen::mouse_wheel_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::mouse_wheel, event.type());
+  ASSERT_EQ(cen::EventType::MouseWheel, event.type());
 }
 
 TEST(MouseWheelEvent, SetWindowId)

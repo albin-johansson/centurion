@@ -27,7 +27,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
    *
    * \since 4.0.0
    */
-  joy_device_event() noexcept : common_event{event_type::joystick_device_added} {}
+  joy_device_event() noexcept : common_event{EventType::JoyDeviceAdded} {}
 
   /**
    * \brief Creates a joy_device_event that is based on the supplied SDL event.

@@ -33,7 +33,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent> {
    *
    * \since 4.0.0
    */
-  text_editing_event() noexcept : common_event{event_type::text_editing} { check_length(); }
+  text_editing_event() noexcept : common_event{EventType::TextEditing} { check_length(); }
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.

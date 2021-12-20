@@ -6,7 +6,7 @@ TEST(JoyBallEvent, Defaults)
 {
   cen::joy_ball_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::joystick_ball_motion, event.type());
+  ASSERT_EQ(cen::EventType::JoyBallMotion, event.type());
 }
 
 TEST(JoyBallEvent, SetWhich)

@@ -33,7 +33,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  controller_sensor_event() noexcept : common_event{event_type::controller_sensor_update} {}
+  controller_sensor_event() noexcept : common_event{EventType::ControllerSensorUpdate} {}
 
   /**
    * \brief Creates a controller sensor event based on an SDL event.

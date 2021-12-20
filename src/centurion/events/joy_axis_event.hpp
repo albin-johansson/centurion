@@ -28,7 +28,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
    *
    * \since 4.0.0
    */
-  joy_axis_event() noexcept : common_event{event_type::joystick_axis_motion} {}
+  joy_axis_event() noexcept : common_event{EventType::JoyAxisMotion} {}
 
   /**
    * \brief Creates a joy axis event based on the supplied SDL joy axis event.

@@ -6,7 +6,7 @@ TEST(QuitEvent, Defaults)
 {
   cen::quit_event event;
   ASSERT_GT(event.time(), 0u);
-  ASSERT_EQ(cen::event_type::quit, event.type());
+  ASSERT_EQ(cen::EventType::Quit, event.type());
 }
 
 TEST(QuitEvent, Construction)

@@ -28,7 +28,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
    *
    * \since 4.0.0
    */
-  joy_ball_event() noexcept : common_event{event_type::joystick_ball_motion} {}
+  joy_ball_event() noexcept : common_event{EventType::JoyBallMotion} {}
 
   /**
    * \brief Creates a joy ball event based on the supplied SDL joy ball event.

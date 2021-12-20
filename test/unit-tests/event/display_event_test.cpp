@@ -7,7 +7,7 @@
 TEST(DisplayEvent, Defaults)
 {
   const cen::display_event event;
-  ASSERT_EQ(cen::event_type::display, event.type());
+  ASSERT_EQ(cen::EventType::Display, event.type());
   ASSERT_EQ(cen::display_event_id::none, event.event_id());
   ASSERT_GT(event.time(), 0u);
   ASSERT_EQ(0u, event.index());

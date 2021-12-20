@@ -36,7 +36,7 @@ class common_event {
    *
    * \since 5.1.0
    */
-  explicit common_event(const event_type type) noexcept
+  explicit common_event(const EventType type) noexcept
   {
     set_time(SDL_GetTicks());
     set_type(type);
@@ -78,7 +78,7 @@ class common_event {
    *
    * \since 4.0.0
    */
-  void set_type(const event_type type) noexcept { m_event.type = ToUnderlying(type); }
+  void set_type(const EventType type) noexcept { m_event.type = ToUnderlying(type); }
 
   /**
    * \brief Returns the timestamp associated with the creation of the event.
@@ -96,9 +96,9 @@ class common_event {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto type() const noexcept -> event_type
+  [[nodiscard]] auto type() const noexcept -> EventType
   {
-    return static_cast<event_type>(m_event.type);
+    return static_cast<EventType>(m_event.type);
   }
 
   /**

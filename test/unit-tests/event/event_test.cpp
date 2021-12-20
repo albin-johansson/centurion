@@ -82,7 +82,7 @@ TEST(Event, Push)
 
   cen::Event event;
   ASSERT_TRUE(event.Poll());
-  ASSERT_EQ(cen::event_type::key_down, event.GetType());
+  ASSERT_EQ(cen::EventType::KeyDown, event.GetType());
 
   {
     const cen::window_event windowEvent;
@@ -90,7 +90,7 @@ TEST(Event, Push)
   }
 
   ASSERT_TRUE(event.Poll());
-  ASSERT_EQ(cen::event_type::window, event.GetType());
+  ASSERT_EQ(cen::EventType::Window, event.GetType());
 }
 
 TEST(Event, Flush)
@@ -123,7 +123,7 @@ TEST(Event, Poll)
   cen::Event event;
   ASSERT_TRUE(event.Poll());
 
-  ASSERT_EQ(cen::event_type::mouse_motion, event.GetType());
+  ASSERT_EQ(cen::EventType::MouseMotion, event.GetType());
   ASSERT_TRUE(event.Is<cen::mouse_motion_event>());
 
   auto& motionEvent = event.Get<cen::mouse_motion_event>();
@@ -137,29 +137,29 @@ TEST(Event, GetQueueSize)
 {
   cen::Event::FlushAll();
   ASSERT_EQ(0, cen::Event::GetQueueSize());
-  ASSERT_EQ(0, cen::Event::GetQueueSize(cen::event_type::quit));
+  ASSERT_EQ(0, cen::Event::GetQueueSize(cen::EventType::Quit));
 
   auto event = create_event(SDL_QUIT);
   cen::Event::Push(event);
 
   ASSERT_EQ(1, cen::Event::GetQueueSize());
-  ASSERT_EQ(1, cen::Event::GetQueueSize(cen::event_type::quit));
-  ASSERT_EQ(0, cen::Event::GetQueueSize(cen::event_type::window));
+  ASSERT_EQ(1, cen::Event::GetQueueSize(cen::EventType::Quit));
+  ASSERT_EQ(0, cen::Event::GetQueueSize(cen::EventType::Window));
 }
 
 TEST(Event, InQueue)
 {
   cen::Event::FlushAll();
-  ASSERT_FALSE(cen::Event::InQueue(cen::event_type::quit));
+  ASSERT_FALSE(cen::Event::InQueue(cen::EventType::Quit));
 
   cen::quit_event qe;
   cen::Event::Push(qe);
 
-  ASSERT_TRUE(cen::Event::InQueue(cen::event_type::quit));
-  ASSERT_FALSE(cen::Event::InQueue(cen::event_type::window));
+  ASSERT_TRUE(cen::Event::InQueue(cen::EventType::Quit));
+  ASSERT_FALSE(cen::Event::InQueue(cen::EventType::Window));
 
   cen::Event::FlushAll();
-  ASSERT_FALSE(cen::Event::InQueue(cen::event_type::quit));
+  ASSERT_FALSE(cen::Event::InQueue(cen::EventType::Quit));
 }
 
 TEST(Event, Type)
@@ -172,7 +172,7 @@ TEST(Event, Type)
 
   cen::Event event;
   ASSERT_TRUE(event.Poll());
-  ASSERT_EQ(cen::event_type::touch_motion, event.GetType());
+  ASSERT_EQ(cen::EventType::FingerMotion, event.GetType());
 
   cen::Event::FlushAll();
 }

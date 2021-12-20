@@ -29,7 +29,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    *
    * \since 4.0.0
    */
-  controller_button_event() noexcept : common_event{event_type::controller_button_down} {}
+  controller_button_event() noexcept : common_event{EventType::ControllerButtonDown} {}
 
   /**
    * \brief Creates a controller button event that is based on the supplied SDL

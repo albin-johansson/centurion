@@ -59,7 +59,7 @@ static_assert(validate_event<cen::quit_event, SDL_QuitEvent>());
 static_assert(validate_event<cen::text_editing_event, SDL_TextEditingEvent>());
 static_assert(validate_event<cen::text_input_event, SDL_TextInputEvent>());
 static_assert(validate_event<cen::touch_finger_event, SDL_TouchFingerEvent>());
-static_assert(validate_event<cen::window_event, SDL_WindowEvent>());
+static_assert(validate_event<cen::WindowEvent, SDL_WindowEvent>());
 static_assert(validate_event<cen::sensor_event, SDL_SensorEvent>());
 static_assert(validate_event<cen::user_event, SDL_UserEvent>());
 
@@ -85,7 +85,7 @@ TEST(Event, Push)
   ASSERT_EQ(cen::EventType::KeyDown, event.GetType());
 
   {
-    const cen::window_event windowEvent;
+    const cen::WindowEvent windowEvent;
     cen::Event::Push(windowEvent);
   }
 
@@ -380,8 +380,8 @@ TEST(Event, Is)
     const auto window = create_event(SDL_WINDOWEVENT);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(window.Is<cen::window_event>());
-    ASSERT_FALSE(wrong.Is<cen::window_event>());
+    ASSERT_TRUE(window.Is<cen::WindowEvent>());
+    ASSERT_FALSE(wrong.Is<cen::WindowEvent>());
   }
 }
 
@@ -389,22 +389,22 @@ TEST(Event, Get)
 {
   auto event = create_event(SDL_QUIT);
   ASSERT_NO_THROW(event.Get<cen::quit_event>());
-  ASSERT_ANY_THROW(event.Get<cen::window_event>());
+  ASSERT_ANY_THROW(event.Get<cen::WindowEvent>());
 
   const auto& cEvent = event;
   ASSERT_NO_THROW(cEvent.Get<cen::quit_event>());
-  ASSERT_ANY_THROW(cEvent.Get<cen::window_event>());
+  ASSERT_ANY_THROW(cEvent.Get<cen::WindowEvent>());
 }
 
 TEST(Event, TryGet)
 {
   auto event = create_event(SDL_MOUSEMOTION);
   ASSERT_TRUE(event.TryGet<cen::MouseMotionEvent>());
-  ASSERT_FALSE(event.TryGet<cen::window_event>());
+  ASSERT_FALSE(event.TryGet<cen::WindowEvent>());
 
   const auto& cEvent = event;
   ASSERT_TRUE(cEvent.TryGet<cen::MouseMotionEvent>());
-  ASSERT_FALSE(cEvent.TryGet<cen::window_event>());
+  ASSERT_FALSE(cEvent.TryGet<cen::WindowEvent>());
 }
 
 TEST(Event, Data)

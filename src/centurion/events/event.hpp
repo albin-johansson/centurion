@@ -212,7 +212,7 @@ class Event final {
                                  ControllerSensorEvent,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-                                 window_event>;
+                                 WindowEvent>;
 
   SDL_Event mEvent{};
   data_type mData{};
@@ -242,7 +242,7 @@ class Event final {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
       case EventType::Window:
-        mData.emplace<window_event>(mEvent.window);
+        mData.emplace<WindowEvent>(mEvent.window);
         break;
 
       case EventType::System:

@@ -4,7 +4,7 @@ namespace {
 
 // Here we specify that we want to subscribe to four different kinds of events
 using event_dispatcher = cen::EventDispatcher<cen::quit_event,
-                                              cen::window_event,
+                                              cen::WindowEvent,
                                               cen::keyboard_event,
                                               cen::MouseButtonEvent>;
 
@@ -19,7 +19,7 @@ class Game final {
   {
     // Member function handlers
     m_dispatcher.Bind<cen::quit_event>().To<&Game::on_quit_event>(this);
-    m_dispatcher.Bind<cen::window_event>().To<&Game::on_window_event>(this);
+    m_dispatcher.Bind<cen::WindowEvent>().To<&Game::on_window_event>(this);
 
     // Lambda handler
     m_dispatcher.Bind<cen::keyboard_event>().To(
@@ -57,7 +57,7 @@ class Game final {
   }
 
   // Invoked for each window event
-  void on_window_event(const cen::window_event& event) { cen::log_info("window_event"); }
+  void on_window_event(const cen::WindowEvent& event) { cen::log_info("window_event"); }
 };
 
 }  // namespace

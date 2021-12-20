@@ -43,11 +43,6 @@ set(SOURCE_FILES
 
     event/audio_device_event_test.cpp
     event/common_event_test.cpp
-    event/controller_axis_event_test.cpp
-    event/controller_button_event_test.cpp
-    event/controller_device_event_test.cpp
-    event/controller_sensor_event_test.cpp
-    event/controller_touchpad_event_test.cpp
     event/display_event_id_test.cpp
     event/display_event_test.cpp
     event/dollar_gesture_event_test.cpp
@@ -56,10 +51,6 @@ set(SOURCE_FILES
     event/event_test.cpp
     event/event_type_test.cpp
     event/keyboard_event_test.cpp
-    event/mouse_button_event_test.cpp
-    event/mouse_motion_event_test.cpp
-    event/mouse_wheel_event_test.cpp
-    event/mouse_wheel_direction_test.cpp
     event/multi_gesture_event_test.cpp
     event/quit_event_test.cpp
     event/sensor_event_test.cpp
@@ -67,8 +58,12 @@ set(SOURCE_FILES
     event/text_input_event_test.cpp
     event/touch_finger_event_test.cpp
     event/user_event_test.cpp
-    event/window_event_test.cpp
-    event/window_event_id_test.cpp
+
+    event/controller/controller_axis_event_test.cpp
+    event/controller/controller_button_event_test.cpp
+    event/controller/controller_device_event_test.cpp
+    event/controller/controller_sensor_event_test.cpp
+    event/controller/controller_touchpad_event_test.cpp
 
     event/joystick/joy_axis_event_test.cpp
     event/joystick/joy_ball_event_test.cpp
@@ -76,6 +71,14 @@ set(SOURCE_FILES
     event/joystick/joy_device_event_test.cpp
     event/joystick/joy_hat_event_test.cpp
     event/joystick/joy_hat_position_test.cpp
+
+    event/mouse/mouse_button_event_test.cpp
+    event/mouse/mouse_motion_event_test.cpp
+    event/mouse/mouse_wheel_direction_test.cpp
+    event/mouse/mouse_wheel_event_test.cpp
+
+    event/window/window_event_id_test.cpp
+    event/window/window_event_test.cpp
 
     filesystem/base_path_test.cpp
     filesystem/file_test.cpp

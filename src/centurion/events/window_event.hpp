@@ -3,94 +3,53 @@
 
 #include <SDL.h>
 
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+#include "../core/exception.hpp"
 #include "event_base.hpp"
-#include "window_event_id.hpp"
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
-/**
- * \class window_event
- *
- * \brief Represents an event that is associated with an action related to a
- * window.
- *
- * \see `SDL_WindowEvent`
- *
- * \since 4.0.0
- */
-class window_event final : public EventBase<SDL_WindowEvent> {
- public:
-  /**
-   * \brief Creates a window event.
-   *
-   * \since 4.0.0
-   */
-  window_event() noexcept : EventBase{EventType::Window} {}
-
-  /**
-   * \brief Creates a window event based on the supplied SDL window event.
-   *
-   * \param event the SDL window event that will be copied.
-   *
-   * \since 4.0.0
-   */
-  explicit window_event(const SDL_WindowEvent& event) noexcept : EventBase{event} {}
-
-  /**
-   * \brief Returns the event ID of this window event.
-   *
-   * \details There are many different kinds of window events, use this function to check
-   * what kind of action that triggered this event.
-   *
-   * \return the event ID of this window event.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto event_id() const noexcept -> window_event_id
-  {
-    return static_cast<window_event_id>(mEvent.event);
-  }
-
-  /**
-   * \brief Returns the value of the first data value.
-   *
-   * \details The meaning of this value is dependent on the window event ID of this window
-   * event.
-   *
-   * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
-   * data2 represent the new width and height of the window respectively. See the
-   * `window_event_id` documentation for more details about whether the value returned
-   * from this function is meaningful in regard to the window event ID.
-   *
-   * \return the value of the first data value.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return mEvent.data1; }
-
-  /**
-   * \brief Returns the value of the second data value.
-   *
-   * \details The meaning of this value is dependent on the window event ID of this window
-   * event.
-   *
-   * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
-   * data2 represent the new width and height of the window respectively. See the
-   * `window_event_id` documentation for more details about whether the value returned
-   * from this function is meaningful in regard to the window event ID.
-   *
-   * \return the value of the second data value.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto data_2() const noexcept -> Sint32 { return mEvent.data2; }
+enum class WindowEventID {
+  None = SDL_WINDOWEVENT_NONE,
+  Shown = SDL_WINDOWEVENT_SHOWN,
+  Hidden = SDL_WINDOWEVENT_HIDDEN,
+  Exposed = SDL_WINDOWEVENT_EXPOSED,
+  Moved = SDL_WINDOWEVENT_MOVED,
+  Resized = SDL_WINDOWEVENT_RESIZED,
+  SizeChanged = SDL_WINDOWEVENT_SIZE_CHANGED,
+  Minimized = SDL_WINDOWEVENT_MINIMIZED,
+  Maximized = SDL_WINDOWEVENT_MAXIMIZED,
+  Restored = SDL_WINDOWEVENT_RESTORED,
+  Enter = SDL_WINDOWEVENT_ENTER,
+  Leave = SDL_WINDOWEVENT_LEAVE,
+  FocusGained = SDL_WINDOWEVENT_FOCUS_GAINED,
+  FocusLost = SDL_WINDOWEVENT_FOCUS_LOST,
+  Close = SDL_WINDOWEVENT_CLOSE,
+  TakeFocus = SDL_WINDOWEVENT_TAKE_FOCUS,
+  HitTest = SDL_WINDOWEVENT_HIT_TEST
 };
 
-/// \name SDL event conversions
-/// \{
+class WindowEvent final : public EventBase<SDL_WindowEvent> {
+ public:
+  WindowEvent() noexcept : EventBase{EventType::Window} {}
+
+  explicit WindowEvent(const SDL_WindowEvent& event) noexcept : EventBase{event} {}
+
+  void SetEventID(const WindowEventID id) noexcept { mEvent.event = static_cast<Uint8>(id); }
+
+  void SetData1(const Sint32 value) noexcept { mEvent.data1 = value; }
+  void SetData2(const Sint32 value) noexcept { mEvent.data2 = value; }
+
+  [[nodiscard]] auto GetEventID() const noexcept -> WindowEventID
+  {
+    return static_cast<WindowEventID>(mEvent.event);
+  }
+
+  [[nodiscard]] auto GetData1() const noexcept -> Sint32 { return mEvent.data1; }
+  [[nodiscard]] auto GetData2() const noexcept -> Sint32 { return mEvent.data2; }
+};
 
 template <>
 inline auto AsSDLEvent(const EventBase<SDL_WindowEvent>& event) -> SDL_Event
@@ -100,9 +59,69 @@ inline auto AsSDLEvent(const EventBase<SDL_WindowEvent>& event) -> SDL_Event
   return e;
 }
 
-/// \} End of SDL event conversions
+[[nodiscard]] constexpr auto to_string(const WindowEventID id) -> std::string_view
+{
+  switch (id) {
+    case WindowEventID::None:
+      return "None";
 
-/// \} End of group event
+    case WindowEventID::Shown:
+      return "Shown";
+
+    case WindowEventID::Hidden:
+      return "Hidden";
+
+    case WindowEventID::Exposed:
+      return "Exposed";
+
+    case WindowEventID::Moved:
+      return "Moved";
+
+    case WindowEventID::Resized:
+      return "Resized";
+
+    case WindowEventID::SizeChanged:
+      return "SizeChanged";
+
+    case WindowEventID::Minimized:
+      return "Minimized";
+
+    case WindowEventID::Maximized:
+      return "Maximized";
+
+    case WindowEventID::Restored:
+      return "Restored";
+
+    case WindowEventID::Enter:
+      return "Enter";
+
+    case WindowEventID::Leave:
+      return "Leave";
+
+    case WindowEventID::FocusGained:
+      return "FocusGained";
+
+    case WindowEventID::FocusLost:
+      return "FocusLost";
+
+    case WindowEventID::Close:
+      return "Close";
+
+    case WindowEventID::TakeFocus:
+      return "TakeFocus";
+
+    case WindowEventID::HitTest:
+      return "HitTest";
+
+    default:
+      throw Error{"Did not recognize window event ID!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const WindowEventID id) -> std::ostream&
+{
+  return stream << to_string(id);
+}
 
 }  // namespace cen
 

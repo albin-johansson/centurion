@@ -118,7 +118,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/events/touch_finger_event.hpp
                src/centurion/events/user_event.hpp
                src/centurion/events/window_event.hpp
-               src/centurion/events/window_event_id.hpp
 
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp

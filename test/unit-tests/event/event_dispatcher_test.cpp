@@ -7,7 +7,7 @@
 #include "core/logging.hpp"
 
 using EventDispatcher =
-    cen::EventDispatcher<cen::quit_event, cen::ControllerButtonEvent, cen::window_event>;
+    cen::EventDispatcher<cen::quit_event, cen::ControllerButtonEvent, cen::WindowEvent>;
 
 namespace {
 
@@ -40,10 +40,10 @@ TEST(EventDispatcher, Bind)
   dispatcher.Bind<cen::ControllerButtonEvent>().To<&ButtonHandler::OnEvent>(&handler);
 
   bool visitedLambda{};
-  dispatcher.Bind<cen::window_event>().To(
-      [&](const cen::window_event&) { visitedLambda = true; });
+  dispatcher.Bind<cen::WindowEvent>().To(
+      [&](const cen::WindowEvent&) { visitedLambda = true; });
 
-  cen::window_event windowEvent;
+  cen::WindowEvent windowEvent;
   ASSERT_TRUE(cen::Event::Push(windowEvent));
 
   cen::quit_event quitEvent;
@@ -64,7 +64,7 @@ TEST(EventDispatcher, Reset)
   ASSERT_EQ(0, dispatcher.GetActiveCount());
 
   dispatcher.Bind<cen::quit_event>().To([](cen::quit_event) {});
-  dispatcher.Bind<cen::window_event>().To([](cen::window_event) {});
+  dispatcher.Bind<cen::WindowEvent>().To([](cen::WindowEvent) {});
   dispatcher.Bind<cen::ControllerButtonEvent>().To([](cen::ControllerButtonEvent) {});
 
   ASSERT_EQ(3, dispatcher.GetActiveCount());
@@ -87,7 +87,7 @@ TEST(EventDispatcher, GetActiveCount)
   dispatcher.Bind<cen::quit_event>().To([](cen::quit_event) {});
   ASSERT_EQ(1, dispatcher.GetActiveCount());
 
-  dispatcher.Bind<cen::window_event>().To([](cen::window_event) {});
+  dispatcher.Bind<cen::WindowEvent>().To([](cen::WindowEvent) {});
   ASSERT_EQ(2, dispatcher.GetActiveCount());
 }
 
@@ -99,7 +99,7 @@ TEST(EventDispatcher, GetSize)
   cen::EventDispatcher<cen::quit_event> one;
   ASSERT_EQ(1, one.GetSize());
 
-  cen::EventDispatcher<cen::quit_event, cen::window_event> two;
+  cen::EventDispatcher<cen::quit_event, cen::WindowEvent> two;
   ASSERT_EQ(2, two.GetSize());
 }
 

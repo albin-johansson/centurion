@@ -51,9 +51,9 @@ static_assert(validate_event<cen::joy_button_event, SDL_JoyButtonEvent>());
 static_assert(validate_event<cen::joy_device_event, SDL_JoyDeviceEvent>());
 static_assert(validate_event<cen::joy_hat_event, SDL_JoyHatEvent>());
 static_assert(validate_event<cen::keyboard_event, SDL_KeyboardEvent>());
-static_assert(validate_event<cen::mouse_button_event, SDL_MouseButtonEvent>());
-static_assert(validate_event<cen::mouse_motion_event, SDL_MouseMotionEvent>());
-static_assert(validate_event<cen::mouse_wheel_event, SDL_MouseWheelEvent>());
+static_assert(validate_event<cen::MouseButtonEvent, SDL_MouseButtonEvent>());
+static_assert(validate_event<cen::MouseMotionEvent, SDL_MouseMotionEvent>());
+static_assert(validate_event<cen::MouseWheelEvent, SDL_MouseWheelEvent>());
 static_assert(validate_event<cen::multi_gesture_event, SDL_MultiGestureEvent>());
 static_assert(validate_event<cen::quit_event, SDL_QuitEvent>());
 static_assert(validate_event<cen::text_editing_event, SDL_TextEditingEvent>());
@@ -124,11 +124,11 @@ TEST(Event, Poll)
   ASSERT_TRUE(event.Poll());
 
   ASSERT_EQ(cen::EventType::MouseMotion, event.GetType());
-  ASSERT_TRUE(event.Is<cen::mouse_motion_event>());
+  ASSERT_TRUE(event.Is<cen::MouseMotionEvent>());
 
-  auto& motionEvent = event.Get<cen::mouse_motion_event>();
-  ASSERT_EQ(sdl.motion.x, motionEvent.x());
-  ASSERT_EQ(sdl.motion.y, motionEvent.y());
+  auto& motionEvent = event.Get<cen::MouseMotionEvent>();
+  ASSERT_EQ(sdl.motion.x, motionEvent.GetX());
+  ASSERT_EQ(sdl.motion.y, motionEvent.GetY());
 
   cen::Event::FlushAll();
 }
@@ -311,25 +311,25 @@ TEST(Event, Is)
     const auto down = create_event(SDL_MOUSEBUTTONDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(up.Is<cen::mouse_button_event>());
-    ASSERT_TRUE(down.Is<cen::mouse_button_event>());
-    ASSERT_FALSE(wrong.Is<cen::mouse_button_event>());
+    ASSERT_TRUE(up.Is<cen::MouseButtonEvent>());
+    ASSERT_TRUE(down.Is<cen::MouseButtonEvent>());
+    ASSERT_FALSE(wrong.Is<cen::MouseButtonEvent>());
   }
 
   {  // mouse_motion_event
     const auto motion = create_event(SDL_MOUSEMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(motion.Is<cen::mouse_motion_event>());
-    ASSERT_FALSE(wrong.Is<cen::mouse_button_event>());
+    ASSERT_TRUE(motion.Is<cen::MouseMotionEvent>());
+    ASSERT_FALSE(wrong.Is<cen::MouseButtonEvent>());
   }
 
   {  // mouse_wheel_event
     const auto wheel = create_event(SDL_MOUSEWHEEL);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(wheel.Is<cen::mouse_wheel_event>());
-    ASSERT_FALSE(wrong.Is<cen::mouse_wheel_event>());
+    ASSERT_TRUE(wheel.Is<cen::MouseWheelEvent>());
+    ASSERT_FALSE(wrong.Is<cen::MouseWheelEvent>());
   }
 
   {  // multi_gesture_event
@@ -399,11 +399,11 @@ TEST(Event, Get)
 TEST(Event, TryGet)
 {
   auto event = create_event(SDL_MOUSEMOTION);
-  ASSERT_TRUE(event.TryGet<cen::mouse_motion_event>());
+  ASSERT_TRUE(event.TryGet<cen::MouseMotionEvent>());
   ASSERT_FALSE(event.TryGet<cen::window_event>());
 
   const auto& cEvent = event;
-  ASSERT_TRUE(cEvent.TryGet<cen::mouse_motion_event>());
+  ASSERT_TRUE(cEvent.TryGet<cen::MouseMotionEvent>());
   ASSERT_FALSE(cEvent.TryGet<cen::window_event>());
 }
 

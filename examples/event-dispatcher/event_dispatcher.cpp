@@ -6,11 +6,11 @@ namespace {
 using event_dispatcher = cen::EventDispatcher<cen::quit_event,
                                               cen::window_event,
                                               cen::keyboard_event,
-                                              cen::mouse_button_event>;
+                                              cen::MouseButtonEvent>;
 
-void on_mouse_button_event(const cen::mouse_button_event& event)
+void on_mouse_button_event(const cen::MouseButtonEvent& event)
 {
-  cen::log_info("mouse_button_event");
+  cen::log_info("MouseButtonEvent");
 }
 
 class Game final {
@@ -26,7 +26,7 @@ class Game final {
         [](const cen::keyboard_event& event) { cen::log_info("keyboard_event"); });
 
     // Free function handler
-    m_dispatcher.Bind<cen::mouse_button_event>().To<&on_mouse_button_event>();
+    m_dispatcher.Bind<cen::MouseButtonEvent>().To<&on_mouse_button_event>();
   }
 
   auto run() -> int

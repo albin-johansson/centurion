@@ -29,9 +29,9 @@
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
-#include "centurion/common.hpp"
 #include "centurion/audio.hpp"
 #include "centurion/color.hpp"
+#include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
 #include "centurion/endian.hpp"
 #include "centurion/filesystem.hpp"
@@ -59,16 +59,15 @@
 #include "centurion/core/features.hpp"
 #include "centurion/core/initialization.hpp"
 #include "centurion/core/logging.hpp"
-#include "centurion/memory.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/core/version.hpp"
 #include "centurion/events/audio_device_event.hpp"
-#include "centurion/events/event_base.hpp"
 #include "centurion/events/controller_events.hpp"
 #include "centurion/events/display_event.hpp"
 #include "centurion/events/dollar_gesture_event.hpp"
 #include "centurion/events/drop_event.hpp"
 #include "centurion/events/event.hpp"
+#include "centurion/events/event_base.hpp"
 #include "centurion/events/event_dispatcher.hpp"
 #include "centurion/events/event_type.hpp"
 #include "centurion/events/joy_axis_event.hpp"
@@ -78,10 +77,7 @@
 #include "centurion/events/joy_hat_event.hpp"
 #include "centurion/events/joy_hat_position.hpp"
 #include "centurion/events/keyboard_event.hpp"
-#include "centurion/events/mouse_button_event.hpp"
-#include "centurion/events/mouse_motion_event.hpp"
-#include "centurion/events/mouse_wheel_direction.hpp"
-#include "centurion/events/mouse_wheel_event.hpp"
+#include "centurion/events/mouse_events.hpp"
 #include "centurion/events/multi_gesture_event.hpp"
 #include "centurion/events/quit_event.hpp"
 #include "centurion/events/sensor_event.hpp"
@@ -108,5 +104,6 @@
 #include "centurion/input/sensor.hpp"
 #include "centurion/input/touch.hpp"
 #include "centurion/input/touch_device_type.hpp"
+#include "centurion/memory.hpp"
 
 #endif  // CENTURION_HPP_

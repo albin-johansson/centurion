@@ -9,20 +9,18 @@
 
 #include "../common.hpp"
 #include "audio_device_event.hpp"
-#include "event_base.hpp"
 #include "controller_events.hpp"
 #include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
+#include "event_base.hpp"
 #include "joy_axis_event.hpp"
 #include "joy_ball_event.hpp"
 #include "joy_button_event.hpp"
 #include "joy_device_event.hpp"
 #include "joy_hat_event.hpp"
 #include "keyboard_event.hpp"
-#include "mouse_button_event.hpp"
-#include "mouse_motion_event.hpp"
-#include "mouse_wheel_event.hpp"
+#include "mouse_events.hpp"
 #include "multi_gesture_event.hpp"
 #include "quit_event.hpp"
 #include "sensor_event.hpp"
@@ -201,9 +199,9 @@ class Event final {
                                  joy_device_event,
                                  joy_hat_event,
                                  keyboard_event,
-                                 mouse_button_event,
-                                 mouse_motion_event,
-                                 mouse_wheel_event,
+                                 MouseButtonEvent,
+                                 MouseMotionEvent,
+                                 MouseWheelEvent,
                                  multi_gesture_event,
                                  quit_event,
                                  text_editing_event,
@@ -271,16 +269,16 @@ class Event final {
         break;
 
       case EventType::MouseMotion:
-        mData.emplace<mouse_motion_event>(mEvent.motion);
+        mData.emplace<MouseMotionEvent>(mEvent.motion);
         break;
 
       case EventType::MouseButtonDown:
       case EventType::MouseButtonUp:
-        mData.emplace<mouse_button_event>(mEvent.button);
+        mData.emplace<MouseButtonEvent>(mEvent.button);
         break;
 
       case EventType::MouseWheel:
-        mData.emplace<mouse_wheel_event>(mEvent.wheel);
+        mData.emplace<MouseWheelEvent>(mEvent.wheel);
         break;
 
       case EventType::JoyAxisMotion:

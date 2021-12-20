@@ -4,109 +4,54 @@
 
 TEST(MouseWheelEvent, Defaults)
 {
-  cen::mouse_wheel_event event;
+  const cen::MouseWheelEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::MouseWheel, event.GetType());
 }
 
-TEST(MouseWheelEvent, SetWindowId)
+TEST(MouseWheelEvent, SetWindowID)
 {
-  cen::mouse_wheel_event event;
+  cen::MouseWheelEvent event;
 
-  constexpr Uint32 id = 32;
-  event.set_window_id(id);
-
-  ASSERT_EQ(id, event.window_id());
+  event.SetWindowID(32);
+  ASSERT_EQ(32, event.GetWindowID());
 }
 
 TEST(MouseWheelEvent, SetWhich)
 {
-  cen::mouse_wheel_event event;
+  cen::MouseWheelEvent event;
 
-  constexpr Uint32 which = 32;
-  event.set_which(which);
-
-  ASSERT_EQ(which, event.which());
+  event.SetWhich(32);
+  ASSERT_EQ(32, event.GetWhich());
 }
 
 TEST(MouseWheelEvent, SetXScroll)
 {
-  cen::mouse_wheel_event event;
+  cen::MouseWheelEvent event;
 
-  constexpr auto xScroll = -545;
-  event.set_x_scroll(xScroll);
-
-  ASSERT_EQ(xScroll, event.x_scroll());
+  event.SetXScroll(-545);
+  ASSERT_EQ(-545, event.GetXScroll());
 }
 
 TEST(MouseWheelEvent, SetYScroll)
 {
-  cen::mouse_wheel_event event;
+  cen::MouseWheelEvent event;
 
-  constexpr auto yScroll = 725;
-  event.set_y_scroll(yScroll);
-
-  ASSERT_EQ(yScroll, event.y_scroll());
+  event.SetYScroll(725);
+  ASSERT_EQ(725, event.GetYScroll());
 }
 
 TEST(MouseWheelEvent, SetDirection)
 {
-  cen::mouse_wheel_event event;
+  cen::MouseWheelEvent event;
 
-  constexpr auto direction = cen::mouse_wheel_direction::flipped;
-  event.set_direction(direction);
-
-  ASSERT_EQ(direction, event.direction());
-}
-
-TEST(MouseWheelEvent, WindowId)
-{
-  SDL_MouseWheelEvent sdl;
-  sdl.windowID = 12;
-
-  const cen::mouse_wheel_event event{sdl};
-  ASSERT_EQ(sdl.windowID, event.window_id());
-}
-
-TEST(MouseWheelEvent, Which)
-{
-  SDL_MouseWheelEvent sdl;
-  sdl.windowID = 12;
-
-  const cen::mouse_wheel_event event{sdl};
-  ASSERT_EQ(sdl.windowID, event.window_id());
-}
-
-TEST(MouseWheelEvent, XScroll)
-{
-  SDL_MouseWheelEvent sdl;
-  sdl.x = 455;
-
-  const cen::mouse_wheel_event event{sdl};
-  ASSERT_EQ(sdl.x, event.x_scroll());
-}
-
-TEST(MouseWheelEvent, YScroll)
-{
-  SDL_MouseWheelEvent sdl;
-  sdl.y = -123;
-
-  const cen::mouse_wheel_event event{sdl};
-  ASSERT_EQ(sdl.y, event.y_scroll());
-}
-
-TEST(MouseWheelEvent, Direction)
-{
-  SDL_MouseWheelEvent sdl;
-  sdl.direction = SDL_MOUSEWHEEL_NORMAL;
-
-  const cen::mouse_wheel_event event{sdl};
-  ASSERT_EQ(cen::mouse_wheel_direction::normal, event.direction());
+  event.SetDirection(cen::MouseWheelDirection::Flipped);
+  ASSERT_EQ(cen::MouseWheelDirection::Flipped, event.GetDirection());
 }
 
 TEST(MouseWheelEvent, AsSDLEvent)
 {
-  const cen::mouse_wheel_event event;
+  const cen::MouseWheelEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
   ASSERT_EQ(sdl.wheel.type, cen::ToUnderlying(event.GetType()));

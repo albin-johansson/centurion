@@ -114,10 +114,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/events/joy_hat_event.hpp
                src/centurion/events/joy_hat_position.hpp
                src/centurion/events/keyboard_event.hpp
-               src/centurion/events/mouse_button_event.hpp
-               src/centurion/events/mouse_motion_event.hpp
-               src/centurion/events/mouse_wheel_direction.hpp
-               src/centurion/events/mouse_wheel_event.hpp
+               src/centurion/events/mouse_events.hpp
                src/centurion/events/multi_gesture_event.hpp
                src/centurion/events/quit_event.hpp
                src/centurion/events/sensor_event.hpp

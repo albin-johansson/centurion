@@ -4,165 +4,79 @@
 
 TEST(MouseButtonEvent, Defaults)
 {
-  cen::mouse_button_event event;
+  const cen::MouseButtonEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::MouseButtonDown, event.GetType());
 }
 
-TEST(MouseButtonEvent, SetWindowId)
+TEST(MouseButtonEvent, SetWindowID)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr Uint32 id = 64;
-  event.set_window_id(id);
-
-  ASSERT_EQ(id, event.window_id());
+  event.SetWindowID(64);
+  ASSERT_EQ(64, event.GetWindowID());
 }
 
 TEST(MouseButtonEvent, SetWhich)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr Uint32 which = 17;
-  event.set_which(which);
-
-  ASSERT_EQ(which, event.which());
+  event.SetWhich(17);
+  ASSERT_EQ(17, event.GetWhich());
 }
 
 TEST(MouseButtonEvent, SetButton)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr auto button = cen::MouseButton::Right;
-  event.set_button(button);
-
-  ASSERT_EQ(button, event.button());
+  event.SetButton(cen::MouseButton::Right);
+  ASSERT_EQ(cen::MouseButton::Right, event.GetButton());
 }
 
 TEST(MouseButtonEvent, SetState)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr auto state = cen::ButtonState::Released;
-  event.set_state(state);
+  event.SetState(cen::ButtonState::Pressed);
 
-  ASSERT_EQ(state, event.state());
+  ASSERT_EQ(cen::ButtonState::Pressed, event.GetState());
+  ASSERT_TRUE(event.IsPressed());
+  ASSERT_FALSE(event.IsReleased());
+
+  event.SetState(cen::ButtonState::Released);
+
+  ASSERT_EQ(cen::ButtonState::Released, event.GetState());
+  ASSERT_TRUE(event.IsReleased());
+  ASSERT_FALSE(event.IsPressed());
 }
 
 TEST(MouseButtonEvent, SetClicks)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr auto clicks = 2;
-  event.set_clicks(clicks);
-
-  ASSERT_EQ(clicks, event.clicks());
+  event.SetClicks(2);
+  ASSERT_EQ(2, event.GetClicks());
 }
 
 TEST(MouseButtonEvent, SetX)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr auto x = 645;
-  event.set_x(x);
-
-  ASSERT_EQ(x, event.x());
+  event.SetX(645);
+  ASSERT_EQ(645, event.GetX());
 }
 
 TEST(MouseButtonEvent, SetY)
 {
-  cen::mouse_button_event event;
+  cen::MouseButtonEvent event;
 
-  constexpr auto y = 177;
-  event.set_y(y);
-
-  ASSERT_EQ(y, event.y());
-}
-
-TEST(MouseButtonEvent, WindowId)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.windowID = 75;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.windowID, event.window_id());
-}
-
-TEST(MouseButtonEvent, Which)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.which = 23;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.which, event.which());
-}
-
-TEST(MouseButtonEvent, Button)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.button = SDL_BUTTON_X1;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.button, cen::ToUnderlying(event.button()));
-}
-
-TEST(MouseButtonEvent, State)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.state = SDL_PRESSED;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.state, cen::ToUnderlying(event.state()));
-}
-
-TEST(MouseButtonEvent, Pressed)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.state = SDL_PRESSED;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_TRUE(event.pressed());
-}
-
-TEST(MouseButtonEvent, Released)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.state = SDL_RELEASED;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_TRUE(event.released());
-}
-
-TEST(MouseButtonEvent, Clicks)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.clicks = 2;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.clicks, event.clicks());
-}
-
-TEST(MouseButtonEvent, X)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.x = 467;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.x, event.x());
-}
-
-TEST(MouseButtonEvent, Y)
-{
-  SDL_MouseButtonEvent sdl;
-  sdl.y = 887;
-
-  const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.y, event.y());
+  event.SetY(177);
+  ASSERT_EQ(177, event.GetY());
 }
 
 TEST(MouseButtonEvent, AsSDLEvent)
 {
-  const cen::mouse_button_event event;
+  const cen::MouseButtonEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
   ASSERT_EQ(sdl.button.type, cen::ToUnderlying(event.GetType()));

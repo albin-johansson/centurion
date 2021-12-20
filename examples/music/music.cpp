@@ -138,10 +138,10 @@ class music_example final {
 
 auto main(int, char**) -> int
 {
-  const cen::SDLLibrary sdl;
-  const cen::IMGLibrary img;
-  const cen::MixLibrary mix;
-  const cen::TTFLibrary ttf;
+  const cen::SDL sdl;
+  const cen::IMG img;
+  const cen::Mix mix;
+  const cen::TTF ttf;
 
   music_example example;
   return example.run();

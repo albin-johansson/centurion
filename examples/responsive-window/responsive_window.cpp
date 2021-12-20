@@ -3,10 +3,10 @@
 int main(int, char**)
 {
   /* Initialize the SDL libraries */
-  const cen::SDLLibrary sdl;
-  const cen::IMGLibrary img;
-  const cen::MixLibrary mix;
-  const cen::TTFLibrary ttf;
+  const cen::SDL sdl;
+  const cen::IMG img;
+  const cen::Mix mix;
+  const cen::TTF ttf;
 
   /* Create a window and an associated renderer */
   auto [window, renderer] = cen::MakeWindowAndRenderer();

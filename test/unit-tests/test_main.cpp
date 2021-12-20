@@ -6,16 +6,16 @@
 int main(int argc, char* argv[])
 {
 #ifdef CEN_AUDIO
-  const cen::SDLLibrary sdl;
-  const cen::MixLibrary mix;
+  const cen::SDL sdl;
+  const cen::Mix mix;
 #else
   cen::SDLConfig cfg;
   cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-  const cen::SDLLibrary sdl{cfg};
+  const cen::SDL sdl{cfg};
 #endif
 
-  const cen::IMGLibrary img;
-  const cen::TTFLibrary ttf;
+  const cen::IMG img;
+  const cen::TTF ttf;
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 #if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES

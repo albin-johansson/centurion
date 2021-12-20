@@ -28,16 +28,16 @@ struct SDLConfig final {
   Uint32 flags{SDL_INIT_EVERYTHING};
 };
 
-class SDLLibrary final {
+class SDL final {
  public:
-  explicit SDLLibrary(const SDLConfig& cfg = {})
+  explicit SDL(const SDLConfig& cfg = {})
   {
     if (SDL_Init(cfg.flags) < 0) {
       throw SDLError{};
     }
   }
 
-  ~SDLLibrary() noexcept { SDL_Quit(); }
+  ~SDL() noexcept { SDL_Quit(); }
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -46,16 +46,16 @@ struct IMGConfig final {
   int flags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
 };
 
-class IMGLibrary final {
+class IMG final {
  public:
-  explicit IMGLibrary(const IMGConfig& cfg = {})
+  explicit IMG(const IMGConfig& cfg = {})
   {
     if (!IMG_Init(cfg.flags)) {
       throw IMGError{};
     }
   }
 
-  ~IMGLibrary() noexcept { IMG_Quit(); }
+  ~IMG() noexcept { IMG_Quit(); }
 };
 
 #endif  // CENTURION_NO_SDL_IMAGE
@@ -71,9 +71,9 @@ struct MixConfig final {
   int chunk_size{4096};
 };
 
-class MixLibrary final {
+class Mix final {
  public:
-  explicit MixLibrary(const MixConfig& cfg = {})
+  explicit Mix(const MixConfig& cfg = {})
   {
     if (!Mix_Init(cfg.flags)) {
       throw MixError{};
@@ -84,7 +84,7 @@ class MixLibrary final {
     }
   }
 
-  ~MixLibrary() noexcept
+  ~Mix() noexcept
   {
     Mix_CloseAudio();
     Mix_Quit();
@@ -95,16 +95,16 @@ class MixLibrary final {
 
 #ifndef CENTURION_NO_SDL_TTF
 
-class TTFLibrary final {
+class TTF final {
  public:
-  TTFLibrary()
+  TTF()
   {
     if (TTF_Init() == -1) {
       throw TTFError{};
     }
   }
 
-  ~TTFLibrary() noexcept { TTF_Quit(); }
+  ~TTF() noexcept { TTF_Quit(); }
 };
 
 #endif  // CENTURION_NO_SDL_TTF

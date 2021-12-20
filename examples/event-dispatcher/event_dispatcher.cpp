@@ -64,10 +64,10 @@ class Game final {
 
 int main(int, char**)
 {
-  const cen::SDLLibrary sdl;
-  const cen::IMGLibrary img;
-  const cen::MixLibrary mix;
-  const cen::TTFLibrary ttf;
+  const cen::SDL sdl;
+  const cen::IMG img;
+  const cen::Mix mix;
+  const cen::TTF ttf;
   Game game;
   return game.run();
 }

@@ -2,10 +2,10 @@
 
 int main(int, char**) /* The signature of main must be equivalent to this! */
 {
-  const cen::SDLLibrary sdl;
-  const cen::IMGLibrary img;
-  const cen::MixLibrary mix;
-  const cen::TTFLibrary ttf;
+  const cen::SDL sdl;
+  const cen::IMG img;
+  const cen::Mix mix;
+  const cen::TTF ttf;
 
   /* The core SDL library along with the extension libraries are now initialized! */
 

@@ -2,9 +2,9 @@
 
 int main(int, char**)
 {
-  const cen::SDLLibrary sdl;
-  const cen::IMGLibrary img;
-  const cen::TTFLibrary ttf;
+  const cen::SDL sdl;
+  const cen::IMG img;
+  const cen::TTF ttf;
 
   // Create our window and renderer
   auto [window, renderer] = cen::MakeWindowAndRenderer();

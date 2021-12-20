@@ -23,7 +23,7 @@ class InitializationTest : public testing::Test {
 TEST_F(InitializationTest, CoreDefaultConfiguration)
 {
   try {
-    const cen::SDLLibrary sdl;
+    const cen::SDL sdl;
     ASSERT_EQ(1u, SDL_Init_fake.call_count);
 
     constexpr cen::SDLConfig cfg;
@@ -37,7 +37,7 @@ TEST_F(InitializationTest, CoreDefaultConfiguration)
 TEST_F(InitializationTest, ImgDefaultConfiguration)
 {
   try {
-    const cen::IMGLibrary lib;
+    const cen::IMG lib;
     ASSERT_EQ(1u, IMG_Init_fake.call_count);
 
     constexpr cen::IMGConfig cfg;
@@ -51,7 +51,7 @@ TEST_F(InitializationTest, ImgDefaultConfiguration)
 TEST_F(InitializationTest, MixDefaultConfiguration)
 {
   try {
-    const cen::MixLibrary lib;
+    const cen::Mix lib;
     ASSERT_EQ(1u, Mix_Init_fake.call_count);
 
     constexpr cen::MixConfig cfg;
@@ -68,7 +68,7 @@ TEST_F(InitializationTest, MixDefaultConfiguration)
 TEST_F(InitializationTest, TTFDefaultConfiguration)
 {
   try {
-    const cen::TTFLibrary lib;
+    const cen::TTF lib;
     ASSERT_EQ(1u, TTF_Init_fake.call_count);
   }
   catch (...) {
@@ -79,29 +79,29 @@ TEST_F(InitializationTest, TTFDefaultConfiguration)
 TEST_F(InitializationTest, SDLCoreInitFailure)
 {
   SDL_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::SDLLibrary{}, cen::SDLError);
+  ASSERT_THROW(cen::SDL{}, cen::SDLError);
 }
 
 TEST_F(InitializationTest, SDLTTFInitFailure)
 {
   TTF_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::TTFLibrary{}, cen::TTFError);
+  ASSERT_THROW(cen::TTF{}, cen::TTFError);
 }
 
 TEST_F(InitializationTest, SDLImageInitFailure)
 {
   IMG_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::IMGLibrary{}, cen::IMGError);
+  ASSERT_THROW(cen::IMG{}, cen::IMGError);
 }
 
 TEST_F(InitializationTest, SDLMixInitFailure)
 {
   Mix_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::MixLibrary{}, cen::MixError);
+  ASSERT_THROW(cen::Mix{}, cen::MixError);
 }
 
 TEST_F(InitializationTest, SDLMixOpenFailure)
 {
   Mix_OpenAudio_fake.return_val = -1;
-  ASSERT_THROW(cen::MixLibrary{}, cen::MixError);
+  ASSERT_THROW(cen::Mix{}, cen::MixError);
 }

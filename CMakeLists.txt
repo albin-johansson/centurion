@@ -68,6 +68,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/events.hpp
                src/centurion/filesystem.hpp
                src/centurion/font.hpp
+               src/centurion/initialization.hpp
                src/centurion/keyboard.hpp
                src/centurion/locale.hpp
                src/centurion/math.hpp
@@ -88,7 +89,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/common.hpp
                src/centurion/core/exception.hpp
                src/centurion/core/features.hpp
-               src/centurion/core/initialization.hpp
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp
 

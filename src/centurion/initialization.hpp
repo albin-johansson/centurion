@@ -1,14 +1,14 @@
-#ifndef CENTURION_CORE_INITIALIZATION_HPP_
-#define CENTURION_CORE_INITIALIZATION_HPP_
+#ifndef CENTURION_INITIALIZATION_HPP_
+#define CENTURION_INITIALIZATION_HPP_
 
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 
-#include "../common.hpp"
-#include "exception.hpp"
-#include "features.hpp"
+#include "common.hpp"
+#include "core/exception.hpp"
+#include "core/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -111,4 +111,4 @@ class TTF final {
 
 }  // namespace cen
 
-#endif  // CENTURION_CORE_INITIALIZATION_HPP_
+#endif  // CENTURION_INITIALIZATION_HPP_

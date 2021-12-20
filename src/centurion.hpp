@@ -38,6 +38,7 @@
 #include "centurion/events.hpp"
 #include "centurion/filesystem.hpp"
 #include "centurion/font.hpp"
+#include "centurion/initialization.hpp"
 #include "centurion/keyboard.hpp"
 #include "centurion/locale.hpp"
 #include "centurion/math.hpp"
@@ -61,7 +62,6 @@
 
 #include "centurion/core/exception.hpp"
 #include "centurion/core/features.hpp"
-#include "centurion/core/initialization.hpp"
 #include "centurion/core/logging.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/input/button_state.hpp"

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "core/initialization.hpp"
+#include "initialization.hpp"
 #include "core/logging.hpp"
 
 int main(int argc, char* argv[])

@@ -1,4 +1,4 @@
-#include "core/initialization.hpp"
+#include "initialization.hpp"
 
 #include <gtest/gtest.h>
 

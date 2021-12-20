@@ -45,11 +45,11 @@ static_assert(validate_event<cen::ControllerButtonEvent, SDL_ControllerButtonEve
 static_assert(validate_event<cen::ControllerDeviceEvent, SDL_ControllerDeviceEvent>());
 static_assert(validate_event<cen::dollar_gesture_event, SDL_DollarGestureEvent>());
 static_assert(validate_event<cen::drop_event, SDL_DropEvent>());
-static_assert(validate_event<cen::joy_axis_event, SDL_JoyAxisEvent>());
-static_assert(validate_event<cen::joy_ball_event, SDL_JoyBallEvent>());
-static_assert(validate_event<cen::joy_button_event, SDL_JoyButtonEvent>());
-static_assert(validate_event<cen::joy_device_event, SDL_JoyDeviceEvent>());
-static_assert(validate_event<cen::joy_hat_event, SDL_JoyHatEvent>());
+static_assert(validate_event<cen::JoyAxisEvent, SDL_JoyAxisEvent>());
+static_assert(validate_event<cen::JoyBallEvent, SDL_JoyBallEvent>());
+static_assert(validate_event<cen::JoyButtonEvent, SDL_JoyButtonEvent>());
+static_assert(validate_event<cen::JoyDeviceEvent, SDL_JoyDeviceEvent>());
+static_assert(validate_event<cen::JoyHatEvent, SDL_JoyHatEvent>());
 static_assert(validate_event<cen::keyboard_event, SDL_KeyboardEvent>());
 static_assert(validate_event<cen::MouseButtonEvent, SDL_MouseButtonEvent>());
 static_assert(validate_event<cen::MouseMotionEvent, SDL_MouseMotionEvent>());
@@ -256,16 +256,16 @@ TEST(Event, Is)
     const auto motion = create_event(SDL_JOYAXISMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(motion.Is<cen::joy_axis_event>());
-    ASSERT_FALSE(wrong.Is<cen::joy_axis_event>());
+    ASSERT_TRUE(motion.Is<cen::JoyAxisEvent>());
+    ASSERT_FALSE(wrong.Is<cen::JoyAxisEvent>());
   }
 
   {  // joy_ball_event
     const auto motion = create_event(SDL_JOYBALLMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(motion.Is<cen::joy_ball_event>());
-    ASSERT_FALSE(wrong.Is<cen::joy_ball_event>());
+    ASSERT_TRUE(motion.Is<cen::JoyBallEvent>());
+    ASSERT_FALSE(wrong.Is<cen::JoyBallEvent>());
   }
 
   {  // joy_button_event
@@ -273,9 +273,9 @@ TEST(Event, Is)
     const auto down = create_event(SDL_JOYBUTTONDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(up.Is<cen::joy_button_event>());
-    ASSERT_TRUE(down.Is<cen::joy_button_event>());
-    ASSERT_FALSE(wrong.Is<cen::joy_button_event>());
+    ASSERT_TRUE(up.Is<cen::JoyButtonEvent>());
+    ASSERT_TRUE(down.Is<cen::JoyButtonEvent>());
+    ASSERT_FALSE(wrong.Is<cen::JoyButtonEvent>());
   }
 
   {  // joy_device_event
@@ -283,17 +283,17 @@ TEST(Event, Is)
     const auto removed = create_event(SDL_JOYDEVICEREMOVED);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(added.Is<cen::joy_device_event>());
-    ASSERT_TRUE(removed.Is<cen::joy_device_event>());
-    ASSERT_FALSE(wrong.Is<cen::joy_device_event>());
+    ASSERT_TRUE(added.Is<cen::JoyDeviceEvent>());
+    ASSERT_TRUE(removed.Is<cen::JoyDeviceEvent>());
+    ASSERT_FALSE(wrong.Is<cen::JoyDeviceEvent>());
   }
 
   {  // joy_hat_event
     const auto motion = create_event(SDL_JOYHATMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    ASSERT_TRUE(motion.Is<cen::joy_hat_event>());
-    ASSERT_FALSE(wrong.Is<cen::joy_hat_event>());
+    ASSERT_TRUE(motion.Is<cen::JoyHatEvent>());
+    ASSERT_FALSE(wrong.Is<cen::JoyHatEvent>());
   }
 
   {  // keyboard_event

@@ -55,12 +55,6 @@ set(SOURCE_FILES
     event/event_dispatcher_test.cpp
     event/event_test.cpp
     event/event_type_test.cpp
-    event/joy_axis_event_test.cpp
-    event/joy_ball_event_test.cpp
-    event/joy_button_event_test.cpp
-    event/joy_device_event_test.cpp
-    event/joy_hat_event_test.cpp
-    event/joy_hat_position_test.cpp
     event/keyboard_event_test.cpp
     event/mouse_button_event_test.cpp
     event/mouse_motion_event_test.cpp
@@ -75,6 +69,13 @@ set(SOURCE_FILES
     event/user_event_test.cpp
     event/window_event_test.cpp
     event/window_event_id_test.cpp
+
+    event/joystick/joy_axis_event_test.cpp
+    event/joystick/joy_ball_event_test.cpp
+    event/joystick/joy_button_event_test.cpp
+    event/joystick/joy_device_event_test.cpp
+    event/joystick/joy_hat_event_test.cpp
+    event/joystick/joy_hat_position_test.cpp
 
     filesystem/base_path_test.cpp
     filesystem/file_test.cpp

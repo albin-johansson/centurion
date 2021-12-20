@@ -14,11 +14,7 @@
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
 #include "event_base.hpp"
-#include "joy_axis_event.hpp"
-#include "joy_ball_event.hpp"
-#include "joy_button_event.hpp"
-#include "joy_device_event.hpp"
-#include "joy_hat_event.hpp"
+#include "joystick_events.hpp"
 #include "keyboard_event.hpp"
 #include "mouse_events.hpp"
 #include "multi_gesture_event.hpp"
@@ -193,11 +189,11 @@ class Event final {
                                  ControllerDeviceEvent,
                                  dollar_gesture_event,
                                  drop_event,
-                                 joy_axis_event,
-                                 joy_ball_event,
-                                 joy_button_event,
-                                 joy_device_event,
-                                 joy_hat_event,
+                                 JoyAxisEvent,
+                                 JoyBallEvent,
+                                 JoyButtonEvent,
+                                 JoyDeviceEvent,
+                                 JoyHatEvent,
                                  keyboard_event,
                                  MouseButtonEvent,
                                  MouseMotionEvent,
@@ -282,25 +278,25 @@ class Event final {
         break;
 
       case EventType::JoyAxisMotion:
-        mData.emplace<joy_axis_event>(mEvent.jaxis);
+        mData.emplace<JoyAxisEvent>(mEvent.jaxis);
         break;
 
       case EventType::JoyBallMotion:
-        mData.emplace<joy_ball_event>(mEvent.jball);
+        mData.emplace<JoyBallEvent>(mEvent.jball);
         break;
 
       case EventType::JoyHatMotion:
-        mData.emplace<joy_hat_event>(mEvent.jhat);
+        mData.emplace<JoyHatEvent>(mEvent.jhat);
         break;
 
       case EventType::JoyButtonDown:
       case EventType::JoyButtonUp:
-        mData.emplace<joy_button_event>(mEvent.jbutton);
+        mData.emplace<JoyButtonEvent>(mEvent.jbutton);
         break;
 
       case EventType::JoyDeviceAdded:
       case EventType::JoyDeviceRemoved:
-        mData.emplace<joy_device_event>(mEvent.jdevice);
+        mData.emplace<JoyDeviceEvent>(mEvent.jdevice);
         break;
 
       case EventType::ControllerAxisMotion:

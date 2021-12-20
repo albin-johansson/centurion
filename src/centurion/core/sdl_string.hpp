@@ -1,5 +1,5 @@
-#ifndef CENTURION_CORE_SDL_STRING_HPP_
-#define CENTURION_CORE_SDL_STRING_HPP_
+#ifndef CENTURION_SDL_STRING_HPP_
+#define CENTURION_SDL_STRING_HPP_
 
 #include <SDL.h>
 
@@ -11,22 +11,15 @@
 
 namespace cen {
 
-/// \addtogroup core
-/// \{
-
 /**
- * \class sdl_string
- *
  * \brief Represents an SDL string.
  *
  * \details Certain SDL APIs return `char*` strings that need to be freed using
- * `SDL_free`, this class serves as a small wrapper around such strings. Use the `copy()`
+ * `SDL_free()`, this class serves as a small wrapper around such strings. Use the `copy()`
  * member function to convert the string into a corresponding `std::string`.
  *
  * \note Instances of `sdl_string` might manage null strings. Use the overloaded `operator
  * bool()` in order to determine whether or not any associated string is null.
- *
- * \since 5.0.0
  */
 class sdl_string final {
  public:
@@ -34,19 +27,15 @@ class sdl_string final {
    * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
-   *
-   * \since 5.0.0
    */
-  explicit sdl_string(Owner<char*> str) noexcept : m_str{str} {}
+  explicit sdl_string(Owner<char*> str) noexcept : mStr{str} {}
 
   /**
    * \brief Returns the internal string, which might be null.
    *
    * \return the internal string; `nullptr` if there is none.
-   *
-   * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> const char* { return m_str.get(); }
+  [[nodiscard]] auto get() const noexcept -> const char* { return mStr.get(); }
 
   /**
    * \brief Returns a copy of the internal string.
@@ -55,12 +44,10 @@ class sdl_string final {
    * pointer.
    *
    * \return a copy of the internal string.
-   *
-   * \since 5.0.0
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str) {
+    if (mStr) {
       return std::string{get()};
     }
     else {
@@ -72,17 +59,13 @@ class sdl_string final {
    * \brief Indicates whether or not the internal string is non-null.
    *
    * \return `true` if the internal string is non-null; `false` otherwise.
-   *
-   * \since 5.0.0
    */
-  explicit operator bool() const noexcept { return m_str.operator bool(); }
+  explicit operator bool() const noexcept { return mStr.operator bool(); }
 
  private:
-  std::unique_ptr<char, detail::sdl_deleter> m_str;
+  std::unique_ptr<char, detail::sdl_deleter> mStr;
 };
-
-/// \} End of group core
 
 }  // namespace cen
 
-#endif  // CENTURION_CORE_SDL_STRING_HPP_
+#endif  // CENTURION_SDL_STRING_HPP_

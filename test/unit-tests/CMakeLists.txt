@@ -43,17 +43,13 @@ set(SOURCE_FILES
 
     event/audio_device_event_test.cpp
     event/common_event_test.cpp
-    event/dollar_gesture_event_test.cpp
     event/drop_event_test.cpp
     event/event_dispatcher_test.cpp
     event/event_test.cpp
     event/event_type_test.cpp
     event/keyboard_event_test.cpp
-    event/multi_gesture_event_test.cpp
     event/quit_event_test.cpp
     event/sensor_event_test.cpp
-    event/text_editing_event_test.cpp
-    event/text_input_event_test.cpp
     event/touch_finger_event_test.cpp
     event/user_event_test.cpp
 
@@ -66,6 +62,9 @@ set(SOURCE_FILES
     event/display/display_event_id_test.cpp
     event/display/display_event_test.cpp
 
+    event/gesture/dollar_gesture_event_test.cpp
+    event/gesture/multi_gesture_event_test.cpp
+
     event/joystick/joy_axis_event_test.cpp
     event/joystick/joy_ball_event_test.cpp
     event/joystick/joy_button_event_test.cpp
@@ -77,6 +76,9 @@ set(SOURCE_FILES
     event/mouse/mouse_motion_event_test.cpp
     event/mouse/mouse_wheel_direction_test.cpp
     event/mouse/mouse_wheel_event_test.cpp
+
+    event/text/text_editing_event_test.cpp
+    event/text/text_input_event_test.cpp
 
     event/window/window_event_id_test.cpp
     event/window/window_event_test.cpp

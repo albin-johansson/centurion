@@ -7,18 +7,18 @@
 
 TEST(GLSwapInterval, Values)
 {
-  ASSERT_EQ(0, cen::ToUnderlying(cen::gl_swap_interval::immediate));
-  ASSERT_EQ(1, cen::ToUnderlying(cen::gl_swap_interval::synchronized));
-  ASSERT_EQ(-1, cen::ToUnderlying(cen::gl_swap_interval::late_immediate));
+  ASSERT_EQ(0, ToUnderlying(cen::GLSwapInterval::Immediate));
+  ASSERT_EQ(1, ToUnderlying(cen::GLSwapInterval::Synchronized));
+  ASSERT_EQ(-1, ToUnderlying(cen::GLSwapInterval::LateImmediate));
 }
 
 TEST(GLSwapInterval, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::gl_swap_interval>(2)), cen::Error);
+  ASSERT_THROW(to_string(cen::GLSwapInterval{2}), cen::Error);
 
-  ASSERT_EQ("immediate", cen::to_string(cen::gl_swap_interval::immediate));
-  ASSERT_EQ("synchronized", cen::to_string(cen::gl_swap_interval::synchronized));
-  ASSERT_EQ("late_immediate", cen::to_string(cen::gl_swap_interval::late_immediate));
+  ASSERT_EQ("Immediate", to_string(cen::GLSwapInterval::Immediate));
+  ASSERT_EQ("Synchronized", to_string(cen::GLSwapInterval::Synchronized));
+  ASSERT_EQ("LateImmediate", to_string(cen::GLSwapInterval::LateImmediate));
 
-  std::clog << "OpenGL swap interval example: " << cen::gl_swap_interval::synchronized << '\n';
+  std::clog << "OpenGL swap interval example: " << cen::GLSwapInterval::Synchronized << '\n';
 }

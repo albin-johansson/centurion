@@ -188,7 +188,7 @@ class Event final {
                                  ControllerButtonEvent,
                                  ControllerDeviceEvent,
                                  dollar_gesture_event,
-                                 drop_event,
+                                 DropEvent,
                                  JoyAxisEvent,
                                  JoyBallEvent,
                                  JoyButtonEvent,
@@ -348,7 +348,7 @@ class Event final {
       case EventType::DropText:
       case EventType::DropBegin:
       case EventType::DropComplete:
-        mData.emplace<drop_event>(mEvent.drop);
+        mData.emplace<DropEvent>(mEvent.drop);
         break;
 
       case EventType::AudioDeviceAdded:

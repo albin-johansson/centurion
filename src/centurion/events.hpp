@@ -491,40 +491,39 @@ class dollar_gesture_event final : public EventBase<SDL_DollarGestureEvent> {
   [[nodiscard]] auto y() const noexcept -> float { return mEvent.y; }
 };
 
-// TODO
-class drop_event final : public EventBase<SDL_DropEvent> {
+class DropEvent final : public EventBase<SDL_DropEvent> {
  public:
-  drop_event() noexcept : EventBase{EventType::DropFile} {}
+  DropEvent() noexcept : EventBase{EventType::DropFile} {}
 
-  explicit drop_event(const SDL_DropEvent& event) noexcept : EventBase{event} {}
+  explicit DropEvent(const SDL_DropEvent& event) noexcept : EventBase{event} {}
 
-  ~drop_event() noexcept
+  ~DropEvent() noexcept { MaybeDestroyFile(); }
+
+  void SetWillFreeFile(const bool freeFile) noexcept { mFreeFile = freeFile; }
+
+  void SetFile(char* file) noexcept
   {
-    if (mEvent.file && m_willFreeFile) {
-      SDL_free(mEvent.file);
-    }
-  }
-
-  void set_will_free_file(const bool freeFile) noexcept { m_willFreeFile = freeFile; }
-
-  void set_file(char* file) noexcept
-  {
-    if (mEvent.file && m_willFreeFile) {
-      SDL_free(mEvent.file);
-    }
+    MaybeDestroyFile();
     mEvent.file = file;
   }
 
-  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
 
-  [[nodiscard]] auto will_free_file() const noexcept -> bool { return m_willFreeFile; }
+  [[nodiscard]] auto WillFreeFile() const noexcept -> bool { return mFreeFile; }
 
-  [[nodiscard]] auto file() const noexcept -> char* { return mEvent.file; }
+  [[nodiscard]] auto GetFile() const noexcept -> char* { return mEvent.file; }
 
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
 
  private:
-  bool m_willFreeFile{false};
+  bool mFreeFile{false};
+
+  void MaybeDestroyFile() noexcept
+  {
+    if (mEvent.file && mFreeFile) {
+      SDL_free(mEvent.file);
+    }
+  }
 };
 
 // TODO

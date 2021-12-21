@@ -29,7 +29,7 @@ static_assert(ValidateEvent<cen::ControllerAxisEvent, SDL_ControllerAxisEvent>()
 static_assert(ValidateEvent<cen::ControllerButtonEvent, SDL_ControllerButtonEvent>());
 static_assert(ValidateEvent<cen::ControllerDeviceEvent, SDL_ControllerDeviceEvent>());
 static_assert(ValidateEvent<cen::dollar_gesture_event, SDL_DollarGestureEvent>());
-static_assert(ValidateEvent<cen::drop_event, SDL_DropEvent>());
+static_assert(ValidateEvent<cen::DropEvent, SDL_DropEvent>());
 static_assert(ValidateEvent<cen::JoyAxisEvent, SDL_JoyAxisEvent>());
 static_assert(ValidateEvent<cen::JoyBallEvent, SDL_JoyBallEvent>());
 static_assert(ValidateEvent<cen::JoyButtonEvent, SDL_JoyButtonEvent>());
@@ -228,11 +228,11 @@ TEST(Event, Is)
     const auto text = CreateEvent(SDL_DROPTEXT);
     const auto wrong = CreateEvent(SDL_QUIT);
 
-    ASSERT_TRUE(begin.Is<cen::drop_event>());
-    ASSERT_TRUE(complete.Is<cen::drop_event>());
-    ASSERT_TRUE(file.Is<cen::drop_event>());
-    ASSERT_TRUE(text.Is<cen::drop_event>());
-    ASSERT_FALSE(wrong.Is<cen::drop_event>());
+    ASSERT_TRUE(begin.Is<cen::DropEvent>());
+    ASSERT_TRUE(complete.Is<cen::DropEvent>());
+    ASSERT_TRUE(file.Is<cen::DropEvent>());
+    ASSERT_TRUE(text.Is<cen::DropEvent>());
+    ASSERT_FALSE(wrong.Is<cen::DropEvent>());
   }
 
   {  // joy_axis_event

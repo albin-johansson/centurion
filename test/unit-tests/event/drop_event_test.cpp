@@ -4,76 +4,52 @@
 
 TEST(DropEvent, Defaults)
 {
-  cen::drop_event event;
+  const cen::DropEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::DropFile, event.GetType());
+
+  ASSERT_EQ(nullptr, event.GetFile());
+  ASSERT_EQ(0u, event.GetWindowID());
+  ASSERT_FALSE(event.WillFreeFile());
 }
 
 TEST(DropEvent, SetWillFreeFile)
 {
-  cen::drop_event event;
+  cen::DropEvent event;
 
-  event.set_will_free_file(true);
-  ASSERT_TRUE(event.will_free_file());
+  event.SetWillFreeFile(true);
+  ASSERT_TRUE(event.WillFreeFile());
 
-  event.set_will_free_file(false);
-  ASSERT_FALSE(event.will_free_file());
+  event.SetWillFreeFile(false);
+  ASSERT_FALSE(event.WillFreeFile());
 }
 
 TEST(DropEvent, SetFile)
 {
-  cen::drop_event event;
-  ASSERT_NO_THROW(event.set_file(nullptr));
+  cen::DropEvent event;
+  ASSERT_NO_THROW(event.SetFile(nullptr));
 
-  // This is the only time in the tests that a drop_event should free the file,
-  // check the code coverage reports in order to see if it's freed.
-  event.set_file(static_cast<char*>(SDL_malloc(sizeof(char))));
-  event.set_will_free_file(true);
+  event.SetWillFreeFile(true);
+  ASSERT_TRUE(event.WillFreeFile());
+
+  /* This is the only time in the tests that a drop event should free the file,
+     check the code coverage reports in order to see if it's freed. */
+  event.SetFile(static_cast<char*>(SDL_malloc(sizeof(char))));
 }
 
-TEST(DropEvent, SetWindowId)
+TEST(DropEvent, SetWindowID)
 {
-  cen::drop_event event;
+  cen::DropEvent event;
 
-  constexpr Uint32 id = 84;
-  event.set_window_id(id);
-
-  ASSERT_EQ(id, event.window_id());
-}
-
-TEST(DropEvent, WillFreeFile)
-{
-  const cen::drop_event event;
-  ASSERT_FALSE(event.will_free_file());
-}
-
-TEST(DropEvent, File)
-{
-  char file = '1';  // pretend this is some raw data
-
-  SDL_DropEvent sdl;
-  sdl.file = &file;  // shouldn't be deleted, otherwise we're in trouble
-
-  const cen::drop_event event{sdl};
-
-  ASSERT_TRUE(event.file());
-  ASSERT_EQ(file, *event.file());
-}
-
-TEST(DropEvent, WindowId)
-{
-  SDL_DropEvent sdl{};
-  sdl.windowID = 32;
-
-  const cen::drop_event event{sdl};
-  ASSERT_EQ(sdl.windowID, event.window_id());
+  event.SetWindowID(84);
+  ASSERT_EQ(84, event.GetWindowID());
 }
 
 TEST(DropEvent, AsSDLEvent)
 {
-  const cen::drop_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::DropEvent event;
+  const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.drop.type, cen::ToUnderlying(event.GetType()));
-  ASSERT_EQ(sdl.drop.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.drop.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.drop.timestamp, event.GetTimestamp());
 }

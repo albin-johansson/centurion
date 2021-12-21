@@ -204,7 +204,7 @@ class Event final {
                                  text_input_event,
                                  touch_finger_event,
                                  sensor_event,
-                                 user_event,
+                                 UserEvent,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                                  DisplayEvent,
@@ -365,7 +365,7 @@ class Event final {
         break;
 
       case EventType::User:
-        mData.emplace<user_event>(mEvent.user);
+        mData.emplace<UserEvent>(mEvent.user);
         break;
 
       default:

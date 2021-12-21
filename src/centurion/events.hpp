@@ -869,99 +869,28 @@ class touch_finger_event final : public EventBase<SDL_TouchFingerEvent> {
   [[nodiscard]] auto pressure() const noexcept -> float { return mEvent.pressure; }
 };
 
-// TODO
-class user_event final : public EventBase<SDL_UserEvent> {
+class UserEvent final : public EventBase<SDL_UserEvent> {
  public:
-  /**
-   * \brief Creates a user event.
-   *
-   * \details Note that the event will be created using `EventType::User`, but you can use any
-   * event type value in the range [`EventType::User`, SDL_LASTEVENT - 1].
-   *
-   * \since 6.3.0
-   */
-  user_event() noexcept : EventBase{EventType::User} {}
+  UserEvent() noexcept : EventBase{EventType::User} {}
 
-  /**
-   * \brief Creates a user event based on an SDL event.
-   *
-   * \param event the event that will be copied.
-   *
-   * \since 6.3.0
-   */
-  explicit user_event(const SDL_UserEvent& event) noexcept : EventBase{event} {}
+  explicit UserEvent(const SDL_UserEvent& event) noexcept : EventBase{event} {}
 
-  /**
-   * \brief Sets the window ID associated with the event.
-   *
-   * \param id the ID of the associated window.
-   *
-   * \since 6.3.0
-   */
-  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
 
-  /**
-   * \brief Sets the user-defined event code associated with the event.
-   *
-   * \param code the custom event code.
-   *
-   * \since 6.3.0
-   */
-  void set_code(const Sint32 code) noexcept { mEvent.code = code; }
+  void SetCode(const Sint32 code) noexcept { mEvent.code = code; }
 
-  /**
-   * \brief Sets an opaque data pointer to some user data.
-   *
-   * \param data the user data, can safely be null.
-   *
-   * \since 6.3.0
-   */
-  void set_data_1(void* data) noexcept { mEvent.data1 = data; }
+  void SetData1(void* data) noexcept { mEvent.data1 = data; }
+  void SetData2(void* data) noexcept { mEvent.data2 = data; }
 
-  /// \copydoc set_data_1()
-  void set_data_2(void* data) noexcept { mEvent.data2 = data; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
 
-  /**
-   * \brief Returns the ID of the window associated with the event.
-   *
-   * \return the associated window ID.
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetCode() const noexcept -> Sint32 { return mEvent.code; }
 
-  /**
-   * \brief Returns the user-defined event code associated with the event.
-   *
-   * \return the associated event code.
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto code() const noexcept -> Sint32 { return mEvent.code; }
+  [[nodiscard]] auto GetData1() noexcept -> void* { return mEvent.data1; }
+  [[nodiscard]] auto GetData1() const noexcept -> const void* { return mEvent.data1; }
 
-  /**
-   * \brief Returns a pointer to the first user data slot.
-   *
-   * \return a pointer to the user data, might be null.
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto data_1() noexcept -> void* { return mEvent.data1; }
-
-  /// \copydoc data_1()
-  [[nodiscard]] auto data_1() const noexcept -> const void* { return mEvent.data1; }
-
-  /**
-   * \brief Returns a pointer to the second user data slot.
-   *
-   * \return a pointer to the user data, might be null.
-   *
-   * \since 6.3.0
-   */
-  [[nodiscard]] auto data_2() noexcept -> void* { return mEvent.data2; }
-
-  /// \copydoc data_2()
-  [[nodiscard]] auto data_2() const noexcept -> const void* { return mEvent.data2; }
+  [[nodiscard]] auto GetData2() noexcept -> void* { return mEvent.data2; }
+  [[nodiscard]] auto GetData2() const noexcept -> const void* { return mEvent.data2; }
 };
 
 class WindowEvent final : public EventBase<SDL_WindowEvent> {

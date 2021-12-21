@@ -4,68 +4,70 @@
 
 TEST(UserEvent, Defaults)
 {
-  const cen::user_event event;
-  ASSERT_EQ(0, event.code());
-  ASSERT_EQ(0u, event.window_id());
-  ASSERT_FALSE(event.data_1());
-  ASSERT_FALSE(event.data_2());
+  const cen::UserEvent event;
+
+  ASSERT_EQ(0, event.GetCode());
+  ASSERT_EQ(0u, event.GetWindowID());
+
+  ASSERT_EQ(nullptr, event.GetData1());
+  ASSERT_EQ(nullptr, event.GetData2());
 }
 
 TEST(UserEvent, SetWindowId)
 {
-  cen::user_event event;
+  cen::UserEvent event;
 
   const Uint32 id = 123;
-  event.set_window_id(id);
+  event.SetWindowID(id);
 
-  ASSERT_EQ(id, event.window_id());
+  ASSERT_EQ(id, event.GetWindowID());
 }
 
 TEST(UserEvent, SetCode)
 {
-  cen::user_event event;
+  cen::UserEvent event;
 
   const auto code = 13;
-  event.set_code(code);
+  event.SetCode(code);
 
-  ASSERT_EQ(code, event.code());
+  ASSERT_EQ(code, event.GetCode());
 }
 
 TEST(UserEvent, SetData1)
 {
-  cen::user_event event;
-  const auto& cevent = event;
+  cen::UserEvent event;
+  const auto& ref = event;
 
   int i = 42;
-  event.set_data_1(&i);
+  event.SetData1(&i);
 
-  ASSERT_EQ(&i, event.data_1());
-  ASSERT_EQ(&i, cevent.data_1());
-  ASSERT_FALSE(event.data_2());
+  ASSERT_EQ(&i, event.GetData1());
+  ASSERT_EQ(&i, ref.GetData1());
+  ASSERT_EQ(nullptr, event.GetData2());
 }
 
 TEST(UserEvent, SetData2)
 {
-  cen::user_event event;
-  const auto& cevent = event;
+  cen::UserEvent event;
+  const auto& ref = event;
 
   int i = 42;
-  event.set_data_2(&i);
+  event.SetData2(&i);
 
-  ASSERT_EQ(&i, event.data_2());
-  ASSERT_EQ(&i, cevent.data_2());
-  ASSERT_FALSE(event.data_1());
+  ASSERT_EQ(&i, event.GetData2());
+  ASSERT_EQ(&i, ref.GetData2());
+  ASSERT_EQ(nullptr, event.GetData1());
 }
 
 TEST(UserEvent, AsSDLEvent)
 {
-  const cen::user_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::UserEvent event;
+  const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.user.type, cen::ToUnderlying(event.GetType()));
-  ASSERT_EQ(sdl.user.timestamp, event.GetTimestamp());
-  ASSERT_EQ(sdl.user.code, event.code());
-  ASSERT_EQ(sdl.user.windowID, event.window_id());
-  ASSERT_EQ(sdl.user.data1, event.data_1());
-  ASSERT_EQ(sdl.user.data2, event.data_2());
+  ASSERT_EQ(underlying.user.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.user.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.user.code, event.GetCode());
+  ASSERT_EQ(underlying.user.windowID, event.GetWindowID());
+  ASSERT_EQ(underlying.user.data1, event.GetData1());
+  ASSERT_EQ(underlying.user.data2, event.GetData2());
 }

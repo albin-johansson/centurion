@@ -35,7 +35,7 @@ static_assert(ValidateEvent<cen::JoyBallEvent, SDL_JoyBallEvent>());
 static_assert(ValidateEvent<cen::JoyButtonEvent, SDL_JoyButtonEvent>());
 static_assert(ValidateEvent<cen::JoyDeviceEvent, SDL_JoyDeviceEvent>());
 static_assert(ValidateEvent<cen::JoyHatEvent, SDL_JoyHatEvent>());
-static_assert(ValidateEvent<cen::keyboard_event, SDL_KeyboardEvent>());
+static_assert(ValidateEvent<cen::KeyboardEvent, SDL_KeyboardEvent>());
 static_assert(ValidateEvent<cen::MouseButtonEvent, SDL_MouseButtonEvent>());
 static_assert(ValidateEvent<cen::MouseMotionEvent, SDL_MouseMotionEvent>());
 static_assert(ValidateEvent<cen::MouseWheelEvent, SDL_MouseWheelEvent>());
@@ -284,9 +284,9 @@ TEST(Event, Is)
     const auto down = CreateEvent(SDL_KEYDOWN);
     const auto wrong = CreateEvent(SDL_QUIT);
 
-    ASSERT_TRUE(up.Is<cen::keyboard_event>());
-    ASSERT_TRUE(down.Is<cen::keyboard_event>());
-    ASSERT_FALSE(wrong.Is<cen::keyboard_event>());
+    ASSERT_TRUE(up.Is<cen::KeyboardEvent>());
+    ASSERT_TRUE(down.Is<cen::KeyboardEvent>());
+    ASSERT_FALSE(wrong.Is<cen::KeyboardEvent>());
   }
 
   {  // mouse_button_event

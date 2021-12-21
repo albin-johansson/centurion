@@ -3,7 +3,7 @@
 
 namespace {
 
-using event_dispatcher = cen::EventDispatcher<cen::quit_event, cen::keyboard_event>;
+using event_dispatcher = cen::EventDispatcher<cen::quit_event, cen::KeyboardEvent>;
 
 constexpr cen::Area window_size = cen::Window::GetDefaultSize();
 
@@ -27,7 +27,7 @@ class music_example final {
       , mClick{RESOURCE_DIR "click.wav"}
   {
     mDispatcher.Bind<cen::quit_event>().To<&music_example::on_quit_event>(this);
-    mDispatcher.Bind<cen::keyboard_event>().To<&music_example::on_keyboard_event>(this);
+    mDispatcher.Bind<cen::KeyboardEvent>().To<&music_example::on_keyboard_event>(this);
 
     load_messages();
   }
@@ -79,25 +79,25 @@ class music_example final {
 
   void on_quit_event(const cen::quit_event&) { m_running = false; }
 
-  void on_keyboard_event(const cen::keyboard_event& event)
+  void on_keyboard_event(const cen::KeyboardEvent& event)
   {
     if (event.released()) {
-      if (event.is_active(cen::scancodes::zero)) {
+      if (event.IsActive(cen::scancodes::zero)) {
         mClick.Play(0);
       }
-      else if (event.is_active(cen::scancodes::one)) {
+      else if (event.IsActive(cen::scancodes::one)) {
         mClick.Play(1);
       }
-      else if (event.is_active(cen::scancodes::two)) {
+      else if (event.IsActive(cen::scancodes::two)) {
         mClick.Play(2);
       }
-      else if (event.is_active(cen::scancodes::nine)) {
+      else if (event.IsActive(cen::scancodes::nine)) {
         mClick.Play(cen::Music::forever);
       }
-      else if (event.is_active(cen::scancodes::f)) {
+      else if (event.IsActive(cen::scancodes::f)) {
         mSong.FadeIn(cen::Seconds<int>{5});
       }
-      else if (event.is_active(cen::scancodes::escape)) {
+      else if (event.IsActive(cen::scancodes::escape)) {
         cen::Music::Halt();
       }
     }

@@ -526,90 +526,85 @@ class DropEvent final : public EventBase<SDL_DropEvent> {
   }
 };
 
-// TODO
-class keyboard_event final : public EventBase<SDL_KeyboardEvent> {
+class KeyboardEvent final : public EventBase<SDL_KeyboardEvent> {
  public:
-  keyboard_event() noexcept : EventBase{EventType::KeyDown} {}
+  KeyboardEvent() noexcept : EventBase{EventType::KeyDown} {}
 
-  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : EventBase{event} {}
+  explicit KeyboardEvent(const SDL_KeyboardEvent& event) noexcept : EventBase{event} {}
 
-  void set_scan_code(const ScanCode code) noexcept { mEvent.keysym.scancode = code.get(); }
+  void SetScanCode(const ScanCode code) noexcept { mEvent.keysym.scancode = code.get(); }
 
-  void set_key_code(const KeyCode code) noexcept { mEvent.keysym.sym = code.get(); }
+  void SetKeyCode(const KeyCode code) noexcept { mEvent.keysym.sym = code.get(); }
 
-  void set_button_state(const ButtonState state) noexcept
-  {
-    mEvent.state = ToUnderlying(state);
-  }
+  void SetButtonState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
 
-  void set_modifier(const KeyMod modifiers, const bool active) noexcept
+  void SetModifier(const KeyMod mod, const bool active) noexcept
   {
     if (active) {
-      mEvent.keysym.mod |= ToUnderlying(modifiers);
+      mEvent.keysym.mod |= ToUnderlying(mod);
     }
     else {
-      mEvent.keysym.mod &= ~ToUnderlying(modifiers);
+      mEvent.keysym.mod &= ~ToUnderlying(mod);
     }
   }
 
-  void set_repeated(const bool repeated) noexcept { mEvent.repeat = repeated; }
+  void SetRepeated(const bool repeated) noexcept { mEvent.repeat = repeated; }
 
-  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
 
-  [[nodiscard]] auto is_active(const ScanCode& code) const noexcept -> bool
+  [[nodiscard]] auto IsActive(const ScanCode& code) const noexcept -> bool
   {
     return mEvent.keysym.scancode == code.get();
   }
 
-  [[nodiscard]] auto is_active(const KeyCode& code) const noexcept -> bool
+  [[nodiscard]] auto IsActive(const KeyCode& code) const noexcept -> bool
   {
     return static_cast<SDL_KeyCode>(mEvent.keysym.sym) == code.get();
   }
 
-  [[nodiscard]] auto is_active(const KeyMod modifiers) const noexcept -> bool
+  [[nodiscard]] auto IsActive(const KeyMod mod) const noexcept -> bool
   {
-    return detail::IsActive(modifiers, mEvent.keysym.mod);
+    return detail::IsActive(mod, mEvent.keysym.mod);
   }
 
-  [[nodiscard]] auto is_only_active(const KeyMod modifiers) const noexcept -> bool
+  [[nodiscard]] auto IsOnlyActive(const KeyMod mod) const noexcept -> bool
   {
-    return detail::IsOnlyActive(modifiers, mEvent.keysym.mod);
+    return detail::IsOnlyActive(mod, mEvent.keysym.mod);
   }
 
-  [[nodiscard]] auto is_only_any_of_active(const KeyMod modifiers) const noexcept -> bool
+  [[nodiscard]] auto IsOnlyAnyOfActive(const KeyMod mod) const noexcept -> bool
   {
-    return detail::IsOnlyAnyOfActive(modifiers, mEvent.keysym.mod);
+    return detail::IsOnlyAnyOfActive(mod, mEvent.keysym.mod);
   }
 
-  [[nodiscard]] auto repeated() const noexcept -> bool { return mEvent.repeat; }
+  [[nodiscard]] auto IsRepeated() const noexcept -> bool { return mEvent.repeat; }
 
-  [[nodiscard]] auto state() const noexcept -> ButtonState
+  [[nodiscard]] auto GetState() const noexcept -> ButtonState
   {
     return static_cast<ButtonState>(mEvent.state);
   }
 
-  [[nodiscard]] auto released() const noexcept -> bool
+  [[nodiscard]] auto IsReleased() const noexcept -> bool
   {
-    return state() == ButtonState::Released;
+    return GetState() == ButtonState::Released;
   }
 
-  [[nodiscard]] auto pressed() const noexcept -> bool
+  [[nodiscard]] auto IsPressed() const noexcept -> bool
   {
-    return state() == ButtonState::Pressed;
+    return GetState() == ButtonState::Pressed;
   }
 
-  [[nodiscard]] auto scan() const noexcept -> ScanCode { return mEvent.keysym.scancode; }
+  [[nodiscard]] auto GetScanCode() const noexcept -> ScanCode
+  {
+    return mEvent.keysym.scancode;
+  }
 
-  [[nodiscard]] auto get_scan_code() const noexcept -> ScanCode { return scan(); }
-
-  [[nodiscard]] auto key() const noexcept -> KeyCode
+  [[nodiscard]] auto GetKeyCode() const noexcept -> KeyCode
   {
     return static_cast<SDL_KeyCode>(mEvent.keysym.sym);
   }
 
-  [[nodiscard]] auto get_key_code() const noexcept -> KeyCode { return key(); }
-
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
 };
 
 class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {

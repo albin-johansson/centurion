@@ -5,157 +5,153 @@
 
 TEST(KeyboardEvent, Defaults)
 {
-  cen::keyboard_event event;
+  const cen::KeyboardEvent event;
   ASSERT_GT(event.GetTimestamp(), 0u);
   ASSERT_EQ(cen::EventType::KeyDown, event.GetType());
 }
 
 TEST(KeyboardEvent, SetScanCode)
 {
-  cen::keyboard_event event;
+  cen::KeyboardEvent event;
 
-  event.set_scan_code(cen::scancodes::b);
-  ASSERT_EQ(cen::scancodes::b, event.get_scan_code());
+  event.SetScanCode(cen::scancodes::b);
+  ASSERT_EQ(cen::scancodes::b, event.GetScanCode());
 }
 
 TEST(KeyboardEvent, SetKeyCode)
 {
-  cen::keyboard_event event;
+  cen::KeyboardEvent event;
 
-  event.set_key_code(cen::keycodes::n);
-  ASSERT_EQ(cen::keycodes::n, event.get_key_code());
+  event.SetKeyCode(cen::keycodes::n);
+  ASSERT_EQ(cen::keycodes::n, event.GetKeyCode());
 }
 
 TEST(KeyboardEvent, SetModifier)
 {
-  cen::keyboard_event event;
+  cen::KeyboardEvent event;
 
-  constexpr auto Shift = cen::KeyMod::LShift;
-  constexpr auto caps = cen::KeyMod::Caps;
+  const auto shift = cen::KeyMod::LShift;
+  const auto caps = cen::KeyMod::Caps;
 
-  event.set_modifier(Shift, true);
-  ASSERT_TRUE(event.is_active(Shift));
+  event.SetModifier(shift, true);
+  ASSERT_TRUE(event.IsActive(shift));
 
-  event.set_modifier(caps, true);
-  ASSERT_TRUE(event.is_active(Shift));
-  ASSERT_TRUE(event.is_active(caps));
+  event.SetModifier(caps, true);
+  ASSERT_TRUE(event.IsActive(shift));
+  ASSERT_TRUE(event.IsActive(caps));
 
-  event.set_modifier(Shift, false);
-  ASSERT_FALSE(event.is_active(Shift));
-  ASSERT_TRUE(event.is_active(caps));
+  event.SetModifier(shift, false);
+  ASSERT_FALSE(event.IsActive(shift));
+  ASSERT_TRUE(event.IsActive(caps));
 }
 
 TEST(KeyboardEvent, SetRepeated)
 {
-  cen::keyboard_event event;
+  cen::KeyboardEvent event;
 
-  event.set_repeated(true);
-  ASSERT_TRUE(event.repeated());
+  event.SetRepeated(true);
+  ASSERT_TRUE(event.IsRepeated());
 
-  event.set_repeated(false);
-  ASSERT_FALSE(event.repeated());
+  event.SetRepeated(false);
+  ASSERT_FALSE(event.IsRepeated());
 }
 
-TEST(KeyboardEvent, SetWindowId)
+TEST(KeyboardEvent, SetWindowID)
 {
-  cen::keyboard_event event;
+  cen::KeyboardEvent event;
 
-  constexpr Uint32 id = 79;
-  event.set_window_id(id);
-
-  ASSERT_EQ(id, event.window_id());
+  event.SetWindowID(79);
+  ASSERT_EQ(79, event.GetWindowID());
 }
 
 TEST(KeyboardEvent, SetButtonState)
 {
-  cen::keyboard_event event;
+  cen::KeyboardEvent event;
 
-  event.set_button_state(cen::ButtonState::Pressed);
-  ASSERT_TRUE(event.pressed());
-  ASSERT_FALSE(event.released());
-  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
+  event.SetButtonState(cen::ButtonState::Pressed);
+  ASSERT_EQ(cen::ButtonState::Pressed, event.GetState());
+  ASSERT_TRUE(event.IsPressed());
+  ASSERT_FALSE(event.IsReleased());
 
-  event.set_button_state(cen::ButtonState::Released);
-  ASSERT_TRUE(event.released());
-  ASSERT_FALSE(event.pressed());
-  ASSERT_EQ(cen::ButtonState::Released, event.state());
+  event.SetButtonState(cen::ButtonState::Released);
+  ASSERT_EQ(cen::ButtonState::Released, event.GetState());
+  ASSERT_TRUE(event.IsReleased());
+  ASSERT_FALSE(event.IsPressed());
 }
 
 TEST(KeyboardEvent, IsActive)
 {
-  SDL_KeyboardEvent sdl{};
-  sdl.keysym.scancode = SDL_SCANCODE_Q;
-  sdl.keysym.sym = SDLK_d;
+  cen::KeyboardEvent event;
+  event.SetScanCode(cen::scancodes::q);
+  event.SetKeyCode(cen::keycodes::d);
 
-  const cen::keyboard_event event{sdl};
+  ASSERT_TRUE(event.IsActive(cen::scancodes::q));
+  ASSERT_TRUE(event.IsActive(cen::keycodes::d));
 
-  ASSERT_TRUE(event.is_active(cen::keycodes::d));
-  ASSERT_TRUE(event.is_active(cen::scancodes::q));
-
-  ASSERT_FALSE(event.is_active(cen::keycodes::x));
-  ASSERT_FALSE(event.is_active(cen::scancodes::o));
+  ASSERT_FALSE(event.IsActive(cen::scancodes::o));
+  ASSERT_FALSE(event.IsActive(cen::keycodes::x));
 }
 
 TEST(KeyboardEvent, IsOnlyActive)
 {
-  cen::keyboard_event event;
-  ASSERT_TRUE(event.is_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
+  cen::KeyboardEvent event;
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::None));
+  ASSERT_TRUE(event.IsOnlyActive(cen::KeyMod::None));
+  ASSERT_FALSE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Shift));
 
-  event.set_modifier(cen::KeyMod::Shift, true);
-  ASSERT_FALSE(event.is_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::LShift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::RShift));
+  event.SetModifier(cen::KeyMod::Shift, true);
+  ASSERT_FALSE(event.IsActive(cen::KeyMod::None));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::None));
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.IsOnlyActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::LShift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::RShift));
 
-  event.set_modifier(cen::KeyMod::Alt, true);
-  ASSERT_FALSE(event.is_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Alt));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Alt));
+  event.SetModifier(cen::KeyMod::Alt, true);
+  ASSERT_FALSE(event.IsActive(cen::KeyMod::None));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::None));
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Alt));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Alt));
 
-  event.set_modifier(cen::KeyMod::Alt, false);
-  event.set_modifier(cen::KeyMod::RShift, false);
-  ASSERT_FALSE(event.is_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::LShift));
-  ASSERT_FALSE(event.is_active(cen::KeyMod::RShift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::LShift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::RShift));
+  event.SetModifier(cen::KeyMod::Alt, false);
+  event.SetModifier(cen::KeyMod::RShift, false);
+  ASSERT_FALSE(event.IsActive(cen::KeyMod::None));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::None));
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::LShift));
+  ASSERT_FALSE(event.IsActive(cen::KeyMod::RShift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.IsOnlyActive(cen::KeyMod::LShift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::RShift));
 }
 
 TEST(KeyboardEvent, IsOnlyAnyOfActive)
 {
-  cen::keyboard_event event;
-  ASSERT_TRUE(event.is_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_any_of_active(cen::KeyMod::Shift));
+  cen::KeyboardEvent event;
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::None));
+  ASSERT_TRUE(event.IsOnlyActive(cen::KeyMod::None));
+  ASSERT_TRUE(event.IsOnlyAnyOfActive(cen::KeyMod::None));
+  ASSERT_FALSE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyAnyOfActive(cen::KeyMod::Shift));
 
-  event.set_modifier(cen::KeyMod::LShift, true);
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::LShift));
+  event.SetModifier(cen::KeyMod::LShift, true);
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.IsOnlyAnyOfActive(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.IsOnlyAnyOfActive(cen::KeyMod::LShift));
 
-  event.set_modifier(cen::KeyMod::RGui, true);
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_any_of_active(cen::KeyMod::Shift));
+  event.SetModifier(cen::KeyMod::RGui, true);
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyActive(cen::KeyMod::Shift));
+  ASSERT_FALSE(event.IsOnlyAnyOfActive(cen::KeyMod::Shift));
 
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::LShift | cen::KeyMod::RGui));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::LShift | cen::KeyMod::RGui));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::Shift | cen::KeyMod::Gui));
+  ASSERT_TRUE(event.IsOnlyActive(cen::KeyMod::LShift | cen::KeyMod::RGui));
+  ASSERT_TRUE(event.IsOnlyAnyOfActive(cen::KeyMod::LShift | cen::KeyMod::RGui));
+  ASSERT_TRUE(event.IsOnlyAnyOfActive(cen::KeyMod::Shift | cen::KeyMod::Gui));
 }
 
 TEST(KeyboardEvent, IsActiveModifier)
@@ -167,114 +163,18 @@ TEST(KeyboardEvent, IsActiveModifier)
 
   sdl.keysym = keysym;
 
-  const cen::keyboard_event event{sdl};
+  const cen::KeyboardEvent event{sdl};
 
   // Check that multiple key modifiers can be active at the same time
-  ASSERT_TRUE(event.is_active(cen::KeyMod::LAlt));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Caps));
-}
-
-TEST(KeyboardEvent, Repeated)
-{
-  cen::keyboard_event event;
-  ASSERT_FALSE(event.repeated());
-
-  event.set_repeated(true);
-  ASSERT_TRUE(event.repeated());
-}
-
-TEST(KeyboardEvent, State)
-{
-  {  // Default button state
-    const cen::keyboard_event event;
-    ASSERT_EQ(cen::ButtonState::Released, event.state());
-  }
-
-  {  // Check valid state
-    SDL_KeyboardEvent sdl{};
-
-    sdl.keysym.sym = SDLK_ESCAPE;
-    sdl.state = SDL_PRESSED;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_EQ(cen::ButtonState::Pressed, event.state());
-  }
-}
-
-TEST(KeyboardEvent, Released)
-{
-  {  // Released
-    SDL_KeyboardEvent sdl{};
-    sdl.state = SDL_RELEASED;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.released());
-    ASSERT_EQ(cen::ButtonState::Released, event.state());
-  }
-
-  {  // Not released
-    SDL_KeyboardEvent sdl{};
-    sdl.state = SDL_PRESSED;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_FALSE(event.released());
-  }
-}
-
-TEST(KeyboardEvent, Pressed)
-{
-  {  // Pressed
-    SDL_KeyboardEvent sdl{};
-    sdl.state = SDL_PRESSED;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.pressed());
-    ASSERT_EQ(cen::ButtonState::Pressed, event.state());
-  }
-
-  {  // Not pressed
-    SDL_KeyboardEvent sdl{};
-    sdl.state = SDL_RELEASED;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_FALSE(event.pressed());
-  }
-}
-
-TEST(KeyboardEvent, GetScanCode)
-{
-  cen::keyboard_event event;
-
-  constexpr auto code = cen::scancodes::q;
-  event.set_scan_code(code);
-
-  ASSERT_EQ(code, event.get_scan_code());
-}
-
-TEST(KeyboardEvent, GetKeyCode)
-{
-  cen::keyboard_event event;
-
-  constexpr auto code = cen::keycodes::x;
-  event.set_key_code(code);
-
-  ASSERT_EQ(code, event.get_key_code());
-}
-
-TEST(KeyboardEvent, WindowId)
-{
-  SDL_KeyboardEvent sdl{};
-  sdl.windowID = 72;
-
-  const cen::keyboard_event event{sdl};
-  ASSERT_EQ(sdl.windowID, event.window_id());
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::LAlt));
+  ASSERT_TRUE(event.IsActive(cen::KeyMod::Caps));
 }
 
 TEST(KeyboardEvent, AsSDLEvent)
 {
-  const cen::keyboard_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::KeyboardEvent event;
+  const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.key.type, cen::ToUnderlying(event.GetType()));
-  ASSERT_EQ(sdl.key.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.key.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.key.timestamp, event.GetTimestamp());
 }

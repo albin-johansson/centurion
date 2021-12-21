@@ -194,7 +194,7 @@ class Event final {
                                  JoyButtonEvent,
                                  JoyDeviceEvent,
                                  JoyHatEvent,
-                                 keyboard_event,
+                                 KeyboardEvent,
                                  MouseButtonEvent,
                                  MouseMotionEvent,
                                  MouseWheelEvent,
@@ -250,7 +250,7 @@ class Event final {
 
       case EventType::KeyDown:
       case EventType::KeyUp:
-        mData.emplace<keyboard_event>(mEvent.key);
+        mData.emplace<KeyboardEvent>(mEvent.key);
         break;
 
       case EventType::TextEditing:

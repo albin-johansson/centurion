@@ -47,10 +47,10 @@ class Event final {
   /// Updates the event loop, gathering events from the input devices.
   static void Update() noexcept { SDL_PumpEvents(); }
 
-  static void Push(Event& event) noexcept
+  static auto Push(Event& event) noexcept -> Result
   {
     auto& sdlEvent = event.mEvent;
-    SDL_PushEvent(&sdlEvent);
+    return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
   template <typename T>
@@ -77,7 +77,7 @@ class Event final {
     const bool result = SDL_PollEvent(&mEvent);
 
     if (result) {
-      UpdateData(static_cast<EventType>(mEvent.type));
+      UpdateData(EventType{mEvent.type});
     }
     else {
       mData.emplace<std::monostate>();

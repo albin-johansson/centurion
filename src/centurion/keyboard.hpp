@@ -90,19 +90,19 @@ namespace detail {
 
 }  // namespace detail
 
-/** Sets the current key modifiers. */
+/// Sets the current key modifiers.
 inline void SetModifiers(const KeyMod mods) noexcept
 {
   SDL_SetModState(static_cast<SDL_Keymod>(mods));
 }
 
-/** Returns the current key modifier state. */
+/// Returns the current key modifier state.
 [[nodiscard]] inline auto GetModifiers() noexcept -> KeyMod
 {
   return static_cast<KeyMod>(SDL_GetModState());
 }
 
-/** Represents a virtual key. */
+/// Represents a virtual key.
 class KeyCode final {
  public:
   /** Creates a key with the `SDLK_UNKNOWN` key code. */
@@ -248,7 +248,7 @@ class ScanCode final {
   SDL_Scancode mCode{SDL_SCANCODE_UNKNOWN};
 };
 
-/** Provides information about the keyboard state. */
+/// Provides information about the keyboard state.
 class Keyboard final {
  public:
   Keyboard() noexcept { mState = SDL_GetKeyboardState(&mKeyCount); }

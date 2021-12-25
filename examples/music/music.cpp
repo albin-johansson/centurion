@@ -81,7 +81,7 @@ class music_example final {
 
   void on_keyboard_event(const cen::KeyboardEvent& event)
   {
-    if (event.released()) {
+    if (event.IsReleased()) {
       if (event.IsActive(cen::scancodes::zero)) {
         mClick.Play(0);
       }

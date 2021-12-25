@@ -13,7 +13,6 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core/features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "math.hpp"

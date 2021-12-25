@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include "core/exception.hpp"
+#include "common.hpp"
 #include "mouse.hpp"
 
 static_assert(std::is_move_constructible_v<cen::Cursor>);

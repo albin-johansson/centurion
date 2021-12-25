@@ -4,7 +4,7 @@
 #include <memory>    // unique_ptr
 
 #include "color.hpp"
-#include "core/exception.hpp"
+#include "common.hpp"
 #include "core/logging.hpp"
 #include "font.hpp"
 #include "math.hpp"

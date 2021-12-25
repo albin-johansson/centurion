@@ -5,7 +5,7 @@
 #include <type_traits>
 
 #include "audio.hpp"
-#include "core/exception.hpp"
+#include "common.hpp"
 
 static_assert(std::is_final_v<cen::SoundEffect>);
 static_assert(!std::is_default_constructible_v<cen::SoundEffect>);

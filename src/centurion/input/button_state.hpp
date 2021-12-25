@@ -7,7 +7,6 @@
 #include <string_view>  // string_view
 
 #include "../common.hpp"
-#include "../core/exception.hpp"
 
 namespace cen {
 

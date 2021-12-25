@@ -1,4 +1,4 @@
-#include "core/exception.hpp"
+#include "common.hpp"
 
 #include <gtest/gtest.h>
 

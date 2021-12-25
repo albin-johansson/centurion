@@ -13,7 +13,6 @@
 
 #include "../color.hpp"
 #include "../common.hpp"
-#include "../core/exception.hpp"
 #include "../core/features.hpp"
 #include "../core/sdl_string.hpp"
 #include "../detail/owner_handle_api.hpp"

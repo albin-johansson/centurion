@@ -14,7 +14,6 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core/features.hpp"
 #include "detail/stdlib.hpp"
 

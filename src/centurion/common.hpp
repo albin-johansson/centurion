@@ -3,11 +3,24 @@
 
 #include <SDL.h>
 
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <chrono>       // duration
+#include <exception>    // exception
 #include <ostream>      // ostream
+#include <ratio>        // ratio, milli, micro, nano
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
-#include <chrono>       // duration
-#include <ratio>        // ratio, milli, micro, nano
 
 #include "core/features.hpp"
 #include "memory.hpp"
@@ -104,7 +117,7 @@ using Owner = T;
 template <typename T, RequirePointer<T> = 0>
 using MaybeOwner = T;
 
-/* Converts an enum value to the underlying integral value. */
+/// Converts an enum value to the underlying integral value.
 template <typename Enum, RequireEnum<Enum> = 0>
 [[nodiscard]] constexpr auto ToUnderlying(const Enum value) noexcept
     -> std::underlying_type_t<Enum>
@@ -112,14 +125,14 @@ template <typename Enum, RequireEnum<Enum> = 0>
   return static_cast<std::underlying_type_t<Enum>>(value);
 }
 
-/* Casts a value to a value of another type. */
+/// Casts a value to a value of another type.
 template <typename To, typename From>
 [[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
 {
   return static_cast<To>(from);
 }
 
-/* Obtains the size of a container as an `int`. */
+/// Obtains the size of a container as an `int`.
 template <typename T>
 [[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
     -> int
@@ -127,11 +140,63 @@ template <typename T>
   return static_cast<int>(container.size());
 }
 
-/* Simply returns the string if it isn't null, returning a placeholder otherwise. */
+/// Simply returns the string if it isn't null, returning a placeholder otherwise.
 [[nodiscard]] inline auto str_or_na(const char* str) noexcept -> const char*
 {
   return str ? str : "N/A";
 }
+
+class Error : public std::exception {
+ public:
+  Error() noexcept = default;
+
+  explicit Error(const char* what) noexcept : mWhat{what ? what : "?"} {}
+
+  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat; }
+
+ private:
+  const char* mWhat{"?"};
+};
+
+class SDLError final : public Error {
+ public:
+  SDLError() noexcept : Error{SDL_GetError()} {}
+
+  explicit SDLError(const char* what) noexcept : Error{what} {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+class IMGError final : public Error {
+ public:
+  IMGError() noexcept : Error{IMG_GetError()} {}
+
+  explicit IMGError(const char* what) noexcept : Error{what} {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+class TTFError final : public Error {
+ public:
+  TTFError() noexcept : Error{TTF_GetError()} {}
+
+  explicit TTFError(const char* what) noexcept : Error{what} {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+class MixError final : public Error {
+ public:
+  MixError() noexcept : Error{Mix_GetError()} {}
+
+  explicit MixError(const char* what) noexcept : Error{what} {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /**
  * \brief A simple indicator for the result of different operations.

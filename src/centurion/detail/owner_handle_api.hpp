@@ -5,7 +5,7 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
-#include "../core/exception.hpp"
+#include "../common.hpp"
 #include "../memory.hpp"
 
 /// \cond FALSE

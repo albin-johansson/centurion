@@ -6,7 +6,6 @@
 #include <array>  // array
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core_mocks.hpp"
 #include "color.hpp"
 

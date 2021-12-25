@@ -14,7 +14,6 @@
 #include <string>    // string, to_string
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core/features.hpp"
 #include "memory.hpp"
 #include "detail/owner_handle_api.hpp"

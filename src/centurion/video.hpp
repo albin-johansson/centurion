@@ -9,7 +9,6 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "math.hpp"
 #include "pixels.hpp"
 

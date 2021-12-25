@@ -10,7 +10,6 @@
 #include <utility>   // pair, make_pair, move
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core/features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"

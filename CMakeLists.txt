@@ -62,6 +62,7 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
                src/centurion/color.hpp
+               src/centurion/common.hpp
                src/centurion/concurrency.hpp
                src/centurion/endian.hpp
                src/centurion/event.hpp
@@ -86,8 +87,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video.hpp
                src/centurion/vulkan.hpp
 
-               src/centurion/common.hpp
-               src/centurion/core/exception.hpp
                src/centurion/core/features.hpp
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp

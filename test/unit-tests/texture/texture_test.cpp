@@ -6,7 +6,7 @@
 #include <type_traits>
 
 #include "color.hpp"
-#include "core/exception.hpp"
+#include "common.hpp"
 #include "core/logging.hpp"
 #include "render.hpp"
 #include "window.hpp"

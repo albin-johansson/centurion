@@ -9,7 +9,6 @@
 #include <utility>      // move
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "detail/array_utils.hpp"
 #include "detail/stdlib.hpp"
 #include "input/button_state.hpp"

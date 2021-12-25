@@ -13,7 +13,6 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core/sdl_string.hpp"
 #include "detail/sdl_deleter.hpp"
 #include "detail/stdlib.hpp"

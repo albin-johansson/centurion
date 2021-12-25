@@ -7,7 +7,6 @@
 #include <optional>  // optional
 
 #include "common.hpp"
-#include "core/exception.hpp"
 #include "core/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE

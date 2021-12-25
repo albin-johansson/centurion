@@ -60,7 +60,6 @@
 
 //
 
-#include "centurion/core/exception.hpp"
 #include "centurion/core/features.hpp"
 #include "centurion/core/logging.hpp"
 #include "centurion/core/sdl_string.hpp"

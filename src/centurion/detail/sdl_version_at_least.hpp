@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "version.hpp"
+#include "../version.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

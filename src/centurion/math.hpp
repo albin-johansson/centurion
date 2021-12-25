@@ -9,7 +9,7 @@
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

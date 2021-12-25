@@ -19,7 +19,7 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "memory.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"

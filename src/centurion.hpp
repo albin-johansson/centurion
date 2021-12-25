@@ -36,6 +36,7 @@
 #include "centurion/endian.hpp"
 #include "centurion/event.hpp"
 #include "centurion/events.hpp"
+#include "centurion/features.hpp"
 #include "centurion/filesystem.hpp"
 #include "centurion/font.hpp"
 #include "centurion/initialization.hpp"
@@ -60,7 +61,6 @@
 
 //
 
-#include "centurion/core/features.hpp"
 #include "centurion/core/logging.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/input/button_state.hpp"

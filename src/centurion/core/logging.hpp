@@ -12,16 +12,15 @@
 #include <string_view>  // string_view
 #include <utility>      // forward
 
-#include "../core/features.hpp"
+#include "../common.hpp"
+#include "../features.hpp"
+#include "../version.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
-
-#include "../common.hpp"
-#include "version.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 

@@ -14,7 +14,7 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

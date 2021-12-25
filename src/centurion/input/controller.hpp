@@ -13,11 +13,11 @@
 
 #include "../color.hpp"
 #include "../common.hpp"
-#include "../core/features.hpp"
 #include "../core/sdl_string.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
+#include "../features.hpp"
 #include "button_state.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"

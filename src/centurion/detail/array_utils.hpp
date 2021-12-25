@@ -5,7 +5,7 @@
 #include <cstddef>  // size_t
 
 #include "../common.hpp"
-#include "../core/features.hpp"
+#include "../features.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

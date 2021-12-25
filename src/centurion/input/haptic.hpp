@@ -8,21 +8,20 @@
 #include <ostream>   // ostream
 #include <string>    // string
 
-#include "../core/features.hpp"
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "haptic_effect.hpp"
+#include "haptic_feature.hpp"
+#include "joystick.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
-
-#include "../common.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../detail/stdlib.hpp"
-#include "../math.hpp"
-#include "haptic_effect.hpp"
-#include "haptic_feature.hpp"
-#include "joystick.hpp"
 
 namespace cen {
 

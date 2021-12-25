@@ -67,6 +67,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/endian.hpp
                src/centurion/event.hpp
                src/centurion/events.hpp
+               src/centurion/features.hpp
                src/centurion/filesystem.hpp
                src/centurion/font.hpp
                src/centurion/initialization.hpp
@@ -87,7 +88,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video.hpp
                src/centurion/vulkan.hpp
 
-               src/centurion/core/features.hpp
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp
 

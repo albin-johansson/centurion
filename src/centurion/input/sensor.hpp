@@ -9,17 +9,16 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#include "../core/features.hpp"
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
-
-#include "../common.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../detail/stdlib.hpp"
 
 namespace cen {
 

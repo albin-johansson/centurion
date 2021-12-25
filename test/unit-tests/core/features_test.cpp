@@ -1,4 +1,4 @@
-#include "core/features.hpp"
+#include "features.hpp"
 
 #include <gtest/gtest.h>
 

@@ -10,7 +10,7 @@
 #include <type_traits>  // invoke_result_t, declval
 
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "memory.hpp"
 #include "detail/stdlib.hpp"
 

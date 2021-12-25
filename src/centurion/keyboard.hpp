@@ -11,7 +11,7 @@
 #include <string>     // string, to_string
 
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "version.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

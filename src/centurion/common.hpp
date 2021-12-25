@@ -22,7 +22,7 @@
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
 
-#include "core/features.hpp"
+#include "features.hpp"
 #include "memory.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS

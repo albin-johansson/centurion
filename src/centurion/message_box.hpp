@@ -13,7 +13,7 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "detail/stack_resource.hpp"
 #include "window.hpp"
 

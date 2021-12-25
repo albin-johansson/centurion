@@ -16,7 +16,7 @@
 
 #include "common.hpp"
 #include "events.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "detail/tuple_type_index.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

@@ -11,7 +11,7 @@
 #include <vector>    // vector
 
 #include "common.hpp"
-#include "core/features.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "window.hpp"
 

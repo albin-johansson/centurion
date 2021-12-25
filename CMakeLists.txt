@@ -95,7 +95,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/owner_handle_api.hpp
                src/centurion/detail/sdl_deleter.hpp
                src/centurion/detail/sdl_version_at_least.hpp
-               src/centurion/detail/stack_resource.hpp
                src/centurion/detail/tuple_type_index.hpp
 
                src/centurion/input/button_state.hpp

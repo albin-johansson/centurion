@@ -13,10 +13,6 @@
 #include <format>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
-#include <memory_resource>
-#endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE
-
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
 TEST(Features, Concepts)
@@ -36,13 +32,3 @@ TEST(Features, Format)
 }
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
-
-#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
-
-TEST(Features, MemoryResource)
-{
-  std::array<std::byte, 64> buffer{};
-  std::pmr::monotonic_buffer_resource resource{buffer.data(), sizeof buffer};
-}
-
-#endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE

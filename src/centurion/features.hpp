@@ -33,12 +33,6 @@
 #define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
-#ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
-#else
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
-#endif  // __cpp_lib_memory_resource
-
 #ifdef __cpp_lib_interpolate
 #define CENTURION_HAS_FEATURE_LERP 1
 #else

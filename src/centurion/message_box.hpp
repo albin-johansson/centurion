@@ -13,8 +13,6 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "features.hpp"
-#include "detail/stack_resource.hpp"
 #include "window.hpp"
 
 namespace cen {
@@ -228,14 +226,8 @@ class MessageBox final {
     data.flags = ToFlags(mType, mButtonOrder);
     data.colorScheme = mColorScheme ? mColorScheme->data() : nullptr;
 
-#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
-    // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
-    detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
-    std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
-#else
     std::vector<SDL_MessageBoxButtonData> buttonData;
     buttonData.reserve(8);
-#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
     if (mButtons.empty()) {
       AddButton(0, "OK", ButtonFlags::ReturnKeyDefault);

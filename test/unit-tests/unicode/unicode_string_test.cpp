@@ -8,7 +8,7 @@
 TEST(UnicodeString, Defaults)
 {
   const cen::UnicodeString str;
-  ASSERT_EQ(0, str.size());
+  ASSERT_EQ(0u, str.size());
   ASSERT_TRUE(str.empty());
 
   ASSERT_EQ(0, str.at(0));  // null-terminator
@@ -17,7 +17,7 @@ TEST(UnicodeString, Defaults)
 TEST(UnicodeString, InitializerListConstructor)
 {
   const cen::UnicodeString str = {'a', 'b', 'c'};
-  ASSERT_EQ(3, str.size());
+  ASSERT_EQ(3u, str.size());
   ASSERT_FALSE(str.empty());
 
   ASSERT_EQ('a', str.at(0));
@@ -51,11 +51,11 @@ TEST(UnicodeString, Append)
   cen::UnicodeString str;
 
   str.append('A');
-  ASSERT_EQ(1, str.size());
+  ASSERT_EQ(1u, str.size());
   ASSERT_EQ('A', str.at(0));
 
   str.append(0xF308);
-  ASSERT_EQ(2, str.size());
+  ASSERT_EQ(2u, str.size());
   ASSERT_EQ(0xF308, str.at(1));
 }
 
@@ -64,7 +64,7 @@ TEST(UnicodeString, AppendVariadic)
   cen::UnicodeString str;
 
   str.append('B', 'A', 'R');
-  ASSERT_EQ(3, str.size());
+  ASSERT_EQ(3u, str.size());
   ASSERT_EQ('B', str.at(0));
   ASSERT_EQ('A', str.at(1));
   ASSERT_EQ('R', str.at(2));
@@ -75,11 +75,11 @@ TEST(UnicodeString, AdditionAssignmentOperator)
   cen::UnicodeString str;
 
   str += 'Z';
-  ASSERT_EQ(1, str.size());
+  ASSERT_EQ(1u, str.size());
   ASSERT_EQ('Z', str.at(0));
 
   str += 'Q';
-  ASSERT_EQ(2, str.size());
+  ASSERT_EQ(2u, str.size());
   ASSERT_EQ('Q', str.at(1));
 }
 
@@ -89,11 +89,11 @@ TEST(UnicodeString, PopBack)
 
   str += 'A';
   ASSERT_FALSE(str.empty());
-  ASSERT_EQ(1, str.size());
+  ASSERT_EQ(1u, str.size());
 
   str.pop_back();
   ASSERT_TRUE(str.empty());
-  ASSERT_EQ(0, str.size());  // NOLINT
+  ASSERT_EQ(0u, str.size());  // NOLINT
   ASSERT_EQ(0, str.at(0));   // null-terminator
 
   ASSERT_NO_THROW(str.pop_back());
@@ -101,7 +101,7 @@ TEST(UnicodeString, PopBack)
   ASSERT_NO_THROW(str.pop_back());
 
   ASSERT_TRUE(str.empty());
-  ASSERT_EQ(0, str.size());  // NOLINT
+  ASSERT_EQ(0u, str.size());  // NOLINT
   ASSERT_EQ(0, str.at(0));   // null-terminator
 }
 

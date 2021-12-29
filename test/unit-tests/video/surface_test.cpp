@@ -55,10 +55,10 @@ TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
 TEST_F(SurfaceTest, SizePixelFormatConstructor)
 {
   cen::Window window;
-  cen::Surface surface{{10, 10}, window.GetPixelFormat()};
-  ASSERT_EQ(10, surface.GetWidth());
-  ASSERT_EQ(10, surface.GetHeight());
-  ASSERT_EQ(window.GetPixelFormat(), surface.GetFormatInfo().GetFormat());
+  cen::Surface image{{10, 10}, window.GetPixelFormat()};
+  ASSERT_EQ(10, image.GetWidth());
+  ASSERT_EQ(10, image.GetHeight());
+  ASSERT_EQ(window.GetPixelFormat(), image.GetFormatInfo().GetFormat());
 }
 
 TEST_F(SurfaceTest, CopyConstructor)

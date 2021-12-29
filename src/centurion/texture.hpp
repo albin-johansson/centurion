@@ -290,14 +290,14 @@ template <typename T>
 [[nodiscard]] auto to_string(const BasicTexture<T>& texture) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("texture{{data: {}, width: {}, height: {}}}",
+  return std::format("Texture(data: {}, width: {}, height: {})",
                      detail::address_of(texture.get()),
-                     texture.width(),
-                     texture.height());
+                     texture.GetWidth(),
+                     texture.GetHeight());
 #else
-  return "texture{data: " + detail::address_of(texture.get()) +
-         ", GetWidth: " + std::to_string(texture.GetWidth()) +
-         ", GetHeight: " + std::to_string(texture.GetHeight()) + "}";
+  return "Texture(data: " + detail::address_of(texture.get()) +
+         ", width: " + std::to_string(texture.GetWidth()) +
+         ", height: " + std::to_string(texture.GetHeight()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

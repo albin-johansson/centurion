@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16 ]
-        CPP_VERSION: [ 17, 20 ]
+        CPP_VERSION: [ 17, 20, 23 ]
     steps:
       - uses: actions/checkout@main
       - uses: ilammy/msvc-dev-cmd@master

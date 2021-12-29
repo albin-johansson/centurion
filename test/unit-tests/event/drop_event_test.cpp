@@ -42,7 +42,7 @@ TEST(DropEvent, SetWindowID)
   cen::DropEvent event;
 
   event.SetWindowID(84);
-  ASSERT_EQ(84, event.GetWindowID());
+  ASSERT_EQ(84u, event.GetWindowID());
 }
 
 TEST(DropEvent, AsSDLEvent)

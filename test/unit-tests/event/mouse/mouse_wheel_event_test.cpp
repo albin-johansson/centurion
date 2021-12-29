@@ -14,7 +14,7 @@ TEST(MouseWheelEvent, SetWindowID)
   cen::MouseWheelEvent event;
 
   event.SetWindowID(32);
-  ASSERT_EQ(32, event.GetWindowID());
+  ASSERT_EQ(32u, event.GetWindowID());
 }
 
 TEST(MouseWheelEvent, SetWhich)
@@ -22,7 +22,7 @@ TEST(MouseWheelEvent, SetWhich)
   cen::MouseWheelEvent event;
 
   event.SetWhich(32);
-  ASSERT_EQ(32, event.GetWhich());
+  ASSERT_EQ(32u, event.GetWhich());
 }
 
 TEST(MouseWheelEvent, SetXScroll)

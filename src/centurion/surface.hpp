@@ -336,14 +336,14 @@ template <typename T>
 [[nodiscard]] auto to_string(const BasicSurface<T>& surface) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("Surface{{data: {}, width: {}, height: {}}}",
+  return std::format("Surface(data: {}, width: {}, height: {})",
                      detail::address_of(surface.get()),
-                     surface.width(),
-                     surface.height());
+                     surface.GetWidth(),
+                     surface.GetHeight());
 #else
-  return "Surface{data: " + detail::address_of(surface.get()) +
+  return "Surface(data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.GetWidth()) +
-         ", height: " + std::to_string(surface.GetHeight()) + "}";
+         ", height: " + std::to_string(surface.GetHeight()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

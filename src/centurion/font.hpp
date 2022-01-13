@@ -814,7 +814,7 @@ class FontBundle final {
   }
 };
 
-[[nodiscard]] constexpr auto to_string(const FontHint hint) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const FontHint hint) -> std::string_view
 {
   switch (hint) {
     case FontHint::Normal:
@@ -834,7 +834,7 @@ class FontBundle final {
   }
 }
 
-[[nodiscard]] inline auto to_string(const Font& font) -> std::string
+[[nodiscard]] inline auto ToString(const Font& font) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Font(data: {}, name: {}, size: {})",
@@ -850,12 +850,12 @@ class FontBundle final {
 
 inline auto operator<<(std::ostream& stream, const FontHint hint) -> std::ostream&
 {
-  return stream << to_string(hint);
+  return stream << ToString(hint);
 }
 
 inline auto operator<<(std::ostream& stream, const Font& font) -> std::ostream&
 {
-  return stream << to_string(font);
+  return stream << ToString(font);
 }
 
 /// \} End of group video

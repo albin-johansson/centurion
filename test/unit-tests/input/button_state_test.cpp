@@ -14,10 +14,10 @@ TEST(ButtonState, Values)
 
 TEST(ButtonState, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::ButtonState>(3)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::ButtonState>(3)), cen::Error);
 
-  ASSERT_EQ("Released", cen::to_string(cen::ButtonState::Released));
-  ASSERT_EQ("Pressed", cen::to_string(cen::ButtonState::Pressed));
+  ASSERT_EQ("Released", cen::ToString(cen::ButtonState::Released));
+  ASSERT_EQ("Pressed", cen::ToString(cen::ButtonState::Pressed));
 
   std::clog << "Button state example: " << cen::ButtonState::Pressed << '\n';
 }

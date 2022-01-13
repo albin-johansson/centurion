@@ -213,7 +213,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-[[nodiscard]] constexpr auto to_string(const FlashOp op) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const FlashOp op) -> std::string_view
 {
   switch (op) {
     case FlashOp::Cancel:
@@ -232,7 +232,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
-[[nodiscard]] constexpr auto to_string(const BlendMode mode) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const BlendMode mode) -> std::string_view
 {
   switch (mode) {
     case BlendMode::None:
@@ -262,7 +262,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const BlendFactor factor) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const BlendFactor factor) -> std::string_view
 {
   switch (factor) {
     case BlendFactor::Zero:
@@ -300,7 +300,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const BlendOp op) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const BlendOp op) -> std::string_view
 {
   switch (op) {
     case BlendOp::Add:
@@ -323,7 +323,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const DisplayOrientation orientation)
+[[nodiscard]] constexpr auto ToString(const DisplayOrientation orientation)
     -> std::string_view
 {
   switch (orientation) {
@@ -351,30 +351,30 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
 
 inline auto operator<<(std::ostream& stream, const FlashOp op) -> std::ostream&
 {
-  return stream << to_string(op);
+  return stream << ToString(op);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 inline auto operator<<(std::ostream& stream, const BlendMode mode) -> std::ostream&
 {
-  return stream << to_string(mode);
+  return stream << ToString(mode);
 }
 
 inline auto operator<<(std::ostream& stream, const BlendFactor factor) -> std::ostream&
 {
-  return stream << to_string(factor);
+  return stream << ToString(factor);
 }
 
 inline auto operator<<(std::ostream& stream, const BlendOp op) -> std::ostream&
 {
-  return stream << to_string(op);
+  return stream << ToString(op);
 }
 
 inline auto operator<<(std::ostream& stream, const DisplayOrientation orientation)
     -> std::ostream&
 {
-  return stream << to_string(orientation);
+  return stream << ToString(orientation);
 }
 
 }  // namespace cen

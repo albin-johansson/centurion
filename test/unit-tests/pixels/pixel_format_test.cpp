@@ -79,65 +79,65 @@ TEST(PixelFormat, Values)
 
 TEST(PixelFormat, ToString)
 {
-  ASSERT_THROW(to_string(static_cast<Format>(0xFFFFFFFF)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Format>(0xFFFFFFFF)), cen::Error);
 
-  ASSERT_EQ("Unknown", to_string(Format::Unknown));
-  ASSERT_EQ("Index1LSB", to_string(Format::Index1LSB));
-  ASSERT_EQ("Index1MSB", to_string(Format::Index1MSB));
-  ASSERT_EQ("Index4LSB", to_string(Format::Index4LSB));
-  ASSERT_EQ("Index4MSB", to_string(Format::Index4MSB));
-  ASSERT_EQ("Index8", to_string(Format::Index8));
+  ASSERT_EQ("Unknown", ToString(Format::Unknown));
+  ASSERT_EQ("Index1LSB", ToString(Format::Index1LSB));
+  ASSERT_EQ("Index1MSB", ToString(Format::Index1MSB));
+  ASSERT_EQ("Index4LSB", ToString(Format::Index4LSB));
+  ASSERT_EQ("Index4MSB", ToString(Format::Index4MSB));
+  ASSERT_EQ("Index8", ToString(Format::Index8));
 
-  ASSERT_EQ("RGB332", to_string(Format::RGB332));
+  ASSERT_EQ("RGB332", ToString(Format::RGB332));
 
-  ASSERT_EQ("ARGB4444", to_string(Format::ARGB4444));
-  ASSERT_EQ("RGBA4444", to_string(Format::RGBA4444));
-  ASSERT_EQ("ABGR4444", to_string(Format::ABGR4444));
-  ASSERT_EQ("BGRA4444", to_string(Format::BGRA4444));
+  ASSERT_EQ("ARGB4444", ToString(Format::ARGB4444));
+  ASSERT_EQ("RGBA4444", ToString(Format::RGBA4444));
+  ASSERT_EQ("ABGR4444", ToString(Format::ABGR4444));
+  ASSERT_EQ("BGRA4444", ToString(Format::BGRA4444));
 
-  ASSERT_EQ("ARGB1555", to_string(Format::ARGB1555));
-  ASSERT_EQ("RGBA5551", to_string(Format::RGBA5551));
-  ASSERT_EQ("ABGR1555", to_string(Format::ABGR1555));
-  ASSERT_EQ("BGRA5551", to_string(Format::BGRA5551));
+  ASSERT_EQ("ARGB1555", ToString(Format::ARGB1555));
+  ASSERT_EQ("RGBA5551", ToString(Format::RGBA5551));
+  ASSERT_EQ("ABGR1555", ToString(Format::ABGR1555));
+  ASSERT_EQ("BGRA5551", ToString(Format::BGRA5551));
 
-  ASSERT_EQ("RGB565", to_string(Format::RGB565));
-  ASSERT_EQ("BGR565", to_string(Format::BGR565));
+  ASSERT_EQ("RGB565", ToString(Format::RGB565));
+  ASSERT_EQ("BGR565", ToString(Format::BGR565));
 
-  ASSERT_EQ("RGB24", to_string(Format::RGB24));
-  ASSERT_EQ("BGR24", to_string(Format::BGR24));
+  ASSERT_EQ("RGB24", ToString(Format::RGB24));
+  ASSERT_EQ("BGR24", ToString(Format::BGR24));
 
-  ASSERT_EQ("RGBX8888", to_string(Format::RGBX8888));
-  ASSERT_EQ("BGRX8888", to_string(Format::BGRX8888));
-  ASSERT_EQ("ARGB8888", to_string(Format::ARGB8888));
-  ASSERT_EQ("RGBA8888", to_string(Format::RGBA8888));
-  ASSERT_EQ("ABGR8888", to_string(Format::ABGR8888));
-  ASSERT_EQ("BGRA8888", to_string(Format::BGRA8888));
+  ASSERT_EQ("RGBX8888", ToString(Format::RGBX8888));
+  ASSERT_EQ("BGRX8888", ToString(Format::BGRX8888));
+  ASSERT_EQ("ARGB8888", ToString(Format::ARGB8888));
+  ASSERT_EQ("RGBA8888", ToString(Format::RGBA8888));
+  ASSERT_EQ("ABGR8888", ToString(Format::ABGR8888));
+  ASSERT_EQ("BGRA8888", ToString(Format::BGRA8888));
 
-  ASSERT_EQ("ARGB2101010", to_string(Format::ARGB2101010));
+  ASSERT_EQ("ARGB2101010", ToString(Format::ARGB2101010));
 
-  ASSERT_EQ("YV12", to_string(Format::YV12));
-  ASSERT_EQ("IYUV", to_string(Format::IYUV));
-  ASSERT_EQ("YUY2", to_string(Format::YUY2));
-  ASSERT_EQ("UYVY", to_string(Format::UYVY));
-  ASSERT_EQ("YVYU", to_string(Format::YVYU));
+  ASSERT_EQ("YV12", ToString(Format::YV12));
+  ASSERT_EQ("IYUV", ToString(Format::IYUV));
+  ASSERT_EQ("YUY2", ToString(Format::YUY2));
+  ASSERT_EQ("UYVY", ToString(Format::UYVY));
+  ASSERT_EQ("YVYU", ToString(Format::YVYU));
 
-  ASSERT_EQ("NV12", to_string(Format::NV12));
-  ASSERT_EQ("NV21", to_string(Format::NV21));
+  ASSERT_EQ("NV12", ToString(Format::NV12));
+  ASSERT_EQ("NV21", ToString(Format::NV21));
 
-  ASSERT_EQ("ExternalOES", to_string(Format::ExternalOES));
+  ASSERT_EQ("ExternalOES", ToString(Format::ExternalOES));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  ASSERT_EQ("XRGB4444", to_string(Format::XRGB4444));
-  ASSERT_EQ("XBGR4444", to_string(Format::XBGR4444));
-  ASSERT_EQ("XRGB1555", to_string(Format::XRGB1555));
-  ASSERT_EQ("XBGR1555", to_string(Format::XBGR1555));
-  ASSERT_EQ("XRGB8888", to_string(Format::XRGB8888));
-  ASSERT_EQ("XBGR8888", to_string(Format::XBGR8888));
+  ASSERT_EQ("XRGB4444", ToString(Format::XRGB4444));
+  ASSERT_EQ("XBGR4444", ToString(Format::XBGR4444));
+  ASSERT_EQ("XRGB1555", ToString(Format::XRGB1555));
+  ASSERT_EQ("XBGR1555", ToString(Format::XBGR1555));
+  ASSERT_EQ("XRGB8888", ToString(Format::XRGB8888));
+  ASSERT_EQ("XBGR8888", ToString(Format::XBGR8888));
 
 #elif SDL_VERSION_ATLEAST(2, 0, 12)
 
-  ASSERT_EQ("BGR444", to_string(Format::BGR444));
+  ASSERT_EQ("BGR444", ToString(Format::BGR444));
 
 #endif
 

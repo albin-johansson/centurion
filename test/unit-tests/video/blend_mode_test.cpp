@@ -20,17 +20,17 @@ TEST(BlendMode, Values)
 
 TEST(BlendMode, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::BlendMode>(SDL_BLENDMODE_INVALID - 1)),
+  ASSERT_THROW(cen::ToString(static_cast<cen::BlendMode>(SDL_BLENDMODE_INVALID - 1)),
                cen::Error);
 
-  ASSERT_EQ("None", cen::to_string(cen::BlendMode::None));
-  ASSERT_EQ("Blend", cen::to_string(cen::BlendMode::Blend));
-  ASSERT_EQ("Add", cen::to_string(cen::BlendMode::Add));
-  ASSERT_EQ("Mod", cen::to_string(cen::BlendMode::Mod));
-  ASSERT_EQ("Invalid", cen::to_string(cen::BlendMode::Invalid));
+  ASSERT_EQ("None", cen::ToString(cen::BlendMode::None));
+  ASSERT_EQ("Blend", cen::ToString(cen::BlendMode::Blend));
+  ASSERT_EQ("Add", cen::ToString(cen::BlendMode::Add));
+  ASSERT_EQ("Mod", cen::ToString(cen::BlendMode::Mod));
+  ASSERT_EQ("Invalid", cen::ToString(cen::BlendMode::Invalid));
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-  ASSERT_EQ("Mul", cen::to_string(cen::BlendMode::Mul));
+  ASSERT_EQ("Mul", cen::ToString(cen::BlendMode::Mul));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   std::clog << "Blend mode example: " << cen::BlendMode::Blend << '\n';

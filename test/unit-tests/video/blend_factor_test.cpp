@@ -29,22 +29,22 @@ TEST(BlendFactor, Values)
 
 TEST(BlendFactor, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::BlendFactor>(100)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::BlendFactor>(100)), cen::Error);
 
-  ASSERT_EQ("Zero", cen::to_string(cen::BlendFactor::Zero));
-  ASSERT_EQ("One", cen::to_string(cen::BlendFactor::One));
+  ASSERT_EQ("Zero", cen::ToString(cen::BlendFactor::Zero));
+  ASSERT_EQ("One", cen::ToString(cen::BlendFactor::One));
 
-  ASSERT_EQ("SrcColor", cen::to_string(cen::BlendFactor::SrcColor));
-  ASSERT_EQ("OneMinusSrcColor", cen::to_string(cen::BlendFactor::OneMinusSrcColor));
+  ASSERT_EQ("SrcColor", cen::ToString(cen::BlendFactor::SrcColor));
+  ASSERT_EQ("OneMinusSrcColor", cen::ToString(cen::BlendFactor::OneMinusSrcColor));
 
-  ASSERT_EQ("SrcAlpha", cen::to_string(cen::BlendFactor::SrcAlpha));
-  ASSERT_EQ("OneMinusSrcAlpha", cen::to_string(cen::BlendFactor::OneMinusSrcAlpha));
+  ASSERT_EQ("SrcAlpha", cen::ToString(cen::BlendFactor::SrcAlpha));
+  ASSERT_EQ("OneMinusSrcAlpha", cen::ToString(cen::BlendFactor::OneMinusSrcAlpha));
 
-  ASSERT_EQ("DstColor", cen::to_string(cen::BlendFactor::DstColor));
-  ASSERT_EQ("OneMinusDstColor", cen::to_string(cen::BlendFactor::OneMinusDstColor));
+  ASSERT_EQ("DstColor", cen::ToString(cen::BlendFactor::DstColor));
+  ASSERT_EQ("OneMinusDstColor", cen::ToString(cen::BlendFactor::OneMinusDstColor));
 
-  ASSERT_EQ("DstAlpha", cen::to_string(cen::BlendFactor::DstAlpha));
-  ASSERT_EQ("OneMinusDstAlpha", cen::to_string(cen::BlendFactor::OneMinusDstAlpha));
+  ASSERT_EQ("DstAlpha", cen::ToString(cen::BlendFactor::DstAlpha));
+  ASSERT_EQ("OneMinusDstAlpha", cen::ToString(cen::BlendFactor::OneMinusDstAlpha));
 
   std::clog << "Blend factor example: " << cen::BlendFactor::SrcColor << '\n';
 }

@@ -588,7 +588,7 @@ inline auto LoadControllerMappings(const std::string& file) noexcept -> std::opt
   return SDL_GameControllerNumMappings();
 }
 
-[[nodiscard]] constexpr auto to_string(const ControllerButton button) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ControllerButton button) -> std::string_view
 {
   switch (button) {
     case ControllerButton::Invalid:
@@ -671,10 +671,10 @@ inline auto LoadControllerMappings(const std::string& file) noexcept -> std::opt
 
 inline auto operator<<(std::ostream& stream, const ControllerButton button) -> std::ostream&
 {
-  return stream << to_string(button);
+  return stream << ToString(button);
 }
 
-[[nodiscard]] constexpr auto to_string(const ControllerAxis axis) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ControllerAxis axis) -> std::string_view
 {
   switch (axis) {
     case ControllerAxis::Invalid:
@@ -708,10 +708,10 @@ inline auto operator<<(std::ostream& stream, const ControllerButton button) -> s
 
 inline auto operator<<(std::ostream& stream, const ControllerAxis axis) -> std::ostream&
 {
-  return stream << to_string(axis);
+  return stream << ToString(axis);
 }
 
-[[nodiscard]] constexpr auto to_string(const ControllerBindType type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ControllerBindType type) -> std::string_view
 {
   switch (type) {
     case ControllerBindType::None:
@@ -733,12 +733,12 @@ inline auto operator<<(std::ostream& stream, const ControllerAxis axis) -> std::
 
 inline auto operator<<(std::ostream& stream, const ControllerBindType type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-[[nodiscard]] constexpr auto to_string(const ControllerType type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ControllerType type) -> std::string_view
 {
   switch (type) {
     case ControllerType::Unknown:
@@ -786,12 +786,12 @@ inline auto operator<<(std::ostream& stream, const ControllerBindType type) -> s
 
 inline auto operator<<(std::ostream& stream, const ControllerType type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-[[nodiscard]] inline auto to_string(const ControllerMappingResult result) -> std::string_view
+[[nodiscard]] inline auto ToString(const ControllerMappingResult result) -> std::string_view
 {
   switch (result) {
     case ControllerMappingResult::Error:
@@ -811,11 +811,11 @@ inline auto operator<<(std::ostream& stream, const ControllerType type) -> std::
 inline auto operator<<(std::ostream& stream, const ControllerMappingResult result)
     -> std::ostream&
 {
-  return stream << to_string(result);
+  return stream << ToString(result);
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicController<T>& controller) -> std::string
+[[nodiscard]] auto ToString(const BasicController<T>& controller) -> std::string
 {
   const auto* name = controller.GetName();
 
@@ -838,7 +838,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicController<T>& controller) -> std::ostream&
 {
-  return stream << to_string(controller);
+  return stream << ToString(controller);
 }
 
 }  // namespace cen

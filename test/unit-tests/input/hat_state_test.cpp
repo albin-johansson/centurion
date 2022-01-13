@@ -20,17 +20,17 @@ TEST(HatState, Values)
 
 TEST(HatState, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::HatState>(0x10)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::HatState>(0x10)), cen::Error);
 
-  ASSERT_EQ("Centered", cen::to_string(cen::HatState::Centered));
-  ASSERT_EQ("Up", cen::to_string(cen::HatState::Up));
-  ASSERT_EQ("Right", cen::to_string(cen::HatState::Right));
-  ASSERT_EQ("Down", cen::to_string(cen::HatState::Down));
-  ASSERT_EQ("Left", cen::to_string(cen::HatState::Left));
-  ASSERT_EQ("RightUp", cen::to_string(cen::HatState::RightUp));
-  ASSERT_EQ("RightDown", cen::to_string(cen::HatState::RightDown));
-  ASSERT_EQ("LeftUp", cen::to_string(cen::HatState::LeftUp));
-  ASSERT_EQ("LeftDown", cen::to_string(cen::HatState::LeftDown));
+  ASSERT_EQ("Centered", cen::ToString(cen::HatState::Centered));
+  ASSERT_EQ("Up", cen::ToString(cen::HatState::Up));
+  ASSERT_EQ("Right", cen::ToString(cen::HatState::Right));
+  ASSERT_EQ("Down", cen::ToString(cen::HatState::Down));
+  ASSERT_EQ("Left", cen::ToString(cen::HatState::Left));
+  ASSERT_EQ("RightUp", cen::ToString(cen::HatState::RightUp));
+  ASSERT_EQ("RightDown", cen::ToString(cen::HatState::RightDown));
+  ASSERT_EQ("LeftUp", cen::ToString(cen::HatState::LeftUp));
+  ASSERT_EQ("LeftDown", cen::ToString(cen::HatState::LeftDown));
 
   std::clog << "Hat state example: " << cen::HatState::Centered << '\n';
 }

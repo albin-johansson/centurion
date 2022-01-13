@@ -14,10 +14,10 @@ TEST(MouseWheelDirection, Values)
 
 TEST(MouseWheelDirection, ToString)
 {
-  ASSERT_THROW(to_string(static_cast<Direction>(3)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Direction>(3)), cen::Error);
 
-  ASSERT_EQ("Normal", to_string(Direction::Normal));
-  ASSERT_EQ("Flipped", to_string(Direction::Flipped));
+  ASSERT_EQ("Normal", ToString(Direction::Normal));
+  ASSERT_EQ("Flipped", ToString(Direction::Flipped));
 
   std::clog << "Mouse wheel direction example: " << Direction::Normal << '\n';
 }

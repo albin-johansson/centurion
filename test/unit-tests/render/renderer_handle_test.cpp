@@ -54,5 +54,5 @@ TEST_F(RendererHandleTest, ToStringAndStreamOperator)
   const cen::RendererHandle handle{*renderer};
 
   std::clog << handle << '\n';
-  cen::log_info_raw(cen::to_string(handle));
+  cen::log_info_raw(cen::ToString(handle));
 }

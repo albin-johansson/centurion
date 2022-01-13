@@ -21,13 +21,13 @@ TEST(DisplayOrientation, Values)
 
 TEST(DisplayOrientation, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::DisplayOrientation>(6)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::DisplayOrientation>(6)), cen::Error);
 
-  ASSERT_EQ("Unknown", cen::to_string(cen::DisplayOrientation::Unknown));
-  ASSERT_EQ("Landscape", cen::to_string(cen::DisplayOrientation::Landscape));
-  ASSERT_EQ("LandscapeFlipped", cen::to_string(cen::DisplayOrientation::LandscapeFlipped));
-  ASSERT_EQ("Portrait", cen::to_string(cen::DisplayOrientation::Portrait));
-  ASSERT_EQ("PortraitFlipped", cen::to_string(cen::DisplayOrientation::PortraitFlipped));
+  ASSERT_EQ("Unknown", cen::ToString(cen::DisplayOrientation::Unknown));
+  ASSERT_EQ("Landscape", cen::ToString(cen::DisplayOrientation::Landscape));
+  ASSERT_EQ("LandscapeFlipped", cen::ToString(cen::DisplayOrientation::LandscapeFlipped));
+  ASSERT_EQ("Portrait", cen::ToString(cen::DisplayOrientation::Portrait));
+  ASSERT_EQ("PortraitFlipped", cen::ToString(cen::DisplayOrientation::PortraitFlipped));
 
   std::clog << "Display orientation example: " << cen::DisplayOrientation::Portrait << '\n';
 }

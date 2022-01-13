@@ -205,7 +205,7 @@ TEST(KeyCode, InequalityOperator)
 
 TEST(KeyCode, ToString)
 {
-  cen::log_info_raw(cen::to_string(cen::keycodes::a));
+  cen::log_info_raw(cen::ToString(cen::keycodes::a));
 }
 
 TEST(KeyCode, StreamOperator)

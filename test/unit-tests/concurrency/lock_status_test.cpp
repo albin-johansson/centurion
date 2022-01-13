@@ -14,11 +14,11 @@ TEST(LockStatus, Values)
 
 TEST(LockStatus, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::LockStatus>(2)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::LockStatus>(2)), cen::Error);
 
-  ASSERT_EQ("Success", cen::to_string(cen::LockStatus::Success));
-  ASSERT_EQ("TimedOut", cen::to_string(cen::LockStatus::TimedOut));
-  ASSERT_EQ("Error", cen::to_string(cen::LockStatus::Error));
+  ASSERT_EQ("Success", cen::ToString(cen::LockStatus::Success));
+  ASSERT_EQ("TimedOut", cen::ToString(cen::LockStatus::TimedOut));
+  ASSERT_EQ("Error", cen::ToString(cen::LockStatus::Error));
 
   std::clog << "Lock status example: " << cen::LockStatus::TimedOut << '\n';
 }

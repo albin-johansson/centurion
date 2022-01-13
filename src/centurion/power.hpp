@@ -77,7 +77,7 @@ enum class PowerState {
   return QueryBattery() == PowerState::Charged;
 }
 
-[[nodiscard]] constexpr auto to_string(const PowerState state) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const PowerState state) -> std::string_view
 {
   switch (state) {
     case PowerState::Unknown:
@@ -102,7 +102,7 @@ enum class PowerState {
 
 inline auto operator<<(std::ostream& stream, const PowerState state) -> std::ostream&
 {
-  return stream << to_string(state);
+  return stream << ToString(state);
 }
 
 }  // namespace cen

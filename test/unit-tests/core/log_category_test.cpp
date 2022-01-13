@@ -22,19 +22,19 @@ TEST(LogCategory, Values)
 
 TEST(LogCategory, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::log_category>(SDL_LOG_CATEGORY_CUSTOM + 1)),
+  ASSERT_THROW(cen::ToString(static_cast<cen::log_category>(SDL_LOG_CATEGORY_CUSTOM + 1)),
                cen::Error);
 
-  ASSERT_EQ("app", cen::to_string(cen::log_category::app));
-  ASSERT_EQ("error", cen::to_string(cen::log_category::error));
-  ASSERT_EQ("assert", cen::to_string(cen::log_category::assert));
-  ASSERT_EQ("system", cen::to_string(cen::log_category::system));
-  ASSERT_EQ("audio", cen::to_string(cen::log_category::audio));
-  ASSERT_EQ("video", cen::to_string(cen::log_category::video));
-  ASSERT_EQ("render", cen::to_string(cen::log_category::render));
-  ASSERT_EQ("input", cen::to_string(cen::log_category::input));
-  ASSERT_EQ("test", cen::to_string(cen::log_category::test));
-  ASSERT_EQ("custom", cen::to_string(cen::log_category::custom));
+  ASSERT_EQ("app", cen::ToString(cen::log_category::app));
+  ASSERT_EQ("error", cen::ToString(cen::log_category::error));
+  ASSERT_EQ("assert", cen::ToString(cen::log_category::assert));
+  ASSERT_EQ("system", cen::ToString(cen::log_category::system));
+  ASSERT_EQ("audio", cen::ToString(cen::log_category::audio));
+  ASSERT_EQ("video", cen::ToString(cen::log_category::video));
+  ASSERT_EQ("render", cen::ToString(cen::log_category::render));
+  ASSERT_EQ("input", cen::ToString(cen::log_category::input));
+  ASSERT_EQ("test", cen::ToString(cen::log_category::test));
+  ASSERT_EQ("custom", cen::ToString(cen::log_category::custom));
 
   std::clog << "Log category example: " << cen::log_category::video << '\n';
 }

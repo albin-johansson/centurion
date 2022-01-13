@@ -18,10 +18,10 @@ TEST(MessageBoxButtonOrder, Values)
 
 TEST(MessageBoxButtonOrder, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::MessageBoxButtonOrder>(0x101)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxButtonOrder>(0x101)), cen::Error);
 
-  ASSERT_EQ("LeftToRight", cen::to_string(cen::MessageBoxButtonOrder::LeftToRight));
-  ASSERT_EQ("RightToLeft", cen::to_string(cen::MessageBoxButtonOrder::RightToLeft));
+  ASSERT_EQ("LeftToRight", cen::ToString(cen::MessageBoxButtonOrder::LeftToRight));
+  ASSERT_EQ("RightToLeft", cen::ToString(cen::MessageBoxButtonOrder::RightToLeft));
 
   std::clog << "Button order example: " << cen::MessageBoxButtonOrder::LeftToRight << '\n';
 }

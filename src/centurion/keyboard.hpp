@@ -375,7 +375,7 @@ class Keyboard final {
   return SDL_HasScreenKeyboardSupport() == SDL_TRUE;
 }
 
-[[nodiscard]] inline auto to_string(const KeyMod mods) -> std::string
+[[nodiscard]] inline auto ToString(const KeyMod mods) -> std::string
 {
   if (mods == KeyMod::None) {
     return "None";
@@ -414,7 +414,7 @@ class Keyboard final {
   return stream.str();
 }
 
-[[nodiscard]] inline auto to_string(const KeyCode& code) -> std::string
+[[nodiscard]] inline auto ToString(const KeyCode& code) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("KeyCode(key: {})", code.GetName());
@@ -423,7 +423,7 @@ class Keyboard final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-[[nodiscard]] inline auto to_string(const ScanCode& code) -> std::string
+[[nodiscard]] inline auto ToString(const ScanCode& code) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ScanCode(key: {})", code.GetName());
@@ -432,7 +432,7 @@ class Keyboard final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-[[nodiscard]] inline auto to_string(const Keyboard& keyboard) -> std::string
+[[nodiscard]] inline auto ToString(const Keyboard& keyboard) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Keyboard(#keys: {})", keyboard.GetNumKeys());
@@ -443,22 +443,22 @@ class Keyboard final {
 
 inline auto operator<<(std::ostream& stream, const KeyMod& mods) -> std::ostream&
 {
-  return stream << to_string(mods);
+  return stream << ToString(mods);
 }
 
 inline auto operator<<(std::ostream& stream, const KeyCode& code) -> std::ostream&
 {
-  return stream << to_string(code);
+  return stream << ToString(code);
 }
 
 inline auto operator<<(std::ostream& stream, const ScanCode& code) -> std::ostream&
 {
-  return stream << to_string(code);
+  return stream << ToString(code);
 }
 
 inline auto operator<<(std::ostream& stream, const Keyboard& keyboard) -> std::ostream&
 {
-  return stream << to_string(keyboard);
+  return stream << ToString(keyboard);
 }
 
 [[nodiscard]] constexpr auto operator&(const KeyMod a, const KeyMod b) noexcept -> KeyMod

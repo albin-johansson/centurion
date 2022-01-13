@@ -64,39 +64,39 @@ TEST(KeyModifier, BitwiseAND)
 TEST(KeyModifier, ToString)
 {
   {  // Singles
-    ASSERT_EQ("None", cen::to_string(cen::KeyMod::None));
-    ASSERT_EQ("LShift", cen::to_string(cen::KeyMod::LShift));
-    ASSERT_EQ("RShift", cen::to_string(cen::KeyMod::RShift));
-    ASSERT_EQ("LCtrl", cen::to_string(cen::KeyMod::LCtrl));
-    ASSERT_EQ("RCtrl", cen::to_string(cen::KeyMod::RCtrl));
-    ASSERT_EQ("LAlt", cen::to_string(cen::KeyMod::LAlt));
-    ASSERT_EQ("RAlt", cen::to_string(cen::KeyMod::RAlt));
-    ASSERT_EQ("LGui", cen::to_string(cen::KeyMod::LGui));
-    ASSERT_EQ("RGui", cen::to_string(cen::KeyMod::RGui));
-    ASSERT_EQ("Num", cen::to_string(cen::KeyMod::Num));
-    ASSERT_EQ("Caps", cen::to_string(cen::KeyMod::Caps));
-    ASSERT_EQ("Mode", cen::to_string(cen::KeyMod::Mode));
+    ASSERT_EQ("None", cen::ToString(cen::KeyMod::None));
+    ASSERT_EQ("LShift", cen::ToString(cen::KeyMod::LShift));
+    ASSERT_EQ("RShift", cen::ToString(cen::KeyMod::RShift));
+    ASSERT_EQ("LCtrl", cen::ToString(cen::KeyMod::LCtrl));
+    ASSERT_EQ("RCtrl", cen::ToString(cen::KeyMod::RCtrl));
+    ASSERT_EQ("LAlt", cen::ToString(cen::KeyMod::LAlt));
+    ASSERT_EQ("RAlt", cen::ToString(cen::KeyMod::RAlt));
+    ASSERT_EQ("LGui", cen::ToString(cen::KeyMod::LGui));
+    ASSERT_EQ("RGui", cen::ToString(cen::KeyMod::RGui));
+    ASSERT_EQ("Num", cen::ToString(cen::KeyMod::Num));
+    ASSERT_EQ("Caps", cen::ToString(cen::KeyMod::Caps));
+    ASSERT_EQ("Mode", cen::ToString(cen::KeyMod::Mode));
   }
 
   {  // Two modifiers
     const auto mods = cen::KeyMod::LShift | cen::KeyMod::Caps;
-    ASSERT_EQ("LShift,Caps", cen::to_string(mods));
+    ASSERT_EQ("LShift,Caps", cen::ToString(mods));
   }
 
   {  // Three modifiers
     const auto mods = cen::KeyMod::LCtrl | cen::KeyMod::RAlt | cen::KeyMod::Num;
-    ASSERT_EQ("LCtrl,RAlt,Num", cen::to_string(mods));
+    ASSERT_EQ("LCtrl,RAlt,Num", cen::ToString(mods));
   }
 
   {  // Composite enumerator
     const auto mods = cen::KeyMod::Alt;
-    ASSERT_EQ("LAlt,RAlt", cen::to_string(mods));
+    ASSERT_EQ("LAlt,RAlt", cen::ToString(mods));
   }
 
   {  // Everything
     const auto mods = static_cast<cen::KeyMod>(0xFFFF);
     ASSERT_EQ("LShift,RShift,LCtrl,RCtrl,LAlt,RAlt,LGui,RGui,Num,Caps,Mode",
-              cen::to_string(mods));
+              cen::ToString(mods));
   }
 
   std::clog << "Key modifier example: " << cen::KeyMod::LShift << '\n';

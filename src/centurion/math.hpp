@@ -407,7 +407,7 @@ template <>
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicVector3<T>& vector) -> std::string
+[[nodiscard]] auto ToString(const BasicVector3<T>& vector) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Vector3(x: {}, y: {}, z: {})", vector.x, vector.y, vector.z);
@@ -418,7 +418,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicArea<T>& area) -> std::string
+[[nodiscard]] auto ToString(const BasicArea<T>& area) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Area(width: {}, height: {})", area.width, area.height);
@@ -428,7 +428,7 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-[[nodiscard]] inline auto to_string(const Point point) -> std::string
+[[nodiscard]] inline auto ToString(const Point point) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Point(x: {}, y: {})", point.GetX(), point.GetY());
@@ -438,7 +438,7 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-[[nodiscard]] inline auto to_string(const FPoint point) -> std::string
+[[nodiscard]] inline auto ToString(const FPoint point) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("FPoint(x: {}, y: {})", point.GetX(), point.GetY());
@@ -449,7 +449,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicRect<T>& rect) -> std::string
+[[nodiscard]] auto ToString(const BasicRect<T>& rect) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Rect(x: {}, y: {}, width: {}, height: {})",
@@ -538,25 +538,25 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicVector3<T>& vector) -> std::ostream&
 {
-  return stream << to_string(vector);
+  return stream << ToString(vector);
 }
 
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicArea<T>& area) -> std::ostream&
 {
-  return stream << to_string(area);
+  return stream << ToString(area);
 }
 
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicPoint<T>& point) -> std::ostream&
 {
-  return stream << to_string(point);
+  return stream << ToString(point);
 }
 
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicRect<T>& rect) -> std::ostream&
 {
-  return stream << to_string(rect);
+  return stream << ToString(rect);
 }
 
 }  // namespace cen

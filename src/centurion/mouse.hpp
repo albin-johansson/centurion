@@ -230,7 +230,7 @@ class BasicCursor final {
   detail::Pointer<T, SDL_Cursor> mCursor;
 };
 
-[[nodiscard]] inline auto to_string(const Mouse& mouse) -> std::string
+[[nodiscard]] inline auto ToString(const Mouse& mouse) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Mouse(x: {}, y: {})", mouse.GetX(), mouse.GetY());
@@ -242,10 +242,10 @@ class BasicCursor final {
 
 inline auto operator<<(std::ostream& stream, const Mouse& mouse) -> std::ostream&
 {
-  return stream << to_string(mouse);
+  return stream << ToString(mouse);
 }
 
-[[nodiscard]] constexpr auto to_string(const MouseButton button) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const MouseButton button) -> std::string_view
 {
   switch (button) {
     case MouseButton::Left:
@@ -270,10 +270,10 @@ inline auto operator<<(std::ostream& stream, const Mouse& mouse) -> std::ostream
 
 inline auto operator<<(std::ostream& stream, const MouseButton button) -> std::ostream&
 {
-  return stream << to_string(button);
+  return stream << ToString(button);
 }
 
-[[nodiscard]] constexpr auto to_string(const SystemCursor cursor) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const SystemCursor cursor) -> std::string_view
 {
   switch (cursor) {
     case SystemCursor::Arrow:
@@ -319,7 +319,7 @@ inline auto operator<<(std::ostream& stream, const MouseButton button) -> std::o
 
 inline auto operator<<(std::ostream& stream, const SystemCursor cursor) -> std::ostream&
 {
-  return stream << to_string(cursor);
+  return stream << ToString(cursor);
 }
 
 }  // namespace cen

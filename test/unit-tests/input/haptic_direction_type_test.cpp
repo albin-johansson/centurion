@@ -15,11 +15,11 @@ TEST(HapticDirectionType, Values)
 
 TEST(HapticDirectionType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::haptic_direction_type>(3)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::haptic_direction_type>(3)), cen::Error);
 
-  ASSERT_EQ("polar", cen::to_string(cen::haptic_direction_type::polar));
-  ASSERT_EQ("cartesian", cen::to_string(cen::haptic_direction_type::cartesian));
-  ASSERT_EQ("spherical", cen::to_string(cen::haptic_direction_type::spherical));
+  ASSERT_EQ("polar", cen::ToString(cen::haptic_direction_type::polar));
+  ASSERT_EQ("cartesian", cen::ToString(cen::haptic_direction_type::cartesian));
+  ASSERT_EQ("spherical", cen::ToString(cen::haptic_direction_type::spherical));
 
   std::clog << "Haptic direction type example: " << cen::haptic_direction_type::cartesian
             << '\n';

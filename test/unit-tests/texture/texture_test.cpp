@@ -186,7 +186,7 @@ TEST_F(TextureTest, Get)
 
 TEST_F(TextureTest, ToString)
 {
-  cen::log_info_raw(cen::to_string(*texture));
+  cen::log_info_raw(cen::ToString(*texture));
 }
 
 TEST_F(TextureTest, StreamOperator)

@@ -23,21 +23,21 @@ TEST(SystemCursor, Values)
 
 TEST(SystemCursor, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::SystemCursor>(SDL_NUM_SYSTEM_CURSORS)),
+  ASSERT_THROW(cen::ToString(static_cast<cen::SystemCursor>(SDL_NUM_SYSTEM_CURSORS)),
                cen::Error);
 
-  ASSERT_EQ("Arrow", cen::to_string(cen::SystemCursor::Arrow));
-  ASSERT_EQ("IBeam", cen::to_string(cen::SystemCursor::IBeam));
-  ASSERT_EQ("Wait", cen::to_string(cen::SystemCursor::Wait));
-  ASSERT_EQ("Crosshair", cen::to_string(cen::SystemCursor::Crosshair));
-  ASSERT_EQ("WaitArrow", cen::to_string(cen::SystemCursor::WaitArrow));
-  ASSERT_EQ("Size_NW_SE", cen::to_string(cen::SystemCursor::Size_NW_SE));
-  ASSERT_EQ("Size_NE_SW", cen::to_string(cen::SystemCursor::Size_NE_SW));
-  ASSERT_EQ("Size_W_E", cen::to_string(cen::SystemCursor::Size_W_E));
-  ASSERT_EQ("Size_N_S", cen::to_string(cen::SystemCursor::Size_N_S));
-  ASSERT_EQ("SizeAll", cen::to_string(cen::SystemCursor::SizeAll));
-  ASSERT_EQ("No", cen::to_string(cen::SystemCursor::No));
-  ASSERT_EQ("Hand", cen::to_string(cen::SystemCursor::Hand));
+  ASSERT_EQ("Arrow", cen::ToString(cen::SystemCursor::Arrow));
+  ASSERT_EQ("IBeam", cen::ToString(cen::SystemCursor::IBeam));
+  ASSERT_EQ("Wait", cen::ToString(cen::SystemCursor::Wait));
+  ASSERT_EQ("Crosshair", cen::ToString(cen::SystemCursor::Crosshair));
+  ASSERT_EQ("WaitArrow", cen::ToString(cen::SystemCursor::WaitArrow));
+  ASSERT_EQ("Size_NW_SE", cen::ToString(cen::SystemCursor::Size_NW_SE));
+  ASSERT_EQ("Size_NE_SW", cen::ToString(cen::SystemCursor::Size_NE_SW));
+  ASSERT_EQ("Size_W_E", cen::ToString(cen::SystemCursor::Size_W_E));
+  ASSERT_EQ("Size_N_S", cen::ToString(cen::SystemCursor::Size_N_S));
+  ASSERT_EQ("SizeAll", cen::ToString(cen::SystemCursor::SizeAll));
+  ASSERT_EQ("No", cen::ToString(cen::SystemCursor::No));
+  ASSERT_EQ("Hand", cen::ToString(cen::SystemCursor::Hand));
 
   std::clog << "System cursor example: " << cen::SystemCursor::Hand << '\n';
 }

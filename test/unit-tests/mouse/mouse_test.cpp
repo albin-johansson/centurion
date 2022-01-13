@@ -66,7 +66,7 @@ TEST(Mouse, SetLogicalSize)
 TEST(Mouse, ToString)
 {
   const cen::Mouse mouse;
-  ASSERT_EQ("Mouse(x: 0, y: 0)", cen::to_string(mouse));
+  ASSERT_EQ("Mouse(x: 0, y: 0)", cen::ToString(mouse));
 
   std::clog << mouse << '\n';
 }

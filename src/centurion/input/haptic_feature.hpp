@@ -46,7 +46,7 @@ enum class haptic_feature : uint {
  * \brief Returns a textual version of the supplied haptic feature.
  *
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(haptic_feature::spring) == "spring"`.
+ * `ToString(haptic_feature::spring) == "spring"`.
  *
  * \param feature the enumerator that will be converted.
  *
@@ -56,7 +56,7 @@ enum class haptic_feature : uint {
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const haptic_feature feature) -> std::string_view
 {
   switch (feature) {
     case haptic_feature::constant:
@@ -123,7 +123,7 @@ enum class haptic_feature : uint {
  * \param stream the output stream that will be used.
  * \param feature the enumerator that will be printed.
  *
- * \see `to_string(haptic_feature)`
+ * \see `ToString(haptic_feature)`
  *
  * \return the used stream.
  *
@@ -131,7 +131,7 @@ enum class haptic_feature : uint {
  */
 inline auto operator<<(std::ostream& stream, const haptic_feature feature) -> std::ostream&
 {
-  return stream << to_string(feature);
+  return stream << ToString(feature);
 }
 
 /// \} End of streaming

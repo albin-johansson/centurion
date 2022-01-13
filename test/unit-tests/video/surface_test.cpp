@@ -216,7 +216,7 @@ TEST_F(SurfaceTest, Get)
 
 TEST_F(SurfaceTest, ToString)
 {
-  cen::log_info_raw(cen::to_string(*surface));
+  cen::log_info_raw(cen::ToString(*surface));
 }
 
 TEST_F(SurfaceTest, StreamOperator)

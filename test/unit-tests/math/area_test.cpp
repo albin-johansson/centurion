@@ -84,8 +84,8 @@ TEST(Area, ToString)
   constexpr cen::Area ia{123, 456};
   constexpr cen::FArea fa{78.9f, 23.4f};
 
-  cen::log_info_raw(cen::to_string(ia));
-  cen::log_info_raw(cen::to_string(fa));
+  cen::log_info_raw(cen::ToString(ia));
+  cen::log_info_raw(cen::ToString(fa));
 }
 
 TEST(Area, StreamOperator)

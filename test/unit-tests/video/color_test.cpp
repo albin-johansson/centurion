@@ -359,7 +359,7 @@ TEST(Color, AsARGB)
 TEST(Color, ToString)
 {
   constexpr cen::Color color{0x12, 0xFA, 0xCC, 0xAD};
-  cen::log_info_raw(cen::to_string(color));
+  cen::log_info_raw(cen::ToString(color));
 }
 
 TEST(Color, StreamOperator)

@@ -46,40 +46,40 @@ TEST(GLAttribute, Values)
 
 TEST(GLAttribute, ToString)
 {
-  ASSERT_EQ("RedSize", to_string(Attr::RedSize));
-  ASSERT_EQ("GreenSize", to_string(Attr::GreenSize));
-  ASSERT_EQ("BlueSize", to_string(Attr::BlueSize));
-  ASSERT_EQ("AlphaSize", to_string(Attr::AlphaSize));
-  ASSERT_EQ("BufferSize", to_string(Attr::BufferSize));
+  ASSERT_EQ("RedSize", ToString(Attr::RedSize));
+  ASSERT_EQ("GreenSize", ToString(Attr::GreenSize));
+  ASSERT_EQ("BlueSize", ToString(Attr::BlueSize));
+  ASSERT_EQ("AlphaSize", ToString(Attr::AlphaSize));
+  ASSERT_EQ("BufferSize", ToString(Attr::BufferSize));
 
-  ASSERT_EQ("DoubleBuffer", to_string(Attr::DoubleBuffer));
+  ASSERT_EQ("DoubleBuffer", ToString(Attr::DoubleBuffer));
 
-  ASSERT_EQ("DepthSize", to_string(Attr::DepthSize));
-  ASSERT_EQ("StencilSize", to_string(Attr::StencilSize));
+  ASSERT_EQ("DepthSize", ToString(Attr::DepthSize));
+  ASSERT_EQ("StencilSize", ToString(Attr::StencilSize));
 
-  ASSERT_EQ("AccumRedSize", to_string(Attr::AccumRedSize));
-  ASSERT_EQ("AccumGreenSize", to_string(Attr::AccumGreenSize));
-  ASSERT_EQ("AccumBlueSize", to_string(Attr::AccumBlueSize));
-  ASSERT_EQ("AccumAlphaSize", to_string(Attr::AccumAlphaSize));
+  ASSERT_EQ("AccumRedSize", ToString(Attr::AccumRedSize));
+  ASSERT_EQ("AccumGreenSize", ToString(Attr::AccumGreenSize));
+  ASSERT_EQ("AccumBlueSize", ToString(Attr::AccumBlueSize));
+  ASSERT_EQ("AccumAlphaSize", ToString(Attr::AccumAlphaSize));
 
-  ASSERT_EQ("Stereo", to_string(Attr::Stereo));
-  ASSERT_EQ("MultisampleBuffers", to_string(Attr::MultisampleBuffers));
-  ASSERT_EQ("MultisampleSamples", to_string(Attr::MultisampleSamples));
-  ASSERT_EQ("AcceleratedVisual", to_string(Attr::AcceleratedVisual));
-  ASSERT_EQ("RetainedBacking", to_string(Attr::RetainedBacking));
+  ASSERT_EQ("Stereo", ToString(Attr::Stereo));
+  ASSERT_EQ("MultisampleBuffers", ToString(Attr::MultisampleBuffers));
+  ASSERT_EQ("MultisampleSamples", ToString(Attr::MultisampleSamples));
+  ASSERT_EQ("AcceleratedVisual", ToString(Attr::AcceleratedVisual));
+  ASSERT_EQ("RetainedBacking", ToString(Attr::RetainedBacking));
 
-  ASSERT_EQ("ContextMajorVersion", to_string(Attr::ContextMajorVersion));
-  ASSERT_EQ("ContextMinorVersion", to_string(Attr::ContextMinorVersion));
-  ASSERT_EQ("ContextProfileMask", to_string(Attr::ContextProfileMask));
-  ASSERT_EQ("ContextReleaseBehavior", to_string(Attr::ContextReleaseBehavior));
-  ASSERT_EQ("ContextResetNotification", to_string(Attr::ContextResetNotification));
-  ASSERT_EQ("ContextNoError", to_string(Attr::ContextNoError));
+  ASSERT_EQ("ContextMajorVersion", ToString(Attr::ContextMajorVersion));
+  ASSERT_EQ("ContextMinorVersion", ToString(Attr::ContextMinorVersion));
+  ASSERT_EQ("ContextProfileMask", ToString(Attr::ContextProfileMask));
+  ASSERT_EQ("ContextReleaseBehavior", ToString(Attr::ContextReleaseBehavior));
+  ASSERT_EQ("ContextResetNotification", ToString(Attr::ContextResetNotification));
+  ASSERT_EQ("ContextNoError", ToString(Attr::ContextNoError));
 
-  ASSERT_EQ("EGL", to_string(Attr::EGL));
-  ASSERT_EQ("ContextFlags", to_string(Attr::ContextFlags));
+  ASSERT_EQ("EGL", ToString(Attr::EGL));
+  ASSERT_EQ("ContextFlags", ToString(Attr::ContextFlags));
 
-  ASSERT_EQ("ShareWithCurrentContext", to_string(Attr::ShareWithCurrentContext));
-  ASSERT_EQ("FramebufferSRGBCapable", to_string(Attr::FramebufferSRGBCapable));
+  ASSERT_EQ("ShareWithCurrentContext", ToString(Attr::ShareWithCurrentContext));
+  ASSERT_EQ("FramebufferSRGBCapable", ToString(Attr::FramebufferSRGBCapable));
 
   std::clog << "OpenGL attribute example: " << Attr::DoubleBuffer << '\n';
 }

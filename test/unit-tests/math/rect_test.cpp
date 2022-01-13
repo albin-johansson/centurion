@@ -529,7 +529,7 @@ TEST(Rect, Collides)
 TEST(Rect, ToString)
 {
   const cen::FRect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
-  cen::log_info_raw(cen::to_string(rect));
+  cen::log_info_raw(cen::ToString(rect));
 }
 
 TEST(Rect, StreamOperator)

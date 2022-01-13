@@ -14,11 +14,11 @@ TEST(TextureAccess, Values)
 
 TEST(TextureAccess, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::TextureAccess>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::TextureAccess>(4)), cen::Error);
 
-  ASSERT_EQ("Static", cen::to_string(cen::TextureAccess::Static));
-  ASSERT_EQ("Streaming", cen::to_string(cen::TextureAccess::Streaming));
-  ASSERT_EQ("Target", cen::to_string(cen::TextureAccess::Target));
+  ASSERT_EQ("Static", cen::ToString(cen::TextureAccess::Static));
+  ASSERT_EQ("Streaming", cen::ToString(cen::TextureAccess::Streaming));
+  ASSERT_EQ("Target", cen::ToString(cen::TextureAccess::Target));
 
   std::clog << "Texture GetAccess example: " << cen::TextureAccess::Streaming << '\n';
 }

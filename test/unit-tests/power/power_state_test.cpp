@@ -16,13 +16,13 @@ TEST(PowerState, Values)
 
 TEST(PowerState, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::PowerState>(6)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::PowerState>(6)), cen::Error);
 
-  ASSERT_EQ("Unknown", cen::to_string(cen::PowerState::Unknown));
-  ASSERT_EQ("OnBattery", cen::to_string(cen::PowerState::OnBattery));
-  ASSERT_EQ("NoBattery", cen::to_string(cen::PowerState::NoBattery));
-  ASSERT_EQ("Charging", cen::to_string(cen::PowerState::Charging));
-  ASSERT_EQ("Charged", cen::to_string(cen::PowerState::Charged));
+  ASSERT_EQ("Unknown", cen::ToString(cen::PowerState::Unknown));
+  ASSERT_EQ("OnBattery", cen::ToString(cen::PowerState::OnBattery));
+  ASSERT_EQ("NoBattery", cen::ToString(cen::PowerState::NoBattery));
+  ASSERT_EQ("Charging", cen::ToString(cen::PowerState::Charging));
+  ASSERT_EQ("Charged", cen::ToString(cen::PowerState::Charged));
 
   std::clog << "Power state example: " << cen::PowerState::OnBattery << '\n';
 }

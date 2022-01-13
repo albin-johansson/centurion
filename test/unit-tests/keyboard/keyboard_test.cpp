@@ -91,7 +91,7 @@ TEST(Keyboard, ToString)
   cen::Keyboard keyboard;
 
   ASSERT_EQ("Keyboard(#keys: " + std::to_string(keyboard.GetNumKeys()) + ")",
-            cen::to_string(keyboard));
+            cen::ToString(keyboard));
 
   std::clog << keyboard << '\n';
 }

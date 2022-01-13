@@ -22,18 +22,18 @@ TEST(JoystickType, Values)
 
 TEST(JoystickType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::JoystickType>(11)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::JoystickType>(11)), cen::Error);
 
-  ASSERT_EQ("Unknown", cen::to_string(cen::JoystickType::Unknown));
-  ASSERT_EQ("GameController", cen::to_string(cen::JoystickType::GameController));
-  ASSERT_EQ("Wheel", cen::to_string(cen::JoystickType::Wheel));
-  ASSERT_EQ("ArcadeStick", cen::to_string(cen::JoystickType::ArcadeStick));
-  ASSERT_EQ("FlightStick", cen::to_string(cen::JoystickType::FlightStick));
-  ASSERT_EQ("DancePad", cen::to_string(cen::JoystickType::DancePad));
-  ASSERT_EQ("Guitar", cen::to_string(cen::JoystickType::Guitar));
-  ASSERT_EQ("DrumKit", cen::to_string(cen::JoystickType::DrumKit));
-  ASSERT_EQ("ArcadePad", cen::to_string(cen::JoystickType::ArcadePad));
-  ASSERT_EQ("Throttle", cen::to_string(cen::JoystickType::Throttle));
+  ASSERT_EQ("Unknown", cen::ToString(cen::JoystickType::Unknown));
+  ASSERT_EQ("GameController", cen::ToString(cen::JoystickType::GameController));
+  ASSERT_EQ("Wheel", cen::ToString(cen::JoystickType::Wheel));
+  ASSERT_EQ("ArcadeStick", cen::ToString(cen::JoystickType::ArcadeStick));
+  ASSERT_EQ("FlightStick", cen::ToString(cen::JoystickType::FlightStick));
+  ASSERT_EQ("DancePad", cen::ToString(cen::JoystickType::DancePad));
+  ASSERT_EQ("Guitar", cen::ToString(cen::JoystickType::Guitar));
+  ASSERT_EQ("DrumKit", cen::ToString(cen::JoystickType::DrumKit));
+  ASSERT_EQ("ArcadePad", cen::ToString(cen::JoystickType::ArcadePad));
+  ASSERT_EQ("Throttle", cen::ToString(cen::JoystickType::Throttle));
 
   std::clog << "Joystick type example: " << cen::JoystickType::Guitar << '\n';
 }

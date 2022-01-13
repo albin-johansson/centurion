@@ -172,7 +172,7 @@ TEST(ScanCode, InequalityOperator)
 
 TEST(ScanCode, ToString)
 {
-  cen::log_info_raw(cen::to_string(cen::scancodes::x));
+  cen::log_info_raw(cen::ToString(cen::scancodes::x));
 }
 
 TEST(ScanCode, StreamOperator)

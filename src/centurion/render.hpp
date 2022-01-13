@@ -629,7 +629,7 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicRenderer<T>& renderer) -> std::string
+[[nodiscard]] auto ToString(const BasicRenderer<T>& renderer) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Renderer(data: {})", detail::address_of(renderer.get()));
@@ -641,10 +641,10 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicRenderer<T>& renderer) -> std::ostream&
 {
-  return stream << to_string(renderer);
+  return stream << ToString(renderer);
 }
 
-[[nodiscard]] inline auto to_string(const RendererInfo& info) -> std::string
+[[nodiscard]] inline auto ToString(const RendererInfo& info) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("RendererInfo(name: {})", str_or_na(info.GetName()));
@@ -656,7 +656,7 @@ auto operator<<(std::ostream& stream, const BasicRenderer<T>& renderer) -> std::
 
 inline auto operator<<(std::ostream& stream, const RendererInfo& info) -> std::ostream&
 {
-  return stream << to_string(info);
+  return stream << ToString(info);
 }
 
 }  // namespace cen

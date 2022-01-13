@@ -22,17 +22,17 @@ TEST(JoyHatPosition, Values)
 
 TEST(JoyHatPosition, ToString)
 {
-  ASSERT_THROW(to_string(static_cast<Position>(SDL_HAT_RIGHTDOWN + 1)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Position>(SDL_HAT_RIGHTDOWN + 1)), cen::Error);
 
-  ASSERT_EQ("LeftUp", to_string(Position::LeftUp));
-  ASSERT_EQ("Left", to_string(Position::Left));
-  ASSERT_EQ("LeftDown", to_string(Position::LeftDown));
-  ASSERT_EQ("Up", to_string(Position::Up));
-  ASSERT_EQ("Centered", to_string(Position::Centered));
-  ASSERT_EQ("Down", to_string(Position::Down));
-  ASSERT_EQ("RightUp", to_string(Position::RightUp));
-  ASSERT_EQ("Right", to_string(Position::Right));
-  ASSERT_EQ("RightDown", to_string(Position::RightDown));
+  ASSERT_EQ("LeftUp", ToString(Position::LeftUp));
+  ASSERT_EQ("Left", ToString(Position::Left));
+  ASSERT_EQ("LeftDown", ToString(Position::LeftDown));
+  ASSERT_EQ("Up", ToString(Position::Up));
+  ASSERT_EQ("Centered", ToString(Position::Centered));
+  ASSERT_EQ("Down", ToString(Position::Down));
+  ASSERT_EQ("RightUp", ToString(Position::RightUp));
+  ASSERT_EQ("Right", ToString(Position::Right));
+  ASSERT_EQ("RightDown", ToString(Position::RightDown));
 
   std::clog << "Joystick hat position example: " << Position::Left << '\n';
 }

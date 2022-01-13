@@ -29,25 +29,25 @@ TEST(WindowEventID, Values)
 
 TEST(WindowEventID, ToString)
 {
-  ASSERT_THROW(to_string(static_cast<ID>(18)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<ID>(18)), cen::Error);
 
-  ASSERT_EQ("None", to_string(ID::None));
-  ASSERT_EQ("Shown", to_string(ID::Shown));
-  ASSERT_EQ("Hidden", to_string(ID::Hidden));
-  ASSERT_EQ("Exposed", to_string(ID::Exposed));
-  ASSERT_EQ("Moved", to_string(ID::Moved));
-  ASSERT_EQ("Resized", to_string(ID::Resized));
-  ASSERT_EQ("SizeChanged", to_string(ID::SizeChanged));
-  ASSERT_EQ("Minimized", to_string(ID::Minimized));
-  ASSERT_EQ("Maximized", to_string(ID::Maximized));
-  ASSERT_EQ("Restored", to_string(ID::Restored));
-  ASSERT_EQ("Enter", to_string(ID::Enter));
-  ASSERT_EQ("Leave", to_string(ID::Leave));
-  ASSERT_EQ("FocusGained", to_string(ID::FocusGained));
-  ASSERT_EQ("FocusLost", to_string(ID::FocusLost));
-  ASSERT_EQ("Close", to_string(ID::Close));
-  ASSERT_EQ("TakeFocus", to_string(ID::TakeFocus));
-  ASSERT_EQ("HitTest", to_string(ID::HitTest));
+  ASSERT_EQ("None", ToString(ID::None));
+  ASSERT_EQ("Shown", ToString(ID::Shown));
+  ASSERT_EQ("Hidden", ToString(ID::Hidden));
+  ASSERT_EQ("Exposed", ToString(ID::Exposed));
+  ASSERT_EQ("Moved", ToString(ID::Moved));
+  ASSERT_EQ("Resized", ToString(ID::Resized));
+  ASSERT_EQ("SizeChanged", ToString(ID::SizeChanged));
+  ASSERT_EQ("Minimized", ToString(ID::Minimized));
+  ASSERT_EQ("Maximized", ToString(ID::Maximized));
+  ASSERT_EQ("Restored", ToString(ID::Restored));
+  ASSERT_EQ("Enter", ToString(ID::Enter));
+  ASSERT_EQ("Leave", ToString(ID::Leave));
+  ASSERT_EQ("FocusGained", ToString(ID::FocusGained));
+  ASSERT_EQ("FocusLost", ToString(ID::FocusLost));
+  ASSERT_EQ("Close", ToString(ID::Close));
+  ASSERT_EQ("TakeFocus", ToString(ID::TakeFocus));
+  ASSERT_EQ("HitTest", ToString(ID::HitTest));
 
   std::clog << "Window event ID example: " << ID::Resized << '\n';
 }

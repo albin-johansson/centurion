@@ -16,11 +16,11 @@ TEST(ScaleMode, EnumValues)
 
 TEST(ScaleMode, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::ScaleMode>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::ScaleMode>(4)), cen::Error);
 
-  ASSERT_EQ("Nearest", cen::to_string(cen::ScaleMode::Nearest));
-  ASSERT_EQ("Linear", cen::to_string(cen::ScaleMode::Linear));
-  ASSERT_EQ("Best", cen::to_string(cen::ScaleMode::Best));
+  ASSERT_EQ("Nearest", cen::ToString(cen::ScaleMode::Nearest));
+  ASSERT_EQ("Linear", cen::ToString(cen::ScaleMode::Linear));
+  ASSERT_EQ("Best", cen::ToString(cen::ScaleMode::Best));
 
   std::clog << "Scale mode example: " << cen::ScaleMode::Linear << '\n';
 }

@@ -13,11 +13,11 @@ TEST(MessageBoxType, Values)
 
 TEST(MessageBoxType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::MessageBoxType>(0x41)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxType>(0x41)), cen::Error);
 
-  ASSERT_EQ("Information", cen::to_string(cen::MessageBoxType::Information));
-  ASSERT_EQ("Error", cen::to_string(cen::MessageBoxType::Error));
-  ASSERT_EQ("Warning", cen::to_string(cen::MessageBoxType::Warning));
+  ASSERT_EQ("Information", cen::ToString(cen::MessageBoxType::Information));
+  ASSERT_EQ("Error", cen::ToString(cen::MessageBoxType::Error));
+  ASSERT_EQ("Warning", cen::ToString(cen::MessageBoxType::Warning));
 
   std::clog << "Message box type example: " << cen::MessageBoxType::Information << '\n';
 }

@@ -10,9 +10,9 @@
 #include <type_traits>  // invoke_result_t, declval
 
 #include "common.hpp"
+#include "detail/stdlib.hpp"
 #include "features.hpp"
 #include "memory.hpp"
-#include "detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -388,7 +388,7 @@ class Thread final {
   bool mDetached{false};
 };
 
-[[nodiscard]] constexpr auto to_string(const ThreadPriority priority) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ThreadPriority priority) -> std::string_view
 {
   switch (priority) {
     case ThreadPriority::Low:
@@ -408,7 +408,7 @@ class Thread final {
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const LockStatus status) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const LockStatus status) -> std::string_view
 {
   switch (status) {
     case LockStatus::Success:
@@ -425,7 +425,7 @@ class Thread final {
   }
 }
 
-[[nodiscard]] inline auto to_string(const Thread& thread) -> std::string
+[[nodiscard]] inline auto ToString(const Thread& thread) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Thread(data: {}, name: {}, id: {})",
@@ -440,17 +440,17 @@ class Thread final {
 
 inline auto operator<<(std::ostream& stream, const ThreadPriority priority) -> std::ostream&
 {
-  return stream << to_string(priority);
+  return stream << ToString(priority);
 }
 
 inline auto operator<<(std::ostream& stream, const LockStatus status) -> std::ostream&
 {
-  return stream << to_string(status);
+  return stream << ToString(status);
 }
 
 inline auto operator<<(std::ostream& stream, const Thread& thread) -> std::ostream&
 {
-  return stream << to_string(thread);
+  return stream << ToString(thread);
 }
 
 /// \} End of group system

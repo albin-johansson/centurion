@@ -83,7 +83,7 @@ TEST_F(WindowTest, DefaultSize)
 
 TEST_F(WindowTest, ToString)
 {
-  cen::log_info_raw(cen::to_string(*window));
+  cen::log_info_raw(cen::ToString(*window));
 }
 
 TEST_F(WindowTest, StreamOperator)

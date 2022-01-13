@@ -133,7 +133,7 @@ class BasicGLContext final {
   std::unique_ptr<void, Deleter> mContext;
 };
 
-[[nodiscard]] constexpr auto to_string(const GLAttribute attr) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const GLAttribute attr) -> std::string_view
 {
   switch (attr) {
     case GLAttribute::RedSize:
@@ -222,7 +222,7 @@ class BasicGLContext final {
   }
 }
 
-[[nodiscard]] constexpr auto to_string(const GLSwapInterval interval) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const GLSwapInterval interval) -> std::string_view
 {
   switch (interval) {
     case GLSwapInterval::Immediate:
@@ -241,12 +241,12 @@ class BasicGLContext final {
 
 inline auto operator<<(std::ostream& stream, const GLAttribute attr) -> std::ostream&
 {
-  return stream << to_string(attr);
+  return stream << ToString(attr);
 }
 
 inline auto operator<<(std::ostream& stream, const GLSwapInterval interval) -> std::ostream&
 {
-  return stream << to_string(interval);
+  return stream << ToString(interval);
 }
 
 namespace gl {

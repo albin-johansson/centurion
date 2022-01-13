@@ -254,7 +254,7 @@ class MessageBox final {
   }
 };
 
-[[nodiscard]] constexpr auto to_string(const MessageBoxType type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const MessageBoxType type) -> std::string_view
 {
   switch (type) {
     case MessageBoxType::Error:
@@ -273,10 +273,10 @@ class MessageBox final {
 
 inline auto operator<<(std::ostream& stream, const MessageBoxType type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
-[[nodiscard]] constexpr auto to_string(const MessageBoxButtonOrder order) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const MessageBoxButtonOrder order) -> std::string_view
 {
   switch (order) {
     case MessageBoxButtonOrder::LeftToRight:
@@ -293,10 +293,10 @@ inline auto operator<<(std::ostream& stream, const MessageBoxType type) -> std::
 inline auto operator<<(std::ostream& stream, const MessageBoxButtonOrder order)
     -> std::ostream&
 {
-  return stream << to_string(order);
+  return stream << ToString(order);
 }
 
-[[nodiscard]] constexpr auto to_string(const MessageBoxColorType type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const MessageBoxColorType type) -> std::string_view
 {
   switch (type) {
     case MessageBoxColorType::Background:
@@ -321,7 +321,7 @@ inline auto operator<<(std::ostream& stream, const MessageBoxButtonOrder order)
 
 inline auto operator<<(std::ostream& stream, const MessageBoxColorType type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
 }  // namespace cen

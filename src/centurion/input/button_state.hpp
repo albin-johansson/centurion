@@ -15,7 +15,7 @@ enum class ButtonState : Uint8 {
   Pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
 };
 
-[[nodiscard]] constexpr auto to_string(const ButtonState state) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ButtonState state) -> std::string_view
 {
   switch (state) {
     case ButtonState::Released:
@@ -31,7 +31,7 @@ enum class ButtonState : Uint8 {
 
 inline auto operator<<(std::ostream& stream, const ButtonState state) -> std::ostream&
 {
-  return stream << to_string(state);
+  return stream << ToString(state);
 }
 
 }  // namespace cen

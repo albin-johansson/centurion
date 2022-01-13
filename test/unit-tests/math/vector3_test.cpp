@@ -45,7 +45,7 @@ TEST(Vector3, StreamOperator)
 TEST(Vector3, ToString)
 {
   const float3 vec{12.3f, 45.6f};
-  cen::log_info_raw(cen::to_string(vec));
+  cen::log_info_raw(cen::ToString(vec));
 }
 
 TEST(Vector3, EqualityOperator)

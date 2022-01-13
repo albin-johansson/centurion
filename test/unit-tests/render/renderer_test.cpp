@@ -170,7 +170,7 @@ TEST_F(RendererTest, Capture)
 
 TEST_F(RendererTest, ToString)
 {
-  cen::log_info_raw(cen::to_string(*renderer));
+  cen::log_info_raw(cen::ToString(*renderer));
 }
 
 TEST_F(RendererTest, StreamOperator)

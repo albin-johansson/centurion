@@ -425,7 +425,7 @@ class BasicWindow final {
 };
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicWindow<T>& window) -> std::string
+[[nodiscard]] auto ToString(const BasicWindow<T>& window) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Window(data: {}, width: {}, height: {})",
@@ -442,7 +442,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicWindow<T>& window) -> std::ostream&
 {
-  return stream << to_string(window);
+  return stream << ToString(window);
 }
 
 [[nodiscard]] inline auto GetGrabbedWindow() noexcept -> WindowHandle

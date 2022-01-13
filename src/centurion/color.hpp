@@ -410,14 +410,14 @@ class Color final {
   SDL_Color mColor{0, 0, 0, 0xFF};
 };
 
-[[nodiscard]] inline auto to_string(const Color& color) -> std::string
+[[nodiscard]] inline auto ToString(const Color& color) -> std::string
 {
   return color.AsRGBA();
 }
 
 inline auto operator<<(std::ostream& stream, const Color& color) -> std::ostream&
 {
-  return stream << to_string(color);
+  return stream << ToString(color);
 }
 
 /**

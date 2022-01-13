@@ -895,7 +895,7 @@ class basic_haptic final {
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
+[[nodiscard]] auto ToString(const basic_haptic<T>& haptic) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("haptic{{data: {}, name: {}}}",
@@ -925,7 +925,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ostream&
 {
-  return stream << to_string(haptic);
+  return stream << ToString(haptic);
 }
 
 /// \} End of streaming

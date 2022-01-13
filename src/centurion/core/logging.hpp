@@ -91,7 +91,7 @@ enum class log_category {
  * \brief Returns a textual version of the supplied log category.
  *
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(log_category::app) == "app"`.
+ * `ToString(log_category::app) == "app"`.
  *
  * \param category the enumerator that will be converted.
  *
@@ -101,7 +101,7 @@ enum class log_category {
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const log_category category) -> std::string_view
 {
   switch (category) {
     case log_category::app:
@@ -143,7 +143,7 @@ enum class log_category {
  * \brief Returns a textual version of the supplied log priority.
  *
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(log_priority::debug) == "debug"`.
+ * `ToString(log_priority::debug) == "debug"`.
  *
  * \param priority the enumerator that will be converted.
  *
@@ -153,7 +153,7 @@ enum class log_category {
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const log_priority priority) -> std::string_view
 {
   switch (priority) {
     case log_priority::verbose:
@@ -190,7 +190,7 @@ enum class log_category {
  * \param stream the output stream that will be used.
  * \param priority the enumerator that will be printed.
  *
- * \see `to_string(log_category)`
+ * \see `ToString(log_category)`
  *
  * \return the used stream.
  *
@@ -198,7 +198,7 @@ enum class log_category {
  */
 inline auto operator<<(std::ostream& stream, const log_category category) -> std::ostream&
 {
-  return stream << to_string(category);
+  return stream << ToString(category);
 }
 
 /**
@@ -207,7 +207,7 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
  * \param stream the output stream that will be used.
  * \param priority the enumerator that will be printed.
  *
- * \see `to_string(log_priority)`
+ * \see `ToString(log_priority)`
  *
  * \return the used stream.
  *
@@ -215,7 +215,7 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
  */
 inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
 {
-  return stream << to_string(priority);
+  return stream << ToString(priority);
 }
 
 /// \} End of streaming
@@ -430,7 +430,7 @@ inline void use_preset_output_function() noexcept
                                              buffer.size() - 1,
                                              "LOG {:%T} [{}] > {}\n",
                                              time,
-                                             to_string(priority),
+                                             ToString(priority),
                                              message);
         *result.out = '\0';
 

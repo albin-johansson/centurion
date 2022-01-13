@@ -16,12 +16,12 @@ TEST(ThreadPriority, Values)
 
 TEST(ThreadPriority, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::ThreadPriority>(5)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::ThreadPriority>(5)), cen::Error);
 
-  ASSERT_EQ("Low", cen::to_string(cen::ThreadPriority::Low));
-  ASSERT_EQ("Normal", cen::to_string(cen::ThreadPriority::Normal));
-  ASSERT_EQ("High", cen::to_string(cen::ThreadPriority::High));
-  ASSERT_EQ("Critical", cen::to_string(cen::ThreadPriority::Critical));
+  ASSERT_EQ("Low", cen::ToString(cen::ThreadPriority::Low));
+  ASSERT_EQ("Normal", cen::ToString(cen::ThreadPriority::Normal));
+  ASSERT_EQ("High", cen::ToString(cen::ThreadPriority::High));
+  ASSERT_EQ("Critical", cen::ToString(cen::ThreadPriority::Critical));
 
   std::clog << "Thread priority example: " << cen::ThreadPriority::High << '\n';
 }

@@ -130,13 +130,13 @@ TEST(Thread, CurrentId)
 TEST(Thread, ToString)
 {
   cen::Thread thread{dummy, "myThread"};
-  cen::log_info_raw(cen::to_string(thread));
+  cen::log_info_raw(cen::ToString(thread));
 }
 
 TEST(Thread, StreamOperator)
 {
   cen::Thread thread{dummy, "myThread"};
-  std::clog << cen::to_string(thread) << '\n';
+  std::clog << cen::ToString(thread) << '\n';
 }
 
 #if CENTURION_HAS_FEATURE_CONCEPTS

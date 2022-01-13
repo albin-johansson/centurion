@@ -175,10 +175,10 @@ TEST(Point, Data)
 TEST(Point, ToString)
 {
   const cen::Point ip{123, 456};
-  cen::log_info_raw(cen::to_string(ip));
+  cen::log_info_raw(cen::ToString(ip));
 
   const cen::FPoint fp{12.3f, 45.6f};
-  cen::log_info_raw(cen::to_string(fp));
+  cen::log_info_raw(cen::ToString(fp));
 }
 
 TEST(Point, StreamOperator)

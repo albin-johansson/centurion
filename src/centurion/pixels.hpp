@@ -243,7 +243,7 @@ class BasicPixelFormatInfo final {
   detail::Pointer<B, SDL_PixelFormat> mFormat;
 };
 
-[[nodiscard]] constexpr auto to_string(const PixelFormat format) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const PixelFormat format) -> std::string_view
 {
   switch (format) {
     case PixelFormat::Unknown:
@@ -382,10 +382,10 @@ class BasicPixelFormatInfo final {
 
 inline auto operator<<(std::ostream& stream, const PixelFormat format) -> std::ostream&
 {
-  return stream << to_string(format);
+  return stream << ToString(format);
 }
 
-[[nodiscard]] inline auto to_string(const Palette& palette) -> std::string
+[[nodiscard]] inline auto ToString(const Palette& palette) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Palette(data: {}, size: {})",
@@ -399,11 +399,11 @@ inline auto operator<<(std::ostream& stream, const PixelFormat format) -> std::o
 
 inline auto operator<<(std::ostream& stream, const Palette& palette) -> std::ostream&
 {
-  return stream << to_string(palette);
+  return stream << ToString(palette);
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicPixelFormatInfo<T>& info) -> std::string
+[[nodiscard]] auto ToString(const BasicPixelFormatInfo<T>& info) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("PixelFormatInfo(data: {}, name: {})",
@@ -418,7 +418,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicPixelFormatInfo<T>& info) -> std::ostream&
 {
-  return stream << to_string(info);
+  return stream << ToString(info);
 }
 
 }  // namespace cen

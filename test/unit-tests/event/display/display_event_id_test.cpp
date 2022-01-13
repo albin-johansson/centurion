@@ -20,12 +20,12 @@ TEST(DisplayEventID, Values)
 
 TEST(DisplayEventID, ToString)
 {
-  ASSERT_THROW(to_string(static_cast<ID>(4)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<ID>(4)), cen::Error);
 
-  ASSERT_EQ("None", to_string(ID::None));
-  ASSERT_EQ("Orientation", to_string(ID::Orientation));
-  ASSERT_EQ("Connected", to_string(ID::Connected));
-  ASSERT_EQ("Disconnected", to_string(ID::Disconnected));
+  ASSERT_EQ("None", ToString(ID::None));
+  ASSERT_EQ("Orientation", ToString(ID::Orientation));
+  ASSERT_EQ("Connected", ToString(ID::Connected));
+  ASSERT_EQ("Disconnected", ToString(ID::Disconnected));
 
   std::clog << "Display event ID example: " << ID::Connected << '\n';
 }

@@ -333,7 +333,7 @@ class BasicSurface final {
 /// \{
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicSurface<T>& surface) -> std::string
+[[nodiscard]] auto ToString(const BasicSurface<T>& surface) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Surface(data: {}, width: {}, height: {})",
@@ -355,7 +355,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicSurface<T>& surface) -> std::ostream&
 {
-  return stream << to_string(surface);
+  return stream << ToString(surface);
 }
 
 /// \} End of streaming

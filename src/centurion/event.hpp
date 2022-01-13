@@ -536,7 +536,7 @@ class EventDispatcher final {
 };
 
 template <typename... E>
-[[nodiscard]] auto to_string(const EventDispatcher<E...>& dispatcher) -> std::string
+[[nodiscard]] auto ToString(const EventDispatcher<E...>& dispatcher) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("EventDispatcher(size: {}, #active: {})",
@@ -551,7 +551,7 @@ template <typename... E>
 template <typename... E>
 auto operator<<(std::ostream& stream, const EventDispatcher<E...>& dispatcher) -> std::ostream&
 {
-  return stream << to_string(dispatcher);
+  return stream << ToString(dispatcher);
 }
 
 }  // namespace cen

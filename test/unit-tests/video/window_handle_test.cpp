@@ -34,7 +34,7 @@ TEST(WindowHandle, ToString)
   cen::Window window;
   cen::WindowHandle handle{window};
 
-  cen::log_info_raw(cen::to_string(handle));
+  cen::log_info_raw(cen::ToString(handle));
 }
 
 TEST(WindowHandle, StreamOperator)

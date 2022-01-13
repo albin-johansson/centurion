@@ -356,7 +356,7 @@ class basic_sensor final {
  * \brief Returns a textual version of the supplied sensor type.
  *
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(sensor_type::gyroscope) == "gyroscope"`.
+ * `ToString(sensor_type::gyroscope) == "gyroscope"`.
  *
  * \param type the enumerator that will be converted.
  *
@@ -366,7 +366,7 @@ class basic_sensor final {
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const sensor_type type) -> std::string_view
 {
   switch (type) {
     case sensor_type::invalid:
@@ -396,7 +396,7 @@ class basic_sensor final {
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
+[[nodiscard]] auto ToString(const basic_sensor<T>& sensor) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("sensor{{data: {}, id: {}, name: {}}}",
@@ -420,7 +420,7 @@ template <typename T>
  * \param stream the output stream that will be used.
  * \param type the enumerator that will be printed.
  *
- * \see `to_string(sensor_type)`
+ * \see `ToString(sensor_type)`
  *
  * \return the used stream.
  *
@@ -428,7 +428,7 @@ template <typename T>
  */
 inline auto operator<<(std::ostream& stream, const sensor_type type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
 /**
@@ -444,7 +444,7 @@ inline auto operator<<(std::ostream& stream, const sensor_type type) -> std::ost
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ostream&
 {
-  return stream << to_string(sensor);
+  return stream << ToString(sensor);
 }
 
 /// \} End of streaming

@@ -238,7 +238,7 @@ class BasicTexture final {
   detail::Pointer<T, SDL_Texture> mTexture;
 };
 
-[[nodiscard]] constexpr auto to_string(const TextureAccess access) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const TextureAccess access) -> std::string_view
 {
   switch (access) {
     case TextureAccess::Static:
@@ -257,12 +257,12 @@ class BasicTexture final {
 
 inline auto operator<<(std::ostream& stream, const TextureAccess access) -> std::ostream&
 {
-  return stream << to_string(access);
+  return stream << ToString(access);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-[[nodiscard]] constexpr auto to_string(const ScaleMode mode) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const ScaleMode mode) -> std::string_view
 {
   switch (mode) {
     case ScaleMode::Nearest:
@@ -281,13 +281,13 @@ inline auto operator<<(std::ostream& stream, const TextureAccess access) -> std:
 
 inline auto operator<<(std::ostream& stream, const ScaleMode mode) -> std::ostream&
 {
-  return stream << to_string(mode);
+  return stream << ToString(mode);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicTexture<T>& texture) -> std::string
+[[nodiscard]] auto ToString(const BasicTexture<T>& texture) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Texture(data: {}, width: {}, height: {})",
@@ -304,7 +304,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicTexture<T>& texture) -> std::ostream&
 {
-  return stream << to_string(texture);
+  return stream << ToString(texture);
 }
 
 }  // namespace cen

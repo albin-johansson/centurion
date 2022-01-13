@@ -480,7 +480,7 @@ class BasicJoystick final {
   detail::Pointer<T, SDL_Joystick> mJoystick;
 };
 
-[[nodiscard]] constexpr auto to_string(const JoystickType type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const JoystickType type) -> std::string_view
 {
   switch (type) {
     case JoystickType::Unknown:
@@ -520,10 +520,10 @@ class BasicJoystick final {
 
 inline auto operator<<(std::ostream& stream, const JoystickType type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
-[[nodiscard]] constexpr auto to_string(const JoystickPower power) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const JoystickPower power) -> std::string_view
 {
   switch (power) {
     case JoystickPower::Unknown:
@@ -554,10 +554,10 @@ inline auto operator<<(std::ostream& stream, const JoystickType type) -> std::os
 
 inline auto operator<<(std::ostream& stream, const JoystickPower power) -> std::ostream&
 {
-  return stream << to_string(power);
+  return stream << ToString(power);
 }
 
-[[nodiscard]] constexpr auto to_string(const HatState state) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const HatState state) -> std::string_view
 {
   switch (state) {
     case HatState::Centered:
@@ -594,11 +594,11 @@ inline auto operator<<(std::ostream& stream, const JoystickPower power) -> std::
 
 inline auto operator<<(std::ostream& stream, const HatState state) -> std::ostream&
 {
-  return stream << to_string(state);
+  return stream << ToString(state);
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const BasicJoystick<T>& joystick) -> std::string
+[[nodiscard]] auto ToString(const BasicJoystick<T>& joystick) -> std::string
 {
   const char* serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
@@ -621,7 +621,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const BasicJoystick<T>& joystick) -> std::ostream&
 {
-  return stream << to_string(joystick);
+  return stream << ToString(joystick);
 }
 
 }  // namespace cen

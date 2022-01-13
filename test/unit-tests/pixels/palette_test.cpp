@@ -65,7 +65,7 @@ TEST(Palette, GetSize)
 TEST(Palette, ToString)
 {
   const cen::Palette palette{7};
-  cen::log_info_raw(cen::to_string(palette));
+  cen::log_info_raw(cen::ToString(palette));
 }
 
 TEST(Palette, StreamOperator)

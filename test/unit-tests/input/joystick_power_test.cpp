@@ -18,16 +18,16 @@ TEST(JoystickPower, Values)
 
 TEST(JoystickPower, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::JoystickPower>(SDL_JOYSTICK_POWER_MAX + 1)),
+  ASSERT_THROW(cen::ToString(static_cast<cen::JoystickPower>(SDL_JOYSTICK_POWER_MAX + 1)),
                cen::Error);
 
-  ASSERT_EQ("Unknown", cen::to_string(cen::JoystickPower::Unknown));
-  ASSERT_EQ("Empty", cen::to_string(cen::JoystickPower::Empty));
-  ASSERT_EQ("Low", cen::to_string(cen::JoystickPower::Low));
-  ASSERT_EQ("Medium", cen::to_string(cen::JoystickPower::Medium));
-  ASSERT_EQ("Full", cen::to_string(cen::JoystickPower::Full));
-  ASSERT_EQ("Wired", cen::to_string(cen::JoystickPower::Wired));
-  ASSERT_EQ("Max", cen::to_string(cen::JoystickPower::Max));
+  ASSERT_EQ("Unknown", cen::ToString(cen::JoystickPower::Unknown));
+  ASSERT_EQ("Empty", cen::ToString(cen::JoystickPower::Empty));
+  ASSERT_EQ("Low", cen::ToString(cen::JoystickPower::Low));
+  ASSERT_EQ("Medium", cen::ToString(cen::JoystickPower::Medium));
+  ASSERT_EQ("Full", cen::ToString(cen::JoystickPower::Full));
+  ASSERT_EQ("Wired", cen::ToString(cen::JoystickPower::Wired));
+  ASSERT_EQ("Max", cen::ToString(cen::JoystickPower::Max));
 
   std::clog << "Joystick power example: " << cen::JoystickPower::Wired << '\n';
 }

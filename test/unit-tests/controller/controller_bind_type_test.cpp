@@ -17,12 +17,12 @@ TEST(ControllerBindType, Values)
 
 TEST(ControllerBindType, ToString)
 {
-  ASSERT_THROW(to_string(static_cast<BindType>(4)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<BindType>(4)), cen::Error);
 
-  ASSERT_EQ("None", to_string(BindType::None));
-  ASSERT_EQ("Button", to_string(BindType::Button));
-  ASSERT_EQ("Axis", to_string(BindType::Axis));
-  ASSERT_EQ("Hat", to_string(BindType::Hat));
+  ASSERT_EQ("None", ToString(BindType::None));
+  ASSERT_EQ("Button", ToString(BindType::Button));
+  ASSERT_EQ("Axis", ToString(BindType::Axis));
+  ASSERT_EQ("Hat", ToString(BindType::Hat));
 
   std::clog << "Controller bind type example: " << BindType::Button << '\n';
 }

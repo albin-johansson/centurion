@@ -96,7 +96,7 @@ enum class device_type {
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] constexpr auto to_string(touch_device_type type) -> std::string_view;
+[[nodiscard]] constexpr auto ToString(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -109,7 +109,7 @@ namespace touch {
  * \param stream the output stream that will be used.
  * \param type the enumerator that will be printed.
  *
- * \see `to_string(touch_device_type)`
+ * \see `ToString(touch_device_type)`
  *
  * \return the used stream.
  *
@@ -117,7 +117,7 @@ namespace touch {
  */
 inline auto operator<<(std::ostream& stream, const touch_device_type type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
 /// \} End of streaming
@@ -131,7 +131,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
  * \brief Returns a textual version of the supplied touch device type.
  *
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(device_type::direct) == "direct"`.
+ * `ToString(device_type::direct) == "direct"`.
  *
  * \param type the enumerator that will be converted.
  *
@@ -141,7 +141,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const touch_device_type type) -> std::string_view
 {
   switch (type) {
     case touch_device_type::invalid:

@@ -263,7 +263,7 @@ inline auto OpenURL(const std::string& url) noexcept -> Result
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-[[nodiscard]] inline auto to_string(const Platform id) -> std::string_view
+[[nodiscard]] inline auto ToString(const Platform id) -> std::string_view
 {
   switch (id) {
     case Platform::Unknown:
@@ -291,7 +291,7 @@ inline auto OpenURL(const std::string& url) noexcept -> Result
 
 inline auto operator<<(std::ostream& stream, const Platform id) -> std::ostream&
 {
-  return stream << to_string(id);
+  return stream << ToString(id);
 }
 
 }  // namespace cen

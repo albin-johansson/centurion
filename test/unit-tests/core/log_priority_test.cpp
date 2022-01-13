@@ -17,15 +17,15 @@ TEST(LogPriority, Values)
 
 TEST(LogPriority, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::log_priority>(SDL_NUM_LOG_PRIORITIES)),
+  ASSERT_THROW(cen::ToString(static_cast<cen::log_priority>(SDL_NUM_LOG_PRIORITIES)),
                cen::Error);
 
-  ASSERT_EQ("verbose", cen::to_string(cen::log_priority::verbose));
-  ASSERT_EQ("debug", cen::to_string(cen::log_priority::debug));
-  ASSERT_EQ("info", cen::to_string(cen::log_priority::info));
-  ASSERT_EQ("warn", cen::to_string(cen::log_priority::warn));
-  ASSERT_EQ("error", cen::to_string(cen::log_priority::error));
-  ASSERT_EQ("critical", cen::to_string(cen::log_priority::critical));
+  ASSERT_EQ("verbose", cen::ToString(cen::log_priority::verbose));
+  ASSERT_EQ("debug", cen::ToString(cen::log_priority::debug));
+  ASSERT_EQ("info", cen::ToString(cen::log_priority::info));
+  ASSERT_EQ("warn", cen::ToString(cen::log_priority::warn));
+  ASSERT_EQ("error", cen::ToString(cen::log_priority::error));
+  ASSERT_EQ("critical", cen::ToString(cen::log_priority::critical));
 
   std::clog << "Log priority example: " << cen::log_priority::info << '\n';
 }

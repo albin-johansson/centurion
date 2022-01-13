@@ -14,11 +14,11 @@ TEST(GLSwapInterval, Values)
 
 TEST(GLSwapInterval, ToString)
 {
-  ASSERT_THROW(to_string(cen::GLSwapInterval{2}), cen::Error);
+  ASSERT_THROW(ToString(cen::GLSwapInterval{2}), cen::Error);
 
-  ASSERT_EQ("Immediate", to_string(cen::GLSwapInterval::Immediate));
-  ASSERT_EQ("Synchronized", to_string(cen::GLSwapInterval::Synchronized));
-  ASSERT_EQ("LateImmediate", to_string(cen::GLSwapInterval::LateImmediate));
+  ASSERT_EQ("Immediate", ToString(cen::GLSwapInterval::Immediate));
+  ASSERT_EQ("Synchronized", ToString(cen::GLSwapInterval::Synchronized));
+  ASSERT_EQ("LateImmediate", ToString(cen::GLSwapInterval::LateImmediate));
 
   std::clog << "OpenGL swap interval example: " << cen::GLSwapInterval::Synchronized << '\n';
 }

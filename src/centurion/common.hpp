@@ -273,14 +273,14 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-[[nodiscard]] inline auto to_string(const Result result) -> std::string
+[[nodiscard]] inline auto ToString(const Result result) -> std::string
 {
   return result ? "success" : "failure";
 }
 
 inline auto operator<<(std::ostream& stream, const Result result) -> std::ostream&
 {
-  return stream << to_string(result);
+  return stream << ToString(result);
 }
 
 namespace literals {

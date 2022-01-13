@@ -15,12 +15,12 @@ TEST(FontHint, Values)
 
 TEST(FontHint, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::FontHint>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::FontHint>(4)), cen::Error);
 
-  ASSERT_EQ("Normal", cen::to_string(cen::FontHint::Normal));
-  ASSERT_EQ("Light", cen::to_string(cen::FontHint::Light));
-  ASSERT_EQ("Mono", cen::to_string(cen::FontHint::Mono));
-  ASSERT_EQ("None", cen::to_string(cen::FontHint::None));
+  ASSERT_EQ("Normal", cen::ToString(cen::FontHint::Normal));
+  ASSERT_EQ("Light", cen::ToString(cen::FontHint::Light));
+  ASSERT_EQ("Mono", cen::ToString(cen::FontHint::Mono));
+  ASSERT_EQ("None", cen::ToString(cen::FontHint::None));
 
   std::clog << "Font hint example: " << cen::FontHint::Normal << '\n';
 }

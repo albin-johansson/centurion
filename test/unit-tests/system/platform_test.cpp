@@ -7,14 +7,14 @@
 
 TEST(Platform, PlatformEnum)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::Platform>(7)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::Platform>(7)), cen::Error);
 
-  ASSERT_EQ("Unknown", cen::to_string(cen::Platform::Unknown));
-  ASSERT_EQ("Windows", cen::to_string(cen::Platform::Windows));
-  ASSERT_EQ("MacOS", cen::to_string(cen::Platform::MacOS));
-  ASSERT_EQ("Linux", cen::to_string(cen::Platform::Linux));
-  ASSERT_EQ("IOS", cen::to_string(cen::Platform::IOS));
-  ASSERT_EQ("Android", cen::to_string(cen::Platform::Android));
+  ASSERT_EQ("Unknown", cen::ToString(cen::Platform::Unknown));
+  ASSERT_EQ("Windows", cen::ToString(cen::Platform::Windows));
+  ASSERT_EQ("MacOS", cen::ToString(cen::Platform::MacOS));
+  ASSERT_EQ("Linux", cen::ToString(cen::Platform::Linux));
+  ASSERT_EQ("IOS", cen::ToString(cen::Platform::IOS));
+  ASSERT_EQ("Android", cen::ToString(cen::Platform::Android));
 
   std::clog << "Platform ID example: " << cen::Platform::Windows << '\n';
 }

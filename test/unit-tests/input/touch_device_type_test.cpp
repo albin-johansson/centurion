@@ -22,12 +22,12 @@ TEST(TouchDeviceType, Values)
 
 TEST(TouchDeviceType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::touch_device_type>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::touch_device_type>(4)), cen::Error);
 
-  ASSERT_EQ("invalid", cen::to_string(cen::touch_device_type::invalid));
-  ASSERT_EQ("direct", cen::to_string(cen::touch_device_type::direct));
-  ASSERT_EQ("indirect_absolute", cen::to_string(cen::touch_device_type::indirect_absolute));
-  ASSERT_EQ("indirect_relative", cen::to_string(cen::touch_device_type::indirect_relative));
+  ASSERT_EQ("invalid", cen::ToString(cen::touch_device_type::invalid));
+  ASSERT_EQ("direct", cen::ToString(cen::touch_device_type::direct));
+  ASSERT_EQ("indirect_absolute", cen::ToString(cen::touch_device_type::indirect_absolute));
+  ASSERT_EQ("indirect_relative", cen::ToString(cen::touch_device_type::indirect_relative));
 
   std::clog << "Touch device type: " << cen::touch_device_type::direct << '\n';
 }

@@ -264,7 +264,7 @@ TEST(Font, Get)
 TEST(Font, ToString)
 {
   const cen::Font font{typeWriterPath, 12};
-  cen::log_info_raw(cen::to_string(font));
+  cen::log_info_raw(cen::ToString(font));
 }
 
 TEST(Font, StreamOperator)

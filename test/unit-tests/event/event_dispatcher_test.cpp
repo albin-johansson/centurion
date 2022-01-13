@@ -106,7 +106,7 @@ TEST(EventDispatcher, GetSize)
 TEST(EventDispatcher, ToString)
 {
   EventDispatcher dispatcher;
-  cen::log_info_raw(cen::to_string(dispatcher));
+  cen::log_info_raw(cen::ToString(dispatcher));
 }
 
 TEST(EventDispatcher, StreamOperator)

@@ -1127,7 +1127,7 @@ inline auto AsSDLEvent(const EventBase<SDL_WindowEvent>& event) -> SDL_Event
   return e;
 }
 
-[[nodiscard]] constexpr auto to_string(const EventType type) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const EventType type) -> std::string_view
 {
   switch (type) {
     case EventType::Quit:
@@ -1303,10 +1303,10 @@ inline auto AsSDLEvent(const EventBase<SDL_WindowEvent>& event) -> SDL_Event
 
 inline auto operator<<(std::ostream& stream, const EventType type) -> std::ostream&
 {
-  return stream << to_string(type);
+  return stream << ToString(type);
 }
 
-[[nodiscard]] constexpr auto to_string(const JoyHatPosition position) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const JoyHatPosition position) -> std::string_view
 {
   switch (position) {
     case JoyHatPosition::LeftUp:
@@ -1343,12 +1343,12 @@ inline auto operator<<(std::ostream& stream, const EventType type) -> std::ostre
 
 inline auto operator<<(std::ostream& stream, const JoyHatPosition position) -> std::ostream&
 {
-  return stream << to_string(position);
+  return stream << ToString(position);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-[[nodiscard]] constexpr auto to_string(const DisplayEventID id) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const DisplayEventID id) -> std::string_view
 {
   switch (id) {
     case DisplayEventID::None:
@@ -1370,12 +1370,12 @@ inline auto operator<<(std::ostream& stream, const JoyHatPosition position) -> s
 
 inline auto operator<<(std::ostream& stream, const DisplayEventID id) -> std::ostream&
 {
-  return stream << to_string(id);
+  return stream << ToString(id);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-[[nodiscard]] constexpr auto to_string(const MouseWheelDirection dir) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const MouseWheelDirection dir) -> std::string_view
 {
   switch (dir) {
     case MouseWheelDirection::Normal:
@@ -1391,10 +1391,10 @@ inline auto operator<<(std::ostream& stream, const DisplayEventID id) -> std::os
 
 inline auto operator<<(std::ostream& stream, const MouseWheelDirection dir) -> std::ostream&
 {
-  return stream << to_string(dir);
+  return stream << ToString(dir);
 }
 
-[[nodiscard]] constexpr auto to_string(const WindowEventID id) -> std::string_view
+[[nodiscard]] constexpr auto ToString(const WindowEventID id) -> std::string_view
 {
   switch (id) {
     case WindowEventID::None:
@@ -1455,7 +1455,7 @@ inline auto operator<<(std::ostream& stream, const MouseWheelDirection dir) -> s
 
 inline auto operator<<(std::ostream& stream, const WindowEventID id) -> std::ostream&
 {
-  return stream << to_string(id);
+  return stream << ToString(id);
 }
 
 }  // namespace cen

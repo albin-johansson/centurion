@@ -16,11 +16,11 @@ TEST(FlashOp, Values)
 
 TEST(FlashOp, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::FlashOp>(42)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::FlashOp>(42)), cen::Error);
 
-  ASSERT_EQ("Cancel", cen::to_string(cen::FlashOp::Cancel));
-  ASSERT_EQ("Briefly", cen::to_string(cen::FlashOp::Briefly));
-  ASSERT_EQ("UntilFocused", cen::to_string(cen::FlashOp::UntilFocused));
+  ASSERT_EQ("Cancel", cen::ToString(cen::FlashOp::Cancel));
+  ASSERT_EQ("Briefly", cen::ToString(cen::FlashOp::Briefly));
+  ASSERT_EQ("UntilFocused", cen::ToString(cen::FlashOp::UntilFocused));
 
   std::cout << "Flash operation example: " << cen::FlashOp::Briefly << '\n';
 }

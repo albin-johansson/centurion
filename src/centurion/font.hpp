@@ -40,19 +40,49 @@ namespace cen {
 /// \addtogroup video
 /// \{
 
-struct GlyphMetrics final {
-  int min_x{};   /* The minimum X-offset. */
-  int min_y{};   /* The minimum Y-offset. */
-  int max_x{};   /* The maximum X-offset. */
-  int max_y{};   /* The maximum Y-offset. */
-  int advance{}; /* The advance offset. */
-};
-
 enum class FontHint : int {
   Normal = TTF_HINTING_NORMAL,
   Light = TTF_HINTING_LIGHT,
   Mono = TTF_HINTING_MONO,
   None = TTF_HINTING_NONE
+};
+
+/// \name Font hint functions
+/// \{
+
+[[nodiscard]] constexpr auto ToString(const FontHint hint) -> std::string_view
+{
+  switch (hint) {
+    case FontHint::Normal:
+      return "Normal";
+
+    case FontHint::Light:
+      return "Light";
+
+    case FontHint::Mono:
+      return "Mono";
+
+    case FontHint::None:
+      return "None";
+
+    default:
+      throw Error{"Did not recognize font hint!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const FontHint hint) -> std::ostream&
+{
+  return stream << ToString(hint);
+}
+
+/// \} End of font hint functions
+
+struct GlyphMetrics final {
+  int min_x{};    ///< The minimum X-offset.
+  int min_y{};    ///< The minimum Y-offset.
+  int max_x{};    ///< The maximum X-offset.
+  int max_y{};    ///< The maximum Y-offset.
+  int advance{};  ///< The advance offset.
 };
 
 class Font final {
@@ -272,7 +302,7 @@ class Font final {
     return Surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedUTF8(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_blended(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderUTF8_Blended(get(), str, color.get())};
@@ -281,12 +311,12 @@ class Font final {
   [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const color& color) const
       -> Surface
   {
-    return RenderBlendedUTF8(str.c_str(), color);
+    return render_blended(str.c_str(), color);
   }
 
-  [[nodiscard]] auto RenderBlendedWrappedUTF8(const char* str,
-                                              const color& color,
-                                              const Uint32 wrap) const -> Surface
+  [[nodiscard]] auto render_wrapped(const char* str,
+                                    const color& color,
+                                    const Uint32 wrap) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, color.get(), wrap)};
@@ -296,10 +326,10 @@ class Font final {
                                               const color& color,
                                               const Uint32 wrap) const -> Surface
   {
-    return RenderBlendedWrappedUTF8(str.c_str(), color, wrap);
+    return render_wrapped(str.c_str(), color, wrap);
   }
 
-  [[nodiscard]] auto RenderShadedUTF8(const char* str, const color& fg, const color& bg) const
+  [[nodiscard]] auto render_shaded(const char* str, const color& fg, const color& bg) const
       -> Surface
   {
     assert(str);
@@ -310,10 +340,10 @@ class Font final {
                                       const color& fg,
                                       const color& bg) const -> Surface
   {
-    return RenderShadedUTF8(str.c_str(), fg, bg);
+    return render_shaded(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto RenderSolidUTF8(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_solid(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderUTF8_Solid(get(), str, color.get())};
@@ -322,10 +352,11 @@ class Font final {
   [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const color& color) const
       -> Surface
   {
-    return RenderSolidUTF8(str.c_str(), color);
+    return render_solid(str.c_str(), color);
   }
 
-  [[nodiscard]] auto RenderBlendedLatin1(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_blended_latin1(const char* str, const color& color) const
+      -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Blended(get(), str, color.get())};
@@ -334,12 +365,12 @@ class Font final {
   [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const color& color) const
       -> Surface
   {
-    return RenderBlendedLatin1(str.c_str(), color);
+    return render_blended_latin1(str.c_str(), color);
   }
 
-  [[nodiscard]] auto RenderBlendedWrappedLatin1(const char* str,
-                                                const color& color,
-                                                const Uint32 wrap) const -> Surface
+  [[nodiscard]] auto render_wrapped_latin1(const char* str,
+                                           const color& color,
+                                           const Uint32 wrap) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Blended_Wrapped(get(), str, color.get(), wrap)};
@@ -349,7 +380,7 @@ class Font final {
                                                 const color& color,
                                                 const Uint32 wrap) const -> Surface
   {
-    return RenderBlendedWrappedLatin1(str.c_str(), color, wrap);
+    return render_wrapped_latin1(str.c_str(), color, wrap);
   }
 
   [[nodiscard]] auto RenderShadedLatin1(const char* str,
@@ -367,7 +398,7 @@ class Font final {
     return RenderShadedLatin1(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto RenderSolidLatin1(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_solid_latin1(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Solid(get(), str, color.get())};
@@ -376,30 +407,30 @@ class Font final {
   [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const color& color) const
       -> Surface
   {
-    return RenderSolidLatin1(str.c_str(), color);
+    return render_solid_latin1(str.c_str(), color);
   }
 
-  [[nodiscard]] auto RenderBlendedUnicode(const UnicodeString& str, const color& color) const
+  [[nodiscard]] auto render_blended_unicode(const UnicodeString& str, const color& color) const
       -> Surface
   {
     return Surface{TTF_RenderUNICODE_Blended(get(), str.data(), color.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedWrappedUnicode(const UnicodeString& str,
-                                                 const color& color,
-                                                 const Uint32 wrap) const -> Surface
+  [[nodiscard]] auto render_wrapped_unicode(const UnicodeString& str,
+                                            const color& color,
+                                            const Uint32 wrap) const -> Surface
   {
     return Surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), color.get(), wrap)};
   }
 
-  [[nodiscard]] auto RenderShadedUnicode(const UnicodeString& str,
-                                         const color& fg,
-                                         const color& bg) const -> Surface
+  [[nodiscard]] auto render_shaded_unicode(const UnicodeString& str,
+                                           const color& fg,
+                                           const color& bg) const -> Surface
   {
     return Surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const color& color) const
+  [[nodiscard]] auto render_solid_unicode(const UnicodeString& str, const color& color) const
       -> Surface
   {
     return Surface{TTF_RenderUNICODE_Solid(get(), str.data(), color.get())};
@@ -424,40 +455,105 @@ class Font final {
   }
 };
 
+/// \name Font functions
+/// \{
+
+[[nodiscard]] inline auto ToString(const Font& font) -> std::string
+{
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("Font(data: {}, name: {}, size: {})",
+                     detail::address_of(font.get()),
+                     font.GetFamilyName(),
+                     font.GetSize());
+#else
+  return "Font(data: " + detail::address_of(font.get()) +
+         ", name: " + std::string{font.GetFamilyName()} +
+         ", size: " + std::to_string(font.GetSize()) + ")";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+inline auto operator<<(std::ostream& stream, const Font& font) -> std::ostream&
+{
+  return stream << ToString(font);
+}
+
+/// \} End of font functions
+
 /**
- * Provides efficient font rendering.
+ * \brief Provides efficient font rendering.
  *
- * Firstly, this class can be used to cache individual glyphs as textures that can subsequently
- * be rendered one-by-one to form strings. Note, this approach will not result in accurate
- * kerning. However, this might not be noticeable, and simply worth the performance boost. This
- * approach is very efficient for rendering pieces of text that frequently changes, since
- * other approaches would require dynamic allocation and de-allocation for every new rendered
- * string.
+ * \details This class can be used to cache individual glyphs as textures that can
+ * subsequently be rendered one-by-one to form strings. Note, this approach will not result in
+ * accurate kerning. However, this might not be noticeable, and simply worth the performance
+ * boost. This approach is very efficient for rendering pieces of text that frequently changes,
+ * since other approaches would require dynamic allocation and de-allocation for every new
+ * rendered string.
  *
- * Secondly, it's possible to cache rendered strings and associate them with integer
- * identifiers. In contrast with the first approach, this will result in accurate kerning. The
- * only problem is that it's hard to know the exact strings you will render at compile-time.
- * Use this option if you know that you're going to render some specific string a lot.
+ * \details Furthermore, it is possible to cache rendered strings and associate them with
+ * integer identifiers. In contrast with the first approach, this will result in accurate
+ * kerning. The only problem is that it is hard to know the exact strings you will render at
+ * compile-time. Use this option if you know that you are going to render some specific string
+ * a lot.
+ *
+ * \note Instances of this class are initially empty, i.e. they hold no cached glyphs or
+ * strings. It is up to you to explicitly specify what you want to cache.
+ *
+ * \see `font`
+ * \see `font_bundle`
  */
-class FontCache final {
+class font_cache final {
  public:
-  struct GlyphData final {
-    Texture texture;
-    GlyphMetrics metrics;
+  using id_type = std::size_t;
+  using size_type = std::size_t;
+
+  /**
+   * \brief Provides cached information about a glyph in a font.
+   */
+  struct glyph_data final {
+    Texture texture;       ///< The cached texture of the glyph.
+    GlyphMetrics metrics;  ///< The metrics associate with the glyph.
   };
 
-  FontCache(const char* file, const int size) : mFont{file, size} {}
+  /// \name Construction
+  /// \{
 
-  FontCache(const std::string& file, const int size) : mFont{file, size} {}
+  /**
+   * \brief Creates a font cache based on the font at the specified file path.
+   *
+   * \param file the file path of the font.
+   * \param size the size of the font.
+   */
+  font_cache(const char* file, const int size) : mFont{file, size} {}
 
-  explicit FontCache(Font&& font) noexcept : mFont{std::move(font)} {}
+  /// \copydoc font_cache(const char*, int)
+  font_cache(const std::string& file, const int size) : mFont{file, size} {}
 
-  /* Renders a glyph and returns the next x-coordinate */
+  /**
+   * \brief Creates a font cache based on an existing font.
+   *
+   * \param font the font that will be used.
+   */
+  explicit font_cache(Font&& font) noexcept : mFont{std::move(font)} {}
+
+  /// \} End of construction
+
+  /// \name Glyph-based rendering functions
+  /// \{
+
+  /**
+   * \brief Renders a glyph, returning the x-coordinate for the next glyph.
+   *
+   * \param renderer the renderer that will be used.
+   * \param glyph the Unicode glyph that will be rendered.
+   * \param position the position of the rendered glyph.
+   *
+   * \return the x-coordinate intended to be used by a consecutive glyph.
+   */
   template <typename T>
-  auto RenderGlyph(BasicRenderer<T>& renderer, const Unicode glyph, const Point& position)
+  auto render_glyph(BasicRenderer<T>& renderer, const Unicode glyph, const Point& position)
       -> int
   {
-    if (const auto* data = TryGetGlyph(glyph)) {
+    if (const auto* data = find_glyph(glyph)) {
       const auto& [texture, metrics] = *data;
       const auto outline = mFont.GetOutline();
 
@@ -474,9 +570,24 @@ class FontCache final {
     }
   }
 
-  /* Renders a string as a series of glyphs */
+  /**
+   * \brief Renders a string as a series of glyphs.
+   *
+   * \details You can provide null-characters in the string to indicate line breaks which this
+   * function will respect.
+   *
+   * \note This function will not output rendered text with accurate kerning.
+   *
+   * \tparam String the type of the string-like object, storing Unicode glyphs.
+   *
+   * \param renderer the renderer that will be used.
+   * \param str the source of the Unicode glyphs.
+   * \param position the position of the rendered string.
+   *
+   * \see `render_glyph()`
+   */
   template <typename T, typename String>
-  void RenderText(BasicRenderer<T>& renderer, const String& str, Point position)
+  void render_text(BasicRenderer<T>& renderer, const String& str, Point position)
   {
     const auto originalX = position.GetX();
     const auto lineSkip = mFont.GetLineSkip();
@@ -487,190 +598,492 @@ class FontCache final {
         position.SetY(position.GetY() + lineSkip);
       }
       else {
-        const auto x = RenderGlyph(renderer, glyph, position);
+        const auto x = render_glyph(renderer, glyph, position);
         position.SetX(x);
       }
     }
   }
 
+  /// \} End of glyph-based rendering functions
+
+  /// \name String caching functions
+  /// \{
+
+  /**
+   * \brief Renders a UTF-8 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_solid()`
+   */
   template <typename T>
-  auto StoreSolidUTF8(BasicRenderer<T>& renderer, const char* str, const color& color)
-      -> std::size_t
+  auto store_solid(BasicRenderer<T>& renderer, const char* str, const color& fg) -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderSolidUTF8(str, color));
+    return store(renderer, mFont.render_solid(str, fg));
   }
 
+  /// \copydoc store_solid()
   template <typename T>
-  auto StoreShadedUTF8(BasicRenderer<T>& renderer,
-                       const char* str,
-                       const color& fg,
-                       const color& bg) -> std::size_t
+  auto store_solid(BasicRenderer<T>& renderer, const std::string& str, const color& fg)
+      -> id_type
+  {
+    return store_solid(renderer, str.c_str(), fg);
+  }
+
+  /**
+   * \brief Renders a UTF-8 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the foreground color of the rendered text.
+   * \param bg the background color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_shaded()`
+   */
+  template <typename T>
+  auto store_shaded(BasicRenderer<T>& renderer,
+                    const char* str,
+                    const color& fg,
+                    const color& bg) -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderShadedUTF8(str, fg, bg));
+    return store(renderer, mFont.render_shaded(str, fg, bg));
   }
 
+  /// \copydoc store_shaded()
   template <typename T>
-  auto StoreBlendedUTF8(BasicRenderer<T>& renderer, const char* str, const color& color)
-      -> std::size_t
+  auto store_shaded(BasicRenderer<T>& renderer,
+                    const std::string& str,
+                    const color& fg,
+                    const color& bg) -> id_type
+  {
+    return store_shaded(renderer, str.c_str(), fg, bg);
+  }
+
+  /**
+   * \brief Renders a UTF-8 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_blended()`
+   */
+  template <typename T>
+  auto store_blended(BasicRenderer<T>& renderer, const char* str, const color& fg) -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderBlendedUTF8(str, color));
+    return store(renderer, mFont.render_blended(str, fg));
   }
 
+  /// \copydoc store_blended()
   template <typename T>
-  auto StoreWrappedUTF8(BasicRenderer<T>& renderer,
-                        const char* str,
-                        const color& color,
-                        const Uint32 wrap) -> std::size_t
+  auto store_blended(BasicRenderer<T>& renderer, const std::string& str, const color& fg)
+      -> id_type
+  {
+    return store_blended(renderer, str.c_str(), fg);
+  }
+
+  /**
+   * \brief Renders a UTF-8 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   * \param wrap the width in pixels after which the text will be wrapped.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_wrapped()`
+   */
+  template <typename T>
+  auto store_wrapped(BasicRenderer<T>& renderer,
+                     const char* str,
+                     const color& fg,
+                     const Uint32 wrap) -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderBlendedWrappedUTF8(str, color, wrap));
+    return store(renderer, mFont.render_wrapped(str, fg, wrap));
   }
 
+  /// \copydoc store_wrapped()
   template <typename T>
-  auto StoreSolidLatin1(BasicRenderer<T>& renderer, const char* str, const color& color)
-      -> std::size_t
+  auto store_wrapped(BasicRenderer<T>& renderer,
+                     const std::string& str,
+                     const color& fg,
+                     const Uint32 wrap) -> id_type
+  {
+    return store_wrapped(renderer, str.c_str(), fg, wrap);
+  }
+
+  /**
+   * \brief Renders a Latin-1 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_solid_latin1()`
+   */
+  template <typename T>
+  auto store_solid_latin1(BasicRenderer<T>& renderer, const char* str, const color& fg)
+      -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderSolidLatin1(str, color));
+    return store(renderer, mFont.render_solid_latin1(str, fg));
   }
 
+  /// \copydoc store_solid_latin1()
   template <typename T>
-  auto StoreShadedLatin1(BasicRenderer<T>& renderer,
-                         const char* str,
-                         const color& fg,
-                         const color& bg) -> std::size_t
+  auto store_solid_latin1(BasicRenderer<T>& renderer, const std::string& str, const color& fg)
+      -> id_type
+  {
+    return store_solid_latin1(renderer, str.c_str(), fg);
+  }
+
+  /**
+   * \brief Renders a Latin-1 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the foreground color of the rendered text.
+   * \param bg the background color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_shaded_latin1()`
+   */
+  template <typename T>
+  auto store_shaded_latin1(BasicRenderer<T>& renderer,
+                           const char* str,
+                           const color& fg,
+                           const color& bg) -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderShadedLatin1(str, fg, bg));
+    return store(renderer, mFont.RenderShadedLatin1(str, fg, bg));
   }
 
+  /// \copydoc store_shaded_latin1()
   template <typename T>
-  auto StoreBlendedLatin1(BasicRenderer<T>& renderer, const char* str, const color& color)
-      -> std::size_t
+  auto store_shaded_latin1(BasicRenderer<T>& renderer,
+                           const std::string& str,
+                           const color& fg,
+                           const color& bg) -> id_type
+  {
+    return store_shaded_latin1(renderer, str.c_str(), fg, bg);
+  }
+
+  /**
+   * \brief Renders a Latin-1 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_blended_latin1()`
+   */
+  template <typename T>
+  auto store_blended_latin1(BasicRenderer<T>& renderer, const char* str, const color& fg)
+      -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderBlendedLatin1(str, color));
+    return store(renderer, mFont.render_blended_latin1(str, fg));
   }
 
+  /// \copydoc store_blended_latin1()
   template <typename T>
-  auto StoreWrappedLatin1(BasicRenderer<T>& renderer,
-                          const char* str,
-                          const color& color,
-                          const Uint32 wrap) -> std::size_t
+  auto store_blended_latin1(BasicRenderer<T>& renderer,
+                            const std::string& str,
+                            const color& fg) -> id_type
+  {
+    return store_blended_latin1(renderer, str.c_str(), fg);
+  }
+
+  /**
+   * \brief Renders a Latin-1 string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   * \param wrap the width in pixels after which the text will be wrapped.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_wrapped_latin1()`
+   */
+  template <typename T>
+  auto store_wrapped_latin1(BasicRenderer<T>& renderer,
+                            const char* str,
+                            const color& fg,
+                            const Uint32 wrap) -> id_type
   {
     assert(str);
-    return Store(renderer, mFont.RenderBlendedWrappedLatin1(str, color, wrap));
+    return store(renderer, mFont.render_wrapped_latin1(str, fg, wrap));
   }
 
+  /// \copydoc store_wrapped_latin1()
   template <typename T>
-  auto StoreSolidUnicode(BasicRenderer<T>& renderer,
-                         const UnicodeString& str,
-                         const color& color) -> std::size_t
+  auto store_wrapped_latin1(BasicRenderer<T>& renderer,
+                            const std::string& str,
+                            const color& fg,
+                            const Uint32 wrap) -> id_type
   {
-    return Store(renderer, mFont.RenderSolidUnicode(str, color));
+    return store_wrapped_latin1(renderer, str.c_str(), fg, wrap);
   }
 
+  /**
+   * \brief Renders a Unicode string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_solid_unicode()`
+   */
   template <typename T>
-  auto StoreShadedUnicode(BasicRenderer<T>& renderer,
-                          const UnicodeString& str,
-                          const color& fg,
-                          const color& bg) -> std::size_t
-  {
-    return Store(renderer, mFont.RenderShadedUnicode(str, fg, bg));
-  }
-
-  template <typename T>
-  auto StoreBlendedUnicode(BasicRenderer<T>& renderer,
+  auto store_solid_unicode(BasicRenderer<T>& renderer,
                            const UnicodeString& str,
-                           const color& color) -> std::size_t
+                           const color& fg) -> id_type
   {
-    return Store(renderer, mFont.RenderBlendedUnicode(str, color));
+    return store(renderer, mFont.render_solid_unicode(str, fg));
   }
 
+  /**
+   * \brief Renders a Unicode string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the foreground color of the rendered text.
+   * \param bg the background color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_shaded_unicode()`
+   */
   template <typename T>
-  auto StoreWrappedUnicode(BasicRenderer<T>& renderer,
-                           const UnicodeString& str,
-                           const color& color,
-                           const Uint32 wrap) -> std::size_t
+  auto store_shaded_unicode(BasicRenderer<T>& renderer,
+                            const UnicodeString& str,
+                            const color& fg,
+                            const color& bg) -> id_type
   {
-    return Store(renderer, mFont.RenderBlendedWrappedUnicode(str, color, wrap));
+    return store(renderer, mFont.render_shaded_unicode(str, fg, bg));
   }
 
-  [[nodiscard]] auto HasString(const std::size_t id) const noexcept -> bool
+  /**
+   * \brief Renders a Unicode string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_blended_unicode()`
+   */
+  template <typename T>
+  auto store_blended_unicode(BasicRenderer<T>& renderer,
+                             const UnicodeString& str,
+                             const color& fg) -> id_type
   {
-    return mStrings.find(id) != mStrings.end();
+    return store(renderer, mFont.render_blended_unicode(str, fg));
   }
 
-  [[nodiscard]] auto GetString(const std::size_t id) const -> const Texture&
+  /**
+   * \brief Renders a Unicode string to a texture and caches it.
+   *
+   * \param renderer the renderer that will be used to create the string texture.
+   * \param str the string that will be rendered and cached.
+   * \param fg the color of the rendered text.
+   * \param wrap the width in pixels after which the text will be wrapped.
+   *
+   * \return the identifier assigned to the texture.
+   *
+   * \see `font::render_wrapped_unicode()`
+   */
+  template <typename T>
+  auto store_wrapped_unicode(BasicRenderer<T>& renderer,
+                             const UnicodeString& str,
+                             const color& fg,
+                             const Uint32 wrap) -> id_type
   {
-    return mStrings.at(id);
+    return store(renderer, mFont.render_wrapped_unicode(str, fg, wrap));
   }
 
-  [[nodiscard]] auto TryGetString(const std::size_t id) const noexcept -> const Texture*
+  /// \} End of string caching functions
+
+  /// \name String cache query functions
+  /// \{
+
+  /**
+   * \brief Returns the cached string texture for an identifier, if there is one.
+   *
+   * \param id the identifier of the cached string.
+   *
+   * \return the cached string texture; a null pointer is returned if no match was found.
+   */
+  [[nodiscard]] auto find_string(const id_type id) const -> const Texture*
   {
-    const auto it = mStrings.find(id);
-    if (it != mStrings.end()) {
-      return &it->second;
+    if (const auto iter = mStrings.find(id); iter != mStrings.end()) {
+      return &iter->second;
     }
     else {
       return nullptr;
     }
   }
 
-  template <typename T>
-  void StoreGlyph(BasicRenderer<T>& renderer, const Unicode glyph)
+  /**
+   * \brief Indicates whether there is a cached string associated with a specific identifier.
+   *
+   * \param id the identifier that will be checked.
+   *
+   * \return `true` if there is a cached string associated with the ID; `false` otherwise.
+   */
+  [[nodiscard]] auto has_string(const id_type id) const -> bool
   {
-    if (HasGlyph(glyph) || !mFont.IsGlyphProvided(glyph)) {
+    return find_string(id) != nullptr;
+  }
+
+  /**
+   * \brief Returns the cached rendered string associated with an identifier.
+   *
+   * \param id the identifier associated with the desired rendered string.
+   *
+   * \return the cached string texture.
+   *
+   * \throws Error if there is no cached string for the supplied identifier.
+   *
+   * \see `find_string()`
+   */
+  [[nodiscard]] auto get_string(const id_type id) const -> const Texture&
+  {
+    if (const auto* ptr = find_string(id)) {
+      return *ptr;
+    }
+    else {
+      throw Error{"Invalid font cache string identifier!"};
+    }
+  }
+
+  /// \} End of string cache query functions
+
+  /// \name Glyph caching functions
+  /// \{
+
+  /**
+   * \brief Renders a glyph to a texture and caches it.
+   *
+   * \details This function has no effect if the glyph has already been cached, or if the glyph
+   * is not provided by the underlying font.
+   *
+   * \param renderer the renderer that will be used.
+   * \param glyph the glyph that will be cached.
+   */
+  template <typename T>
+  void store_glyph(BasicRenderer<T>& renderer, const Unicode glyph)
+  {
+    if (has_glyph(glyph) || !mFont.IsGlyphProvided(glyph)) {
       return;
     }
 
-    GlyphData data{CreateGlyphTexture(renderer, glyph), mFont.GetMetrics(glyph).value()};
+    glyph_data data{make_glyph_texture(renderer, glyph), mFont.GetMetrics(glyph).value()};
     mGlyphs.try_emplace(glyph, std::move(data));
   }
 
+  /**
+   * \brief Renders a range of glyphs to individual textures and caches them.
+   *
+   * \details The glyphs that will be cached are in the range [begin, end).
+   *
+   * \param renderer the renderer that will be used.
+   * \param begin the first glyph that will be cached.
+   * \param end the range terminator (will not be cached).
+   *
+   * \see `store_glyph()`
+   * \see https://unicode-table.com/en/blocks/
+   */
   template <typename T>
-  void StoreGlyphRange(BasicRenderer<T>& renderer, const Unicode begin, const Unicode end)
+  void store_glyphs(BasicRenderer<T>& renderer, const Unicode begin, const Unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch) {
-      StoreGlyph(renderer, ch);
+    for (auto glyph = begin; glyph < end; ++glyph) {
+      store_glyph(renderer, glyph);
     }
   }
 
+  /**
+   * \brief Stores the glyphs provided in the basic latin character range.
+   *
+   * \note The control characters are excluded.
+   *
+   * \param renderer the renderer that will be used.
+   *
+   * \see `store_glyphs()`
+   */
   template <typename T>
-  void StoreBasicLatinGlyphs(BasicRenderer<T>& renderer)
+  void store_basic_latin_glyphs(BasicRenderer<T>& renderer)
   {
     /* https://unicode-table.com/en/blocks/basic-latin/ */
-    StoreGlyphRange(renderer, 0x20, 0x7F);
+    store_glyphs(renderer, 0x20, 0x7F);
   }
 
+  /**
+   * \brief Stores the glyphs provided in the Latin-1 supplement character range.
+   *
+   * \note The control characters are excluded.
+   *
+   * \param renderer the renderer that will be used.
+   *
+   * \see `store_glyphs()`
+   */
   template <typename T>
-  void StoreLatin1SupplementGlyphs(BasicRenderer<T>& renderer)
+  void store_latin1_supplement_glyphs(BasicRenderer<T>& renderer)
   {
     /* https://unicode-table.com/en/blocks/latin-1-supplement/ */
-    StoreGlyphRange(renderer, 0xA0, 0x100);
+    store_glyphs(renderer, 0xA0, 0xFF + 0x1);
   }
 
+  /**
+   * \brief Stores the glyphs provided in the Latin-1 character range.
+   *
+   * \param renderer the renderer that will be used.
+   *
+   * \see `store_basic_latin_glyphs()`
+   * \see `store_latin1_supplement_glyphs()`
+   */
   template <typename T>
-  void StoreLatin1Glyphs(BasicRenderer<T>& renderer)
+  void store_latin1_glyphs(BasicRenderer<T>& renderer)
   {
-    StoreBasicLatinGlyphs(renderer);
-    StoreLatin1SupplementGlyphs(renderer);
+    store_basic_latin_glyphs(renderer);
+    store_latin1_supplement_glyphs(renderer);
   }
 
-  [[nodiscard]] auto HasGlyph(const Unicode glyph) const noexcept -> bool
-  {
-    return mGlyphs.find(glyph) != mGlyphs.end();
-  }
+  /// \} End of glyph caching functions
 
-  [[nodiscard]] auto GetGlyph(const Unicode glyph) const -> const GlyphData&
-  {
-    return mGlyphs.at(glyph);
-  }
+  /// \name Glyph cache query functions
+  /// \{
 
-  [[nodiscard]] auto TryGetGlyph(const Unicode glyph) const -> const GlyphData*
+  /**
+   * \brief Returns the cached information associated with a glyph, if there is any.
+   *
+   * \param glyph the glyph that will be queried.
+   *
+   * \return the found glyph data; a null pointer is returned if no data was found.
+   */
+  [[nodiscard]] auto find_glyph(const Unicode glyph) const -> const glyph_data*
   {
     if (const auto it = mGlyphs.find(glyph); it != mGlyphs.end()) {
       return &it->second;
@@ -680,24 +1093,66 @@ class FontCache final {
     }
   }
 
-  [[nodiscard]] auto GetFont() noexcept -> Font& { return mFont; }
-  [[nodiscard]] auto GetFont() const noexcept -> const Font& { return mFont; }
+  /**
+   * \brief Indicates whether a glyph has been cached.
+   *
+   * \param glyph the glyph that will be checked.
+   *
+   * \return `true` if the glyph has been cached; `false` otherwise.
+   */
+  [[nodiscard]] auto has_glyph(const Unicode glyph) const noexcept -> bool
+  {
+    return find_glyph(glyph) != nullptr;
+  }
+
+  /**
+   * \brief Returns the previously cached information associated with a glyph.
+   *
+   * \param glyph the glyph that will be queried.
+   *
+   * \return the cached glyph data.
+   *
+   * \throws Error if there is no data stored for the glyph.
+   *
+   * \see `find_glyph()`
+   */
+  [[nodiscard]] auto get_glyph(const Unicode glyph) const -> const glyph_data&
+  {
+    if (const auto* ptr = find_glyph(glyph)) {
+      return *ptr;
+    }
+    else {
+      throw Error{"Invalid font cache glyph!"};
+    }
+  }
+
+  /// \} End of glyph cache query functions
+
+  /**
+   * \brief Returns the underlying font instance.
+   *
+   * \return the associated font.
+   */
+  [[nodiscard]] auto get_font() noexcept -> Font& { return mFont; }
+
+  /// \copydoc get_font()
+  [[nodiscard]] auto get_font() const noexcept -> const Font& { return mFont; }
 
  private:
   Font mFont;
-  std::unordered_map<Unicode, GlyphData> mGlyphs;
-  std::unordered_map<std::size_t, Texture> mStrings;
-  std::size_t mNextStringId{1};
+  std::unordered_map<Unicode, glyph_data> mGlyphs;
+  std::unordered_map<id_type, Texture> mStrings;
+  id_type mNextStringId{1};
 
   template <typename T>
-  [[nodiscard]] auto CreateGlyphTexture(BasicRenderer<T>& renderer, const Unicode glyph)
+  [[nodiscard]] auto make_glyph_texture(BasicRenderer<T>& renderer, const Unicode glyph)
       -> Texture
   {
     return renderer.ToTexture(mFont.RenderBlendedGlyph(glyph, renderer.GetColor()));
   }
 
   template <typename T>
-  auto Store(BasicRenderer<T>& renderer, Surface&& surface) -> std::size_t
+  auto store(BasicRenderer<T>& renderer, Surface&& surface) -> id_type
   {
     const auto id = mNextStringId;
     assert(mStrings.find(id) == mStrings.end());
@@ -708,6 +1163,31 @@ class FontCache final {
     return id;
   }
 };
+
+/// \name Font cache functions
+/// \{
+
+[[nodiscard]] inline auto to_string(const font_cache& cache) -> std::string
+{
+  const auto& font = cache.get_font();
+
+  const auto* name = str_or_na(font.GetFamilyName());
+  const auto size = font.GetSize();
+
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("font_cache(font: '{}', size: {})", name, size);
+#else
+  using namespace std::string_literals;
+  return "font_cache(font: '"s + name + "', size: " + std::to_string(size) + ")";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+inline auto operator<<(std::ostream& stream, const font_cache& cache) -> std::ostream&
+{
+  return stream << to_string(cache);
+}
+
+/// \} End of font cache functions
 
 /**
  * \brief Utility for handling fonts of various sizes.
@@ -818,7 +1298,7 @@ class font_bundle final {
    *
    * \throws Error if the identifier is invalid or if there is no font of the specified size.
    */
-  [[nodiscard]] auto at(const id_type id, const int size) -> FontCache&
+  [[nodiscard]] auto at(const id_type id, const int size) -> font_cache&
   {
     if (const auto pool = mPools.find(id); pool != mPools.end()) {
       auto& caches = pool->second.caches;
@@ -835,7 +1315,7 @@ class font_bundle final {
   }
 
   /// \copydoc at()
-  [[nodiscard]] auto at(const id_type id, const int size) const -> const FontCache&
+  [[nodiscard]] auto at(const id_type id, const int size) const -> const font_cache&
   {
     return mPools.at(id).caches.at(size);
   }
@@ -857,13 +1337,13 @@ class font_bundle final {
    */
   [[nodiscard]] auto get_font(const id_type id, const int size) -> Font&
   {
-    return at(id, size).GetFont();
+    return at(id, size).get_font();
   }
 
   /// \copydoc get_font()
   [[nodiscard]] auto get_font(const id_type id, const int size) const -> const Font&
   {
-    return at(id, size).GetFont();
+    return at(id, size).get_font();
   }
 
   /**
@@ -896,7 +1376,7 @@ class font_bundle final {
  private:
   struct font_pool final {
     std::string path;
-    std::unordered_map<int, FontCache> caches;  ///< Size -> Cache
+    std::unordered_map<int, font_cache> caches;  ///< Size -> Cache
   };
 
   std::unordered_map<id_type, font_pool> mPools;
@@ -937,50 +1417,6 @@ inline auto operator<<(std::ostream& stream, const font_bundle& bundle) -> std::
 }
 
 /// \} End of font bundle functions
-
-[[nodiscard]] constexpr auto ToString(const FontHint hint) -> std::string_view
-{
-  switch (hint) {
-    case FontHint::Normal:
-      return "Normal";
-
-    case FontHint::Light:
-      return "Light";
-
-    case FontHint::Mono:
-      return "Mono";
-
-    case FontHint::None:
-      return "None";
-
-    default:
-      throw Error{"Did not recognize font hint!"};
-  }
-}
-
-[[nodiscard]] inline auto ToString(const Font& font) -> std::string
-{
-#if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("Font(data: {}, name: {}, size: {})",
-                     detail::address_of(font.get()),
-                     font.GetFamilyName(),
-                     font.GetSize());
-#else
-  return "Font(data: " + detail::address_of(font.get()) +
-         ", name: " + std::string{font.GetFamilyName()} +
-         ", size: " + std::to_string(font.GetSize()) + ")";
-#endif  // CENTURION_HAS_FEATURE_FORMAT
-}
-
-inline auto operator<<(std::ostream& stream, const FontHint hint) -> std::ostream&
-{
-  return stream << ToString(hint);
-}
-
-inline auto operator<<(std::ostream& stream, const Font& font) -> std::ostream&
-{
-  return stream << ToString(font);
-}
 
 /// \} End of group video
 

@@ -62,19 +62,19 @@ class music_example final {
   void load_messages()
   {
     const auto color = cen::colors::white;
-    mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_zero, color));
-    mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_one, color));
-    mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_two, color));
-    mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_nine, color));
-    mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_fade, color));
-    mInstructions.emplace_back(mRenderer, mFont.RenderBlendedLatin1(msg_halt, color));
+    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_zero, color));
+    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_one, color));
+    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_two, color));
+    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_nine, color));
+    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_fade, color));
+    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_halt, color));
 
     mTexPlayingMusic =
-        mRenderer.ToTexture(mFont.RenderBlendedLatin1(msg_playing, cen::colors::lime_green));
+        mRenderer.ToTexture(mFont.render_blended_latin1(msg_playing, cen::colors::lime_green));
     mTexFadingMusic =
-        mRenderer.ToTexture(mFont.RenderBlendedLatin1(msg_fading, cen::colors::hot_pink));
+        mRenderer.ToTexture(mFont.render_blended_latin1(msg_fading, cen::colors::hot_pink));
     mTexNoMusic =
-        mRenderer.ToTexture(mFont.RenderBlendedLatin1(msg_no_music, cen::colors::red));
+        mRenderer.ToTexture(mFont.render_blended_latin1(msg_no_music, cen::colors::red));
   }
 
   void on_quit_event(const cen::quit_event&) { m_running = false; }

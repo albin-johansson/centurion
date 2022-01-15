@@ -15,7 +15,7 @@ int main(int, char**)
   window.Show();
 
   // Render a string to a texture, which in turn can be rendered to our render target
-  cen::Texture text{renderer, font.RenderBlendedUTF8("Hello world!", cen::colors::white)};
+  cen::Texture text{renderer, font.render_blended("Hello world!", cen::colors::white)};
 
   // Clear our render target with an arbitrary color
   renderer.ClearWith(cen::colors::light_coral);

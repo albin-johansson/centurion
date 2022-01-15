@@ -131,10 +131,9 @@ class BasicJoystick final {
     return SDL_JoystickRumbleTriggers(mJoystick, left, right, duration.count()) == 0;
   }
 
-  auto SetLED(const Color& color) noexcept -> Result
+  auto SetLED(const color& color) noexcept -> Result
   {
-    return SDL_JoystickSetLED(mJoystick, color.GetRed(), color.GetGreen(), color.GetBlue()) ==
-           0;
+    return SDL_JoystickSetLED(mJoystick, color.red(), color.green(), color.blue()) == 0;
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

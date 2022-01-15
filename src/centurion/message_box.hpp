@@ -53,9 +53,9 @@ class MessageBoxColorScheme final {
     SetColor(MessageBoxColorType::ButtonSelected, colors::white);
   }
 
-  void SetColor(const MessageBoxColorType id, const Color& color) noexcept
+  void SetColor(const MessageBoxColorType id, const color& color) noexcept
   {
-    mScheme.colors[ToUnderlying(id)] = color.AsMessageBoxColor();
+    mScheme.colors[ToUnderlying(id)] = color.as_message_box_color();
   }
 
   [[nodiscard]] auto data() noexcept -> SDL_MessageBoxColorScheme* { return &mScheme; }

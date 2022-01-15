@@ -253,38 +253,38 @@ class Font final {
     return CalcSize(str.c_str());
   }
 
-  [[nodiscard]] auto RenderBlendedGlyph(const Unicode glyph, const Color& color) const
+  [[nodiscard]] auto RenderBlendedGlyph(const Unicode glyph, const color& color) const
       -> Surface
   {
     return Surface{TTF_RenderGlyph_Blended(get(), glyph, color.get())};
   }
 
-  [[nodiscard]] auto RenderSolidGlyph(const Unicode glyph, const Color& color) const -> Surface
+  [[nodiscard]] auto RenderSolidGlyph(const Unicode glyph, const color& color) const -> Surface
   {
     return Surface{TTF_RenderGlyph_Solid(get(), glyph, color.get())};
   }
 
   [[nodiscard]] auto RenderShadedGlyph(const Unicode glyph,
-                                       const Color& fg,
-                                       const Color& bg) const -> Surface
+                                       const color& fg,
+                                       const color& bg) const -> Surface
   {
     return Surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedUTF8(const char* str, const Color& color) const -> Surface
+  [[nodiscard]] auto RenderBlendedUTF8(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderUTF8_Blended(get(), str, color.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const Color& color) const
+  [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const color& color) const
       -> Surface
   {
     return RenderBlendedUTF8(str.c_str(), color);
   }
 
   [[nodiscard]] auto RenderBlendedWrappedUTF8(const char* str,
-                                              const Color& color,
+                                              const color& color,
                                               const Uint32 wrap) const -> Surface
   {
     assert(str);
@@ -292,13 +292,13 @@ class Font final {
   }
 
   [[nodiscard]] auto RenderBlendedWrappedUTF8(const std::string& str,
-                                              const Color& color,
+                                              const color& color,
                                               const Uint32 wrap) const -> Surface
   {
     return RenderBlendedWrappedUTF8(str.c_str(), color, wrap);
   }
 
-  [[nodiscard]] auto RenderShadedUTF8(const char* str, const Color& fg, const Color& bg) const
+  [[nodiscard]] auto RenderShadedUTF8(const char* str, const color& fg, const color& bg) const
       -> Surface
   {
     assert(str);
@@ -306,38 +306,38 @@ class Font final {
   }
 
   [[nodiscard]] auto RenderShadedUTF8(const std::string& str,
-                                      const Color& fg,
-                                      const Color& bg) const -> Surface
+                                      const color& fg,
+                                      const color& bg) const -> Surface
   {
     return RenderShadedUTF8(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto RenderSolidUTF8(const char* str, const Color& color) const -> Surface
+  [[nodiscard]] auto RenderSolidUTF8(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderUTF8_Solid(get(), str, color.get())};
   }
 
-  [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const Color& color) const
+  [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const color& color) const
       -> Surface
   {
     return RenderSolidUTF8(str.c_str(), color);
   }
 
-  [[nodiscard]] auto RenderBlendedLatin1(const char* str, const Color& color) const -> Surface
+  [[nodiscard]] auto RenderBlendedLatin1(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Blended(get(), str, color.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const Color& color) const
+  [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const color& color) const
       -> Surface
   {
     return RenderBlendedLatin1(str.c_str(), color);
   }
 
   [[nodiscard]] auto RenderBlendedWrappedLatin1(const char* str,
-                                                const Color& color,
+                                                const color& color,
                                                 const Uint32 wrap) const -> Surface
   {
     assert(str);
@@ -345,60 +345,60 @@ class Font final {
   }
 
   [[nodiscard]] auto RenderBlendedWrappedLatin1(const std::string& str,
-                                                const Color& color,
+                                                const color& color,
                                                 const Uint32 wrap) const -> Surface
   {
     return RenderBlendedWrappedLatin1(str.c_str(), color, wrap);
   }
 
   [[nodiscard]] auto RenderShadedLatin1(const char* str,
-                                        const Color& fg,
-                                        const Color& bg) const -> Surface
+                                        const color& fg,
+                                        const color& bg) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto RenderShadedLatin1(const std::string& str,
-                                        const Color& fg,
-                                        const Color& bg) const -> Surface
+                                        const color& fg,
+                                        const color& bg) const -> Surface
   {
     return RenderShadedLatin1(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto RenderSolidLatin1(const char* str, const Color& color) const -> Surface
+  [[nodiscard]] auto RenderSolidLatin1(const char* str, const color& color) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Solid(get(), str, color.get())};
   }
 
-  [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const Color& color) const
+  [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const color& color) const
       -> Surface
   {
     return RenderSolidLatin1(str.c_str(), color);
   }
 
-  [[nodiscard]] auto RenderBlendedUnicode(const UnicodeString& str, const Color& color) const
+  [[nodiscard]] auto RenderBlendedUnicode(const UnicodeString& str, const color& color) const
       -> Surface
   {
     return Surface{TTF_RenderUNICODE_Blended(get(), str.data(), color.get())};
   }
 
   [[nodiscard]] auto RenderBlendedWrappedUnicode(const UnicodeString& str,
-                                                 const Color& color,
+                                                 const color& color,
                                                  const Uint32 wrap) const -> Surface
   {
     return Surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), color.get(), wrap)};
   }
 
   [[nodiscard]] auto RenderShadedUnicode(const UnicodeString& str,
-                                         const Color& fg,
-                                         const Color& bg) const -> Surface
+                                         const color& fg,
+                                         const color& bg) const -> Surface
   {
     return Surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const Color& color) const
+  [[nodiscard]] auto RenderSolidUnicode(const UnicodeString& str, const color& color) const
       -> Surface
   {
     return Surface{TTF_RenderUNICODE_Solid(get(), str.data(), color.get())};
@@ -493,7 +493,7 @@ class FontCache final {
   }
 
   template <typename T>
-  auto StoreSolidUTF8(BasicRenderer<T>& renderer, const char* str, const Color& color)
+  auto StoreSolidUTF8(BasicRenderer<T>& renderer, const char* str, const color& color)
       -> std::size_t
   {
     assert(str);
@@ -503,15 +503,15 @@ class FontCache final {
   template <typename T>
   auto StoreShadedUTF8(BasicRenderer<T>& renderer,
                        const char* str,
-                       const Color& fg,
-                       const Color& bg) -> std::size_t
+                       const color& fg,
+                       const color& bg) -> std::size_t
   {
     assert(str);
     return Store(renderer, mFont.RenderShadedUTF8(str, fg, bg));
   }
 
   template <typename T>
-  auto StoreBlendedUTF8(BasicRenderer<T>& renderer, const char* str, const Color& color)
+  auto StoreBlendedUTF8(BasicRenderer<T>& renderer, const char* str, const color& color)
       -> std::size_t
   {
     assert(str);
@@ -521,7 +521,7 @@ class FontCache final {
   template <typename T>
   auto StoreWrappedUTF8(BasicRenderer<T>& renderer,
                         const char* str,
-                        const Color& color,
+                        const color& color,
                         const Uint32 wrap) -> std::size_t
   {
     assert(str);
@@ -529,7 +529,7 @@ class FontCache final {
   }
 
   template <typename T>
-  auto StoreSolidLatin1(BasicRenderer<T>& renderer, const char* str, const Color& color)
+  auto StoreSolidLatin1(BasicRenderer<T>& renderer, const char* str, const color& color)
       -> std::size_t
   {
     assert(str);
@@ -539,15 +539,15 @@ class FontCache final {
   template <typename T>
   auto StoreShadedLatin1(BasicRenderer<T>& renderer,
                          const char* str,
-                         const Color& fg,
-                         const Color& bg) -> std::size_t
+                         const color& fg,
+                         const color& bg) -> std::size_t
   {
     assert(str);
     return Store(renderer, mFont.RenderShadedLatin1(str, fg, bg));
   }
 
   template <typename T>
-  auto StoreBlendedLatin1(BasicRenderer<T>& renderer, const char* str, const Color& color)
+  auto StoreBlendedLatin1(BasicRenderer<T>& renderer, const char* str, const color& color)
       -> std::size_t
   {
     assert(str);
@@ -557,7 +557,7 @@ class FontCache final {
   template <typename T>
   auto StoreWrappedLatin1(BasicRenderer<T>& renderer,
                           const char* str,
-                          const Color& color,
+                          const color& color,
                           const Uint32 wrap) -> std::size_t
   {
     assert(str);
@@ -567,7 +567,7 @@ class FontCache final {
   template <typename T>
   auto StoreSolidUnicode(BasicRenderer<T>& renderer,
                          const UnicodeString& str,
-                         const Color& color) -> std::size_t
+                         const color& color) -> std::size_t
   {
     return Store(renderer, mFont.RenderSolidUnicode(str, color));
   }
@@ -575,8 +575,8 @@ class FontCache final {
   template <typename T>
   auto StoreShadedUnicode(BasicRenderer<T>& renderer,
                           const UnicodeString& str,
-                          const Color& fg,
-                          const Color& bg) -> std::size_t
+                          const color& fg,
+                          const color& bg) -> std::size_t
   {
     return Store(renderer, mFont.RenderShadedUnicode(str, fg, bg));
   }
@@ -584,7 +584,7 @@ class FontCache final {
   template <typename T>
   auto StoreBlendedUnicode(BasicRenderer<T>& renderer,
                            const UnicodeString& str,
-                           const Color& color) -> std::size_t
+                           const color& color) -> std::size_t
   {
     return Store(renderer, mFont.RenderBlendedUnicode(str, color));
   }
@@ -592,7 +592,7 @@ class FontCache final {
   template <typename T>
   auto StoreWrappedUnicode(BasicRenderer<T>& renderer,
                            const UnicodeString& str,
-                           const Color& color,
+                           const color& color,
                            const Uint32 wrap) -> std::size_t
   {
     return Store(renderer, mFont.RenderBlendedWrappedUnicode(str, color, wrap));

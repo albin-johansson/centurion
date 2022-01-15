@@ -110,17 +110,17 @@ class Palette final {
     }
   }
 
-  auto SetColor(const int index, const Color& color) noexcept -> Result
+  auto SetColor(const int index, const color& color) noexcept -> Result
   {
     assert(index >= 0);
     assert(index < GetSize());
     return SDL_SetPaletteColors(mPalette.get(), color.data(), index, 1) == 0;
   }
 
-  [[nodiscard]] auto GetColor(const int index) const -> Color
+  [[nodiscard]] auto GetColor(const int index) const -> color
   {
     if (index >= 0 && index < GetSize()) {
-      return Color{mPalette->colors[index]};
+      return color{mPalette->colors[index]};
     }
     else {
       throw Error{"Palette index out of bounds!"};
@@ -186,37 +186,33 @@ class BasicPixelFormatInfo final {
   explicit BasicPixelFormatInfo(const PixelFormatInfo& info) noexcept : mFormat{info.get()}
   {}
 
-  [[nodiscard]] auto PixelToRGB(const Uint32 pixel) const noexcept -> Color
+  [[nodiscard]] auto PixelToRGB(const Uint32 pixel) const noexcept -> color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     SDL_GetRGB(pixel, mFormat, &red, &green, &blue);
-    return Color{red, green, blue};
+    return {red, green, blue};
   }
 
-  [[nodiscard]] auto PixelToRGBA(const Uint32 pixel) const noexcept -> Color
+  [[nodiscard]] auto PixelToRGBA(const Uint32 pixel) const noexcept -> color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     Uint8 alpha{};
     SDL_GetRGBA(pixel, mFormat, &red, &green, &blue, &alpha);
-    return Color{red, green, blue, alpha};
+    return {red, green, blue, alpha};
   }
 
-  [[nodiscard]] auto RGBToPixel(const Color& color) const noexcept -> Uint32
+  [[nodiscard]] auto RGBToPixel(const color& color) const noexcept -> Uint32
   {
-    return SDL_MapRGB(mFormat, color.GetRed(), color.GetGreen(), color.GetBlue());
+    return SDL_MapRGB(mFormat, color.red(), color.green(), color.blue());
   }
 
-  [[nodiscard]] auto RGBAToPixel(const Color& color) const noexcept -> Uint32
+  [[nodiscard]] auto RGBAToPixel(const color& color) const noexcept -> Uint32
   {
-    return SDL_MapRGBA(mFormat,
-                       color.GetRed(),
-                       color.GetGreen(),
-                       color.GetBlue(),
-                       color.GetAlpha());
+    return SDL_MapRGBA(mFormat, color.red(), color.green(), color.blue(), color.alpha());
   }
 
   [[nodiscard]] auto GetFormat() const noexcept -> PixelFormat

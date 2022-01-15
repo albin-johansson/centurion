@@ -418,12 +418,10 @@ class BasicController final {
     return SDL_GameControllerRumbleTriggers(mController, lo, hi, duration.count()) == 0;
   }
 
-  auto SetLED(const Color& color) noexcept -> Result
+  auto SetLED(const color& color) noexcept -> Result
   {
-    return SDL_GameControllerSetLED(mController,
-                                    color.GetRed(),
-                                    color.GetGreen(),
-                                    color.GetBlue()) == 0;
+    return SDL_GameControllerSetLED(mController, color.red(), color.green(), color.blue()) ==
+           0;
   }
 
   auto SetSensorEnabled(const sensor_type type, const bool enabled) noexcept -> Result

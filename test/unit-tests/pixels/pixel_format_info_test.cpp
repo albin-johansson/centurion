@@ -53,34 +53,29 @@ TEST_F(PixelFormatInfoTest, GetName)
 TEST_F(PixelFormatInfoTest, RGBToPixel)
 {
   constexpr auto color = cen::colors::hot_pink;
-  ASSERT_EQ(SDL_MapRGB(info->get(), color.GetRed(), color.GetGreen(), color.GetBlue()),
+  ASSERT_EQ(SDL_MapRGB(info->get(), color.red(), color.green(), color.blue()),
             info->RGBToPixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, RGBAToPixel)
 {
   constexpr auto color = cen::colors::honey_dew;
-  ASSERT_EQ(SDL_MapRGBA(info->get(),
-                        color.GetRed(),
-                        color.GetGreen(),
-                        color.GetBlue(),
-                        color.GetAlpha()),
+  ASSERT_EQ(SDL_MapRGBA(info->get(), color.red(), color.green(), color.blue(), color.alpha()),
             info->RGBAToPixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGB)
 {
   constexpr auto color = cen::colors::hot_pink;
-  const Uint32 pixel =
-      (color.GetRed() << 24u) | (color.GetGreen() << 16u) | (color.GetBlue() << 8u);
+  const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
   ASSERT_EQ(color, info->PixelToRGB(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGBA)
 {
   constexpr auto color = cen::colors::aquamarine;
-  const Uint32 pixel = (color.GetRed() << 24u) | (color.GetGreen() << 16u) |
-                       (color.GetBlue() << 8u) | (color.GetAlpha() << 0u);
+  const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u) |
+                       (color.alpha() << 0u);
   ASSERT_EQ(color, info->PixelToRGBA(pixel));
 }
 

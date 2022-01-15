@@ -15,9 +15,9 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
@@ -75,7 +75,7 @@ class BasicRenderer final {
   auto Clear() noexcept -> Result { return SDL_RenderClear(get()) == 0; }
 
   /* Clears the rendering target with the specified color, active color is unchanged. */
-  void ClearWith(const Color& color) noexcept
+  void ClearWith(const color& color) noexcept
   {
     const auto previous = GetColor();
     SetColor(color);
@@ -88,7 +88,7 @@ class BasicRenderer final {
 
   void Fill() noexcept { FillRect<int>({{}, GetOutputSize()}); }
 
-  void FillWith(const Color& color) noexcept
+  void FillWith(const color& color) noexcept
   {
     const auto previous = GetColor();
 
@@ -379,13 +379,13 @@ class BasicRenderer final {
     return Texture{*this, surface};
   }
 
-  auto SetColor(const Color& color) noexcept -> Result
+  auto SetColor(const color& color) noexcept -> Result
   {
     return SDL_SetRenderDrawColor(get(),
-                                  color.GetRed(),
-                                  color.GetGreen(),
-                                  color.GetBlue(),
-                                  color.GetAlpha()) == 0;
+                                  color.red(),
+                                  color.green(),
+                                  color.blue(),
+                                  color.alpha()) == 0;
   }
 
   auto SetClip(const std::optional<Rect>& area) noexcept -> Result
@@ -486,7 +486,7 @@ class BasicRenderer final {
     return static_cast<BlendMode>(mode);
   }
 
-  [[nodiscard]] auto GetColor() const noexcept -> Color
+  [[nodiscard]] auto GetColor() const noexcept -> color
   {
     Uint8 red{};
     Uint8 green{};

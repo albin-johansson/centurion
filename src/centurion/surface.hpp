@@ -204,9 +204,9 @@ class BasicSurface final {
 
   void SetAlphaMod(const Uint8 alpha) noexcept { SDL_SetSurfaceAlphaMod(mSurface, alpha); }
 
-  void SetColorMod(const Color& color) noexcept
+  void SetColorMod(const color& color) noexcept
   {
-    SDL_SetSurfaceColorMod(mSurface, color.GetRed(), color.GetGreen(), color.GetBlue());
+    SDL_SetSurfaceColorMod(mSurface, color.red(), color.green(), color.blue());
   }
 
   void SetBlendMode(const BlendMode mode) noexcept
@@ -243,13 +243,13 @@ class BasicSurface final {
     return alpha;
   }
 
-  [[nodiscard]] auto GetColorMod() const noexcept -> Color
+  [[nodiscard]] auto GetColorMod() const noexcept -> color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     if (SDL_GetSurfaceColorMod(mSurface, &red, &green, &blue) == 0) {
-      return Color{red, green, blue};
+      return {red, green, blue};
     }
     else {
       return colors::white;

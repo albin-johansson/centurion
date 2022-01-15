@@ -122,9 +122,9 @@ class BasicTexture final {
     SDL_SetTextureBlendMode(mTexture, static_cast<SDL_BlendMode>(mode));
   }
 
-  void SetColorMod(const Color& color) noexcept
+  void SetColorMod(const color& color) noexcept
   {
-    SDL_SetTextureColorMod(mTexture, color.GetRed(), color.GetGreen(), color.GetBlue());
+    SDL_SetTextureColorMod(mTexture, color.red(), color.green(), color.blue());
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -192,13 +192,13 @@ class BasicTexture final {
     return alpha;
   }
 
-  [[nodiscard]] auto GetColorMod() const noexcept -> Color
+  [[nodiscard]] auto GetColorMod() const noexcept -> color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     SDL_GetTextureColorMod(mTexture, &red, &green, &blue);
-    return Color{red, green, blue};
+    return {red, green, blue};
   }
 
   [[nodiscard]] auto GetBlendMode() const noexcept -> BlendMode

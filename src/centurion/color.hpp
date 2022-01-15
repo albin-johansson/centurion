@@ -25,9 +25,15 @@
 
 namespace cen {
 
+/**
+ * \brief A representation of an 8-bit RGBA color.
+ *
+ * \details This class supports construction and conversion from various formats such as the
+ * SDL color types, HSV, HSL, normalized components, and hexadecimal RGB/RGBA/ARGB color codes.
+ */
 class Color final {
  public:
-  /* Creates a black color */
+  /// Creates an opaque black color.
   constexpr Color() noexcept = default;
 
   constexpr Color(const Uint8 red,
@@ -37,8 +43,10 @@ class Color final {
       : mColor{red, green, blue, alpha}
   {}
 
+  /// Copies a plain SDL color.
   constexpr explicit Color(const SDL_Color& color) noexcept : mColor{color} {}
 
+  /// Copies an SDL message box color, assuming opaque opacity.
   constexpr explicit Color(const SDL_MessageBoxColor& color) noexcept
       : mColor{color.r, color.g, color.b, 0xFF}
   {}
@@ -46,7 +54,7 @@ class Color final {
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \note The values will be clamped to be within their respective ranges.
+   * \details The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -113,7 +121,7 @@ class Color final {
   /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \note The values will be clamped to be within their respective ranges.
+   * \details The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].

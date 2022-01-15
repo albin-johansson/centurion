@@ -67,7 +67,7 @@ class SharedObject final {
   explicit SharedObject(const char* object) : mObject{SDL_LoadObject(object)}
   {
     if (!mObject) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -285,7 +285,7 @@ inline auto OpenURL(const std::string& url) noexcept -> Result
       return "Android";
 
     default:
-      throw Error{"Did not recognize platform!"};
+      throw exception{"Did not recognize platform!"};
   }
 }
 

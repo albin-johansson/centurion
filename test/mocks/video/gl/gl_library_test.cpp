@@ -31,7 +31,7 @@ TEST_F(OpenGLLibraryTest, Construction)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_LoadLibrary, values.data(), cen::isize(values));
 
-  ASSERT_THROW(cen::GLLibrary library, cen::SDLError);
+  ASSERT_THROW(cen::GLLibrary library, cen::sdl_error);
   ASSERT_NO_THROW(cen::GLLibrary library);
 }
 

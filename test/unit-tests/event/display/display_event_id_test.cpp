@@ -20,7 +20,7 @@ TEST(DisplayEventID, Values)
 
 TEST(DisplayEventID, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<ID>(4)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<ID>(4)), cen::exception);
 
   ASSERT_EQ("None", ToString(ID::None));
   ASSERT_EQ("Orientation", ToString(ID::Orientation));

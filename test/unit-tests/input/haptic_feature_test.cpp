@@ -28,7 +28,7 @@ TEST(HapticFeature, Values)
 
 TEST(HapticFeature, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::haptic_feature>(1u << 16u)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::haptic_feature>(1u << 16u)), cen::exception);
 
   ASSERT_EQ("constant", cen::ToString(cen::haptic_feature::constant));
   ASSERT_EQ("sine", cen::ToString(cen::haptic_feature::sine));

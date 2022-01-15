@@ -6,7 +6,7 @@ TEST(FontBundle, Usage)
 {
   cen::font_bundle bundle;
 
-  ASSERT_THROW(bundle.load_font("foo", 12), cen::TTFError);
+  ASSERT_THROW(bundle.load_font("foo", 12), cen::ttf_error);
 
   const auto a = bundle.load_font("resources/daniel.ttf", 12);
   ASSERT_EQ(1, bundle.font_count());
@@ -37,13 +37,13 @@ TEST(FontBundle, Usage)
   ASSERT_TRUE(bundle.contains("resources/type_writer.ttf"));
 
   ASSERT_STREQ("Daniel", bundle.get_font(a, 12).family_name());
-  ASSERT_THROW(bundle.at(a, 11), cen::Error);
-  ASSERT_THROW(bundle.at(a, 13), cen::Error);
-  ASSERT_THROW(bundle.at(c + 1, 9), cen::Error);
+  ASSERT_THROW(bundle.at(a, 11), cen::exception);
+  ASSERT_THROW(bundle.at(a, 13), cen::exception);
+  ASSERT_THROW(bundle.at(c + 1, 9), cen::exception);
 
   ASSERT_STREQ("Type Writer", bundle.get_font(c, 9).family_name());
-  ASSERT_THROW(bundle.at(c, 8), cen::Error);
-  ASSERT_THROW(bundle.at(c, 10), cen::Error);
+  ASSERT_THROW(bundle.at(c, 8), cen::exception);
+  ASSERT_THROW(bundle.at(c, 10), cen::exception);
 }
 
 TEST(FontBundle, ToString)

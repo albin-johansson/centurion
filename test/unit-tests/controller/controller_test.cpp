@@ -4,17 +4,17 @@
 
 TEST(Controller, PointerConstructor)
 {
-  ASSERT_THROW(cen::Controller{nullptr}, cen::Error);
+  ASSERT_THROW(cen::Controller{nullptr}, cen::exception);
 }
 
 TEST(Controller, IndexConstructor)
 {
-  ASSERT_THROW(cen::Controller{}, cen::SDLError);
+  ASSERT_THROW(cen::Controller{}, cen::sdl_error);
 }
 
 TEST(Controller, FromJoystick)
 {
-  ASSERT_THROW(cen::Controller::FromJoystick(0), cen::SDLError);
+  ASSERT_THROW(cen::Controller::FromJoystick(0), cen::sdl_error);
 }
 
 TEST(Controller, LoadControllerMappings)
@@ -45,7 +45,7 @@ TEST(Controller, GetAmount)
 
 TEST(Controller, FromIndex)
 {
-  ASSERT_THROW(cen::Controller::FromIndex(0), cen::SDLError);
+  ASSERT_THROW(cen::Controller::FromIndex(0), cen::sdl_error);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

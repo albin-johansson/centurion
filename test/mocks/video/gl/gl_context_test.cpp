@@ -25,7 +25,7 @@ class OpenGLContextTest : public testing::Test {
 
 TEST_F(OpenGLContextTest, Construction)
 {
-  ASSERT_THROW(cen::GLContext{nullptr}, cen::Error);
+  ASSERT_THROW(cen::GLContext{nullptr}, cen::exception);
   ASSERT_NO_THROW(cen::GLContextHandle{nullptr});
 }
 

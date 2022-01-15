@@ -16,7 +16,7 @@ TEST(BlendOp, Values)
 
 TEST(BlendOp, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::BlendOp>(42)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::BlendOp>(42)), cen::exception);
 
   ASSERT_EQ("Add", cen::ToString(cen::BlendOp::Add));
   ASSERT_EQ("Sub", cen::ToString(cen::BlendOp::Sub));

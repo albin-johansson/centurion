@@ -52,7 +52,7 @@ enum class haptic_feature : uint {
  *
  * \return a string that mirrors the name of the enumerator.
  *
- * \throws cen_error if the enumerator is not recognized.
+ * \throws exception if the enumerator is not recognized.
  *
  * \since 6.2.0
  */
@@ -108,7 +108,7 @@ enum class haptic_feature : uint {
       return "pause";
 
     default:
-      throw Error{"Did not recognize haptic feature!"};
+      throw exception{"Did not recognize haptic feature!"};
   }
 }
 

@@ -29,7 +29,7 @@ TEST(WindowEventID, Values)
 
 TEST(WindowEventID, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<ID>(18)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<ID>(18)), cen::exception);
 
   ASSERT_EQ("None", ToString(ID::None));
   ASSERT_EQ("Shown", ToString(ID::Shown));

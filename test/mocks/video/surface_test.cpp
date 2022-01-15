@@ -38,14 +38,14 @@ TEST_F(SurfaceTest, ConvertTo)
 {
   ASSERT_THROW(
       { const auto s [[maybe_unused]] = m_surface.ConvertTo(cen::PixelFormat::RGBA8888); },
-      cen::SDLError);
+      cen::sdl_error);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 
 TEST_F(SurfaceTest, Copy)
 {
   cen::Surface dst;
-  ASSERT_THROW(dst = m_surface, cen::SDLError);
+  ASSERT_THROW(dst = m_surface, cen::sdl_error);
   ASSERT_EQ(1u, SDL_DuplicateSurface_fake.call_count);
 }
 

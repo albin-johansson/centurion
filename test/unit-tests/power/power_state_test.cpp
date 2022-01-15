@@ -16,7 +16,7 @@ TEST(PowerState, Values)
 
 TEST(PowerState, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::PowerState>(6)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::PowerState>(6)), cen::exception);
 
   ASSERT_EQ("Unknown", cen::ToString(cen::PowerState::Unknown));
   ASSERT_EQ("OnBattery", cen::ToString(cen::PowerState::OnBattery));

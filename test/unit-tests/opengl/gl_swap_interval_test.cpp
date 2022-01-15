@@ -14,7 +14,7 @@ TEST(GLSwapInterval, Values)
 
 TEST(GLSwapInterval, ToString)
 {
-  ASSERT_THROW(ToString(cen::GLSwapInterval{2}), cen::Error);
+  ASSERT_THROW(ToString(cen::GLSwapInterval{2}), cen::exception);
 
   ASSERT_EQ("Immediate", ToString(cen::GLSwapInterval::Immediate));
   ASSERT_EQ("Synchronized", ToString(cen::GLSwapInterval::Synchronized));

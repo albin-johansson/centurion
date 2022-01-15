@@ -96,7 +96,7 @@ enum class PowerState {
       return "Charged";
 
     default:
-      throw Error{"Did not recognize power state!"};
+      throw exception{"Did not recognize power state!"};
   }
 }
 

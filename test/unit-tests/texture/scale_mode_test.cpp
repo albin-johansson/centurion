@@ -16,7 +16,7 @@ TEST(ScaleMode, EnumValues)
 
 TEST(ScaleMode, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::ScaleMode>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::ScaleMode>(4)), cen::exception);
 
   ASSERT_EQ("Nearest", cen::ToString(cen::ScaleMode::Nearest));
   ASSERT_EQ("Linear", cen::ToString(cen::ScaleMode::Linear));

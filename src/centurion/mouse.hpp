@@ -162,7 +162,7 @@ class BasicCursor final {
       : mCursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
     if (!mCursor) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -171,7 +171,7 @@ class BasicCursor final {
       : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.GetX(), hotspot.GetY())}
   {
     if (!mCursor) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -264,7 +264,7 @@ inline auto operator<<(std::ostream& stream, const Mouse& mouse) -> std::ostream
       return "x2";
 
     default:
-      throw Error{"Did not recognize mouse button!"};
+      throw exception{"Did not recognize mouse button!"};
   }
 }
 
@@ -313,7 +313,7 @@ inline auto operator<<(std::ostream& stream, const MouseButton button) -> std::o
       return "Hand";
 
     default:
-      throw Error{"Did not recognize system cursor!"};
+      throw exception{"Did not recognize system cursor!"};
   }
 }
 

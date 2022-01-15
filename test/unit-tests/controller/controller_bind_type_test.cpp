@@ -17,7 +17,7 @@ TEST(ControllerBindType, Values)
 
 TEST(ControllerBindType, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<BindType>(4)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<BindType>(4)), cen::exception);
 
   ASSERT_EQ("None", ToString(BindType::None));
   ASSERT_EQ("Button", ToString(BindType::Button));

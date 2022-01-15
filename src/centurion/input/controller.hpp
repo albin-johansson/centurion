@@ -143,7 +143,7 @@ class BasicController final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mController) {
-        throw Error{"Cannot create controller from null pointer!"};
+        throw exception{"Cannot create controller from null pointer!"};
       }
     }
   }
@@ -158,7 +158,7 @@ class BasicController final {
   explicit BasicController(const int index = 0) : mController{SDL_GameControllerOpen(index)}
   {
     if (!mController) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -169,7 +169,7 @@ class BasicController final {
       return BasicController{ptr};
     }
     else {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -182,7 +182,7 @@ class BasicController final {
       return BasicController{ptr};
     }
     else {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -663,7 +663,7 @@ inline auto LoadControllerMappings(const std::string& file) noexcept -> std::opt
       return "Max";
 
     default:
-      throw Error{"Did not recognize controller button!"};
+      throw exception{"Did not recognize controller button!"};
   }
 }
 
@@ -700,7 +700,7 @@ inline auto operator<<(std::ostream& stream, const ControllerButton button) -> s
       return "Max";
 
     default:
-      throw Error{"Did not recognize controller axis!"};
+      throw exception{"Did not recognize controller axis!"};
   }
 }
 
@@ -725,7 +725,7 @@ inline auto operator<<(std::ostream& stream, const ControllerAxis axis) -> std::
       return "Hat";
 
     default:
-      throw Error{"Did not recognize controller bind type!"};
+      throw exception{"Did not recognize controller bind type!"};
   }
 }
 
@@ -778,7 +778,7 @@ inline auto operator<<(std::ostream& stream, const ControllerBindType type) -> s
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
-      throw Error{"Did not recognize controller type!"};
+      throw exception{"Did not recognize controller type!"};
   }
 }
 
@@ -802,7 +802,7 @@ inline auto operator<<(std::ostream& stream, const ControllerType type) -> std::
       return "Added";
 
     default:
-      throw Error{"Did not recognize controller mapping result!"};
+      throw exception{"Did not recognize controller mapping result!"};
   }
 }
 

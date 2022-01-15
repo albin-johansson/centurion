@@ -14,7 +14,7 @@ TEST(TextureAccess, Values)
 
 TEST(TextureAccess, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::TextureAccess>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::TextureAccess>(4)), cen::exception);
 
   ASSERT_EQ("Static", cen::ToString(cen::TextureAccess::Static));
   ASSERT_EQ("Streaming", cen::ToString(cen::TextureAccess::Streaming));

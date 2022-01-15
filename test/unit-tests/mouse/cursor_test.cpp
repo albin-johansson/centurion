@@ -22,7 +22,7 @@ TEST(Cursor, SystemCursorConstructor)
   ASSERT_NO_THROW(cen::Cursor{cen::SystemCursor::Crosshair});
 
   const auto invalid = static_cast<cen::SystemCursor>(83'948);
-  ASSERT_THROW(cen::Cursor{invalid}, cen::SDLError);
+  ASSERT_THROW(cen::Cursor{invalid}, cen::sdl_error);
 }
 
 TEST(Cursor, SurfaceConstructor)
@@ -32,7 +32,7 @@ TEST(Cursor, SurfaceConstructor)
   ASSERT_NO_THROW(cen::Cursor(surface, hotspot));
 
   const cen::Point outside{8341, 2342};
-  ASSERT_THROW(cen::Cursor(surface, outside), cen::SDLError);
+  ASSERT_THROW(cen::Cursor(surface, outside), cen::sdl_error);
 }
 
 TEST(Cursor, Enable)

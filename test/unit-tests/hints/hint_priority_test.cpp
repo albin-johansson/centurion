@@ -16,7 +16,7 @@ TEST(HintPriority, ToString)
 {
   // TODO
 
-  //  ASSERT_THROW(cen::ToString(static_cast<cen::hint_priority>(4)), cen::Error);
+  //  ASSERT_THROW(cen::ToString(static_cast<cen::hint_priority>(4)), cen::exception);
   //
   //  ASSERT_EQ("low", cen::ToString(cen::hint_priority::low));
   //  ASSERT_EQ("normal", cen::ToString(cen::hint_priority::normal));

@@ -21,7 +21,7 @@ TEST(DisplayOrientation, Values)
 
 TEST(DisplayOrientation, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::DisplayOrientation>(6)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::DisplayOrientation>(6)), cen::exception);
 
   ASSERT_EQ("Unknown", cen::ToString(cen::DisplayOrientation::Unknown));
   ASSERT_EQ("Landscape", cen::ToString(cen::DisplayOrientation::Landscape));

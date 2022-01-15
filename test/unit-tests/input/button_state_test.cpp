@@ -14,7 +14,7 @@ TEST(ButtonState, Values)
 
 TEST(ButtonState, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::ButtonState>(3)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::ButtonState>(3)), cen::exception);
 
   ASSERT_EQ("Released", cen::ToString(cen::ButtonState::Released));
   ASSERT_EQ("Pressed", cen::ToString(cen::ButtonState::Pressed));

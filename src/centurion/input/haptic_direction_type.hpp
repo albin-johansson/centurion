@@ -39,7 +39,7 @@ enum class haptic_direction_type : Uint8 {
  *
  * \return a string that mirrors the name of the enumerator.
  *
- * \throws cen_error if the enumerator is not recognized.
+ * \throws exception if the enumerator is not recognized.
  *
  * \since 6.2.0
  */
@@ -56,7 +56,7 @@ enum class haptic_direction_type : Uint8 {
       return "spherical";
 
     default:
-      throw Error{"Did not recognize haptic direction type!"};
+      throw exception{"Did not recognize haptic direction type!"};
   }
 }
 

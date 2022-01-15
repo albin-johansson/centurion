@@ -68,7 +68,7 @@ class BasicWindow final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mWindow) {
-        throw Error{"Cannot create window from null pointer!"};
+        throw exception{"Cannot create window from null pointer!"};
       }
     }
   }
@@ -81,10 +81,10 @@ class BasicWindow final {
     assert(title);
 
     if (size.width < 1) {
-      throw Error{"Bad window width!"};
+      throw exception{"Bad window width!"};
     }
     else if (size.height < 1) {
-      throw Error{"Bad window height!"};
+      throw exception{"Bad window height!"};
     }
 
     mWindow.reset(SDL_CreateWindow(title,
@@ -94,7 +94,7 @@ class BasicWindow final {
                                    size.height,
                                    flags));
     if (!mWindow) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 

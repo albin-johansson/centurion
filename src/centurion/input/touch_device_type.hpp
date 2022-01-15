@@ -137,7 +137,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
  *
  * \return a string that mirrors the name of the enumerator.
  *
- * \throws cen_error if the enumerator is not recognized.
+ * \throws exception if the enumerator is not recognized.
  *
  * \since 6.2.0
  */
@@ -157,7 +157,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
       return "indirect_relative";
 
     default:
-      throw Error{"Did not recognize touch device type!"};
+      throw exception{"Did not recognize touch device type!"};
   }
 }
 

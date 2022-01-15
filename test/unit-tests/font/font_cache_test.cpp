@@ -225,7 +225,7 @@ TEST_F(FontCacheTest, GetGlyph)
   const auto& [texture, metrics] = cache.get_glyph('a');
   ASSERT_TRUE(texture.get());
 
-  ASSERT_THROW(cache.get_glyph(256), cen::Error);
+  ASSERT_THROW(cache.get_glyph(256), cen::exception);
 }
 
 TEST_F(FontCacheTest, FindGlyph)
@@ -245,7 +245,7 @@ TEST_F(FontCacheTest, GetString)
   ASSERT_TRUE(cache.has_string(id));
 
   ASSERT_TRUE(cache.get_string(id).get());
-  ASSERT_THROW(cache.get_string(id + 1), cen::Error);
+  ASSERT_THROW(cache.get_string(id + 1), cen::exception);
 }
 
 TEST_F(FontCacheTest, FindString)

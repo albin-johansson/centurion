@@ -27,11 +27,11 @@ static_assert(!std::is_copy_assignable_v<cen::font>);
 
 TEST(Font, Constructor)
 {
-  ASSERT_THROW(cen::font("", 1), cen::TTFError);
-  ASSERT_THROW(cen::font(danielPath, 0), cen::Error);
+  ASSERT_THROW(cen::font("", 1), cen::ttf_error);
+  ASSERT_THROW(cen::font(danielPath, 0), cen::exception);
 
-  ASSERT_THROW(cen::font(""s, 1), cen::TTFError);
-  ASSERT_THROW(cen::font(std::string{danielPath}, 0), cen::Error);
+  ASSERT_THROW(cen::font(""s, 1), cen::ttf_error);
+  ASSERT_THROW(cen::font(std::string{danielPath}, 0), cen::exception);
 }
 
 TEST(Font, ResetStyle)

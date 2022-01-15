@@ -46,7 +46,7 @@ class TextureTest : public testing::Test {
 
 TEST_F(TextureTest, PointerConstructor)
 {
-  ASSERT_THROW(cen::Texture{nullptr}, cen::Error);
+  ASSERT_THROW(cen::Texture{nullptr}, cen::exception);
 
   cen::Texture texture{IMG_LoadTexture(renderer->get(), path)};
   ASSERT_TRUE(texture.get());
@@ -55,7 +55,7 @@ TEST_F(TextureTest, PointerConstructor)
 TEST_F(TextureTest, PathConstructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(cen::Texture(*renderer, "badpath"s), cen::IMGError);
+  ASSERT_THROW(cen::Texture(*renderer, "badpath"s), cen::img_error);
 
   ASSERT_EQ(imageWidth, texture->GetWidth());
   ASSERT_EQ(imageHeight, texture->GetHeight());

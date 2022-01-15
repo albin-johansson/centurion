@@ -8,7 +8,7 @@ using MappingResult = cen::ControllerMappingResult;
 
 TEST(ControllerMappingResult, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<MappingResult>(4)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<MappingResult>(4)), cen::exception);
 
   ASSERT_EQ("Error", ToString(MappingResult::Error));
   ASSERT_EQ("Updated", ToString(MappingResult::Updated));

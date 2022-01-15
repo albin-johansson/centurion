@@ -88,14 +88,14 @@ using namespace cen::literals;
 
 TEST_F(HapticTest, IndexConstructor)
 {
-  ASSERT_THROW(cen::haptic{}, cen::SDLError);
+  ASSERT_THROW(cen::haptic{}, cen::sdl_error);
   ASSERT_EQ(1u, SDL_HapticOpen_fake.call_count);
 }
 
 TEST_F(HapticTest, PointerConstructor)
 {
   static_assert(!noexcept(cen::haptic{nullptr}));
-  ASSERT_THROW(cen::haptic{nullptr}, cen::Error);
+  ASSERT_THROW(cen::haptic{nullptr}, cen::exception);
 
   static_assert(noexcept(cen::haptic_handle{nullptr}));
   ASSERT_NO_THROW(cen::haptic_handle{nullptr});
@@ -104,13 +104,13 @@ TEST_F(HapticTest, PointerConstructor)
 TEST_F(HapticTest, FromJoystick)
 {
   cen::JoystickHandle handle{nullptr};
-  ASSERT_THROW(cen::haptic::from_joystick(handle), cen::SDLError);
+  ASSERT_THROW(cen::haptic::from_joystick(handle), cen::sdl_error);
   ASSERT_EQ(1u, SDL_HapticOpenFromJoystick_fake.call_count);
 }
 
 TEST_F(HapticTest, FromMouse)
 {
-  ASSERT_THROW(cen::haptic::from_mouse(), cen::SDLError);
+  ASSERT_THROW(cen::haptic::from_mouse(), cen::sdl_error);
   ASSERT_EQ(1u, SDL_HapticOpenFromMouse_fake.call_count);
 }
 

@@ -41,13 +41,13 @@ class RendererTest : public testing::Test {
 TEST_F(RendererTest, PointerConstructor)
 {
   SDL_Renderer* renderer{};
-  ASSERT_THROW(cen::Renderer{renderer}, cen::Error);
+  ASSERT_THROW(cen::Renderer{renderer}, cen::exception);
 }
 
 TEST_F(RendererTest, FlagsConstructor)
 {
   // This throws because there is already a renderer associated with the window
-  ASSERT_THROW(cen::Renderer{*window}, cen::SDLError);
+  ASSERT_THROW(cen::Renderer{*window}, cen::sdl_error);
 }
 
 TEST_F(RendererTest, SetColor)

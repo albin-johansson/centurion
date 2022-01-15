@@ -60,7 +60,7 @@ class BasicTexture final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mTexture) {
-        throw Error{"Cannot create texture from null pointer!"};
+        throw exception{"Cannot create texture from null pointer!"};
       }
     }
   }
@@ -77,7 +77,7 @@ class BasicTexture final {
       : mTexture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!mTexture) {
-      throw IMGError{};
+      throw img_error{};
     }
   }
 
@@ -94,7 +94,7 @@ class BasicTexture final {
       : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!mTexture) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -111,7 +111,7 @@ class BasicTexture final {
                                    size.height)}
   {
     if (!mTexture) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -251,7 +251,7 @@ class BasicTexture final {
       return "Target";
 
     default:
-      throw Error{"Did not recognize texture GetAccess!"};
+      throw exception{"Did not recognize texture GetAccess!"};
   }
 }
 
@@ -275,7 +275,7 @@ inline auto operator<<(std::ostream& stream, const TextureAccess access) -> std:
       return "Best";
 
     default:
-      throw Error{"Did not recognize scale mode!"};
+      throw exception{"Did not recognize scale mode!"};
   }
 }
 

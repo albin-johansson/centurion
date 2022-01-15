@@ -15,7 +15,7 @@ TEST(HapticDirectionType, Values)
 
 TEST(HapticDirectionType, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::haptic_direction_type>(3)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::haptic_direction_type>(3)), cen::exception);
 
   ASSERT_EQ("polar", cen::ToString(cen::haptic_direction_type::polar));
   ASSERT_EQ("cartesian", cen::ToString(cen::haptic_direction_type::cartesian));

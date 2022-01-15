@@ -31,7 +31,7 @@ TEST(ControllerType, Values)
 
 TEST(ControllerType, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Type>(10)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Type>(10)), cen::exception);
 
   ASSERT_EQ("Unknown", ToString(Type::Unknown));
   ASSERT_EQ("NintendoSwitchPro", ToString(Type::NintendoSwitchPro));

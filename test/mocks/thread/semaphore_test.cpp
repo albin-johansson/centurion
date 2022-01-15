@@ -15,5 +15,5 @@ class SemaphoreTest : public testing::Test {
 
 TEST_F(SemaphoreTest, Constructor)
 {
-  ASSERT_THROW(cen::Semaphore{0}, cen::SDLError);
+  ASSERT_THROW(cen::Semaphore{0}, cen::sdl_error);
 }

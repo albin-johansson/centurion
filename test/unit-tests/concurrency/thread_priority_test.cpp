@@ -16,7 +16,7 @@ TEST(ThreadPriority, Values)
 
 TEST(ThreadPriority, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::ThreadPriority>(5)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::ThreadPriority>(5)), cen::exception);
 
   ASSERT_EQ("Low", cen::ToString(cen::ThreadPriority::Low));
   ASSERT_EQ("Normal", cen::ToString(cen::ThreadPriority::Normal));

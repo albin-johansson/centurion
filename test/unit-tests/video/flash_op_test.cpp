@@ -16,7 +16,7 @@ TEST(FlashOp, Values)
 
 TEST(FlashOp, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::FlashOp>(42)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::FlashOp>(42)), cen::exception);
 
   ASSERT_EQ("Cancel", cen::ToString(cen::FlashOp::Cancel));
   ASSERT_EQ("Briefly", cen::ToString(cen::FlashOp::Briefly));

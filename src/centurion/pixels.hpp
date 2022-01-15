@@ -106,7 +106,7 @@ class Palette final {
   explicit Palette(const int nColors) : mPalette{SDL_AllocPalette(nColors)}
   {
     if (!mPalette) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -123,7 +123,7 @@ class Palette final {
       return color{mPalette->colors[index]};
     }
     else {
-      throw Error{"Palette index out of bounds!"};
+      throw exception{"Palette index out of bounds!"};
     }
   }
 
@@ -166,7 +166,7 @@ class BasicPixelFormatInfo final {
   {
     if constexpr (detail::is_owner<B>) {
       if (!mFormat) {
-        throw Error{"Null pixel format!"};
+        throw exception{"Null pixel format!"};
       }
     }
   }
@@ -178,7 +178,7 @@ class BasicPixelFormatInfo final {
       : mFormat{SDL_AllocFormat(ToUnderlying(format))}
   {
     if (!mFormat) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -372,7 +372,7 @@ class BasicPixelFormatInfo final {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw Error{"Did not recognize pixel format!"};
+      throw exception{"Did not recognize pixel format!"};
   }
 }
 

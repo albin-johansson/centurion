@@ -4,12 +4,12 @@
 
 TEST(Joystick, PointerConstructor)
 {
-  ASSERT_THROW(cen::Joystick{nullptr}, cen::Error);
+  ASSERT_THROW(cen::Joystick{nullptr}, cen::exception);
 }
 
 TEST(Joystick, IndexConstructor)
 {
-  ASSERT_THROW(cen::Joystick{0}, cen::SDLError);
+  ASSERT_THROW(cen::Joystick{0}, cen::sdl_error);
 }
 
 TEST(Joystick, GetAxisMax)

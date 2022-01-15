@@ -22,7 +22,7 @@ TEST(JoyHatPosition, Values)
 
 TEST(JoyHatPosition, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Position>(SDL_HAT_RIGHTDOWN + 1)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Position>(SDL_HAT_RIGHTDOWN + 1)), cen::exception);
 
   ASSERT_EQ("LeftUp", ToString(Position::LeftUp));
   ASSERT_EQ("Left", ToString(Position::Left));

@@ -4,5 +4,5 @@
 
 TEST(SharedObject, Constructor)
 {
-  ASSERT_THROW(cen::SharedObject{"foo"}, cen::SDLError);
+  ASSERT_THROW(cen::SharedObject{"foo"}, cen::sdl_error);
 }

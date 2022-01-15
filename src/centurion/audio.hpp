@@ -54,7 +54,7 @@ class Music final {
   explicit Music(const char* file) : mMusic{Mix_LoadMUS(file)}
   {
     if (!mMusic) {
-      throw MixError{};
+      throw mix_error{};
     }
   }
 
@@ -189,7 +189,7 @@ class BasicSoundEffect final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mChunk) {
-        throw MixError{};
+        throw mix_error{};
       }
     }
   }
@@ -198,7 +198,7 @@ class BasicSoundEffect final {
   explicit BasicSoundEffect(const char* file) : mChunk{Mix_LoadWAV(file)}
   {
     if (!mChunk) {
-      throw MixError{};
+      throw mix_error{};
     }
   }
 

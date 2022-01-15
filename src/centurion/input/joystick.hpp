@@ -82,7 +82,7 @@ class BasicJoystick final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mJoystick) {
-        throw Error{"Cannot create joystick from null pointer!"};
+        throw exception{"Cannot create joystick from null pointer!"};
       }
     }
   }
@@ -91,7 +91,7 @@ class BasicJoystick final {
   explicit BasicJoystick(const int index = 0) : mJoystick{SDL_JoystickOpen(index)}
   {
     if (!mJoystick) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -513,7 +513,7 @@ class BasicJoystick final {
       return "Throttle";
 
     default:
-      throw Error{"Did not recognize joystick type!"};
+      throw exception{"Did not recognize joystick type!"};
   }
 }
 
@@ -547,7 +547,7 @@ inline auto operator<<(std::ostream& stream, const JoystickType type) -> std::os
       return "Max";
 
     default:
-      throw Error{"Did not recognize joystick power!"};
+      throw exception{"Did not recognize joystick power!"};
   }
 }
 
@@ -587,7 +587,7 @@ inline auto operator<<(std::ostream& stream, const JoystickPower power) -> std::
       return "LeftDown";
 
     default:
-      throw Error{"Did not recognize hat state!"};
+      throw exception{"Did not recognize hat state!"};
   }
 }
 

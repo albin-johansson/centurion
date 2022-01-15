@@ -24,7 +24,7 @@ TEST(SystemCursor, Values)
 TEST(SystemCursor, ToString)
 {
   ASSERT_THROW(cen::ToString(static_cast<cen::SystemCursor>(SDL_NUM_SYSTEM_CURSORS)),
-               cen::Error);
+               cen::exception);
 
   ASSERT_EQ("Arrow", cen::ToString(cen::SystemCursor::Arrow));
   ASSERT_EQ("IBeam", cen::ToString(cen::SystemCursor::IBeam));

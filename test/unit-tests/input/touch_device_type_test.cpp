@@ -22,7 +22,7 @@ TEST(TouchDeviceType, Values)
 
 TEST(TouchDeviceType, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::touch_device_type>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::touch_device_type>(4)), cen::exception);
 
   ASSERT_EQ("invalid", cen::ToString(cen::touch_device_type::invalid));
   ASSERT_EQ("direct", cen::ToString(cen::touch_device_type::direct));

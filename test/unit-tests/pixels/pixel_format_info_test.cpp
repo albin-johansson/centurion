@@ -24,14 +24,14 @@ TEST_F(PixelFormatInfoTest, PointerConstructor)
   static_assert(!noexcept(cen::PixelFormatInfo{nullptr}));
   static_assert(noexcept(cen::PixelFormatInfoHandle{nullptr}));
 
-  ASSERT_THROW(cen::PixelFormatInfo{nullptr}, cen::Error);
+  ASSERT_THROW(cen::PixelFormatInfo{nullptr}, cen::exception);
   ASSERT_NO_THROW(cen::PixelFormatInfoHandle{nullptr});
 }
 
 TEST_F(PixelFormatInfoTest, FormatConstructor)
 {
   const auto invalid = static_cast<cen::PixelFormat>(0xFFFFFFFF);
-  ASSERT_THROW(cen::PixelFormatInfo{invalid}, cen::SDLError);
+  ASSERT_THROW(cen::PixelFormatInfo{invalid}, cen::sdl_error);
 }
 
 TEST_F(PixelFormatInfoTest, HandleFromOwner)

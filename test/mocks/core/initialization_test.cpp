@@ -79,29 +79,29 @@ TEST_F(InitializationTest, TTFDefaultConfiguration)
 TEST_F(InitializationTest, SDLCoreInitFailure)
 {
   SDL_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::SDL{}, cen::SDLError);
+  ASSERT_THROW(cen::SDL{}, cen::sdl_error);
 }
 
 TEST_F(InitializationTest, SDLTTFInitFailure)
 {
   TTF_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::TTF{}, cen::TTFError);
+  ASSERT_THROW(cen::TTF{}, cen::ttf_error);
 }
 
 TEST_F(InitializationTest, SDLImageInitFailure)
 {
   IMG_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::IMG{}, cen::IMGError);
+  ASSERT_THROW(cen::IMG{}, cen::img_error);
 }
 
 TEST_F(InitializationTest, SDLMixInitFailure)
 {
   Mix_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::Mix{}, cen::MixError);
+  ASSERT_THROW(cen::Mix{}, cen::mix_error);
 }
 
 TEST_F(InitializationTest, SDLMixOpenFailure)
 {
   Mix_OpenAudio_fake.return_val = -1;
-  ASSERT_THROW(cen::Mix{}, cen::MixError);
+  ASSERT_THROW(cen::Mix{}, cen::mix_error);
 }

@@ -77,7 +77,7 @@ class basic_haptic final {
    *
    * \param haptic a pointer to the haptic device data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
+   * \throws exception if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -86,7 +86,7 @@ class basic_haptic final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!m_haptic) {
-        throw Error{"Null haptic pointer!"};
+        throw exception{"Null haptic pointer!"};
       }
     }
   }
@@ -106,7 +106,7 @@ class basic_haptic final {
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -141,7 +141,7 @@ class basic_haptic final {
       return basic_haptic{ptr};
     }
     else {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -163,7 +163,7 @@ class basic_haptic final {
       return basic_haptic{ptr};
     }
     else {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 

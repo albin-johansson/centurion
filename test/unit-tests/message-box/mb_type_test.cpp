@@ -13,7 +13,7 @@ TEST(MessageBoxType, Values)
 
 TEST(MessageBoxType, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxType>(0x41)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxType>(0x41)), cen::exception);
 
   ASSERT_EQ("Information", cen::ToString(cen::MessageBoxType::Information));
   ASSERT_EQ("Error", cen::ToString(cen::MessageBoxType::Error));

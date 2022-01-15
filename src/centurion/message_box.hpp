@@ -212,7 +212,7 @@ class MessageBox final {
                                               message.c_str(),
                                               parent);
     if (res == -1) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -242,7 +242,7 @@ class MessageBox final {
 
     button_id button{-1};
     if (SDL_ShowMessageBox(&data, &button) == -1) {
-      throw SDLError{};
+      throw sdl_error{};
     }
 
     if (button != -1) {
@@ -267,7 +267,7 @@ class MessageBox final {
       return "Information";
 
     default:
-      throw Error{"Did not recognize message box type!"};
+      throw exception{"Did not recognize message box type!"};
   }
 }
 
@@ -286,7 +286,7 @@ inline auto operator<<(std::ostream& stream, const MessageBoxType type) -> std::
       return "RightToLeft";
 
     default:
-      throw Error{"Did not recognize message box button order!"};
+      throw exception{"Did not recognize message box button order!"};
   }
 }
 
@@ -315,7 +315,7 @@ inline auto operator<<(std::ostream& stream, const MessageBoxButtonOrder order)
       return "ButtonSelected";
 
     default:
-      throw Error{"Did not recognize message box color type!"};
+      throw exception{"Did not recognize message box color type!"};
   }
 }
 

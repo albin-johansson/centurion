@@ -78,7 +78,7 @@ class basic_sensor final {
    *
    * \param sensor a pointer to the SDL sensor data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
+   * \throws exception if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -87,7 +87,7 @@ class basic_sensor final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!m_sensor) {
-        throw Error{"Null sensor pointer!"};
+        throw exception{"Null sensor pointer!"};
       }
     }
   }
@@ -105,7 +105,7 @@ class basic_sensor final {
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -362,7 +362,7 @@ class basic_sensor final {
  *
  * \return a string that mirrors the name of the enumerator.
  *
- * \throws cen_error if the enumerator is not recognized.
+ * \throws exception if the enumerator is not recognized.
  *
  * \since 6.2.0
  */
@@ -382,7 +382,7 @@ class basic_sensor final {
       return "gyroscope";
 
     default:
-      throw Error{"Did not recognize sensor type!"};
+      throw exception{"Did not recognize sensor type!"};
   }
 }
 

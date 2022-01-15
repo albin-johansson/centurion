@@ -32,7 +32,7 @@ class SDL final {
   explicit SDL(const SDLConfig& cfg = {})
   {
     if (SDL_Init(cfg.flags) < 0) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -50,7 +50,7 @@ class IMG final {
   explicit IMG(const IMGConfig& cfg = {})
   {
     if (!IMG_Init(cfg.flags)) {
-      throw IMGError{};
+      throw img_error{};
     }
   }
 
@@ -75,11 +75,11 @@ class Mix final {
   explicit Mix(const MixConfig& cfg = {})
   {
     if (!Mix_Init(cfg.flags)) {
-      throw MixError{};
+      throw mix_error{};
     }
 
     if (Mix_OpenAudio(cfg.frequency, cfg.format, cfg.channels, cfg.chunk_size) == -1) {
-      throw MixError{};
+      throw mix_error{};
     }
   }
 
@@ -99,7 +99,7 @@ class TTF final {
   TTF()
   {
     if (TTF_Init() == -1) {
-      throw TTFError{};
+      throw ttf_error{};
     }
   }
 

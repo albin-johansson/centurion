@@ -14,7 +14,7 @@ TEST(MouseWheelDirection, Values)
 
 TEST(MouseWheelDirection, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Direction>(3)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Direction>(3)), cen::exception);
 
   ASSERT_EQ("Normal", ToString(Direction::Normal));
   ASSERT_EQ("Flipped", ToString(Direction::Flipped));

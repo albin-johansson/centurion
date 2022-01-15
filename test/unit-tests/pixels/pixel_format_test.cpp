@@ -79,7 +79,7 @@ TEST(PixelFormat, Values)
 
 TEST(PixelFormat, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Format>(0xFFFFFFFF)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Format>(0xFFFFFFFF)), cen::exception);
 
   ASSERT_EQ("Unknown", ToString(Format::Unknown));
   ASSERT_EQ("Index1LSB", ToString(Format::Index1LSB));

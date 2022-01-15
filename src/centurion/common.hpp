@@ -146,11 +146,11 @@ template <typename T>
   return str ? str : "N/A";
 }
 
-class Error : public std::exception {
+class exception : public std::exception {
  public:
-  Error() noexcept = default;
+  exception() noexcept = default;
 
-  explicit Error(const char* what) noexcept : mWhat{what ? what : "?"} {}
+  explicit exception(const char* what) noexcept : mWhat{what ? what : "?"} {}
 
   [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat; }
 
@@ -158,42 +158,42 @@ class Error : public std::exception {
   const char* mWhat{"?"};
 };
 
-class SDLError final : public Error {
+class sdl_error final : public exception {
  public:
-  SDLError() noexcept : Error{SDL_GetError()} {}
+  sdl_error() noexcept : exception{SDL_GetError()} {}
 
-  explicit SDLError(const char* what) noexcept : Error{what} {}
+  explicit sdl_error(const char* what) noexcept : exception{what} {}
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-class IMGError final : public Error {
+class img_error final : public exception {
  public:
-  IMGError() noexcept : Error{IMG_GetError()} {}
+  img_error() noexcept : exception{IMG_GetError()} {}
 
-  explicit IMGError(const char* what) noexcept : Error{what} {}
+  explicit img_error(const char* what) noexcept : exception{what} {}
 };
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_TTF
 
-class TTFError final : public Error {
+class ttf_error final : public exception {
  public:
-  TTFError() noexcept : Error{TTF_GetError()} {}
+  ttf_error() noexcept : exception{TTF_GetError()} {}
 
-  explicit TTFError(const char* what) noexcept : Error{what} {}
+  explicit ttf_error(const char* what) noexcept : exception{what} {}
 };
 
 #endif  // CENTURION_NO_SDL_TTF
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-class MixError final : public Error {
+class mix_error final : public exception {
  public:
-  MixError() noexcept : Error{Mix_GetError()} {}
+  mix_error() noexcept : exception{Mix_GetError()} {}
 
-  explicit MixError(const char* what) noexcept : Error{what} {}
+  explicit mix_error(const char* what) noexcept : exception{what} {}
 };
 
 #endif  // CENTURION_NO_SDL_MIXER

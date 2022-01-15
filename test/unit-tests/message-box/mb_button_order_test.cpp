@@ -18,7 +18,7 @@ TEST(MessageBoxButtonOrder, Values)
 
 TEST(MessageBoxButtonOrder, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxButtonOrder>(0x101)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxButtonOrder>(0x101)), cen::exception);
 
   ASSERT_EQ("LeftToRight", cen::ToString(cen::MessageBoxButtonOrder::LeftToRight));
   ASSERT_EQ("RightToLeft", cen::ToString(cen::MessageBoxButtonOrder::RightToLeft));

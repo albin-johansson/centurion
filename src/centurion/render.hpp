@@ -53,7 +53,7 @@ class BasicRenderer final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!get()) {
-        throw Error{"Cannot create renderer from null pointer!"};
+        throw exception{"Cannot create renderer from null pointer!"};
       }
     }
   }
@@ -63,7 +63,7 @@ class BasicRenderer final {
       : mRenderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -360,13 +360,13 @@ class BasicRenderer final {
     Surface image{GetOutputSize(), format};
 
     if (!image.Lock()) {
-      throw SDLError{};
+      throw sdl_error{};
     }
 
     if (const auto res =
             SDL_RenderReadPixels(get(), nullptr, 0, image.GetPixelData(), image.GetPitch());
         res == -1) {
-      throw SDLError{};
+      throw sdl_error{};
     }
 
     image.Unlock();

@@ -31,10 +31,10 @@ class SoundEffect : public testing::Test {
 
 TEST_F(SoundEffect, Constructor)
 {
-  ASSERT_THROW(cen::SoundEffect("foobar"), cen::MixError);
+  ASSERT_THROW(cen::SoundEffect("foobar"), cen::mix_error);
 
   using namespace std::string_literals;
-  ASSERT_THROW(cen::SoundEffect("foobar"s), cen::MixError);
+  ASSERT_THROW(cen::SoundEffect("foobar"s), cen::mix_error);
 }
 
 TEST_F(SoundEffect, PlayAndStop)

@@ -71,7 +71,7 @@ class GLLibrary final {
   CENTURION_NODISCARD_CTOR explicit GLLibrary(const char* path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -100,7 +100,7 @@ class BasicGLContext final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mContext) {
-        throw Error{"Can't create OpenGL context from null pointer!"};
+        throw exception{"Can't create OpenGL context from null pointer!"};
       }
     }
   }
@@ -111,7 +111,7 @@ class BasicGLContext final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mContext) {
-        throw SDLError{};
+        throw sdl_error{};
       }
     }
   }
@@ -218,7 +218,7 @@ class BasicGLContext final {
       return "ContextNoError";
 
     default:
-      throw Error{"Did not recognize OpenGL attribute!"};
+      throw exception{"Did not recognize OpenGL attribute!"};
   }
 }
 
@@ -235,7 +235,7 @@ class BasicGLContext final {
       return "LateImmediate";
 
     default:
-      throw Error{"Did not recognize swap interval!"};
+      throw exception{"Did not recognize swap interval!"};
   }
 }
 

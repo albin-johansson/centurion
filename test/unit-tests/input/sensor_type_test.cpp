@@ -15,7 +15,7 @@ TEST(SensorType, Values)
 
 TEST(SensorType, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::sensor_type>(4)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::sensor_type>(4)), cen::exception);
 
   ASSERT_EQ("invalid", cen::ToString(cen::sensor_type::invalid));
   ASSERT_EQ("unknown", cen::ToString(cen::sensor_type::unknown));

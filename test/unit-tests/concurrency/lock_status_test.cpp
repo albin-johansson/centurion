@@ -14,7 +14,7 @@ TEST(LockStatus, Values)
 
 TEST(LockStatus, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::LockStatus>(2)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::LockStatus>(2)), cen::exception);
 
   ASSERT_EQ("Success", cen::ToString(cen::LockStatus::Success));
   ASSERT_EQ("TimedOut", cen::ToString(cen::LockStatus::TimedOut));

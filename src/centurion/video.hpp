@@ -226,7 +226,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
       return "UntilFocused";
 
     default:
-      throw Error{"Did not recognize window flash operation!"};
+      throw exception{"Did not recognize window flash operation!"};
   }
 }
 
@@ -258,7 +258,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw Error{"Did not recognize blend mode!"};
+      throw exception{"Did not recognize blend mode!"};
   }
 }
 
@@ -296,7 +296,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
       return "OneMinusDstAlpha";
 
     default:
-      throw Error{"Did not recognize blend factor!"};
+      throw exception{"Did not recognize blend factor!"};
   }
 }
 
@@ -319,7 +319,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
       return "Max";
 
     default:
-      throw Error{"Did not recognize blend operation!"};
+      throw exception{"Did not recognize blend operation!"};
   }
 }
 
@@ -343,7 +343,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
       return "PortraitFlipped";
 
     default:
-      throw Error{"Did not recognize display orientation!"};
+      throw exception{"Did not recognize display orientation!"};
   }
 }
 

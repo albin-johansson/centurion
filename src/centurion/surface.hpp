@@ -47,7 +47,7 @@ class BasicSurface final {
   {
     if constexpr (detail::is_owner<T>) {
       if (!mSurface) {
-        throw Error{"Cannot create owning surface from null pointer!"};
+        throw exception{"Cannot create owning surface from null pointer!"};
       }
     }
   }
@@ -59,7 +59,7 @@ class BasicSurface final {
   explicit BasicSurface(const char* file) : mSurface{IMG_Load(file)}
   {
     if (!mSurface) {
-      throw IMGError{};
+      throw img_error{};
     }
   }
 
@@ -79,7 +79,7 @@ class BasicSurface final {
                                                 ToUnderlying(format))}
   {
     if (!mSurface) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -229,7 +229,7 @@ class BasicSurface final {
       return result;
     }
     else {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -311,7 +311,7 @@ class BasicSurface final {
       return copy;
     }
     else {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 

@@ -21,7 +21,7 @@ TEST(ControllerAxis, Values)
 
 TEST(ControllerAxis, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Axis>(SDL_CONTROLLER_AXIS_MAX + 1)), cen::Error);
+  ASSERT_THROW(ToString(static_cast<Axis>(SDL_CONTROLLER_AXIS_MAX + 1)), cen::exception);
 
   ASSERT_EQ("Invalid", ToString(Axis::Invalid));
   ASSERT_EQ("LeftX", ToString(Axis::LeftX));

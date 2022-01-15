@@ -66,7 +66,7 @@ enum class font_hint {
       return "none";
 
     default:
-      throw Error{"Did not recognize font hint!"};
+      throw exception{"Did not recognize font hint!"};
   }
 }
 
@@ -107,7 +107,7 @@ class font final {
    * \param file the file path of the font file.
    * \param size the size of the font.
    *
-   * \throws error if the font size is not greater than zero.
+   * \throws exception if the font size is not greater than zero.
    * \throws ttf_error if the font cannot be opened.
    */
   font(const char* file, const int size) : mSize{size}
@@ -115,12 +115,12 @@ class font final {
     assert(file);
 
     if (size <= 0) {
-      throw Error{"Bad font size!"};
+      throw exception{"Bad font size!"};
     }
 
     mFont.reset(TTF_OpenFont(file, size));
     if (!mFont) {
-      throw TTFError{};
+      throw ttf_error{};
     }
   }
 
@@ -1158,7 +1158,7 @@ class font_cache final {
    *
    * \return the cached string texture.
    *
-   * \throws Error if there is no cached string for the supplied identifier.
+   * \throws exception if there is no cached string for the supplied identifier.
    *
    * \see `find_string()`
    */
@@ -1168,7 +1168,7 @@ class font_cache final {
       return *ptr;
     }
     else {
-      throw Error{"Invalid font cache string identifier!"};
+      throw exception{"Invalid font cache string identifier!"};
     }
   }
 
@@ -1305,7 +1305,7 @@ class font_cache final {
    *
    * \return the cached glyph data.
    *
-   * \throws Error if there is no data stored for the glyph.
+   * \throws exception if there is no data stored for the glyph.
    *
    * \see `find_glyph()`
    */
@@ -1315,7 +1315,7 @@ class font_cache final {
       return *ptr;
     }
     else {
-      throw Error{"Invalid font cache glyph!"};
+      throw exception{"Invalid font cache glyph!"};
     }
   }
 
@@ -1489,7 +1489,7 @@ class font_bundle final {
    *
    * \return the found font cache.
    *
-   * \throws Error if the identifier is invalid or if there is no font of the specified size.
+   * \throws exception if the identifier is invalid or if there is no font of the specified size.
    */
   [[nodiscard]] auto at(const id_type id, const int size) -> font_cache&
   {
@@ -1499,11 +1499,11 @@ class font_bundle final {
         return cache->second;
       }
       else {
-        throw Error{"No loaded font of the requested size!"};
+        throw exception{"No loaded font of the requested size!"};
       }
     }
     else {
-      throw Error{"Invalid font pool identifier!"};
+      throw exception{"Invalid font pool identifier!"};
     }
   }
 
@@ -1524,7 +1524,7 @@ class font_bundle final {
    *
    * \return the found font.
    *
-   * \throws Error if the identifier is invalid or if there is no font of the specified size.
+   * \throws exception if the identifier is invalid or if there is no font of the specified size.
    *
    * \see `at()`
    */

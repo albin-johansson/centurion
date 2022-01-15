@@ -52,7 +52,7 @@ class Mutex final {
   Mutex() : mMutex{SDL_CreateMutex()}
   {
     if (!mMutex) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -89,7 +89,7 @@ class ScopedLock final {
   CENTURION_NODISCARD_CTOR explicit ScopedLock(Mutex& mutex) : mMutex{&mutex}
   {
     if (!mutex.Lock()) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -151,7 +151,7 @@ class Condition final {
   Condition() : mCond{SDL_CreateCond()}
   {
     if (!mCond) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -183,7 +183,7 @@ class Semaphore final {
   explicit Semaphore(const Uint32 tokens) : mSemaphore{SDL_CreateSemaphore(tokens)}
   {
     if (!mSemaphore) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -225,7 +225,7 @@ class Thread final {
       : mThread{SDL_CreateThread(task, name, data)}
   {
     if (!mThread) {
-      throw SDLError{};
+      throw sdl_error{};
     }
   }
 
@@ -404,7 +404,7 @@ class Thread final {
       return "Critical";
 
     default:
-      throw Error{"Did not recognize thread priority!"};
+      throw exception{"Did not recognize thread priority!"};
   }
 }
 
@@ -421,7 +421,7 @@ class Thread final {
       return "Error";
 
     default:
-      throw Error{"Did not recognize lock status!"};
+      throw exception{"Did not recognize lock status!"};
   }
 }
 

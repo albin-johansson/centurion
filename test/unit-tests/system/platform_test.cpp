@@ -7,7 +7,7 @@
 
 TEST(Platform, PlatformEnum)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::Platform>(7)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::Platform>(7)), cen::exception);
 
   ASSERT_EQ("Unknown", cen::ToString(cen::Platform::Unknown));
   ASSERT_EQ("Windows", cen::ToString(cen::Platform::Windows));

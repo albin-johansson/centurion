@@ -8,8 +8,8 @@
 
 TEST(Palette, Constructor)
 {
-  ASSERT_THROW(cen::Palette{0}, cen::Error);
-  ASSERT_THROW(cen::Palette{-1}, cen::Error);
+  ASSERT_THROW(cen::Palette{0}, cen::exception);
+  ASSERT_THROW(cen::Palette{-1}, cen::exception);
   ASSERT_NO_THROW(cen::Palette{1});
 }
 
@@ -52,8 +52,8 @@ TEST(Palette, GetColor)
   cen::Palette palette{4};
   ASSERT_NO_THROW(palette.GetColor(0));
   ASSERT_NO_THROW(palette.GetColor(3));
-  ASSERT_THROW(palette.GetColor(-1), cen::Error);
-  ASSERT_THROW(palette.GetColor(4), cen::Error);
+  ASSERT_THROW(palette.GetColor(-1), cen::exception);
+  ASSERT_THROW(palette.GetColor(4), cen::exception);
 }
 
 TEST(Palette, GetSize)

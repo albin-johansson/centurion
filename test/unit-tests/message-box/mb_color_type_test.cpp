@@ -21,7 +21,7 @@ TEST(MessageBoxColorType, ToString)
 {
   ASSERT_THROW(
       cen::ToString(static_cast<cen::MessageBoxColorType>(SDL_MESSAGEBOX_COLOR_MAX + 1)),
-      cen::Error);
+      cen::exception);
 
   ASSERT_EQ("Background", cen::ToString(cen::MessageBoxColorType::Background));
   ASSERT_EQ("Text", cen::ToString(cen::MessageBoxColorType::Text));

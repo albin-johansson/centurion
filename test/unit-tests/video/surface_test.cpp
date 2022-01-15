@@ -39,8 +39,8 @@ class SurfaceTest : public testing::Test {
 
 TEST_F(SurfaceTest, PathConstructor)
 {
-  ASSERT_THROW(cen::Surface(""), cen::Error);
-  ASSERT_THROW(cen::Surface(""s), cen::Error);
+  ASSERT_THROW(cen::Surface(""), cen::exception);
+  ASSERT_THROW(cen::Surface(""s), cen::exception);
   ASSERT_NO_THROW(cen::Surface{path});
 }
 
@@ -49,7 +49,7 @@ TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
   ASSERT_NO_THROW(cen::Surface(IMG_Load(path)));
 
   SDL_Surface* ptr{};
-  ASSERT_THROW(cen::Surface{ptr}, cen::Error);
+  ASSERT_THROW(cen::Surface{ptr}, cen::exception);
 }
 
 TEST_F(SurfaceTest, SizePixelFormatConstructor)

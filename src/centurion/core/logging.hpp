@@ -97,7 +97,7 @@ enum class log_category {
  *
  * \return a string that mirrors the name of the enumerator.
  *
- * \throws cen_error if the enumerator is not recognized.
+ * \throws exception if the enumerator is not recognized.
  *
  * \since 6.2.0
  */
@@ -135,7 +135,7 @@ enum class log_category {
       return "custom";
 
     default:
-      throw Error{"Did not recognize log category!"};
+      throw exception{"Did not recognize log category!"};
   }
 }
 
@@ -149,7 +149,7 @@ enum class log_category {
  *
  * \return a string that mirrors the name of the enumerator.
  *
- * \throws cen_error if the enumerator is not recognized.
+ * \throws exception if the enumerator is not recognized.
  *
  * \since 6.2.0
  */
@@ -175,7 +175,7 @@ enum class log_category {
       return "critical";
 
     default:
-      throw Error{"Did not recognize log priority!"};
+      throw exception{"Did not recognize log priority!"};
   }
 }
 

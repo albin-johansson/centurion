@@ -29,7 +29,7 @@ TEST(BlendFactor, Values)
 
 TEST(BlendFactor, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::BlendFactor>(100)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::BlendFactor>(100)), cen::exception);
 
   ASSERT_EQ("Zero", cen::ToString(cen::BlendFactor::Zero));
   ASSERT_EQ("One", cen::ToString(cen::BlendFactor::One));

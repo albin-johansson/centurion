@@ -25,7 +25,7 @@ enum class ButtonState : Uint8 {
       return "Pressed";
 
     default:
-      throw Error{"Did not recognize button state!"};
+      throw exception{"Did not recognize button state!"};
   }
 }
 

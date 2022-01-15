@@ -20,7 +20,7 @@ TEST(HatState, Values)
 
 TEST(HatState, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::HatState>(0x10)), cen::Error);
+  ASSERT_THROW(cen::ToString(static_cast<cen::HatState>(0x10)), cen::exception);
 
   ASSERT_EQ("Centered", cen::ToString(cen::HatState::Centered));
   ASSERT_EQ("Up", cen::ToString(cen::HatState::Up));

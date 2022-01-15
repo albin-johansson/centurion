@@ -1297,7 +1297,7 @@ inline auto AsSDLEvent(const EventBase<SDL_WindowEvent>& event) -> SDL_Event
       return "User";
 
     default:
-      throw Error{"Did not recognize event type!"};
+      throw exception{"Did not recognize event type!"};
   }
 }
 
@@ -1337,7 +1337,7 @@ inline auto operator<<(std::ostream& stream, const EventType type) -> std::ostre
       return "RightDown";
 
     default:
-      throw Error{"Did not recognize joystick hat position!"};
+      throw exception{"Did not recognize joystick hat position!"};
   }
 }
 
@@ -1364,7 +1364,7 @@ inline auto operator<<(std::ostream& stream, const JoyHatPosition position) -> s
       return "Disconnected";
 
     default:
-      throw Error{"Did not recognize display event ID!"};
+      throw exception{"Did not recognize display event ID!"};
   }
 }
 
@@ -1385,7 +1385,7 @@ inline auto operator<<(std::ostream& stream, const DisplayEventID id) -> std::os
       return "Flipped";
 
     default:
-      throw Error{"Did not recognize mouse wheel direction!"};
+      throw exception{"Did not recognize mouse wheel direction!"};
   }
 }
 
@@ -1449,7 +1449,7 @@ inline auto operator<<(std::ostream& stream, const MouseWheelDirection dir) -> s
       return "HitTest";
 
     default:
-      throw Error{"Did not recognize window event ID!"};
+      throw exception{"Did not recognize window event ID!"};
   }
 }
 

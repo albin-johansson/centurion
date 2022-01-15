@@ -21,7 +21,7 @@ TEST(BlendMode, Values)
 TEST(BlendMode, ToString)
 {
   ASSERT_THROW(cen::ToString(static_cast<cen::BlendMode>(SDL_BLENDMODE_INVALID - 1)),
-               cen::Error);
+               cen::exception);
 
   ASSERT_EQ("None", cen::ToString(cen::BlendMode::None));
   ASSERT_EQ("Blend", cen::ToString(cen::BlendMode::Blend));

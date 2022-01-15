@@ -19,7 +19,7 @@ TEST(JoystickPower, Values)
 TEST(JoystickPower, ToString)
 {
   ASSERT_THROW(cen::ToString(static_cast<cen::JoystickPower>(SDL_JOYSTICK_POWER_MAX + 1)),
-               cen::Error);
+               cen::exception);
 
   ASSERT_EQ("Unknown", cen::ToString(cen::JoystickPower::Unknown));
   ASSERT_EQ("Empty", cen::ToString(cen::JoystickPower::Empty));

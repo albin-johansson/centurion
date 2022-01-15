@@ -27,6 +27,9 @@
 
 namespace cen {
 
+/// \addtogroup audio
+/// \{
+
 enum class MusicType {
   None = MUS_NONE,
   MP3 = MUS_MP3,
@@ -313,6 +316,8 @@ class BasicSoundEffect final {
 {
   return SoundEffectHandle{Mix_GetChunk(channel)};
 }
+
+/// \} End of group audio
 
 }  // namespace cen
 

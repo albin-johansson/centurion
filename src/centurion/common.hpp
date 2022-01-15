@@ -60,23 +60,17 @@ using int64 = Sint64;
 using unicode_t = uint16;
 
 template <typename T>
-using Seconds = std::chrono::duration<T>;
+using seconds = std::chrono::duration<T>;
 
 template <typename T>
-using Millis = std::chrono::duration<T, std::milli>;
+using millis = std::chrono::duration<T, std::milli>;
 
 template <typename T>
-using Micros = std::chrono::duration<T, std::micro>;
+using minutes = std::chrono::duration<T, std::ratio<60>>;
 
-template <typename T>
-using Nanos = std::chrono::duration<T, std::nano>;
-
-template <typename T>
-using Minutes = std::chrono::duration<T, std::ratio<60>>;
-
-using U16_Millis = Millis<uint16>;
-using U32_Millis = Millis<uint32>;
-using U64_Millis = Millis<uint64>;
+using u16ms = millis<uint16>;
+using u32ms = millis<uint32>;
+using u64ms = millis<uint64>;
 
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
@@ -298,16 +292,16 @@ inline namespace time_literals {
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U64_Millis
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> u64ms
 {
-  return U64_Millis{static_cast<uint64>(ms)};
+  return u64ms{static_cast<uint64>(ms)};
 }
 
 #else
 
-[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U32_Millis
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> u32ms
 {
-  return U32_Millis{static_cast<uint32>(ms)};
+  return u32ms{static_cast<uint32>(ms)};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

@@ -152,7 +152,7 @@ class EventBase {
 
   explicit EventBase(T&& event) noexcept : mEvent{std::move(event)} {}
 
-  /// Sets the timestamp of the creation of the event. TODO U32_Millis?
+  /// Sets the timestamp of the creation of the event. TODO u32ms?
   void SetTimestamp(const uint32 timestamp) noexcept { mEvent.timestamp = timestamp; }
 
   void SetType(const EventType type) noexcept { mEvent.type = ToUnderlying(type); }

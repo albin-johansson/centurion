@@ -75,7 +75,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  void set_period(const U16_Millis period) noexcept(noexcept(period.count()))
+  void set_period(const u16ms period) noexcept(noexcept(period.count()))
   {
     representation().period = period.count();
   }
@@ -120,10 +120,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto period() const -> U16_Millis
-  {
-    return U16_Millis{representation().period};
-  }
+  [[nodiscard]] auto period() const -> u16ms { return u16ms{representation().period}; }
 
   /**
    * \brief Returns the current magnitude (peak value) of the wave.

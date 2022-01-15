@@ -20,12 +20,12 @@ enum class PowerState {
 };
 
 /* Returns the seconds of remaining battery life. */
-[[nodiscard]] inline auto GetBatterySeconds() -> std::optional<Seconds<int>>
+[[nodiscard]] inline auto GetBatterySeconds() -> std::optional<seconds<int>>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft != -1) {
-    return Seconds<int>{secondsLeft};
+    return seconds<int>{secondsLeft};
   }
   else {
     return std::nullopt;
@@ -33,10 +33,10 @@ enum class PowerState {
 }
 
 /* Returns the minutes of remaining battery life. */
-[[nodiscard]] inline auto GetBatteryMinutes() -> std::optional<Minutes<int>>
+[[nodiscard]] inline auto GetBatteryMinutes() -> std::optional<minutes<int>>
 {
   if (const auto secondsLeft = GetBatterySeconds()) {
-    return std::chrono::duration_cast<Minutes<int>>(*secondsLeft);
+    return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   }
   else {
     return std::nullopt;

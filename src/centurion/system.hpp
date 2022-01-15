@@ -190,27 +190,26 @@ class SharedObject final {
 }
 
 /* Returns the value of the high-performance counter in seconds. */
-[[nodiscard]] inline auto NowInSeconds() noexcept(noexcept(Seconds<double>{}))
-    -> Seconds<double>
+[[nodiscard]] inline auto NowInSeconds() noexcept(noexcept(seconds<double>{}))
+    -> seconds<double>
 {
-  return Seconds<double>{static_cast<double>(Now()) / static_cast<double>(GetFrequency())};
+  return seconds<double>{static_cast<double>(Now()) / static_cast<double>(GetFrequency())};
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
 /* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard]] inline auto GetTicks() noexcept(noexcept(U64_Millis{uint64{}})) -> U64_Millis
+[[nodiscard]] inline auto GetTicks() noexcept(noexcept(u64ms{uint64{}})) -> u64ms
 {
-  return U64_Millis{SDL_GetTicks64()};
+  return u64ms{SDL_GetTicks64()};
 }
 
 #else
 
 /* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(U32_Millis{uint32{}}))
-    -> U32_Millis
+[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
 {
-  return U32_Millis{SDL_GetTicks()};
+  return u32ms{SDL_GetTicks()};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

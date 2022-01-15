@@ -82,14 +82,14 @@ class Music final {
 
   static void Rewind() noexcept { Mix_RewindMusic(); }
 
-  auto FadeIn(const Millis<int> duration,
+  auto FadeIn(const millis<int> duration,
               const int nLoops = 0) noexcept(noexcept(duration.count())) -> Result
   {
     assert(duration.count() > 0);
     return Mix_FadeInMusic(mMusic.get(), detail::max(nLoops, forever), duration.count()) == 0;
   }
 
-  static auto FadeOut(const Millis<int> duration) noexcept(noexcept(duration.count()))
+  static auto FadeOut(const millis<int> duration) noexcept(noexcept(duration.count()))
       -> Result
   {
     assert(duration.count() > 0);
@@ -224,7 +224,7 @@ class BasicSoundEffect final {
     }
   }
 
-  void FadeIn(const Millis<int> duration) noexcept(noexcept(duration.count()))
+  void FadeIn(const millis<int> duration) noexcept(noexcept(duration.count()))
   {
     assert(duration.count() > 0);
     if (!IsPlaying()) {
@@ -232,7 +232,7 @@ class BasicSoundEffect final {
     }
   }
 
-  void FadeOut(const Millis<int> duration) noexcept(noexcept(duration.count()))  // NOLINT
+  void FadeOut(const millis<int> duration) noexcept(noexcept(duration.count()))  // NOLINT
   {
     assert(duration.count() > 0);
     if (IsPlaying()) {

@@ -190,12 +190,12 @@ class BasicController final {
 
   auto Rumble(const uint16 lo,
               const uint16 hi,
-              const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
+              const u32ms duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_GameControllerRumble(mController, lo, hi, duration.count()) == 0;
   }
 
-  void StopRumble() { Rumble(0, 0, U32_Millis::zero()); }
+  void StopRumble() { Rumble(0, 0, u32ms::zero()); }
 
   [[nodiscard]] auto GetVendor() const noexcept -> std::optional<uint16>
   {
@@ -413,7 +413,7 @@ class BasicController final {
 
   auto RumbleTriggers(const uint16 lo,
                       const uint16 hi,
-                      const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
+                      const u32ms duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_GameControllerRumbleTriggers(mController, lo, hi, duration.count()) == 0;
   }

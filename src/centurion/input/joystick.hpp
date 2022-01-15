@@ -117,7 +117,7 @@ class BasicJoystick final {
 
   auto Rumble(const uint16 lowFreq,
               const uint16 highFreq,
-              const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
+              const u32ms duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_JoystickRumble(mJoystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -126,7 +126,7 @@ class BasicJoystick final {
 
   auto RumbleTriggers(const uint16 left,
                       const uint16 right,
-                      const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
+                      const u32ms duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_JoystickRumbleTriggers(mJoystick, left, right, duration.count()) == 0;
   }

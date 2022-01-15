@@ -168,7 +168,7 @@ class Condition final {
   }
 
   /* Waits until signalled or if the specified amount of time passes. */
-  auto Wait(Mutex& mutex, const U32_Millis ms) noexcept(noexcept(ms.count())) -> LockStatus
+  auto Wait(Mutex& mutex, const u32ms ms) noexcept(noexcept(ms.count())) -> LockStatus
   {
     return static_cast<LockStatus>(SDL_CondWaitTimeout(mCond.get(), mutex.get(), ms.count()));
   }
@@ -191,7 +191,7 @@ class Semaphore final {
   auto Acquire() noexcept -> Result { return SDL_SemWait(mSemaphore.get()) == 0; }
 
   /* Waits until a token is available for a limited time. */
-  auto Acquire(const U32_Millis ms) noexcept(noexcept(ms.count())) -> LockStatus
+  auto Acquire(const u32ms ms) noexcept(noexcept(ms.count())) -> LockStatus
   {
     return static_cast<LockStatus>(SDL_SemWaitTimeout(mSemaphore.get(), ms.count()));
   }
@@ -326,10 +326,7 @@ class Thread final {
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
   /* Forces the current thread to halt for at least the specified amount of time. */
-  static void Sleep(const U32_Millis ms) noexcept(noexcept(ms.count()))
-  {
-    SDL_Delay(ms.count());
-  }
+  static void Sleep(const u32ms ms) noexcept(noexcept(ms.count())) { SDL_Delay(ms.count()); }
 
   /* Lets the thread terminate without having another thread join it. */
   void Detach() noexcept

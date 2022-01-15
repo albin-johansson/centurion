@@ -67,7 +67,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    */
   void set_type(const condition_type type) noexcept
   {
-    representation().type = static_cast<Uint16>(ToUnderlying(type));
+    representation().type = static_cast<uint16>(ToUnderlying(type));
   }
 
   /**
@@ -77,7 +77,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_joystick_positive_level(const BasicVector3<Uint16>& level) noexcept
+  void set_joystick_positive_level(const BasicVector3<uint16>& level) noexcept
   {
     representation().right_sat[0] = level.x;
     representation().right_sat[1] = level.y;
@@ -91,7 +91,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_joystick_negative_level(const BasicVector3<Uint16>& level) noexcept
+  void set_joystick_negative_level(const BasicVector3<uint16>& level) noexcept
   {
     representation().left_sat[0] = level.x;
     representation().left_sat[1] = level.y;
@@ -135,7 +135,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_deadband(const BasicVector3<Uint16>& size) noexcept
+  void set_deadband(const BasicVector3<uint16>& size) noexcept
   {
     representation().deadband[0] = size.x;
     representation().deadband[1] = size.y;
@@ -164,7 +164,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto joystick_positive_level() const noexcept -> BasicVector3<Uint16>
+  [[nodiscard]] auto joystick_positive_level() const noexcept -> BasicVector3<uint16>
   {
     const auto& level = representation().right_sat;
     return {level[0], level[1], level[2]};
@@ -178,7 +178,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto joystick_negative_level() const noexcept -> BasicVector3<Uint16>
+  [[nodiscard]] auto joystick_negative_level() const noexcept -> BasicVector3<uint16>
   {
     const auto& level = representation().left_sat;
     return {level[0], level[1], level[2]};
@@ -217,7 +217,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto deadband() const noexcept -> BasicVector3<Uint16>
+  [[nodiscard]] auto deadband() const noexcept -> BasicVector3<uint16>
   {
     const auto& band = representation().deadband;
     return {band[0], band[1], band[2]};

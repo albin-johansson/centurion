@@ -733,7 +733,7 @@ class multi_gesture_event final : public EventBase<SDL_MultiGestureEvent> {
 
   void set_center_y(const float centerY) noexcept { mEvent.y = centerY; }
 
-  void set_finger_count(const Uint16 count) noexcept { mEvent.numFingers = count; }
+  void set_finger_count(const uint16 count) noexcept { mEvent.numFingers = count; }
 
   [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID { return mEvent.touchId; }
 
@@ -745,7 +745,7 @@ class multi_gesture_event final : public EventBase<SDL_MultiGestureEvent> {
 
   [[nodiscard]] auto center_y() const noexcept -> float { return mEvent.y; }
 
-  [[nodiscard]] auto finger_count() const noexcept -> Uint16 { return mEvent.numFingers; }
+  [[nodiscard]] auto finger_count() const noexcept -> uint16 { return mEvent.numFingers; }
 };
 
 // TODO

@@ -74,7 +74,7 @@ using Nanos = std::chrono::duration<T, std::nano>;
 template <typename T>
 using Minutes = std::chrono::duration<T, std::ratio<60>>;
 
-using U16_Millis = Millis<Uint16>;
+using U16_Millis = Millis<uint16>;
 using U32_Millis = Millis<Uint32>;
 using U64_Millis = Millis<Uint64>;
 

@@ -65,7 +65,7 @@ struct MixConfig final {
   int flags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD |
             MIX_INIT_OPUS};
   int frequency{MIX_DEFAULT_FREQUENCY};
-  Uint16 format{MIX_DEFAULT_FORMAT};
+  uint16 format{MIX_DEFAULT_FORMAT};
   int channels{MIX_DEFAULT_CHANNELS};
   int chunk_size{4096};
 };

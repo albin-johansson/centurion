@@ -6,7 +6,7 @@
 namespace cen {
 
 /** Swaps the byte order of the specified value. */
-[[nodiscard]] inline auto SwapByteOrder(const Uint16 value) noexcept -> Uint16
+[[nodiscard]] inline auto SwapByteOrder(const uint16 value) noexcept -> uint16
 {
   return SDL_Swap16(value);
 }
@@ -27,7 +27,7 @@ namespace cen {
 }
 
 /* Swaps a big endian value to a little endian value. */
-[[nodiscard]] inline auto SwapBigEndian(const Uint16 value) noexcept -> Uint16
+[[nodiscard]] inline auto SwapBigEndian(const uint16 value) noexcept -> uint16
 {
   return SDL_SwapBE16(value);
 }
@@ -48,7 +48,7 @@ namespace cen {
 }
 
 /* Swaps a little endian value to a big endian value. */
-[[nodiscard]] inline auto SwapLittleEndian(const Uint16 value) noexcept -> Uint16
+[[nodiscard]] inline auto SwapLittleEndian(const uint16 value) noexcept -> uint16
 {
   return SDL_SwapLE16(value);
 }

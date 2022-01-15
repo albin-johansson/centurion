@@ -37,7 +37,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  enum periodic_type : Uint16 {
+  enum periodic_type : uint16 {
     sine = SDL_HAPTIC_SINE,
     left_right = SDL_HAPTIC_LEFTRIGHT,
     triangle = SDL_HAPTIC_TRIANGLE,
@@ -111,7 +111,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  void set_phase_shift(const Uint16 shift) noexcept { representation().phase = shift; }
+  void set_phase_shift(const uint16 shift) noexcept { representation().phase = shift; }
 
   /**
    * \brief Returns the current period of the wave.
@@ -153,7 +153,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto phase_shift() const noexcept -> Uint16 { return representation().phase; }
+  [[nodiscard]] auto phase_shift() const noexcept -> uint16 { return representation().phase; }
 
   /**
    * \brief Returns the internal representation.

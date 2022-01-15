@@ -188,8 +188,8 @@ class BasicController final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  auto Rumble(const Uint16 lo,
-              const Uint16 hi,
+  auto Rumble(const uint16 lo,
+              const uint16 hi,
               const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_GameControllerRumble(mController, lo, hi, duration.count()) == 0;
@@ -197,7 +197,7 @@ class BasicController final {
 
   void StopRumble() { Rumble(0, 0, U32_Millis::zero()); }
 
-  [[nodiscard]] auto GetVendor() const noexcept -> std::optional<Uint16>
+  [[nodiscard]] auto GetVendor() const noexcept -> std::optional<uint16>
   {
     const auto id = SDL_GameControllerGetVendor(mController);
     if (id != 0) {
@@ -208,7 +208,7 @@ class BasicController final {
     }
   }
 
-  [[nodiscard]] auto GetProduct() const noexcept -> std::optional<Uint16>
+  [[nodiscard]] auto GetProduct() const noexcept -> std::optional<uint16>
   {
     const auto id = SDL_GameControllerGetProduct(mController);
     if (id != 0) {
@@ -219,7 +219,7 @@ class BasicController final {
     }
   }
 
-  [[nodiscard]] auto GetProductVersion() const noexcept -> std::optional<Uint16>
+  [[nodiscard]] auto GetProductVersion() const noexcept -> std::optional<uint16>
   {
     const auto id = SDL_GameControllerGetProductVersion(mController);
     if (id != 0) {
@@ -411,8 +411,8 @@ class BasicController final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  auto RumbleTriggers(const Uint16 lo,
-                      const Uint16 hi,
+  auto RumbleTriggers(const uint16 lo,
+                      const uint16 hi,
                       const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_GameControllerRumbleTriggers(mController, lo, hi, duration.count()) == 0;

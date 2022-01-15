@@ -178,7 +178,7 @@ class haptic_effect {
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  void set_button(const Uint16 button) noexcept
+  void set_button(const uint16 button) noexcept
   {
     rep().button = button;
   }
@@ -208,7 +208,7 @@ class haptic_effect {
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  [[nodiscard]] auto button() const noexcept -> Uint16
+  [[nodiscard]] auto button() const noexcept -> uint16
   {
     return rep().button;
   }
@@ -243,7 +243,7 @@ class haptic_effect {
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_attack_level(const Uint16 level) noexcept
+  void set_attack_level(const uint16 level) noexcept
   {
     rep().attack_level = level;
   }
@@ -258,7 +258,7 @@ class haptic_effect {
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_fade_level(const Uint16 level) noexcept
+  void set_fade_level(const uint16 level) noexcept
   {
     rep().fade_level = level;
   }
@@ -307,7 +307,7 @@ class haptic_effect {
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  [[nodiscard]] auto attack_level() const noexcept -> Uint16
+  [[nodiscard]] auto attack_level() const noexcept -> uint16
   {
     return rep().attack_level;
   }
@@ -322,7 +322,7 @@ class haptic_effect {
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  [[nodiscard]] auto fade_level() const noexcept -> Uint16
+  [[nodiscard]] auto fade_level() const noexcept -> uint16
   {
     return rep().fade_level;
   }
@@ -366,7 +366,7 @@ class haptic_effect {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto type() const noexcept -> Uint16 { return rep().type; }
+  [[nodiscard]] auto type() const noexcept -> uint16 { return rep().type; }
 
   /**
    * \brief Returns the internal effect representation.

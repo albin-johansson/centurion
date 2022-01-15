@@ -81,7 +81,7 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  void set_sample_count(const Uint16 count) noexcept { representation().samples = count; }
+  void set_sample_count(const uint16 count) noexcept { representation().samples = count; }
 
   /**
    * \brief Sets the associated custom data.
@@ -94,7 +94,7 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  void set_data(Uint16* data) noexcept { representation().data = data; }
+  void set_data(uint16* data) noexcept { representation().data = data; }
 
   /**
    * \brief Returns the number of axes that are used.
@@ -124,7 +124,7 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto sample_count() const noexcept -> Uint16
+  [[nodiscard]] auto sample_count() const noexcept -> uint16
   {
     return representation().samples;
   }
@@ -136,7 +136,7 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto data() const noexcept -> Uint16* { return representation().data; }
+  [[nodiscard]] auto data() const noexcept -> uint16* { return representation().data; }
 
   /**
    * \brief Returns the internal representation.

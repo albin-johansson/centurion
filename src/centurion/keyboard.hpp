@@ -22,7 +22,7 @@
 
 namespace cen {
 
-enum class KeyMod : Uint16 {
+enum class KeyMod : uint16 {
   None = KMOD_NONE,
   LShift = KMOD_LSHIFT,
   RShift = KMOD_RSHIFT,
@@ -43,7 +43,7 @@ enum class KeyMod : Uint16 {
 
 namespace detail {
 
-[[nodiscard]] inline auto IsActive(const KeyMod modifiers, const Uint16 currentMask) noexcept
+[[nodiscard]] inline auto IsActive(const KeyMod modifiers, const uint16 currentMask) noexcept
     -> bool
 {
   if (modifiers == KeyMod::None) {
@@ -55,7 +55,7 @@ namespace detail {
 }
 
 [[nodiscard]] inline auto IsOnlyActive(const KeyMod modifiers,
-                                       const Uint16 currentMask) noexcept -> bool
+                                       const uint16 currentMask) noexcept -> bool
 {
   if (modifiers == KeyMod::None) {
     return !currentMask;
@@ -74,7 +74,7 @@ namespace detail {
 }
 
 [[nodiscard]] inline auto IsOnlyAnyOfActive(const KeyMod modifiers,
-                                            const Uint16 currentMask) noexcept -> bool
+                                            const uint16 currentMask) noexcept -> bool
 {
   if (modifiers == KeyMod::None) {
     return !currentMask;
@@ -309,7 +309,7 @@ class Keyboard final {
   /** Indicates whether any of the specified key modifiers are active. */
   [[nodiscard]] static auto IsActive(const KeyMod modifiers) noexcept -> bool
   {
-    return detail::IsActive(modifiers, static_cast<Uint16>(SDL_GetModState()));
+    return detail::IsActive(modifiers, static_cast<uint16>(SDL_GetModState()));
   }
 
   /**
@@ -326,7 +326,7 @@ class Keyboard final {
    */
   [[nodiscard]] static auto IsOnlyActive(const KeyMod modifiers) noexcept -> bool
   {
-    return detail::IsOnlyActive(modifiers, static_cast<Uint16>(SDL_GetModState()));
+    return detail::IsOnlyActive(modifiers, static_cast<uint16>(SDL_GetModState()));
   }
 
   /**
@@ -346,7 +346,7 @@ class Keyboard final {
    */
   [[nodiscard]] static auto IsOnlyAnyOfActive(const KeyMod modifiers) noexcept -> bool
   {
-    return detail::IsOnlyAnyOfActive(modifiers, static_cast<Uint16>(SDL_GetModState()));
+    return detail::IsOnlyAnyOfActive(modifiers, static_cast<uint16>(SDL_GetModState()));
   }
 
   [[nodiscard]] auto GetNumKeys() const noexcept -> int { return mKeyCount; }

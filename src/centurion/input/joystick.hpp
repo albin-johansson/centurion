@@ -115,8 +115,8 @@ class BasicJoystick final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  auto Rumble(const Uint16 lowFreq,
-              const Uint16 highFreq,
+  auto Rumble(const uint16 lowFreq,
+              const uint16 highFreq,
               const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_JoystickRumble(mJoystick, lowFreq, highFreq, duration.count()) == 0;
@@ -124,8 +124,8 @@ class BasicJoystick final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  auto RumbleTriggers(const Uint16 left,
-                      const Uint16 right,
+  auto RumbleTriggers(const uint16 left,
+                      const uint16 right,
                       const U32_Millis duration) noexcept(noexcept(duration.count())) -> Result
   {
     return SDL_JoystickRumbleTriggers(mJoystick, left, right, duration.count()) == 0;
@@ -220,7 +220,7 @@ class BasicJoystick final {
     return static_cast<JoystickType>(SDL_JoystickGetType(mJoystick));
   }
 
-  [[nodiscard]] auto GetVendor() const noexcept -> std::optional<Uint16>
+  [[nodiscard]] auto GetVendor() const noexcept -> std::optional<uint16>
   {
     const auto vendor = SDL_JoystickGetVendor(mJoystick);
     if (vendor != 0) {
@@ -231,7 +231,7 @@ class BasicJoystick final {
     }
   }
 
-  [[nodiscard]] auto GetProduct() const noexcept -> std::optional<Uint16>
+  [[nodiscard]] auto GetProduct() const noexcept -> std::optional<uint16>
   {
     const auto product = SDL_JoystickGetProduct(mJoystick);
     if (product != 0) {
@@ -242,7 +242,7 @@ class BasicJoystick final {
     }
   }
 
-  [[nodiscard]] auto GetProductVersion() const noexcept -> std::optional<Uint16>
+  [[nodiscard]] auto GetProductVersion() const noexcept -> std::optional<uint16>
   {
     const auto version = SDL_JoystickGetProductVersion(mJoystick);
     if (version != 0) {
@@ -299,7 +299,7 @@ class BasicJoystick final {
     return static_cast<JoystickType>(SDL_JoystickGetDeviceType(deviceIndex));
   }
 
-  [[nodiscard]] static auto GetVendor(const int deviceIndex) noexcept -> std::optional<Uint16>
+  [[nodiscard]] static auto GetVendor(const int deviceIndex) noexcept -> std::optional<uint16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
     if (vendor != 0) {
@@ -310,7 +310,7 @@ class BasicJoystick final {
     }
   }
 
-  [[nodiscard]] static auto GetProduct(const int deviceIndex) noexcept -> std::optional<Uint16>
+  [[nodiscard]] static auto GetProduct(const int deviceIndex) noexcept -> std::optional<uint16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
     if (product != 0) {
@@ -322,7 +322,7 @@ class BasicJoystick final {
   }
 
   [[nodiscard]] static auto GetProductVersion(const int deviceIndex) noexcept
-      -> std::optional<Uint16>
+      -> std::optional<uint16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
     if (version != 0) {

@@ -47,7 +47,7 @@ namespace cen {
 using uint = unsigned int;
 using ulonglong = unsigned long long;
 
-using Unicode = Uint16;
+using unicode_t = Uint16;
 
 template <typename T>
 using Seconds = std::chrono::duration<T>;

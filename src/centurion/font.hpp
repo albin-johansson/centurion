@@ -400,8 +400,8 @@ class font final {
    *
    * \return the kerning amount between the two glyphs.
    */
-  [[nodiscard]] auto get_kerning(const Unicode previous, const Unicode current) const noexcept
-      -> int
+  [[nodiscard]] auto get_kerning(const unicode_t previous,
+                                 const unicode_t current) const noexcept -> int
   {
     return TTF_GetFontKerningSizeGlyphs(mFont.get(), previous, current);
   }
@@ -413,7 +413,7 @@ class font final {
    *
    * \return `true` if the glyph is provided; `false` otherwise.
    */
-  [[nodiscard]] auto is_glyph_provided(const Unicode glyph) const noexcept -> bool
+  [[nodiscard]] auto is_glyph_provided(const unicode_t glyph) const noexcept -> bool
   {
     return TTF_GlyphIsProvided(mFont.get(), glyph);
   }
@@ -425,7 +425,7 @@ class font final {
    *
    * \return the metrics of the glyph; an empty optional is returned if it is unavailable.
    */
-  [[nodiscard]] auto get_metrics(const Unicode glyph) const noexcept
+  [[nodiscard]] auto get_metrics(const unicode_t glyph) const noexcept
       -> std::optional<glyph_metrics>
   {
     glyph_metrics metrics;
@@ -448,19 +448,20 @@ class font final {
   /// \name Glyph rendering functions
   /// \{
 
-  [[nodiscard]] auto render_solid_glyph(const Unicode glyph, const color& fg) const -> Surface
+  [[nodiscard]] auto render_solid_glyph(const unicode_t glyph, const color& fg) const
+      -> Surface
   {
     return Surface{TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
   }
 
-  [[nodiscard]] auto render_shaded_glyph(const Unicode glyph,
+  [[nodiscard]] auto render_shaded_glyph(const unicode_t glyph,
                                          const color& fg,
                                          const color& bg) const -> Surface
   {
     return Surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto render_blended_glyph(const Unicode glyph, const color& fg) const
+  [[nodiscard]] auto render_blended_glyph(const unicode_t glyph, const color& fg) const
       -> Surface
   {
     return Surface{TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
@@ -743,7 +744,7 @@ class font_cache final {
    * \return the x-coordinate intended to be used by a consecutive glyph.
    */
   template <typename T>
-  auto render_glyph(BasicRenderer<T>& renderer, const Unicode glyph, const Point& position)
+  auto render_glyph(BasicRenderer<T>& renderer, const unicode_t glyph, const Point& position)
       -> int
   {
     if (const auto* data = find_glyph(glyph)) {
@@ -785,7 +786,7 @@ class font_cache final {
     const auto originalX = position.GetX();
     const auto lineSkip = mFont.line_skip();
 
-    for (const Unicode glyph : str) {
+    for (const unicode_t glyph : str) {
       if (glyph == '\n') {
         position.SetX(originalX);
         position.SetY(position.GetY() + lineSkip);
@@ -1187,7 +1188,7 @@ class font_cache final {
    * \param glyph the glyph that will be cached.
    */
   template <typename T>
-  void store_glyph(BasicRenderer<T>& renderer, const Unicode glyph)
+  void store_glyph(BasicRenderer<T>& renderer, const unicode_t glyph)
   {
     if (has_glyph(glyph) || !mFont.is_glyph_provided(glyph)) {
       return;
@@ -1210,7 +1211,7 @@ class font_cache final {
    * \see https://unicode-table.com/en/blocks/
    */
   template <typename T>
-  void store_glyphs(BasicRenderer<T>& renderer, const Unicode begin, const Unicode end)
+  void store_glyphs(BasicRenderer<T>& renderer, const unicode_t begin, const unicode_t end)
   {
     for (auto glyph = begin; glyph < end; ++glyph) {
       store_glyph(renderer, glyph);
@@ -1276,7 +1277,7 @@ class font_cache final {
    *
    * \return the found glyph data; a null pointer is returned if no data was found.
    */
-  [[nodiscard]] auto find_glyph(const Unicode glyph) const -> const glyph_data*
+  [[nodiscard]] auto find_glyph(const unicode_t glyph) const -> const glyph_data*
   {
     if (const auto it = mGlyphs.find(glyph); it != mGlyphs.end()) {
       return &it->second;
@@ -1293,7 +1294,7 @@ class font_cache final {
    *
    * \return `true` if the glyph has been cached; `false` otherwise.
    */
-  [[nodiscard]] auto has_glyph(const Unicode glyph) const noexcept -> bool
+  [[nodiscard]] auto has_glyph(const unicode_t glyph) const noexcept -> bool
   {
     return find_glyph(glyph) != nullptr;
   }
@@ -1309,7 +1310,7 @@ class font_cache final {
    *
    * \see `find_glyph()`
    */
-  [[nodiscard]] auto get_glyph(const Unicode glyph) const -> const glyph_data&
+  [[nodiscard]] auto get_glyph(const unicode_t glyph) const -> const glyph_data&
   {
     if (const auto* ptr = find_glyph(glyph)) {
       return *ptr;
@@ -1333,12 +1334,12 @@ class font_cache final {
 
  private:
   font mFont;
-  std::unordered_map<Unicode, glyph_data> mGlyphs;
+  std::unordered_map<unicode_t, glyph_data> mGlyphs;
   std::unordered_map<id_type, Texture> mStrings;
   id_type mNextStringId{1};
 
   template <typename T>
-  [[nodiscard]] auto make_glyph_texture(BasicRenderer<T>& renderer, const Unicode glyph)
+  [[nodiscard]] auto make_glyph_texture(BasicRenderer<T>& renderer, const unicode_t glyph)
       -> Texture
   {
     return renderer.ToTexture(mFont.render_blended_glyph(glyph, renderer.GetColor()));
@@ -1489,7 +1490,8 @@ class font_bundle final {
    *
    * \return the found font cache.
    *
-   * \throws exception if the identifier is invalid or if there is no font of the specified size.
+   * \throws exception if the identifier is invalid or if there is no font of the specified
+   * size.
    */
   [[nodiscard]] auto at(const id_type id, const int size) -> font_cache&
   {
@@ -1524,7 +1526,8 @@ class font_bundle final {
    *
    * \return the found font.
    *
-   * \throws exception if the identifier is invalid or if there is no font of the specified size.
+   * \throws exception if the identifier is invalid or if there is no font of the specified
+   * size.
    *
    * \see `at()`
    */

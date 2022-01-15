@@ -13,26 +13,26 @@ namespace cen {
 /* Represents a null-terminated string encoded in Unicode. */
 class UnicodeString final {
  public:
-  using value_type = std::vector<Unicode>::value_type;
+  using value_type = std::vector<unicode_t>::value_type;
 
-  using pointer = std::vector<Unicode>::pointer;
-  using const_pointer = std::vector<Unicode>::const_pointer;
+  using pointer = std::vector<unicode_t>::pointer;
+  using const_pointer = std::vector<unicode_t>::const_pointer;
 
-  using reference = std::vector<Unicode>::reference;
-  using const_reference = std::vector<Unicode>::const_reference;
+  using reference = std::vector<unicode_t>::reference;
+  using const_reference = std::vector<unicode_t>::const_reference;
 
-  using iterator = std::vector<Unicode>::iterator;
-  using const_iterator = std::vector<Unicode>::const_iterator;
+  using iterator = std::vector<unicode_t>::iterator;
+  using const_iterator = std::vector<unicode_t>::const_iterator;
 
-  using reverse_iterator = std::vector<Unicode>::reverse_iterator;
-  using const_reverse_iterator = std::vector<Unicode>::const_reverse_iterator;
+  using reverse_iterator = std::vector<unicode_t>::reverse_iterator;
+  using const_reverse_iterator = std::vector<unicode_t>::const_reverse_iterator;
 
-  using size_type = std::vector<Unicode>::size_type;
-  using difference_type = std::vector<Unicode>::difference_type;
+  using size_type = std::vector<unicode_t>::size_type;
+  using difference_type = std::vector<unicode_t>::difference_type;
 
   UnicodeString() { mData.push_back(0); }
 
-  UnicodeString(std::initializer_list<Unicode> codes)
+  UnicodeString(std::initializer_list<unicode_t> codes)
   {
     reserve(codes.size() + 1);
     mData.insert(mData.end(), codes.begin(), codes.end());
@@ -41,18 +41,18 @@ class UnicodeString final {
 
   void reserve(const size_type n) { mData.reserve(n); }
 
-  void append(const Unicode ch) { mData.insert(mData.end() - 1, ch); }
+  void append(const unicode_t ch) { mData.insert(mData.end() - 1, ch); }
 
   template <typename... Character>
   void append(Character... code)
   {
     static_assert(sizeof...(Character) != 0, "Must append at least 1 value!");
-    static_assert((std::is_convertible_v<Character, Unicode> && ...),
-                  "Must append Unicode values!");
-    (append(static_cast<Unicode>(code)), ...);
+    static_assert((std::is_convertible_v<Character, unicode_t> && ...),
+                  "Must append unicode_t values!");
+    (append(static_cast<unicode_t>(code)), ...);
   }
 
-  void operator+=(const Unicode ch) { append(ch); }
+  void operator+=(const unicode_t ch) { append(ch); }
 
   void pop_back()
   {
@@ -105,7 +105,7 @@ class UnicodeString final {
   }
 
  private:
-  std::vector<Unicode> mData;
+  std::vector<unicode_t> mData;
 };
 
 [[nodiscard]] inline auto operator==(const UnicodeString& a, const UnicodeString& b) -> bool

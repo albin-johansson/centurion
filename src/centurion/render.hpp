@@ -41,7 +41,7 @@ using RendererHandle = BasicRenderer<detail::HandleTag>;
 template <typename T>
 class BasicRenderer final {
  public:
-  enum RendererFlags : Uint32 {
+  enum RendererFlags : uint32 {
     Software = SDL_RENDERER_SOFTWARE,             ///< Software renderer
     Accelerated = SDL_RENDERER_ACCELERATED,       ///< Hardware-accelerated
     TargetTextures = SDL_RENDERER_TARGETTEXTURE,  ///< Supports target textures
@@ -59,7 +59,7 @@ class BasicRenderer final {
   }
 
   template <typename Window, typename TT = T, detail::EnableOwner<TT> = 0>
-  explicit BasicRenderer(const Window& window, const Uint32 flags = GetDefaultFlags())
+  explicit BasicRenderer(const Window& window, const uint32 flags = GetDefaultFlags())
       : mRenderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
@@ -514,7 +514,7 @@ class BasicRenderer final {
     return SDL_RenderIsClipEnabled(get());
   }
 
-  [[nodiscard]] constexpr static auto GetDefaultFlags() noexcept -> Uint32
+  [[nodiscard]] constexpr static auto GetDefaultFlags() noexcept -> uint32
   {
     return Accelerated | VSync;
   }
@@ -537,7 +537,7 @@ class RendererInfo final {
       -> std::optional<RendererInfo>;
 
  public:
-  [[nodiscard]] auto GetSupportedFlags() const noexcept -> Uint32 { return mInfo.flags; }
+  [[nodiscard]] auto GetSupportedFlags() const noexcept -> uint32 { return mInfo.flags; }
 
   [[nodiscard]] auto HasVSync() const noexcept -> bool
   {
@@ -559,7 +559,7 @@ class RendererInfo final {
     return GetSupportedFlags() & SDL_RENDERER_SOFTWARE;
   }
 
-  [[nodiscard]] auto GetPixelFormats() const noexcept -> Uint32
+  [[nodiscard]] auto GetPixelFormats() const noexcept -> uint32
   {
     return mInfo.num_texture_formats;
   }

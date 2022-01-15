@@ -134,15 +134,15 @@ class Mouse final {
   Point mCurrentPosition{};
   Point mPreviousPosition{};
   FArea mLogicalSize{1, 1};
-  Uint32 mCurrentMask{};
-  Uint32 mPreviousMask{};
+  uint32 mCurrentMask{};
+  uint32 mPreviousMask{};
 
-  [[nodiscard]] auto IsButtonPressed(const Uint32 mask) const noexcept -> bool
+  [[nodiscard]] auto IsButtonPressed(const uint32 mask) const noexcept -> bool
   {
     return mCurrentMask & mask;
   }
 
-  [[nodiscard]] auto WasButtonReleased(const Uint32 mask) const noexcept -> bool
+  [[nodiscard]] auto WasButtonReleased(const uint32 mask) const noexcept -> bool
   {
     return !(mCurrentMask & mask) && mPreviousMask & mask;
   }

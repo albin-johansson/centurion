@@ -24,7 +24,7 @@
 namespace cen {
 
 struct SDLConfig final {
-  Uint32 flags{SDL_INIT_EVERYTHING};
+  uint32 flags{SDL_INIT_EVERYTHING};
 };
 
 class SDL final {

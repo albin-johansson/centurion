@@ -18,7 +18,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-inline constexpr Uint32 haptic_infinity = SDL_HAPTIC_INFINITY;
+inline constexpr uint32 haptic_infinity = SDL_HAPTIC_INFINITY;
 
 /**
  * \class haptic_effect

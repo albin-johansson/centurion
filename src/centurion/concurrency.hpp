@@ -180,7 +180,7 @@ class Condition final {
 class Semaphore final {
  public:
   /* Creates a semaphore with the specified amount of tokens. */
-  explicit Semaphore(const Uint32 tokens) : mSemaphore{SDL_CreateSemaphore(tokens)}
+  explicit Semaphore(const uint32 tokens) : mSemaphore{SDL_CreateSemaphore(tokens)}
   {
     if (!mSemaphore) {
       throw sdl_error{};
@@ -205,7 +205,7 @@ class Semaphore final {
   /* Returns a token to the semaphore and notifies waiting threads. */
   auto Release() noexcept -> Result { return SDL_SemPost(mSemaphore.get()) == 0; }
 
-  [[nodiscard]] auto GetTokens() const noexcept -> Uint32
+  [[nodiscard]] auto GetTokens() const noexcept -> uint32
   {
     return SDL_SemValue(mSemaphore.get());
   }

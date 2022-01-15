@@ -535,7 +535,7 @@ class font final {
     return render_blended(str.c_str(), fg);
   }
 
-  [[nodiscard]] auto render_wrapped(const char* str, const color& fg, const Uint32 wrap) const
+  [[nodiscard]] auto render_wrapped(const char* str, const color& fg, const uint32 wrap) const
       -> Surface
   {
     assert(str);
@@ -544,7 +544,7 @@ class font final {
 
   [[nodiscard]] auto render_wrapped(const std::string& str,
                                     const color& fg,
-                                    const Uint32 wrap) const -> Surface
+                                    const uint32 wrap) const -> Surface
   {
     return render_wrapped(str.c_str(), fg, wrap);
   }
@@ -590,7 +590,7 @@ class font final {
 
   [[nodiscard]] auto render_wrapped_latin1(const char* str,
                                            const color& fg,
-                                           const Uint32 wrap) const -> Surface
+                                           const uint32 wrap) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
@@ -598,7 +598,7 @@ class font final {
 
   [[nodiscard]] auto render_wrapped_latin1(const std::string& str,
                                            const color& fg,
-                                           const Uint32 wrap) const -> Surface
+                                           const uint32 wrap) const -> Surface
   {
     return render_wrapped_latin1(str.c_str(), fg, wrap);
   }
@@ -624,7 +624,7 @@ class font final {
 
   [[nodiscard]] auto render_wrapped_unicode(const UnicodeString& str,
                                             const color& fg,
-                                            const Uint32 wrap) const -> Surface
+                                            const uint32 wrap) const -> Surface
   {
     return Surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
   }
@@ -903,7 +903,7 @@ class font_cache final {
   auto store_wrapped(BasicRenderer<T>& renderer,
                      const char* str,
                      const color& fg,
-                     const Uint32 wrap) -> id_type
+                     const uint32 wrap) -> id_type
   {
     assert(str);
     return store(renderer, mFont.render_wrapped(str, fg, wrap));
@@ -914,7 +914,7 @@ class font_cache final {
   auto store_wrapped(BasicRenderer<T>& renderer,
                      const std::string& str,
                      const color& fg,
-                     const Uint32 wrap) -> id_type
+                     const uint32 wrap) -> id_type
   {
     return store_wrapped(renderer, str.c_str(), fg, wrap);
   }
@@ -1022,7 +1022,7 @@ class font_cache final {
   auto store_wrapped_latin1(BasicRenderer<T>& renderer,
                             const char* str,
                             const color& fg,
-                            const Uint32 wrap) -> id_type
+                            const uint32 wrap) -> id_type
   {
     assert(str);
     return store(renderer, mFont.render_wrapped_latin1(str, fg, wrap));
@@ -1033,7 +1033,7 @@ class font_cache final {
   auto store_wrapped_latin1(BasicRenderer<T>& renderer,
                             const std::string& str,
                             const color& fg,
-                            const Uint32 wrap) -> id_type
+                            const uint32 wrap) -> id_type
   {
     return store_wrapped_latin1(renderer, str.c_str(), fg, wrap);
   }
@@ -1113,7 +1113,7 @@ class font_cache final {
   auto store_wrapped_unicode(BasicRenderer<T>& renderer,
                              const UnicodeString& str,
                              const color& fg,
-                             const Uint32 wrap) -> id_type
+                             const uint32 wrap) -> id_type
   {
     return store(renderer, mFont.render_wrapped_unicode(str, fg, wrap));
   }

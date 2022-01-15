@@ -38,7 +38,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  enum condition_type : Uint32 {
+  enum condition_type : uint32 {
     spring = SDL_HAPTIC_SPRING,     ///< Based on axes position.
     damper = SDL_HAPTIC_DAMPER,     ///< Based on axes velocity.
     inertia = SDL_HAPTIC_INERTIA,   ///< Based on axes acceleration.

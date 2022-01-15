@@ -35,7 +35,7 @@ using WindowHandle = BasicWindow<detail::HandleTag>;
 template <typename T>
 class BasicWindow final {
  public:
-  enum WindowFlags : Uint32 {
+  enum WindowFlags : uint32 {
     Fullscreen = SDL_WINDOW_FULLSCREEN,
     OpenGL = SDL_WINDOW_OPENGL,
     Shown = SDL_WINDOW_SHOWN,
@@ -76,7 +76,7 @@ class BasicWindow final {
   template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicWindow(const char* title,
                        const Area size = GetDefaultSize(),
-                       const Uint32 flags = GetDefaultFlags())
+                       const uint32 flags = GetDefaultFlags())
   {
     assert(title);
 
@@ -101,7 +101,7 @@ class BasicWindow final {
   template <typename TT = T, detail::EnableOwner<TT> = 0>
   explicit BasicWindow(const std::string& title,
                        const Area size = GetDefaultSize(),
-                       const Uint32 flags = GetDefaultFlags())
+                       const uint32 flags = GetDefaultFlags())
       : BasicWindow{title.c_str(), size, flags}
   {}
 
@@ -242,7 +242,7 @@ class BasicWindow final {
     return SDL_CaptureMouse(capture ? SDL_TRUE : SDL_FALSE) == 0;
   }
 
-  [[nodiscard]] auto GetID() const noexcept -> Uint32 { return SDL_GetWindowID(mWindow); }
+  [[nodiscard]] auto GetID() const noexcept -> uint32 { return SDL_GetWindowID(mWindow); }
 
   [[nodiscard]] auto GetPosition() const noexcept -> Point
   {
@@ -316,12 +316,12 @@ class BasicWindow final {
     return SurfaceHandle{SDL_GetWindowSurface(mWindow)};
   }
 
-  [[nodiscard]] auto GetFlags() const noexcept -> Uint32
+  [[nodiscard]] auto GetFlags() const noexcept -> uint32
   {
     return SDL_GetWindowFlags(mWindow);
   }
 
-  [[nodiscard]] auto CheckFlag(const Uint32 flag) const noexcept -> bool
+  [[nodiscard]] auto CheckFlag(const uint32 flag) const noexcept -> bool
   {
     return GetFlags() & flag;
   }
@@ -415,7 +415,7 @@ class BasicWindow final {
   }
 
   template <typename TT = T, detail::EnableOwner<TT> = 0>
-  [[nodiscard]] constexpr static auto GetDefaultFlags() noexcept -> Uint32
+  [[nodiscard]] constexpr static auto GetDefaultFlags() noexcept -> uint32
   {
     return Hidden;
   }
@@ -460,7 +460,7 @@ auto operator<<(std::ostream& stream, const BasicWindow<T>& window) -> std::ostr
   return WindowHandle{SDL_GetKeyboardFocus()};
 }
 
-[[nodiscard]] inline auto GetWindow(const Uint32 id) noexcept -> WindowHandle
+[[nodiscard]] inline auto GetWindow(const uint32 id) noexcept -> WindowHandle
 {
   return WindowHandle{SDL_GetWindowFromID(id)};
 }
@@ -472,7 +472,7 @@ template <typename T>
 }
 
 [[nodiscard]] inline auto MakeWindowAndRenderer(const Area size = Window::GetDefaultSize(),
-                                                const Uint32 flags = Window::GetDefaultFlags())
+                                                const uint32 flags = Window::GetDefaultFlags())
     -> std::pair<Window, Renderer>
 {
   cen::Window window{"Centurion window", size, flags};

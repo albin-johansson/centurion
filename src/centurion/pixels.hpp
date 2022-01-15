@@ -24,7 +24,7 @@
 
 namespace cen {
 
-enum class PixelFormat : Uint32 {
+enum class PixelFormat : uint32 {
   Unknown = SDL_PIXELFORMAT_UNKNOWN,
 
   Index1LSB = SDL_PIXELFORMAT_INDEX1LSB,
@@ -129,7 +129,7 @@ class Palette final {
 
   [[nodiscard]] auto GetSize() const noexcept -> int { return mPalette->ncolors; }
 
-  [[nodiscard]] auto GetVersion() const noexcept -> Uint32 { return mPalette->version; }
+  [[nodiscard]] auto GetVersion() const noexcept -> uint32 { return mPalette->version; }
 
   [[nodiscard]] auto data() const noexcept -> SDL_Palette* { return mPalette.get(); }
 
@@ -186,7 +186,7 @@ class BasicPixelFormatInfo final {
   explicit BasicPixelFormatInfo(const PixelFormatInfo& info) noexcept : mFormat{info.get()}
   {}
 
-  [[nodiscard]] auto PixelToRGB(const Uint32 pixel) const noexcept -> color
+  [[nodiscard]] auto PixelToRGB(const uint32 pixel) const noexcept -> color
   {
     uint8 red{};
     uint8 green{};
@@ -195,7 +195,7 @@ class BasicPixelFormatInfo final {
     return {red, green, blue};
   }
 
-  [[nodiscard]] auto PixelToRGBA(const Uint32 pixel) const noexcept -> color
+  [[nodiscard]] auto PixelToRGBA(const uint32 pixel) const noexcept -> color
   {
     uint8 red{};
     uint8 green{};
@@ -205,12 +205,12 @@ class BasicPixelFormatInfo final {
     return {red, green, blue, alpha};
   }
 
-  [[nodiscard]] auto RGBToPixel(const color& color) const noexcept -> Uint32
+  [[nodiscard]] auto RGBToPixel(const color& color) const noexcept -> uint32
   {
     return SDL_MapRGB(mFormat, color.red(), color.green(), color.blue());
   }
 
-  [[nodiscard]] auto RGBAToPixel(const color& color) const noexcept -> Uint32
+  [[nodiscard]] auto RGBAToPixel(const color& color) const noexcept -> uint32
   {
     return SDL_MapRGBA(mFormat, color.red(), color.green(), color.blue(), color.alpha());
   }

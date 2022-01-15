@@ -20,7 +20,7 @@
 namespace cen {
 
 /// Represents the different event types.
-enum class EventType : Uint32 {
+enum class EventType : uint32 {
   Quit = SDL_QUIT,
 
   AppTerminating = SDL_APP_TERMINATING,
@@ -109,7 +109,7 @@ enum class JoyHatPosition : uint8 {
   RightDown = SDL_HAT_RIGHTDOWN
 };
 
-enum class MouseWheelDirection : Uint32 {
+enum class MouseWheelDirection : uint32 {
   Normal = SDL_MOUSEWHEEL_NORMAL,
   Flipped = SDL_MOUSEWHEEL_FLIPPED
 };
@@ -153,11 +153,11 @@ class EventBase {
   explicit EventBase(T&& event) noexcept : mEvent{std::move(event)} {}
 
   /// Sets the timestamp of the creation of the event. TODO U32_Millis?
-  void SetTimestamp(const Uint32 timestamp) noexcept { mEvent.timestamp = timestamp; }
+  void SetTimestamp(const uint32 timestamp) noexcept { mEvent.timestamp = timestamp; }
 
   void SetType(const EventType type) noexcept { mEvent.type = ToUnderlying(type); }
 
-  [[nodiscard]] auto GetTimestamp() const noexcept -> Uint32 { return mEvent.timestamp; }
+  [[nodiscard]] auto GetTimestamp() const noexcept -> uint32 { return mEvent.timestamp; }
 
   [[nodiscard]] auto GetType() const noexcept -> EventType { return EventType{mEvent.type}; }
 
@@ -181,10 +181,10 @@ class AudioDeviceEvent final : public EventBase<SDL_AudioDeviceEvent> {
 
   explicit AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept : EventBase{event} {}
 
-  void SetWhich(const Uint32 which) noexcept { mEvent.which = which; }
+  void SetWhich(const uint32 which) noexcept { mEvent.which = which; }
   void SetCapture(const bool capture) noexcept { mEvent.iscapture = capture; }
 
-  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return mEvent.which; }
+  [[nodiscard]] auto GetWhich() const noexcept -> uint32 { return mEvent.which; }
   [[nodiscard]] auto IsCapture() const noexcept -> bool { return mEvent.iscapture; }
   [[nodiscard]] auto IsOutput() const noexcept -> bool { return !IsCapture(); }
 };
@@ -440,7 +440,7 @@ class DisplayEvent final : public EventBase<SDL_DisplayEvent> {
     mEvent.event = static_cast<uint8>(ToUnderlying(id));
   }
 
-  void SetIndex(const Uint32 index) noexcept { mEvent.display = index; }
+  void SetIndex(const uint32 index) noexcept { mEvent.display = index; }
 
   void SetData1(const Sint32 data) noexcept { mEvent.data1 = data; }
 
@@ -449,7 +449,7 @@ class DisplayEvent final : public EventBase<SDL_DisplayEvent> {
     return static_cast<DisplayEventID>(mEvent.event);
   }
 
-  [[nodiscard]] auto GetIndex() const noexcept -> Uint32 { return mEvent.display; }
+  [[nodiscard]] auto GetIndex() const noexcept -> uint32 { return mEvent.display; }
 
   [[nodiscard]] auto GetData1() const noexcept -> Sint32 { return mEvent.data1; }
 };
@@ -469,7 +469,7 @@ class dollar_gesture_event final : public EventBase<SDL_DollarGestureEvent> {
 
   void set_gesture_id(const SDL_GestureID id) noexcept { mEvent.gestureId = id; }
 
-  void set_fingers(const Uint32 fingers) noexcept { mEvent.numFingers = fingers; }
+  void set_fingers(const uint32 fingers) noexcept { mEvent.numFingers = fingers; }
 
   void set_error(const float error) noexcept { mEvent.error = error; }
 
@@ -481,7 +481,7 @@ class dollar_gesture_event final : public EventBase<SDL_DollarGestureEvent> {
 
   [[nodiscard]] auto gesture_id() const noexcept -> SDL_GestureID { return mEvent.gestureId; }
 
-  [[nodiscard]] auto finger_count() const noexcept -> Uint32 { return mEvent.numFingers; }
+  [[nodiscard]] auto finger_count() const noexcept -> uint32 { return mEvent.numFingers; }
 
   [[nodiscard]] auto error() const noexcept -> float { return mEvent.error; }
 
@@ -506,13 +506,13 @@ class DropEvent final : public EventBase<SDL_DropEvent> {
     mEvent.file = file;
   }
 
-  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
 
   [[nodiscard]] auto WillFreeFile() const noexcept -> bool { return mFreeFile; }
 
   [[nodiscard]] auto GetFile() const noexcept -> char* { return mEvent.file; }
 
-  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }
 
  private:
   bool mFreeFile{false};
@@ -549,7 +549,7 @@ class KeyboardEvent final : public EventBase<SDL_KeyboardEvent> {
 
   void SetRepeated(const bool repeated) noexcept { mEvent.repeat = repeated; }
 
-  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
 
   [[nodiscard]] auto IsActive(const ScanCode& code) const noexcept -> bool
   {
@@ -603,7 +603,7 @@ class KeyboardEvent final : public EventBase<SDL_KeyboardEvent> {
     return static_cast<SDL_KeyCode>(mEvent.keysym.sym);
   }
 
-  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }
 };
 
 class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {
@@ -612,8 +612,8 @@ class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {
 
   explicit MouseButtonEvent(const SDL_MouseButtonEvent& event) noexcept : EventBase{event} {}
 
-  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
-  void SetWhich(const Uint32 which) noexcept { mEvent.which = which; }
+  void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWhich(const uint32 which) noexcept { mEvent.which = which; }
 
   void SetButton(const MouseButton button) noexcept { mEvent.button = ToUnderlying(button); }
   void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
@@ -623,8 +623,8 @@ class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {
   void SetX(const Sint32 x) noexcept { mEvent.x = x; }
   void SetY(const Sint32 y) noexcept { mEvent.y = y; }
 
-  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
-  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return mEvent.which; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWhich() const noexcept -> uint32 { return mEvent.which; }
 
   [[nodiscard]] auto GetButton() const noexcept -> MouseButton
   {
@@ -658,10 +658,10 @@ class MouseMotionEvent final : public EventBase<SDL_MouseMotionEvent> {
 
   explicit MouseMotionEvent(const SDL_MouseMotionEvent& event) noexcept : EventBase{event} {}
 
-  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
-  void SetWhich(const Uint32 which) noexcept { mEvent.which = which; }
+  void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWhich(const uint32 which) noexcept { mEvent.which = which; }
 
-  void SetState(const Uint32 state) noexcept { mEvent.state = state; }
+  void SetState(const uint32 state) noexcept { mEvent.state = state; }
 
   void SetX(const Sint32 x) noexcept { mEvent.x = x; }
   void SetY(const Sint32 y) noexcept { mEvent.y = y; }
@@ -669,10 +669,10 @@ class MouseMotionEvent final : public EventBase<SDL_MouseMotionEvent> {
   void SetDeltaX(const Sint32 dx) noexcept { mEvent.xrel = dx; }
   void SetDeltaY(const Sint32 dy) noexcept { mEvent.yrel = dy; }
 
-  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
-  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return mEvent.which; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWhich() const noexcept -> uint32 { return mEvent.which; }
 
-  [[nodiscard]] auto GetState() const noexcept -> Uint32 { return mEvent.state; }
+  [[nodiscard]] auto GetState() const noexcept -> uint32 { return mEvent.state; }
 
   [[nodiscard]] auto IsPressed(const MouseButton button) const noexcept -> bool
   {
@@ -692,8 +692,8 @@ class MouseWheelEvent final : public EventBase<SDL_MouseWheelEvent> {
 
   explicit MouseWheelEvent(const SDL_MouseWheelEvent& event) noexcept : EventBase{event} {}
 
-  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
-  void SetWhich(const Uint32 which) noexcept { mEvent.which = which; }
+  void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWhich(const uint32 which) noexcept { mEvent.which = which; }
 
   void SetXScroll(const Sint32 xScroll) noexcept { mEvent.x = xScroll; }
   void SetYScroll(const Sint32 yScroll) noexcept { mEvent.y = yScroll; }
@@ -703,8 +703,8 @@ class MouseWheelEvent final : public EventBase<SDL_MouseWheelEvent> {
     mEvent.direction = ToUnderlying(direction);
   }
 
-  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
-  [[nodiscard]] auto GetWhich() const noexcept -> Uint32 { return mEvent.which; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWhich() const noexcept -> uint32 { return mEvent.which; }
 
   [[nodiscard]] auto GetXScroll() const noexcept -> Sint32 { return mEvent.x; }
   [[nodiscard]] auto GetYScroll() const noexcept -> Sint32 { return mEvent.y; }
@@ -776,7 +776,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
     check_length();
   }
 
-  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
   void set_start(const Sint32 start) noexcept { mEvent.start = start; }
 
@@ -785,7 +785,7 @@ class text_editing_event final : public EventBase<SDL_TextEditingEvent> {
     mEvent.length = detail::clamp(length, 0, 32);
   }
 
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
 
   [[nodiscard]] auto text() const noexcept -> std::string_view
   {
@@ -807,9 +807,9 @@ class text_input_event final : public EventBase<SDL_TextInputEvent> {
 
   explicit text_input_event(const SDL_TextInputEvent& event) noexcept : EventBase{event} {}
 
-  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
 
   [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
   {
@@ -830,7 +830,7 @@ class touch_finger_event final : public EventBase<SDL_TouchFingerEvent> {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  void set_window_id(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -853,7 +853,7 @@ class touch_finger_event final : public EventBase<SDL_TouchFingerEvent> {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -874,14 +874,14 @@ class UserEvent final : public EventBase<SDL_UserEvent> {
 
   explicit UserEvent(const SDL_UserEvent& event) noexcept : EventBase{event} {}
 
-  void SetWindowID(const Uint32 id) noexcept { mEvent.windowID = id; }
+  void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
 
   void SetCode(const Sint32 code) noexcept { mEvent.code = code; }
 
   void SetData1(void* data) noexcept { mEvent.data1 = data; }
   void SetData2(void* data) noexcept { mEvent.data2 = data; }
 
-  [[nodiscard]] auto GetWindowID() const noexcept -> Uint32 { return mEvent.windowID; }
+  [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }
 
   [[nodiscard]] auto GetCode() const noexcept -> Sint32 { return mEvent.code; }
 

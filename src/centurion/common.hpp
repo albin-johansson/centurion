@@ -75,7 +75,7 @@ template <typename T>
 using Minutes = std::chrono::duration<T, std::ratio<60>>;
 
 using U16_Millis = Millis<uint16>;
-using U32_Millis = Millis<Uint32>;
+using U32_Millis = Millis<uint32>;
 using U64_Millis = Millis<Uint64>;
 
 #ifdef NDEBUG
@@ -307,7 +307,7 @@ inline namespace time_literals {
 
 [[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U32_Millis
 {
-  return U32_Millis{static_cast<Uint32>(ms)};
+  return U32_Millis{static_cast<uint32>(ms)};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

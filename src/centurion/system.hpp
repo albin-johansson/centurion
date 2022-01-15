@@ -207,7 +207,7 @@ class SharedObject final {
 #else
 
 /* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(U32_Millis{Uint32{}}))
+[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(U32_Millis{uint32{}}))
     -> U32_Millis
 {
   return U32_Millis{SDL_GetTicks()};

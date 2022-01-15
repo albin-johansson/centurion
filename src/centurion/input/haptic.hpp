@@ -314,7 +314,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto run(const effect_id id, const Uint32 iterations = 1) noexcept -> Result
+  auto run(const effect_id id, const uint32 iterations = 1) noexcept -> Result
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }

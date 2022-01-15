@@ -158,7 +158,7 @@ class BasicTexture final {
 
   [[nodiscard]] auto GetFormat() const noexcept -> PixelFormat
   {
-    Uint32 format{};
+    uint32 format{};
     SDL_QueryTexture(mTexture, &format, nullptr, nullptr, nullptr);
     return static_cast<PixelFormat>(format);
   }

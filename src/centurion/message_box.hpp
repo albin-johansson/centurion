@@ -17,13 +17,13 @@
 
 namespace cen {
 
-enum class MessageBoxType : Uint32 {
+enum class MessageBoxType : uint32 {
   Error = SDL_MESSAGEBOX_ERROR,
   Warning = SDL_MESSAGEBOX_WARNING,
   Information = SDL_MESSAGEBOX_INFORMATION
 };
 
-enum class MessageBoxButtonOrder : Uint32 {
+enum class MessageBoxButtonOrder : uint32 {
 #if SDL_VERSION_ATLEAST(2, 0, 12)
   LeftToRight = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
   RightToLeft = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
@@ -80,7 +80,7 @@ class MessageBox final {
  public:
   using button_id = int;
 
-  enum ButtonFlags : Uint32 {
+  enum ButtonFlags : uint32 {
     ReturnKeyDefault = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     EscapeKeyDefault = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
   };
@@ -196,7 +196,7 @@ class MessageBox final {
 
   [[nodiscard]] constexpr static auto ToFlags(const MessageBoxType type,
                                               const MessageBoxButtonOrder buttonOrder) noexcept
-      -> Uint32
+      -> uint32
   {
     return ToUnderlying(type) | ToUnderlying(buttonOrder);
   }

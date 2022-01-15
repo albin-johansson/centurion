@@ -11,7 +11,7 @@ namespace cen {
   return SDL_Swap16(value);
 }
 
-[[nodiscard]] inline auto SwapByteOrder(const Uint32 value) noexcept -> Uint32
+[[nodiscard]] inline auto SwapByteOrder(const uint32 value) noexcept -> uint32
 {
   return SDL_Swap32(value);
 }
@@ -32,7 +32,7 @@ namespace cen {
   return SDL_SwapBE16(value);
 }
 
-[[nodiscard]] inline auto SwapBigEndian(const Uint32 value) noexcept -> Uint32
+[[nodiscard]] inline auto SwapBigEndian(const uint32 value) noexcept -> uint32
 {
   return SDL_SwapBE32(value);
 }
@@ -53,7 +53,7 @@ namespace cen {
   return SDL_SwapLE16(value);
 }
 
-[[nodiscard]] inline auto SwapLittleEndian(const Uint32 value) noexcept -> Uint32
+[[nodiscard]] inline auto SwapLittleEndian(const uint32 value) noexcept -> uint32
 {
   return SDL_SwapLE32(value);
 }

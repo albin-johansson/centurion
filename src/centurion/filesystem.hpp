@@ -126,8 +126,8 @@ class File final {
     return SDL_WriteBE64(mContext.get(), value) == 1;
   }
 
-  [[nodiscard]] auto Seek(const Sint64 offset, const SeekMode mode) noexcept
-      -> std::optional<Sint64>
+  [[nodiscard]] auto Seek(const int64 offset, const SeekMode mode) noexcept
+      -> std::optional<int64>
   {
     assert(mContext);
     const auto result = SDL_RWseek(mContext.get(), offset, ToUnderlying(mode));
@@ -251,7 +251,7 @@ class File final {
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
-  [[nodiscard]] auto GetOffset() const noexcept -> Sint64
+  [[nodiscard]] auto GetOffset() const noexcept -> int64
   {
     assert(mContext);
     return SDL_RWtell(mContext.get());

@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
+#include <cstddef>        // size_t
 #include <cstring>        // strcmp
 #include <filesystem>     // path
 #include <memory>         // unique_ptr
@@ -19,10 +20,10 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "features.hpp"
-#include "memory.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
 #include "math.hpp"
+#include "memory.hpp"
 #include "render.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
@@ -709,25 +710,51 @@ class FontCache final {
 };
 
 /**
- * Utility for handling fonts of various sizes.
+ * \brief Utility for handling fonts of various sizes.
  *
- * Note, this class stores `FontCache` instances, so the `GetCache`/`GetFont`-functions operate
- * on the same underlying fonts.
+ * \details The main motivation behind this utility is the fact that it is common to load the
+ * same font family in several different sizes. This class provides a simple API for
+ * efficiently managing such pools of fonts.
+ *
+ * \details This class works by organizing different pools of fonts based on their file paths.
+ * Which means that the same font, loaded from different file paths, will be put into different
+ * pools.
+ *
+ * \note Despite the name, this class actually stores `font_cache` instances. However, you can
+ * still simply extract the underlying `font` instances if you do not need the extra features
+ * provided by the `font_cache` class.
+ *
+ * \see `font`
+ * \see `font_cache`
  */
-class FontBundle final {
+class font_bundle final {
  public:
-  /* Attempts to load a font in a specific size, and returns the font ID */
-  auto LoadFont(const char* path, const int size) -> std::size_t
+  using id_type = std::size_t;
+  using size_type = std::size_t;
+
+  /**
+   * \brief Loads a font in a specific size.
+   *
+   * \details It is safe to load a font that has already been previously loaded. Furthermore,
+   * this function has no effect if there is already a font of the specified size stored in the
+   * pool for the font family.
+   *
+   * \param path the file path of the font.
+   * \param size the size of the font.
+   *
+   * \return the identifier associated with the font.
+   */
+  auto load_font(const char* path, const int size) -> id_type
   {
     assert(path);
-    if (const auto id = GetID(path)) {
-      mPacks[*id].caches.try_emplace(size, Font{path, size});
+    if (const auto id = get_id(path)) {
+      mPools[*id].caches.try_emplace(size, Font{path, size});
       return *id;
     }
     else {
       const auto newId = mNextFontId;
 
-      auto& pack = mPacks[newId];
+      auto& pack = mPools[newId];
       pack.path = path;
       pack.caches.try_emplace(size, Font{path, size});
 
@@ -737,19 +764,43 @@ class FontBundle final {
     }
   }
 
-  [[nodiscard]] auto HasFont(const std::string_view path) const -> bool
+  /**
+   * \brief Indicates whether or not there is a font pool associated with an ID.
+   *
+   * \param id the pool ID that will be checked.
+   *
+   * \return `true` if there is a font pool associated with the ID; `false` otherwise.
+   */
+  [[nodiscard]] auto contains(const id_type id) const -> bool
   {
-    return GetID(path).has_value();
+    return mPools.find(id) != mPools.end();
   }
 
-  [[nodiscard]] auto HasFont(const std::size_t id) const -> bool
+  /**
+   * \brief Indicates whether there is a pool for the specified file path.
+   *
+   * \param path the file path that will be checked.
+   *
+   * \return `true` if a pool is found; `false` otherwise.
+   */
+  [[nodiscard]] auto contains(const std::string_view path) const -> bool
   {
-    return mPacks.find(id) != mPacks.end();
+    return get_id(path).has_value();
   }
 
-  [[nodiscard]] auto HasFont(const std::size_t id, const int size) const -> bool
+  /**
+   * \brief Indicates whether there is a font of a specific size in a pool.
+   *
+   * \details This function returns `false` if an invalid pool identifier is used.
+   *
+   * \param id the identifier associated with the pool that will be checked.
+   * \param size the font size to look for.
+   *
+   * \return `true` if there is a font of the specific size in the pool; `false` otherwise.
+   */
+  [[nodiscard]] auto contains(const id_type id, const int size) const -> bool
   {
-    if (const auto pack = mPacks.find(id); pack != mPacks.end()) {
+    if (const auto pack = mPools.find(id); pack != mPools.end()) {
       return pack->second.caches.find(size) != pack->second.caches.end();
     }
     else {
@@ -757,52 +808,103 @@ class FontBundle final {
     }
   }
 
-  [[nodiscard]] auto GetCache(const std::size_t id, const int size) -> FontCache&
+  /**
+   * \brief Returns a previously loaded font of a particular size from a pool.
+   *
+   * \param id the identifier of the pool to query.
+   * \param size the size of the desired font.
+   *
+   * \return the found font cache.
+   *
+   * \throws Error if the identifier is invalid or if there is no font of the specified size.
+   */
+  [[nodiscard]] auto at(const id_type id, const int size) -> FontCache&
   {
-    return mPacks.at(id).caches.at(size);
+    if (const auto pool = mPools.find(id); pool != mPools.end()) {
+      auto& caches = pool->second.caches;
+      if (const auto cache = caches.find(size); cache != caches.end()) {
+        return cache->second;
+      }
+      else {
+        throw Error{"No loaded font of the requested size!"};
+      }
+    }
+    else {
+      throw Error{"Invalid font pool identifier!"};
+    }
   }
 
-  [[nodiscard]] auto GetCache(const std::size_t id, const int size) const -> const FontCache&
+  /// \copydoc at()
+  [[nodiscard]] auto at(const id_type id, const int size) const -> const FontCache&
   {
-    return mPacks.at(id).caches.at(size);
+    return mPools.at(id).caches.at(size);
   }
 
-  /* Shorthand for `GetCache(id, size).GetFont()` */
-  [[nodiscard]] auto GetFont(const std::size_t id, const int size) -> Font&
+  /**
+   * \brief Returns a previously loaded font of a particular size from a pool.
+   *
+   * \note This function is provided as a shorthand, and simply calls `at()` and extracts the
+   * font from the found font cache.
+   *
+   * \param id the identifier of the pool to query.
+   * \param size the size of the desired font.
+   *
+   * \return the found font.
+   *
+   * \throws Error if the identifier is invalid or if there is no font of the specified size.
+   *
+   * \see `at()`
+   */
+  [[nodiscard]] auto get_font(const id_type id, const int size) -> Font&
   {
-    return GetCache(id, size).GetFont();
+    return at(id, size).GetFont();
   }
 
-  [[nodiscard]] auto GetFont(const std::size_t id, const int size) const -> const Font&
+  /// \copydoc get_font()
+  [[nodiscard]] auto get_font(const id_type id, const int size) const -> const Font&
   {
-    return GetCache(id, size).GetFont();
+    return at(id, size).GetFont();
   }
 
-  [[nodiscard]] auto GetNumUniqueFonts() const -> std::size_t { return mPacks.size(); }
-
-  [[nodiscard]] auto GetNumFonts() const -> std::size_t
+  /**
+   * \brief Returns the amount of fonts that have been loaded (including different sizes).
+   *
+   * \return the total amount of loaded individual fonts.
+   *
+   * \see `pool_count()`
+   */
+  [[nodiscard]] auto font_count() const noexcept -> size_type
   {
-    std::size_t count = 0;
+    size_type count = 0;
 
-    for (const auto& [id, pack] : mPacks) {
+    for (const auto& [id, pack] : mPools) {
       count += pack.caches.size();
     }
 
     return count;
   }
 
+  /**
+   * \brief Returns the amount of loaded font pools, i.e. font faces irrespective of sizes.
+   *
+   * \return the number of font pools.
+   *
+   * \see `font_count()`
+   */
+  [[nodiscard]] auto pool_count() const -> size_type { return mPools.size(); }
+
  private:
-  struct FontPack final {
+  struct font_pool final {
     std::string path;
-    std::unordered_map<int, FontCache> caches; /* Size -> Cache */
+    std::unordered_map<int, FontCache> caches;  ///< Size -> Cache
   };
 
-  std::unordered_map<std::size_t, FontPack> mPacks;
-  std::size_t mNextFontId{1};
+  std::unordered_map<id_type, font_pool> mPools;
+  id_type mNextFontId{1};
 
-  [[nodiscard]] auto GetID(const std::string_view path) const -> std::optional<std::size_t>
+  [[nodiscard]] auto get_id(const std::string_view path) const -> std::optional<id_type>
   {
-    for (const auto& [id, pack] : mPacks) {
+    for (const auto& [id, pack] : mPools) {
       if (!pack.caches.empty()) {
         if (pack.path == path) {
           return id;
@@ -813,6 +915,28 @@ class FontBundle final {
     return std::nullopt;
   }
 };
+
+/// \name Font bundle functions
+/// \{
+
+[[nodiscard]] inline auto to_string(const font_bundle& bundle) -> std::string
+{
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("font_bundle(#pools: {}, #fonts: {})",
+                     bundle.pool_count(),
+                     bundle.font_count());
+#else
+  return "font_bundle(#pools: " + std::to_string(bundle.pool_count()) +
+         ", #fonts: " + std::to_string(bundle.font_count()) + ")";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+inline auto operator<<(std::ostream& stream, const font_bundle& bundle) -> std::ostream&
+{
+  return stream << to_string(bundle);
+}
+
+/// \} End of font bundle functions
 
 [[nodiscard]] constexpr auto ToString(const FontHint hint) -> std::string_view
 {

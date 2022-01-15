@@ -47,7 +47,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp> {
    *
    * \since 5.2.0
    */
-  void set_start_strength(const Sint16 start) noexcept { representation().start = start; }
+  void set_start_strength(const int16 start) noexcept { representation().start = start; }
 
   /**
    * \brief Sets the strength level at the end of the effect.
@@ -56,7 +56,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp> {
    *
    * \since 5.2.0
    */
-  void set_end_strength(const Sint16 end) noexcept { representation().end = end; }
+  void set_end_strength(const int16 end) noexcept { representation().end = end; }
 
   /**
    * \brief Returns the initial strength level.
@@ -65,7 +65,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto start_strength() const noexcept -> Sint16
+  [[nodiscard]] auto start_strength() const noexcept -> int16
   {
     return representation().start;
   }
@@ -77,7 +77,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto end_strength() const noexcept -> Sint16 { return representation().end; }
+  [[nodiscard]] auto end_strength() const noexcept -> int16 { return representation().end; }
 
   /**
    * \brief Returns the internal representation.

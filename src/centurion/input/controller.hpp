@@ -251,7 +251,7 @@ class BasicController final {
     return JoystickHandle{SDL_GameControllerGetJoystick(mController)};
   }
 
-  [[nodiscard]] auto GetAxis(const ControllerAxis axis) const noexcept -> Sint16
+  [[nodiscard]] auto GetAxis(const ControllerAxis axis) const noexcept -> int16
   {
     return SDL_GameControllerGetAxis(mController, static_cast<SDL_GameControllerAxis>(axis));
   }

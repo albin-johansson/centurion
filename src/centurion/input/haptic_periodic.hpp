@@ -90,7 +90,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  void set_magnitude(const Sint16 magnitude) noexcept
+  void set_magnitude(const int16 magnitude) noexcept
   {
     representation().magnitude = magnitude;
   }
@@ -102,7 +102,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  void set_mean(const Sint16 mean) noexcept { representation().offset = mean; }
+  void set_mean(const int16 mean) noexcept { representation().offset = mean; }
 
   /**
    * \brief Sets the phase shift.
@@ -132,7 +132,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto magnitude() const noexcept -> Sint16
+  [[nodiscard]] auto magnitude() const noexcept -> int16
   {
     return representation().magnitude;
   }
@@ -144,7 +144,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto mean() const noexcept -> Sint16 { return representation().offset; }
+  [[nodiscard]] auto mean() const noexcept -> int16 { return representation().offset; }
 
   /**
    * \brief Returns the current positive phase shift of the wave.

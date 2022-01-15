@@ -199,13 +199,13 @@ class JoyAxisEvent final : public EventBase<SDL_JoyAxisEvent> {
 
   void SetAxis(const uint8 axis) noexcept { mEvent.axis = axis; }
 
-  void SetValue(const Sint16 value) noexcept { mEvent.value = value; }
+  void SetValue(const int16 value) noexcept { mEvent.value = value; }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
   [[nodiscard]] auto GetAxis() const noexcept -> uint8 { return mEvent.axis; }
 
-  [[nodiscard]] auto GetValue() const noexcept -> Sint16 { return mEvent.value; }
+  [[nodiscard]] auto GetValue() const noexcept -> int16 { return mEvent.value; }
 };
 
 class JoyBallEvent final : public EventBase<SDL_JoyBallEvent> {
@@ -217,14 +217,14 @@ class JoyBallEvent final : public EventBase<SDL_JoyBallEvent> {
   void SetWhich(const SDL_JoystickID which) noexcept { mEvent.which = which; }
   void SetBall(const uint8 ball) noexcept { mEvent.ball = ball; }
 
-  void SetDeltaX(const Sint16 dx) noexcept { mEvent.xrel = dx; }
-  void SetDeltaY(const Sint16 dy) noexcept { mEvent.yrel = dy; }
+  void SetDeltaX(const int16 dx) noexcept { mEvent.xrel = dx; }
+  void SetDeltaY(const int16 dy) noexcept { mEvent.yrel = dy; }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
   [[nodiscard]] auto GetBall() const noexcept -> uint8 { return mEvent.ball; }
 
-  [[nodiscard]] auto GetDeltaX() const noexcept -> Sint16 { return mEvent.xrel; }
-  [[nodiscard]] auto GetDeltaY() const noexcept -> Sint16 { return mEvent.yrel; }
+  [[nodiscard]] auto GetDeltaX() const noexcept -> int16 { return mEvent.xrel; }
+  [[nodiscard]] auto GetDeltaY() const noexcept -> int16 { return mEvent.yrel; }
 };
 
 class JoyButtonEvent final : public EventBase<SDL_JoyButtonEvent> {
@@ -298,14 +298,14 @@ class ControllerAxisEvent final : public EventBase<SDL_ControllerAxisEvent> {
 
   void SetWhich(const SDL_JoystickID which) noexcept { mEvent.which = which; }
   void SetAxis(const ControllerAxis axis) noexcept { mEvent.axis = static_cast<uint8>(axis); }
-  void SetValue(const Sint16 value) noexcept { mEvent.value = value; }
+  void SetValue(const int16 value) noexcept { mEvent.value = value; }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
   [[nodiscard]] auto GetAxis() const noexcept -> ControllerAxis
   {
     return static_cast<ControllerAxis>(mEvent.axis);
   }
-  [[nodiscard]] auto GetValue() const noexcept -> Sint16 { return mEvent.value; }
+  [[nodiscard]] auto GetValue() const noexcept -> int16 { return mEvent.value; }
 };
 
 class ControllerButtonEvent final : public EventBase<SDL_ControllerButtonEvent> {

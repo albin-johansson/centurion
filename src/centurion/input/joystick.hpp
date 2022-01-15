@@ -182,7 +182,7 @@ class BasicJoystick final {
     return SDL_JoystickDetachVirtual(index) == 0;
   }
 
-  auto SetVirtualAxis(const int axis, const Sint16 value) noexcept -> Result
+  auto SetVirtualAxis(const int axis, const int16 value) noexcept -> Result
   {
     return SDL_JoystickSetVirtualAxis(mJoystick, axis, value) == 0;
   }
@@ -367,15 +367,15 @@ class BasicJoystick final {
     }
   }
 
-  [[nodiscard]] auto GetAxis(const int axis) const noexcept -> Sint16
+  [[nodiscard]] auto GetAxis(const int axis) const noexcept -> int16
   {
     return SDL_JoystickGetAxis(mJoystick, axis);
   }
 
   [[nodiscard]] auto GetAxisInitialState(const int axis) const noexcept
-      -> std::optional<Sint16>
+      -> std::optional<int16>
   {
-    Sint16 state{};
+    int16 state{};
     if (SDL_JoystickGetAxisInitialState(mJoystick, axis, &state)) {
       return state;
     }
@@ -457,12 +457,12 @@ class BasicJoystick final {
     return GetGUID(str.c_str());
   }
 
-  [[nodiscard]] constexpr static auto GetAxisMax() noexcept -> Sint16
+  [[nodiscard]] constexpr static auto GetAxisMax() noexcept -> int16
   {
     return SDL_JOYSTICK_AXIS_MAX;
   }
 
-  [[nodiscard]] constexpr static auto GetAxisMin() noexcept -> Sint16
+  [[nodiscard]] constexpr static auto GetAxisMin() noexcept -> int16
   {
     return SDL_JOYSTICK_AXIS_MIN;
   }

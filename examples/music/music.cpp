@@ -48,7 +48,7 @@ class music_example final {
  private:
   cen::Window mWindow;
   cen::Renderer mRenderer;
-  cen::Font mFont;
+  cen::font mFont;
   event_dispatcher mDispatcher;
   cen::Music mSong;
   cen::Music mClick;

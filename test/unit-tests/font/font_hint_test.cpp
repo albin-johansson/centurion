@@ -7,20 +7,20 @@
 
 TEST(FontHint, Values)
 {
-  ASSERT_EQ(TTF_HINTING_NORMAL, cen::ToUnderlying(cen::FontHint::Normal));
-  ASSERT_EQ(TTF_HINTING_LIGHT, cen::ToUnderlying(cen::FontHint::Light));
-  ASSERT_EQ(TTF_HINTING_MONO, cen::ToUnderlying(cen::FontHint::Mono));
-  ASSERT_EQ(TTF_HINTING_NONE, cen::ToUnderlying(cen::FontHint::None));
+  ASSERT_EQ(TTF_HINTING_NORMAL, ToUnderlying(cen::font_hint::normal));
+  ASSERT_EQ(TTF_HINTING_LIGHT, ToUnderlying(cen::font_hint::light));
+  ASSERT_EQ(TTF_HINTING_MONO, ToUnderlying(cen::font_hint::mono));
+  ASSERT_EQ(TTF_HINTING_NONE, ToUnderlying(cen::font_hint::none));
 }
 
 TEST(FontHint, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::FontHint>(4)), cen::Error);
+  ASSERT_THROW(to_string(static_cast<cen::font_hint>(4)), cen::Error);
 
-  ASSERT_EQ("Normal", cen::ToString(cen::FontHint::Normal));
-  ASSERT_EQ("Light", cen::ToString(cen::FontHint::Light));
-  ASSERT_EQ("Mono", cen::ToString(cen::FontHint::Mono));
-  ASSERT_EQ("None", cen::ToString(cen::FontHint::None));
+  ASSERT_EQ("normal", to_string(cen::font_hint::normal));
+  ASSERT_EQ("light", to_string(cen::font_hint::light));
+  ASSERT_EQ("mono", to_string(cen::font_hint::mono));
+  ASSERT_EQ("none", to_string(cen::font_hint::none));
 
-  std::clog << "Font hint example: " << cen::FontHint::Normal << '\n';
+  std::clog << "Font hint example: " << cen::font_hint::normal << '\n';
 }

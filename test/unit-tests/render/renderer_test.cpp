@@ -17,7 +17,7 @@ class RendererTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    font = std::make_unique<cen::Font>("resources/daniel.ttf", 12);
+    font = std::make_unique<cen::font>("resources/daniel.ttf", 12);
     window = std::make_unique<cen::Window>();
 
     renderer = std::make_unique<cen::Renderer>(*window);
@@ -32,7 +32,7 @@ class RendererTest : public testing::Test {
     font.reset();
   }
 
-  inline static std::unique_ptr<cen::Font> font;
+  inline static std::unique_ptr<cen::font> font;
   inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
   inline static std::unique_ptr<cen::Texture> texture;

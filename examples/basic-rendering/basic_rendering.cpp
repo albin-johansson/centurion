@@ -11,7 +11,7 @@ int main(int, char**)
 
   // Here we assume the existence of an image and font
   const cen::Texture image{renderer, RESOURCE_DIR "panda.png"};
-  const cen::Font font{RESOURCE_DIR "daniel.ttf", 36};
+  const cen::font font{RESOURCE_DIR "daniel.ttf", 36};
   window.Show();
 
   // Render a string to a texture, which in turn can be rendered to our render target

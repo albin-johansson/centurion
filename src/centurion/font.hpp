@@ -40,44 +40,44 @@ namespace cen {
 /// \addtogroup video
 /// \{
 
-enum class FontHint : int {
-  Normal = TTF_HINTING_NORMAL,
-  Light = TTF_HINTING_LIGHT,
-  Mono = TTF_HINTING_MONO,
-  None = TTF_HINTING_NONE
+enum class font_hint {
+  normal = TTF_HINTING_NORMAL,
+  light = TTF_HINTING_LIGHT,
+  mono = TTF_HINTING_MONO,
+  none = TTF_HINTING_NONE
 };
 
 /// \name Font hint functions
 /// \{
 
-[[nodiscard]] constexpr auto ToString(const FontHint hint) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint) {
-    case FontHint::Normal:
-      return "Normal";
+    case font_hint::normal:
+      return "normal";
 
-    case FontHint::Light:
-      return "Light";
+    case font_hint::light:
+      return "light";
 
-    case FontHint::Mono:
-      return "Mono";
+    case font_hint::mono:
+      return "mono";
 
-    case FontHint::None:
-      return "None";
+    case font_hint::none:
+      return "none";
 
     default:
       throw Error{"Did not recognize font hint!"};
   }
 }
 
-inline auto operator<<(std::ostream& stream, const FontHint hint) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const font_hint hint) -> std::ostream&
 {
-  return stream << ToString(hint);
+  return stream << to_string(hint);
 }
 
 /// \} End of font hint functions
 
-struct GlyphMetrics final {
+struct glyph_metrics final {
   int min_x{};    ///< The minimum X-offset.
   int min_y{};    ///< The minimum Y-offset.
   int max_x{};    ///< The maximum X-offset.
@@ -85,9 +85,21 @@ struct GlyphMetrics final {
   int advance{};  ///< The advance offset.
 };
 
-class Font final {
+class font final {
  public:
-  Font(const char* file, const int size) : mSize{size}
+  /// \name Construction
+  /// \{
+
+  /**
+   * \brief Creates a font based on the TTF-font at the specified path.
+   *
+   * \param file the file path of the font file.
+   * \param size the size of the font.
+   *
+   * \throws error if the font size is not greater than zero.
+   * \throws ttf_error if the font cannot be opened.
+   */
+  font(const char* file, const int size) : mSize{size}
   {
     assert(file);
 
@@ -101,156 +113,311 @@ class Font final {
     }
   }
 
-  Font(const std::string& file, const int size) : Font{file.c_str(), size} {}
+  /// \copydoc font(const char*, int)
+  font(const std::string& file, const int size) : font{file.c_str(), size} {}
 
-  void ResetStyle() noexcept { TTF_SetFontStyle(mFont.get(), TTF_STYLE_NORMAL); }
+  /// \} End of construction
 
-  void SetBold(const bool bold) noexcept
+  /// \name Style functions
+  /// \{
+
+  /**
+   * \brief Resets the style of the font.
+   */
+  void reset_style() noexcept { TTF_SetFontStyle(mFont.get(), TTF_STYLE_NORMAL); }
+
+  /**
+   * \brief Sets whether the font is bold.
+   *
+   * \param bold `true` if the font should be bold; `false` otherwise.
+   */
+  void set_bold(const bool bold) noexcept
   {
     if (bold) {
-      AddStyle(TTF_STYLE_BOLD);
+      add_style(TTF_STYLE_BOLD);
     }
     else {
-      RemoveStyle(TTF_STYLE_BOLD);
+      remove_style(TTF_STYLE_BOLD);
     }
   }
 
-  void SetItalic(const bool italic) noexcept
+  /**
+   * \brief Sets whether the font is italic.
+   *
+   * \param italic `true` if the font should be italic; `false` otherwise.
+   */
+  void set_italic(const bool italic) noexcept
   {
     if (italic) {
-      AddStyle(TTF_STYLE_ITALIC);
+      add_style(TTF_STYLE_ITALIC);
     }
     else {
-      RemoveStyle(TTF_STYLE_ITALIC);
+      remove_style(TTF_STYLE_ITALIC);
     }
   }
 
-  void SetUnderlined(const bool underlined) noexcept
+  /**
+   * \brief Sets whether the font is underlined.
+   *
+   * \param underlined `true` if the font should be underlined; `false` otherwise.
+   */
+  void set_underlined(const bool underlined) noexcept
   {
     if (underlined) {
-      AddStyle(TTF_STYLE_UNDERLINE);
+      add_style(TTF_STYLE_UNDERLINE);
     }
     else {
-      RemoveStyle(TTF_STYLE_UNDERLINE);
+      remove_style(TTF_STYLE_UNDERLINE);
     }
   }
 
-  void SetStrikethrough(const bool strikethrough) noexcept
+  /**
+   * \brief Sets whether the font is strikethrough.
+   *
+   * \param strikethrough `true` if the font should be strikethrough; `false` otherwise.
+   */
+  void set_strikethrough(const bool strikethrough) noexcept
   {
     if (strikethrough) {
-      AddStyle(TTF_STYLE_STRIKETHROUGH);
+      add_style(TTF_STYLE_STRIKETHROUGH);
     }
     else {
-      RemoveStyle(TTF_STYLE_STRIKETHROUGH);
+      remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
 
-  void SetKerning(const bool kerning) noexcept
+  /**
+   * \brief Sets whether the font can make use of kerning.
+   *
+   * \param kerning `true` if kerning is allowed; `false` otherwise.
+   */
+  void set_kerning(const bool kerning) noexcept
   {
     TTF_SetFontKerning(mFont.get(), kerning ? 1 : 0);
   }
 
-  void SetOutline(const int outline) noexcept { TTF_SetFontOutline(mFont.get(), outline); }
+  /**
+   * \brief Sets the outline size of the font.
+   *
+   * \param outline the outline size; use zero to disable the outline.
+   */
+  void set_outline(const int outline) noexcept
+  {
+    TTF_SetFontOutline(mFont.get(), detail::min(outline, 0));
+  }
 
-  void SetFontHinting(const FontHint hint) noexcept
+  /**
+   * \brief Sets the hint used by the font.
+   *
+   * \param hint the hint that will be used.
+   */
+  void set_font_hinting(const font_hint hint) noexcept
   {
     TTF_SetFontHinting(mFont.get(), ToUnderlying(hint));
   }
 
-  [[nodiscard]] auto IsBold() const noexcept -> bool
+  /**
+   * \brief Indicates whether the font is bold.
+   *
+   * \return `true` if the font is bold; `false` otherwise.
+   */
+  [[nodiscard]] auto is_bold() const noexcept -> bool
   {
     return TTF_GetFontStyle(mFont.get()) & TTF_STYLE_BOLD;
   }
 
-  [[nodiscard]] auto IsItalic() const noexcept -> bool
+  /**
+   * \brief Indicates whether the font is italic.
+   *
+   * \return `true` if the font is italic; `false` otherwise.
+   */
+  [[nodiscard]] auto is_italic() const noexcept -> bool
   {
     return TTF_GetFontStyle(mFont.get()) & TTF_STYLE_ITALIC;
   }
 
-  [[nodiscard]] auto IsUnderlined() const noexcept -> bool
+  /**
+   * \brief Indicates whether the font is underlined.
+   *
+   * \return `true` if the font is underlined; `false` otherwise.
+   */
+  [[nodiscard]] auto is_underlined() const noexcept -> bool
   {
     return TTF_GetFontStyle(mFont.get()) & TTF_STYLE_UNDERLINE;
   }
 
-  [[nodiscard]] auto IsStrikethrough() const noexcept -> bool
+  /**
+   * \brief Indicates whether the font is strikethrough.
+   *
+   * \return `true` if the font is strikethrough; `false` otherwise.
+   */
+  [[nodiscard]] auto is_strikethrough() const noexcept -> bool
   {
     return TTF_GetFontStyle(mFont.get()) & TTF_STYLE_STRIKETHROUGH;
   }
 
-  [[nodiscard]] auto HasKerning() const noexcept -> bool
+  /**
+   * \brief Indicates whether the font is outlined.
+   *
+   * \return `true` if the font is outlined; `false` otherwise.
+   */
+  [[nodiscard]] auto is_outlined() const noexcept -> bool { return outline() != 0; }
+
+  /**
+   * \brief Indicates whether the font can make use of kerning.
+   *
+   * \return `true` if the kerning is allowed; `false` otherwise.
+   */
+  [[nodiscard]] auto has_kerning() const noexcept -> bool
   {
     return TTF_GetFontKerning(mFont.get());
   }
 
-  [[nodiscard]] auto IsFixedWidth() const noexcept -> bool
-  {
-    return TTF_FontFaceIsFixedWidth(mFont.get());
-  }
-
-  [[nodiscard]] auto IsOutlined() const noexcept -> bool { return GetOutline() != 0; }
-
-  [[nodiscard]] auto GetOutline() const noexcept -> int
+  /**
+   * \brief Returns the size of the font outline.
+   *
+   * \return the outline size.
+   */
+  [[nodiscard]] auto outline() const noexcept -> int
   {
     return TTF_GetFontOutline(mFont.get());
   }
 
-  [[nodiscard]] auto GetFontHinting() const noexcept -> FontHint
+  /**
+   * \brief Returns the font hinting.
+   *
+   * \return the current font hint.
+   */
+  [[nodiscard]] auto font_hinting() const noexcept -> font_hint
   {
-    return static_cast<FontHint>(TTF_GetFontHinting(mFont.get()));
+    return static_cast<font_hint>(TTF_GetFontHinting(mFont.get()));
   }
 
-  /* Returns the maximum height of a character in this font. */
-  [[nodiscard]] auto GetHeight() const noexcept -> int { return TTF_FontHeight(mFont.get()); }
+  /// \} End of style functions
 
-  /* Returns the offset from the baseline to the bottom of the font characters. */
-  [[nodiscard]] auto GetDescent() const noexcept -> int
+  /// \name Query functions
+  /// \{
+
+  /**
+   * \brief Indicates whether the font is fixed width.
+   *
+   * \return `true` if the font is fixed width; `false` otherwise.
+   */
+  [[nodiscard]] auto is_fixed_width() const noexcept -> bool
   {
-    return TTF_FontDescent(mFont.get());
+    return TTF_FontFaceIsFixedWidth(mFont.get());
   }
 
-  /* Returns the offset from the baseline to the top of the font characters. */
-  [[nodiscard]] auto GetAscent() const noexcept -> int { return TTF_FontAscent(mFont.get()); }
+  /**
+   * \brief Returns the maximum height of a character in the font.
+   *
+   * \return the maximum character height.
+   */
+  [[nodiscard]] auto height() const noexcept -> int { return TTF_FontHeight(mFont.get()); }
 
-  /* Returns the recommended vertical spacing between lines of rendered text. */
-  [[nodiscard]] auto GetLineSkip() const noexcept -> int
+  /**
+   * \brief Returns the offset from the baseline to the bottom of the font characters.
+   *
+   * \return the "descent" value of the font.
+   */
+  [[nodiscard]] auto descent() const noexcept -> int { return TTF_FontDescent(mFont.get()); }
+
+  /**
+   * \brief Returns the offset from the baseline to the top of the font characters.
+   *
+   * \return the "ascent" value of the font.
+   */
+  [[nodiscard]] auto ascent() const noexcept -> int { return TTF_FontAscent(mFont.get()); }
+
+  /**
+   * \brief Returns the suggested vertical spacing between lines of rendered text in the font.
+   *
+   * \return the vertical spacing between lines of text in the font.
+   */
+  [[nodiscard]] auto line_skip() const noexcept -> int
   {
     return TTF_FontLineSkip(mFont.get());
   }
 
-  /* Returns the number of available font faces. */
-  [[nodiscard]] auto GetFontFaces() const noexcept -> int
+  /**
+   * \brief Returns the number of available font faces.
+   *
+   * \return the amount of font faces.
+   */
+  [[nodiscard]] auto font_face_count() const noexcept -> int
   {
     return static_cast<int>(TTF_FontFaces(mFont.get()));
   }
 
-  [[nodiscard]] auto GetFamilyName() const noexcept -> const char*
+  /**
+   * \brief Returns the name of the font family.
+   *
+   * \return the font family name; a null string is returned if something goes wrong.
+   */
+  [[nodiscard]] auto family_name() const noexcept -> const char*
   {
     return TTF_FontFaceFamilyName(mFont.get());
   }
 
-  [[nodiscard]] auto GetStyleName() const noexcept -> const char*
+  /**
+   * \brief Returns the name of the font face style.
+   *
+   * \return the font face style name; a null string is returned if it is not available.
+   */
+  [[nodiscard]] auto style_name() const noexcept -> const char*
   {
     return TTF_FontFaceStyleName(mFont.get());
   }
 
-  [[nodiscard]] auto GetSize() const noexcept -> int { return mSize; }
+  /**
+   * \brief Returns the size of the font.
+   *
+   * \return the size of the font.
+   */
+  [[nodiscard]] auto size() const noexcept -> int { return mSize; }
 
-  /* Returns the kerning amount between two glyphs. */
-  [[nodiscard]] auto GetKerning(const Unicode previous, const Unicode current) const noexcept
+  /// \} End of query functions
+
+  /// \name Glyph information functions
+  /// \{
+
+  /**
+   * \brief Returns the kerning amount between two glyphs.
+   *
+   * \param previous the previous glyph.
+   * \param current the current glyph.
+   *
+   * \return the kerning amount between the two glyphs.
+   */
+  [[nodiscard]] auto get_kerning(const Unicode previous, const Unicode current) const noexcept
       -> int
   {
     return TTF_GetFontKerningSizeGlyphs(mFont.get(), previous, current);
   }
 
-  [[nodiscard]] auto IsGlyphProvided(const Unicode glyph) const noexcept -> bool
+  /**
+   * \brief Indicates whether a glyph is provided by the font.
+   *
+   * \param glyph the glyph that will be checked.
+   *
+   * \return `true` if the glyph is provided; `false` otherwise.
+   */
+  [[nodiscard]] auto is_glyph_provided(const Unicode glyph) const noexcept -> bool
   {
     return TTF_GlyphIsProvided(mFont.get(), glyph);
   }
 
-  [[nodiscard]] auto GetMetrics(const Unicode glyph) const noexcept
-      -> std::optional<GlyphMetrics>
+  /**
+   * \brief Returns the metrics of a specific glyph.
+   *
+   * \param glyph the glyph that will be queried.
+   *
+   * \return the metrics of the glyph; an empty optional is returned if it is unavailable.
+   */
+  [[nodiscard]] auto get_metrics(const Unicode glyph) const noexcept
+      -> std::optional<glyph_metrics>
   {
-    GlyphMetrics metrics;
+    glyph_metrics metrics;
     if (TTF_GlyphMetrics(mFont.get(),
                          glyph,
                          &metrics.min_x,
@@ -265,8 +432,43 @@ class Font final {
     }
   }
 
-  /* Returns the size of a rendered string. */
-  [[nodiscard]] auto CalcSize(const char* str) const noexcept -> std::optional<Area>
+  /// \} End of glyph information functions
+
+  /// \name Glyph rendering functions
+  /// \{
+
+  [[nodiscard]] auto render_solid_glyph(const Unicode glyph, const color& fg) const -> Surface
+  {
+    return Surface{TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
+  }
+
+  [[nodiscard]] auto render_shaded_glyph(const Unicode glyph,
+                                         const color& fg,
+                                         const color& bg) const -> Surface
+  {
+    return Surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
+  }
+
+  [[nodiscard]] auto render_blended_glyph(const Unicode glyph, const color& fg) const
+      -> Surface
+  {
+    return Surface{TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
+  }
+
+  /// \} End of glyph rendering functions
+
+  /// \name String rendering functions
+  /// \{
+
+  /**
+   * \brief Returns the size of a string if it was rendered using the font.
+   *
+   * \param str the string that will be measured.
+   *
+   * \return the size of the string if it was rendered; an empty optional is returned if
+   * something goes wrong.
+   */
+  [[nodiscard]] auto calc_size(const char* str) const noexcept -> std::optional<Area>
   {
     assert(str);
 
@@ -279,54 +481,21 @@ class Font final {
     }
   }
 
-  [[nodiscard]] auto CalcSize(const std::string& str) const noexcept -> std::optional<Area>
+  /// \copydoc calc_size()
+  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> std::optional<Area>
   {
-    return CalcSize(str.c_str());
+    return calc_size(str.c_str());
   }
 
-  [[nodiscard]] auto RenderBlendedGlyph(const Unicode glyph, const color& color) const
-      -> Surface
-  {
-    return Surface{TTF_RenderGlyph_Blended(get(), glyph, color.get())};
-  }
-
-  [[nodiscard]] auto RenderSolidGlyph(const Unicode glyph, const color& color) const -> Surface
-  {
-    return Surface{TTF_RenderGlyph_Solid(get(), glyph, color.get())};
-  }
-
-  [[nodiscard]] auto RenderShadedGlyph(const Unicode glyph,
-                                       const color& fg,
-                                       const color& bg) const -> Surface
-  {
-    return Surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
-  }
-
-  [[nodiscard]] auto render_blended(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_solid(const char* str, const color& fg) const -> Surface
   {
     assert(str);
-    return Surface{TTF_RenderUTF8_Blended(get(), str, color.get())};
+    return Surface{TTF_RenderUTF8_Solid(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedUTF8(const std::string& str, const color& color) const
-      -> Surface
+  [[nodiscard]] auto render_solid(const std::string& str, const color& fg) const -> Surface
   {
-    return render_blended(str.c_str(), color);
-  }
-
-  [[nodiscard]] auto render_wrapped(const char* str,
-                                    const color& color,
-                                    const Uint32 wrap) const -> Surface
-  {
-    assert(str);
-    return Surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, color.get(), wrap)};
-  }
-
-  [[nodiscard]] auto RenderBlendedWrappedUTF8(const std::string& str,
-                                              const color& color,
-                                              const Uint32 wrap) const -> Surface
-  {
-    return render_wrapped(str.c_str(), color, wrap);
+    return render_solid(str.c_str(), fg);
   }
 
   [[nodiscard]] auto render_shaded(const char* str, const color& fg, const color& bg) const
@@ -336,91 +505,96 @@ class Font final {
     return Surface{TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto RenderShadedUTF8(const std::string& str,
-                                      const color& fg,
-                                      const color& bg) const -> Surface
+  [[nodiscard]] auto render_shaded(const std::string& str,
+                                   const color& fg,
+                                   const color& bg) const -> Surface
   {
     return render_shaded(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto render_solid(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_blended(const char* str, const color& fg) const -> Surface
   {
     assert(str);
-    return Surface{TTF_RenderUTF8_Solid(get(), str, color.get())};
+    return Surface{TTF_RenderUTF8_Blended(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto RenderSolidUTF8(const std::string& str, const color& color) const
-      -> Surface
+  [[nodiscard]] auto render_blended(const std::string& str, const color& fg) const -> Surface
   {
-    return render_solid(str.c_str(), color);
+    return render_blended(str.c_str(), fg);
   }
 
-  [[nodiscard]] auto render_blended_latin1(const char* str, const color& color) const
+  [[nodiscard]] auto render_wrapped(const char* str, const color& fg, const Uint32 wrap) const
       -> Surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Blended(get(), str, color.get())};
+    return Surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
-  [[nodiscard]] auto RenderBlendedLatin1(const std::string& str, const color& color) const
-      -> Surface
+  [[nodiscard]] auto render_wrapped(const std::string& str,
+                                    const color& fg,
+                                    const Uint32 wrap) const -> Surface
   {
-    return render_blended_latin1(str.c_str(), color);
+    return render_wrapped(str.c_str(), fg, wrap);
   }
 
-  [[nodiscard]] auto render_wrapped_latin1(const char* str,
-                                           const color& color,
-                                           const Uint32 wrap) const -> Surface
+  [[nodiscard]] auto render_solid_latin1(const char* str, const color& fg) const -> Surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Blended_Wrapped(get(), str, color.get(), wrap)};
+    return Surface{TTF_RenderText_Solid(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto RenderBlendedWrappedLatin1(const std::string& str,
-                                                const color& color,
-                                                const Uint32 wrap) const -> Surface
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const color& fg) const
+      -> Surface
   {
-    return render_wrapped_latin1(str.c_str(), color, wrap);
+    return render_solid_latin1(str.c_str(), fg);
   }
 
-  [[nodiscard]] auto RenderShadedLatin1(const char* str,
-                                        const color& fg,
-                                        const color& bg) const -> Surface
+  [[nodiscard]] auto render_shaded_latin1(const char* str,
+                                          const color& fg,
+                                          const color& bg) const -> Surface
   {
     assert(str);
     return Surface{TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto RenderShadedLatin1(const std::string& str,
-                                        const color& fg,
-                                        const color& bg) const -> Surface
+  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
+                                          const color& fg,
+                                          const color& bg) const -> Surface
   {
-    return RenderShadedLatin1(str.c_str(), fg, bg);
+    return render_shaded_latin1(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto render_solid_latin1(const char* str, const color& color) const -> Surface
+  [[nodiscard]] auto render_blended_latin1(const char* str, const color& fg) const -> Surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Solid(get(), str, color.get())};
+    return Surface{TTF_RenderText_Blended(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto RenderSolidLatin1(const std::string& str, const color& color) const
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const color& fg) const
       -> Surface
   {
-    return render_solid_latin1(str.c_str(), color);
+    return render_blended_latin1(str.c_str(), fg);
   }
 
-  [[nodiscard]] auto render_blended_unicode(const UnicodeString& str, const color& color) const
+  [[nodiscard]] auto render_wrapped_latin1(const char* str,
+                                           const color& fg,
+                                           const Uint32 wrap) const -> Surface
+  {
+    assert(str);
+    return Surface{TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
+  }
+
+  [[nodiscard]] auto render_wrapped_latin1(const std::string& str,
+                                           const color& fg,
+                                           const Uint32 wrap) const -> Surface
+  {
+    return render_wrapped_latin1(str.c_str(), fg, wrap);
+  }
+
+  [[nodiscard]] auto render_solid_unicode(const UnicodeString& str, const color& fg) const
       -> Surface
   {
-    return Surface{TTF_RenderUNICODE_Blended(get(), str.data(), color.get())};
-  }
-
-  [[nodiscard]] auto render_wrapped_unicode(const UnicodeString& str,
-                                            const color& color,
-                                            const Uint32 wrap) const -> Surface
-  {
-    return Surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), color.get(), wrap)};
+    return Surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
   }
 
   [[nodiscard]] auto render_shaded_unicode(const UnicodeString& str,
@@ -430,11 +604,20 @@ class Font final {
     return Surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto render_solid_unicode(const UnicodeString& str, const color& color) const
+  [[nodiscard]] auto render_blended_unicode(const UnicodeString& str, const color& fg) const
       -> Surface
   {
-    return Surface{TTF_RenderUNICODE_Solid(get(), str.data(), color.get())};
+    return Surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
   }
+
+  [[nodiscard]] auto render_wrapped_unicode(const UnicodeString& str,
+                                            const color& fg,
+                                            const Uint32 wrap) const -> Surface
+  {
+    return Surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
+  }
+
+  /// \} End of string rendering functions
 
   [[nodiscard]] auto get() const noexcept -> TTF_Font* { return mFont.get(); }
 
@@ -442,13 +625,13 @@ class Font final {
   Managed<TTF_Font> mFont;
   int mSize{};
 
-  void AddStyle(const int mask) noexcept
+  void add_style(const int mask) noexcept
   {
     const auto style = TTF_GetFontStyle(mFont.get());
     TTF_SetFontStyle(mFont.get(), style | mask);
   }
 
-  void RemoveStyle(const int mask) noexcept
+  void remove_style(const int mask) noexcept
   {
     const auto style = TTF_GetFontStyle(mFont.get());
     TTF_SetFontStyle(mFont.get(), style & ~mask);
@@ -458,23 +641,22 @@ class Font final {
 /// \name Font functions
 /// \{
 
-[[nodiscard]] inline auto ToString(const Font& font) -> std::string
+[[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("Font(data: {}, name: {}, size: {})",
+  return std::format("font(data: {}, name: '{}', size: {})",
                      detail::address_of(font.get()),
-                     font.GetFamilyName(),
-                     font.GetSize());
+                     str_or_na(font.family_name()),
+                     font.size());
 #else
-  return "Font(data: " + detail::address_of(font.get()) +
-         ", name: " + std::string{font.GetFamilyName()} +
-         ", size: " + std::to_string(font.GetSize()) + ")";
+  return "font(data: " + detail::address_of(font.get()) + ", name: '" +
+         str_or_na(font.family_name()) + "', size: " + std::to_string(font.size()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
-inline auto operator<<(std::ostream& stream, const Font& font) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 {
-  return stream << ToString(font);
+  return stream << to_string(font);
 }
 
 /// \} End of font functions
@@ -510,8 +692,8 @@ class font_cache final {
    * \brief Provides cached information about a glyph in a font.
    */
   struct glyph_data final {
-    Texture texture;       ///< The cached texture of the glyph.
-    GlyphMetrics metrics;  ///< The metrics associate with the glyph.
+    Texture texture;        ///< The cached texture of the glyph.
+    glyph_metrics metrics;  ///< The metrics associate with the glyph.
   };
 
   /// \name Construction
@@ -533,7 +715,7 @@ class font_cache final {
    *
    * \param font the font that will be used.
    */
-  explicit font_cache(Font&& font) noexcept : mFont{std::move(font)} {}
+  explicit font_cache(font&& font) noexcept : mFont{std::move(font)} {}
 
   /// \} End of construction
 
@@ -555,7 +737,7 @@ class font_cache final {
   {
     if (const auto* data = find_glyph(glyph)) {
       const auto& [texture, metrics] = *data;
-      const auto outline = mFont.GetOutline();
+      const auto outline = mFont.outline();
 
       /* SDL_ttf handles the y-axis alignment */
       const auto x = position.GetX() + metrics.min_x - outline;
@@ -590,7 +772,7 @@ class font_cache final {
   void render_text(BasicRenderer<T>& renderer, const String& str, Point position)
   {
     const auto originalX = position.GetX();
-    const auto lineSkip = mFont.GetLineSkip();
+    const auto lineSkip = mFont.line_skip();
 
     for (const Unicode glyph : str) {
       if (glyph == '\n') {
@@ -771,7 +953,7 @@ class font_cache final {
                            const color& bg) -> id_type
   {
     assert(str);
-    return store(renderer, mFont.RenderShadedLatin1(str, fg, bg));
+    return store(renderer, mFont.render_shaded_latin1(str, fg, bg));
   }
 
   /// \copydoc store_shaded_latin1()
@@ -996,11 +1178,11 @@ class font_cache final {
   template <typename T>
   void store_glyph(BasicRenderer<T>& renderer, const Unicode glyph)
   {
-    if (has_glyph(glyph) || !mFont.IsGlyphProvided(glyph)) {
+    if (has_glyph(glyph) || !mFont.is_glyph_provided(glyph)) {
       return;
     }
 
-    glyph_data data{make_glyph_texture(renderer, glyph), mFont.GetMetrics(glyph).value()};
+    glyph_data data{make_glyph_texture(renderer, glyph), mFont.get_metrics(glyph).value()};
     mGlyphs.try_emplace(glyph, std::move(data));
   }
 
@@ -1133,13 +1315,13 @@ class font_cache final {
    *
    * \return the associated font.
    */
-  [[nodiscard]] auto get_font() noexcept -> Font& { return mFont; }
+  [[nodiscard]] auto get_font() noexcept -> font& { return mFont; }
 
   /// \copydoc get_font()
-  [[nodiscard]] auto get_font() const noexcept -> const Font& { return mFont; }
+  [[nodiscard]] auto get_font() const noexcept -> const font& { return mFont; }
 
  private:
-  Font mFont;
+  font mFont;
   std::unordered_map<Unicode, glyph_data> mGlyphs;
   std::unordered_map<id_type, Texture> mStrings;
   id_type mNextStringId{1};
@@ -1148,7 +1330,7 @@ class font_cache final {
   [[nodiscard]] auto make_glyph_texture(BasicRenderer<T>& renderer, const Unicode glyph)
       -> Texture
   {
-    return renderer.ToTexture(mFont.RenderBlendedGlyph(glyph, renderer.GetColor()));
+    return renderer.ToTexture(mFont.render_blended_glyph(glyph, renderer.GetColor()));
   }
 
   template <typename T>
@@ -1171,8 +1353,8 @@ class font_cache final {
 {
   const auto& font = cache.get_font();
 
-  const auto* name = str_or_na(font.GetFamilyName());
-  const auto size = font.GetSize();
+  const auto* name = str_or_na(font.family_name());
+  const auto size = font.size();
 
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("font_cache(font: '{}', size: {})", name, size);
@@ -1228,7 +1410,7 @@ class font_bundle final {
   {
     assert(path);
     if (const auto id = get_id(path)) {
-      mPools[*id].caches.try_emplace(size, Font{path, size});
+      mPools[*id].caches.try_emplace(size, font{path, size});
       return *id;
     }
     else {
@@ -1236,7 +1418,7 @@ class font_bundle final {
 
       auto& pack = mPools[newId];
       pack.path = path;
-      pack.caches.try_emplace(size, Font{path, size});
+      pack.caches.try_emplace(size, font{path, size});
 
       ++mNextFontId;
 
@@ -1335,13 +1517,13 @@ class font_bundle final {
    *
    * \see `at()`
    */
-  [[nodiscard]] auto get_font(const id_type id, const int size) -> Font&
+  [[nodiscard]] auto get_font(const id_type id, const int size) -> font&
   {
     return at(id, size).get_font();
   }
 
   /// \copydoc get_font()
-  [[nodiscard]] auto get_font(const id_type id, const int size) const -> const Font&
+  [[nodiscard]] auto get_font(const id_type id, const int size) const -> const font&
   {
     return at(id, size).get_font();
   }

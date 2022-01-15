@@ -17,167 +17,167 @@ inline constexpr auto danielPath = "resources/daniel.ttf";
 
 }  // namespace
 
-static_assert(std::is_final_v<cen::Font>);
+static_assert(std::is_final_v<cen::font>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::Font>);
-static_assert(std::is_nothrow_move_assignable_v<cen::Font>);
+static_assert(std::is_nothrow_move_constructible_v<cen::font>);
+static_assert(std::is_nothrow_move_assignable_v<cen::font>);
 
-static_assert(!std::is_copy_constructible_v<cen::Font>);
-static_assert(!std::is_copy_assignable_v<cen::Font>);
+static_assert(!std::is_copy_constructible_v<cen::font>);
+static_assert(!std::is_copy_assignable_v<cen::font>);
 
 TEST(Font, Constructor)
 {
-  ASSERT_THROW(cen::Font("", 1), cen::TTFError);
-  ASSERT_THROW(cen::Font(danielPath, 0), cen::Error);
+  ASSERT_THROW(cen::font("", 1), cen::TTFError);
+  ASSERT_THROW(cen::font(danielPath, 0), cen::Error);
 
-  ASSERT_THROW(cen::Font(""s, 1), cen::TTFError);
-  ASSERT_THROW(cen::Font(std::string{danielPath}, 0), cen::Error);
+  ASSERT_THROW(cen::font(""s, 1), cen::TTFError);
+  ASSERT_THROW(cen::font(std::string{danielPath}, 0), cen::Error);
 }
 
 TEST(Font, ResetStyle)
 {
   // We use the std::string constructor here to make sure it works
-  cen::Font font{std::string{typeWriterPath}, 12};
+  cen::font font{std::string{typeWriterPath}, 12};
 
-  font.SetBold(true);
-  font.SetItalic(true);
-  font.SetUnderlined(true);
-  font.SetStrikethrough(true);
+  font.set_bold(true);
+  font.set_italic(true);
+  font.set_underlined(true);
+  font.set_strikethrough(true);
 
-  font.ResetStyle();
-  ASSERT_FALSE(font.IsBold());
-  ASSERT_FALSE(font.IsItalic());
-  ASSERT_FALSE(font.IsUnderlined());
-  ASSERT_FALSE(font.IsStrikethrough());
+  font.reset_style();
+  ASSERT_FALSE(font.is_bold());
+  ASSERT_FALSE(font.is_italic());
+  ASSERT_FALSE(font.is_underlined());
+  ASSERT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetBold)
 {
-  cen::Font font{typeWriterPath, 12};
+  cen::font font{typeWriterPath, 12};
 
-  ASSERT_FALSE(font.IsBold());
+  ASSERT_FALSE(font.is_bold());
 
-  font.SetBold(true);
-  ASSERT_TRUE(font.IsBold());
+  font.set_bold(true);
+  ASSERT_TRUE(font.is_bold());
 
-  font.SetBold(false);
-  ASSERT_FALSE(font.IsBold());
+  font.set_bold(false);
+  ASSERT_FALSE(font.is_bold());
 }
 
 TEST(Font, SetItalic)
 {
-  cen::Font font{typeWriterPath, 12};
+  cen::font font{typeWriterPath, 12};
 
-  ASSERT_FALSE(font.IsItalic());
+  ASSERT_FALSE(font.is_italic());
 
-  font.SetItalic(true);
-  ASSERT_TRUE(font.IsItalic());
+  font.set_italic(true);
+  ASSERT_TRUE(font.is_italic());
 
-  font.SetItalic(false);
-  ASSERT_FALSE(font.IsItalic());
+  font.set_italic(false);
+  ASSERT_FALSE(font.is_italic());
 }
 
 TEST(Font, SetUnderlined)
 {
-  cen::Font font{typeWriterPath, 12};
+  cen::font font{typeWriterPath, 12};
 
-  ASSERT_FALSE(font.IsUnderlined());
+  ASSERT_FALSE(font.is_underlined());
 
-  font.SetUnderlined(true);
-  ASSERT_TRUE(font.IsUnderlined());
+  font.set_underlined(true);
+  ASSERT_TRUE(font.is_underlined());
 
-  font.SetUnderlined(false);
-  ASSERT_FALSE(font.IsUnderlined());
+  font.set_underlined(false);
+  ASSERT_FALSE(font.is_underlined());
 }
 
 TEST(Font, SetStrikethrough)
 {
-  cen::Font font{typeWriterPath, 12};
+  cen::font font{typeWriterPath, 12};
 
-  ASSERT_FALSE(font.IsStrikethrough());
+  ASSERT_FALSE(font.is_strikethrough());
 
-  font.SetStrikethrough(true);
-  ASSERT_TRUE(font.IsStrikethrough());
+  font.set_strikethrough(true);
+  ASSERT_TRUE(font.is_strikethrough());
 
-  font.SetStrikethrough(false);
-  ASSERT_FALSE(font.IsStrikethrough());
+  font.set_strikethrough(false);
+  ASSERT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetOutline)
 {
-  cen::Font font{typeWriterPath, 12};
+  cen::font font{typeWriterPath, 12};
 
-  ASSERT_FALSE(font.IsOutlined());
+  ASSERT_FALSE(font.is_outlined());
 
-  font.SetOutline(2);
-  ASSERT_EQ(font.GetOutline(), 2);
-  ASSERT_TRUE(font.IsOutlined());
+  font.set_outline(2);
+  ASSERT_EQ(font.outline(), 2);
+  ASSERT_TRUE(font.is_outlined());
 
-  font.SetOutline(0);
-  ASSERT_EQ(font.GetOutline(), 0);
-  ASSERT_FALSE(font.IsOutlined());
+  font.set_outline(0);
+  ASSERT_EQ(font.outline(), 0);
+  ASSERT_FALSE(font.is_outlined());
 }
 
 TEST(Font, SetFontHinting)
 {
-  cen::Font font{typeWriterPath, 12};
+  cen::font font{typeWriterPath, 12};
 
-  font.SetFontHinting(cen::FontHint::Mono);
-  ASSERT_EQ(font.GetFontHinting(), cen::FontHint::Mono);
+  font.set_font_hinting(cen::font_hint::mono);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::mono);
 
-  font.SetFontHinting(cen::FontHint::None);
-  ASSERT_EQ(font.GetFontHinting(), cen::FontHint::None);
+  font.set_font_hinting(cen::font_hint::none);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::none);
 
-  font.SetFontHinting(cen::FontHint::Light);
-  ASSERT_EQ(font.GetFontHinting(), cen::FontHint::Light);
+  font.set_font_hinting(cen::font_hint::light);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::light);
 
-  font.SetFontHinting(cen::FontHint::Normal);
-  ASSERT_EQ(font.GetFontHinting(), cen::FontHint::Normal);
+  font.set_font_hinting(cen::font_hint::normal);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, SetKerning)
 {
-  cen::Font font{danielPath, 12};
+  cen::font font{danielPath, 12};
 
-  font.SetKerning(true);
-  ASSERT_TRUE(font.HasKerning());
+  font.set_kerning(true);
+  ASSERT_TRUE(font.has_kerning());
 
-  font.SetKerning(false);
-  ASSERT_FALSE(font.HasKerning());
+  font.set_kerning(false);
+  ASSERT_FALSE(font.has_kerning());
 }
 
-TEST(Font, GetSize)
+TEST(Font, Size)
 {
   constexpr auto size = 12;
-  const cen::Font font{typeWriterPath, size};
+  const cen::font font{typeWriterPath, size};
 
-  ASSERT_EQ(font.GetSize(), size);
+  ASSERT_EQ(font.size(), size);
 }
 
-TEST(Font, GetHeight)
+TEST(Font, Height)
 {
   constexpr auto size = 16;
-  const cen::Font font{typeWriterPath, size};
+  const cen::font font{typeWriterPath, size};
 
   // doesn't have to be equal, but should be close
-  ASSERT_EQ(font.GetHeight(), size);
+  ASSERT_EQ(font.height(), size);
 }
 
 TEST(Font, IsFixedWidth)
 {
-  const cen::Font firaCode{firaCodePath, 12};  // Fixed width
-  const cen::Font daniel{danielPath, 12};      // Not fixed width
+  const cen::font firaCode{firaCodePath, 12};  // Fixed width
+  const cen::font daniel{danielPath, 12};      // Not fixed width
 
-  ASSERT_TRUE(firaCode.IsFixedWidth());
-  ASSERT_FALSE(daniel.IsFixedWidth());
+  ASSERT_TRUE(firaCode.is_fixed_width());
+  ASSERT_FALSE(daniel.is_fixed_width());
 }
 
 TEST(Font, GetKerning)
 {
-  cen::Font font{danielPath, 36};
-  font.SetKerning(true);
+  cen::font font{danielPath, 36};
+  font.set_kerning(true);
 
-  const auto amount = font.GetKerning('A', 'A');
+  const auto amount = font.get_kerning('A', 'A');
   ASSERT_EQ(amount, 0);
 
   // TODO test font with heavier kerning
@@ -185,90 +185,90 @@ TEST(Font, GetKerning)
 
 TEST(Font, GetMetrics)
 {
-  const cen::Font font{danielPath, 12};
+  const cen::font font{danielPath, 12};
 
-  const auto metrics = font.GetMetrics('A');
+  const auto metrics = font.get_metrics('A');
   ASSERT_TRUE(metrics.has_value());
 }
 
 TEST(Font, IsGlyphAvailable)
 {
-  const cen::Font font{firaCodePath, 12};
+  const cen::font font{firaCodePath, 12};
 
-  ASSERT_TRUE(font.IsGlyphProvided('A'));
-  ASSERT_TRUE(font.IsGlyphProvided(0x003D));  // U+003D is an equal sign
+  ASSERT_TRUE(font.is_glyph_provided('A'));
+  ASSERT_TRUE(font.is_glyph_provided(0x003D));  // U+003D is an equal sign
 }
 
-TEST(Font, GetFamilyName)
+TEST(Font, FamilyName)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_STREQ(font.GetFamilyName(), "Type Writer");
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_STREQ(font.family_name(), "Type Writer");
 }
 
-TEST(Font, GetStyleName)
+TEST(Font, StyleName)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_STREQ(font.GetStyleName(), "Regular");
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_STREQ(font.style_name(), "Regular");
 }
 
 TEST(Font, CalcSize)
 {
-  const cen::Font font{typeWriterPath, 12};
-  const auto size = font.CalcSize("foo"s).value();
+  const cen::font font{typeWriterPath, 12};
+  const auto size = font.calc_size("foo"s).value();
   ASSERT_GT(size.width, 0);
   ASSERT_GT(size.height, 0);
 }
 
-TEST(Font, GetFontFaces)
+TEST(Font, FontFaceCount)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_GE(font.GetFontFaces(), 1);
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_GE(font.font_face_count(), 1);
 }
 
-TEST(Font, GetFontHinting)
+TEST(Font, FontHinting)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_EQ(font.GetFontHinting(), cen::FontHint::Normal);
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, HasKerning)
 {
-  const cen::Font font{danielPath, 12};
-  ASSERT_TRUE(font.HasKerning());
+  const cen::font font{danielPath, 12};
+  ASSERT_TRUE(font.has_kerning());
 }
 
-TEST(Font, GetLineSkip)
+TEST(Font, LineSkip)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_GT(font.GetLineSkip(), 0);
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_GT(font.line_skip(), 0);
 }
 
-TEST(Font, GetAscent)
+TEST(Font, Ascent)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_GT(font.GetAscent(), 0);
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_GT(font.ascent(), 0);
 }
 
-TEST(Font, GetDescent)
+TEST(Font, Descent)
 {
-  const cen::Font font{typeWriterPath, 12};
-  ASSERT_LT(font.GetDescent(), 0);
+  const cen::font font{typeWriterPath, 12};
+  ASSERT_LT(font.descent(), 0);
 }
 
 TEST(Font, Get)
 {
-  const cen::Font font{typeWriterPath, 12};
+  const cen::font font{typeWriterPath, 12};
   ASSERT_TRUE(font.get());
 }
 
 TEST(Font, ToString)
 {
-  const cen::Font font{typeWriterPath, 12};
-  cen::log_info_raw(cen::ToString(font));
+  const cen::font font{typeWriterPath, 12};
+  cen::log_info_raw(cen::to_string(font));
 }
 
 TEST(Font, StreamOperator)
 {
-  const cen::Font font{typeWriterPath, 12};
+  const cen::font font{typeWriterPath, 12};
   std::clog << font << '\n';
 }

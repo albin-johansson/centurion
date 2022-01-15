@@ -261,7 +261,7 @@ TEST_F(FontCacheTest, FindString)
 TEST_F(FontCacheTest, GetFont)
 {
   const auto& font = cache.get_font();
-  ASSERT_STREQ("JetBrains Mono", font.GetFamilyName());
+  ASSERT_STREQ("JetBrains Mono", font.family_name());
 }
 
 TEST_F(FontCacheTest, ToString)

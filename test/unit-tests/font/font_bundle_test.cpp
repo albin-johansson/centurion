@@ -36,12 +36,12 @@ TEST(FontBundle, Usage)
   ASSERT_TRUE(bundle.contains(c));
   ASSERT_TRUE(bundle.contains("resources/type_writer.ttf"));
 
-  ASSERT_STREQ("Daniel", bundle.get_font(a, 12).GetFamilyName());
+  ASSERT_STREQ("Daniel", bundle.get_font(a, 12).family_name());
   ASSERT_THROW(bundle.at(a, 11), cen::Error);
   ASSERT_THROW(bundle.at(a, 13), cen::Error);
   ASSERT_THROW(bundle.at(c + 1, 9), cen::Error);
 
-  ASSERT_STREQ("Type Writer", bundle.get_font(c, 9).GetFamilyName());
+  ASSERT_STREQ("Type Writer", bundle.get_font(c, 9).family_name());
   ASSERT_THROW(bundle.at(c, 8), cen::Error);
   ASSERT_THROW(bundle.at(c, 10), cen::Error);
 }

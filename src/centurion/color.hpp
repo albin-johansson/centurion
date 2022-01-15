@@ -30,6 +30,11 @@ namespace cen {
  *
  * \details This class supports construction and conversion from various formats such as the
  * SDL color types, HSV, HSL, normalized components, and hexadecimal RGB/RGBA/ARGB color codes.
+ *
+ * \details See the `cen::colors` namespace for a large collection of named color constants for
+ * commonly used HTML colors.
+ *
+ * \see `blend(const color&, const color&, float)`
  */
 class color final {
  public:
@@ -187,6 +192,18 @@ class color final {
     return {r, g, b};
   }
 
+  /**
+   * \brief Attempts to create a color based on a hexadecimal RGB color code.
+   *
+   * \details The color code string must feature a `#` prefix, and be 7 characters long.
+   *
+   * \param rgb the RGB color code, using the format "#RRGGBB".
+   *
+   * \return a color corresponding to the hex code; an empty optional upon failure.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
     if (rgb.length() != 7 || rgb.at(0) != '#') {
@@ -211,6 +228,18 @@ class color final {
     }
   }
 
+  /**
+   * \brief Attempts to create a color based on a hexadecimal RGBA color code.
+   *
+   * \details The color code string must feature a `#` prefix, and be 9 characters long.
+   *
+   * \param rgba the RGBA color code, using the format "#RRGGBBAA".
+   *
+   * \return a color corresponding to the hex code; an empty optional upon failure.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
     if (rgba.length() != 9 || rgba.at(0) != '#') {
@@ -237,6 +266,18 @@ class color final {
     }
   }
 
+  /**
+   * \brief Attempts to create a color based on a hexadecimal ARGB color code.
+   *
+   * \details The color code string must feature a `#` prefix, and be 9 characters long.
+   *
+   * \param argb the ARGB color code, using the format "#AARRGGBB".
+   *
+   * \return a color corresponding to the hex code; an empty optional upon failure.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
     if (argb.length() != 9 || argb.at(0) != '#') {
@@ -294,36 +335,71 @@ class color final {
   }
 
   constexpr void set_red(const Uint8 red) noexcept { mColor.r = red; }
+
   constexpr void set_green(const Uint8 green) noexcept { mColor.g = green; }
+
   constexpr void set_blue(const Uint8 blue) noexcept { mColor.b = blue; }
+
   constexpr void set_alpha(const Uint8 alpha) noexcept { mColor.a = alpha; }
 
   [[nodiscard]] constexpr auto red() const noexcept -> Uint8 { return mColor.r; }
+
   [[nodiscard]] constexpr auto green() const noexcept -> Uint8 { return mColor.g; }
+
   [[nodiscard]] constexpr auto blue() const noexcept -> Uint8 { return mColor.b; }
+
   [[nodiscard]] constexpr auto alpha() const noexcept -> Uint8 { return mColor.a; }
 
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   */
   [[nodiscard]] constexpr auto norm_red() const noexcept -> float
   {
     return static_cast<float>(mColor.r) / 255.0f;
   }
 
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   */
   [[nodiscard]] constexpr auto norm_green() const noexcept -> float
   {
     return static_cast<float>(mColor.g) / 255.0f;
   }
 
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   */
   [[nodiscard]] constexpr auto norm_blue() const noexcept -> float
   {
     return static_cast<float>(mColor.b) / 255.0f;
   }
 
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   */
   [[nodiscard]] constexpr auto norm_alpha() const noexcept -> float
   {
     return static_cast<float>(mColor.a) / 255.0f;
   }
 
-  /* Returns a hexadecimal RGB code representation, on the format "#RRGGBB". */
+  /**
+   * \brief Returns a hexadecimal RGB color code, representing the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a string encoding the color according to the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   */
   [[nodiscard]] auto as_rgb() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -341,7 +417,16 @@ class color final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
   }
 
-  /* Returns a hexadecimal RGBA code representation, on the format "#RRGGBBAA". */
+  /**
+   * \brief Returns a hexadecimal RGBA color code, representing the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a string encoding the color according to the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   */
   [[nodiscard]] auto as_rgba() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -364,7 +449,16 @@ class color final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
   }
 
-  /* Returns a hexadecimal ARGB code representation, on the format "#AARRGGBB". */
+  /**
+   * \brief Returns a hexadecimal ARGB color code, representing the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a string encoding the color according to the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   */
   [[nodiscard]] auto as_argb() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -387,6 +481,13 @@ class color final {
 #endif  // CENTURION_HAS_FEATURE_FORMAT
   }
 
+  /**
+   * \brief Converts the color into a message box color.
+   *
+   * \note Message box colors do not feature an alpha component.
+   *
+   * \return a message box color with the same component values as the color.
+   */
   [[nodiscard]] auto as_message_box_color() const noexcept -> SDL_MessageBoxColor
   {
     return {mColor.r, mColor.g, mColor.b};
@@ -418,14 +519,14 @@ class color final {
   SDL_Color mColor{0, 0, 0, 0xFF};
 };
 
-[[nodiscard]] inline auto ToString(const color& color) -> std::string
+[[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
   return color.as_rgba();
 }
 
 inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
 {
-  return stream << ToString(color);
+  return stream << to_string(color);
 }
 
 /**

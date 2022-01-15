@@ -52,10 +52,10 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  void set_axis_count(const Uint8 count) noexcept
+  void set_axis_count(const uint8 count) noexcept
   {
     assert(count > 0);
-    representation().channels = detail::max(Uint8{1}, count);
+    representation().channels = detail::max(uint8{1}, count);
   }
 
   // clang-format off
@@ -103,7 +103,7 @@ class haptic_custom final : public haptic_effect<haptic_custom> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto axis_count() const noexcept -> Uint8 { return representation().channels; }
+  [[nodiscard]] auto axis_count() const noexcept -> uint8 { return representation().channels; }
 
   /**
    * \brief Returns the duration of samples.

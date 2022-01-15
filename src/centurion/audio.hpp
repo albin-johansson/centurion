@@ -47,7 +47,7 @@ enum class FadeStatus {
 
 class Music final {
  public:
-  using MusicHookCallback = void (*)(void*, Uint8*, int);
+  using MusicHookCallback = void (*)(void*, uint8*, int);
 
   inline constexpr static int forever = -1;
 

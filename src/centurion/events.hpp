@@ -97,7 +97,7 @@ enum class EventType : Uint32 {
   User = SDL_USEREVENT
 };
 
-enum class JoyHatPosition : Uint8 {
+enum class JoyHatPosition : uint8 {
   LeftUp = SDL_HAT_LEFTUP,
   Left = SDL_HAT_LEFT,
   LeftDown = SDL_HAT_LEFTDOWN,
@@ -197,13 +197,13 @@ class JoyAxisEvent final : public EventBase<SDL_JoyAxisEvent> {
 
   void SetWhich(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
-  void SetAxis(const Uint8 axis) noexcept { mEvent.axis = axis; }
+  void SetAxis(const uint8 axis) noexcept { mEvent.axis = axis; }
 
   void SetValue(const Sint16 value) noexcept { mEvent.value = value; }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
-  [[nodiscard]] auto GetAxis() const noexcept -> Uint8 { return mEvent.axis; }
+  [[nodiscard]] auto GetAxis() const noexcept -> uint8 { return mEvent.axis; }
 
   [[nodiscard]] auto GetValue() const noexcept -> Sint16 { return mEvent.value; }
 };
@@ -215,13 +215,13 @@ class JoyBallEvent final : public EventBase<SDL_JoyBallEvent> {
   explicit JoyBallEvent(const SDL_JoyBallEvent& event) noexcept : EventBase{event} {}
 
   void SetWhich(const SDL_JoystickID which) noexcept { mEvent.which = which; }
-  void SetBall(const Uint8 ball) noexcept { mEvent.ball = ball; }
+  void SetBall(const uint8 ball) noexcept { mEvent.ball = ball; }
 
   void SetDeltaX(const Sint16 dx) noexcept { mEvent.xrel = dx; }
   void SetDeltaY(const Sint16 dy) noexcept { mEvent.yrel = dy; }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
-  [[nodiscard]] auto GetBall() const noexcept -> Uint8 { return mEvent.ball; }
+  [[nodiscard]] auto GetBall() const noexcept -> uint8 { return mEvent.ball; }
 
   [[nodiscard]] auto GetDeltaX() const noexcept -> Sint16 { return mEvent.xrel; }
   [[nodiscard]] auto GetDeltaY() const noexcept -> Sint16 { return mEvent.yrel; }
@@ -235,13 +235,13 @@ class JoyButtonEvent final : public EventBase<SDL_JoyButtonEvent> {
 
   void SetWhich(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
-  void SetButton(const Uint8 index) noexcept { mEvent.button = index; }
+  void SetButton(const uint8 index) noexcept { mEvent.button = index; }
 
   void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
-  [[nodiscard]] auto GetButton() const noexcept -> Uint8 { return mEvent.button; }
+  [[nodiscard]] auto GetButton() const noexcept -> uint8 { return mEvent.button; }
 
   [[nodiscard]] auto GetState() const noexcept -> ButtonState
   {
@@ -276,11 +276,11 @@ class JoyHatEvent final : public EventBase<SDL_JoyHatEvent> {
 
   explicit JoyHatEvent(const SDL_JoyHatEvent& event) noexcept : EventBase{event} {}
 
-  void SetHat(const Uint8 hat) noexcept { mEvent.hat = hat; }
+  void SetHat(const uint8 hat) noexcept { mEvent.hat = hat; }
 
   void SetPosition(const JoyHatPosition value) noexcept { mEvent.value = ToUnderlying(value); }
 
-  [[nodiscard]] auto GetHat() const noexcept -> Uint8 { return mEvent.hat; }
+  [[nodiscard]] auto GetHat() const noexcept -> uint8 { return mEvent.hat; }
 
   [[nodiscard]] auto GetPosition() const noexcept -> JoyHatPosition
   {
@@ -297,7 +297,7 @@ class ControllerAxisEvent final : public EventBase<SDL_ControllerAxisEvent> {
   {}
 
   void SetWhich(const SDL_JoystickID which) noexcept { mEvent.which = which; }
-  void SetAxis(const ControllerAxis axis) noexcept { mEvent.axis = static_cast<Uint8>(axis); }
+  void SetAxis(const ControllerAxis axis) noexcept { mEvent.axis = static_cast<uint8>(axis); }
   void SetValue(const Sint16 value) noexcept { mEvent.value = value; }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
@@ -320,7 +320,7 @@ class ControllerButtonEvent final : public EventBase<SDL_ControllerButtonEvent> 
 
   void SetButton(const ControllerButton button) noexcept
   {
-    mEvent.button = static_cast<Uint8>(button);
+    mEvent.button = static_cast<uint8>(button);
   }
 
   void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
@@ -437,7 +437,7 @@ class DisplayEvent final : public EventBase<SDL_DisplayEvent> {
 
   void SetEventID(const DisplayEventID id) noexcept
   {
-    mEvent.event = static_cast<Uint8>(ToUnderlying(id));
+    mEvent.event = static_cast<uint8>(ToUnderlying(id));
   }
 
   void SetIndex(const Uint32 index) noexcept { mEvent.display = index; }
@@ -618,7 +618,7 @@ class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {
   void SetButton(const MouseButton button) noexcept { mEvent.button = ToUnderlying(button); }
   void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
 
-  void SetClicks(const Uint8 clicks) noexcept { mEvent.clicks = clicks; }
+  void SetClicks(const uint8 clicks) noexcept { mEvent.clicks = clicks; }
 
   void SetX(const Sint32 x) noexcept { mEvent.x = x; }
   void SetY(const Sint32 y) noexcept { mEvent.y = y; }
@@ -646,7 +646,7 @@ class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {
     return GetState() == ButtonState::Released;
   }
 
-  [[nodiscard]] auto GetClicks() const noexcept -> Uint8 { return mEvent.clicks; }
+  [[nodiscard]] auto GetClicks() const noexcept -> uint8 { return mEvent.clicks; }
 
   [[nodiscard]] auto GetX() const noexcept -> Sint32 { return mEvent.x; }
   [[nodiscard]] auto GetY() const noexcept -> Sint32 { return mEvent.y; }
@@ -898,7 +898,7 @@ class WindowEvent final : public EventBase<SDL_WindowEvent> {
 
   explicit WindowEvent(const SDL_WindowEvent& event) noexcept : EventBase{event} {}
 
-  void SetEventID(const WindowEventID id) noexcept { mEvent.event = static_cast<Uint8>(id); }
+  void SetEventID(const WindowEventID id) noexcept { mEvent.event = static_cast<uint8>(id); }
 
   void SetData1(const Sint32 value) noexcept { mEvent.data1 = value; }
   void SetData2(const Sint32 value) noexcept { mEvent.data2 = value; }

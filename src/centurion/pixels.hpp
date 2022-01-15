@@ -188,19 +188,19 @@ class BasicPixelFormatInfo final {
 
   [[nodiscard]] auto PixelToRGB(const Uint32 pixel) const noexcept -> color
   {
-    Uint8 red{};
-    Uint8 green{};
-    Uint8 blue{};
+    uint8 red{};
+    uint8 green{};
+    uint8 blue{};
     SDL_GetRGB(pixel, mFormat, &red, &green, &blue);
     return {red, green, blue};
   }
 
   [[nodiscard]] auto PixelToRGBA(const Uint32 pixel) const noexcept -> color
   {
-    Uint8 red{};
-    Uint8 green{};
-    Uint8 blue{};
-    Uint8 alpha{};
+    uint8 red{};
+    uint8 green{};
+    uint8 blue{};
+    uint8 alpha{};
     SDL_GetRGBA(pixel, mFormat, &red, &green, &blue, &alpha);
     return {red, green, blue, alpha};
   }

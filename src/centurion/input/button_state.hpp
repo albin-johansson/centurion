@@ -10,7 +10,7 @@
 
 namespace cen {
 
-enum class ButtonState : Uint8 {
+enum class ButtonState : uint8 {
   Released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   Pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
 };

@@ -37,7 +37,7 @@ enum class SystemCursor {
   Hand = SDL_SYSTEM_CURSOR_HAND
 };
 
-enum class MouseButton : Uint8 {
+enum class MouseButton : uint8 {
   Left = SDL_BUTTON_LEFT,
   Middle = SDL_BUTTON_MIDDLE,
   Right = SDL_BUTTON_RIGHT,

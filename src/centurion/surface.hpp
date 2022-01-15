@@ -202,7 +202,7 @@ class BasicSurface final {
     }
   }
 
-  void SetAlphaMod(const Uint8 alpha) noexcept { SDL_SetSurfaceAlphaMod(mSurface, alpha); }
+  void SetAlphaMod(const uint8 alpha) noexcept { SDL_SetSurfaceAlphaMod(mSurface, alpha); }
 
   void SetColorMod(const color& color) noexcept
   {
@@ -236,18 +236,18 @@ class BasicSurface final {
   /* Does the surface need to be locked before modifying the pixel data? */
   [[nodiscard]] auto MustLock() const noexcept -> bool { return SDL_MUSTLOCK(mSurface); }
 
-  [[nodiscard]] auto GetAlpha() const noexcept -> Uint8
+  [[nodiscard]] auto GetAlpha() const noexcept -> uint8
   {
-    Uint8 alpha{0xFF};
+    uint8 alpha{0xFF};
     SDL_GetSurfaceAlphaMod(mSurface, &alpha);
     return alpha;
   }
 
   [[nodiscard]] auto GetColorMod() const noexcept -> color
   {
-    Uint8 red{};
-    Uint8 green{};
-    Uint8 blue{};
+    uint8 red{};
+    uint8 green{};
+    uint8 blue{};
     if (SDL_GetSurfaceColorMod(mSurface, &red, &green, &blue) == 0) {
       return {red, green, blue};
     }

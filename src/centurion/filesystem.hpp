@@ -84,7 +84,7 @@ class File final {
 
   // clang-format on
 
-  auto WriteByte(const Uint8 value) noexcept -> Result
+  auto WriteByte(const uint8 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteU8(mContext.get(), value) == 1;
@@ -172,7 +172,7 @@ class File final {
     return value;
   }
 
-  auto ReadByte() noexcept -> Uint8
+  auto ReadByte() noexcept -> uint8
   {
     assert(mContext);
     return SDL_ReadU8(mContext.get());

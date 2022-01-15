@@ -51,7 +51,7 @@ enum class JoystickPower {
   Max = SDL_JOYSTICK_POWER_MAX
 };
 
-enum class HatState : Uint8 {
+enum class HatState : uint8 {
   Centered = SDL_HAT_CENTERED,    ///< The hat is centered.
   Up = SDL_HAT_UP,                ///< The hat is directed "north".
   Right = SDL_HAT_RIGHT,          ///< The hat is directed "east".

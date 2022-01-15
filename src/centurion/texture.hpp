@@ -115,7 +115,7 @@ class BasicTexture final {
     }
   }
 
-  void SetAlpha(const Uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
+  void SetAlpha(const uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
 
   void SetBlendMode(const BlendMode mode) noexcept
   {
@@ -185,18 +185,18 @@ class BasicTexture final {
     return GetAccess() == TextureAccess::Streaming;
   }
 
-  [[nodiscard]] auto GetAlpha() const noexcept -> Uint8
+  [[nodiscard]] auto GetAlpha() const noexcept -> uint8
   {
-    Uint8 alpha{};
+    uint8 alpha{};
     SDL_GetTextureAlphaMod(mTexture, &alpha);
     return alpha;
   }
 
   [[nodiscard]] auto GetColorMod() const noexcept -> color
   {
-    Uint8 red{};
-    Uint8 green{};
-    Uint8 blue{};
+    uint8 red{};
+    uint8 green{};
+    uint8 blue{};
     SDL_GetTextureColorMod(mTexture, &red, &green, &blue);
     return {red, green, blue};
   }

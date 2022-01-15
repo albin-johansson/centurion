@@ -352,8 +352,8 @@ class Keyboard final {
   [[nodiscard]] auto GetNumKeys() const noexcept -> int { return mKeyCount; }
 
  private:
-  const Uint8* mState{};
-  std::array<Uint8, cen::ScanCode::GetAmount()> mPrevious{};
+  const uint8* mState{};
+  std::array<uint8, cen::ScanCode::GetAmount()> mPrevious{};
   int mKeyCount{};
 
   template <typename Predicate>

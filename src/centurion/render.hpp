@@ -488,10 +488,10 @@ class BasicRenderer final {
 
   [[nodiscard]] auto GetColor() const noexcept -> color
   {
-    Uint8 red{};
-    Uint8 green{};
-    Uint8 blue{};
-    Uint8 alpha{};
+    uint8 red{};
+    uint8 green{};
+    uint8 blue{};
+    uint8 alpha{};
     SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
     return {red, green, blue, alpha};
   }

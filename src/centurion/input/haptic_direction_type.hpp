@@ -20,7 +20,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_direction_type : Uint8 {
+enum class haptic_direction_type : uint8 {
   polar = SDL_HAPTIC_POLAR,
   cartesian = SDL_HAPTIC_CARTESIAN,
   spherical = SDL_HAPTIC_SPHERICAL

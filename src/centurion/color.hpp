@@ -25,6 +25,9 @@
 
 namespace cen {
 
+/// \addtogroup video
+/// \{
+
 /**
  * \brief A representation of an 8-bit RGBA color.
  *
@@ -33,6 +36,8 @@ namespace cen {
  *
  * \details See the `cen::colors` namespace for a large collection of named color constants for
  * commonly used HTML colors.
+ *
+ * \serializable
  *
  * \see `blend(const color&, const color&, float)`
  */
@@ -519,15 +524,8 @@ class color final {
   SDL_Color mColor{0, 0, 0, 0xFF};
 };
 
-[[nodiscard]] inline auto to_string(const color& color) -> std::string
-{
-  return color.as_rgba();
-}
-
-inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
-{
-  return stream << to_string(color);
-}
+/// \name Color functions
+/// \{
 
 /**
  * \brief Blends two colors according to the specified bias.
@@ -560,6 +558,16 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
   return color::from_norm(red, green, blue, alpha);
 }
 
+[[nodiscard]] inline auto to_string(const color& color) -> std::string
+{
+  return color.as_rgba();
+}
+
+inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
+{
+  return stream << to_string(color);
+}
+
 [[nodiscard]] constexpr auto operator==(const color& a, const color& b) noexcept -> bool
 {
   return (a.red() == b.red()) && (a.green() == b.green()) && (a.blue() == b.blue()) &&
@@ -571,7 +579,18 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
   return !(a == b);
 }
 
+/// \} End of color functions
+
+/// \} End of group video
+
+/// \ingroup video
 namespace colors {
+
+/// \addtogroup video
+/// \{
+
+/// \name Color constants
+/// \{
 
 inline constexpr color transparent{0, 0, 0, 0};
 inline constexpr color white{0xFF, 0xFF, 0xFF};
@@ -726,6 +745,10 @@ inline constexpr color dark_slate_gray{0x2F, 0x4F, 0x4F};
 inline constexpr color dark_slate_grey{dark_slate_gray};
 inline constexpr color dark_turquoise{0, 0xCE, 0xD1};
 inline constexpr color dark_violet{0x94, 0, 0xD3};
+
+/// \} End of color constants
+
+/// \} End of group video
 
 }  // namespace colors
 }  // namespace cen

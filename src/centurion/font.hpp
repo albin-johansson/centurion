@@ -85,6 +85,17 @@ struct glyph_metrics final {
   int advance{};  ///< The advance offset.
 };
 
+/**
+ * \brief Represents a TrueType font.
+ *
+ * \details This class provides information about TrueType fonts, and can also be used
+ * for rendering glyphs and strings. There are also various utility classes related to dealing
+ * with fonts, in order to easily deal with fonts of different sizes and more efficient text
+ * rendering.
+ *
+ * \see `font_cache`
+ * \see `font_bundle`
+ */
 class font final {
  public:
   /// \name Construction

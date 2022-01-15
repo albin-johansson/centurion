@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include "common.hpp"
+
 namespace cen {
 
 /** Swaps the byte order of the specified value. */

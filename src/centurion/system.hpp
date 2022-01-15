@@ -178,13 +178,13 @@ class SharedObject final {
 }
 
 /* Returns the current value of the high-performance counter. */
-[[nodiscard]] inline auto Now() noexcept -> Uint64
+[[nodiscard]] inline auto Now() noexcept -> uint64
 {
   return SDL_GetPerformanceCounter();
 }
 
 /* Returns the frequency of the high-performance counter. */
-[[nodiscard]] inline auto GetFrequency() noexcept -> Uint64
+[[nodiscard]] inline auto GetFrequency() noexcept -> uint64
 {
   return SDL_GetPerformanceFrequency();
 }
@@ -199,7 +199,7 @@ class SharedObject final {
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
 /* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard]] inline auto GetTicks() noexcept(noexcept(U64_Millis{Uint64{}})) -> U64_Millis
+[[nodiscard]] inline auto GetTicks() noexcept(noexcept(U64_Millis{uint64{}})) -> U64_Millis
 {
   return U64_Millis{SDL_GetTicks64()};
 }

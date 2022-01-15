@@ -102,7 +102,7 @@ class File final {
     return SDL_WriteLE32(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const Uint64 value) noexcept -> Result
+  auto WriteNativeAsLittleEndian(const uint64 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteLE64(mContext.get(), value) == 1;
@@ -120,7 +120,7 @@ class File final {
     return SDL_WriteBE32(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const Uint64 value) noexcept -> Result
+  auto WriteNativeAsBigEndian(const uint64 value) noexcept -> Result
   {
     assert(mContext);
     return SDL_WriteBE64(mContext.get(), value) == 1;
@@ -190,7 +190,7 @@ class File final {
     return SDL_ReadLE32(mContext.get());
   }
 
-  auto ReadLittleEndianU64() noexcept -> Uint64
+  auto ReadLittleEndianU64() noexcept -> uint64
   {
     assert(mContext);
     return SDL_ReadLE64(mContext.get());
@@ -208,7 +208,7 @@ class File final {
     return SDL_ReadBE32(mContext.get());
   }
 
-  auto ReadBigEndianU64() noexcept -> Uint64
+  auto ReadBigEndianU64() noexcept -> uint64
   {
     assert(mContext);
     return SDL_ReadBE64(mContext.get());

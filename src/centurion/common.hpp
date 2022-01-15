@@ -76,7 +76,7 @@ using Minutes = std::chrono::duration<T, std::ratio<60>>;
 
 using U16_Millis = Millis<uint16>;
 using U32_Millis = Millis<uint32>;
-using U64_Millis = Millis<Uint64>;
+using U64_Millis = Millis<uint64>;
 
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
@@ -300,7 +300,7 @@ inline namespace time_literals {
 
 [[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> U64_Millis
 {
-  return U64_Millis{static_cast<Uint64>(ms)};
+  return U64_Millis{static_cast<uint64>(ms)};
 }
 
 #else

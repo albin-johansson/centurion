@@ -214,7 +214,7 @@ class font final {
    */
   void set_outline(const int outline) noexcept
   {
-    TTF_SetFontOutline(mFont.get(), detail::min(outline, 0));
+    TTF_SetFontOutline(mFont.get(), detail::max(outline, 0));
   }
 
   /**

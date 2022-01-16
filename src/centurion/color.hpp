@@ -43,9 +43,22 @@ namespace cen {
  */
 class color final {
  public:
-  /// Creates an opaque black color.
+  /// \name Construction
+  /// \{
+
+  /**
+   * \brief Creates an opaque black color.
+   */
   constexpr color() noexcept = default;
 
+  /**
+   * \brief Creates a color.
+   *
+   * \param red the red component value.
+   * \param green the green component value.
+   * \param blue the blue component value.
+   * \param alpha the alpha component value.
+   */
   constexpr color(const uint8 red,
                   const uint8 green,
                   const uint8 blue,
@@ -53,10 +66,20 @@ class color final {
       : mColor{red, green, blue, alpha}
   {}
 
-  /// Copies a plain SDL color.
+  /**
+   * \brief Copies a plain SDL color.
+   *
+   * \param color the color that will be copied.
+   */
   constexpr explicit color(const SDL_Color& color) noexcept : mColor{color} {}
 
-  /// Copies an SDL message box color, assuming opaque opacity.
+  /**
+   * \brief Copies an SDL message box color.
+   *
+   * \details The created color is fully opaque.
+   *
+   * \param color the color that will be copied.
+   */
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : mColor{color.r, color.g, color.b, 0xFF}
   {}
@@ -339,20 +362,70 @@ class color final {
     return {red(), green(), blue(), alpha};
   }
 
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the red component value.
+   *
+   * \param red the new red component.
+   */
   constexpr void set_red(const uint8 red) noexcept { mColor.r = red; }
 
+  /**
+   * \brief Sets the green component value.
+   *
+   * \param green the new green component.
+   */
   constexpr void set_green(const uint8 green) noexcept { mColor.g = green; }
 
+  /**
+   * \brief Sets the blue component value.
+   *
+   * \param blue the new blue component.
+   */
   constexpr void set_blue(const uint8 blue) noexcept { mColor.b = blue; }
 
+  /**
+   * \brief Sets the alpha component value.
+   *
+   * \param alpha the new alpha component.
+   */
   constexpr void set_alpha(const uint8 alpha) noexcept { mColor.a = alpha; }
 
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
+
+  /**
+   * \brief Returns the value of the red component.
+   *
+   * \return the red component value, in the range [0, 255].
+   */
   [[nodiscard]] constexpr auto red() const noexcept -> uint8 { return mColor.r; }
 
+  /**
+   * \brief Returns the value of the green component.
+   *
+   * \return the green component value, in the range [0, 255].
+   */
   [[nodiscard]] constexpr auto green() const noexcept -> uint8 { return mColor.g; }
 
+  /**
+   * \brief Returns the value of the blue component.
+   *
+   * \return the blue component value, in the range [0, 255].
+   */
   [[nodiscard]] constexpr auto blue() const noexcept -> uint8 { return mColor.b; }
 
+  /**
+   * \brief Returns the value of the alpha component.
+   *
+   * \return the alpha component value, in the range [0, 255].
+   */
   [[nodiscard]] constexpr auto alpha() const noexcept -> uint8 { return mColor.a; }
 
   /**
@@ -394,6 +467,11 @@ class color final {
   {
     return static_cast<float>(mColor.a) / 255.0f;
   }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Returns a hexadecimal RGB color code, representing the color.
@@ -498,27 +576,24 @@ class color final {
     return {mColor.r, mColor.g, mColor.b};
   }
 
+  /// \} End of conversions
+
+  /// \name Misc functions
+  /// \{
+
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(mColor.r, mColor.g, mColor.b, mColor.a);
+  }
+
   [[nodiscard]] auto data() noexcept -> SDL_Color* { return &mColor; }
 
   [[nodiscard]] auto data() const noexcept -> const SDL_Color* { return &mColor; }
 
   [[nodiscard]] auto get() const noexcept -> const SDL_Color& { return mColor; }
 
-  /**
-   * \brief Serializes the color.
-   *
-   * \details This function expects that the archive provides an overloaded `operator()`,
-   * used for serializing data. This API is based on the Cereal serialization library.
-   *
-   * \tparam Archive the type of the archive.
-   *
-   * \param archive the archive used to serialize the color.
-   */
-  template <typename Archive>
-  void serialize(Archive& archive)
-  {
-    archive(mColor.r, mColor.g, mColor.b, mColor.a);
-  }
+  /// \} End of misc functions
 
  private:
   SDL_Color mColor{0, 0, 0, 0xFF};

@@ -73,8 +73,6 @@ found [here](https://albin-johansson.github.io/centurion/).
 ```C++
 #include <centurion.hpp>
 
-/* Note, the library provides an "SDL" namespace alias if you prefer that over "cen" */
-
 int main(int, char**)
 {
   /* Initialize SDL libraries */

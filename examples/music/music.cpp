@@ -106,7 +106,7 @@ class music_example final {
   void render()
   {
     auto position_of = [y = 50](const cen::Texture& texture) mutable {
-      const auto x = (window_size.width - texture.GetWidth()) / 2;
+      const auto x = (window_size.width - texture.width()) / 2;
       const auto oldY = y;
 
       y += 25;
@@ -138,10 +138,10 @@ class music_example final {
 
 auto main(int, char**) -> int
 {
-  const cen::SDL sdl;
-  const cen::IMG img;
-  const cen::Mix mix;
-  const cen::TTF ttf;
+  const cen::sdl sdl;
+  const cen::img img;
+  const cen::mix mix;
+  const cen::ttf ttf;
 
   music_example example;
   return example.run();

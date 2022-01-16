@@ -23,56 +23,114 @@
 
 namespace cen {
 
-struct SDLConfig final {
+/// \addtogroup initialization
+/// \{
+
+/**
+ * \brief Used to specify how the core SDL library is initialized.
+ */
+struct sdl_cfg final {
+  /// \brief Controls which SDL subsystems are initialized, see `SDL_INIT_` macros.
   uint32 flags{SDL_INIT_EVERYTHING};
 };
 
-class SDL final {
+/**
+ * \brief Used to load and subsequently unload the core SDL library.
+ *
+ * \see `img`
+ * \see `mix`
+ * \see `ttf`
+ */
+class sdl final {
  public:
-  explicit SDL(const SDLConfig& cfg = {})
+  /**
+   * \brief Loads the core SDL library.
+   *
+   * \param cfg the configuration that will be used.
+   *
+   * \throws sdl_error if the SDL library cannot be initialized.
+   */
+  CENTURION_NODISCARD_CTOR explicit sdl(const sdl_cfg& cfg = {})
   {
     if (SDL_Init(cfg.flags) < 0) {
       throw sdl_error{};
     }
   }
 
-  ~SDL() noexcept { SDL_Quit(); }
+  ~sdl() noexcept { SDL_Quit(); }
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-struct IMGConfig final {
+/**
+ * \brief Used to specify how the SDL_image library is initialized.
+ */
+struct img_cfg final {
+  /// \brief Controls which image formats to support, see `IMG_INIT_` macros.
   int flags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
 };
 
-class IMG final {
+/**
+ * \brief Used to load and subsequently unload the SDL_image library.
+ */
+class img final {
  public:
-  explicit IMG(const IMGConfig& cfg = {})
+  /**
+   * \brief Loads the SDL_image library.
+   *
+   * \param cfg the configuration that will be used.
+   *
+   * \throws img_error if the SDL_image library cannot be initialized.
+   */
+  CENTURION_NODISCARD_CTOR explicit img(const img_cfg& cfg = {})
   {
     if (!IMG_Init(cfg.flags)) {
       throw img_error{};
     }
   }
 
-  ~IMG() noexcept { IMG_Quit(); }
+  ~img() noexcept { IMG_Quit(); }
 };
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-struct MixConfig final {
+/**
+ * \brief Used to specify how the SDL_mixer library is initialized.
+ */
+struct mix_cfg final {
+  /// \brief Controls which file formats to be supported, see `MIX_INIT_` macros.
   int flags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD |
             MIX_INIT_OPUS};
+
+  /// \brief The mixer frequency.
   int frequency{MIX_DEFAULT_FREQUENCY};
+
+  /// \brief The mixer format.
   uint16 format{MIX_DEFAULT_FORMAT};
+
+  /// \brief The amount of mixer channels.
   int channels{MIX_DEFAULT_CHANNELS};
+
+  /// \brief The mixer chunk size, in bytes.
   int chunk_size{4096};
 };
 
-class Mix final {
+/**
+ * \brief Used to load and subsequently unload the SDL_mixer library.
+ */
+class mix final {
  public:
-  explicit Mix(const MixConfig& cfg = {})
+  /**
+   * \brief Loads the SDL_mixer library.
+   *
+   * \param cfg the configuration that will be used.
+   *
+   * \throws mix_error if the SDL_mixer library cannot be initialized or if the audio device
+   * couldn't be opened.
+   */
+  CENTURION_NODISCARD_CTOR explicit mix(const mix_cfg& cfg = {})
   {
     if (!Mix_Init(cfg.flags)) {
       throw mix_error{};
@@ -83,7 +141,7 @@ class Mix final {
     }
   }
 
-  ~Mix() noexcept
+  ~mix() noexcept
   {
     Mix_CloseAudio();
     Mix_Quit();
@@ -94,19 +152,31 @@ class Mix final {
 
 #ifndef CENTURION_NO_SDL_TTF
 
-class TTF final {
+/**
+ * \brief Used to load and subsequently unload the SDL_ttf library.
+ */
+class ttf final {
  public:
-  TTF()
+  /**
+   * \brief Loads the SDL_ttf library.
+   *
+   * \param cfg the configuration that will be used.
+   *
+   * \throws ttf_error if the SDL_ttf library cannot be initialized.
+   */
+  CENTURION_NODISCARD_CTOR ttf()
   {
     if (TTF_Init() == -1) {
       throw ttf_error{};
     }
   }
 
-  ~TTF() noexcept { TTF_Quit(); }
+  ~ttf() noexcept { TTF_Quit(); }
 };
 
 #endif  // CENTURION_NO_SDL_TTF
+
+/// \} End of group initialization
 
 }  // namespace cen
 

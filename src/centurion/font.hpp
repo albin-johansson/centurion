@@ -37,7 +37,7 @@
 
 namespace cen {
 
-/// \addtogroup video
+/// \addtogroup font
 /// \{
 
 enum class font_hint {
@@ -1614,7 +1614,7 @@ inline auto operator<<(std::ostream& stream, const font_bundle& bundle) -> std::
 
 /// \} End of font bundle functions
 
-/// \} End of group video
+/// \} End of group font
 
 }  // namespace cen
 

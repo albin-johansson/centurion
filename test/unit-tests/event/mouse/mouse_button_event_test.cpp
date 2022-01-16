@@ -14,7 +14,7 @@ TEST(MouseButtonEvent, SetWindowID)
   cen::MouseButtonEvent event;
 
   event.SetWindowID(64);
-  ASSERT_EQ(64, event.GetWindowID());
+  ASSERT_EQ(64u, event.GetWindowID());
 }
 
 TEST(MouseButtonEvent, SetWhich)
@@ -22,7 +22,7 @@ TEST(MouseButtonEvent, SetWhich)
   cen::MouseButtonEvent event;
 
   event.SetWhich(17);
-  ASSERT_EQ(17, event.GetWhich());
+  ASSERT_EQ(17u, event.GetWhich());
 }
 
 TEST(MouseButtonEvent, SetButton)

@@ -17,7 +17,14 @@ $generatedby&#160;<a href="https://www.doxygen.org/index.html"><img class="foote
     $(document).ready(function(){
         toggleButton = document.createElement('doxygen-awesome-dark-mode-toggle')
         toggleButton.title = "Toggle Light/Dark Mode"
-        document.getElementById("MSearchBox").parentNode.appendChild(toggleButton)
+
+        $(document).ready(function(){
+          document.getElementById("MSearchBox").parentNode.appendChild(toggleButton)
+        })
+
+        $(window).resize(function(){
+          document.getElementById("MSearchBox").parentNode.appendChild(toggleButton)
+        })
     })
 </script>
 </body>

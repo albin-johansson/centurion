@@ -56,8 +56,8 @@ TEST_F(SurfaceTest, SizePixelFormatConstructor)
 {
   cen::Window window;
   cen::Surface image{{10, 10}, window.GetPixelFormat()};
-  ASSERT_EQ(10, image.GetWidth());
-  ASSERT_EQ(10, image.GetHeight());
+  ASSERT_EQ(10, image.width());
+  ASSERT_EQ(10, image.height());
   ASSERT_EQ(window.GetPixelFormat(), image.GetFormatInfo().GetFormat());
 }
 
@@ -157,12 +157,12 @@ TEST_F(SurfaceTest, SetBlendMode)
 
 TEST_F(SurfaceTest, Width)
 {
-  ASSERT_EQ(200, surface->GetWidth());
+  ASSERT_EQ(200, surface->width());
 }
 
 TEST_F(SurfaceTest, Height)
 {
-  ASSERT_EQ(150, surface->GetHeight());
+  ASSERT_EQ(150, surface->height());
 }
 
 TEST_F(SurfaceTest, Size)
@@ -174,12 +174,12 @@ TEST_F(SurfaceTest, Size)
 
 TEST_F(SurfaceTest, Pitch)
 {
-  ASSERT_EQ(4 * surface->GetWidth(), surface->GetPitch());
+  ASSERT_EQ(4 * surface->width(), surface->GetPitch());
 }
 
 TEST_F(SurfaceTest, Clip)
 {
-  constexpr cen::Rect rect{{48, 29}, {34, 89}};
+  constexpr cen::irect rect{{48, 29}, {34, 89}};
 
   surface->get()->clip_rect = rect.get();
   ASSERT_EQ(rect, surface->GetClip());

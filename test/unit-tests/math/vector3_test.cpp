@@ -6,8 +6,8 @@
 #include "math.hpp"
 #include "serialization_utils.hpp"
 
-using float3 = cen::BasicVector3<float>;
-using int3 = cen::BasicVector3<int>;
+using float3 = cen::basic_vector3<float>;
+using int3 = cen::basic_vector3<int>;
 
 TEST(Vector3, Defaults)
 {
@@ -45,7 +45,7 @@ TEST(Vector3, StreamOperator)
 TEST(Vector3, ToString)
 {
   const float3 vec{12.3f, 45.6f};
-  cen::log_info_raw(cen::ToString(vec));
+  cen::log_info_raw(cen::to_string(vec));
 }
 
 TEST(Vector3, EqualityOperator)
@@ -97,9 +97,9 @@ TEST(Vector3, Serialization)
   const auto x = 7842;
   const auto y = 3234;
   const auto z = -1295;
-  serialize_save("BasicVector3.binary", int3{x, y, z});
+  serialize_save("basic_vector3.binary", int3{x, y, z});
 
-  const auto vector = serialize_create<int3>("BasicVector3.binary");
+  const auto vector = serialize_create<int3>("basic_vector3.binary");
   ASSERT_EQ(x, vector.x);
   ASSERT_EQ(y, vector.y);
   ASSERT_EQ(z, vector.z);

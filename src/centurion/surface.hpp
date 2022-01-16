@@ -71,7 +71,7 @@ class BasicSurface final {
 
   /* Creates a blank surface with the specified size and format */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  BasicSurface(const Area& size, const PixelFormat format)
+  BasicSurface(const iarea& size, const PixelFormat format)
       : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
                                                 size.width,
                                                 size.height,
@@ -263,11 +263,14 @@ class BasicSurface final {
     return static_cast<BlendMode>(mode);
   }
 
-  [[nodiscard]] auto GetWidth() const noexcept -> int { return mSurface->w; }
+  [[nodiscard]] auto width() const noexcept -> int { return mSurface->w; }
 
-  [[nodiscard]] auto GetHeight() const noexcept -> int { return mSurface->h; }
+  [[nodiscard]] auto height() const noexcept -> int { return mSurface->h; }
 
-  [[nodiscard]] auto GetSize() const noexcept -> Area { return Area{GetWidth(), GetHeight()}; }
+  [[nodiscard]] auto GetSize() const noexcept -> iarea
+  {
+    return iarea{width(), height()};
+  }
 
   /* Returns the pitch, i.e. the length of a row of pixels in bytes */
   [[nodiscard]] auto GetPitch() const noexcept -> int { return mSurface->pitch; }
@@ -281,7 +284,7 @@ class BasicSurface final {
     return PixelFormatInfoHandle{mSurface->format};
   }
 
-  [[nodiscard]] auto GetClip() const noexcept -> Rect { return Rect{mSurface->clip_rect}; }
+  [[nodiscard]] auto GetClip() const noexcept -> irect { return irect{mSurface->clip_rect}; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -315,10 +318,10 @@ class BasicSurface final {
     }
   }
 
-  [[nodiscard]] auto InBounds(const Point point) const noexcept -> bool
+  [[nodiscard]] auto InBounds(const ipoint point) const noexcept -> bool
   {
-    const Rect bounds{0, 0, GetWidth(), GetHeight()};
-    return bounds.Contains(point);
+    const irect bounds{0, 0, width(), height()};
+    return bounds.contains(point);
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
@@ -338,12 +341,12 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Surface(data: {}, width: {}, height: {})",
                      detail::address_of(surface.get()),
-                     surface.GetWidth(),
-                     surface.GetHeight());
+                     surface.width(),
+                     surface.height());
 #else
   return "Surface(data: " + detail::address_of(surface.get()) +
-         ", width: " + std::to_string(surface.GetWidth()) +
-         ", height: " + std::to_string(surface.GetHeight()) + ")";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

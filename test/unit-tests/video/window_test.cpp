@@ -23,7 +23,7 @@ TEST_F(WindowTest, Defaults)
 
   ASSERT_EQ("Centurion", window.GetTitle());
 
-  ASSERT_EQ(cen::Window::GetDefaultSize(), window.GetSize());
+  ASSERT_EQ(cen::Window::GetDefaultSize(), window.size());
   ASSERT_TRUE(window.CheckFlag(cen::Window::GetDefaultFlags()));
 
   ASSERT_FALSE(window.IsVisible());
@@ -58,8 +58,8 @@ TEST_F(WindowTest, ContructorFromStringAndArea)
   const cen::Window window{title, {width, height}};
 
   ASSERT_EQ(title, window.GetTitle());
-  ASSERT_EQ(width, window.GetWidth());
-  ASSERT_EQ(height, window.GetHeight());
+  ASSERT_EQ(width, window.width());
+  ASSERT_EQ(height, window.height());
   ASSERT_FALSE(window.IsVisible());
 }
 

@@ -50,7 +50,7 @@ class Mouse final {
  public:
   Mouse() noexcept = default;
 
-  void Update(const Area& windowSize) noexcept
+  void Update(const iarea& windowSize) noexcept
   {
     mPreviousPosition = mCurrentPosition;
     mPreviousMask = mCurrentMask;
@@ -65,8 +65,8 @@ class Mouse final {
       const auto yRatio =
           static_cast<float>(y) / static_cast<float>(detail::max(windowSize.height, 1));
 
-      mCurrentPosition.SetX(static_cast<int>(xRatio * mLogicalSize.width));
-      mCurrentPosition.SetY(static_cast<int>(yRatio * mLogicalSize.height));
+      mCurrentPosition.set_x(static_cast<int>(xRatio * mLogicalSize.width));
+      mCurrentPosition.set_y(static_cast<int>(yRatio * mLogicalSize.height));
     }
   }
 
@@ -76,19 +76,19 @@ class Mouse final {
     mLogicalSize.height = 1;
   }
 
-  void SetLogicalSize(const FArea& size) noexcept
+  void SetLogicalSize(const farea& size) noexcept
   {
     mLogicalSize.width = detail::max(size.width, 1.0f);
     mLogicalSize.height = detail::max(size.height, 1.0f);
   }
 
-  [[nodiscard]] auto GetPosition() const noexcept -> Point { return mCurrentPosition; }
+  [[nodiscard]] auto GetPosition() const noexcept -> ipoint { return mCurrentPosition; }
 
-  [[nodiscard]] auto GetX() const noexcept -> int { return mCurrentPosition.GetX(); }
+  [[nodiscard]] auto x() const noexcept -> int { return mCurrentPosition.x(); }
 
-  [[nodiscard]] auto GetY() const noexcept -> int { return mCurrentPosition.GetY(); }
+  [[nodiscard]] auto y() const noexcept -> int { return mCurrentPosition.y(); }
 
-  [[nodiscard]] auto GetLogicalSize() const noexcept -> FArea { return mLogicalSize; }
+  [[nodiscard]] auto GetLogicalSize() const noexcept -> farea { return mLogicalSize; }
 
   [[nodiscard]] auto GetLogicalWidth() const noexcept -> float { return mLogicalSize.width; }
 
@@ -126,14 +126,14 @@ class Mouse final {
 
   [[nodiscard]] auto WasMoved() const noexcept -> bool
   {
-    return (mCurrentPosition.GetX() != mPreviousPosition.GetX()) ||
-           (mCurrentPosition.GetY() != mPreviousPosition.GetY());
+    return (mCurrentPosition.x() != mPreviousPosition.x()) ||
+           (mCurrentPosition.y() != mPreviousPosition.y());
   }
 
  private:
-  Point mCurrentPosition{};
-  Point mPreviousPosition{};
-  FArea mLogicalSize{1, 1};
+  ipoint mCurrentPosition{};
+  ipoint mPreviousPosition{};
+  farea mLogicalSize{1, 1};
   uint32 mCurrentMask{};
   uint32 mPreviousMask{};
 
@@ -167,8 +167,8 @@ class BasicCursor final {
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  BasicCursor(const Surface& surface, const Point& hotspot)
-      : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.GetX(), hotspot.GetY())}
+  BasicCursor(const Surface& surface, const ipoint& hotspot)
+      : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
     if (!mCursor) {
       throw sdl_error{};
@@ -233,10 +233,9 @@ class BasicCursor final {
 [[nodiscard]] inline auto ToString(const Mouse& mouse) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("Mouse(x: {}, y: {})", mouse.GetX(), mouse.GetY());
+  return std::format("Mouse(x: {}, y: {})", mouse.x(), mouse.y());
 #else
-  return "Mouse(x: " + std::to_string(mouse.GetX()) + ", y: " + std::to_string(mouse.GetY()) +
-         ")";
+  return "Mouse(x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

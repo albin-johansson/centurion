@@ -22,27 +22,27 @@ int main(int, char**)
 
   // Draw a filled circle
   renderer.SetColor(cen::colors::red);
-  renderer.FillCircle(cen::FPoint{150, 150}, 75);
+  renderer.FillCircle(cen::fpoint{150, 150}, 75);
 
   // Draw an outlined circle
   renderer.SetColor(cen::colors::cyan);
-  renderer.DrawCircle(cen::FPoint{350, 275}, 50);
+  renderer.DrawCircle(cen::fpoint{350, 275}, 50);
 
   // Draw a filled rectangle
   renderer.SetColor(cen::colors::lime_green);
-  renderer.FillRect(cen::FRect{25.0, 500.0, 125.0, 75.0});
+  renderer.FillRect(cen::frect{25.0, 500.0, 125.0, 75.0});
 
   // Draw an outlined rectangle
   renderer.SetColor(cen::colors::khaki);
-  renderer.DrawRect(cen::FRect{550.0, 50.0, 140.0, 60.0});
+  renderer.DrawRect(cen::frect{550.0, 50.0, 140.0, 60.0});
 
   // Draw a line between two points
   renderer.SetColor(cen::colors::forest_green);
-  renderer.DrawLine(cen::FPoint{240.0, 340.0}, cen::FPoint{360.0, 460.0});
+  renderer.DrawLine(cen::fpoint{240.0, 340.0}, cen::fpoint{360.0, 460.0});
 
   // Render the image along with the text (also in the form of a texture)
-  renderer.Render(image, cen::FPoint{600.0, 450.0});
-  renderer.Render(text, cen::FPoint{450.0, 230.0});
+  renderer.Render(image, cen::fpoint{600.0, 450.0});
+  renderer.Render(text, cen::fpoint{450.0, 230.0});
 
   // Apply our draw calls to the render target (the window)
   renderer.Present();

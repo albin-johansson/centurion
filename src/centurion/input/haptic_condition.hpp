@@ -77,7 +77,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_joystick_positive_level(const BasicVector3<uint16>& level) noexcept
+  void set_joystick_positive_level(const basic_vector3<uint16>& level) noexcept
   {
     representation().right_sat[0] = level.x;
     representation().right_sat[1] = level.y;
@@ -91,7 +91,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_joystick_negative_level(const BasicVector3<uint16>& level) noexcept
+  void set_joystick_negative_level(const basic_vector3<uint16>& level) noexcept
   {
     representation().left_sat[0] = level.x;
     representation().left_sat[1] = level.y;
@@ -106,7 +106,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_force_rate_positive(const BasicVector3<int16>& rate) noexcept
+  void set_force_rate_positive(const basic_vector3<int16>& rate) noexcept
   {
     representation().right_coeff[0] = rate.x;
     representation().right_coeff[1] = rate.y;
@@ -121,7 +121,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_force_rate_negative(const BasicVector3<int16>& rate) noexcept
+  void set_force_rate_negative(const basic_vector3<int16>& rate) noexcept
   {
     representation().left_coeff[0] = rate.x;
     representation().left_coeff[1] = rate.y;
@@ -135,7 +135,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_deadband(const BasicVector3<uint16>& size) noexcept
+  void set_deadband(const basic_vector3<uint16>& size) noexcept
   {
     representation().deadband[0] = size.x;
     representation().deadband[1] = size.y;
@@ -149,7 +149,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  void set_center(const BasicVector3<int16>& center) noexcept
+  void set_center(const basic_vector3<int16>& center) noexcept
   {
     representation().center[0] = center.x;
     representation().center[1] = center.y;
@@ -164,7 +164,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto joystick_positive_level() const noexcept -> BasicVector3<uint16>
+  [[nodiscard]] auto joystick_positive_level() const noexcept -> basic_vector3<uint16>
   {
     const auto& level = representation().right_sat;
     return {level[0], level[1], level[2]};
@@ -178,7 +178,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto joystick_negative_level() const noexcept -> BasicVector3<uint16>
+  [[nodiscard]] auto joystick_negative_level() const noexcept -> basic_vector3<uint16>
   {
     const auto& level = representation().left_sat;
     return {level[0], level[1], level[2]};
@@ -191,7 +191,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto force_rate_positive() const noexcept -> BasicVector3<int16>
+  [[nodiscard]] auto force_rate_positive() const noexcept -> basic_vector3<int16>
   {
     const auto& rate = representation().right_coeff;
     return {rate[0], rate[1], rate[2]};
@@ -204,7 +204,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto force_rate_negative() const noexcept -> BasicVector3<int16>
+  [[nodiscard]] auto force_rate_negative() const noexcept -> basic_vector3<int16>
   {
     const auto& rate = representation().left_coeff;
     return {rate[0], rate[1], rate[2]};
@@ -217,7 +217,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto deadband() const noexcept -> BasicVector3<uint16>
+  [[nodiscard]] auto deadband() const noexcept -> basic_vector3<uint16>
   {
     const auto& band = representation().deadband;
     return {band[0], band[1], band[2]};
@@ -230,7 +230,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto center() const noexcept -> BasicVector3<int16>
+  [[nodiscard]] auto center() const noexcept -> basic_vector3<int16>
   {
     const auto& center = representation().center;
     return {center[0], center[1], center[2]};

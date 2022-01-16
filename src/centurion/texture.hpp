@@ -103,7 +103,7 @@ class BasicTexture final {
   BasicTexture(const Renderer& renderer,
                const PixelFormat format,
                const TextureAccess access,
-               const Area size)
+               const iarea size)
       : mTexture{SDL_CreateTexture(renderer.get(),
                                    ToUnderlying(format),
                                    ToUnderlying(access),
@@ -136,7 +136,7 @@ class BasicTexture final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  [[nodiscard]] auto GetSize() const noexcept -> Area
+  [[nodiscard]] auto GetSize() const noexcept -> iarea
   {
     int width{};
     int height{};
@@ -144,13 +144,13 @@ class BasicTexture final {
     return {width, height};
   }
 
-  [[nodiscard]] auto GetWidth() const noexcept -> int
+  [[nodiscard]] auto width() const noexcept -> int
   {
     const auto [width, height] = GetSize();
     return width;
   }
 
-  [[nodiscard]] auto GetHeight() const noexcept -> int
+  [[nodiscard]] auto height() const noexcept -> int
   {
     const auto [width, height] = GetSize();
     return height;
@@ -292,12 +292,12 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Texture(data: {}, width: {}, height: {})",
                      detail::address_of(texture.get()),
-                     texture.GetWidth(),
-                     texture.GetHeight());
+                     texture.width(),
+                     texture.height());
 #else
   return "Texture(data: " + detail::address_of(texture.get()) +
-         ", width: " + std::to_string(texture.GetWidth()) +
-         ", height: " + std::to_string(texture.GetHeight()) + ")";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

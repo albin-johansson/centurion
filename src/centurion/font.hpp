@@ -480,11 +480,11 @@ class font final {
    * \return the size of the string if it was rendered; an empty optional is returned if
    * something goes wrong.
    */
-  [[nodiscard]] auto calc_size(const char* str) const noexcept -> std::optional<Area>
+  [[nodiscard]] auto calc_size(const char* str) const noexcept -> std::optional<iarea>
   {
     assert(str);
 
-    Area size{};
+    iarea size{};
     if (TTF_SizeText(mFont.get(), str, &size.width, &size.height) != -1) {
       return size;
     }
@@ -494,7 +494,7 @@ class font final {
   }
 
   /// \copydoc calc_size()
-  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> std::optional<Area>
+  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> std::optional<iarea>
   {
     return calc_size(str.c_str());
   }
@@ -744,7 +744,7 @@ class font_cache final {
    * \return the x-coordinate intended to be used by a consecutive glyph.
    */
   template <typename T>
-  auto render_glyph(BasicRenderer<T>& renderer, const unicode_t glyph, const Point& position)
+  auto render_glyph(BasicRenderer<T>& renderer, const unicode_t glyph, const ipoint& position)
       -> int
   {
     if (const auto* data = find_glyph(glyph)) {
@@ -752,15 +752,15 @@ class font_cache final {
       const auto outline = mFont.outline();
 
       /* SDL_ttf handles the y-axis alignment */
-      const auto x = position.GetX() + metrics.min_x - outline;
-      const auto y = position.GetY() - outline;
+      const auto x = position.x() + metrics.min_x - outline;
+      const auto y = position.y() - outline;
 
-      renderer.Render(texture, Point{x, y});
+      renderer.Render(texture, ipoint{x, y});
 
       return x + metrics.advance;
     }
     else {
-      return position.GetX();
+      return position.x();
     }
   }
 
@@ -781,19 +781,19 @@ class font_cache final {
    * \see `render_glyph()`
    */
   template <typename T, typename String>
-  void render_text(BasicRenderer<T>& renderer, const String& str, Point position)
+  void render_text(BasicRenderer<T>& renderer, const String& str, ipoint position)
   {
-    const auto originalX = position.GetX();
+    const auto originalX = position.x();
     const auto lineSkip = mFont.line_skip();
 
     for (const unicode_t glyph : str) {
       if (glyph == '\n') {
-        position.SetX(originalX);
-        position.SetY(position.GetY() + lineSkip);
+        position.set_x(originalX);
+        position.set_y(position.y() + lineSkip);
       }
       else {
         const auto x = render_glyph(renderer, glyph, position);
-        position.SetX(x);
+        position.set_x(x);
       }
     }
   }

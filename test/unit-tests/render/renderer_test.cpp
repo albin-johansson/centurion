@@ -58,7 +58,7 @@ TEST_F(RendererTest, SetColor)
 
 TEST_F(RendererTest, SetClip)
 {
-  constexpr cen::Rect clip{{12, 34}, {56, 78}};
+  constexpr cen::irect clip{{12, 34}, {56, 78}};
 
   renderer->SetClip(clip);
   ASSERT_TRUE(renderer->GetClip().has_value());
@@ -70,7 +70,7 @@ TEST_F(RendererTest, SetClip)
 
 TEST_F(RendererTest, SetViewport)
 {
-  constexpr cen::Rect viewport{{12, 34}, {56, 78}};
+  constexpr cen::irect viewport{{12, 34}, {56, 78}};
 
   renderer->SetViewport(viewport);
   ASSERT_EQ(viewport, renderer->GetViewport());
@@ -98,7 +98,7 @@ TEST_F(RendererTest, SetScale)
 TEST_F(RendererTest, SetLogicalSize)
 {
   const auto old = renderer->GetLogicalSize();
-  constexpr cen::Area size{12, 34};
+  constexpr cen::iarea size{12, 34};
 
   renderer->SetLogicalSize(size);
   ASSERT_EQ(size.width, renderer->GetLogicalSize().width);
@@ -145,10 +145,10 @@ TEST_F(RendererTest, Capture)
   renderer->ClearWith(cen::colors::pink);
 
   renderer->SetColor(cen::colors::green);
-  renderer->FillRect(cen::Rect{20, 20, 150, 100});
+  renderer->FillRect(cen::irect{20, 20, 150, 100});
 
   renderer->SetColor(cen::colors::black);
-  renderer->DrawCircle(cen::FPoint{300.0, 200.0}, 30);
+  renderer->DrawCircle(cen::fpoint{300.0, 200.0}, 30);
 
   renderer->SetColor(cen::colors::maroon);
   renderer->FillCircle({400, 300}, 35);

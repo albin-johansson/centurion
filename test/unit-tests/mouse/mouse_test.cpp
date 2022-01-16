@@ -17,8 +17,8 @@ TEST(Mouse, Defaults)
 {
   const cen::Mouse mouse;
 
-  ASSERT_EQ(0, mouse.GetX());
-  ASSERT_EQ(0, mouse.GetY());
+  ASSERT_EQ(0, mouse.x());
+  ASSERT_EQ(0, mouse.y());
 
   ASSERT_EQ(1, mouse.GetLogicalWidth());
   ASSERT_EQ(1, mouse.GetLogicalHeight());
@@ -44,7 +44,7 @@ TEST(Mouse, ResetLogicalSize)
 {
   cen::Mouse mouse;
 
-  const cen::FArea size{455, 183};
+  const cen::farea size{455, 183};
   mouse.SetLogicalSize(size);
 
   mouse.ResetLogicalSize();
@@ -56,7 +56,7 @@ TEST(Mouse, SetLogicalSize)
 {
   cen::Mouse mouse;
 
-  const cen::FArea size{821, 219};
+  const cen::farea size{821, 219};
   mouse.SetLogicalSize(size);
 
   ASSERT_EQ(size.width, mouse.GetLogicalSize().width);

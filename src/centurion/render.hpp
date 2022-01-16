@@ -99,9 +99,9 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto DrawRect(const BasicRect<U>& rect) noexcept -> result
+  auto DrawRect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (BasicRect<U>::integral) {
+    if constexpr (basic_rect<U>::integral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
     else {
@@ -110,9 +110,9 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto FillRect(const BasicRect<U>& rect) noexcept -> result
+  auto FillRect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (BasicRect<U>::integral) {
+    if constexpr (basic_rect<U>::integral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
     else {
@@ -121,15 +121,13 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto DrawLine(const BasicPoint<U>& start, const BasicPoint<U>& end) noexcept -> result
+  auto DrawLine(const basic_point<U>& start, const basic_point<U>& end) noexcept -> result
   {
-    if constexpr (BasicPoint<U>::integral) {
-      return SDL_RenderDrawLine(get(), start.GetX(), start.GetY(), end.GetX(), end.GetY()) ==
-             0;
+    if constexpr (basic_point<U>::integral) {
+      return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
     else {
-      return SDL_RenderDrawLineF(get(), start.GetX(), start.GetY(), end.GetX(), end.GetY()) ==
-             0;
+      return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
   }
 
@@ -156,27 +154,27 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto DrawPoint(const BasicPoint<U>& point) noexcept -> result
+  auto DrawPoint(const basic_point<U>& point) noexcept -> result
   {
-    if constexpr (BasicPoint<U>::integral) {
-      return SDL_RenderDrawPoint(get(), point.GetX(), point.GetY()) == 0;
+    if constexpr (basic_point<U>::integral) {
+      return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
     else {
-      return SDL_RenderDrawPointF(get(), point.GetX(), point.GetY()) == 0;
+      return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
     }
   }
 
   template <typename U>
-  void DrawCircle(const BasicPoint<U>& position, const float radius) noexcept
+  void DrawCircle(const basic_point<U>& position, const float radius) noexcept
   {
-    using value_t = typename BasicPoint<U>::value_type;
+    using value_t = typename basic_point<U>::value_type;
 
     auto error = -radius;
     auto x = radius - 0.5f;
     auto y = 0.5f;
 
-    const auto cx = static_cast<float>(position.GetX()) - 0.5f;
-    const auto cy = static_cast<float>(position.GetY()) - 0.5f;
+    const auto cx = static_cast<float>(position.x()) - 0.5f;
+    const auto cy = static_cast<float>(position.y()) - 0.5f;
 
     while (x >= y) {
       DrawPoint<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
@@ -209,10 +207,10 @@ class BasicRenderer final {
     }
   }
 
-  void FillCircle(const FPoint center, const float radius)
+  void FillCircle(const fpoint center, const float radius)
   {
-    const auto cx = center.GetX();
-    const auto cy = center.GetY();
+    const auto cx = center.x();
+    const auto cy = center.y();
 
     for (auto dy = 1.0f; dy <= radius; dy += 1.0f) {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
@@ -222,27 +220,25 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture, const BasicPoint<P>& position) noexcept -> result
+  auto Render(const BasicTexture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
   {
-    if constexpr (BasicPoint<P>::floating) {
-      const auto size = cast<FArea>(texture.GetSize());
-      const SDL_FRect dst{position.GetX(), position.GetY(), size.width, size.height};
+    if constexpr (basic_point<P>::floating) {
+      const auto size = cast<farea>(texture.GetSize());
+      const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else {
-      const SDL_Rect dst{position.GetX(),
-                         position.GetY(),
-                         texture.GetWidth(),
-                         texture.GetHeight()};
+      const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture, const BasicRect<P>& destination) noexcept
+  auto Render(const BasicTexture<U>& texture, const basic_rect<P>& destination) noexcept
       -> result
   {
-    if constexpr (BasicRect<P>::floating) {
+    if constexpr (basic_rect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
     else {
@@ -252,10 +248,10 @@ class BasicRenderer final {
 
   template <typename P, typename U>
   auto Render(const BasicTexture<U>& texture,
-              const Rect& source,
-              const BasicRect<P>& destination) noexcept -> result
+              const irect& source,
+              const basic_rect<P>& destination) noexcept -> result
   {
-    if constexpr (BasicRect<P>::floating) {
+    if constexpr (basic_rect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
     }
     else {
@@ -265,11 +261,11 @@ class BasicRenderer final {
 
   template <typename P, typename U>
   auto Render(const BasicTexture<U>& texture,
-              const Rect& source,
-              const BasicRect<P>& destination,
+              const irect& source,
+              const basic_rect<P>& destination,
               const double angle) noexcept -> result
   {
-    if constexpr (BasicRect<P>::floating) {
+    if constexpr (basic_rect<P>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -291,17 +287,17 @@ class BasicRenderer final {
 
   template <typename R, typename P, typename U>
   auto Render(const BasicTexture<U>& texture,
-              const Rect& source,
-              const BasicRect<R>& destination,
+              const irect& source,
+              const basic_rect<R>& destination,
               const double angle,
-              const BasicPoint<P>& center) noexcept -> result
+              const basic_point<P>& center) noexcept -> result
   {
-    static_assert(
-        std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
-        "Destination rectangle and center point must have the same "
-        "value types (int or float)!");
+    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+                                 typename basic_point<P>::value_type>,
+                  "Destination rectangle and center point must have the same "
+                  "value types (int or float)!");
 
-    if constexpr (BasicRect<R>::floating) {
+    if constexpr (basic_rect<R>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -323,18 +319,18 @@ class BasicRenderer final {
 
   template <typename R, typename P, typename U>
   auto Render(const BasicTexture<U>& texture,
-              const Rect& source,
-              const BasicRect<R>& destination,
+              const irect& source,
+              const basic_rect<R>& destination,
               const double angle,
-              const BasicPoint<P>& center,
+              const basic_point<P>& center,
               const SDL_RendererFlip flip) noexcept -> result
   {
-    static_assert(
-        std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
-        "Destination rectangle and center point must have the same "
-        "value types (int or float)!");
+    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+                                 typename basic_point<P>::value_type>,
+                  "Destination rectangle and center point must have the same "
+                  "value types (int or float)!");
 
-    if constexpr (BasicRect<R>::floating) {
+    if constexpr (basic_rect<R>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -388,12 +384,12 @@ class BasicRenderer final {
                                   color.alpha()) == 0;
   }
 
-  auto SetClip(const std::optional<Rect>& area) noexcept -> result
+  auto SetClip(const std::optional<irect>& area) noexcept -> result
   {
     return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
   }
 
-  auto SetViewport(const Rect& viewport) noexcept -> result
+  auto SetViewport(const irect& viewport) noexcept -> result
   {
     return SDL_RenderSetViewport(get(), viewport.data()) == 0;
   }
@@ -419,7 +415,7 @@ class BasicRenderer final {
     return SDL_RenderSetScale(get(), xScale, yScale) == 0;
   }
 
-  auto SetLogicalSize(const Area size) noexcept -> result
+  auto SetLogicalSize(const iarea size) noexcept -> result
   {
     assert(size.width >= 0);
     assert(size.height >= 0);
@@ -445,9 +441,9 @@ class BasicRenderer final {
     return TextureHandle{SDL_GetRenderTarget(get())};
   }
 
-  [[nodiscard]] auto GetLogicalSize() const noexcept -> Area
+  [[nodiscard]] auto GetLogicalSize() const noexcept -> iarea
   {
-    Area size{};
+    iarea size{};
     SDL_RenderGetLogicalSize(get(), &size.width, &size.height);
     return size;
   }
@@ -460,11 +456,11 @@ class BasicRenderer final {
     return {xScale, yScale};
   }
 
-  [[nodiscard]] auto GetClip() const noexcept -> std::optional<Rect>
+  [[nodiscard]] auto GetClip() const noexcept -> std::optional<irect>
   {
-    Rect rect{};
+    irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.HasArea()) {
+    if (!rect.has_area()) {
       return std::nullopt;
     }
     else {
@@ -472,9 +468,9 @@ class BasicRenderer final {
     }
   }
 
-  [[nodiscard]] auto GetOutputSize() const noexcept -> Area
+  [[nodiscard]] auto GetOutputSize() const noexcept -> iarea
   {
-    Area size{};
+    iarea size{};
     SDL_GetRendererOutputSize(get(), &size.width, &size.height);
     return size;
   }
@@ -496,9 +492,9 @@ class BasicRenderer final {
     return {red, green, blue, alpha};
   }
 
-  [[nodiscard]] auto GetViewport() const noexcept -> Rect
+  [[nodiscard]] auto GetViewport() const noexcept -> irect
   {
-    Rect viewport{};
+    irect viewport{};
     SDL_RenderGetViewport(get(), viewport.data());
     return viewport;
   }
@@ -570,7 +566,7 @@ class RendererInfo final {
     return static_cast<PixelFormat>(mInfo.texture_formats[index]);
   }
 
-  [[nodiscard]] auto GetMaxTextureSize() const noexcept -> Area
+  [[nodiscard]] auto GetMaxTextureSize() const noexcept -> iarea
   {
     return {mInfo.max_texture_width, mInfo.max_texture_height};
   }

@@ -262,7 +262,7 @@ void Swap(BasicWindow<T>& window) noexcept
 }
 
 template <typename T>
-[[nodiscard]] auto GetDrawableSize(const BasicWindow<T>& window) noexcept -> Area
+[[nodiscard]] auto GetDrawableSize(const BasicWindow<T>& window) noexcept -> iarea
 {
   assert(window.IsOpenGL());
 
@@ -326,12 +326,12 @@ inline auto SetSwapInterval(const GLSwapInterval interval) noexcept -> result
 }
 
 template <typename T>
-auto Bind(BasicTexture<T>& texture) noexcept -> std::optional<FArea>
+auto Bind(BasicTexture<T>& texture) noexcept -> std::optional<farea>
 {
   float width{};
   float height{};
   if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0) {
-    return FArea{width, height};
+    return farea{width, height};
   }
   else {
     return std::nullopt;

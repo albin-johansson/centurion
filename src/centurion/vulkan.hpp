@@ -127,7 +127,7 @@ inline auto required_extensions() -> std::optional<std::vector<const char*>>
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto drawable_size(const BasicWindow<T>& window) noexcept -> Area
+[[nodiscard]] auto drawable_size(const BasicWindow<T>& window) noexcept -> iarea
 {
   assert(window.IsVulkan());
 

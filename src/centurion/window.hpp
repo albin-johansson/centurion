@@ -75,7 +75,7 @@ class BasicWindow final {
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicWindow(const char* title,
-                       const Area size = GetDefaultSize(),
+                       const iarea size = GetDefaultSize(),
                        const uint32 flags = GetDefaultFlags())
   {
     assert(title);
@@ -100,7 +100,7 @@ class BasicWindow final {
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicWindow(const std::string& title,
-                       const Area size = GetDefaultSize(),
+                       const iarea size = GetDefaultSize(),
                        const uint32 flags = GetDefaultFlags())
       : BasicWindow{title.c_str(), size, flags}
   {}
@@ -197,40 +197,40 @@ class BasicWindow final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
-  void SetX(const int x) noexcept { SetPosition({x, GetY()}); }
+  void SetX(const int x) noexcept { SetPosition({x, y()}); }
 
-  void SetY(const int y) noexcept { SetPosition({GetX(), y}); }
+  void SetY(const int y) noexcept { SetPosition({x(), y}); }
 
-  void SetPosition(const Point position) noexcept
+  void SetPosition(const ipoint position) noexcept
   {
-    SDL_SetWindowPosition(mWindow, position.GetX(), position.GetY());
+    SDL_SetWindowPosition(mWindow, position.x(), position.y());
   }
 
   void SetWidth(const int width) noexcept
   {
-    SDL_SetWindowSize(mWindow, detail::max(width, 1), GetHeight());
+    SDL_SetWindowSize(mWindow, detail::max(width, 1), height());
   }
 
   void SetHeight(const int height) noexcept
   {
-    SDL_SetWindowSize(mWindow, GetWidth(), detail::max(height, 1));
+    SDL_SetWindowSize(mWindow, width(), detail::max(height, 1));
   }
 
-  void SetSize(const Area size) noexcept
+  void SetSize(const iarea size) noexcept
   {
     assert(size.width > 0);
     assert(size.height > 0);
     SDL_SetWindowSize(mWindow, size.width, size.height);
   }
 
-  void SetMinSize(const Area size) noexcept
+  void SetMinSize(const iarea size) noexcept
   {
     assert(size.width > 0);
     assert(size.height > 0);
     SDL_SetWindowMinimumSize(mWindow, size.width, size.height);
   }
 
-  void SetMaxSize(const Area size) noexcept
+  void SetMaxSize(const iarea size) noexcept
   {
     assert(size.width > 0);
     assert(size.height > 0);
@@ -244,7 +244,7 @@ class BasicWindow final {
 
   [[nodiscard]] auto GetID() const noexcept -> uint32 { return SDL_GetWindowID(mWindow); }
 
-  [[nodiscard]] auto GetPosition() const noexcept -> Point
+  [[nodiscard]] auto position() const noexcept -> ipoint
   {
     int x{};
     int y{};
@@ -252,31 +252,31 @@ class BasicWindow final {
     return {x, y};
   }
 
-  [[nodiscard]] auto GetX() const noexcept -> int { return GetPosition().GetX(); }
+  [[nodiscard]] auto x() const noexcept -> int { return position().x(); }
 
-  [[nodiscard]] auto GetY() const noexcept -> int { return GetPosition().GetY(); }
+  [[nodiscard]] auto y() const noexcept -> int { return position().y(); }
 
-  [[nodiscard]] auto GetSize() const noexcept -> Area
+  [[nodiscard]] auto size() const noexcept -> iarea
   {
-    Area size{};
+    iarea size{};
     SDL_GetWindowSize(mWindow, &size.width, &size.height);
     return size;
   }
 
-  [[nodiscard]] auto GetWidth() const noexcept -> int { return GetSize().width; }
+  [[nodiscard]] auto width() const noexcept -> int { return size().width; }
 
-  [[nodiscard]] auto GetHeight() const noexcept -> int { return GetSize().height; }
+  [[nodiscard]] auto height() const noexcept -> int { return size().height; }
 
-  [[nodiscard]] auto GetMinSize() const noexcept -> Area
+  [[nodiscard]] auto GetMinSize() const noexcept -> iarea
   {
-    Area size{};
+    iarea size{};
     SDL_GetWindowMinimumSize(mWindow, &size.width, &size.height);
     return size;
   }
 
-  [[nodiscard]] auto GetMaxSize() const noexcept -> Area
+  [[nodiscard]] auto GetMaxSize() const noexcept -> iarea
   {
-    Area size{};
+    iarea size{};
     SDL_GetWindowMaximumSize(mWindow, &size.width, &size.height);
     return size;
   }
@@ -409,7 +409,7 @@ class BasicWindow final {
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  [[nodiscard]] constexpr static auto GetDefaultSize() noexcept -> Area
+  [[nodiscard]] constexpr static auto GetDefaultSize() noexcept -> iarea
   {
     return {800, 600};
   }
@@ -430,12 +430,12 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("Window(data: {}, width: {}, height: {})",
                      detail::address_of(window.data()),
-                     window.GetWidth(),
-                     window.GetHeight());
+                     window.width(),
+                     window.height());
 #else
   return "Window(data: " + detail::address_of(window.data()) +
-         ", width: " + std::to_string(window.GetWidth()) +
-         ", height: " + std::to_string(window.GetHeight()) + ")";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -471,7 +471,7 @@ template <typename T>
   return RendererHandle{SDL_GetRenderer(window.get())};
 }
 
-[[nodiscard]] inline auto MakeWindowAndRenderer(const Area size = Window::GetDefaultSize(),
+[[nodiscard]] inline auto MakeWindowAndRenderer(const iarea size = Window::GetDefaultSize(),
                                                 const uint32 flags = Window::GetDefaultFlags())
     -> std::pair<Window, Renderer>
 {

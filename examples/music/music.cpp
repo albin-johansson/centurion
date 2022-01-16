@@ -5,7 +5,7 @@ namespace {
 
 using event_dispatcher = cen::EventDispatcher<cen::quit_event, cen::KeyboardEvent>;
 
-constexpr cen::Area window_size = cen::Window::GetDefaultSize();
+constexpr cen::iarea window_size = cen::Window::GetDefaultSize();
 
 constexpr auto msg_zero = "\"0\" to play the click one time.";
 constexpr auto msg_one = "\"1\" to play the click one time.";
@@ -110,7 +110,7 @@ class music_example final {
       const auto oldY = y;
 
       y += 25;
-      return cen::Point{x, oldY};
+      return cen::ipoint{x, oldY};
     };
 
     mRenderer.ClearWith(cen::colors::steel_blue);
@@ -119,7 +119,7 @@ class music_example final {
       mRenderer.Render(texture, position_of(texture));
     }
 
-    constexpr cen::Point offset{0, 25};
+    constexpr cen::ipoint offset{0, 25};
     if (cen::music::is_playing() && !cen::music::is_fading()) {
       mRenderer.Render(*mTexPlayingMusic, position_of(*mTexPlayingMusic) + offset);
     }

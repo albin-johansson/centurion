@@ -197,8 +197,8 @@ TEST(HapticCustom, Defaults)
 
 TEST(HapticCondition, Defaults)
 {
-  using u16vector = cen::BasicVector3<Uint16>;
-  using i16vector = cen::BasicVector3<Sint16>;
+  using u16vector = cen::basic_vector3<Uint16>;
+  using i16vector = cen::basic_vector3<Sint16>;
 
   cen::haptic_condition effect;
   ASSERT_EQ(cen::haptic_condition::spring, effect.type());

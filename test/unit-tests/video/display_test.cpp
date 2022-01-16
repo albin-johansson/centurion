@@ -44,10 +44,10 @@ TEST(Display, GetBounds)
   SDL_Rect rect{};
   ASSERT_EQ(0, SDL_GetDisplayBounds(0, &rect));
 
-  ASSERT_EQ(rect.x, bounds->GetX());
-  ASSERT_EQ(rect.y, bounds->GetY());
-  ASSERT_EQ(rect.w, bounds->GetWidth());
-  ASSERT_EQ(rect.h, bounds->GetHeight());
+  ASSERT_EQ(rect.x, bounds->x());
+  ASSERT_EQ(rect.y, bounds->y());
+  ASSERT_EQ(rect.w, bounds->width());
+  ASSERT_EQ(rect.h, bounds->height());
 
   ASSERT_FALSE(cen::GetDisplayBounds(cen::GetNumDisplays()).has_value());
 }
@@ -60,10 +60,10 @@ TEST(Display, GetDisplayUsableBounds)
   SDL_Rect rect{};
   ASSERT_EQ(0, SDL_GetDisplayUsableBounds(0, &rect));
 
-  ASSERT_EQ(rect.x, bounds->GetX());
-  ASSERT_EQ(rect.y, bounds->GetY());
-  ASSERT_EQ(rect.w, bounds->GetWidth());
-  ASSERT_EQ(rect.h, bounds->GetHeight());
+  ASSERT_EQ(rect.x, bounds->x());
+  ASSERT_EQ(rect.y, bounds->y());
+  ASSERT_EQ(rect.w, bounds->width());
+  ASSERT_EQ(rect.h, bounds->height());
 
   ASSERT_FALSE(cen::GetDisplayUsableBounds(cen::GetNumDisplays()).has_value());
 }

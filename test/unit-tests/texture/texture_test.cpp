@@ -57,8 +57,8 @@ TEST_F(TextureTest, PathConstructor)
   using namespace std::string_literals;
   ASSERT_THROW(cen::Texture(*renderer, "badpath"s), cen::img_error);
 
-  ASSERT_EQ(imageWidth, texture->GetWidth());
-  ASSERT_EQ(imageHeight, texture->GetHeight());
+  ASSERT_EQ(imageWidth, texture->width());
+  ASSERT_EQ(imageHeight, texture->height());
 }
 
 TEST_F(TextureTest, SurfaceConstructor)
@@ -73,15 +73,15 @@ TEST_F(TextureTest, CustomizationConstructor)
   constexpr auto access = cen::TextureAccess::Static;
   constexpr auto width = 145;
   constexpr auto height = 85;
-  constexpr cen::Area size{width, height};
+  constexpr cen::iarea size{width, height};
 
   const cen::Texture texture{*renderer, format, access, size};
 
   ASSERT_EQ(format, texture.GetFormat());
   ASSERT_EQ(access, texture.GetAccess());
   ASSERT_EQ(size, texture.GetSize());
-  ASSERT_EQ(width, texture.GetWidth());
-  ASSERT_EQ(height, texture.GetHeight());
+  ASSERT_EQ(width, texture.width());
+  ASSERT_EQ(height, texture.height());
 }
 
 TEST_F(TextureTest, SetBlendMode)

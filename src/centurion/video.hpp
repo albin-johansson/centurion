@@ -167,10 +167,10 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
   }
 }
 
-[[nodiscard]] inline auto GetDisplaySize(const int index = 0) noexcept -> std::optional<Area>
+[[nodiscard]] inline auto GetDisplaySize(const int index = 0) noexcept -> std::optional<iarea>
 {
   if (const auto mode = GetDisplayMode(index)) {
-    return Area{mode->w, mode->h};
+    return iarea{mode->w, mode->h};
   }
   else {
     return std::nullopt;
@@ -188,9 +188,10 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
   }
 }
 
-[[nodiscard]] inline auto GetDisplayBounds(const int index = 0) noexcept -> std::optional<Rect>
+[[nodiscard]] inline auto GetDisplayBounds(const int index = 0) noexcept
+    -> std::optional<irect>
 {
-  Rect result;
+  irect result;
   if (SDL_GetDisplayBounds(index, result.data()) == 0) {
     return result;
   }
@@ -200,9 +201,9 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
 }
 
 [[nodiscard]] inline auto GetDisplayUsableBounds(const int index = 0) noexcept
-    -> std::optional<Rect>
+    -> std::optional<irect>
 {
-  Rect result;
+  irect result;
   if (SDL_GetDisplayUsableBounds(index, result.data()) == 0) {
     return result;
   }

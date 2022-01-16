@@ -624,16 +624,16 @@ TEST_F(WindowTest, GetOpacity)
   ASSERT_EQ(1u, SDL_GetWindowOpacity_fake.call_count);
 }
 
-TEST_F(WindowTest, GetX)
+TEST_F(WindowTest, X)
 {
-  const auto x [[maybe_unused]] = m_window.GetX();
+  const auto x [[maybe_unused]] = m_window.x();
   ASSERT_EQ(1u, SDL_GetWindowPosition_fake.call_count);
   ASSERT_NE(nullptr, SDL_GetWindowPosition_fake.arg1_val);
 }
 
-TEST_F(WindowTest, GetY)
+TEST_F(WindowTest, Y)
 {
-  const auto y [[maybe_unused]] = m_window.GetY();
+  const auto y [[maybe_unused]] = m_window.y();
   ASSERT_EQ(1u, SDL_GetWindowPosition_fake.call_count);
   ASSERT_NE(nullptr, SDL_GetWindowPosition_fake.arg2_val);
 }
@@ -656,9 +656,9 @@ TEST_F(WindowTest, GetDisplayIndex)
   ASSERT_EQ(2u, SDL_GetWindowDisplayIndex_fake.call_count);
 }
 
-TEST_F(WindowTest, GetPosition)
+TEST_F(WindowTest, Position)
 {
-  const auto pos [[maybe_unused]] = m_window.GetPosition();
+  const auto pos [[maybe_unused]] = m_window.position();
   ASSERT_EQ(1u, SDL_GetWindowPosition_fake.call_count);
 }
 
@@ -674,21 +674,21 @@ TEST_F(WindowTest, GetMaxSize)
   ASSERT_EQ(1u, SDL_GetWindowMaximumSize_fake.call_count);
 }
 
-TEST_F(WindowTest, GetWidth)
+TEST_F(WindowTest, Width)
 {
-  const auto width [[maybe_unused]] = m_window.GetWidth();
+  const auto width [[maybe_unused]] = m_window.width();
   ASSERT_EQ(1u, SDL_GetWindowSize_fake.call_count);
 }
 
-TEST_F(WindowTest, GetHeight)
+TEST_F(WindowTest, Height)
 {
-  const auto height [[maybe_unused]] = m_window.GetHeight();
+  const auto height [[maybe_unused]] = m_window.height();
   ASSERT_EQ(1u, SDL_GetWindowSize_fake.call_count);
 }
 
-TEST_F(WindowTest, GetSize)
+TEST_F(WindowTest, Size)
 {
-  const auto size [[maybe_unused]] = m_window.GetSize();
+  const auto size [[maybe_unused]] = m_window.size();
   ASSERT_EQ(1u, SDL_GetWindowSize_fake.call_count);
 }
 

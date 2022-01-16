@@ -41,7 +41,10 @@
 
 namespace cen {
 
-/// \addtogroup core
+/// \addtogroup common
+/// \{
+
+/// \name Integral aliases
 /// \{
 
 using uint = unsigned int;
@@ -72,6 +75,36 @@ using u16ms = millis<uint16>;
 using u32ms = millis<uint32>;
 using u64ms = millis<uint64>;
 
+/// \} End of integral aliases
+
+/// \name Build and compiler information
+/// \{
+
+/**
+ * \var is_debug_build
+ * \brief Indicates whether the compiler is in debug build mode.
+ */
+
+/**
+ * \var is_release_build
+ * \brief Indicates whether the compiler is in release build mode.
+ */
+
+/**
+ * \var on_msvc
+ * \brief Indicates whether the compiler is MSVC.
+ */
+
+/**
+ * \var on_gcc
+ * \brief Indicates whether the compiler is GNU (GCC).
+ */
+
+/**
+ * \var on_clang
+ * \brief Indicates whether the compiler is Clang.
+ */
+
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
 inline constexpr bool is_release_build = true;
@@ -98,9 +131,10 @@ inline constexpr bool on_clang = true;
 inline constexpr bool on_clang = false;
 #endif  // __clang__
 
-template <typename T>
-inline constexpr bool is_number =
-    !std::is_same_v<T, bool> && (std::is_integral_v<T> || std::is_floating_point_v<T>);
+/// \} End of build and compiler information
+
+/// \name SFINAE helpers
+/// \{
 
 template <typename T>
 using enable_for_pointer_t = std::enable_if_t<std::is_pointer_v<T>, int>;
@@ -113,6 +147,11 @@ using enable_for_convertible_t =
 template <typename T>
 using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
+/// \} End of SFINAE helpers
+
+/// \name Pointer tag aliases
+/// \{
+
 template <typename T, enable_for_pointer_t<T> = 0>
 using not_null = T;
 
@@ -122,35 +161,27 @@ using owner = T;
 template <typename T, enable_for_pointer_t<T> = 0>
 using maybe_owner = T;
 
-/// Converts an enum value to the underlying integral value.
-template <typename Enum, enable_for_enum_t<Enum> = 0>
-[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
-    -> std::underlying_type_t<Enum>
-{
-  return static_cast<std::underlying_type_t<Enum>>(value);
-}
+/// \} End of pointer tag aliases
 
-/// Casts a value to a value of another type.
-template <typename To, typename From>
-[[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
-{
-  return static_cast<To>(from);
-}
-
-/// Obtains the size of a container as an `int`.
 template <typename T>
-[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
-    -> int
-{
-  return static_cast<int>(container.size());
-}
+inline constexpr bool is_number =
+    !std::is_same_v<T, bool> && (std::is_integral_v<T> || std::is_floating_point_v<T>);
 
-/// Simply returns the string if it isn't null, returning a placeholder otherwise.
-[[nodiscard]] inline auto str_or_na(const char* str) noexcept -> const char*
-{
-  return str ? str : "N/A";
-}
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
+template <typename T, typename... Args>
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
+/**
+ * \brief The base class of all exceptions explicitly thrown by the library.
+ *
+ * \see `sdl_error`
+ * \see `img_error`
+ * \see `mix_error`
+ * \see `ttf_error`
+ */
 class exception : public std::exception {
  public:
   exception() noexcept = default;
@@ -163,6 +194,9 @@ class exception : public std::exception {
   const char* mWhat{"?"};
 };
 
+/**
+ * \brief Represents an error related to the core SDL library.
+ */
 class sdl_error final : public exception {
  public:
   sdl_error() noexcept : exception{SDL_GetError()} {}
@@ -172,6 +206,9 @@ class sdl_error final : public exception {
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
+/**
+ * \brief Represents an error related to the core SDL_image library.
+ */
 class img_error final : public exception {
  public:
   img_error() noexcept : exception{IMG_GetError()} {}
@@ -183,6 +220,9 @@ class img_error final : public exception {
 
 #ifndef CENTURION_NO_SDL_TTF
 
+/**
+ * \brief Represents an error related to the core SDL_ttf library.
+ */
 class ttf_error final : public exception {
  public:
   ttf_error() noexcept : exception{TTF_GetError()} {}
@@ -194,6 +234,9 @@ class ttf_error final : public exception {
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+/**
+ * \brief Represents an error related to the core SDL_mixer library.
+ */
 class mix_error final : public exception {
  public:
   mix_error() noexcept : exception{Mix_GetError()} {}
@@ -258,25 +301,16 @@ class result final {
   bool mSuccess{};
 };
 
-[[nodiscard]] constexpr auto operator==(const result a, const result b) noexcept -> bool
-{
-  return a.operator bool() == b.operator bool();
-}
+/// \name Result constants
+/// \{
 
-[[nodiscard]] constexpr auto operator!=(const result a, const result b) noexcept -> bool
-{
-  return !(a == b);
-}
+inline constexpr result success{true};   ///< Represents a successful result.
+inline constexpr result failure{false};  ///< Represents a failure.
 
-inline constexpr result success{true};
-inline constexpr result failure{false};
+/// \} End of result constants
 
-#if CENTURION_HAS_FEATURE_CONCEPTS
-
-template <typename T, typename... Args>
-concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
-
-#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+/// \name Result functions
+/// \{
 
 [[nodiscard]] inline auto to_string(const result result) -> std::string
 {
@@ -288,7 +322,95 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
   return stream << to_string(result);
 }
 
+[[nodiscard]] constexpr auto operator==(const result a, const result b) noexcept -> bool
+{
+  return a.operator bool() == b.operator bool();
+}
+
+[[nodiscard]] constexpr auto operator!=(const result a, const result b) noexcept -> bool
+{
+  return !(a == b);
+}
+
+/// \} End of result functions
+
+/// \name Common utility functions
+/// \{
+
+/**
+ * \brief Casts a value to a value of another type.
+ *
+ * \details This is the default implementation, which simply attempts to use `static_cast`. The
+ * idea is that this function will be specialized for various Centurion and SDL types. This is
+ * useful because it isn't always possible to implement conversion operators as members.
+ *
+ * \tparam To the target type of the value that will be converted.
+ * \tparam From the original type of the value.
+ *
+ * \param from the value that will be casted.
+ *
+ * \return the casted value.
+ */
+template <typename To, typename From>
+[[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
+{
+  return static_cast<To>(from);
+}
+
+/**
+ * \brief Converts an enum value to its underlying integral value.
+ *
+ * \details This function is basically just `std::to_underlying()` from C++23.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enumerator that will be converted.
+ *
+ * \return the integral value of the enumerator.
+ */
+template <typename Enum, enable_for_enum_t<Enum> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container that will be queried.
+ *
+ * \return the container size as an `int`.
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+/**
+ * \brief Simply returns the string if it is non-null, returning a placeholder otherwise.
+ *
+ * \param str the string that will be returned if it is not null.
+ *
+ * \return the supplied string or a placeholder.
+ */
+[[nodiscard]] inline auto str_or_na(const char* str) noexcept -> const char*
+{
+  return str ? str : "null";
+}
+
+/// \} End of common utility functions
+
+/// \} End of group common
+
+/// \ingroup common
 namespace literals {
+
+/// \ingroup common
 inline namespace time_literals {
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
@@ -308,7 +430,9 @@ inline namespace time_literals {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 }  // namespace time_literals
+
 }  // namespace literals
+
 }  // namespace cen
 
 #endif  // CENTURION_COMMON_HPP_

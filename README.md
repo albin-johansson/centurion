@@ -76,35 +76,35 @@ found [here](https://albin-johansson.github.io/centurion/).
 int main(int, char**)
 {
   /* Initialize SDL libraries */
-  const cen::SDL sdl;
-  const cen::IMG img;
-  const cen::Mix mix;
-  const cen::TTF ttf;
+  const cen::sdl sdl;
+  const cen::img img;
+  const cen::mix mix;
+  const cen::ttf ttf;
     
-  cen::Window window{"Centurion"};
-  cen::Renderer renderer{window};
+  cen::window window{"Centurion"};
+  cen::renderer renderer{window};
   
-  window.Show();
+  window.show();
   
   bool running = true;
   while (running) {
-    cen::Event event;
-    while (event.Poll()) {
-      if (event.Is<cen::QuitEvent>()) {
+    cen::event event;
+    while (event.poll()) {
+      if (event.is<cen::quit_event>()) {
         running = false;
         break;
       }  
     }
     
-    renderer.ClearWith(cen::colors::black);
+    renderer.clear_with(cen::colors::black);
     
-    renderer.SetColor(cen::colors::red);
-    renderer.FillRect(10, 10, 100, 50);
+    renderer.set_color(cen::colors::red);
+    renderer.fill_rect(10, 10, 100, 50);
     
-    renderer.Present();
+    renderer.present();
   }
     
-  window.Hide();
+  window.hide();
   return 0;
 }
 

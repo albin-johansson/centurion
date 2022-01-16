@@ -270,7 +270,7 @@ class music final {
    * \see `music::forever`
    */
   auto fade_in(const ms_type duration,
-               const int iterations = 0) noexcept(noexcept(duration.count())) -> Result
+               const int iterations = 0) noexcept(noexcept(duration.count())) -> result
   {
     assert(duration.count() > 0);
     return Mix_FadeInMusic(mMusic.get(), detail::max(iterations, forever), duration.count()) ==
@@ -292,7 +292,7 @@ class music final {
    *
    * \see `fade_in()`
    */
-  static auto fade_out(const ms_type duration) noexcept(noexcept(duration.count())) -> Result
+  static auto fade_out(const ms_type duration) noexcept(noexcept(duration.count())) -> result
   {
     assert(duration.count() > 0);
     if (!is_fading()) {
@@ -346,7 +346,7 @@ class music final {
    *
    * \return `success` if the position was successfully changed; `failure` otherwise.
    */
-  static auto set_position(const double position) noexcept -> Result
+  static auto set_position(const double position) noexcept -> result
   {
     return Mix_SetMusicPosition(position) == 0;
   }
@@ -599,7 +599,7 @@ class basic_sound_effect final {
    *
    * \see `sound_effect::forever`
    */
-  auto play(const int iterations = 0) noexcept -> Result
+  auto play(const int iterations = 0) noexcept -> result
   {
     mChannel = Mix_PlayChannel(mChannel, mChunk.get(), detail::max(iterations, forever));
     return mChannel != -1;

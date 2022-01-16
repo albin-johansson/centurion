@@ -190,7 +190,7 @@ class BasicController final {
 
   auto Rumble(const uint16 lo,
               const uint16 hi,
-              const u32ms duration) noexcept(noexcept(duration.count())) -> Result
+              const u32ms duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_GameControllerRumble(mController, lo, hi, duration.count()) == 0;
   }
@@ -413,18 +413,18 @@ class BasicController final {
 
   auto RumbleTriggers(const uint16 lo,
                       const uint16 hi,
-                      const u32ms duration) noexcept(noexcept(duration.count())) -> Result
+                      const u32ms duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_GameControllerRumbleTriggers(mController, lo, hi, duration.count()) == 0;
   }
 
-  auto SetLED(const color& color) noexcept -> Result
+  auto SetLED(const color& color) noexcept -> result
   {
     return SDL_GameControllerSetLED(mController, color.red(), color.green(), color.blue()) ==
            0;
   }
 
-  auto SetSensorEnabled(const sensor_type type, const bool enabled) noexcept -> Result
+  auto SetSensorEnabled(const sensor_type type, const bool enabled) noexcept -> result
   {
     const auto value = static_cast<SDL_SensorType>(type);
     const auto state = enabled ? SDL_TRUE : SDL_FALSE;
@@ -519,7 +519,7 @@ class BasicController final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-  auto SendEffect(const void* data, const int size) -> Result
+  auto SendEffect(const void* data, const int size) -> result
   {
     return SDL_GameControllerSendEffect(mController, data, size) == 0;
   }

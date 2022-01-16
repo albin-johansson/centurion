@@ -180,7 +180,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto init_rumble() noexcept -> Result { return SDL_HapticRumbleInit(m_haptic) == 0; }
+  auto init_rumble() noexcept -> result { return SDL_HapticRumbleInit(m_haptic) == 0; }
 
   /**
    * \brief Plays a rumble effect.
@@ -195,7 +195,7 @@ class basic_haptic final {
    * \since 5.2.0
    */
   auto play_rumble(const float strength,
-                   const u32ms duration) noexcept(noexcept(duration.count())) -> Result
+                   const u32ms duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_HapticRumblePlay(m_haptic,
                                 detail::clamp(strength, 0.0f, 1.0f),
@@ -209,7 +209,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto stop_rumble() noexcept -> Result { return SDL_HapticRumbleStop(m_haptic) == 0; }
+  auto stop_rumble() noexcept -> result { return SDL_HapticRumbleStop(m_haptic) == 0; }
 
   /**
    * \brief Indicates whether or not rumble playback is supported.
@@ -238,7 +238,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto pause() noexcept -> Result
+  auto pause() noexcept -> result
   {
     assert(has_feature_pause());
     return SDL_HapticPause(m_haptic) == 0;
@@ -253,7 +253,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto unpause() noexcept -> Result { return SDL_HapticUnpause(m_haptic) == 0; }
+  auto unpause() noexcept -> result { return SDL_HapticUnpause(m_haptic) == 0; }
 
   /**
    * \brief Uploads an effect to the device.
@@ -294,7 +294,7 @@ class basic_haptic final {
    * \since 5.2.0
    */
   template <typename D>
-  auto update(const effect_id id, const haptic_effect<D>& effect) noexcept -> Result
+  auto update(const effect_id id, const haptic_effect<D>& effect) noexcept -> result
   {
     auto internal = effect.get();
     return SDL_HapticUpdateEffect(m_haptic, id, &internal) == 0;
@@ -314,7 +314,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto run(const effect_id id, const uint32 iterations = 1) noexcept -> Result
+  auto run(const effect_id id, const uint32 iterations = 1) noexcept -> result
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }
@@ -328,7 +328,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto stop(const effect_id id) noexcept -> Result
+  auto stop(const effect_id id) noexcept -> result
   {
     return SDL_HapticStopEffect(m_haptic, id) == 0;
   }
@@ -340,7 +340,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto stop_all() noexcept -> Result { return SDL_HapticStopAll(m_haptic) == 0; }
+  auto stop_all() noexcept -> result { return SDL_HapticStopAll(m_haptic) == 0; }
 
   /**
    * \brief Destroys the effect associated with the specified ID.
@@ -369,7 +369,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto set_gain(const int gain) noexcept -> Result
+  auto set_gain(const int gain) noexcept -> result
   {
     assert(has_feature_gain());
     assert(gain >= 0);
@@ -391,7 +391,7 @@ class basic_haptic final {
    *
    * \since 5.2.0
    */
-  auto set_autocenter(const int autocenter) noexcept -> Result
+  auto set_autocenter(const int autocenter) noexcept -> result
   {
     assert(has_feature_autocenter());
     assert(autocenter >= 0);

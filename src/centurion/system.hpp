@@ -224,13 +224,13 @@ class SharedObject final {
   return GetMemoryMB() / 1'000;
 }
 
-inline auto SetClipboard(const char* text) noexcept -> Result
+inline auto SetClipboard(const char* text) noexcept -> result
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
 }
 
-inline auto SetClipboard(const std::string& text) noexcept -> Result
+inline auto SetClipboard(const std::string& text) noexcept -> result
 {
   return SetClipboard(text.c_str());
 }
@@ -249,13 +249,13 @@ inline auto SetClipboard(const std::string& text) noexcept -> Result
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-inline auto OpenURL(const char* url) noexcept -> Result
+inline auto OpenURL(const char* url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
 }
 
-inline auto OpenURL(const std::string& url) noexcept -> Result
+inline auto OpenURL(const std::string& url) noexcept -> result
 {
   return OpenURL(url.c_str());
 }

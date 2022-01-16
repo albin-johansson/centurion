@@ -85,7 +85,7 @@ namespace vk {
 template <typename T>
 auto create_surface(BasicWindow<T>& window,
                     VkInstance instance,
-                    VkSurfaceKHR* outSurface) noexcept -> Result
+                    VkSurfaceKHR* outSurface) noexcept -> result
 {
   assert(window.IsVulkan());
   return SDL_Vulkan_CreateSurface(window.get(), instance, outSurface) == SDL_TRUE;

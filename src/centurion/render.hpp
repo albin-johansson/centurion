@@ -72,7 +72,7 @@ class BasicRenderer final {
   {}
 
   /* Clears the rendering target with the currently active color. */
-  auto Clear() noexcept -> Result { return SDL_RenderClear(get()) == 0; }
+  auto Clear() noexcept -> result { return SDL_RenderClear(get()) == 0; }
 
   /* Clears the rendering target with the specified color, active color is unchanged. */
   void ClearWith(const color& color) noexcept
@@ -99,7 +99,7 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto DrawRect(const BasicRect<U>& rect) noexcept -> Result
+  auto DrawRect(const BasicRect<U>& rect) noexcept -> result
   {
     if constexpr (BasicRect<U>::integral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
@@ -110,7 +110,7 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto FillRect(const BasicRect<U>& rect) noexcept -> Result
+  auto FillRect(const BasicRect<U>& rect) noexcept -> result
   {
     if constexpr (BasicRect<U>::integral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
@@ -121,7 +121,7 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto DrawLine(const BasicPoint<U>& start, const BasicPoint<U>& end) noexcept -> Result
+  auto DrawLine(const BasicPoint<U>& start, const BasicPoint<U>& end) noexcept -> result
   {
     if constexpr (BasicPoint<U>::integral) {
       return SDL_RenderDrawLine(get(), start.GetX(), start.GetY(), end.GetX(), end.GetY()) ==
@@ -134,7 +134,7 @@ class BasicRenderer final {
   }
 
   template <typename Container>
-  auto DrawLines(const Container& container) noexcept -> Result
+  auto DrawLines(const Container& container) noexcept -> result
   {
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
@@ -156,7 +156,7 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto DrawPoint(const BasicPoint<U>& point) noexcept -> Result
+  auto DrawPoint(const BasicPoint<U>& point) noexcept -> result
   {
     if constexpr (BasicPoint<U>::integral) {
       return SDL_RenderDrawPoint(get(), point.GetX(), point.GetY()) == 0;
@@ -222,7 +222,7 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture, const BasicPoint<P>& position) noexcept -> Result
+  auto Render(const BasicTexture<U>& texture, const BasicPoint<P>& position) noexcept -> result
   {
     if constexpr (BasicPoint<P>::floating) {
       const auto size = cast<FArea>(texture.GetSize());
@@ -240,7 +240,7 @@ class BasicRenderer final {
 
   template <typename P, typename U>
   auto Render(const BasicTexture<U>& texture, const BasicRect<P>& destination) noexcept
-      -> Result
+      -> result
   {
     if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
@@ -253,7 +253,7 @@ class BasicRenderer final {
   template <typename P, typename U>
   auto Render(const BasicTexture<U>& texture,
               const Rect& source,
-              const BasicRect<P>& destination) noexcept -> Result
+              const BasicRect<P>& destination) noexcept -> result
   {
     if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
@@ -267,7 +267,7 @@ class BasicRenderer final {
   auto Render(const BasicTexture<U>& texture,
               const Rect& source,
               const BasicRect<P>& destination,
-              const double angle) noexcept -> Result
+              const double angle) noexcept -> result
   {
     if constexpr (BasicRect<P>::floating) {
       return SDL_RenderCopyExF(get(),
@@ -294,7 +294,7 @@ class BasicRenderer final {
               const Rect& source,
               const BasicRect<R>& destination,
               const double angle,
-              const BasicPoint<P>& center) noexcept -> Result
+              const BasicPoint<P>& center) noexcept -> result
   {
     static_assert(
         std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
@@ -327,7 +327,7 @@ class BasicRenderer final {
               const BasicRect<R>& destination,
               const double angle,
               const BasicPoint<P>& center,
-              const SDL_RendererFlip flip) noexcept -> Result
+              const SDL_RendererFlip flip) noexcept -> result
   {
     static_assert(
         std::is_same_v<typename BasicRect<R>::value_type, typename BasicPoint<P>::value_type>,
@@ -379,7 +379,7 @@ class BasicRenderer final {
     return Texture{*this, surface};
   }
 
-  auto SetColor(const color& color) noexcept -> Result
+  auto SetColor(const color& color) noexcept -> result
   {
     return SDL_SetRenderDrawColor(get(),
                                   color.red(),
@@ -388,52 +388,52 @@ class BasicRenderer final {
                                   color.alpha()) == 0;
   }
 
-  auto SetClip(const std::optional<Rect>& area) noexcept -> Result
+  auto SetClip(const std::optional<Rect>& area) noexcept -> result
   {
     return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
   }
 
-  auto SetViewport(const Rect& viewport) noexcept -> Result
+  auto SetViewport(const Rect& viewport) noexcept -> result
   {
     return SDL_RenderSetViewport(get(), viewport.data()) == 0;
   }
 
-  auto SetBlendMode(const BlendMode mode) noexcept -> Result
+  auto SetBlendMode(const BlendMode mode) noexcept -> result
   {
     return SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode)) == 0;
   }
 
   template <typename U>
-  auto SetTarget(BasicTexture<U>& target) noexcept -> Result
+  auto SetTarget(BasicTexture<U>& target) noexcept -> result
   {
     assert(target.IsTarget());
     return SDL_SetRenderTarget(get(), target.get()) == 0;
   }
 
-  auto ResetTarget() noexcept -> Result { return SDL_SetRenderTarget(get(), nullptr) == 0; }
+  auto ResetTarget() noexcept -> result { return SDL_SetRenderTarget(get(), nullptr) == 0; }
 
-  auto SetScale(const float xScale, const float yScale) noexcept -> Result
+  auto SetScale(const float xScale, const float yScale) noexcept -> result
   {
     assert(xScale > 0);
     assert(yScale > 0);
     return SDL_RenderSetScale(get(), xScale, yScale) == 0;
   }
 
-  auto SetLogicalSize(const Area size) noexcept -> Result
+  auto SetLogicalSize(const Area size) noexcept -> result
   {
     assert(size.width >= 0);
     assert(size.height >= 0);
     return SDL_RenderSetLogicalSize(get(), size.width, size.height) == 0;
   }
 
-  auto SetLogicalIntegerScaling(const bool enabled) noexcept -> Result
+  auto SetLogicalIntegerScaling(const bool enabled) noexcept -> result
   {
     return SDL_RenderSetIntegerScale(get(), enabled ? SDL_TRUE : SDL_FALSE) == 0;
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-  auto SetVSync(const bool enabled) noexcept -> Result
+  auto SetVSync(const bool enabled) noexcept -> result
   {
     return SDL_RenderSetVSync(get(), enabled ? 1 : 0) == 0;
   }

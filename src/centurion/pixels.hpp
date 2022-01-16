@@ -110,7 +110,7 @@ class Palette final {
     }
   }
 
-  auto SetColor(const int index, const color& color) noexcept -> Result
+  auto SetColor(const int index, const color& color) noexcept -> result
   {
     assert(index >= 0);
     assert(index < GetSize());

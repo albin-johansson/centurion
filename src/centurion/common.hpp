@@ -236,36 +236,40 @@ class mix_error final : public exception {
  * \see `success`
  * \see `failure`
  */
-class Result final {
+class result final {
  public:
   /**
    * \brief Creates a result.
    *
    * \param success `true` if the result is successful; `false` otherwise.
    */
-  constexpr Result(const bool success) noexcept  // NOLINT implicit
+  constexpr result(const bool success) noexcept  // NOLINT implicit
       : mSuccess{success}
   {}
 
-  /* Indicates whether the result is successful. */
+  /**
+   * \brief Indicates whether the result is a success.
+   *
+   * \return `true` if the result is a success; `false` otherwise.
+   */
   [[nodiscard]] constexpr explicit operator bool() const noexcept { return mSuccess; }
 
  private:
   bool mSuccess{};
 };
 
-[[nodiscard]] constexpr auto operator==(const Result a, const Result b) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const result a, const result b) noexcept -> bool
 {
   return a.operator bool() == b.operator bool();
 }
 
-[[nodiscard]] constexpr auto operator!=(const Result a, const Result b) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const result a, const result b) noexcept -> bool
 {
   return !(a == b);
 }
 
-inline constexpr Result success{true};
-inline constexpr Result failure{false};
+inline constexpr result success{true};
+inline constexpr result failure{false};
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -274,12 +278,12 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-[[nodiscard]] inline auto ToString(const Result result) -> std::string
+[[nodiscard]] inline auto ToString(const result result) -> std::string
 {
   return result ? "success" : "failure";
 }
 
-inline auto operator<<(std::ostream& stream, const Result result) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
 {
   return stream << ToString(result);
 }

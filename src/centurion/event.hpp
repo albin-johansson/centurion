@@ -47,14 +47,14 @@ class Event final {
   /// Updates the event loop, gathering events from the input devices.
   static void Update() noexcept { SDL_PumpEvents(); }
 
-  static auto Push(Event& event) noexcept -> Result
+  static auto Push(Event& event) noexcept -> result
   {
     auto& sdlEvent = event.mEvent;
     return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
   template <typename T>
-  static auto Push(const EventBase<T>& event) noexcept -> Result
+  static auto Push(const EventBase<T>& event) noexcept -> result
   {
     auto sdlEvent = AsSDLEvent(event);
     return SDL_PushEvent(&sdlEvent) >= 0;

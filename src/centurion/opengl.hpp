@@ -117,7 +117,7 @@ class BasicGLContext final {
   }
 
   template <typename U>
-  auto MakeCurrent(BasicWindow<U>& window) -> Result
+  auto MakeCurrent(BasicWindow<U>& window) -> result
   {
     assert(window.IsOpenGL());
     return SDL_GL_MakeCurrent(window.get(), mContext.get()) == 0;
@@ -278,7 +278,7 @@ inline void ResetAttributes() noexcept
   SDL_GL_ResetAttributes();
 }
 
-inline auto Set(const GLAttribute attr, const int value) noexcept -> Result
+inline auto Set(const GLAttribute attr, const int value) noexcept -> result
 {
   return SDL_GL_SetAttribute(static_cast<SDL_GLattr>(attr), value) == 0;
 }
@@ -294,7 +294,7 @@ inline auto Get(const GLAttribute attr) noexcept -> std::optional<int>
   }
 }
 
-inline auto SetSwapInterval(const GLSwapInterval interval) noexcept -> Result
+inline auto SetSwapInterval(const GLSwapInterval interval) noexcept -> result
 {
   return SDL_GL_SetSwapInterval(ToUnderlying(interval)) == 0;
 }
@@ -339,7 +339,7 @@ auto Bind(BasicTexture<T>& texture) noexcept -> std::optional<FArea>
 }
 
 template <typename T>
-auto Unbind(BasicTexture<T>& texture) noexcept -> Result
+auto Unbind(BasicTexture<T>& texture) noexcept -> result
 {
   return SDL_GL_UnbindTexture(texture.get()) == 0;
 }

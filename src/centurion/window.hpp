@@ -127,23 +127,23 @@ class BasicWindow final {
 
   void Center() noexcept { SetPosition({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}); }
 
-  auto UpdateSurface() noexcept -> Result { return SDL_UpdateWindowSurface(mWindow) == 0; }
+  auto UpdateSurface() noexcept -> result { return SDL_UpdateWindowSurface(mWindow) == 0; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-  auto Flash(const FlashOp op = FlashOp::Briefly) noexcept -> Result
+  auto Flash(const FlashOp op = FlashOp::Briefly) noexcept -> result
   {
     return SDL_FlashWindow(mWindow, static_cast<SDL_FlashOperation>(op)) == 0;
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
-  auto SetFullscreen(const bool enabled) noexcept -> Result
+  auto SetFullscreen(const bool enabled) noexcept -> result
   {
     return SDL_SetWindowFullscreen(mWindow, enabled ? Fullscreen : 0) == 0;
   }
 
-  auto SetFullscreenDesktop(const bool enabled) noexcept -> Result
+  auto SetFullscreenDesktop(const bool enabled) noexcept -> result
   {
     return SDL_SetWindowFullscreen(mWindow, enabled ? FullscreenDesktop : 0) == 0;
   }
@@ -168,7 +168,7 @@ class BasicWindow final {
 
   void SetTitle(const std::string& title) noexcept { SetTitle(title.c_str()); }
 
-  auto SetOpacity(const float opacity) noexcept -> Result
+  auto SetOpacity(const float opacity) noexcept -> result
   {
     return SDL_SetWindowOpacity(mWindow, opacity) == 0;
   }
@@ -178,7 +178,7 @@ class BasicWindow final {
     SDL_SetWindowGrab(mWindow, grab ? SDL_TRUE : SDL_FALSE);
   }
 
-  auto SetBrightness(const float brightness) noexcept -> Result
+  auto SetBrightness(const float brightness) noexcept -> result
   {
     return SDL_SetWindowBrightness(mWindow, detail::clamp(brightness, 0.0f, 1.0f)) == 0;
   }
@@ -237,7 +237,7 @@ class BasicWindow final {
     SDL_SetWindowMaximumSize(mWindow, size.width, size.height);
   }
 
-  static auto SetCapturingMouse(const bool capture) noexcept -> Result
+  static auto SetCapturingMouse(const bool capture) noexcept -> result
   {
     return SDL_CaptureMouse(capture ? SDL_TRUE : SDL_FALSE) == 0;
   }

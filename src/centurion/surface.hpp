@@ -146,38 +146,38 @@ class BasicSurface final {
     return FromBMP(file.c_str());
   }
 
-  auto SaveAsBMP(const char* file) const noexcept -> Result
+  auto SaveAsBMP(const char* file) const noexcept -> result
   {
     assert(file);
     return SDL_SaveBMP(get(), file) != -1;
   }
 
-  auto SaveAsBMP(const std::string& file) const noexcept -> Result  // NOLINT
+  auto SaveAsBMP(const std::string& file) const noexcept -> result  // NOLINT
   {
     return SaveAsBMP(file.c_str());
   }
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  auto SaveAsPNG(const char* file) const noexcept -> Result
+  auto SaveAsPNG(const char* file) const noexcept -> result
   {
     assert(file);
     return IMG_SavePNG(get(), file) != -1;
   }
 
-  auto SaveAsPNG(const std::string& file) const noexcept -> Result
+  auto SaveAsPNG(const std::string& file) const noexcept -> result
   {
     return SaveAsPNG(file.c_str());
   }
 
   /* Save as JPG image, the quality parameter is passed on to libjpeg by SDL */
-  auto SaveAsJPG(const char* file, const int quality) const noexcept -> Result
+  auto SaveAsJPG(const char* file, const int quality) const noexcept -> result
   {
     assert(file);
     return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
-  auto SaveAsJPG(const std::string& file, const int quality) const noexcept -> Result
+  auto SaveAsJPG(const std::string& file, const int quality) const noexcept -> result
   {
     return SaveAsJPG(file.c_str(), quality);
   }
@@ -185,7 +185,7 @@ class BasicSurface final {
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Attempts to lock the access to the surface pixel data */
-  auto Lock() noexcept -> Result
+  auto Lock() noexcept -> result
   {
     if (MustLock()) {
       return SDL_LockSurface(mSurface) == 0;
@@ -215,7 +215,7 @@ class BasicSurface final {
   }
 
   /* Configure RLE acceleration hint. */
-  auto SetRLE(const bool enabled) noexcept -> Result
+  auto SetRLE(const bool enabled) noexcept -> result
   {
     return SDL_SetSurfaceRLE(mSurface, enabled ? 1 : 0) == 0;
   }

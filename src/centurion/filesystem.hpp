@@ -84,43 +84,43 @@ class File final {
 
   // clang-format on
 
-  auto WriteByte(const uint8 value) noexcept -> Result
+  auto WriteByte(const uint8 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteU8(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const uint16 value) noexcept -> Result
+  auto WriteNativeAsLittleEndian(const uint16 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteLE16(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const uint32 value) noexcept -> Result
+  auto WriteNativeAsLittleEndian(const uint32 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteLE32(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsLittleEndian(const uint64 value) noexcept -> Result
+  auto WriteNativeAsLittleEndian(const uint64 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteLE64(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const uint16 value) noexcept -> Result
+  auto WriteNativeAsBigEndian(const uint16 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteBE16(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const uint32 value) noexcept -> Result
+  auto WriteNativeAsBigEndian(const uint32 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteBE32(mContext.get(), value) == 1;
   }
 
-  auto WriteNativeAsBigEndian(const uint64 value) noexcept -> Result
+  auto WriteNativeAsBigEndian(const uint64 value) noexcept -> result
   {
     assert(mContext);
     return SDL_WriteBE64(mContext.get(), value) == 1;

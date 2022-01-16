@@ -117,7 +117,7 @@ class BasicJoystick final {
 
   auto Rumble(const uint16 lowFreq,
               const uint16 highFreq,
-              const u32ms duration) noexcept(noexcept(duration.count())) -> Result
+              const u32ms duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_JoystickRumble(mJoystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -126,12 +126,12 @@ class BasicJoystick final {
 
   auto RumbleTriggers(const uint16 left,
                       const uint16 right,
-                      const u32ms duration) noexcept(noexcept(duration.count())) -> Result
+                      const u32ms duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_JoystickRumbleTriggers(mJoystick, left, right, duration.count()) == 0;
   }
 
-  auto SetLED(const color& color) noexcept -> Result
+  auto SetLED(const color& color) noexcept -> result
   {
     return SDL_JoystickSetLED(mJoystick, color.red(), color.green(), color.blue()) == 0;
   }
@@ -151,7 +151,7 @@ class BasicJoystick final {
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
   /* Sends a packet of joystick specific data. */
-  auto SendEffect(const void* data, const int size) -> Result
+  auto SendEffect(const void* data, const int size) -> result
   {
     return SDL_JoystickSendEffect(mJoystick, data, size) == 0;
   }
@@ -177,22 +177,22 @@ class BasicJoystick final {
   }
 
   /* Detaches a virtual joystick. */
-  static auto DetachVirtual(const int index) noexcept -> Result
+  static auto DetachVirtual(const int index) noexcept -> result
   {
     return SDL_JoystickDetachVirtual(index) == 0;
   }
 
-  auto SetVirtualAxis(const int axis, const int16 value) noexcept -> Result
+  auto SetVirtualAxis(const int axis, const int16 value) noexcept -> result
   {
     return SDL_JoystickSetVirtualAxis(mJoystick, axis, value) == 0;
   }
 
-  auto SetVirtualButton(const int button, const ButtonState state) noexcept -> Result
+  auto SetVirtualButton(const int button, const ButtonState state) noexcept -> result
   {
     return SDL_JoystickSetVirtualButton(mJoystick, button, ToUnderlying(state)) == 0;
   }
 
-  auto SetVirtualHat(const int hat, const HatState state) noexcept -> Result
+  auto SetVirtualHat(const int hat, const HatState state) noexcept -> result
   {
     return SDL_JoystickSetVirtualHat(mJoystick, hat, ToUnderlying(state)) == 0;
   }

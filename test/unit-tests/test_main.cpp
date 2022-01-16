@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 #else
   cen::sdl_cfg cfg;
   cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-  const cen::SDL sdl{cfg};
+  const cen::sdl sdl{cfg};
 #endif
 
   const cen::img img;

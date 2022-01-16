@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "core/logging.hpp"
 #include "event.hpp"
 
 using EventDispatcher =
-    cen::EventDispatcher<cen::quit_event, cen::ControllerButtonEvent, cen::WindowEvent>;
+    cen::event_dispatcher<cen::quit_event, cen::ControllerButtonEvent, cen::WindowEvent>;
 
 namespace {
 
@@ -30,28 +30,28 @@ TEST(EventDispatcher, Bind)
   /* Ensure that it is possible to connect free functions, member functions, and
      lambdas as event handlers. */
 
-  cen::Event::FlushAll();
+  cen::event_handler::flush_all();
 
   ButtonHandler handler;
   EventDispatcher dispatcher;
 
-  dispatcher.Bind<cen::quit_event>().To<&OnQuit>();
-  dispatcher.Bind<cen::ControllerButtonEvent>().To<&ButtonHandler::OnEvent>(&handler);
+  dispatcher.bind<cen::quit_event>().to<&OnQuit>();
+  dispatcher.bind<cen::ControllerButtonEvent>().to<&ButtonHandler::OnEvent>(&handler);
 
   bool visitedLambda{};
-  dispatcher.Bind<cen::WindowEvent>().To(
+  dispatcher.bind<cen::WindowEvent>().to(
       [&](const cen::WindowEvent&) { visitedLambda = true; });
 
   cen::WindowEvent windowEvent;
-  ASSERT_TRUE(cen::Event::Push(windowEvent));
+  ASSERT_TRUE(cen::event_handler::push(windowEvent));
 
   cen::quit_event quitEvent;
-  ASSERT_TRUE(cen::Event::Push(quitEvent));
+  ASSERT_TRUE(cen::event_handler::push(quitEvent));
 
   cen::ControllerButtonEvent buttonEvent;
-  ASSERT_TRUE(cen::Event::Push(buttonEvent));
+  ASSERT_TRUE(cen::event_handler::push(buttonEvent));
 
-  dispatcher.Poll();
+  dispatcher.poll();
   ASSERT_TRUE(handler.visited);
   ASSERT_TRUE(gVisitedFreeFunction);
   ASSERT_TRUE(visitedLambda);
@@ -60,56 +60,56 @@ TEST(EventDispatcher, Bind)
 TEST(EventDispatcher, Reset)
 {
   EventDispatcher dispatcher;
-  ASSERT_EQ(0, dispatcher.GetActiveCount());
+  ASSERT_EQ(0, dispatcher.active_count());
 
-  dispatcher.Bind<cen::quit_event>().To([](cen::quit_event) {});
-  dispatcher.Bind<cen::WindowEvent>().To([](cen::WindowEvent) {});
-  dispatcher.Bind<cen::ControllerButtonEvent>().To([](cen::ControllerButtonEvent) {});
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
+  dispatcher.bind<cen::WindowEvent>().to([](cen::WindowEvent) {});
+  dispatcher.bind<cen::ControllerButtonEvent>().to([](cen::ControllerButtonEvent) {});
 
-  ASSERT_EQ(3, dispatcher.GetActiveCount());
+  ASSERT_EQ(3, dispatcher.active_count());
 
-  dispatcher.Reset();
-  ASSERT_EQ(0, dispatcher.GetActiveCount());
+  dispatcher.reset();
+  ASSERT_EQ(0, dispatcher.active_count());
 
-  ASSERT_NO_THROW(dispatcher.Reset());
+  ASSERT_NO_THROW(dispatcher.reset());
 }
 
-TEST(EventDispatcher, GetActiveCount)
+TEST(EventDispatcher, ActiveCount)
 {
   EventDispatcher dispatcher;
-  ASSERT_EQ(0, dispatcher.GetActiveCount());
+  ASSERT_EQ(0, dispatcher.active_count());
 
-  dispatcher.Bind<cen::quit_event>().To([](cen::quit_event) {});
-  ASSERT_EQ(1, dispatcher.GetActiveCount());
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
+  ASSERT_EQ(1, dispatcher.active_count());
 
   // Bind same event to another lambda, should replace the previous handler
-  dispatcher.Bind<cen::quit_event>().To([](cen::quit_event) {});
-  ASSERT_EQ(1, dispatcher.GetActiveCount());
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
+  ASSERT_EQ(1, dispatcher.active_count());
 
-  dispatcher.Bind<cen::WindowEvent>().To([](cen::WindowEvent) {});
-  ASSERT_EQ(2, dispatcher.GetActiveCount());
+  dispatcher.bind<cen::WindowEvent>().to([](cen::WindowEvent) {});
+  ASSERT_EQ(2, dispatcher.active_count());
 }
 
-TEST(EventDispatcher, GetSize)
+TEST(EventDispatcher, Size)
 {
-  cen::EventDispatcher zero;
-  ASSERT_EQ(0, zero.GetSize());
+  cen::event_dispatcher zero;
+  ASSERT_EQ(0, zero.size());
 
-  cen::EventDispatcher<cen::quit_event> one;
-  ASSERT_EQ(1, one.GetSize());
+  cen::event_dispatcher<cen::quit_event> one;
+  ASSERT_EQ(1, one.size());
 
-  cen::EventDispatcher<cen::quit_event, cen::WindowEvent> two;
-  ASSERT_EQ(2, two.GetSize());
+  cen::event_dispatcher<cen::quit_event, cen::WindowEvent> two;
+  ASSERT_EQ(2, two.size());
 }
 
 TEST(EventDispatcher, ToString)
 {
   EventDispatcher dispatcher;
-  cen::log_info_raw(cen::ToString(dispatcher));
+  cen::log_info_raw(cen::to_string(dispatcher));
 }
 
 TEST(EventDispatcher, StreamOperator)
 {
   EventDispatcher dispatcher;
-  std::clog << dispatcher << '\n';
+  std::cout << dispatcher << '\n';
 }

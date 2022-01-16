@@ -27,57 +27,75 @@
 
 namespace cen {
 
-/// The main interface for dealing with events.
-class Event final {
- public:
-  /// Creates an empty event.
-  Event() noexcept = default;
+/// \addtogroup event
+/// \{
 
-  explicit Event(const SDL_Event& event) noexcept : mEvent{event}
+/**
+ * \brief The main interface for dealing with events.
+ */
+class event_handler final {
+ public:
+  /**
+   * \brief Creates an empty event handler.
+   */
+  event_handler() noexcept = default;
+
+  explicit event_handler(const SDL_Event& event) noexcept : mEvent{event}
   {
-    UpdateData(static_cast<EventType>(event.type));
+    update_data(static_cast<EventType>(event.type));
   }
 
   template <typename T>
-  explicit Event(const EventBase<T>& event) noexcept : mEvent{AsSDLEvent(event)}
+  explicit event_handler(const EventBase<T>& event) noexcept : mEvent{AsSDLEvent(event)}
   {
-    UpdateData(event.type());
+    update_data(event.type());
   }
 
-  /// Updates the event loop, gathering events from the input devices.
-  static void Update() noexcept { SDL_PumpEvents(); }
+  /**
+   * \brief Updates the event loop, gathering events from the input devices.
+   *
+   * \note You might not have to call this function by yourself.
+   */
+  static void update() noexcept { SDL_PumpEvents(); }
 
-  static auto Push(Event& event) noexcept -> result
+  static auto push(event_handler& event) noexcept -> result
   {
     auto& sdlEvent = event.mEvent;
     return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
   template <typename T>
-  static auto Push(const EventBase<T>& event) noexcept -> result
+  static auto push(const EventBase<T>& event) noexcept -> result
   {
     auto sdlEvent = AsSDLEvent(event);
     return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
-  /// Flushes all current events from the event queue.
-  static void Flush() noexcept { SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT); }
+  /**
+   * \brief Flushes all current events from the event queue.
+   */
+  static void flush() noexcept { SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT); }
 
-  /// Flushes all of the current and pending events from the event queue.
-  static void FlushAll() noexcept
+  /**
+   * \brief Flushes all of the current events from the event queue, including pending events.
+   */
+  static void flush_all() noexcept
   {
     SDL_PumpEvents();
     SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
   }
 
-  /// Polls the next available event, if there is one.
-  /// \return `true` if there are pending events; `false` otherwise.
-  auto Poll() noexcept -> bool
+  /**
+   * \brief Polls the next available event, if there is one.
+   *
+   * \return `true` if there are any pending events; `false` otherwise.
+   */
+  auto poll() noexcept -> bool
   {
     const bool result = SDL_PollEvent(&mEvent);
 
     if (result) {
-      UpdateData(EventType{mEvent.type});
+      update_data(EventType{mEvent.type});
     }
     else {
       mData.emplace<std::monostate>();
@@ -86,10 +104,77 @@ class Event final {
     return result;
   }
 
-  /// Returns the type of the current event, if there is one.
-  [[nodiscard]] auto GetType() const noexcept -> std::optional<EventType>
+  /**
+   * \brief Indicates whether the currently stored event is of a particular type.
+   *
+   * \tparam T the event type to check for.
+   *
+   * \return `true` if the stored event is of the specified type; `false` otherwise.
+   */
+  template <typename T>
+  [[nodiscard]] auto is() const noexcept -> bool
   {
-    if (IsEmpty()) {
+    return std::holds_alternative<T>(mData);
+  }
+
+  /**
+   * \brief Returns the current event representation.
+   *
+   * \details Use this function if you're certain about the current event type.
+   *
+   * \details An exception is thrown if there is a mismatch between the requested type and the
+   * actual current event type. Use `try_get()` for a non-throwing alternative to this
+   * function.
+   *
+   * \tparam T the type of the event to obtain.
+   *
+   * \return a reference to the internal event type.
+   */
+  template <typename T>
+  [[nodiscard]] auto get() -> T&
+  {
+    return std::get<T>(mData);
+  }
+
+  /// \copydoc get()
+  template <typename T>
+  [[nodiscard]] auto get() const -> const T&
+  {
+    return std::get<T>(mData);
+  }
+
+  /**
+   * \brief Attempts to return the current event representation.
+   *
+   * \details This function returns a null pointer if there is a mismatch between the requested
+   * type and the current event type.
+   *
+   * \tparam T the type of the event to obtain.
+   *
+   * \return a pointer to the internal event type, might be null.
+   */
+  template <typename T>
+  [[nodiscard]] auto try_get() noexcept -> T*
+  {
+    return std::get_if<T>(&mData);
+  }
+
+  /// \copydoc try_get()
+  template <typename T>
+  [[nodiscard]] auto try_get() const noexcept -> const T*
+  {
+    return std::get_if<T>(&mData);
+  }
+
+  /**
+   * \brief Returns the type of the internal event.
+   *
+   * \return the type of the event;
+   *         an empty optional is returned if there is no internal event.
+   */
+  [[nodiscard]] auto type() const noexcept -> std::optional<EventType>
+  {
+    if (empty()) {
       return std::nullopt;
     }
     else {
@@ -97,8 +182,22 @@ class Event final {
     }
   }
 
-  /// Returns the amount of events in the event queue.
-  [[nodiscard]] static auto GetQueueSize() noexcept -> std::optional<int>
+  /**
+   * \brief Indicates whether there is no internal event.
+   *
+   * \return `true` if there is no internal event; `false` otherwise.
+   */
+  [[nodiscard]] auto empty() const noexcept -> bool { return is<std::monostate>(); }
+
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event* { return &mEvent; }
+
+  /**
+   * \brief Returns the current amount of events in the event queue.
+   *
+   * \return the current number of events in the event queue;
+   *         an empty optional is returned if something goes wrong.
+   */
+  [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
     if (num != -1) {
@@ -109,8 +208,15 @@ class Event final {
     }
   }
 
-  /// Returns the amount of events of a particular type in the event queue.
-  [[nodiscard]] static auto GetQueueSize(const EventType type) noexcept -> std::optional<int>
+  /**
+   * \brief Returns the number of events of a particular type that are in the event queue.
+   *
+   * \param type the type of event to count.
+   *
+   * \return the current number of events of the specified type that are in the event queue;
+   *         an empty optional is returned if something goes wrong.
+   */
+  [[nodiscard]] static auto queue_count(const EventType type) noexcept -> std::optional<int>
   {
     const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
@@ -122,63 +228,18 @@ class Event final {
     }
   }
 
-  /// Indicates whether there is an event of a specific type in the event queue.
-  [[nodiscard]] static auto InQueue(const EventType type) noexcept -> bool
+  /**
+   * \brief Indicates whether or not any events of the specified type is in the event queue.
+   *
+   * \param type the event type to look for in the event queue.
+   *
+   * \return `true` if there are events of the specified type in the event queue; `false`
+   * otherwise.
+   */
+  [[nodiscard]] static auto in_queue(const EventType type) noexcept -> bool
   {
-    return GetQueueSize(type) > 0;
+    return queue_count(type) > 0;
   }
-
-  /// Indicates whether the current event is of a particular type.
-  template <typename T>
-  [[nodiscard]] auto Is() const noexcept -> bool
-  {
-    return std::holds_alternative<T>(mData);
-  }
-
-  /// Returns the current event representation.
-  ///
-  /// Use this function if you're certain about the current event type.
-  ///
-  /// An exception is thrown if there is a mismatch between the requested type and the actual
-  /// current event type. Use `TryGet()` for a non-throwing alternative to this function.
-  ///
-  /// \tparam T the type of the event to obtain.
-  template <typename T>
-  [[nodiscard]] auto Get() -> T&
-  {
-    return std::get<T>(mData);
-  }
-
-  /// \copydoc Get()
-  template <typename T>
-  [[nodiscard]] auto Get() const -> const T&
-  {
-    return std::get<T>(mData);
-  }
-
-  /// Attempts to return the current event representation.
-  ///
-  /// This function returns a null pointer if there is a mismatch between the requested type
-  /// and the current event type.
-  ///
-  /// \tparam T the type of the event to obtain.
-  template <typename T>
-  [[nodiscard]] auto TryGet() noexcept -> T*
-  {
-    return std::get_if<T>(&mData);
-  }
-
-  /// \copydoc TryGet()
-  template <typename T>
-  [[nodiscard]] auto TryGet() const noexcept -> const T*
-  {
-    return std::get_if<T>(&mData);
-  }
-
-  /// Indicates whether there is no current event stored in the handler.
-  [[nodiscard]] auto IsEmpty() const noexcept -> bool { return Is<std::monostate>(); }
-
-  [[nodiscard]] auto data() const noexcept -> const SDL_Event* { return &mEvent; }
 
  private:
   /* Behold, the beast! */
@@ -217,7 +278,7 @@ class Event final {
   SDL_Event mEvent{};
   data_type mData{};
 
-  void UpdateData(const EventType type) noexcept
+  void update_data(const EventType type) noexcept
   {
     switch (type) {
       case EventType::Quit:
@@ -375,20 +436,29 @@ class Event final {
   }
 };
 
-/// Manages a subscription to an event.
+/**
+ * \brief Manages a subscription to an event.
+ *
+ * \details This class is used in the interface of `event_dispatcher`, and isn't meant to be
+ * used directly in client code.
+ *
+ * \tparam E the event type.
+ *
+ * \see `event_dispatcher`
+ */
 template <typename E>
-class EventSink final {
+class event_sink final {
  public:
   using event_type = std::decay_t<E>;              ///< Associated event type.
   using signature_type = void(const event_type&);  ///< Signature of handler.
   using function_type = std::function<signature_type>;
 
   /// Resets the event sink, removing any associated handler.
-  void Reset() noexcept { mFunction = nullptr; }
+  void reset() noexcept { mFunction = nullptr; }
 
   /// Connects to a function object.
   template <typename T>
-  void To(T&& callable)
+  void to(T&& callable)
   {
     static_assert(std::is_invocable_v<T, const event_type&>,
                   "Callable must be invocable with subscribed event!");
@@ -398,65 +468,68 @@ class EventSink final {
 
   /// Connects to a member function.
   template <auto MemberFunc, typename Self>
-  void To(Self* self)
+  void to(Self* self)
   {
     static_assert(std::is_member_function_pointer_v<decltype(MemberFunc)>);
     static_assert(std::is_invocable_v<decltype(MemberFunc), Self*, const event_type&>,
                   "Member function must be invocable with subscribed event!");
 
-    To(std::bind(MemberFunc, self, std::placeholders::_1));
+    to(std::bind(MemberFunc, self, std::placeholders::_1));
   }
 
   /// Connects to a free function.
   template <auto Function>
-  void To()
+  void to()
   {
-    To(Function);
+    to(Function);
   }
 
-  [[nodiscard]] auto GetFunction() -> function_type& { return mFunction; }
-  [[nodiscard]] auto GetFunction() const -> const function_type& { return mFunction; }
+  [[nodiscard]] auto function() -> function_type& { return mFunction; }
+
+  [[nodiscard]] auto function() const -> const function_type& { return mFunction; }
 
  private:
   function_type mFunction;
 };
 
-/// An event dispatcher, implemented as wrapper of an `Event` instance.
-///
-/// This class is an attempt to simplify handling events in applications, usually you'd check
-/// for all of the events that you'd be interested in using `cen::Event::TryGet()` in a long
-/// `if-else if` statement. By using this class, it's possible to automatically generate
-/// equivalent checks by specifying the events that you want to subscribe to, and subsequently
-/// connect lambdas, free functions or member functions to handle the subscribed events. This
-/// can often lead to cleaner looking code, since the manual checks will be replaced by a
-/// single call to `EventDispatcher::Poll()`.
-///
-/// The runtime overhead of using this class compared to typical manual event dispatching is
-/// minimal. However, the function objects for the subscribed events are stored internally, so
-/// they can take up a bit of space. It might be beneficial to allocate instances of this class
-/// on the heap, depending on the amount of subscribed events.
-///
-/// The signature of all event handlers should be `void(const Event&)`, where `Event` is the
-/// subscribed event type.
-///
-/// Note, it is advisable to always typedef the signature of this class with the events that
-/// you want to handle, since the class name quickly grows in size.
-///
-/// \tparam Events the list of events to "subscribe" to, all other events are ignored.
+/**
+ * \brief An event dispatcher, implemented as wrapper around an `event` instance.
+ *
+ * \details This class is an attempt to simplify handling events in applications, usually you'd
+ * check for all of the events that you'd be interested in using `event::try_get()` in a
+ * long `if-else if` statement. By using this class, it's possible to automatically generate
+ * equivalent checks by specifying the events that you want to subscribe to, and subsequently
+ * connect lambdas, free functions or member functions to handle the subscribed events. This
+ * can often lead to cleaner looking code, since the manual checks will be replaced by a
+ * single call to `poll()`.
+ *
+ * \details The runtime overhead of using this class compared to typical manual event
+ * dispatching is minimal. However, the function objects for the subscribed events are stored
+ * internally, so they can take up a bit of space. It might be beneficial to allocate instances
+ * of this class on the heap, depending on the amount of subscribed events.
+ *
+ * \details The signature of all event handlers should be `void(const Event&)`, where `Event`
+ * is the subscribed event type.
+ *
+ * \note It is advisable to always typedef the signature of this class with the events that you
+ * want to handle, since the class name quickly grows in size.
+ *
+ * \tparam Events the list of events to "subscribe" to, all other events are ignored.
+ */
 template <typename... Events>
-class EventDispatcher final {
+class event_dispatcher final {
   static_assert((!std::is_const_v<Events> && ...));
   static_assert((!std::is_volatile_v<Events> && ...));
   static_assert((!std::is_reference_v<Events> && ...));
   static_assert((!std::is_pointer_v<Events> && ...));
 
-  using sink_tuple = std::tuple<EventSink<Events>...>;
+  using sink_tuple = std::tuple<event_sink<Events>...>;
 
   /// Returns the index of an event type in the function tuple.
   template <typename Event>
-  [[nodiscard]] constexpr static auto IndexOf() -> std::size_t
+  [[nodiscard]] constexpr static auto index_of() -> std::size_t
   {
-    using sink_type = EventSink<std::decay_t<Event>>;
+    using sink_type = event_sink<std::decay_t<Event>>;
 
     constexpr auto index = detail::tuple_type_index_v<sink_type, sink_tuple>;
     static_assert(index != -1, "Invalid event type!");
@@ -465,25 +538,25 @@ class EventDispatcher final {
   }
 
   template <typename Event>
-  [[nodiscard]] auto GetSink() -> EventSink<Event>&
+  [[nodiscard]] auto get_sink() -> event_sink<Event>&
   {
-    constexpr auto index = IndexOf<Event>();
+    constexpr auto index = index_of<Event>();
     return std::get<index>(mSinks);
   }
 
   template <typename Event>
-  [[nodiscard]] auto GetSink() const -> const EventSink<Event>&
+  [[nodiscard]] auto get_sink() const -> const event_sink<Event>&
   {
-    constexpr auto index = IndexOf<Event>();
+    constexpr auto index = index_of<Event>();
     return std::get<index>(mSinks);
   }
 
   /// Checks for the specified event type in the event handler, returns true upon a match.
   template <typename Event>
-  auto CheckFor() -> bool
+  auto check_for() -> bool
   {
-    if (const auto* event = mEvent.template TryGet<Event>()) {
-      auto& function = GetSink<Event>().GetFunction();
+    if (const auto* event = mEvent.template try_get<Event>()) {
+      auto& function = get_sink<Event>().function();
 
       if (function) {
         function(*event);
@@ -497,62 +570,88 @@ class EventDispatcher final {
   }
 
  public:
-  /// Polls all events, checking for subscribed events.
-  void Poll()
+  /**
+   * \brief Polls all events, checking for subscribed events.
+   */
+  void poll()
   {
-    while (mEvent.Poll()) {
-      (CheckFor<Events>() || ...); /* Use OR to exploit short-circuiting */
+    while (mEvent.poll()) {
+      (check_for<Events>() || ...); /* Use OR to exploit short-circuiting */
     }
   }
 
-  /// Returns the event sink associated with the specified event.
+  /**
+   * \brief Returns the event sink associated with the specified event.
+   *
+   * \tparam Event the subscribed event to obtain the event sink for.
+   *
+   * \return an event sink.
+   */
   template <typename Event>
-  auto Bind() -> EventSink<Event>&
+  auto bind() -> event_sink<Event>&
   {
     static_assert((std::is_same_v<std::decay_t<Event>, Events> || ...),
                   "Cannot connect unsubscribed event! Make sure that the "
                   "event is provided as a class template parameter.");
-    return GetSink<Event>();
+    return get_sink<Event>();
   }
 
-  /// Removes all set handlers from all the subscribed events.
-  void Reset() noexcept { (Bind<Events>().Reset(), ...); }
+  /**
+   * \brief Removes all set handlers from all the subscribed events.
+   */
+  void reset() noexcept { (bind<Events>().reset(), ...); }
 
-  /// Returns the amount of set event handlers.
-  [[nodiscard]] auto GetActiveCount() const -> std::size_t
+  /**
+   * \brief Returns the amount of set event handlers.
+   *
+   * \return the amount of event handlers.
+   */
+  [[nodiscard]] auto active_count() const -> std::size_t
   {
-    return (0u + ... + (GetSink<Events>().GetFunction() ? 1u : 0u));
+    return (0u + ... + (get_sink<Events>().function() ? 1u : 0u));
   }
 
-  /// Returns the number of subscribed events.
-  [[nodiscard]] constexpr static auto GetSize() noexcept -> std::size_t
+  /**
+   * \brief Returns the total number of subscribed events.
+   *
+   * \return the amount of subscribed events.
+   */
+  [[nodiscard]] constexpr static auto size() noexcept -> std::size_t
   {
     return sizeof...(Events);
   }
 
  private:
-  cen::Event mEvent;
+  cen::event_handler mEvent;
   sink_tuple mSinks;
 };
 
+/// \name Event dispatcher functions
+/// \{
+
 template <typename... E>
-[[nodiscard]] auto ToString(const EventDispatcher<E...>& dispatcher) -> std::string
+[[nodiscard]] auto to_string(const event_dispatcher<E...>& dispatcher) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("EventDispatcher(size: {}, #active: {})",
-                     dispatcher.GetSize(),
-                     dispatcher.GetActiveCount());
+  return std::format("event_dispatcher(size: {}, #active: {})",
+                     dispatcher.size(),
+                     dispatcher.active_count());
 #else
-  return "EventDispatcher(size: " + std::to_string(dispatcher.GetSize()) +
-         ", #active: " + std::to_string(dispatcher.GetActiveCount()) + ")";
+  return "event_dispatcher(size: " + std::to_string(dispatcher.size()) +
+         ", #active: " + std::to_string(dispatcher.active_count()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename... E>
-auto operator<<(std::ostream& stream, const EventDispatcher<E...>& dispatcher) -> std::ostream&
+auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispatcher)
+    -> std::ostream&
 {
-  return stream << ToString(dispatcher);
+  return stream << to_string(dispatcher);
 }
+
+/// \} End of event dispatcher functions
+
+/// \} End of group event
 
 }  // namespace cen
 

@@ -3,7 +3,7 @@
 
 namespace {
 
-using event_dispatcher = cen::EventDispatcher<cen::quit_event, cen::KeyboardEvent>;
+using event_dispatcher = cen::event_dispatcher<cen::quit_event, cen::KeyboardEvent>;
 
 constexpr cen::iarea window_size = cen::Window::GetDefaultSize();
 
@@ -26,8 +26,8 @@ class music_example final {
       , mSong{RESOURCE_DIR "hiddenPond.mp3"}
       , mClick{RESOURCE_DIR "click.wav"}
   {
-    mDispatcher.Bind<cen::quit_event>().To<&music_example::on_quit_event>(this);
-    mDispatcher.Bind<cen::KeyboardEvent>().To<&music_example::on_keyboard_event>(this);
+    mDispatcher.bind<cen::quit_event>().to<&music_example::on_quit_event>(this);
+    mDispatcher.bind<cen::KeyboardEvent>().to<&music_example::on_keyboard_event>(this);
 
     load_messages();
   }
@@ -37,7 +37,7 @@ class music_example final {
     mWindow.Show();
 
     while (m_running) {
-      mDispatcher.Poll();
+      mDispatcher.poll();
       render();
     }
 

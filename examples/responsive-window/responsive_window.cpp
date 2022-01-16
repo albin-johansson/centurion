@@ -14,13 +14,13 @@ int main(int, char**)
   /* Make sure our window is visible */
   window.Show();
 
-  cen::Event event;
+  cen::event_handler event;
   bool running = true;
 
   while (running) {
-    while (event.Poll()) {
+    while (event.poll()) {
       /* Check if the user wants to quit the application */
-      if (event.Is<cen::quit_event>()) {
+      if (event.is<cen::quit_event>()) {
         running = false;
         break;
       }

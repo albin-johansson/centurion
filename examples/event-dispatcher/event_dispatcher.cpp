@@ -3,10 +3,10 @@
 namespace {
 
 // Here we specify that we want to subscribe to four different kinds of events
-using event_dispatcher = cen::EventDispatcher<cen::quit_event,
-                                              cen::WindowEvent,
-                                              cen::KeyboardEvent,
-                                              cen::MouseButtonEvent>;
+using event_dispatcher = cen::event_dispatcher<cen::quit_event,
+                                               cen::WindowEvent,
+                                               cen::KeyboardEvent,
+                                               cen::MouseButtonEvent>;
 
 void on_mouse_button_event(const cen::MouseButtonEvent& event)
 {
@@ -18,15 +18,15 @@ class Game final {
   Game()
   {
     // Member function handlers
-    m_dispatcher.Bind<cen::quit_event>().To<&Game::on_quit_event>(this);
-    m_dispatcher.Bind<cen::WindowEvent>().To<&Game::on_window_event>(this);
+    m_dispatcher.bind<cen::quit_event>().to<&Game::on_quit_event>(this);
+    m_dispatcher.bind<cen::WindowEvent>().to<&Game::on_window_event>(this);
 
     // Lambda handler
-    m_dispatcher.Bind<cen::KeyboardEvent>().To(
+    m_dispatcher.bind<cen::KeyboardEvent>().to(
         [](const cen::KeyboardEvent& event) { cen::log_info("keyboard_event"); });
 
     // Free function handler
-    m_dispatcher.Bind<cen::MouseButtonEvent>().To<&on_mouse_button_event>();
+    m_dispatcher.bind<cen::MouseButtonEvent>().to<&on_mouse_button_event>();
   }
 
   auto run() -> int
@@ -35,7 +35,7 @@ class Game final {
 
     while (m_running) {
       // All we need to do each frame to handle events is to poll the event dispatcher
-      m_dispatcher.Poll();
+      m_dispatcher.poll();
 
       // Game logic goes here...
     }

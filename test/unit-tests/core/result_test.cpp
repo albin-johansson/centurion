@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 
@@ -20,6 +20,6 @@ TEST(Result, Values)
 
 TEST(Result, ToString)
 {
-  std::clog << "result (success): \"" << cen::success << "\"\n";
-  std::clog << "result (failure): \"" << cen::failure << "\"\n";
+  std::cout << "result (success): '" << cen::success << "'\n";
+  std::cout << "result (failure): '" << cen::failure << "'\n";
 }

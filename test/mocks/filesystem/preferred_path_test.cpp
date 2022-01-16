@@ -20,6 +20,6 @@ class PreferredPathTest : public testing::Test {
 
 TEST_F(PreferredPathTest, FunctionCall)
 {
-  const auto path [[maybe_unused]] = cen::GetPreferredPath("centurion", "tests");
+  const auto path [[maybe_unused]] = cen::preferred_path("centurion", "tests");
   ASSERT_EQ(1u, SDL_GetPrefPath_fake.call_count);
 }

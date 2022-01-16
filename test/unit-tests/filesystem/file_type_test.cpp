@@ -1,16 +1,28 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "filesystem.hpp"
 
 TEST(FileType, Values)
 {
-  ASSERT_EQ(SDL_RWOPS_UNKNOWN, cen::to_underlying(cen::FileType::Unknown));
-  ASSERT_EQ(SDL_RWOPS_WINFILE, cen::to_underlying(cen::FileType::Win));
-  ASSERT_EQ(SDL_RWOPS_STDFILE, cen::to_underlying(cen::FileType::Std));
-  ASSERT_EQ(SDL_RWOPS_JNIFILE, cen::to_underlying(cen::FileType::Jni));
-  ASSERT_EQ(SDL_RWOPS_MEMORY, cen::to_underlying(cen::FileType::Memory));
-  ASSERT_EQ(SDL_RWOPS_MEMORY_RO, cen::to_underlying(cen::FileType::MemoryReadOnly));
+  ASSERT_EQ(SDL_RWOPS_UNKNOWN, to_underlying(cen::file_type::unknown));
+  ASSERT_EQ(SDL_RWOPS_WINFILE, to_underlying(cen::file_type::win));
+  ASSERT_EQ(SDL_RWOPS_STDFILE, to_underlying(cen::file_type::std));
+  ASSERT_EQ(SDL_RWOPS_JNIFILE, to_underlying(cen::file_type::jni));
+  ASSERT_EQ(SDL_RWOPS_MEMORY, to_underlying(cen::file_type::memory));
+  ASSERT_EQ(SDL_RWOPS_MEMORY_RO, to_underlying(cen::file_type::memory_ro));
+}
+
+TEST(FileType, ToString)
+{
+  ASSERT_EQ("unknown", to_string(cen::file_type::unknown));
+  ASSERT_EQ("win", to_string(cen::file_type::win));
+  ASSERT_EQ("std", to_string(cen::file_type::std));
+  ASSERT_EQ("jni", to_string(cen::file_type::jni));
+  ASSERT_EQ("memory", to_string(cen::file_type::memory));
+  ASSERT_EQ("memory_ro", to_string(cen::file_type::memory_ro));
+
+  std::cout << "file_type::std == " << cen::file_type::std << '\n';
 }

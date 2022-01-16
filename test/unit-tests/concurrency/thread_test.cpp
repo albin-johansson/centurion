@@ -145,20 +145,20 @@ TEST(Thread, Init)
 {
   {  // No arguments
     auto thread = cen::thread::init([] {});
-    ASSERT_TRUE(thread.is_joinable());
+    ASSERT_TRUE(thread.joinable());
     ASSERT_EQ(0, thread.join());
   }
 
   {  // No arguments but returns integer
     auto thread = cen::thread::init([] { return 42; });
-    ASSERT_TRUE(thread.is_joinable());
+    ASSERT_TRUE(thread.joinable());
     ASSERT_EQ(42, thread.join());
   }
 
   {  // With user data
     int i = 123;
     auto thread = cen::thread::init([](int* data) { return *data; }, &i);
-    ASSERT_TRUE(thread.is_joinable());
+    ASSERT_TRUE(thread.joinable());
     ASSERT_EQ(123, thread.join());
   }
 }

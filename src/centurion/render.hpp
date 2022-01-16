@@ -35,8 +35,8 @@ namespace cen {
 template <typename T>
 class BasicRenderer;
 
-using Renderer = BasicRenderer<detail::OwnerTag>;
-using RendererHandle = BasicRenderer<detail::HandleTag>;
+using Renderer = BasicRenderer<detail::owner_tag>;
+using RendererHandle = BasicRenderer<detail::handle_tag>;
 
 template <typename T>
 class BasicRenderer final {
@@ -58,7 +58,7 @@ class BasicRenderer final {
     }
   }
 
-  template <typename Window, typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename Window, typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicRenderer(const Window& window, const uint32 flags = GetDefaultFlags())
       : mRenderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
@@ -67,7 +67,7 @@ class BasicRenderer final {
     }
   }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicRenderer(const Renderer& owner) noexcept : mRenderer{owner.get()}
   {}
 
@@ -521,14 +521,14 @@ class BasicRenderer final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer* { return mRenderer.get(); }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mRenderer != nullptr;
   }
 
  private:
-  detail::Pointer<T, SDL_Renderer> mRenderer;
+  detail::pointer<T, SDL_Renderer> mRenderer;
 };
 
 class RendererInfo final {

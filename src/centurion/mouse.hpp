@@ -8,9 +8,9 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "surface.hpp"
 
@@ -151,13 +151,13 @@ class Mouse final {
 template <typename T>
 class BasicCursor;
 
-using Cursor = BasicCursor<detail::OwnerTag>;
-using CursorHandle = BasicCursor<detail::HandleTag>;
+using Cursor = BasicCursor<detail::owner_tag>;
+using CursorHandle = BasicCursor<detail::handle_tag>;
 
 template <typename T>
 class BasicCursor final {
  public:
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicCursor(const SystemCursor cursor)
       : mCursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
@@ -166,7 +166,7 @@ class BasicCursor final {
     }
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicCursor(const Surface& surface, const Point& hotspot)
       : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.GetX(), hotspot.GetY())}
   {
@@ -175,11 +175,11 @@ class BasicCursor final {
     }
   }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicCursor(SDL_Cursor* cursor) noexcept : mCursor{cursor}
   {}
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicCursor(const Cursor& owner) noexcept : mCursor{owner.get()}
   {}
 
@@ -220,14 +220,14 @@ class BasicCursor final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return mCursor.get(); }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mCursor != nullptr;
   }
 
  private:
-  detail::Pointer<T, SDL_Cursor> mCursor;
+  detail::pointer<T, SDL_Cursor> mCursor;
 };
 
 [[nodiscard]] inline auto ToString(const Mouse& mouse) -> std::string

@@ -48,11 +48,11 @@ class basic_sensor;
 
 /// \brief Represents an owning sensor device.
 /// \since 5.2.0
-using sensor = basic_sensor<detail::OwnerTag>;
+using sensor = basic_sensor<detail::owner_tag>;
 
 /// \brief Represents a non-owning sensor device.
 /// \since 5.2.0
-using sensor_handle = basic_sensor<detail::HandleTag>;
+using sensor_handle = basic_sensor<detail::handle_tag>;
 
 /**
  * \brief Represents a sensor device.
@@ -101,7 +101,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor) {
@@ -116,7 +116,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit basic_sensor(const sensor& owner) noexcept : m_sensor{owner.get()}
   {}
 
@@ -337,7 +337,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_sensor != nullptr;
@@ -346,7 +346,7 @@ class basic_sensor final {
   /// \} End of conversions
 
  private:
-  detail::Pointer<T, SDL_Sensor> m_sensor;
+  detail::pointer<T, SDL_Sensor> m_sensor;
 };
 
 /// \name String conversions

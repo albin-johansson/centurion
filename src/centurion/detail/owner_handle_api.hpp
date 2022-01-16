@@ -12,33 +12,33 @@
 
 namespace cen::detail {
 
-using OwnerTag = std::true_type;
-using HandleTag = std::false_type;
+using owner_tag = std::true_type;
+using handle_tag = std::false_type;
 
 template <typename T>
-inline constexpr bool is_owner = std::is_same_v<T, OwnerTag>;
+inline constexpr bool is_owner = std::is_same_v<T, owner_tag>;
 
 template <typename T>
-inline constexpr bool is_handle = std::is_same_v<T, HandleTag>;
+inline constexpr bool is_handle = std::is_same_v<T, handle_tag>;
 
 template <typename T>
-using EnableOwner = std::enable_if_t<is_owner<T>, int>;
+using enable_for_owner = std::enable_if_t<is_owner<T>, int>;
 
 template <typename T>
-using EnableHandle = std::enable_if_t<is_handle<T>, int>;
+using enable_for_handle = std::enable_if_t<is_handle<T>, int>;
 
 template <typename B, typename Type>
-class Pointer final {
+class pointer final {
  public:
-  using ManagedPtr = Managed<Type>;
-  using RawPtr = Type*;
-  using PointerType = std::conditional_t<B::value, ManagedPtr, RawPtr>;
+  using managed_ptr = Managed<Type>;
+  using raw_ptr = Type*;
+  using pointer_type = std::conditional_t<B::value, managed_ptr, raw_ptr>;
 
-  Pointer() noexcept = default;
+  pointer() noexcept = default;
 
-  explicit Pointer(Type* ptr) noexcept : mPtr{ptr} {}
+  explicit pointer(Type* ptr) noexcept : mPtr{ptr} {}
 
-  template <typename BB = B, EnableOwner<BB> = 0>
+  template <typename BB = B, enable_for_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     mPtr.reset(ptr);
@@ -64,7 +64,7 @@ class Pointer final {
 
   /*implicit*/ operator Type*() const noexcept { return get(); }
 
-  template <typename BB = B, EnableOwner<BB> = 0>
+  template <typename BB = B, enable_for_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return mPtr.release();
@@ -81,7 +81,7 @@ class Pointer final {
   }
 
  private:
-  PointerType mPtr{};
+  pointer_type mPtr{};
 };
 
 }  // namespace cen::detail

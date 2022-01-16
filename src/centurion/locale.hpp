@@ -66,7 +66,7 @@ class Locale final {
   explicit operator bool() const noexcept { return mLocales != nullptr; }
 
  private:
-  std::unique_ptr<SDL_Locale, detail::SDLDeleter> mLocales;
+  std::unique_ptr<SDL_Locale, detail::sdl_deleter> mLocales;
 
   explicit Locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
 };

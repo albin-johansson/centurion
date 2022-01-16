@@ -11,10 +11,10 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "features.hpp"
-#include "memory.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
+#include "memory.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -153,8 +153,8 @@ class Palette final {
 template <typename B>
 class BasicPixelFormatInfo;
 
-using PixelFormatInfo = BasicPixelFormatInfo<detail::OwnerTag>;
-using PixelFormatInfoHandle = BasicPixelFormatInfo<detail::HandleTag>;
+using PixelFormatInfo = BasicPixelFormatInfo<detail::owner_tag>;
+using PixelFormatInfoHandle = BasicPixelFormatInfo<detail::handle_tag>;
 
 template <typename B>
 class BasicPixelFormatInfo final {
@@ -173,7 +173,7 @@ class BasicPixelFormatInfo final {
 
   // clang-format on
 
-  template <typename BB = B, detail::EnableOwner<BB> = 0>
+  template <typename BB = B, detail::enable_for_owner<BB> = 0>
   explicit BasicPixelFormatInfo(const PixelFormat format)
       : mFormat{SDL_AllocFormat(ToUnderlying(format))}
   {
@@ -182,7 +182,7 @@ class BasicPixelFormatInfo final {
     }
   }
 
-  template <typename BB = B, detail::EnableHandle<BB> = 0>
+  template <typename BB = B, detail::enable_for_handle<BB> = 0>
   explicit BasicPixelFormatInfo(const PixelFormatInfo& info) noexcept : mFormat{info.get()}
   {}
 
@@ -229,14 +229,14 @@ class BasicPixelFormatInfo final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat* { return mFormat.get(); }
 
-  template <typename BB = B, detail::EnableHandle<BB> = 0>
+  template <typename BB = B, detail::enable_for_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return mFormat;
   }
 
  private:
-  detail::Pointer<B, SDL_PixelFormat> mFormat;
+  detail::pointer<B, SDL_PixelFormat> mFormat;
 };
 
 [[nodiscard]] constexpr auto ToString(const PixelFormat format) -> std::string_view

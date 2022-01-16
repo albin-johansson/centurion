@@ -3,21 +3,21 @@
 
 #include <SDL.h>
 
-#include <optional>     // optional
-#include <utility>      // move
-#include <variant>      // variant, holds_alternative, monostate, get, get_if
 #include <array>        // array
 #include <cstddef>      // size_t
 #include <functional>   // function, bind
+#include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
+#include <utility>      // move
+#include <variant>      // variant, holds_alternative, monostate, get, get_if
 
 #include "common.hpp"
+#include "detail/tuple_type_index.hpp"
 #include "events.hpp"
 #include "features.hpp"
-#include "detail/tuple_type_index.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

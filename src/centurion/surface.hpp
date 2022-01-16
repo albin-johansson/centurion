@@ -5,9 +5,9 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "pixels.hpp"
 #include "video.hpp"
@@ -35,8 +35,8 @@ namespace cen {
 template <typename T>
 class BasicSurface;
 
-using Surface = BasicSurface<detail::OwnerTag>;
-using SurfaceHandle = BasicSurface<detail::HandleTag>;
+using Surface = BasicSurface<detail::owner_tag>;
+using SurfaceHandle = BasicSurface<detail::handle_tag>;
 
 template <typename T>
 class BasicSurface final {
@@ -55,7 +55,7 @@ class BasicSurface final {
 #ifndef CENTURION_NO_SDL_IMAGE
 
   /* Creates a surface based on the image at the specified file path */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicSurface(const char* file) : mSurface{IMG_Load(file)}
   {
     if (!mSurface) {
@@ -63,14 +63,14 @@ class BasicSurface final {
     }
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicSurface(const std::string& file) : BasicSurface{file.c_str()}
   {}
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Creates a blank surface with the specified size and format */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicSurface(const Area& size, const PixelFormat format)
       : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
                                                 size.width,
@@ -112,7 +112,7 @@ class BasicSurface final {
   auto operator=(BasicSurface&& other) noexcept -> BasicSurface& = default;
 
   /* Creates a blank surface with the specified blend mode and pixel format */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const char* file,
                                        const BlendMode mode,
                                        const PixelFormat format) -> BasicSurface
@@ -125,7 +125,7 @@ class BasicSurface final {
     return source.ConvertTo(format);
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto WithFormat(const std::string& file,
                                        const BlendMode mode,
                                        const PixelFormat format) -> BasicSurface
@@ -133,14 +133,14 @@ class BasicSurface final {
     return WithFormat(file.c_str(), mode, format);
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto FromBMP(const char* file) -> BasicSurface
   {
     assert(file);
     return BasicSurface{SDL_LoadBMP(file)};
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto FromBMP(const std::string& file) -> BasicSurface
   {
     return FromBMP(file.c_str());
@@ -292,7 +292,7 @@ class BasicSurface final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mSurface != nullptr;
@@ -301,7 +301,7 @@ class BasicSurface final {
   [[nodiscard]] auto get() const noexcept -> SDL_Surface* { return mSurface.get(); }
 
  private:
-  detail::Pointer<T, SDL_Surface> mSurface;
+  detail::pointer<T, SDL_Surface> mSurface;
 
   void Copy(const BasicSurface& other) { mSurface.reset(other.DuplicateSurface()); }
 

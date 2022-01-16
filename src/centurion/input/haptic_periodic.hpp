@@ -129,10 +129,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic> {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto magnitude() const noexcept -> int16
-  {
-    return representation().magnitude;
-  }
+  [[nodiscard]] auto magnitude() const noexcept -> int16 { return representation().magnitude; }
 
   /**
    * \brief Returns the current mean value of the wave.

@@ -15,9 +15,9 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "surface.hpp"
 #include "video.hpp"
@@ -49,8 +49,8 @@ enum class ScaleMode {
 template <typename T>
 class BasicTexture;
 
-using Texture = BasicTexture<detail::OwnerTag>;
-using TextureHandle = BasicTexture<detail::HandleTag>;
+using Texture = BasicTexture<detail::owner_tag>;
+using TextureHandle = BasicTexture<detail::handle_tag>;
 
 template <typename T>
 class BasicTexture final {
@@ -65,14 +65,14 @@ class BasicTexture final {
     }
   }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicTexture(Texture& owner) noexcept : mTexture{owner.get()}
   {}
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
   /* Creates a texture based the image at the specified path. */
-  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicTexture(const Renderer& renderer, const char* path)
       : mTexture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -81,7 +81,7 @@ class BasicTexture final {
     }
   }
 
-  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicTexture(const Renderer& renderer, const std::string& path)
       : BasicTexture{renderer, path.c_str()}
   {}
@@ -89,7 +89,7 @@ class BasicTexture final {
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Creates a texture that is a copy of the supplied surface. */
-  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicTexture(const Renderer& renderer, const Surface& surface)
       : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -99,7 +99,7 @@ class BasicTexture final {
   }
 
   /* Creates a texture with the specified size, format, and access. */
-  template <typename Renderer, typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicTexture(const Renderer& renderer,
                const PixelFormat format,
                const TextureAccess access,
@@ -220,7 +220,7 @@ class BasicTexture final {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /* Releases ownership of the associated SDL texture and returns a pointer to it. */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] auto release() noexcept -> Owner<SDL_Texture*>
   {
     return mTexture.release();
@@ -228,14 +228,14 @@ class BasicTexture final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_Texture* { return mTexture.get(); }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mTexture != nullptr;
   }
 
  private:
-  detail::Pointer<T, SDL_Texture> mTexture;
+  detail::pointer<T, SDL_Texture> mTexture;
 };
 
 [[nodiscard]] constexpr auto ToString(const TextureAccess access) -> std::string_view

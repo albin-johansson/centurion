@@ -126,8 +126,8 @@ enum class ControllerMappingResult {
 template <typename T>
 class BasicController;
 
-using Controller = BasicController<detail::OwnerTag>;
-using ControllerHandle = BasicController<detail::HandleTag>;
+using Controller = BasicController<detail::owner_tag>;
+using ControllerHandle = BasicController<detail::handle_tag>;
 
 template <typename T>
 class BasicController final {
@@ -150,11 +150,11 @@ class BasicController final {
 
   // clang-format on
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicController(const Controller& owner) noexcept : mController{owner.get()}
   {}
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicController(const int index = 0) : mController{SDL_GameControllerOpen(index)}
   {
     if (!mController) {
@@ -162,7 +162,7 @@ class BasicController final {
     }
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto FromJoystick(const SDL_JoystickID id) -> BasicController
   {
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
@@ -175,7 +175,7 @@ class BasicController final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto FromIndex(const PlayerIndex index) -> BasicController
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
@@ -533,14 +533,14 @@ class BasicController final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_GameController* { return mController.get(); }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mController != nullptr;
   }
 
  private:
-  detail::Pointer<T, SDL_GameController> mController;
+  detail::pointer<T, SDL_GameController> mController;
 };
 
 inline auto AddControllerMapping(const char* mapping) noexcept -> ControllerMappingResult

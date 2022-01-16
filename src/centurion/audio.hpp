@@ -510,8 +510,8 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 template <typename T>
 class basic_sound_effect;
 
-using sound_effect = basic_sound_effect<detail::OwnerTag>;
-using sound_effect_handle = basic_sound_effect<detail::HandleTag>;
+using sound_effect = basic_sound_effect<detail::owner_tag>;
+using sound_effect_handle = basic_sound_effect<detail::handle_tag>;
 
 /**
  * \brief Represents a sound effect.
@@ -568,7 +568,7 @@ class basic_sound_effect final {
    *
    * \throws mix_error if the file cannot be loaded.
    */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_sound_effect(const char* file) : mChunk{Mix_LoadWAV(file)}
   {
     if (!mChunk) {
@@ -577,11 +577,11 @@ class basic_sound_effect final {
   }
 
   /// \copydoc basic_sound_effect(const char*)
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_sound_effect(const std::string& file) : basic_sound_effect{file.c_str()}
   {}
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit basic_sound_effect(const sound_effect& owner) noexcept : mChunk{owner.get()}
   {}
 
@@ -631,7 +631,7 @@ class basic_sound_effect final {
    *
    * \return `true` if a sound effect is playing; `false` otherwise.
    */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto is_any_playing() noexcept -> bool
   {
     return Mix_Playing(undefined_channel());
@@ -734,7 +734,7 @@ class basic_sound_effect final {
    *
    * \return `true` if the system has the specified decoder; `false` otherwise.
    */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto has_decoder(const char* name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
@@ -748,7 +748,7 @@ class basic_sound_effect final {
    * \return the name of the decoder associated with the index; a null string is returned if
    * the index is invalid.
    */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto get_decoder(const int index) noexcept -> const char*
   {
     return Mix_GetChunkDecoder(index);
@@ -759,7 +759,7 @@ class basic_sound_effect final {
    *
    * \return the amount of sound effect decoders.
    */
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto decoder_count() noexcept -> int
   {
     return Mix_GetNumChunkDecoders();
@@ -794,7 +794,7 @@ class basic_sound_effect final {
   /// \} End of misc functions
 
  private:
-  detail::Pointer<T, Mix_Chunk> mChunk;
+  detail::pointer<T, Mix_Chunk> mChunk;
   int mChannel{undefined_channel()};
 
   [[nodiscard]] constexpr static auto undefined_channel() noexcept -> int { return -1; }

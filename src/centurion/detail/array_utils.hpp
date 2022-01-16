@@ -1,5 +1,5 @@
-#ifndef CENTURION_DETAIL_ARRAY_UTILS_HEADER
-#define CENTURION_DETAIL_ARRAY_UTILS_HEADER
+#ifndef CENTURION_DETAIL_ARRAY_UTILS_HPP_
+#define CENTURION_DETAIL_ARRAY_UTILS_HPP_
 
 #include <array>    // array, to_array
 #include <cstddef>  // size_t
@@ -8,6 +8,7 @@
 #include "../features.hpp"
 
 /// \cond FALSE
+
 namespace cen::detail {
 
 template <typename T, std::size_t Size>
@@ -37,6 +38,7 @@ template <typename T, std::size_t Size>
 }
 
 }  // namespace cen::detail
+
 /// \endcond
 
-#endif  // CENTURION_DETAIL_ARRAY_UTILS_HEADER
+#endif  // CENTURION_DETAIL_ARRAY_UTILS_HPP_

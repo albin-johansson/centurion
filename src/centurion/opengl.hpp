@@ -13,8 +13,8 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "features.hpp"
 #include "detail/owner_handle_api.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "texture.hpp"
 #include "window.hpp"
@@ -88,8 +88,8 @@ class GLLibrary final {
 template <typename T>
 class BasicGLContext;
 
-using GLContext = BasicGLContext<detail::OwnerTag>;
-using GLContextHandle = BasicGLContext<detail::HandleTag>;
+using GLContext = BasicGLContext<detail::owner_tag>;
+using GLContextHandle = BasicGLContext<detail::handle_tag>;
 
 /// Represents an OpenGL context.
 template <typename T>

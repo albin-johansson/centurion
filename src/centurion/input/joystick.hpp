@@ -11,10 +11,10 @@
 
 #include "../color.hpp"
 #include "../common.hpp"
-#include "../features.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
+#include "../features.hpp"
 #include "button_state.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -71,8 +71,8 @@ struct BallAxisChange final {
 template <typename T>
 class BasicJoystick;
 
-using Joystick = BasicJoystick<detail::OwnerTag>;
-using JoystickHandle = BasicJoystick<detail::HandleTag>;
+using Joystick = BasicJoystick<detail::owner_tag>;
+using JoystickHandle = BasicJoystick<detail::handle_tag>;
 
 template <typename T>
 class BasicJoystick final {
@@ -87,7 +87,7 @@ class BasicJoystick final {
     }
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicJoystick(const int index = 0) : mJoystick{SDL_JoystickOpen(index)}
   {
     if (!mJoystick) {
@@ -95,11 +95,11 @@ class BasicJoystick final {
     }
   }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicJoystick(const Joystick& owner) noexcept : mJoystick{owner.get()}
   {}
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   [[nodiscard]] static auto FromID(const SDL_JoystickID id) noexcept -> JoystickHandle
   {
     return JoystickHandle{SDL_JoystickFromInstanceID(id)};
@@ -107,7 +107,7 @@ class BasicJoystick final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   [[nodiscard]] static auto FromPlayerIndex(const int index) noexcept -> JoystickHandle
   {
     return JoystickHandle{SDL_JoystickFromPlayerIndex(index)};
@@ -372,8 +372,7 @@ class BasicJoystick final {
     return SDL_JoystickGetAxis(mJoystick, axis);
   }
 
-  [[nodiscard]] auto GetAxisInitialState(const int axis) const noexcept
-      -> std::optional<int16>
+  [[nodiscard]] auto GetAxisInitialState(const int axis) const noexcept -> std::optional<int16>
   {
     int16 state{};
     if (SDL_JoystickGetAxisInitialState(mJoystick, axis, &state)) {
@@ -467,7 +466,7 @@ class BasicJoystick final {
     return SDL_JOYSTICK_AXIS_MIN;
   }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mJoystick != nullptr;
@@ -476,7 +475,7 @@ class BasicJoystick final {
   [[nodiscard]] auto get() const noexcept -> SDL_Joystick* { return mJoystick.get(); }
 
  private:
-  detail::Pointer<T, SDL_Joystick> mJoystick;
+  detail::pointer<T, SDL_Joystick> mJoystick;
 };
 
 [[nodiscard]] constexpr auto ToString(const JoystickType type) -> std::string_view

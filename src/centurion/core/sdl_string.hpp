@@ -6,8 +6,8 @@
 #include <memory>  // unique_ptr
 #include <string>  // string
 
-#include "../detail/sdl_deleter.hpp"
 #include "../common.hpp"
+#include "../detail/sdl_deleter.hpp"
 
 namespace cen {
 
@@ -63,7 +63,7 @@ class sdl_string final {
   explicit operator bool() const noexcept { return mStr.operator bool(); }
 
  private:
-  std::unique_ptr<char, detail::SDLDeleter> mStr;
+  std::unique_ptr<char, detail::sdl_deleter> mStr;
 };
 
 }  // namespace cen

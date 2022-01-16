@@ -19,8 +19,8 @@ struct Deleter<int> final {
 
 }  // namespace cen
 
-using Owner = cen::detail::Pointer<cen::detail::OwnerTag, int>;
-using Handle = cen::detail::Pointer<cen::detail::HandleTag, int>;
+using Owner = cen::detail::pointer<cen::detail::owner_tag, int>;
+using Handle = cen::detail::pointer<cen::detail::handle_tag, int>;
 
 static_assert(std::is_nothrow_default_constructible_v<Owner>);
 static_assert(std::is_nothrow_default_constructible_v<Handle>);

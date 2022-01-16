@@ -14,7 +14,7 @@ TEST(MouseMotionEvent, SetWindowID)
   cen::MouseMotionEvent event;
 
   event.SetWindowID(8);
-  ASSERT_EQ(8, event.GetWindowID());
+  ASSERT_EQ(8u, event.GetWindowID());
 }
 
 TEST(MouseMotionEvent, SetWhich)
@@ -22,7 +22,7 @@ TEST(MouseMotionEvent, SetWhich)
   cen::MouseMotionEvent event;
 
   event.SetWhich(65);
-  ASSERT_EQ(65, event.GetWhich());
+  ASSERT_EQ(65u, event.GetWhich());
 }
 
 TEST(MouseMotionEvent, SetState)
@@ -30,7 +30,7 @@ TEST(MouseMotionEvent, SetState)
   cen::MouseMotionEvent event;
 
   event.SetState(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
-  ASSERT_EQ(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK, event.GetState());
+  ASSERT_EQ(Uint32{SDL_BUTTON_LMASK | SDL_BUTTON_MMASK}, event.GetState());
 
   ASSERT_TRUE(event.IsPressed(cen::MouseButton::Left));
   ASSERT_TRUE(event.IsPressed(cen::MouseButton::Middle));

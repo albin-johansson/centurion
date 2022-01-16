@@ -1,11 +1,12 @@
-#ifndef CENTURION_DETAIL_SDL_VERSION_AT_LEAST
-#define CENTURION_DETAIL_SDL_VERSION_AT_LEAST
+#ifndef CENTURION_DETAIL_SDL_VERSION_AT_LEAST_HPP_
+#define CENTURION_DETAIL_SDL_VERSION_AT_LEAST_HPP_
 
 #include <SDL.h>
 
 #include "../version.hpp"
 
 /// \cond FALSE
+
 namespace cen::detail {
 
 [[nodiscard]] constexpr auto sdl_version_at_least(const int major,
@@ -16,6 +17,7 @@ namespace cen::detail {
 }
 
 }  // namespace cen::detail
+
 /// \endcond
 
-#endif  // CENTURION_DETAIL_SDL_VERSION_AT_LEAST
+#endif  // CENTURION_DETAIL_SDL_VERSION_AT_LEAST_HPP_

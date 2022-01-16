@@ -61,7 +61,7 @@ TEST(KeyboardEvent, SetWindowID)
   cen::KeyboardEvent event;
 
   event.SetWindowID(79);
-  ASSERT_EQ(79, event.GetWindowID());
+  ASSERT_EQ(79u, event.GetWindowID());
 }
 
 TEST(KeyboardEvent, SetButtonState)

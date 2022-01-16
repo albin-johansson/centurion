@@ -1,5 +1,5 @@
-#ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
-#define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
+#ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HPP_
+#define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HPP_
 
 #include <cstddef>      // size_t
 #include <tuple>        // tuple
@@ -9,13 +9,14 @@
 #include "../common.hpp"
 
 /// \cond FALSE
+
 namespace cen::detail {
 
 template <typename Target, typename Tuple>
-class TupleTypeIndex;
+class tuple_type_index;
 
 template <typename Target, typename... T>
-class TupleTypeIndex<Target, std::tuple<T...>> {
+class tuple_type_index<Target, std::tuple<T...>> {
  private:
   template <std::size_t... Index>
   [[nodiscard]] constexpr static auto Find([[maybe_unused]] std::index_sequence<Index...> seq)
@@ -29,9 +30,10 @@ class TupleTypeIndex<Target, std::tuple<T...>> {
 };
 
 template <typename Target, typename... T>
-inline constexpr int tuple_type_index_v = TupleTypeIndex<Target, T...>::value;
+inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 }  // namespace cen::detail
+
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
+#endif  // CENTURION_DETAIL_TUPLE_TYPE_INDEX_HPP_

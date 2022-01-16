@@ -323,8 +323,7 @@ inline void SetScreenSaverEnabled(const bool enabled) noexcept
   }
 }
 
-[[nodiscard]] constexpr auto ToString(const DisplayOrientation orientation)
-    -> std::string_view
+[[nodiscard]] constexpr auto ToString(const DisplayOrientation orientation) -> std::string_view
 {
   switch (orientation) {
     case DisplayOrientation::Unknown:

@@ -10,9 +10,9 @@
 #include <utility>   // pair, make_pair, move
 
 #include "common.hpp"
-#include "features.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
+#include "features.hpp"
 #include "math.hpp"
 #include "render.hpp"
 #include "surface.hpp"
@@ -29,8 +29,8 @@ namespace cen {
 template <typename T>
 class BasicWindow;
 
-using Window = BasicWindow<detail::OwnerTag>;
-using WindowHandle = BasicWindow<detail::HandleTag>;
+using Window = BasicWindow<detail::owner_tag>;
+using WindowHandle = BasicWindow<detail::handle_tag>;
 
 template <typename T>
 class BasicWindow final {
@@ -73,7 +73,7 @@ class BasicWindow final {
     }
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicWindow(const char* title,
                        const Area size = GetDefaultSize(),
                        const uint32 flags = GetDefaultFlags())
@@ -98,18 +98,18 @@ class BasicWindow final {
     }
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit BasicWindow(const std::string& title,
                        const Area size = GetDefaultSize(),
                        const uint32 flags = GetDefaultFlags())
       : BasicWindow{title.c_str(), size, flags}
   {}
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   BasicWindow() : BasicWindow{"Centurion"}
   {}
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit BasicWindow(const Window& owner) noexcept : mWindow{owner.get()}
   {}
 
@@ -402,26 +402,26 @@ class BasicWindow final {
 
   [[nodiscard]] auto get() const noexcept -> SDL_Window* { return mWindow.get(); }
 
-  template <typename TT = T, detail::EnableHandle<TT> = 0>
+  template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mWindow != nullptr;
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] constexpr static auto GetDefaultSize() noexcept -> Area
   {
     return {800, 600};
   }
 
-  template <typename TT = T, detail::EnableOwner<TT> = 0>
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] constexpr static auto GetDefaultFlags() noexcept -> uint32
   {
     return Hidden;
   }
 
  private:
-  detail::Pointer<T, SDL_Window> mWindow;
+  detail::pointer<T, SDL_Window> mWindow;
 };
 
 template <typename T>

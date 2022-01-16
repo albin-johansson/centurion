@@ -112,7 +112,7 @@ class Event final {
   /// Returns the amount of events of a particular type in the event queue.
   [[nodiscard]] static auto GetQueueSize(const EventType type) noexcept -> std::optional<int>
   {
-    const auto id = ToUnderlying(type);
+    const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
     if (num != -1) {
       return num;

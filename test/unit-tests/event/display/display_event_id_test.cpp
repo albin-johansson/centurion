@@ -1,10 +1,9 @@
-#include "event.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "common.hpp"
+#include "event.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -12,10 +11,10 @@ using ID = cen::DisplayEventID;
 
 TEST(DisplayEventID, Values)
 {
-  ASSERT_EQ(SDL_DISPLAYEVENT_NONE, ToUnderlying(ID::None));
-  ASSERT_EQ(SDL_DISPLAYEVENT_ORIENTATION, ToUnderlying(ID::Orientation));
-  ASSERT_EQ(SDL_DISPLAYEVENT_CONNECTED, ToUnderlying(ID::Connected));
-  ASSERT_EQ(SDL_DISPLAYEVENT_DISCONNECTED, ToUnderlying(ID::Disconnected));
+  ASSERT_EQ(SDL_DISPLAYEVENT_NONE, to_underlying(ID::None));
+  ASSERT_EQ(SDL_DISPLAYEVENT_ORIENTATION, to_underlying(ID::Orientation));
+  ASSERT_EQ(SDL_DISPLAYEVENT_CONNECTED, to_underlying(ID::Connected));
+  ASSERT_EQ(SDL_DISPLAYEVENT_DISCONNECTED, to_underlying(ID::Disconnected));
 }
 
 TEST(DisplayEventID, ToString)

@@ -175,7 +175,7 @@ class BasicPixelFormatInfo final {
 
   template <typename BB = B, detail::enable_for_owner<BB> = 0>
   explicit BasicPixelFormatInfo(const PixelFormat format)
-      : mFormat{SDL_AllocFormat(ToUnderlying(format))}
+      : mFormat{SDL_AllocFormat(to_underlying(format))}
   {
     if (!mFormat) {
       throw sdl_error{};

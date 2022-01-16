@@ -7,15 +7,15 @@
 
 TEST(HatState, Values)
 {
-  ASSERT_EQ(SDL_HAT_CENTERED, cen::ToUnderlying(cen::HatState::Centered));
-  ASSERT_EQ(SDL_HAT_UP, cen::ToUnderlying(cen::HatState::Up));
-  ASSERT_EQ(SDL_HAT_RIGHT, cen::ToUnderlying(cen::HatState::Right));
-  ASSERT_EQ(SDL_HAT_DOWN, cen::ToUnderlying(cen::HatState::Down));
-  ASSERT_EQ(SDL_HAT_LEFT, cen::ToUnderlying(cen::HatState::Left));
-  ASSERT_EQ(SDL_HAT_RIGHTUP, cen::ToUnderlying(cen::HatState::RightUp));
-  ASSERT_EQ(SDL_HAT_RIGHTDOWN, cen::ToUnderlying(cen::HatState::RightDown));
-  ASSERT_EQ(SDL_HAT_LEFTUP, cen::ToUnderlying(cen::HatState::LeftUp));
-  ASSERT_EQ(SDL_HAT_LEFTDOWN, cen::ToUnderlying(cen::HatState::LeftDown));
+  ASSERT_EQ(SDL_HAT_CENTERED, cen::to_underlying(cen::HatState::Centered));
+  ASSERT_EQ(SDL_HAT_UP, cen::to_underlying(cen::HatState::Up));
+  ASSERT_EQ(SDL_HAT_RIGHT, cen::to_underlying(cen::HatState::Right));
+  ASSERT_EQ(SDL_HAT_DOWN, cen::to_underlying(cen::HatState::Down));
+  ASSERT_EQ(SDL_HAT_LEFT, cen::to_underlying(cen::HatState::Left));
+  ASSERT_EQ(SDL_HAT_RIGHTUP, cen::to_underlying(cen::HatState::RightUp));
+  ASSERT_EQ(SDL_HAT_RIGHTDOWN, cen::to_underlying(cen::HatState::RightDown));
+  ASSERT_EQ(SDL_HAT_LEFTUP, cen::to_underlying(cen::HatState::LeftUp));
+  ASSERT_EQ(SDL_HAT_LEFTDOWN, cen::to_underlying(cen::HatState::LeftDown));
 }
 
 TEST(HatState, ToString)

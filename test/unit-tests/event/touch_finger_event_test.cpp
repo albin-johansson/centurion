@@ -230,6 +230,6 @@ TEST(TouchFingerEvent, AsSDLEvent)
   const cen::touch_finger_event event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.tfinger.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.tfinger.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.tfinger.timestamp, event.GetTimestamp());
 }

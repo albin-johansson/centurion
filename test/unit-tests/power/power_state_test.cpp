@@ -7,11 +7,11 @@
 
 TEST(PowerState, Values)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::PowerState::Unknown), SDL_POWERSTATE_UNKNOWN);
-  ASSERT_EQ(cen::ToUnderlying(cen::PowerState::OnBattery), SDL_POWERSTATE_ON_BATTERY);
-  ASSERT_EQ(cen::ToUnderlying(cen::PowerState::NoBattery), SDL_POWERSTATE_NO_BATTERY);
-  ASSERT_EQ(cen::ToUnderlying(cen::PowerState::Charging), SDL_POWERSTATE_CHARGING);
-  ASSERT_EQ(cen::ToUnderlying(cen::PowerState::Charged), SDL_POWERSTATE_CHARGED);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::Unknown), SDL_POWERSTATE_UNKNOWN);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::OnBattery), SDL_POWERSTATE_ON_BATTERY);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::NoBattery), SDL_POWERSTATE_NO_BATTERY);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::Charging), SDL_POWERSTATE_CHARGING);
+  ASSERT_EQ(cen::to_underlying(cen::PowerState::Charged), SDL_POWERSTATE_CHARGED);
 }
 
 TEST(PowerState, ToString)

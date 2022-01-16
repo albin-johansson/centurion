@@ -189,12 +189,12 @@ class BasicJoystick final {
 
   auto SetVirtualButton(const int button, const ButtonState state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualButton(mJoystick, button, ToUnderlying(state)) == 0;
+    return SDL_JoystickSetVirtualButton(mJoystick, button, to_underlying(state)) == 0;
   }
 
   auto SetVirtualHat(const int hat, const HatState state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualHat(mJoystick, hat, ToUnderlying(state)) == 0;
+    return SDL_JoystickSetVirtualHat(mJoystick, hat, to_underlying(state)) == 0;
   }
 
   [[nodiscard]] static auto IsVirtual(const int index) noexcept -> bool

@@ -7,9 +7,9 @@
 
 TEST(GLSwapInterval, Values)
 {
-  ASSERT_EQ(0, ToUnderlying(cen::GLSwapInterval::Immediate));
-  ASSERT_EQ(1, ToUnderlying(cen::GLSwapInterval::Synchronized));
-  ASSERT_EQ(-1, ToUnderlying(cen::GLSwapInterval::LateImmediate));
+  ASSERT_EQ(0, to_underlying(cen::GLSwapInterval::Immediate));
+  ASSERT_EQ(1, to_underlying(cen::GLSwapInterval::Synchronized));
+  ASSERT_EQ(-1, to_underlying(cen::GLSwapInterval::LateImmediate));
 }
 
 TEST(GLSwapInterval, ToString)

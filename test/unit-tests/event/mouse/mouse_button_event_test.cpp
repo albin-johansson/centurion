@@ -79,6 +79,6 @@ TEST(MouseButtonEvent, AsSDLEvent)
   const cen::MouseButtonEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.button.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.button.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.button.timestamp, event.GetTimestamp());
 }

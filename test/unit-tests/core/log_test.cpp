@@ -36,7 +36,7 @@ TEST(Log, SetPriority)
 TEST(Log, GetPriority)
 {
   ASSERT_EQ(SDL_LogGetPriority(SDL_LOG_CATEGORY_APPLICATION),
-            cen::ToUnderlying(cen::get_priority(cen::log_category::app)));
+            cen::to_underlying(cen::get_priority(cen::log_category::app)));
 }
 
 TEST(Log, MaxMessageSize)

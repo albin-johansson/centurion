@@ -105,8 +105,8 @@ class BasicTexture final {
                const TextureAccess access,
                const iarea size)
       : mTexture{SDL_CreateTexture(renderer.get(),
-                                   ToUnderlying(format),
-                                   ToUnderlying(access),
+                                   to_underlying(format),
+                                   to_underlying(access),
                                    size.width,
                                    size.height)}
   {

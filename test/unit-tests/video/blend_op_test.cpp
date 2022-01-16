@@ -7,11 +7,11 @@
 
 TEST(BlendOp, Values)
 {
-  ASSERT_EQ(SDL_BLENDOPERATION_ADD, cen::ToUnderlying(cen::BlendOp::Add));
-  ASSERT_EQ(SDL_BLENDOPERATION_SUBTRACT, cen::ToUnderlying(cen::BlendOp::Sub));
-  ASSERT_EQ(SDL_BLENDOPERATION_REV_SUBTRACT, cen::ToUnderlying(cen::BlendOp::ReverseSub));
-  ASSERT_EQ(SDL_BLENDOPERATION_MINIMUM, cen::ToUnderlying(cen::BlendOp::Min));
-  ASSERT_EQ(SDL_BLENDOPERATION_MAXIMUM, cen::ToUnderlying(cen::BlendOp::Max));
+  ASSERT_EQ(SDL_BLENDOPERATION_ADD, cen::to_underlying(cen::BlendOp::Add));
+  ASSERT_EQ(SDL_BLENDOPERATION_SUBTRACT, cen::to_underlying(cen::BlendOp::Sub));
+  ASSERT_EQ(SDL_BLENDOPERATION_REV_SUBTRACT, cen::to_underlying(cen::BlendOp::ReverseSub));
+  ASSERT_EQ(SDL_BLENDOPERATION_MINIMUM, cen::to_underlying(cen::BlendOp::Min));
+  ASSERT_EQ(SDL_BLENDOPERATION_MAXIMUM, cen::to_underlying(cen::BlendOp::Max));
 }
 
 TEST(BlendOp, ToString)

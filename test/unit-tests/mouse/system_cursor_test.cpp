@@ -7,18 +7,18 @@
 
 TEST(SystemCursor, Values)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Arrow), SDL_SYSTEM_CURSOR_ARROW);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::IBeam), SDL_SYSTEM_CURSOR_IBEAM);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Wait), SDL_SYSTEM_CURSOR_WAIT);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Crosshair), SDL_SYSTEM_CURSOR_CROSSHAIR);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::WaitArrow), SDL_SYSTEM_CURSOR_WAITARROW);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Size_NW_SE), SDL_SYSTEM_CURSOR_SIZENWSE);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Size_NE_SW), SDL_SYSTEM_CURSOR_SIZENESW);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Size_W_E), SDL_SYSTEM_CURSOR_SIZEWE);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Size_N_S), SDL_SYSTEM_CURSOR_SIZENS);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::SizeAll), SDL_SYSTEM_CURSOR_SIZEALL);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::No), SDL_SYSTEM_CURSOR_NO);
-  ASSERT_EQ(cen::ToUnderlying(cen::SystemCursor::Hand), SDL_SYSTEM_CURSOR_HAND);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Arrow), SDL_SYSTEM_CURSOR_ARROW);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::IBeam), SDL_SYSTEM_CURSOR_IBEAM);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Wait), SDL_SYSTEM_CURSOR_WAIT);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Crosshair), SDL_SYSTEM_CURSOR_CROSSHAIR);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::WaitArrow), SDL_SYSTEM_CURSOR_WAITARROW);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Size_NW_SE), SDL_SYSTEM_CURSOR_SIZENWSE);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Size_NE_SW), SDL_SYSTEM_CURSOR_SIZENESW);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Size_W_E), SDL_SYSTEM_CURSOR_SIZEWE);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Size_N_S), SDL_SYSTEM_CURSOR_SIZENS);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::SizeAll), SDL_SYSTEM_CURSOR_SIZEALL);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::No), SDL_SYSTEM_CURSOR_NO);
+  ASSERT_EQ(cen::to_underlying(cen::SystemCursor::Hand), SDL_SYSTEM_CURSOR_HAND);
 }
 
 TEST(SystemCursor, ToString)

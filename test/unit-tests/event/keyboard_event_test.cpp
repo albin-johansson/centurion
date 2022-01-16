@@ -175,6 +175,6 @@ TEST(KeyboardEvent, AsSDLEvent)
   const cen::KeyboardEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.key.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.key.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.key.timestamp, event.GetTimestamp());
 }

@@ -8,8 +8,8 @@
 
 TEST(ButtonState, Values)
 {
-  ASSERT_EQ(SDL_RELEASED, cen::ToUnderlying(cen::ButtonState::Released));
-  ASSERT_EQ(SDL_PRESSED, cen::ToUnderlying(cen::ButtonState::Pressed));
+  ASSERT_EQ(SDL_RELEASED, cen::to_underlying(cen::ButtonState::Released));
+  ASSERT_EQ(SDL_PRESSED, cen::to_underlying(cen::ButtonState::Pressed));
 }
 
 TEST(ButtonState, ToString)

@@ -9,9 +9,9 @@
 TEST(MessageBoxButtonOrder, Values)
 {
   ASSERT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-            cen::ToUnderlying(cen::MessageBoxButtonOrder::LeftToRight));
+            cen::to_underlying(cen::MessageBoxButtonOrder::LeftToRight));
   ASSERT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
-            cen::ToUnderlying(cen::MessageBoxButtonOrder::RightToLeft));
+            cen::to_underlying(cen::MessageBoxButtonOrder::RightToLeft));
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

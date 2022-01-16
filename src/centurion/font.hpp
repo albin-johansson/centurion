@@ -224,7 +224,7 @@ class font final {
    */
   void set_font_hinting(const font_hint hint) noexcept
   {
-    TTF_SetFontHinting(mFont.get(), ToUnderlying(hint));
+    TTF_SetFontHinting(mFont.get(), to_underlying(hint));
   }
 
   /**

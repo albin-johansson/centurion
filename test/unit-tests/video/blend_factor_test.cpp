@@ -7,24 +7,24 @@
 
 TEST(BlendFactor, Values)
 {
-  ASSERT_EQ(SDL_BLENDFACTOR_ZERO, cen::ToUnderlying(cen::BlendFactor::Zero));
-  ASSERT_EQ(SDL_BLENDFACTOR_ONE, cen::ToUnderlying(cen::BlendFactor::One));
+  ASSERT_EQ(SDL_BLENDFACTOR_ZERO, cen::to_underlying(cen::BlendFactor::Zero));
+  ASSERT_EQ(SDL_BLENDFACTOR_ONE, cen::to_underlying(cen::BlendFactor::One));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_SRC_COLOR, cen::ToUnderlying(cen::BlendFactor::SrcColor));
+  ASSERT_EQ(SDL_BLENDFACTOR_SRC_COLOR, cen::to_underlying(cen::BlendFactor::SrcColor));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
-            cen::ToUnderlying(cen::BlendFactor::OneMinusSrcColor));
+            cen::to_underlying(cen::BlendFactor::OneMinusSrcColor));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_SRC_ALPHA, cen::ToUnderlying(cen::BlendFactor::SrcAlpha));
+  ASSERT_EQ(SDL_BLENDFACTOR_SRC_ALPHA, cen::to_underlying(cen::BlendFactor::SrcAlpha));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-            cen::ToUnderlying(cen::BlendFactor::OneMinusSrcAlpha));
+            cen::to_underlying(cen::BlendFactor::OneMinusSrcAlpha));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_DST_COLOR, cen::ToUnderlying(cen::BlendFactor::DstColor));
+  ASSERT_EQ(SDL_BLENDFACTOR_DST_COLOR, cen::to_underlying(cen::BlendFactor::DstColor));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
-            cen::ToUnderlying(cen::BlendFactor::OneMinusDstColor));
+            cen::to_underlying(cen::BlendFactor::OneMinusDstColor));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_DST_ALPHA, cen::ToUnderlying(cen::BlendFactor::DstAlpha));
+  ASSERT_EQ(SDL_BLENDFACTOR_DST_ALPHA, cen::to_underlying(cen::BlendFactor::DstAlpha));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA,
-            cen::ToUnderlying(cen::BlendFactor::OneMinusDstAlpha));
+            cen::to_underlying(cen::BlendFactor::OneMinusDstAlpha));
 }
 
 TEST(BlendFactor, ToString)

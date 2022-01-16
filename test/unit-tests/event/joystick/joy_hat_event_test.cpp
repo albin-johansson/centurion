@@ -30,6 +30,6 @@ TEST(JoyHatEvent, AsSDLEvent)
   const cen::JoyHatEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jhat.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jhat.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.jhat.timestamp, event.GetTimestamp());
 }

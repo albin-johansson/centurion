@@ -76,7 +76,7 @@ class BasicSurface final {
                                                 size.width,
                                                 size.height,
                                                 0,
-                                                ToUnderlying(format))}
+                                                to_underlying(format))}
   {
     if (!mSurface) {
       throw sdl_error{};
@@ -223,7 +223,7 @@ class BasicSurface final {
   /* Creates a copy of the surface using another pixel format */
   [[nodiscard]] auto ConvertTo(const PixelFormat format) const -> BasicSurface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, ToUnderlying(format), 0)) {
+    if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, to_underlying(format), 0)) {
       BasicSurface result{converted};
       result.SetBlendMode(GetBlendMode());
       return result;
@@ -267,10 +267,7 @@ class BasicSurface final {
 
   [[nodiscard]] auto height() const noexcept -> int { return mSurface->h; }
 
-  [[nodiscard]] auto GetSize() const noexcept -> iarea
-  {
-    return iarea{width(), height()};
-  }
+  [[nodiscard]] auto GetSize() const noexcept -> iarea { return iarea{width(), height()}; }
 
   /* Returns the pitch, i.e. the length of a row of pixels in bytes */
   [[nodiscard]] auto GetPitch() const noexcept -> int { return mSurface->pitch; }

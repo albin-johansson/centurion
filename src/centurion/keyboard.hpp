@@ -50,7 +50,7 @@ namespace detail {
     return !currentMask;
   }
   else {
-    return currentMask & ToUnderlying(modifiers);
+    return currentMask & to_underlying(modifiers);
   }
 }
 
@@ -61,7 +61,7 @@ namespace detail {
     return !currentMask;
   }
 
-  const auto mask = ToUnderlying(modifiers);
+  const auto mask = to_underlying(modifiers);
   const auto hits = currentMask & mask;
 
   if (hits != mask) {
@@ -80,7 +80,7 @@ namespace detail {
     return !currentMask;
   }
 
-  const auto mask = ToUnderlying(modifiers);
+  const auto mask = to_underlying(modifiers);
 
   const auto hits = currentMask & mask;
   const auto others = currentMask & ~hits;
@@ -381,11 +381,11 @@ class Keyboard final {
     return "None";
   }
 
-  const auto mask = ToUnderlying(mods);
+  const auto mask = to_underlying(mods);
   std::stringstream stream;
 
   auto check = [&stream, mask, count = 0](const KeyMod mod, const char* name) mutable {
-    if (mask & ToUnderlying(mod)) {
+    if (mask & to_underlying(mod)) {
       if (count != 0) {
         stream << ',';
       }
@@ -463,17 +463,17 @@ inline auto operator<<(std::ostream& stream, const Keyboard& keyboard) -> std::o
 
 [[nodiscard]] constexpr auto operator&(const KeyMod a, const KeyMod b) noexcept -> KeyMod
 {
-  return static_cast<KeyMod>(ToUnderlying(a) & ToUnderlying(b));
+  return static_cast<KeyMod>(to_underlying(a) & to_underlying(b));
 }
 
 [[nodiscard]] constexpr auto operator|(const KeyMod a, const KeyMod b) noexcept -> KeyMod
 {
-  return static_cast<KeyMod>(ToUnderlying(a) | ToUnderlying(b));
+  return static_cast<KeyMod>(to_underlying(a) | to_underlying(b));
 }
 
 [[nodiscard]] constexpr auto operator~(const KeyMod mods) noexcept -> KeyMod
 {
-  return static_cast<KeyMod>(~ToUnderlying(mods));
+  return static_cast<KeyMod>(~to_underlying(mods));
 }
 
 [[nodiscard]] constexpr auto operator==(const KeyCode& lhs, const KeyCode& rhs) noexcept

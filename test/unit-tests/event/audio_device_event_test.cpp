@@ -37,6 +37,6 @@ TEST(AudioDeviceEvent, AsSDLEvent)
   const cen::AudioDeviceEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.adevice.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.adevice.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.adevice.timestamp, event.GetTimestamp());
 }

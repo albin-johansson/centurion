@@ -45,6 +45,6 @@ TEST(WindowEvent, AsSDLEvent)
   const cen::WindowEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.window.type, ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.window.type, to_underlying(event.GetType()));
   ASSERT_EQ(underlying.window.timestamp, event.GetTimestamp());
 }

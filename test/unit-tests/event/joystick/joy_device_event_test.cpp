@@ -22,6 +22,6 @@ TEST(JoyDeviceEvent, AsSDLEvent)
   const cen::JoyDeviceEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jdevice.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jdevice.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.jdevice.timestamp, event.GetTimestamp());
 }

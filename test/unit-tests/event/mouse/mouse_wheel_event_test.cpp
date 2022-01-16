@@ -54,6 +54,6 @@ TEST(MouseWheelEvent, AsSDLEvent)
   const cen::MouseWheelEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.wheel.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.wheel.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.wheel.timestamp, event.GetTimestamp());
 }

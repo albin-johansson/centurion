@@ -22,7 +22,7 @@ TEST(MessageBoxColorScheme, Custom)
 
   const auto check = [&](const cen::MessageBoxColorType type, const cen::color& color) {
     scheme.SetColor(type, color);
-    ASSERT_EQ(color, cen::color{scheme.data()->colors[cen::ToUnderlying(type)]});
+    ASSERT_EQ(color, cen::color{scheme.data()->colors[cen::to_underlying(type)]});
   };
 
   check(cen::MessageBoxColorType::Text, cen::colors::salmon);

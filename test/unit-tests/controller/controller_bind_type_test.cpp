@@ -9,10 +9,10 @@ using BindType = cen::ControllerBindType;
 
 TEST(ControllerBindType, Values)
 {
-  ASSERT_EQ(ToUnderlying(BindType::Axis), SDL_CONTROLLER_BINDTYPE_AXIS);
-  ASSERT_EQ(ToUnderlying(BindType::Button), SDL_CONTROLLER_BINDTYPE_BUTTON);
-  ASSERT_EQ(ToUnderlying(BindType::None), SDL_CONTROLLER_BINDTYPE_NONE);
-  ASSERT_EQ(ToUnderlying(BindType::Hat), SDL_CONTROLLER_BINDTYPE_HAT);
+  ASSERT_EQ(to_underlying(BindType::Axis), SDL_CONTROLLER_BINDTYPE_AXIS);
+  ASSERT_EQ(to_underlying(BindType::Button), SDL_CONTROLLER_BINDTYPE_BUTTON);
+  ASSERT_EQ(to_underlying(BindType::None), SDL_CONTROLLER_BINDTYPE_NONE);
+  ASSERT_EQ(to_underlying(BindType::Hat), SDL_CONTROLLER_BINDTYPE_HAT);
 }
 
 TEST(ControllerBindType, ToString)

@@ -47,6 +47,6 @@ TEST(ControllerButtonEvent, AsSDLEvent)
   const cen::ControllerButtonEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.cbutton.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.cbutton.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.cbutton.timestamp, event.GetTimestamp());
 }

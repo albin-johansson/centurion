@@ -296,7 +296,7 @@ inline auto Get(const GLAttribute attr) noexcept -> std::optional<int>
 
 inline auto SetSwapInterval(const GLSwapInterval interval) noexcept -> result
 {
-  return SDL_GL_SetSwapInterval(ToUnderlying(interval)) == 0;
+  return SDL_GL_SetSwapInterval(to_underlying(interval)) == 0;
 }
 
 [[nodiscard]] inline auto GetSwapInterval() noexcept -> GLSwapInterval

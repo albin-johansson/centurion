@@ -7,7 +7,7 @@
 TEST(MessageBoxButtonFlags, Values)
 {
   ASSERT_EQ(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
-            cen::ToUnderlying(cen::MessageBox::ReturnKeyDefault));
+            cen::to_underlying(cen::MessageBox::ReturnKeyDefault));
   ASSERT_EQ(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,
-            cen::ToUnderlying(cen::MessageBox::EscapeKeyDefault));
+            cen::to_underlying(cen::MessageBox::EscapeKeyDefault));
 }

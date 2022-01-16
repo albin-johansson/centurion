@@ -50,6 +50,6 @@ TEST(DropEvent, AsSDLEvent)
   const cen::DropEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.drop.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.drop.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.drop.timestamp, event.GetTimestamp());
 }

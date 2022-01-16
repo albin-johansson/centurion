@@ -46,6 +46,6 @@ TEST(JoyBallEvent, AsSDLEvent)
   const cen::JoyBallEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.jball.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.jball.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.jball.timestamp, event.GetTimestamp());
 }

@@ -8,8 +8,8 @@ using Direction = cen::MouseWheelDirection;
 
 TEST(MouseWheelDirection, Values)
 {
-  ASSERT_EQ(ToUnderlying(Direction::Normal), SDL_MOUSEWHEEL_NORMAL);
-  ASSERT_EQ(ToUnderlying(Direction::Flipped), SDL_MOUSEWHEEL_FLIPPED);
+  ASSERT_EQ(to_underlying(Direction::Normal), SDL_MOUSEWHEEL_NORMAL);
+  ASSERT_EQ(to_underlying(Direction::Flipped), SDL_MOUSEWHEEL_FLIPPED);
 }
 
 TEST(MouseWheelDirection, ToString)

@@ -94,7 +94,7 @@ TEST(UnicodeString, PopBack)
   str.pop_back();
   ASSERT_TRUE(str.empty());
   ASSERT_EQ(0u, str.size());  // NOLINT
-  ASSERT_EQ(0, str.at(0));   // null-terminator
+  ASSERT_EQ(0, str.at(0));    // null-terminator
 
   ASSERT_NO_THROW(str.pop_back());
   ASSERT_NO_THROW(str.pop_back());
@@ -102,7 +102,7 @@ TEST(UnicodeString, PopBack)
 
   ASSERT_TRUE(str.empty());
   ASSERT_EQ(0u, str.size());  // NOLINT
-  ASSERT_EQ(0, str.at(0));   // null-terminator
+  ASSERT_EQ(0, str.at(0));    // null-terminator
 }
 
 TEST(UnicodeString, At)

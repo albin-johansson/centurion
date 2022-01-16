@@ -7,14 +7,14 @@
 
 TEST(BlendMode, Values)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::BlendMode::None), SDL_BLENDMODE_NONE);
-  ASSERT_EQ(cen::ToUnderlying(cen::BlendMode::Blend), SDL_BLENDMODE_BLEND);
-  ASSERT_EQ(cen::ToUnderlying(cen::BlendMode::Add), SDL_BLENDMODE_ADD);
-  ASSERT_EQ(cen::ToUnderlying(cen::BlendMode::Mod), SDL_BLENDMODE_MOD);
-  ASSERT_EQ(cen::ToUnderlying(cen::BlendMode::Invalid), SDL_BLENDMODE_INVALID);
+  ASSERT_EQ(cen::to_underlying(cen::BlendMode::None), SDL_BLENDMODE_NONE);
+  ASSERT_EQ(cen::to_underlying(cen::BlendMode::Blend), SDL_BLENDMODE_BLEND);
+  ASSERT_EQ(cen::to_underlying(cen::BlendMode::Add), SDL_BLENDMODE_ADD);
+  ASSERT_EQ(cen::to_underlying(cen::BlendMode::Mod), SDL_BLENDMODE_MOD);
+  ASSERT_EQ(cen::to_underlying(cen::BlendMode::Invalid), SDL_BLENDMODE_INVALID);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-  ASSERT_EQ(cen::ToUnderlying(cen::BlendMode::Mul), SDL_BLENDMODE_MUL);
+  ASSERT_EQ(cen::to_underlying(cen::BlendMode::Mul), SDL_BLENDMODE_MUL);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 }
 

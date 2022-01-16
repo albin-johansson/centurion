@@ -5,9 +5,9 @@
 
 #include <array>  // array
 
+#include "color.hpp"
 #include "common.hpp"
 #include "core_mocks.hpp"
-#include "color.hpp"
 
 using namespace cen::literals;
 

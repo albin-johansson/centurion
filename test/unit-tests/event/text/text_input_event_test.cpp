@@ -41,6 +41,6 @@ TEST(TextInputEvent, AsSDLEvent)
   const cen::text_input_event event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.text.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.text.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.text.timestamp, event.GetTimestamp());
 }

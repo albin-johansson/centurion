@@ -116,6 +116,6 @@ TEST(MultiGestureEvent, AsSDLEvent)
   const cen::multi_gesture_event event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.mgesture.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.mgesture.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.mgesture.timestamp, event.GetTimestamp());
 }

@@ -1,6 +1,6 @@
-#include "event.hpp"
-
 #include <gtest/gtest.h>
+
+#include "event.hpp"
 
 TEST(UserEvent, Defaults)
 {
@@ -64,7 +64,7 @@ TEST(UserEvent, AsSDLEvent)
   const cen::UserEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.user.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.user.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.user.timestamp, event.GetTimestamp());
   ASSERT_EQ(underlying.user.code, event.GetCode());
   ASSERT_EQ(underlying.user.windowID, event.GetWindowID());

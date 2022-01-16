@@ -77,6 +77,6 @@ TEST(MouseMotionEvent, AsSDLEvent)
   const cen::MouseMotionEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.motion.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.motion.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.motion.timestamp, event.GetTimestamp());
 }

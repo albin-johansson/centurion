@@ -95,6 +95,6 @@ TEST(TextEditingEvent, AsSDLEvent)
   const cen::text_editing_event event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.edit.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.edit.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.edit.timestamp, event.GetTimestamp());
 }

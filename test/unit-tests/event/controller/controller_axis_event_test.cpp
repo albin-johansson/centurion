@@ -44,6 +44,6 @@ TEST(ControllerAxisEvent, AsSDLEvent)
   const cen::ControllerAxisEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.caxis.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.caxis.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.caxis.timestamp, event.GetTimestamp());
 }

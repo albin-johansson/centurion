@@ -9,9 +9,9 @@
 
 TEST(FlashOp, Values)
 {
-  ASSERT_EQ(SDL_FLASH_CANCEL, cen::ToUnderlying(cen::FlashOp::Cancel));
-  ASSERT_EQ(SDL_FLASH_BRIEFLY, cen::ToUnderlying(cen::FlashOp::Briefly));
-  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, cen::ToUnderlying(cen::FlashOp::UntilFocused));
+  ASSERT_EQ(SDL_FLASH_CANCEL, cen::to_underlying(cen::FlashOp::Cancel));
+  ASSERT_EQ(SDL_FLASH_BRIEFLY, cen::to_underlying(cen::FlashOp::Briefly));
+  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, cen::to_underlying(cen::FlashOp::UntilFocused));
 }
 
 TEST(FlashOp, ToString)

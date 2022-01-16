@@ -55,7 +55,7 @@ class MessageBoxColorScheme final {
 
   void SetColor(const MessageBoxColorType id, const color& color) noexcept
   {
-    mScheme.colors[ToUnderlying(id)] = color.as_message_box_color();
+    mScheme.colors[to_underlying(id)] = color.as_message_box_color();
   }
 
   [[nodiscard]] auto data() noexcept -> SDL_MessageBoxColorScheme* { return &mScheme; }
@@ -179,7 +179,7 @@ class MessageBox final {
     {
       SDL_MessageBoxButtonData result{};
 
-      result.flags = ToUnderlying(flags);
+      result.flags = to_underlying(flags);
       result.buttonid = id;
       result.text = text.c_str();
 
@@ -198,7 +198,7 @@ class MessageBox final {
                                               const MessageBoxButtonOrder buttonOrder) noexcept
       -> uint32
   {
-    return ToUnderlying(type) | ToUnderlying(buttonOrder);
+    return to_underlying(type) | to_underlying(buttonOrder);
   }
 
   static void Show(SDL_Window* parent,

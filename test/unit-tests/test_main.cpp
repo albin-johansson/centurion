@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "initialization.hpp"
 #include "core/logging.hpp"
+#include "initialization.hpp"
 
 int main(int argc, char* argv[])
 {

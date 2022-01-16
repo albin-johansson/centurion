@@ -7,15 +7,15 @@
 
 TEST(MusicType, Values)
 {
-  ASSERT_EQ(MUS_NONE, ToUnderlying(cen::music_type::none));
-  ASSERT_EQ(MUS_MP3, ToUnderlying(cen::music_type::mp3));
-  ASSERT_EQ(MUS_WAV, ToUnderlying(cen::music_type::wav));
-  ASSERT_EQ(MUS_CMD, ToUnderlying(cen::music_type::cmd));
-  ASSERT_EQ(MUS_MOD, ToUnderlying(cen::music_type::mod));
-  ASSERT_EQ(MUS_OGG, ToUnderlying(cen::music_type::ogg));
-  ASSERT_EQ(MUS_FLAC, ToUnderlying(cen::music_type::flac));
-  ASSERT_EQ(MUS_MID, ToUnderlying(cen::music_type::midi));
-  ASSERT_EQ(MUS_OPUS, ToUnderlying(cen::music_type::opus));
+  ASSERT_EQ(MUS_NONE, to_underlying(cen::music_type::none));
+  ASSERT_EQ(MUS_MP3, to_underlying(cen::music_type::mp3));
+  ASSERT_EQ(MUS_WAV, to_underlying(cen::music_type::wav));
+  ASSERT_EQ(MUS_CMD, to_underlying(cen::music_type::cmd));
+  ASSERT_EQ(MUS_MOD, to_underlying(cen::music_type::mod));
+  ASSERT_EQ(MUS_OGG, to_underlying(cen::music_type::ogg));
+  ASSERT_EQ(MUS_FLAC, to_underlying(cen::music_type::flac));
+  ASSERT_EQ(MUS_MID, to_underlying(cen::music_type::midi));
+  ASSERT_EQ(MUS_OPUS, to_underlying(cen::music_type::opus));
 }
 
 TEST(MusicType, ToString)

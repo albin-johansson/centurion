@@ -24,6 +24,6 @@ TEST(ControllerDeviceEvent, AsSDLEvent)
   const cen::ControllerDeviceEvent event;
   const auto underlying = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(underlying.cdevice.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(underlying.cdevice.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(underlying.cdevice.timestamp, event.GetTimestamp());
 }

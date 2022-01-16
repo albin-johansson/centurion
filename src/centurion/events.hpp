@@ -155,7 +155,7 @@ class EventBase {
   /// Sets the timestamp of the creation of the event. TODO u32ms?
   void SetTimestamp(const uint32 timestamp) noexcept { mEvent.timestamp = timestamp; }
 
-  void SetType(const EventType type) noexcept { mEvent.type = ToUnderlying(type); }
+  void SetType(const EventType type) noexcept { mEvent.type = to_underlying(type); }
 
   [[nodiscard]] auto GetTimestamp() const noexcept -> uint32 { return mEvent.timestamp; }
 
@@ -237,7 +237,7 @@ class JoyButtonEvent final : public EventBase<SDL_JoyButtonEvent> {
 
   void SetButton(const uint8 index) noexcept { mEvent.button = index; }
 
-  void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
+  void SetState(const ButtonState state) noexcept { mEvent.state = to_underlying(state); }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
@@ -278,7 +278,10 @@ class JoyHatEvent final : public EventBase<SDL_JoyHatEvent> {
 
   void SetHat(const uint8 hat) noexcept { mEvent.hat = hat; }
 
-  void SetPosition(const JoyHatPosition value) noexcept { mEvent.value = ToUnderlying(value); }
+  void SetPosition(const JoyHatPosition value) noexcept
+  {
+    mEvent.value = to_underlying(value);
+  }
 
   [[nodiscard]] auto GetHat() const noexcept -> uint8 { return mEvent.hat; }
 
@@ -323,7 +326,7 @@ class ControllerButtonEvent final : public EventBase<SDL_ControllerButtonEvent> 
     mEvent.button = static_cast<uint8>(button);
   }
 
-  void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
+  void SetState(const ButtonState state) noexcept { mEvent.state = to_underlying(state); }
 
   [[nodiscard]] auto GetWhich() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
@@ -373,7 +376,7 @@ class ControllerSensorEvent final : public EventBase<SDL_ControllerSensorEvent> 
 
   void SetWhich(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
-  void SetSensor(const sensor_type sensor) noexcept { mEvent.sensor = ToUnderlying(sensor); }
+  void SetSensor(const sensor_type sensor) noexcept { mEvent.sensor = to_underlying(sensor); }
 
   void SetData(const std::array<float, 3>& values) { detail::assign(values, mEvent.data); }
 
@@ -437,7 +440,7 @@ class DisplayEvent final : public EventBase<SDL_DisplayEvent> {
 
   void SetEventID(const DisplayEventID id) noexcept
   {
-    mEvent.event = static_cast<uint8>(ToUnderlying(id));
+    mEvent.event = static_cast<uint8>(to_underlying(id));
   }
 
   void SetIndex(const uint32 index) noexcept { mEvent.display = index; }
@@ -535,15 +538,18 @@ class KeyboardEvent final : public EventBase<SDL_KeyboardEvent> {
 
   void SetKeyCode(const KeyCode code) noexcept { mEvent.keysym.sym = code.get(); }
 
-  void SetButtonState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
+  void SetButtonState(const ButtonState state) noexcept
+  {
+    mEvent.state = to_underlying(state);
+  }
 
   void SetModifier(const KeyMod mod, const bool active) noexcept
   {
     if (active) {
-      mEvent.keysym.mod |= ToUnderlying(mod);
+      mEvent.keysym.mod |= to_underlying(mod);
     }
     else {
-      mEvent.keysym.mod &= ~ToUnderlying(mod);
+      mEvent.keysym.mod &= ~to_underlying(mod);
     }
   }
 
@@ -615,8 +621,8 @@ class MouseButtonEvent final : public EventBase<SDL_MouseButtonEvent> {
   void SetWindowID(const uint32 id) noexcept { mEvent.windowID = id; }
   void SetWhich(const uint32 which) noexcept { mEvent.which = which; }
 
-  void SetButton(const MouseButton button) noexcept { mEvent.button = ToUnderlying(button); }
-  void SetState(const ButtonState state) noexcept { mEvent.state = ToUnderlying(state); }
+  void SetButton(const MouseButton button) noexcept { mEvent.button = to_underlying(button); }
+  void SetState(const ButtonState state) noexcept { mEvent.state = to_underlying(state); }
 
   void SetClicks(const uint8 clicks) noexcept { mEvent.clicks = clicks; }
 
@@ -676,7 +682,7 @@ class MouseMotionEvent final : public EventBase<SDL_MouseMotionEvent> {
 
   [[nodiscard]] auto IsPressed(const MouseButton button) const noexcept -> bool
   {
-    return mEvent.state & SDL_BUTTON(ToUnderlying(button));
+    return mEvent.state & SDL_BUTTON(to_underlying(button));
   }
 
   [[nodiscard]] auto GetX() const noexcept -> int32 { return mEvent.x; }
@@ -700,7 +706,7 @@ class MouseWheelEvent final : public EventBase<SDL_MouseWheelEvent> {
 
   void SetDirection(const MouseWheelDirection direction) noexcept
   {
-    mEvent.direction = ToUnderlying(direction);
+    mEvent.direction = to_underlying(direction);
   }
 
   [[nodiscard]] auto GetWindowID() const noexcept -> uint32 { return mEvent.windowID; }

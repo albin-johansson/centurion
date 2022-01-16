@@ -1,6 +1,6 @@
-#include "event.hpp"
-
 #include <gtest/gtest.h>
+
+#include "event.hpp"
 
 TEST(SensorEvent, Defaults)
 {
@@ -39,7 +39,7 @@ TEST(SensorEvent, AsSDLEvent)
   const cen::sensor_event event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.sensor.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.sensor.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.sensor.which, event.which());
   ASSERT_EQ(sdl.sensor.timestamp, event.GetTimestamp());
 }

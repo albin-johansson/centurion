@@ -6,9 +6,9 @@
 
 TEST(MessageBoxType, Values)
 {
-  ASSERT_EQ(SDL_MESSAGEBOX_INFORMATION, cen::ToUnderlying(cen::MessageBoxType::Information));
-  ASSERT_EQ(SDL_MESSAGEBOX_WARNING, cen::ToUnderlying(cen::MessageBoxType::Warning));
-  ASSERT_EQ(SDL_MESSAGEBOX_ERROR, cen::ToUnderlying(cen::MessageBoxType::Error));
+  ASSERT_EQ(SDL_MESSAGEBOX_INFORMATION, cen::to_underlying(cen::MessageBoxType::Information));
+  ASSERT_EQ(SDL_MESSAGEBOX_WARNING, cen::to_underlying(cen::MessageBoxType::Warning));
+  ASSERT_EQ(SDL_MESSAGEBOX_ERROR, cen::to_underlying(cen::MessageBoxType::Error));
 }
 
 TEST(MessageBoxType, ToString)

@@ -8,16 +8,16 @@
 TEST(LogCategory, Values)
 {
   ASSERT_EQ(10, cen::log_category_count());
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::app), SDL_LOG_CATEGORY_APPLICATION);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::error), SDL_LOG_CATEGORY_ERROR);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::assert), SDL_LOG_CATEGORY_ASSERT);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::system), SDL_LOG_CATEGORY_SYSTEM);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::audio), SDL_LOG_CATEGORY_AUDIO);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::video), SDL_LOG_CATEGORY_VIDEO);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::render), SDL_LOG_CATEGORY_RENDER);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::input), SDL_LOG_CATEGORY_INPUT);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::test), SDL_LOG_CATEGORY_TEST);
-  ASSERT_EQ(cen::ToUnderlying(cen::log_category::custom), SDL_LOG_CATEGORY_CUSTOM);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::app), SDL_LOG_CATEGORY_APPLICATION);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::error), SDL_LOG_CATEGORY_ERROR);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::assert), SDL_LOG_CATEGORY_ASSERT);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::system), SDL_LOG_CATEGORY_SYSTEM);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::audio), SDL_LOG_CATEGORY_AUDIO);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::video), SDL_LOG_CATEGORY_VIDEO);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::render), SDL_LOG_CATEGORY_RENDER);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::input), SDL_LOG_CATEGORY_INPUT);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::test), SDL_LOG_CATEGORY_TEST);
+  ASSERT_EQ(cen::to_underlying(cen::log_category::custom), SDL_LOG_CATEGORY_CUSTOM);
 }
 
 TEST(LogCategory, ToString)

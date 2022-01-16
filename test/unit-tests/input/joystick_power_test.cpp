@@ -7,13 +7,13 @@
 
 TEST(JoystickPower, Values)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Unknown), SDL_JOYSTICK_POWER_UNKNOWN);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Empty), SDL_JOYSTICK_POWER_EMPTY);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Low), SDL_JOYSTICK_POWER_LOW);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Medium), SDL_JOYSTICK_POWER_MEDIUM);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Full), SDL_JOYSTICK_POWER_FULL);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Wired), SDL_JOYSTICK_POWER_WIRED);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickPower::Max), SDL_JOYSTICK_POWER_MAX);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Unknown), SDL_JOYSTICK_POWER_UNKNOWN);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Empty), SDL_JOYSTICK_POWER_EMPTY);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Low), SDL_JOYSTICK_POWER_LOW);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Medium), SDL_JOYSTICK_POWER_MEDIUM);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Full), SDL_JOYSTICK_POWER_FULL);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Wired), SDL_JOYSTICK_POWER_WIRED);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickPower::Max), SDL_JOYSTICK_POWER_MAX);
 }
 
 TEST(JoystickPower, ToString)

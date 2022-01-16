@@ -9,9 +9,9 @@
 
 TEST(ScaleMode, EnumValues)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::ScaleMode::Linear), SDL_ScaleModeLinear);
-  ASSERT_EQ(cen::ToUnderlying(cen::ScaleMode::Nearest), SDL_ScaleModeNearest);
-  ASSERT_EQ(cen::ToUnderlying(cen::ScaleMode::Best), SDL_ScaleModeBest);
+  ASSERT_EQ(cen::to_underlying(cen::ScaleMode::Linear), SDL_ScaleModeLinear);
+  ASSERT_EQ(cen::to_underlying(cen::ScaleMode::Nearest), SDL_ScaleModeNearest);
+  ASSERT_EQ(cen::to_underlying(cen::ScaleMode::Best), SDL_ScaleModeBest);
 }
 
 TEST(ScaleMode, ToString)

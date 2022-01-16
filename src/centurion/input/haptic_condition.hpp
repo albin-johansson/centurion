@@ -67,7 +67,7 @@ class haptic_condition final : public haptic_effect<haptic_condition> {
    */
   void set_type(const condition_type type) noexcept
   {
-    representation().type = static_cast<uint16>(ToUnderlying(type));
+    representation().type = static_cast<uint16>(to_underlying(type));
   }
 
   /**

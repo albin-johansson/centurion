@@ -9,15 +9,15 @@ using Position = cen::JoyHatPosition;
 
 TEST(JoyHatPosition, Values)
 {
-  ASSERT_EQ(ToUnderlying(Position::LeftUp), SDL_HAT_LEFTUP);
-  ASSERT_EQ(ToUnderlying(Position::Left), SDL_HAT_LEFT);
-  ASSERT_EQ(ToUnderlying(Position::LeftDown), SDL_HAT_LEFTDOWN);
-  ASSERT_EQ(ToUnderlying(Position::Up), SDL_HAT_UP);
-  ASSERT_EQ(ToUnderlying(Position::Centered), SDL_HAT_CENTERED);
-  ASSERT_EQ(ToUnderlying(Position::Down), SDL_HAT_DOWN);
-  ASSERT_EQ(ToUnderlying(Position::RightUp), SDL_HAT_RIGHTUP);
-  ASSERT_EQ(ToUnderlying(Position::Right), SDL_HAT_RIGHT);
-  ASSERT_EQ(ToUnderlying(Position::RightDown), SDL_HAT_RIGHTDOWN);
+  ASSERT_EQ(to_underlying(Position::LeftUp), SDL_HAT_LEFTUP);
+  ASSERT_EQ(to_underlying(Position::Left), SDL_HAT_LEFT);
+  ASSERT_EQ(to_underlying(Position::LeftDown), SDL_HAT_LEFTDOWN);
+  ASSERT_EQ(to_underlying(Position::Up), SDL_HAT_UP);
+  ASSERT_EQ(to_underlying(Position::Centered), SDL_HAT_CENTERED);
+  ASSERT_EQ(to_underlying(Position::Down), SDL_HAT_DOWN);
+  ASSERT_EQ(to_underlying(Position::RightUp), SDL_HAT_RIGHTUP);
+  ASSERT_EQ(to_underlying(Position::Right), SDL_HAT_RIGHT);
+  ASSERT_EQ(to_underlying(Position::RightDown), SDL_HAT_RIGHTDOWN);
 }
 
 TEST(JoyHatPosition, ToString)

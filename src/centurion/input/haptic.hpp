@@ -446,7 +446,7 @@ class basic_haptic final {
    */
   [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept -> bool
   {
-    return has_feature(ToUnderlying(feature));
+    return has_feature(to_underlying(feature));
   }
 
   /**

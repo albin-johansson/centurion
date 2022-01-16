@@ -8,23 +8,23 @@ using ID = cen::WindowEventID;
 
 TEST(WindowEventID, Values)
 {
-  ASSERT_EQ(SDL_WINDOWEVENT_NONE, ToUnderlying(ID::None));
-  ASSERT_EQ(SDL_WINDOWEVENT_SHOWN, ToUnderlying(ID::Shown));
-  ASSERT_EQ(SDL_WINDOWEVENT_HIDDEN, ToUnderlying(ID::Hidden));
-  ASSERT_EQ(SDL_WINDOWEVENT_EXPOSED, ToUnderlying(ID::Exposed));
-  ASSERT_EQ(SDL_WINDOWEVENT_MOVED, ToUnderlying(ID::Moved));
-  ASSERT_EQ(SDL_WINDOWEVENT_RESIZED, ToUnderlying(ID::Resized));
-  ASSERT_EQ(SDL_WINDOWEVENT_SIZE_CHANGED, ToUnderlying(ID::SizeChanged));
-  ASSERT_EQ(SDL_WINDOWEVENT_MINIMIZED, ToUnderlying(ID::Minimized));
-  ASSERT_EQ(SDL_WINDOWEVENT_MAXIMIZED, ToUnderlying(ID::Maximized));
-  ASSERT_EQ(SDL_WINDOWEVENT_RESTORED, ToUnderlying(ID::Restored));
-  ASSERT_EQ(SDL_WINDOWEVENT_ENTER, ToUnderlying(ID::Enter));
-  ASSERT_EQ(SDL_WINDOWEVENT_LEAVE, ToUnderlying(ID::Leave));
-  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_GAINED, ToUnderlying(ID::FocusGained));
-  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_LOST, ToUnderlying(ID::FocusLost));
-  ASSERT_EQ(SDL_WINDOWEVENT_CLOSE, ToUnderlying(ID::Close));
-  ASSERT_EQ(SDL_WINDOWEVENT_TAKE_FOCUS, ToUnderlying(ID::TakeFocus));
-  ASSERT_EQ(SDL_WINDOWEVENT_HIT_TEST, ToUnderlying(ID::HitTest));
+  ASSERT_EQ(SDL_WINDOWEVENT_NONE, to_underlying(ID::None));
+  ASSERT_EQ(SDL_WINDOWEVENT_SHOWN, to_underlying(ID::Shown));
+  ASSERT_EQ(SDL_WINDOWEVENT_HIDDEN, to_underlying(ID::Hidden));
+  ASSERT_EQ(SDL_WINDOWEVENT_EXPOSED, to_underlying(ID::Exposed));
+  ASSERT_EQ(SDL_WINDOWEVENT_MOVED, to_underlying(ID::Moved));
+  ASSERT_EQ(SDL_WINDOWEVENT_RESIZED, to_underlying(ID::Resized));
+  ASSERT_EQ(SDL_WINDOWEVENT_SIZE_CHANGED, to_underlying(ID::SizeChanged));
+  ASSERT_EQ(SDL_WINDOWEVENT_MINIMIZED, to_underlying(ID::Minimized));
+  ASSERT_EQ(SDL_WINDOWEVENT_MAXIMIZED, to_underlying(ID::Maximized));
+  ASSERT_EQ(SDL_WINDOWEVENT_RESTORED, to_underlying(ID::Restored));
+  ASSERT_EQ(SDL_WINDOWEVENT_ENTER, to_underlying(ID::Enter));
+  ASSERT_EQ(SDL_WINDOWEVENT_LEAVE, to_underlying(ID::Leave));
+  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_GAINED, to_underlying(ID::FocusGained));
+  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_LOST, to_underlying(ID::FocusLost));
+  ASSERT_EQ(SDL_WINDOWEVENT_CLOSE, to_underlying(ID::Close));
+  ASSERT_EQ(SDL_WINDOWEVENT_TAKE_FOCUS, to_underlying(ID::TakeFocus));
+  ASSERT_EQ(SDL_WINDOWEVENT_HIT_TEST, to_underlying(ID::HitTest));
 }
 
 TEST(WindowEventID, ToString)

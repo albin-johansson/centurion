@@ -6,17 +6,17 @@
 
 TEST(DisplayOrientation, Values)
 {
-  ASSERT_EQ(SDL_ORIENTATION_UNKNOWN, cen::ToUnderlying(cen::DisplayOrientation::Unknown));
+  ASSERT_EQ(SDL_ORIENTATION_UNKNOWN, cen::to_underlying(cen::DisplayOrientation::Unknown));
 
-  ASSERT_EQ(SDL_ORIENTATION_LANDSCAPE, cen::ToUnderlying(cen::DisplayOrientation::Landscape));
+  ASSERT_EQ(SDL_ORIENTATION_LANDSCAPE, cen::to_underlying(cen::DisplayOrientation::Landscape));
 
   ASSERT_EQ(SDL_ORIENTATION_LANDSCAPE_FLIPPED,
-            cen::ToUnderlying(cen::DisplayOrientation::LandscapeFlipped));
+            cen::to_underlying(cen::DisplayOrientation::LandscapeFlipped));
 
-  ASSERT_EQ(SDL_ORIENTATION_PORTRAIT, cen::ToUnderlying(cen::DisplayOrientation::Portrait));
+  ASSERT_EQ(SDL_ORIENTATION_PORTRAIT, cen::to_underlying(cen::DisplayOrientation::Portrait));
 
   ASSERT_EQ(SDL_ORIENTATION_PORTRAIT_FLIPPED,
-            cen::ToUnderlying(cen::DisplayOrientation::PortraitFlipped));
+            cen::to_underlying(cen::DisplayOrientation::PortraitFlipped));
 }
 
 TEST(DisplayOrientation, ToString)

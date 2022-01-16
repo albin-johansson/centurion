@@ -1,10 +1,9 @@
-#include "event.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/logging.hpp"
+#include "event.hpp"
 
 using EventDispatcher =
     cen::EventDispatcher<cen::quit_event, cen::ControllerButtonEvent, cen::WindowEvent>;

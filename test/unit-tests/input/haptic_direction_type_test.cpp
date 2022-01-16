@@ -8,9 +8,9 @@
 
 TEST(HapticDirectionType, Values)
 {
-  ASSERT_EQ(SDL_HAPTIC_POLAR, cen::ToUnderlying(cen::haptic_direction_type::polar));
-  ASSERT_EQ(SDL_HAPTIC_CARTESIAN, cen::ToUnderlying(cen::haptic_direction_type::cartesian));
-  ASSERT_EQ(SDL_HAPTIC_SPHERICAL, cen::ToUnderlying(cen::haptic_direction_type::spherical));
+  ASSERT_EQ(SDL_HAPTIC_POLAR, cen::to_underlying(cen::haptic_direction_type::polar));
+  ASSERT_EQ(SDL_HAPTIC_CARTESIAN, cen::to_underlying(cen::haptic_direction_type::cartesian));
+  ASSERT_EQ(SDL_HAPTIC_SPHERICAL, cen::to_underlying(cen::haptic_direction_type::spherical));
 }
 
 TEST(HapticDirectionType, ToString)

@@ -254,7 +254,7 @@ inline void set_priority(const log_priority priority) noexcept
  */
 inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
-  SDL_LogSetPriority(ToUnderlying(category), static_cast<SDL_LogPriority>(priority));
+  SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
 
 /**
@@ -268,7 +268,7 @@ inline void set_priority(const log_category category, const log_priority priorit
  */
 [[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
-  return static_cast<log_priority>(SDL_LogGetPriority(ToUnderlying(category)));
+  return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
 
 /**

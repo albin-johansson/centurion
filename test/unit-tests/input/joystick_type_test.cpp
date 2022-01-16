@@ -7,17 +7,19 @@
 
 TEST(JoystickType, Values)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::Unknown), SDL_JOYSTICK_TYPE_UNKNOWN);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::GameController),
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::Unknown), SDL_JOYSTICK_TYPE_UNKNOWN);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::GameController),
             SDL_JOYSTICK_TYPE_GAMECONTROLLER);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::Wheel), SDL_JOYSTICK_TYPE_WHEEL);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::ArcadeStick), SDL_JOYSTICK_TYPE_ARCADE_STICK);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::FlightStick), SDL_JOYSTICK_TYPE_FLIGHT_STICK);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::DancePad), SDL_JOYSTICK_TYPE_DANCE_PAD);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::Guitar), SDL_JOYSTICK_TYPE_GUITAR);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::DrumKit), SDL_JOYSTICK_TYPE_DRUM_KIT);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::ArcadePad), SDL_JOYSTICK_TYPE_ARCADE_PAD);
-  ASSERT_EQ(cen::ToUnderlying(cen::JoystickType::Throttle), SDL_JOYSTICK_TYPE_THROTTLE);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::Wheel), SDL_JOYSTICK_TYPE_WHEEL);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::ArcadeStick),
+            SDL_JOYSTICK_TYPE_ARCADE_STICK);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::FlightStick),
+            SDL_JOYSTICK_TYPE_FLIGHT_STICK);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::DancePad), SDL_JOYSTICK_TYPE_DANCE_PAD);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::Guitar), SDL_JOYSTICK_TYPE_GUITAR);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::DrumKit), SDL_JOYSTICK_TYPE_DRUM_KIT);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::ArcadePad), SDL_JOYSTICK_TYPE_ARCADE_PAD);
+  ASSERT_EQ(cen::to_underlying(cen::JoystickType::Throttle), SDL_JOYSTICK_TYPE_THROTTLE);
 }
 
 TEST(JoystickType, ToString)

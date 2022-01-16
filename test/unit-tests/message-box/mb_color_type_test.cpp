@@ -6,15 +6,15 @@
 
 TEST(MessageBoxColorType, Values)
 {
-  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_TEXT, cen::ToUnderlying(cen::MessageBoxColorType::Text));
+  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_TEXT, cen::to_underlying(cen::MessageBoxColorType::Text));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
-            cen::ToUnderlying(cen::MessageBoxColorType::ButtonSelected));
+            cen::to_underlying(cen::MessageBoxColorType::ButtonSelected));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
-            cen::ToUnderlying(cen::MessageBoxColorType::ButtonBackground));
+            cen::to_underlying(cen::MessageBoxColorType::ButtonBackground));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
-            cen::ToUnderlying(cen::MessageBoxColorType::ButtonBorder));
+            cen::to_underlying(cen::MessageBoxColorType::ButtonBorder));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BACKGROUND,
-            cen::ToUnderlying(cen::MessageBoxColorType::Background));
+            cen::to_underlying(cen::MessageBoxColorType::Background));
 }
 
 TEST(MessageBoxColorType, ToString)

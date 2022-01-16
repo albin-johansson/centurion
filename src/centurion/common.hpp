@@ -124,7 +124,7 @@ using maybe_owner = T;
 
 /// Converts an enum value to the underlying integral value.
 template <typename Enum, enable_for_enum_t<Enum> = 0>
-[[nodiscard]] constexpr auto ToUnderlying(const Enum value) noexcept
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
     -> std::underlying_type_t<Enum>
 {
   return static_cast<std::underlying_type_t<Enum>>(value);

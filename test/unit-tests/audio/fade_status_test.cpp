@@ -7,9 +7,9 @@
 
 TEST(FadeStatus, Values)
 {
-  ASSERT_EQ(MIX_NO_FADING, ToUnderlying(cen::fade_status::none));
-  ASSERT_EQ(MIX_FADING_IN, ToUnderlying(cen::fade_status::in));
-  ASSERT_EQ(MIX_FADING_OUT, ToUnderlying(cen::fade_status::out));
+  ASSERT_EQ(MIX_NO_FADING, to_underlying(cen::fade_status::none));
+  ASSERT_EQ(MIX_FADING_IN, to_underlying(cen::fade_status::in));
+  ASSERT_EQ(MIX_FADING_OUT, to_underlying(cen::fade_status::out));
 }
 
 TEST(FadeStatus, ToString)

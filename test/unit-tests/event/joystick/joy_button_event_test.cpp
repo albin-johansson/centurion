@@ -47,6 +47,6 @@ TEST(JoyButtonEvent, AsSDLEvent)
   const cen::JoyButtonEvent event;
   const auto sdl = cen::AsSDLEvent(event);
 
-  ASSERT_EQ(sdl.jbutton.type, cen::ToUnderlying(event.GetType()));
+  ASSERT_EQ(sdl.jbutton.type, cen::to_underlying(event.GetType()));
   ASSERT_EQ(sdl.jbutton.timestamp, event.GetTimestamp());
 }

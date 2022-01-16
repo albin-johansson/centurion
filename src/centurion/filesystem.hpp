@@ -130,7 +130,7 @@ class File final {
       -> std::optional<int64>
   {
     assert(mContext);
-    const auto result = SDL_RWseek(mContext.get(), offset, ToUnderlying(mode));
+    const auto result = SDL_RWseek(mContext.get(), offset, to_underlying(mode));
     if (result != -1) {
       return result;
     }

@@ -307,8 +307,4 @@ inline namespace time_literals {
 }  // namespace literals
 }  // namespace cen
 
-#ifndef CENTURION_NO_SDL_NAMESPACE_ALIAS
-namespace SDL = cen;
-#endif  // CENTURION_NO_SDL_NAMESPACE_ALIAS
-
 #endif  // CENTURION_COMMON_HPP_

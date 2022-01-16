@@ -15,5 +15,5 @@ class ConditionTest : public testing::Test {
 
 TEST_F(ConditionTest, Constructor)
 {
-  ASSERT_THROW(cen::Condition{}, cen::sdl_error);
+  ASSERT_THROW(cen::condition{}, cen::sdl_error);
 }

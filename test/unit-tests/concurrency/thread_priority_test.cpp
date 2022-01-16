@@ -1,27 +1,26 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "concurrency.hpp"
 
 TEST(ThreadPriority, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Low), SDL_THREAD_PRIORITY_LOW);
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Normal), SDL_THREAD_PRIORITY_NORMAL);
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::High), SDL_THREAD_PRIORITY_HIGH);
-  ASSERT_EQ(cen::to_underlying(cen::ThreadPriority::Critical),
-            SDL_THREAD_PRIORITY_TIME_CRITICAL);
+  ASSERT_EQ(SDL_THREAD_PRIORITY_LOW, to_underlying(cen::thread_priority::low));
+  ASSERT_EQ(SDL_THREAD_PRIORITY_NORMAL, to_underlying(cen::thread_priority::normal));
+  ASSERT_EQ(SDL_THREAD_PRIORITY_HIGH, to_underlying(cen::thread_priority::high));
+  ASSERT_EQ(SDL_THREAD_PRIORITY_TIME_CRITICAL, to_underlying(cen::thread_priority::critical));
 }
 
-TEST(ThreadPriority, ToString)
+TEST(ThreadPriority, to_string)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::ThreadPriority>(5)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::thread_priority>(5)), cen::exception);
 
-  ASSERT_EQ("Low", cen::ToString(cen::ThreadPriority::Low));
-  ASSERT_EQ("Normal", cen::ToString(cen::ThreadPriority::Normal));
-  ASSERT_EQ("High", cen::ToString(cen::ThreadPriority::High));
-  ASSERT_EQ("Critical", cen::ToString(cen::ThreadPriority::Critical));
+  ASSERT_EQ("low", to_string(cen::thread_priority::low));
+  ASSERT_EQ("normal", to_string(cen::thread_priority::normal));
+  ASSERT_EQ("high", to_string(cen::thread_priority::high));
+  ASSERT_EQ("critical", to_string(cen::thread_priority::critical));
 
-  std::clog << "Thread priority example: " << cen::ThreadPriority::High << '\n';
+  std::cout << "thread_priority::high == " << cen::thread_priority::high << '\n';
 }

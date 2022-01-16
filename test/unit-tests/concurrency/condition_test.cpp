@@ -4,36 +4,36 @@
 
 TEST(Condition, Signal)
 {
-  cen::Condition cond;
-  ASSERT_TRUE(cond.Signal());
+  cen::condition cond;
+  ASSERT_TRUE(cond.signal());
 }
 
 TEST(Condition, Broadcast)
 {
-  cen::Condition cond;
-  ASSERT_TRUE(cond.Broadcast());
+  cen::condition cond;
+  ASSERT_TRUE(cond.broadcast());
 }
 
 TEST(Condition, Wait)
 {
-  cen::Mutex mutex;
-  cen::Condition cond;
+  cen::mutex mutex;
+  cen::condition cond;
 
-  ASSERT_TRUE(mutex.Lock());
+  ASSERT_TRUE(mutex.lock());
 
-  cen::Thread thread{[](void* data) {
-                       auto* cond = reinterpret_cast<cen::Condition*>(data);
+  cen::thread thread{[](void* data) {
+                       auto* cond = reinterpret_cast<cen::condition*>(data);
 
                        using namespace cen::literals::time_literals;
-                       cen::Thread::Sleep(50_ms);
+                       cen::thread::sleep(50_ms);
 
-                       cond->Signal();
+                       cond->signal();
 
                        return 0;
                      },
                      "thread",
                      &cond};
 
-  ASSERT_TRUE(cond.Wait(mutex));
-  ASSERT_TRUE(mutex.Unlock());
+  ASSERT_TRUE(cond.wait(mutex));
+  ASSERT_TRUE(mutex.unlock());
 }

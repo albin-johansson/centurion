@@ -48,7 +48,7 @@ int main(int, char**)
   renderer.Present();
 
   using namespace cen::literals;  // For _ms literal
-  cen::Thread::Sleep(2000_ms);    // Wait for 2 seconds so that we can see the result
+  cen::thread::sleep(2000_ms);    // Wait for 2 seconds so that we can see the result
   window.Hide();
 
   return 0;

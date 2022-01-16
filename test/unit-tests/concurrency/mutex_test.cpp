@@ -4,22 +4,25 @@
 
 TEST(Mutex, LockAndUnlock)
 {
-  cen::Mutex mutex;
+  cen::mutex mutex;
 
-  ASSERT_TRUE(mutex.Lock());
-  ASSERT_TRUE(mutex.Unlock());
+  ASSERT_TRUE(mutex.lock());
+  ASSERT_TRUE(mutex.unlock());
 }
 
 TEST(Mutex, TryLock)
 {
-  cen::Mutex mutex;
+  cen::mutex mutex;
 
-  ASSERT_EQ(mutex.TryLock(), cen::LockStatus::Success);
-  ASSERT_TRUE(mutex.Unlock());
+  ASSERT_EQ(mutex.try_lock(), cen::lock_status::success);
+  ASSERT_TRUE(mutex.unlock());
 }
 
-TEST(Mutex, Get)
+TEST(Mutex, Data)
 {
-  cen::Mutex mutex;
-  ASSERT_TRUE(mutex.get());
+  cen::mutex mutex;
+  ASSERT_TRUE(mutex.data());
+
+  const auto& ref = mutex;
+  ASSERT_TRUE(ref.data());
 }

@@ -1,24 +1,24 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "concurrency.hpp"
 
 TEST(LockStatus, Values)
 {
-  ASSERT_EQ(0, cen::to_underlying(cen::LockStatus::Success));
-  ASSERT_EQ(SDL_MUTEX_TIMEDOUT, cen::to_underlying(cen::LockStatus::TimedOut));
-  ASSERT_EQ(-1, cen::to_underlying(cen::LockStatus::Error));
+  ASSERT_EQ(0, to_underlying(cen::lock_status::success));
+  ASSERT_EQ(SDL_MUTEX_TIMEDOUT, to_underlying(cen::lock_status::timed_out));
+  ASSERT_EQ(-1, to_underlying(cen::lock_status::error));
 }
 
-TEST(LockStatus, ToString)
+TEST(LockStatus, to_string)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::LockStatus>(2)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::lock_status>(2)), cen::exception);
 
-  ASSERT_EQ("Success", cen::ToString(cen::LockStatus::Success));
-  ASSERT_EQ("TimedOut", cen::ToString(cen::LockStatus::TimedOut));
-  ASSERT_EQ("Error", cen::ToString(cen::LockStatus::Error));
+  ASSERT_EQ("success", to_string(cen::lock_status::success));
+  ASSERT_EQ("timed_out", to_string(cen::lock_status::timed_out));
+  ASSERT_EQ("error", to_string(cen::lock_status::error));
 
-  std::clog << "Lock status example: " << cen::LockStatus::TimedOut << '\n';
+  std::cout << "lock_status::timed_out == " << cen::lock_status::timed_out << '\n';
 }

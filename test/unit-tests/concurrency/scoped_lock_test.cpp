@@ -4,11 +4,11 @@
 
 #include "concurrency.hpp"
 
-static_assert(!std::is_copy_constructible_v<cen::ScopedLock>);
-static_assert(!std::is_copy_assignable_v<cen::ScopedLock>);
+static_assert(!std::is_copy_constructible_v<cen::scoped_lock>);
+static_assert(!std::is_copy_assignable_v<cen::scoped_lock>);
 
 TEST(ScopedLock, Construction)
 {
-  cen::Mutex mutex;
-  ASSERT_NO_THROW(cen::ScopedLock{mutex});
+  cen::mutex mutex;
+  ASSERT_NO_THROW(cen::scoped_lock{mutex});
 }

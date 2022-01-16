@@ -12,7 +12,7 @@ class TextureHandleTest : public testing::Test {
     constexpr auto path = "resources/panda.png";
     window = std::make_unique<cen::Window>();
     renderer = std::make_unique<cen::Renderer>(*window);
-    texture = std::make_unique<cen::Texture>(*renderer, path);
+    texture = std::make_unique<cen::texture>(*renderer, path);
   }
 
   static void TearDownTestSuite()
@@ -24,23 +24,23 @@ class TextureHandleTest : public testing::Test {
 
   inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
-  inline static std::unique_ptr<cen::Texture> texture;
+  inline static std::unique_ptr<cen::texture> texture;
 };
 
 TEST_F(TextureHandleTest, FromTexture)
 {
-  cen::TextureHandle handle{*texture};
+  cen::texture_handle handle{*texture};
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
 }
 
 TEST_F(TextureHandleTest, FromRawPointer)
 {
-  cen::TextureHandle bad{nullptr};
+  cen::texture_handle bad{nullptr};
   ASSERT_FALSE(bad);
   ASSERT_FALSE(bad.get());
 
-  cen::TextureHandle good{texture->get()};
+  cen::texture_handle good{texture->get()};
   ASSERT_TRUE(good);
   ASSERT_TRUE(good.get());
 }

@@ -220,11 +220,11 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture, const basic_point<P>& position) noexcept
+  auto Render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
       -> result
   {
     if constexpr (basic_point<P>::floating) {
-      const auto size = cast<farea>(texture.GetSize());
+      const auto size = cast<farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
@@ -235,7 +235,7 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture, const basic_rect<P>& destination) noexcept
+  auto Render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
       -> result
   {
     if constexpr (basic_rect<P>::floating) {
@@ -247,7 +247,7 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture,
+  auto Render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<P>& destination) noexcept -> result
   {
@@ -260,7 +260,7 @@ class BasicRenderer final {
   }
 
   template <typename P, typename U>
-  auto Render(const BasicTexture<U>& texture,
+  auto Render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<P>& destination,
               const double angle) noexcept -> result
@@ -286,7 +286,7 @@ class BasicRenderer final {
   }
 
   template <typename R, typename P, typename U>
-  auto Render(const BasicTexture<U>& texture,
+  auto Render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               const double angle,
@@ -318,7 +318,7 @@ class BasicRenderer final {
   }
 
   template <typename R, typename P, typename U>
-  auto Render(const BasicTexture<U>& texture,
+  auto Render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               const double angle,
@@ -370,9 +370,9 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  [[nodiscard]] auto ToTexture(const BasicSurface<U>& surface) const -> Texture
+  [[nodiscard]] auto ToTexture(const BasicSurface<U>& surface) const -> texture
   {
-    return Texture{*this, surface};
+    return texture{*this, surface};
   }
 
   auto SetColor(const color& color) noexcept -> result
@@ -400,9 +400,9 @@ class BasicRenderer final {
   }
 
   template <typename U>
-  auto SetTarget(BasicTexture<U>& target) noexcept -> result
+  auto SetTarget(basic_texture<U>& target) noexcept -> result
   {
-    assert(target.IsTarget());
+    assert(target.is_target());
     return SDL_SetRenderTarget(get(), target.get()) == 0;
   }
 
@@ -436,9 +436,9 @@ class BasicRenderer final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
-  [[nodiscard]] auto GetRenderTarget() noexcept -> TextureHandle
+  [[nodiscard]] auto GetRenderTarget() noexcept -> texture_handle
   {
-    return TextureHandle{SDL_GetRenderTarget(get())};
+    return texture_handle{SDL_GetRenderTarget(get())};
   }
 
   [[nodiscard]] auto GetLogicalSize() const noexcept -> iarea

@@ -54,10 +54,10 @@ class music_example final {
   cen::music mClick;
   bool m_running{true};
 
-  std::vector<cen::Texture> mInstructions;
-  std::optional<cen::Texture> mTexPlayingMusic;
-  std::optional<cen::Texture> mTexFadingMusic;
-  std::optional<cen::Texture> mTexNoMusic;
+  std::vector<cen::texture> mInstructions;
+  std::optional<cen::texture> mTexPlayingMusic;
+  std::optional<cen::texture> mTexFadingMusic;
+  std::optional<cen::texture> mTexNoMusic;
 
   void load_messages()
   {
@@ -105,7 +105,7 @@ class music_example final {
 
   void render()
   {
-    auto position_of = [y = 50](const cen::Texture& texture) mutable {
+    auto position_of = [y = 50](const cen::texture& texture) mutable {
       const auto x = (window_size.width - texture.width()) / 2;
       const auto oldY = y;
 

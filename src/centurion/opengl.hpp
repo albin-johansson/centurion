@@ -326,7 +326,7 @@ inline auto SetSwapInterval(const GLSwapInterval interval) noexcept -> result
 }
 
 template <typename T>
-auto Bind(BasicTexture<T>& texture) noexcept -> std::optional<farea>
+auto Bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
 {
   float width{};
   float height{};
@@ -339,7 +339,7 @@ auto Bind(BasicTexture<T>& texture) noexcept -> std::optional<farea>
 }
 
 template <typename T>
-auto Unbind(BasicTexture<T>& texture) noexcept -> result
+auto Unbind(basic_texture<T>& texture) noexcept -> result
 {
   return SDL_GL_UnbindTexture(texture.get()) == 0;
 }

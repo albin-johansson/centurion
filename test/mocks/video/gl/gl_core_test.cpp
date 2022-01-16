@@ -143,7 +143,7 @@ TEST_F(OpenGLTest, Bind)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_BindTexture, values.data(), cen::isize(values));
 
-  cen::TextureHandle texture{nullptr};
+  cen::texture_handle texture{nullptr};
   ASSERT_FALSE(cen::gl::Bind(texture));
   ASSERT_TRUE(cen::gl::Bind(texture));
   ASSERT_EQ(2u, SDL_GL_BindTexture_fake.call_count);
@@ -154,7 +154,7 @@ TEST_F(OpenGLTest, Unbind)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_UnbindTexture, values.data(), cen::isize(values));
 
-  cen::TextureHandle texture{nullptr};
+  cen::texture_handle texture{nullptr};
   ASSERT_FALSE(cen::gl::Unbind(texture));
   ASSERT_TRUE(cen::gl::Unbind(texture));
   ASSERT_EQ(2u, SDL_GL_UnbindTexture_fake.call_count);

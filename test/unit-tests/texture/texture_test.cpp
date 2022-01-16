@@ -11,13 +11,13 @@
 #include "render.hpp"
 #include "window.hpp"
 
-static_assert(std::is_final_v<cen::Texture>);
+static_assert(std::is_final_v<cen::texture>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::Texture>);
-static_assert(std::is_nothrow_move_assignable_v<cen::Texture>);
+static_assert(std::is_nothrow_move_constructible_v<cen::texture>);
+static_assert(std::is_nothrow_move_assignable_v<cen::texture>);
 
-static_assert(!std::is_copy_constructible_v<cen::Texture>);
-static_assert(!std::is_copy_assignable_v<cen::Texture>);
+static_assert(!std::is_copy_constructible_v<cen::texture>);
+static_assert(!std::is_copy_assignable_v<cen::texture>);
 
 class TextureTest : public testing::Test {
  protected:
@@ -25,7 +25,7 @@ class TextureTest : public testing::Test {
   {
     window = std::make_unique<cen::Window>();
     renderer = std::make_unique<cen::Renderer>(*window);
-    texture = std::make_unique<cen::Texture>(*renderer, path);
+    texture = std::make_unique<cen::texture>(*renderer, path);
   }
 
   static void TearDownTestSuite()
@@ -37,7 +37,7 @@ class TextureTest : public testing::Test {
 
   inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::Renderer> renderer;
-  inline static std::unique_ptr<cen::Texture> texture;
+  inline static std::unique_ptr<cen::texture> texture;
 
   inline constexpr static auto path = "resources/panda.png";
   inline constexpr static int imageWidth = 200;
@@ -46,16 +46,16 @@ class TextureTest : public testing::Test {
 
 TEST_F(TextureTest, PointerConstructor)
 {
-  ASSERT_THROW(cen::Texture{nullptr}, cen::exception);
+  ASSERT_THROW(cen::texture{nullptr}, cen::exception);
 
-  cen::Texture texture{IMG_LoadTexture(renderer->get(), path)};
+  cen::texture texture{IMG_LoadTexture(renderer->get(), path)};
   ASSERT_TRUE(texture.get());
 }
 
 TEST_F(TextureTest, PathConstructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(cen::Texture(*renderer, "badpath"s), cen::img_error);
+  ASSERT_THROW(cen::texture(*renderer, "badpath"s), cen::img_error);
 
   ASSERT_EQ(imageWidth, texture->width());
   ASSERT_EQ(imageHeight, texture->height());
@@ -64,66 +64,66 @@ TEST_F(TextureTest, PathConstructor)
 TEST_F(TextureTest, SurfaceConstructor)
 {
   const cen::Surface surface{path};
-  ASSERT_NO_THROW(cen::Texture(*renderer, surface));
+  ASSERT_NO_THROW(cen::texture(*renderer, surface));
 }
 
 TEST_F(TextureTest, CustomizationConstructor)
 {
   constexpr auto format = cen::PixelFormat::RGBA32;
-  constexpr auto access = cen::TextureAccess::Static;
+  constexpr auto access = cen::texture_access::non_lockable;
   constexpr auto width = 145;
   constexpr auto height = 85;
   constexpr cen::iarea size{width, height};
 
-  const cen::Texture texture{*renderer, format, access, size};
+  const cen::texture texture{*renderer, format, access, size};
 
-  ASSERT_EQ(format, texture.GetFormat());
-  ASSERT_EQ(access, texture.GetAccess());
-  ASSERT_EQ(size, texture.GetSize());
+  ASSERT_EQ(format, texture.format());
+  ASSERT_EQ(access, texture.access());
+  ASSERT_EQ(size, texture.size());
   ASSERT_EQ(width, texture.width());
   ASSERT_EQ(height, texture.height());
 }
 
 TEST_F(TextureTest, SetBlendMode)
 {
-  const auto previous = texture->GetBlendMode();
+  const auto previous = texture->get_blend_mode();
 
   constexpr auto mode = cen::BlendMode::Blend;
-  texture->SetBlendMode(mode);
+  texture->set_blend_mode(mode);
 
-  ASSERT_EQ(mode, texture->GetBlendMode());
+  ASSERT_EQ(mode, texture->get_blend_mode());
 
-  texture->SetBlendMode(previous);
+  texture->set_blend_mode(previous);
 }
 
 TEST_F(TextureTest, SetAlpha)
 {
-  const auto previous = texture->GetAlpha();
+  const auto previous = texture->alpha();
 
   constexpr auto alpha = 0x3A;
-  texture->SetAlpha(alpha);
+  texture->set_alpha(alpha);
 
-  ASSERT_EQ(alpha, texture->GetAlpha());
+  ASSERT_EQ(alpha, texture->alpha());
 
-  texture->SetAlpha(previous);
+  texture->set_alpha(previous);
 }
 
 TEST_F(TextureTest, SetColorMod)
 {
-  const auto previous = texture->GetColorMod();
+  const auto previous = texture->color_mod();
 
   constexpr auto color = cen::colors::misty_rose;
-  texture->SetColorMod(color);
+  texture->set_color_mod(color);
 
-  const auto actualColor = texture->GetColorMod();
+  const auto actualColor = texture->color_mod();
   ASSERT_EQ(color, actualColor);
 
-  texture->SetColorMod(previous);
+  texture->set_color_mod(previous);
 }
 
 TEST_F(TextureTest, Release)
 {
-  cen::Texture texture{*renderer, path};
+  cen::texture texture{*renderer, path};
 
   auto ptr = texture.release();
   ASSERT_TRUE(ptr);
@@ -133,20 +133,20 @@ TEST_F(TextureTest, Release)
 
 TEST_F(TextureTest, IsStatic)
 {
-  const cen::Texture texture{*renderer,
+  const cen::texture texture{*renderer,
                              window->GetPixelFormat(),
-                             cen::TextureAccess::Static,
+                             cen::texture_access::non_lockable,
                              {10, 10}};
-  ASSERT_TRUE(texture.IsStatic());
+  ASSERT_TRUE(texture.is_static());
 }
 
 TEST_F(TextureTest, IsTarget)
 {
-  ASSERT_FALSE(texture->IsTarget());
+  ASSERT_FALSE(texture->is_target());
 
   const auto format = window->GetPixelFormat();
-  const cen::Texture target{*renderer, format, cen::TextureAccess::Target, {10, 10}};
-  ASSERT_TRUE(target.IsTarget());
+  const cen::texture target{*renderer, format, cen::texture_access::target, {10, 10}};
+  ASSERT_TRUE(target.is_target());
 }
 
 TEST_F(TextureTest, GetFormat)
@@ -155,7 +155,7 @@ TEST_F(TextureTest, GetFormat)
   SDL_QueryTexture(texture->get(), &format, nullptr, nullptr, nullptr);
 
   const auto actual = static_cast<cen::PixelFormat>(format);
-  ASSERT_EQ(actual, texture->GetFormat());
+  ASSERT_EQ(actual, texture->format());
 }
 
 TEST_F(TextureTest, GetAccess)
@@ -163,18 +163,18 @@ TEST_F(TextureTest, GetAccess)
   int access{};
   SDL_QueryTexture(texture->get(), nullptr, &access, nullptr, nullptr);
 
-  const auto actual = static_cast<cen::TextureAccess>(access);
-  ASSERT_EQ(actual, texture->GetAccess());
+  const auto actual = static_cast<cen::texture_access>(access);
+  ASSERT_EQ(actual, texture->access());
 }
 
 TEST_F(TextureTest, ColorMod)
 {
-  ASSERT_EQ(cen::colors::white, texture->GetColorMod());
+  ASSERT_EQ(cen::colors::white, texture->color_mod());
 }
 
 TEST_F(TextureTest, GetSize)
 {
-  const auto size = texture->GetSize();
+  const auto size = texture->size();
   ASSERT_EQ(imageWidth, size.width);
   ASSERT_EQ(imageHeight, size.height);
 }
@@ -186,7 +186,7 @@ TEST_F(TextureTest, Get)
 
 TEST_F(TextureTest, ToString)
 {
-  cen::log_info_raw(cen::ToString(*texture));
+  cen::log_info_raw(cen::to_string(*texture));
 }
 
 TEST_F(TextureTest, StreamOperator)
@@ -198,18 +198,18 @@ TEST_F(TextureTest, StreamOperator)
 
 TEST_F(TextureTest, SetScaleMode)
 {
-  const auto previous = texture->GetScaleMode();
+  const auto previous = texture->get_scale_mode();
 
-  texture->SetScaleMode(cen::ScaleMode::Nearest);
-  ASSERT_EQ(cen::ScaleMode::Nearest, texture->GetScaleMode());
+  texture->set_scale_mode(cen::scale_mode::nearest);
+  ASSERT_EQ(cen::scale_mode::nearest, texture->get_scale_mode());
 
-  texture->SetScaleMode(cen::ScaleMode::Linear);
-  ASSERT_EQ(cen::ScaleMode::Linear, texture->GetScaleMode());
+  texture->set_scale_mode(cen::scale_mode::linear);
+  ASSERT_EQ(cen::scale_mode::linear, texture->get_scale_mode());
 
-  texture->SetScaleMode(cen::ScaleMode::Best);
-  ASSERT_EQ(cen::ScaleMode::Best, texture->GetScaleMode());
+  texture->set_scale_mode(cen::scale_mode::best);
+  ASSERT_EQ(cen::scale_mode::best, texture->get_scale_mode());
 
-  texture->SetScaleMode(previous);
+  texture->set_scale_mode(previous);
 }
 
 TEST_F(TextureTest, GetScaleMode)
@@ -217,7 +217,7 @@ TEST_F(TextureTest, GetScaleMode)
   SDL_ScaleMode mode;
   SDL_GetTextureScaleMode(texture->get(), &mode);
 
-  ASSERT_EQ(mode, static_cast<SDL_ScaleMode>(texture->GetScaleMode()));
+  ASSERT_EQ(mode, static_cast<SDL_ScaleMode>(texture->get_scale_mode()));
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

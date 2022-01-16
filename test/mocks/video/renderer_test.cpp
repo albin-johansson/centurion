@@ -111,7 +111,7 @@ class RendererTest : public testing::Test {
   }
 
   cen::RendererHandle renderer{nullptr};
-  cen::TextureHandle texture{nullptr};
+  cen::texture_handle texture{nullptr};
 };
 
 namespace {
@@ -502,7 +502,7 @@ TEST_F(RendererTest, SetTarget)
   std::array functions{QueryTexture};
   SET_CUSTOM_FAKE_SEQ(SDL_QueryTexture, functions.data(), cen::isize(functions));
 
-  cen::TextureHandle handle{nullptr};
+  cen::texture_handle handle{nullptr};
   ASSERT_EQ(cen::failure, renderer.SetTarget(handle));
   ASSERT_EQ(cen::success, renderer.SetTarget(handle));
   ASSERT_EQ(2u, SDL_SetRenderTarget_fake.call_count);

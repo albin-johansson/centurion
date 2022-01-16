@@ -426,7 +426,7 @@ TEST_F(ControllerTest, Update)
 
 TEST_F(ControllerTest, IsSupported)
 {
-  const auto supported = cen::Controller::IsSupported(0);
+  const auto supported [[maybe_unused]] = cen::Controller::IsSupported(0);
   ASSERT_EQ(1u, SDL_IsGameController_fake.call_count);
 }
 

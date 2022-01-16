@@ -14,10 +14,10 @@
  *
  * int main(int, char**)
  * {
- *   cen::SDL sdl;
- *   cen::IMG img;
- *   cen::Mix mix;
- *   cen::TTF ttf;
+ *   cen::sdl sdl;
+ *   cen::img img;
+ *   cen::mix mix;
+ *   cen::ttf ttf;
  *
  *   // ...
  *

@@ -1,13 +1,22 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "audio.hpp"
 #include "common.hpp"
 
 TEST(FadeStatus, Values)
 {
-  ASSERT_EQ(cen::ToUnderlying(cen::FadeStatus::None), MIX_NO_FADING);
-  ASSERT_EQ(cen::ToUnderlying(cen::FadeStatus::In), MIX_FADING_IN);
-  ASSERT_EQ(cen::ToUnderlying(cen::FadeStatus::Out), MIX_FADING_OUT);
+  ASSERT_EQ(MIX_NO_FADING, ToUnderlying(cen::fade_status::none));
+  ASSERT_EQ(MIX_FADING_IN, ToUnderlying(cen::fade_status::in));
+  ASSERT_EQ(MIX_FADING_OUT, ToUnderlying(cen::fade_status::out));
+}
+
+TEST(FadeStatus, ToString)
+{
+  ASSERT_EQ("none", to_string(cen::fade_status::none));
+  ASSERT_EQ("in", to_string(cen::fade_status::in));
+  ASSERT_EQ("out", to_string(cen::fade_status::out));
+
+  std::cout << "fade_status::in == " << cen::fade_status::in << '\n';
 }

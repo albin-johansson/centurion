@@ -95,7 +95,7 @@ using GLContextHandle = BasicGLContext<detail::handle_tag>;
 template <typename T>
 class BasicGLContext final {
  public:
-  explicit BasicGLContext(MaybeOwner<SDL_GLContext> context) noexcept(detail::is_handle<T>)
+  explicit BasicGLContext(maybe_owner<SDL_GLContext> context) noexcept(detail::is_handle<T>)
       : mContext{context}
   {
     if constexpr (detail::is_owner<T>) {

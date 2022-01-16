@@ -63,7 +63,7 @@ class BasicWindow final {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   };
 
-  explicit BasicWindow(MaybeOwner<SDL_Window*> window) noexcept(detail::is_handle<T>)
+  explicit BasicWindow(maybe_owner<SDL_Window*> window) noexcept(detail::is_handle<T>)
       : mWindow{window}
   {
     if constexpr (detail::is_owner<T>) {

@@ -55,7 +55,7 @@ using TextureHandle = BasicTexture<detail::handle_tag>;
 template <typename T>
 class BasicTexture final {
  public:
-  explicit BasicTexture(MaybeOwner<SDL_Texture*> source) noexcept(detail::is_handle<T>)
+  explicit BasicTexture(maybe_owner<SDL_Texture*> source) noexcept(detail::is_handle<T>)
       : mTexture{source}
   {
     if constexpr (detail::is_owner<T>) {
@@ -221,7 +221,7 @@ class BasicTexture final {
 
   /* Releases ownership of the associated SDL texture and returns a pointer to it. */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  [[nodiscard]] auto release() noexcept -> Owner<SDL_Texture*>
+  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
     return mTexture.release();
   }

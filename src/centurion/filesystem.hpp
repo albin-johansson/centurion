@@ -60,7 +60,7 @@ class File final {
   File(const std::string& path, const FileMode mode) noexcept : File{path.c_str(), mode} {}
 
   template <typename T>
-  auto Write(NotNull<const T*> data, const std::size_t count) noexcept -> std::size_t
+  auto Write(not_null<const T*> data, const std::size_t count) noexcept -> std::size_t
   {
     assert(mContext);
     return SDL_RWwrite(get(), data, sizeof(T), count);

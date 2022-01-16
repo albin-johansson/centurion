@@ -28,7 +28,7 @@ class sdl_string final {
    *
    * \param str the string that will be claimed, can be null.
    */
-  explicit sdl_string(Owner<char*> str) noexcept : mStr{str} {}
+  explicit sdl_string(owner<char*> str) noexcept : mStr{str} {}
 
   /**
    * \brief Returns the internal string, which might be null.

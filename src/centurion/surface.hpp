@@ -42,7 +42,7 @@ template <typename T>
 class BasicSurface final {
  public:
   /* Creates a surface based on existing surface, ownership is claimed by owning surfaces */
-  explicit BasicSurface(MaybeOwner<SDL_Surface*> surface) noexcept(detail::is_handle<T>)
+  explicit BasicSurface(maybe_owner<SDL_Surface*> surface) noexcept(detail::is_handle<T>)
       : mSurface{surface}
   {
     if constexpr (detail::is_owner<T>) {
@@ -305,7 +305,7 @@ class BasicSurface final {
 
   void Copy(const BasicSurface& other) { mSurface.reset(other.DuplicateSurface()); }
 
-  [[nodiscard]] auto DuplicateSurface() const -> Owner<SDL_Surface*>
+  [[nodiscard]] auto DuplicateSurface() const -> owner<SDL_Surface*>
   {
     if (auto* copy = SDL_DuplicateSurface(mSurface)) {
       return copy;

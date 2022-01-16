@@ -138,7 +138,7 @@ class BasicController final {
 
   // clang-format off
 
-  explicit BasicController(MaybeOwner<SDL_GameController*> controller) noexcept(detail::is_handle<T>)
+  explicit BasicController(maybe_owner<SDL_GameController*> controller) noexcept(detail::is_handle<T>)
       : mController{controller}
   {
     if constexpr (detail::is_owner<T>) {

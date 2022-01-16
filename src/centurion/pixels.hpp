@@ -161,7 +161,7 @@ class BasicPixelFormatInfo final {
  public:
   // clang-format off
 
-  explicit BasicPixelFormatInfo(MaybeOwner<SDL_PixelFormat*> format) noexcept(detail::is_handle<B>)
+  explicit BasicPixelFormatInfo(maybe_owner<SDL_PixelFormat*> format) noexcept(detail::is_handle<B>)
       : mFormat{format}
   {
     if constexpr (detail::is_owner<B>) {

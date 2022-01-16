@@ -82,7 +82,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(MaybeOwner<SDL_Sensor*> sensor) noexcept(detail::is_handle<T>)
+  explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(detail::is_handle<T>)
       : m_sensor{sensor}
   {
     if constexpr (detail::is_owner<T>) {

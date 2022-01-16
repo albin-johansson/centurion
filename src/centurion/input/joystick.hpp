@@ -77,7 +77,7 @@ using JoystickHandle = BasicJoystick<detail::handle_tag>;
 template <typename T>
 class BasicJoystick final {
  public:
-  explicit BasicJoystick(MaybeOwner<SDL_Joystick*> joystick) noexcept(detail::is_handle<T>)
+  explicit BasicJoystick(maybe_owner<SDL_Joystick*> joystick) noexcept(detail::is_handle<T>)
       : mJoystick{joystick}
   {
     if constexpr (detail::is_owner<T>) {

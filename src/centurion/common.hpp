@@ -103,26 +103,27 @@ inline constexpr bool is_number =
     !std::is_same_v<T, bool> && (std::is_integral_v<T> || std::is_floating_point_v<T>);
 
 template <typename T>
-using RequirePointer = std::enable_if_t<std::is_pointer_v<T>, int>;
+using enable_for_pointer_t = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using RequireConvertible = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_for_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 template <typename T>
-using RequireEnum = std::enable_if_t<std::is_enum_v<T>, int>;
+using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
-template <typename T, RequirePointer<T> = 0>
-using NotNull = T;
+template <typename T, enable_for_pointer_t<T> = 0>
+using not_null = T;
 
-template <typename T, RequirePointer<T> = 0>
-using Owner = T;
+template <typename T, enable_for_pointer_t<T> = 0>
+using owner = T;
 
-template <typename T, RequirePointer<T> = 0>
-using MaybeOwner = T;
+template <typename T, enable_for_pointer_t<T> = 0>
+using maybe_owner = T;
 
 /// Converts an enum value to the underlying integral value.
-template <typename Enum, RequireEnum<Enum> = 0>
+template <typename Enum, enable_for_enum_t<Enum> = 0>
 [[nodiscard]] constexpr auto ToUnderlying(const Enum value) noexcept
     -> std::underlying_type_t<Enum>
 {
@@ -216,17 +217,17 @@ class mix_error final : public exception {
  * \code{cpp}
  *   cen::window window;
  *
- *   if (window.SetOpacity(0.4f))
+ *   if (window.set_opacity(0.4f))
  *   {
  *     // Success!
  *   }
  *
- *   if (window.SetOpacity(0.4f) == cen::success)
+ *   if (window.set_opacity(0.4f) == cen::success)
  *   {
  *     // Success!
  *   }
  *
- *   if (window.SetOpacity(0.4f) == cen::failure)
+ *   if (window.set_opacity(0.4f) == cen::failure)
  *   {
  *     // Failure!
  *   }
@@ -234,8 +235,6 @@ class mix_error final : public exception {
  *
  * \see `success`
  * \see `failure`
- *
- * \since 6.0.0
  */
 class Result final {
  public:
@@ -243,8 +242,6 @@ class Result final {
    * \brief Creates a result.
    *
    * \param success `true` if the result is successful; `false` otherwise.
-   *
-   * \since 6.0.0
    */
   constexpr Result(const bool success) noexcept  // NOLINT implicit
       : mSuccess{success}

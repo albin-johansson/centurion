@@ -551,7 +551,7 @@ class basic_sound_effect final {
    *
    * \throws mix_error if the supplied pointer is null and the sound effect is owning.
    */
-  explicit basic_sound_effect(MaybeOwner<Mix_Chunk*> sound) noexcept(detail::is_handle<T>)
+  explicit basic_sound_effect(maybe_owner<Mix_Chunk*> sound) noexcept(detail::is_handle<T>)
       : mChunk{sound}
   {
     if constexpr (detail::is_owner<T>) {

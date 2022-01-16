@@ -15,7 +15,7 @@ namespace {
 
 using signature_t = SDL_PowerState (*)(int*, int*);
 
-inline constexpr cen::Seconds<int> seconds{1'337};
+inline constexpr cen::seconds<int> seconds{1'337};
 inline constexpr auto percentage = 27;
 
 auto PowerDelegate(int* outSeconds, int* outPercentage) -> SDL_PowerState
@@ -56,7 +56,7 @@ TEST_F(BatteryTest, GetBatteryMinutes)
   signature_t functions[] = {PowerDelegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(std::chrono::duration_cast<cen::Minutes<int>>(seconds), cen::GetBatteryMinutes());
+  ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(seconds), cen::GetBatteryMinutes());
 }
 
 TEST_F(BatteryTest, GetBatteryPercentage)

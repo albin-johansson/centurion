@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           mkdir doxy-bin && cd doxy-bin
-          wget https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
+          wget https://sourceforge.net/projects/doxygen/files/rel-${{env.DOXYGEN_VERSION}}/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz/download
           tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
           cd doxygen-${{env.DOXYGEN_VERSION}}
           mkdir build && cd build

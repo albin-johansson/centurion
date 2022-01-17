@@ -1,28 +1,28 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "texture.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-TEST(ScaleMode, EnumValues)
+TEST(ScaleMode, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::ScaleMode::Linear), SDL_ScaleModeLinear);
-  ASSERT_EQ(cen::to_underlying(cen::ScaleMode::Nearest), SDL_ScaleModeNearest);
-  ASSERT_EQ(cen::to_underlying(cen::ScaleMode::Best), SDL_ScaleModeBest);
+  ASSERT_EQ(SDL_ScaleModeLinear, to_underlying(cen::scale_mode::linear));
+  ASSERT_EQ(SDL_ScaleModeNearest, to_underlying(cen::scale_mode::nearest));
+  ASSERT_EQ(SDL_ScaleModeBest, to_underlying(cen::scale_mode::best));
 }
 
 TEST(ScaleMode, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::ScaleMode>(4)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::scale_mode>(4)), cen::exception);
 
-  ASSERT_EQ("Nearest", cen::ToString(cen::ScaleMode::Nearest));
-  ASSERT_EQ("Linear", cen::ToString(cen::ScaleMode::Linear));
-  ASSERT_EQ("Best", cen::ToString(cen::ScaleMode::Best));
+  ASSERT_EQ("nearest", to_string(cen::scale_mode::nearest));
+  ASSERT_EQ("linear", to_string(cen::scale_mode::linear));
+  ASSERT_EQ("best", to_string(cen::scale_mode::best));
 
-  std::clog << "Scale mode example: " << cen::ScaleMode::Linear << '\n';
+  std::cout << "scale_mode::linear == " << cen::scale_mode::linear << '\n';
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

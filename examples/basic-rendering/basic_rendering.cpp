@@ -10,12 +10,12 @@ int main(int, char**)
   auto [window, renderer] = cen::MakeWindowAndRenderer();
 
   // Here we assume the existence of an image and font
-  const cen::Texture image{renderer, RESOURCE_DIR "panda.png"};
+  const cen::texture image{renderer, RESOURCE_DIR "panda.png"};
   const cen::font font{RESOURCE_DIR "daniel.ttf", 36};
   window.Show();
 
   // Render a string to a texture, which in turn can be rendered to our render target
-  cen::Texture text{renderer, font.render_blended("Hello world!", cen::colors::white)};
+  cen::texture text{renderer, font.render_blended("Hello world!", cen::colors::white)};
 
   // Clear our render target with an arbitrary color
   renderer.ClearWith(cen::colors::light_coral);

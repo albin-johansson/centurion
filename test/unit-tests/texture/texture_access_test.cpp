@@ -1,24 +1,24 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "render.hpp"
 
 TEST(TextureAccess, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::TextureAccess::Static), SDL_TEXTUREACCESS_STATIC);
-  ASSERT_EQ(cen::to_underlying(cen::TextureAccess::Streaming), SDL_TEXTUREACCESS_STREAMING);
-  ASSERT_EQ(cen::to_underlying(cen::TextureAccess::Target), SDL_TEXTUREACCESS_TARGET);
+  ASSERT_EQ(SDL_TEXTUREACCESS_STATIC, to_underlying(cen::texture_access::non_lockable));
+  ASSERT_EQ(SDL_TEXTUREACCESS_STREAMING, to_underlying(cen::texture_access::streaming));
+  ASSERT_EQ(SDL_TEXTUREACCESS_TARGET, to_underlying(cen::texture_access::target));
 }
 
 TEST(TextureAccess, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::TextureAccess>(4)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::texture_access>(4)), cen::exception);
 
-  ASSERT_EQ("Static", cen::ToString(cen::TextureAccess::Static));
-  ASSERT_EQ("Streaming", cen::ToString(cen::TextureAccess::Streaming));
-  ASSERT_EQ("Target", cen::ToString(cen::TextureAccess::Target));
+  ASSERT_EQ("non_lockable", to_string(cen::texture_access::non_lockable));
+  ASSERT_EQ("streaming", to_string(cen::texture_access::streaming));
+  ASSERT_EQ("target", to_string(cen::texture_access::target));
 
-  std::clog << "Texture GetAccess example: " << cen::TextureAccess::Streaming << '\n';
+  std::cout << "texture_access == " << cen::texture_access::streaming << '\n';
 }

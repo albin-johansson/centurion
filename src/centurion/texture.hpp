@@ -30,32 +30,92 @@
 
 namespace cen {
 
-enum class TextureAccess {
-  Static = SDL_TEXTUREACCESS_STATIC,        ///< Texture changes rarely and isn't lockable.
-  Streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
-  Target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
+/// \addtogroup texture
+/// \{
+
+enum class texture_access {
+  non_lockable = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely and isn't lockable.
+  streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
 };
+
+/// \name Texture access functions
+/// \{
+
+[[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
+{
+  switch (access) {
+    case texture_access::non_lockable:
+      return "non_lockable";
+
+    case texture_access::streaming:
+      return "streaming";
+
+    case texture_access::target:
+      return "target";
+
+    default:
+      throw exception{"Did not recognize texture access!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const texture_access access) -> std::ostream&
+{
+  return stream << to_string(access);
+}
+
+/// \} End of texture access functions
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class ScaleMode {
-  Nearest = SDL_ScaleModeNearest,
-  Linear = SDL_ScaleModeLinear,
-  Best = SDL_ScaleModeBest
+enum class scale_mode {
+  nearest = SDL_ScaleModeNearest,
+  linear = SDL_ScaleModeLinear,
+  best = SDL_ScaleModeBest
 };
+
+/// \name Scale mode functions
+/// \{
+
+[[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
+{
+  switch (mode) {
+    case scale_mode::nearest:
+      return "nearest";
+
+    case scale_mode::linear:
+      return "linear";
+
+    case scale_mode::best:
+      return "best";
+
+    default:
+      throw exception{"Did not recognize scale mode!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostream&
+{
+  return stream << to_string(mode);
+}
+
+/// \} End of scale mode functions
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 template <typename T>
-class BasicTexture;
+class basic_texture;
 
-using Texture = BasicTexture<detail::owner_tag>;
-using TextureHandle = BasicTexture<detail::handle_tag>;
+using texture = basic_texture<detail::owner_tag>;
+using texture_handle = basic_texture<detail::handle_tag>;
 
 template <typename T>
-class BasicTexture final {
+class basic_texture final {
  public:
-  explicit BasicTexture(maybe_owner<SDL_Texture*> source) noexcept(detail::is_handle<T>)
+  /// \name Construction
+  /// \{
+
+  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(detail::is_handle<T>)
       : mTexture{source}
   {
     if constexpr (detail::is_owner<T>) {
@@ -66,14 +126,14 @@ class BasicTexture final {
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit BasicTexture(Texture& owner) noexcept : mTexture{owner.get()}
+  explicit basic_texture(texture& owner) noexcept : mTexture{owner.get()}
   {}
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
   /* Creates a texture based the image at the specified path. */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  BasicTexture(const Renderer& renderer, const char* path)
+  basic_texture(const Renderer& renderer, const char* path)
       : mTexture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!mTexture) {
@@ -82,15 +142,15 @@ class BasicTexture final {
   }
 
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  BasicTexture(const Renderer& renderer, const std::string& path)
-      : BasicTexture{renderer, path.c_str()}
+  basic_texture(const Renderer& renderer, const std::string& path)
+      : basic_texture{renderer, path.c_str()}
   {}
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Creates a texture that is a copy of the supplied surface. */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  BasicTexture(const Renderer& renderer, const Surface& surface)
+  basic_texture(const Renderer& renderer, const Surface& surface)
       : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!mTexture) {
@@ -100,10 +160,10 @@ class BasicTexture final {
 
   /* Creates a texture with the specified size, format, and access. */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  BasicTexture(const Renderer& renderer,
-               const PixelFormat format,
-               const TextureAccess access,
-               const iarea size)
+  basic_texture(const Renderer& renderer,
+                const PixelFormat format,
+                const texture_access access,
+                const iarea size)
       : mTexture{SDL_CreateTexture(renderer.get(),
                                    to_underlying(format),
                                    to_underlying(access),
@@ -115,28 +175,30 @@ class BasicTexture final {
     }
   }
 
-  void SetAlpha(const uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
+  /// \} End of construction
 
-  void SetBlendMode(const BlendMode mode) noexcept
-  {
-    SDL_SetTextureBlendMode(mTexture, static_cast<SDL_BlendMode>(mode));
-  }
+  void set_alpha(const uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
 
-  void SetColorMod(const color& color) noexcept
+  void set_color_mod(const color& color) noexcept
   {
     SDL_SetTextureColorMod(mTexture, color.red(), color.green(), color.blue());
   }
 
+  void set_blend_mode(const BlendMode mode) noexcept
+  {
+    SDL_SetTextureBlendMode(mTexture, static_cast<SDL_BlendMode>(mode));
+  }
+
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  void SetScaleMode(const ScaleMode mode) noexcept
+  void set_scale_mode(const scale_mode mode) noexcept
   {
     SDL_SetTextureScaleMode(mTexture, static_cast<SDL_ScaleMode>(mode));
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  [[nodiscard]] auto GetSize() const noexcept -> iarea
+  [[nodiscard]] auto size() const noexcept -> iarea
   {
     int width{};
     int height{};
@@ -146,53 +208,53 @@ class BasicTexture final {
 
   [[nodiscard]] auto width() const noexcept -> int
   {
-    const auto [width, height] = GetSize();
+    const auto [width, height] = size();
     return width;
   }
 
   [[nodiscard]] auto height() const noexcept -> int
   {
-    const auto [width, height] = GetSize();
+    const auto [width, height] = size();
     return height;
   }
 
-  [[nodiscard]] auto GetFormat() const noexcept -> PixelFormat
+  [[nodiscard]] auto format() const noexcept -> PixelFormat
   {
     uint32 format{};
     SDL_QueryTexture(mTexture, &format, nullptr, nullptr, nullptr);
     return static_cast<PixelFormat>(format);
   }
 
-  [[nodiscard]] auto GetAccess() const noexcept -> TextureAccess
+  [[nodiscard]] auto access() const noexcept -> texture_access
   {
     int access{};
     SDL_QueryTexture(mTexture, nullptr, &access, nullptr, nullptr);
-    return static_cast<TextureAccess>(access);
+    return static_cast<texture_access>(access);
   }
 
-  [[nodiscard]] auto IsTarget() const noexcept -> bool
+  [[nodiscard]] auto is_target() const noexcept -> bool
   {
-    return GetAccess() == TextureAccess::Target;
+    return access() == texture_access::target;
   }
 
-  [[nodiscard]] auto IsStatic() const noexcept -> bool
+  [[nodiscard]] auto is_static() const noexcept -> bool
   {
-    return GetAccess() == TextureAccess::Static;
+    return access() == texture_access::non_lockable;
   }
 
-  [[nodiscard]] auto IsStreaming() const noexcept -> bool
+  [[nodiscard]] auto is_streaming() const noexcept -> bool
   {
-    return GetAccess() == TextureAccess::Streaming;
+    return access() == texture_access::streaming;
   }
 
-  [[nodiscard]] auto GetAlpha() const noexcept -> uint8
+  [[nodiscard]] auto alpha() const noexcept -> uint8
   {
     uint8 alpha{};
     SDL_GetTextureAlphaMod(mTexture, &alpha);
     return alpha;
   }
 
-  [[nodiscard]] auto GetColorMod() const noexcept -> color
+  [[nodiscard]] auto color_mod() const noexcept -> color
   {
     uint8 red{};
     uint8 green{};
@@ -201,7 +263,7 @@ class BasicTexture final {
     return {red, green, blue};
   }
 
-  [[nodiscard]] auto GetBlendMode() const noexcept -> BlendMode
+  [[nodiscard]] auto get_blend_mode() const noexcept -> BlendMode
   {
     SDL_BlendMode mode{};
     SDL_GetTextureBlendMode(mTexture, &mode);
@@ -210,11 +272,11 @@ class BasicTexture final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  [[nodiscard]] auto GetScaleMode() const noexcept -> ScaleMode
+  [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
   {
     SDL_ScaleMode mode{};
     SDL_GetTextureScaleMode(mTexture, &mode);
-    return static_cast<ScaleMode>(mode);
+    return static_cast<scale_mode>(mode);
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -238,74 +300,33 @@ class BasicTexture final {
   detail::pointer<T, SDL_Texture> mTexture;
 };
 
-[[nodiscard]] constexpr auto ToString(const TextureAccess access) -> std::string_view
-{
-  switch (access) {
-    case TextureAccess::Static:
-      return "Static";
-
-    case TextureAccess::Streaming:
-      return "Streaming";
-
-    case TextureAccess::Target:
-      return "Target";
-
-    default:
-      throw exception{"Did not recognize texture GetAccess!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const TextureAccess access) -> std::ostream&
-{
-  return stream << ToString(access);
-}
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-[[nodiscard]] constexpr auto ToString(const ScaleMode mode) -> std::string_view
-{
-  switch (mode) {
-    case ScaleMode::Nearest:
-      return "Nearest";
-
-    case ScaleMode::Linear:
-      return "Linear";
-
-    case ScaleMode::Best:
-      return "Best";
-
-    default:
-      throw exception{"Did not recognize scale mode!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const ScaleMode mode) -> std::ostream&
-{
-  return stream << ToString(mode);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+/// \name Texture functions
+/// \{
 
 template <typename T>
-[[nodiscard]] auto ToString(const BasicTexture<T>& texture) -> std::string
+[[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("Texture(data: {}, width: {}, height: {})",
+  return std::format("texture(data: {}, width: {}, height: {})",
                      detail::address_of(texture.get()),
                      texture.width(),
                      texture.height());
 #else
-  return "Texture(data: " + detail::address_of(texture.get()) +
+  return "texture(data: " + detail::address_of(texture.get()) +
          ", width: " + std::to_string(texture.width()) +
          ", height: " + std::to_string(texture.height()) + ")";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
-auto operator<<(std::ostream& stream, const BasicTexture<T>& texture) -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
 {
-  return stream << ToString(texture);
+  return stream << to_string(texture);
 }
+
+/// \} End of texture functions
+
+/// \} End of group texture
 
 }  // namespace cen
 

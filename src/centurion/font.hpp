@@ -704,7 +704,7 @@ class font_cache final {
    * \brief Provides cached information about a glyph in a font.
    */
   struct glyph_data final {
-    Texture texture;        ///< The cached texture of the glyph.
+    texture texture;        ///< The cached texture of the glyph.
     glyph_metrics metrics;  ///< The metrics associate with the glyph.
   };
 
@@ -1130,7 +1130,7 @@ class font_cache final {
    *
    * \return the cached string texture; a null pointer is returned if no match was found.
    */
-  [[nodiscard]] auto find_string(const id_type id) const -> const Texture*
+  [[nodiscard]] auto find_string(const id_type id) const -> const texture*
   {
     if (const auto iter = mStrings.find(id); iter != mStrings.end()) {
       return &iter->second;
@@ -1163,7 +1163,7 @@ class font_cache final {
    *
    * \see `find_string()`
    */
-  [[nodiscard]] auto get_string(const id_type id) const -> const Texture&
+  [[nodiscard]] auto get_string(const id_type id) const -> const texture&
   {
     if (const auto* ptr = find_string(id)) {
       return *ptr;
@@ -1335,12 +1335,12 @@ class font_cache final {
  private:
   font mFont;
   std::unordered_map<unicode_t, glyph_data> mGlyphs;
-  std::unordered_map<id_type, Texture> mStrings;
+  std::unordered_map<id_type, texture> mStrings;
   id_type mNextStringId{1};
 
   template <typename T>
   [[nodiscard]] auto make_glyph_texture(BasicRenderer<T>& renderer, const unicode_t glyph)
-      -> Texture
+      -> texture
   {
     return renderer.ToTexture(mFont.render_blended_glyph(glyph, renderer.GetColor()));
   }

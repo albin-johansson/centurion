@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(centurion
-    VERSION 6.3.0
+    VERSION 6.3.1
     HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
     LANGUAGES CXX)
 

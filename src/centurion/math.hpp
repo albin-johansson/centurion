@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -323,7 +323,8 @@ template <typename T>
 [[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept ->
     typename basic_point<T>::value_type
 {
-  const auto distance = std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+  const auto distance =
+      std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   if constexpr (basic_point<T>::integral) {
     return static_cast<int>(std::round(distance));
   }

@@ -30,8 +30,8 @@ static_assert(!cen::fpoint::integral);
 
 TEST(Point, GetDistanceUnitXStep)
 {
-  const cen::ipoint a{0, 123};
-  const cen::ipoint b{1, 123};
+  const cen::ipoint a{0, 0};
+  const cen::ipoint b{1, 0};
 
   ASSERT_EQ(cen::distance(a, b), 1);
   ASSERT_EQ(cen::distance(b, a), 1);
@@ -39,22 +39,31 @@ TEST(Point, GetDistanceUnitXStep)
 
 TEST(Point, GetDistanceUnitYStep)
 {
-  const cen::ipoint a{123, 0};
-  const cen::ipoint b{123, 1};
+  const cen::ipoint a{0, 0};
+  const cen::ipoint b{0, 1};
 
   ASSERT_EQ(cen::distance(a, b), 1);
   ASSERT_EQ(cen::distance(b, a), 1);
 }
 
-TEST(Point, GetDistance)
+TEST(Point, DistanceInt)
 {
-  const cen::fpoint a{189.2f, 86.9f};
-  const cen::fpoint b{66.5f, 36.6f};
+  const cen::ipoint a{42, 38};
+  const cen::ipoint b{357, 752};
+  const auto expected = 780;
 
-  const auto expected = std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
+  ASSERT_FLOAT_EQ(cen::distance(a, b), expected);
+  ASSERT_FLOAT_EQ(cen::distance(b, a), expected);
+}
 
-  ASSERT_EQ(cen::distance(a, b), expected);
-  ASSERT_EQ(cen::distance(b, a), expected);
+TEST(Point, DistanceFloat)
+{
+  const cen::fpoint a{189, 86};
+  const cen::fpoint b{66, 36};
+  const auto expected = 17.0f * std::sqrt(61.0f);
+
+  ASSERT_FLOAT_EQ(cen::distance(a, b), expected);
+  ASSERT_FLOAT_EQ(cen::distance(b, a), expected);
 }
 
 TEST(Point, EqualityOperatorReflexivity)

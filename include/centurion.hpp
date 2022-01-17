@@ -61646,13 +61646,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -64830,13 +64830,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -65716,13 +65716,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -78627,13 +78627,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -80224,13 +80224,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -95182,13 +95182,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -102269,13 +102269,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 
@@ -116884,13 +116884,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), 2);
+    const auto yDiff = std::pow(from.y() - to.y(), 2);
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), 2) + std::pow(from.y() - to.y(), 2));
   }
 }
 

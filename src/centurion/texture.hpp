@@ -149,8 +149,8 @@ class basic_texture final {
 #endif  // CENTURION_NO_SDL_IMAGE
 
   /* Creates a texture that is a copy of the supplied surface. */
-  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const surface& surface)
+  template <typename Renderer, typename S, typename TT = T, detail::enable_for_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const basic_surface<S>& surface)
       : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!mTexture) {

@@ -31,6 +31,15 @@
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
+/**
+ * \defgroup common Common
+ *
+ * \brief Common utilities used throughout the library.
+ */
+
+/// \addtogroup common
+/// \{
+
 #define CENTURION_DISABLE_COPY(Class) \
   Class(const Class&) = delete;       \
   Class& operator=(const Class&) = delete;
@@ -38,6 +47,8 @@
 #define CENTURION_DISABLE_MOVE(Class) \
   Class(Class&&) = delete;            \
   Class& operator=(Class&&) = delete;
+
+/// \} End of group common
 
 namespace cen {
 

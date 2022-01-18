@@ -159,7 +159,7 @@ class basic_texture final {
    * \throws img_error if the texture cannot be created.
    */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const char* path)
+  [[deprecated]] basic_texture(const Renderer& renderer, const char* path)
       : mTexture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!mTexture) {
@@ -169,7 +169,7 @@ class basic_texture final {
 
   /// \copydoc basic_texture(const Renderer&, const char*)
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const std::string& path)
+  [[deprecated]] basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
 
@@ -184,7 +184,7 @@ class basic_texture final {
    * \todo basic_renderer::create_texture?
    */
   template <typename Renderer, typename S, typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const basic_surface<S>& surface)
+  [[deprecated]] basic_texture(const Renderer& renderer, const basic_surface<S>& surface)
       : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!mTexture) {
@@ -205,10 +205,10 @@ class basic_texture final {
    * \throws sdl_error if the texture cannot be created.
    */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_texture(const Renderer& renderer,
-                const pixel_format format,
-                const texture_access access,
-                const iarea size)
+  [[deprecated]] basic_texture(const Renderer& renderer,
+                               const pixel_format format,
+                               const texture_access access,
+                               const iarea size)
       : mTexture{SDL_CreateTexture(renderer.get(),
                                    to_underlying(format),
                                    to_underlying(access),

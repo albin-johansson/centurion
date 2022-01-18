@@ -113,6 +113,17 @@ class BasicWindow final {
   explicit BasicWindow(const Window& owner) noexcept : mWindow{owner.get()}
   {}
 
+  [[nodiscard]] auto create_renderer(const uint32 flags = renderer::default_flags())
+      -> renderer
+  {
+    if (auto* ptr = SDL_CreateRenderer(get(), -1, flags)) {
+      return renderer{ptr};
+    }
+    else {
+      throw sdl_error{};
+    }
+  }
+
   void Show() noexcept { SDL_ShowWindow(mWindow); }
 
   void Hide() noexcept { SDL_HideWindow(mWindow); }
@@ -466,18 +477,17 @@ auto operator<<(std::ostream& stream, const BasicWindow<T>& window) -> std::ostr
 }
 
 template <typename T>
-[[nodiscard]] auto GetRenderer(const BasicWindow<T>& window) noexcept -> RendererHandle
+[[nodiscard]] auto GetRenderer(const BasicWindow<T>& window) noexcept -> renderer_handle
 {
-  return RendererHandle{SDL_GetRenderer(window.get())};
+  return renderer_handle{SDL_GetRenderer(window.get())};
 }
 
 [[nodiscard]] inline auto MakeWindowAndRenderer(const iarea size = Window::GetDefaultSize(),
                                                 const uint32 flags = Window::GetDefaultFlags())
-    -> std::pair<Window, Renderer>
+    -> std::pair<Window, renderer>
 {
   cen::Window window{"Centurion window", size, flags};
-  cen::Renderer renderer{window};
-  return std::make_pair(std::move(window), std::move(renderer));
+  return std::make_pair(std::move(window), window.create_renderer());
 }
 
 }  // namespace cen

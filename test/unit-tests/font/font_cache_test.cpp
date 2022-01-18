@@ -13,7 +13,7 @@ class FontCacheTest : public testing::Test {
   static void SetUpTestSuite()
   {
     window = std::make_unique<cen::Window>();
-    renderer = std::make_unique<cen::Renderer>(*window);
+    renderer = std::make_unique<cen::renderer>(window->create_renderer());
   }
 
   static void TearDownTestSuite()
@@ -27,7 +27,7 @@ class FontCacheTest : public testing::Test {
   const cen::UnicodeString unicode_string{'b', 'a', 'r'};
 
   inline static std::unique_ptr<cen::Window> window;
-  inline static std::unique_ptr<cen::Renderer> renderer;
+  inline static std::unique_ptr<cen::renderer> renderer;
   cen::font_cache cache;
 };
 

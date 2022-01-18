@@ -26,11 +26,11 @@ int main(int, char**)
       }
     }
 
-    renderer.ClearWith(cen::colors::coral);
+    renderer.clear_with(cen::colors::coral);
 
     /* Miscellaneous rendering code goes here... */
 
-    renderer.Present();
+    renderer.present();
   }
 
   /* Make the window invisible again, this might not be necessary, but it doesn't hurt */

@@ -24,8 +24,8 @@ class TextureTest : public testing::Test {
   static void SetUpTestSuite()
   {
     window = std::make_unique<cen::Window>();
-    renderer = std::make_unique<cen::Renderer>(*window);
-    texture = std::make_unique<cen::texture>(*renderer, path);
+    renderer = std::make_unique<cen::renderer>(window->create_renderer());
+    texture = std::make_unique<cen::texture>(renderer->create_texture(path));
   }
 
   static void TearDownTestSuite()
@@ -36,7 +36,7 @@ class TextureTest : public testing::Test {
   }
 
   inline static std::unique_ptr<cen::Window> window;
-  inline static std::unique_ptr<cen::Renderer> renderer;
+  inline static std::unique_ptr<cen::renderer> renderer;
   inline static std::unique_ptr<cen::texture> texture;
 
   inline constexpr static auto path = "resources/panda.png";
@@ -55,7 +55,7 @@ TEST_F(TextureTest, PointerConstructor)
 TEST_F(TextureTest, PathConstructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(cen::texture(*renderer, "badpath"s), cen::img_error);
+  ASSERT_THROW(renderer->create_texture("badpath"s), cen::img_error);
 
   ASSERT_EQ(imageWidth, texture->width());
   ASSERT_EQ(imageHeight, texture->height());
@@ -64,7 +64,7 @@ TEST_F(TextureTest, PathConstructor)
 TEST_F(TextureTest, SurfaceConstructor)
 {
   const cen::surface surface{path};
-  ASSERT_NO_THROW(cen::texture(*renderer, surface));
+  ASSERT_NO_THROW(renderer->create_texture(surface));
 }
 
 TEST_F(TextureTest, CustomizationConstructor)
@@ -75,7 +75,7 @@ TEST_F(TextureTest, CustomizationConstructor)
   constexpr auto height = 85;
   constexpr cen::iarea size{width, height};
 
-  const cen::texture texture{*renderer, format, access, size};
+  const auto texture = renderer->create_texture(size, format, access);
 
   ASSERT_EQ(format, texture.format());
   ASSERT_EQ(access, texture.access());
@@ -123,7 +123,7 @@ TEST_F(TextureTest, SetColorMod)
 
 TEST_F(TextureTest, Release)
 {
-  cen::texture texture{*renderer, path};
+  auto texture = renderer->create_texture(path);
 
   auto ptr = texture.release();
   ASSERT_TRUE(ptr);
@@ -133,10 +133,9 @@ TEST_F(TextureTest, Release)
 
 TEST_F(TextureTest, IsStatic)
 {
-  const cen::texture texture{*renderer,
-                             window->GetPixelFormat(),
-                             cen::texture_access::non_lockable,
-                             {10, 10}};
+  const auto texture = renderer->create_texture({10, 10},
+                                                window->GetPixelFormat(),
+                                                cen::texture_access::non_lockable);
   ASSERT_TRUE(texture.is_static());
 }
 
@@ -145,7 +144,7 @@ TEST_F(TextureTest, IsTarget)
   ASSERT_FALSE(texture->is_target());
 
   const auto format = window->GetPixelFormat();
-  const cen::texture target{*renderer, format, cen::texture_access::target, {10, 10}};
+  const auto target = renderer->create_texture({10, 10}, format, cen::texture_access::target);
   ASSERT_TRUE(target.is_target());
 }
 

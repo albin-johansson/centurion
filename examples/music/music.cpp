@@ -21,7 +21,7 @@ class music_example final {
  public:
   music_example()
       : mWindow{"Music example", window_size, cen::Window::Hidden | cen::Window::AllowHighDPI}
-      , mRenderer{mWindow}
+      , mRenderer{mWindow.create_renderer()}
       , mFont{RESOURCE_DIR "fira_code.ttf", 16}
       , mSong{RESOURCE_DIR "hiddenPond.mp3"}
       , mClick{RESOURCE_DIR "click.wav"}
@@ -47,7 +47,7 @@ class music_example final {
 
  private:
   cen::Window mWindow;
-  cen::Renderer mRenderer;
+  cen::renderer mRenderer;
   cen::font mFont;
   event_dispatcher mDispatcher;
   cen::music mSong;
@@ -69,12 +69,12 @@ class music_example final {
     mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_fade, color));
     mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_halt, color));
 
-    mTexPlayingMusic =
-        mRenderer.ToTexture(mFont.render_blended_latin1(msg_playing, cen::colors::lime_green));
-    mTexFadingMusic =
-        mRenderer.ToTexture(mFont.render_blended_latin1(msg_fading, cen::colors::hot_pink));
+    mTexPlayingMusic = mRenderer.create_texture(
+        mFont.render_blended_latin1(msg_playing, cen::colors::lime_green));
+    mTexFadingMusic = mRenderer.create_texture(
+        mFont.render_blended_latin1(msg_fading, cen::colors::hot_pink));
     mTexNoMusic =
-        mRenderer.ToTexture(mFont.render_blended_latin1(msg_no_music, cen::colors::red));
+        mRenderer.create_texture(mFont.render_blended_latin1(msg_no_music, cen::colors::red));
   }
 
   void on_quit_event(const cen::quit_event&) { m_running = false; }
@@ -113,24 +113,24 @@ class music_example final {
       return cen::ipoint{x, oldY};
     };
 
-    mRenderer.ClearWith(cen::colors::steel_blue);
+    mRenderer.clear_with(cen::colors::steel_blue);
 
     for (const auto& texture : mInstructions) {
-      mRenderer.Render(texture, position_of(texture));
+      mRenderer.render(texture, position_of(texture));
     }
 
     constexpr cen::ipoint offset{0, 25};
     if (cen::music::is_playing() && !cen::music::is_fading()) {
-      mRenderer.Render(*mTexPlayingMusic, position_of(*mTexPlayingMusic) + offset);
+      mRenderer.render(*mTexPlayingMusic, position_of(*mTexPlayingMusic) + offset);
     }
     else if (cen::music::is_fading()) {
-      mRenderer.Render(*mTexFadingMusic, position_of(*mTexFadingMusic) + offset);
+      mRenderer.render(*mTexFadingMusic, position_of(*mTexFadingMusic) + offset);
     }
     else {
-      mRenderer.Render(*mTexNoMusic, position_of(*mTexNoMusic) + offset);
+      mRenderer.render(*mTexNoMusic, position_of(*mTexNoMusic) + offset);
     }
 
-    mRenderer.Present();
+    mRenderer.present();
   }
 };
 

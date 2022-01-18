@@ -110,7 +110,7 @@ class RendererTest : public testing::Test {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
   }
 
-  cen::RendererHandle renderer{nullptr};
+  cen::renderer_handle renderer{nullptr};
   cen::texture_handle texture{nullptr};
 };
 
@@ -171,9 +171,9 @@ void validate_render_function(const Fake& fake, Args&&... args)
 
   if constexpr (sizeof...(Args) >= 5) {
     const auto flip = std::get<4>(tuple);
-    static_assert(std::is_same_v<const SDL_RendererFlip, decltype(flip)>);
+    static_assert(std::is_same_v<const cen::renderer_flip, decltype(flip)>);
 
-    ASSERT_EQ(flip, fake.arg6_val);
+    ASSERT_EQ(static_cast<SDL_RendererFlip>(flip), fake.arg6_val);
   }
 }
 
@@ -181,13 +181,13 @@ void validate_render_function(const Fake& fake, Args&&... args)
 
 TEST_F(RendererTest, Clear)
 {
-  renderer.Clear();
+  renderer.clear();
   ASSERT_EQ(1u, SDL_RenderClear_fake.call_count);
 }
 
 TEST_F(RendererTest, ClearWith)
 {
-  renderer.ClearWith(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
+  renderer.clear_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
 
   ASSERT_EQ(1u, SDL_GetRenderDrawColor_fake.call_count);
   ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
@@ -201,7 +201,7 @@ TEST_F(RendererTest, ClearWith)
 
 TEST_F(RendererTest, Present)
 {
-  renderer.Present();
+  renderer.present();
   ASSERT_EQ(1u, SDL_RenderPresent_fake.call_count);
 }
 
@@ -209,12 +209,12 @@ TEST_F(RendererTest, DrawRect)
 {
   {
     constexpr cen::irect rect;
-    renderer.DrawRect(rect);
+    renderer.draw_rect(rect);
   }
 
   {
     constexpr cen::frect rect;
-    renderer.DrawRect(rect);
+    renderer.draw_rect(rect);
   }
 
   ASSERT_EQ(1u, SDL_RenderDrawRect_fake.call_count);
@@ -223,11 +223,11 @@ TEST_F(RendererTest, DrawRect)
 
 TEST_F(RendererTest, FillRect)
 {
-  renderer.FillRect(cen::irect{});
+  renderer.fill_rect(cen::irect{});
   ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
   ASSERT_EQ(0u, SDL_RenderFillRectF_fake.call_count);
 
-  renderer.FillRect(cen::frect{});
+  renderer.fill_rect(cen::frect{});
   ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
   ASSERT_EQ(1u, SDL_RenderFillRectF_fake.call_count);
 }
@@ -237,8 +237,8 @@ TEST_F(RendererTest, DrawPoint)
   const cen::ipoint ipoint;
   const cen::fpoint fpoint;
 
-  renderer.DrawPoint(ipoint);
-  renderer.DrawPoint(fpoint);
+  renderer.draw_point(ipoint);
+  renderer.draw_point(fpoint);
 
   ASSERT_EQ(1u, SDL_RenderDrawPoint_fake.call_count);
   ASSERT_EQ(1u, SDL_RenderDrawPointF_fake.call_count);
@@ -246,14 +246,14 @@ TEST_F(RendererTest, DrawPoint)
 
 TEST_F(RendererTest, Fill)
 {
-  renderer.Fill();
+  renderer.fill();
   ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
   ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
 }
 
 TEST_F(RendererTest, FillWith)
 {
-  renderer.FillWith(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
+  renderer.fill_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
   ASSERT_EQ(1u, SDL_GetRenderDrawColor_fake.call_count);
   ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
   ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
@@ -270,7 +270,7 @@ TEST_F(RendererTest, DrawLine)
   {
     const cen::ipoint start{12, 34};
     const cen::ipoint end{56, 78};
-    renderer.DrawLine(start, end);
+    renderer.draw_line(start, end);
 
     ASSERT_EQ(start.x(), SDL_RenderDrawLine_fake.arg1_val);
     ASSERT_EQ(start.y(), SDL_RenderDrawLine_fake.arg2_val);
@@ -281,7 +281,7 @@ TEST_F(RendererTest, DrawLine)
   {
     const cen::fpoint start{12, 34};
     const cen::fpoint end{56, 78};
-    renderer.DrawLine(start, end);
+    renderer.draw_line(start, end);
 
     ASSERT_EQ(start.x(), SDL_RenderDrawLineF_fake.arg1_val);
     ASSERT_EQ(start.y(), SDL_RenderDrawLineF_fake.arg2_val);
@@ -297,7 +297,7 @@ TEST_F(RendererTest, DrawLines)
 {
   {
     std::array<cen::ipoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
-    renderer.DrawLines(points);
+    renderer.draw_lines(points);
     ASSERT_EQ(1u, SDL_RenderDrawLines_fake.call_count);
     ASSERT_EQ(0u, SDL_RenderDrawLinesF_fake.call_count);
 
@@ -309,7 +309,7 @@ TEST_F(RendererTest, DrawLines)
 
   {
     std::array<cen::fpoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
-    renderer.DrawLines(points);
+    renderer.draw_lines(points);
     ASSERT_EQ(1u, SDL_RenderDrawLines_fake.call_count);
     ASSERT_EQ(1u, SDL_RenderDrawLinesF_fake.call_count);
 
@@ -324,12 +324,12 @@ TEST_F(RendererTest, RenderWithPoint)
 {
   {
     const cen::ipoint pos{12, 34};
-    renderer.Render(texture, pos);
+    renderer.render(texture, pos);
   }
 
   {
     const cen::fpoint pos{56, 78};
-    renderer.Render(texture, pos);
+    renderer.render(texture, pos);
   }
 
   ASSERT_EQ(1u, SDL_RenderCopy_fake.call_count);
@@ -338,10 +338,10 @@ TEST_F(RendererTest, RenderWithPoint)
 
 TEST_F(RendererTest, RenderWithRectangle)
 {
-  renderer.Render(texture, cen::irect{});
+  renderer.render(texture, cen::irect{});
   ASSERT_EQ(1u, SDL_RenderCopy_fake.call_count);
 
-  renderer.Render(texture, cen::frect{});
+  renderer.render(texture, cen::frect{});
   ASSERT_EQ(1u, SDL_RenderCopyF_fake.call_count);
 }
 
@@ -351,7 +351,7 @@ TEST_F(RendererTest, RenderWithSourceDestination)
     const cen::irect src{{12, 34}, {56, 78}};
     const cen::irect dst{{21, 43}, {65, 87}};
 
-    renderer.Render(texture, src, dst);
+    renderer.render(texture, src, dst);
     validate_render_function(SDL_RenderCopy_fake, src, dst);
   }
 
@@ -359,7 +359,7 @@ TEST_F(RendererTest, RenderWithSourceDestination)
     const cen::irect src{{12, 34}, {56, 78}};
     const cen::frect dst{{21, 43}, {65, 87}};
 
-    renderer.Render(texture, src, dst);
+    renderer.render(texture, src, dst);
     validate_render_function(SDL_RenderCopyF_fake, src, dst);
   }
 
@@ -374,7 +374,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngle)
     const cen::irect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
 
-    renderer.Render(texture, src, dst, angle);
+    renderer.render(texture, src, dst, angle);
     validate_render_function(SDL_RenderCopyEx_fake, src, dst, angle);
   }
 
@@ -383,7 +383,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngle)
     const cen::frect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
 
-    renderer.Render(texture, src, dst, angle);
+    renderer.render(texture, src, dst, angle);
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle);
   }
 
@@ -399,7 +399,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
     const auto angle = 12.3;
     const cen::ipoint center{15, 12};
 
-    renderer.Render(texture, src, dst, angle, center);
+    renderer.render(texture, src, dst, angle, center, cen::renderer_flip::none);
     validate_render_function(SDL_RenderCopyEx_fake, src, dst, angle, center);
   }
 
@@ -409,7 +409,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
     const auto angle = 12.3;
     const cen::fpoint center{15, 12};
 
-    renderer.Render(texture, src, dst, angle, center);
+    renderer.render(texture, src, dst, angle, center, cen::renderer_flip::none);
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle, center);
   }
 
@@ -424,9 +424,9 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     const cen::irect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::ipoint center{15, 12};
-    const auto flip = SDL_FLIP_HORIZONTAL;
+    const auto flip = cen::renderer_flip::horizontal;
 
-    renderer.Render(texture, src, dst, angle, center, flip);
+    renderer.render(texture, src, dst, angle, center, flip);
     validate_render_function(SDL_RenderCopyEx_fake, src, dst, angle, center, flip);
   }
 
@@ -435,9 +435,9 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     const cen::frect dst{{21, 43}, {65, 87}};
     const auto angle = 12.3;
     const cen::fpoint center{15, 12};
-    const auto flip = SDL_FLIP_VERTICAL;
+    const auto flip = cen::renderer_flip::vertical;
 
-    renderer.Render(texture, src, dst, angle, center, flip);
+    renderer.render(texture, src, dst, angle, center, flip);
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle, center, flip);
   }
 
@@ -447,7 +447,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
 
 TEST_F(RendererTest, ResetTarget)
 {
-  renderer.ResetTarget();
+  renderer.reset_target();
   ASSERT_EQ(1u, SDL_SetRenderTarget_fake.call_count);
 }
 
@@ -456,8 +456,8 @@ TEST_F(RendererTest, SetColor)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SetRenderDrawColor, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::failure, renderer.SetColor(cen::colors::cyan));
-  ASSERT_EQ(cen::success, renderer.SetColor(cen::colors::cyan));
+  ASSERT_EQ(cen::failure, renderer.set_color(cen::colors::cyan));
+  ASSERT_EQ(cen::success, renderer.set_color(cen::colors::cyan));
   ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
 }
 
@@ -467,8 +467,8 @@ TEST_F(RendererTest, SetClip)
   SET_RETURN_SEQ(SDL_RenderSetClipRect, values.data(), cen::isize(values));
 
   const cen::irect rect{42, 27, 123, 321};
-  ASSERT_EQ(cen::failure, renderer.SetClip(rect));
-  ASSERT_EQ(cen::success, renderer.SetClip(rect));
+  ASSERT_EQ(cen::failure, renderer.set_clip(rect));
+  ASSERT_EQ(cen::success, renderer.set_clip(rect));
   ASSERT_EQ(2u, SDL_RenderSetClipRect_fake.call_count);
 }
 
@@ -478,8 +478,8 @@ TEST_F(RendererTest, SetViewport)
   SET_RETURN_SEQ(SDL_RenderSetViewport, values.data(), cen::isize(values));
 
   const cen::irect rect{12, 34, 56, 78};
-  ASSERT_EQ(cen::failure, renderer.SetViewport(rect));
-  ASSERT_EQ(cen::success, renderer.SetViewport(rect));
+  ASSERT_EQ(cen::failure, renderer.set_viewport(rect));
+  ASSERT_EQ(cen::success, renderer.set_viewport(rect));
   ASSERT_EQ(2u, SDL_RenderSetViewport_fake.call_count);
 }
 
@@ -489,8 +489,8 @@ TEST_F(RendererTest, SetBlendMode)
   SET_RETURN_SEQ(SDL_SetRenderDrawBlendMode, values.data(), cen::isize(values));
 
   const cen::irect rect{12, 34, 56, 78};
-  ASSERT_EQ(cen::failure, renderer.SetBlendMode(cen::BlendMode::Blend));
-  ASSERT_EQ(cen::success, renderer.SetBlendMode(cen::BlendMode::Blend));
+  ASSERT_EQ(cen::failure, renderer.set_blend_mode(cen::BlendMode::Blend));
+  ASSERT_EQ(cen::success, renderer.set_blend_mode(cen::BlendMode::Blend));
   ASSERT_EQ(2u, SDL_SetRenderDrawBlendMode_fake.call_count);
 }
 
@@ -503,14 +503,14 @@ TEST_F(RendererTest, SetTarget)
   SET_CUSTOM_FAKE_SEQ(SDL_QueryTexture, functions.data(), cen::isize(functions));
 
   cen::texture_handle handle{nullptr};
-  ASSERT_EQ(cen::failure, renderer.SetTarget(handle));
-  ASSERT_EQ(cen::success, renderer.SetTarget(handle));
+  ASSERT_EQ(cen::failure, renderer.set_target(handle));
+  ASSERT_EQ(cen::success, renderer.set_target(handle));
   ASSERT_EQ(2u, SDL_SetRenderTarget_fake.call_count);
 }
 
 TEST_F(RendererTest, GetOutputSize)
 {
-  const auto size [[maybe_unused]] = renderer.GetOutputSize();
+  const auto size [[maybe_unused]] = renderer.output_size();
   ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
   ASSERT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg1_val);
   ASSERT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg2_val);
@@ -518,13 +518,13 @@ TEST_F(RendererTest, GetOutputSize)
 
 TEST_F(RendererTest, IsUsingIntegerLogicalScaling)
 {
-  const auto scaling [[maybe_unused]] = renderer.IsUsingIntegerLogicalScaling();
+  const auto scaling [[maybe_unused]] = renderer.using_integer_logical_scaling();
   ASSERT_EQ(1u, SDL_RenderGetIntegerScale_fake.call_count);
 }
 
 TEST_F(RendererTest, IsClippingEnabled)
 {
-  const auto isClipping [[maybe_unused]] = renderer.IsClippingEnabled();
+  const auto isClipping [[maybe_unused]] = renderer.is_clipping_enabled();
   ASSERT_EQ(1u, SDL_RenderIsClipEnabled_fake.call_count);
 }
 
@@ -535,10 +535,10 @@ TEST_F(RendererTest, SetVSync)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_RenderSetVSync, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::failure, renderer.SetVSync(false));
+  ASSERT_EQ(cen::failure, renderer.set_vsync(false));
   ASSERT_EQ(0, SDL_RenderSetVSync_fake.arg1_val);
 
-  ASSERT_EQ(cen::success, renderer.SetVSync(true));
+  ASSERT_EQ(cen::success, renderer.set_vsync(true));
   ASSERT_EQ(1, SDL_RenderSetVSync_fake.arg1_val);
 }
 

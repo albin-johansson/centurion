@@ -11,8 +11,8 @@ class TextureHandleTest : public testing::Test {
   {
     constexpr auto path = "resources/panda.png";
     window = std::make_unique<cen::Window>();
-    renderer = std::make_unique<cen::Renderer>(*window);
-    texture = std::make_unique<cen::texture>(*renderer, path);
+    renderer = std::make_unique<cen::renderer>(window->create_renderer());
+    texture = std::make_unique<cen::texture>(renderer->create_texture(path));
   }
 
   static void TearDownTestSuite()
@@ -23,7 +23,7 @@ class TextureHandleTest : public testing::Test {
   }
 
   inline static std::unique_ptr<cen::Window> window;
-  inline static std::unique_ptr<cen::Renderer> renderer;
+  inline static std::unique_ptr<cen::renderer> renderer;
   inline static std::unique_ptr<cen::texture> texture;
 };
 

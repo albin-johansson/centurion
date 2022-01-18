@@ -53,33 +53,33 @@ class RendererInfoTest : public testing::Test {
   }
 };
 
-TEST_F(RendererInfoTest, Foo)
+TEST_F(RendererInfoTest, Test)
 {
   std::array functions{get_renderer_info};
   SET_CUSTOM_FAKE_SEQ(SDL_GetRendererInfo, functions.data(), cen::isize(functions));
 
-  cen::RendererHandle handle{nullptr};
+  cen::renderer_handle handle{nullptr};
 
-  const auto info = cen::GetInfo(handle);
+  const auto info = cen::get_info(handle);
   ASSERT_TRUE(info);
 
-  ASSERT_STREQ(name, info->GetName());
+  ASSERT_STREQ(name, info->name());
 
-  ASSERT_EQ(flags, info->GetSupportedFlags());
-  ASSERT_TRUE(info->HasVSync());
-  ASSERT_TRUE(info->HasHardwareAcceleration());
-  ASSERT_FALSE(info->HasTargetTextures());
-  ASSERT_FALSE(info->HasSoftwareRenderer());
+  ASSERT_EQ(flags, info->supported_flags());
+  ASSERT_TRUE(info->has_vsync());
+  ASSERT_TRUE(info->is_accelerated());
+  ASSERT_FALSE(info->has_target_textures());
+  ASSERT_FALSE(info->is_software());
 
-  ASSERT_EQ(max_texture_width, info->GetMaxTextureWidth());
-  ASSERT_EQ(max_texture_height, info->GetMaxTextureHeight());
-  ASSERT_EQ(max_texture_width, info->GetMaxTextureSize().width);
-  ASSERT_EQ(max_texture_height, info->GetMaxTextureSize().height);
+  ASSERT_EQ(max_texture_width, info->max_texture_width());
+  ASSERT_EQ(max_texture_height, info->max_texture_height());
+  ASSERT_EQ(max_texture_width, info->max_texture_size().width);
+  ASSERT_EQ(max_texture_height, info->max_texture_size().height);
 
-  ASSERT_EQ(num_texture_formats, info->GetPixelFormats());
-  ASSERT_EQ(texture_format_0, static_cast<Uint32>(info->GetFormat(0)));
-  ASSERT_EQ(texture_format_1, static_cast<Uint32>(info->GetFormat(1)));
-  ASSERT_EQ(texture_format_2, static_cast<Uint32>(info->GetFormat(2)));
+  ASSERT_EQ(num_texture_formats, info->format_count());
+  ASSERT_EQ(texture_format_0, static_cast<Uint32>(info->get_format(0)));
+  ASSERT_EQ(texture_format_1, static_cast<Uint32>(info->get_format(1)));
+  ASSERT_EQ(texture_format_2, static_cast<Uint32>(info->get_format(2)));
 
-  std::clog << *info << '\n';
+  std::cout << *info << '\n';
 }

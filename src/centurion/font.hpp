@@ -744,7 +744,7 @@ class font_cache final {
    * \return the x-coordinate intended to be used by a consecutive glyph.
    */
   template <typename T>
-  auto render_glyph(BasicRenderer<T>& renderer, const unicode_t glyph, const ipoint& position)
+  auto render_glyph(basic_renderer<T>& renderer, const unicode_t glyph, const ipoint& position)
       -> int
   {
     if (const auto* data = find_glyph(glyph)) {
@@ -755,7 +755,7 @@ class font_cache final {
       const auto x = position.x() + metrics.min_x - outline;
       const auto y = position.y() - outline;
 
-      renderer.Render(texture, ipoint{x, y});
+      renderer.render(texture, ipoint{x, y});
 
       return x + metrics.advance;
     }
@@ -781,7 +781,7 @@ class font_cache final {
    * \see `render_glyph()`
    */
   template <typename T, typename String>
-  void render_text(BasicRenderer<T>& renderer, const String& str, ipoint position)
+  void render_text(basic_renderer<T>& renderer, const String& str, ipoint position)
   {
     const auto originalX = position.x();
     const auto lineSkip = mFont.line_skip();
@@ -815,7 +815,7 @@ class font_cache final {
    * \see `font::render_solid()`
    */
   template <typename T>
-  auto store_solid(BasicRenderer<T>& renderer, const char* str, const color& fg) -> id_type
+  auto store_solid(basic_renderer<T>& renderer, const char* str, const color& fg) -> id_type
   {
     assert(str);
     return store(renderer, mFont.render_solid(str, fg));
@@ -823,7 +823,7 @@ class font_cache final {
 
   /// \copydoc store_solid()
   template <typename T>
-  auto store_solid(BasicRenderer<T>& renderer, const std::string& str, const color& fg)
+  auto store_solid(basic_renderer<T>& renderer, const std::string& str, const color& fg)
       -> id_type
   {
     return store_solid(renderer, str.c_str(), fg);
@@ -842,7 +842,7 @@ class font_cache final {
    * \see `font::render_shaded()`
    */
   template <typename T>
-  auto store_shaded(BasicRenderer<T>& renderer,
+  auto store_shaded(basic_renderer<T>& renderer,
                     const char* str,
                     const color& fg,
                     const color& bg) -> id_type
@@ -853,7 +853,7 @@ class font_cache final {
 
   /// \copydoc store_shaded()
   template <typename T>
-  auto store_shaded(BasicRenderer<T>& renderer,
+  auto store_shaded(basic_renderer<T>& renderer,
                     const std::string& str,
                     const color& fg,
                     const color& bg) -> id_type
@@ -873,7 +873,7 @@ class font_cache final {
    * \see `font::render_blended()`
    */
   template <typename T>
-  auto store_blended(BasicRenderer<T>& renderer, const char* str, const color& fg) -> id_type
+  auto store_blended(basic_renderer<T>& renderer, const char* str, const color& fg) -> id_type
   {
     assert(str);
     return store(renderer, mFont.render_blended(str, fg));
@@ -881,7 +881,7 @@ class font_cache final {
 
   /// \copydoc store_blended()
   template <typename T>
-  auto store_blended(BasicRenderer<T>& renderer, const std::string& str, const color& fg)
+  auto store_blended(basic_renderer<T>& renderer, const std::string& str, const color& fg)
       -> id_type
   {
     return store_blended(renderer, str.c_str(), fg);
@@ -900,7 +900,7 @@ class font_cache final {
    * \see `font::render_wrapped()`
    */
   template <typename T>
-  auto store_wrapped(BasicRenderer<T>& renderer,
+  auto store_wrapped(basic_renderer<T>& renderer,
                      const char* str,
                      const color& fg,
                      const uint32 wrap) -> id_type
@@ -911,7 +911,7 @@ class font_cache final {
 
   /// \copydoc store_wrapped()
   template <typename T>
-  auto store_wrapped(BasicRenderer<T>& renderer,
+  auto store_wrapped(basic_renderer<T>& renderer,
                      const std::string& str,
                      const color& fg,
                      const uint32 wrap) -> id_type
@@ -931,7 +931,7 @@ class font_cache final {
    * \see `font::render_solid_latin1()`
    */
   template <typename T>
-  auto store_solid_latin1(BasicRenderer<T>& renderer, const char* str, const color& fg)
+  auto store_solid_latin1(basic_renderer<T>& renderer, const char* str, const color& fg)
       -> id_type
   {
     assert(str);
@@ -940,7 +940,7 @@ class font_cache final {
 
   /// \copydoc store_solid_latin1()
   template <typename T>
-  auto store_solid_latin1(BasicRenderer<T>& renderer, const std::string& str, const color& fg)
+  auto store_solid_latin1(basic_renderer<T>& renderer, const std::string& str, const color& fg)
       -> id_type
   {
     return store_solid_latin1(renderer, str.c_str(), fg);
@@ -959,7 +959,7 @@ class font_cache final {
    * \see `font::render_shaded_latin1()`
    */
   template <typename T>
-  auto store_shaded_latin1(BasicRenderer<T>& renderer,
+  auto store_shaded_latin1(basic_renderer<T>& renderer,
                            const char* str,
                            const color& fg,
                            const color& bg) -> id_type
@@ -970,7 +970,7 @@ class font_cache final {
 
   /// \copydoc store_shaded_latin1()
   template <typename T>
-  auto store_shaded_latin1(BasicRenderer<T>& renderer,
+  auto store_shaded_latin1(basic_renderer<T>& renderer,
                            const std::string& str,
                            const color& fg,
                            const color& bg) -> id_type
@@ -990,7 +990,7 @@ class font_cache final {
    * \see `font::render_blended_latin1()`
    */
   template <typename T>
-  auto store_blended_latin1(BasicRenderer<T>& renderer, const char* str, const color& fg)
+  auto store_blended_latin1(basic_renderer<T>& renderer, const char* str, const color& fg)
       -> id_type
   {
     assert(str);
@@ -999,7 +999,7 @@ class font_cache final {
 
   /// \copydoc store_blended_latin1()
   template <typename T>
-  auto store_blended_latin1(BasicRenderer<T>& renderer,
+  auto store_blended_latin1(basic_renderer<T>& renderer,
                             const std::string& str,
                             const color& fg) -> id_type
   {
@@ -1019,7 +1019,7 @@ class font_cache final {
    * \see `font::render_wrapped_latin1()`
    */
   template <typename T>
-  auto store_wrapped_latin1(BasicRenderer<T>& renderer,
+  auto store_wrapped_latin1(basic_renderer<T>& renderer,
                             const char* str,
                             const color& fg,
                             const uint32 wrap) -> id_type
@@ -1030,7 +1030,7 @@ class font_cache final {
 
   /// \copydoc store_wrapped_latin1()
   template <typename T>
-  auto store_wrapped_latin1(BasicRenderer<T>& renderer,
+  auto store_wrapped_latin1(basic_renderer<T>& renderer,
                             const std::string& str,
                             const color& fg,
                             const uint32 wrap) -> id_type
@@ -1050,7 +1050,7 @@ class font_cache final {
    * \see `font::render_solid_unicode()`
    */
   template <typename T>
-  auto store_solid_unicode(BasicRenderer<T>& renderer,
+  auto store_solid_unicode(basic_renderer<T>& renderer,
                            const UnicodeString& str,
                            const color& fg) -> id_type
   {
@@ -1070,7 +1070,7 @@ class font_cache final {
    * \see `font::render_shaded_unicode()`
    */
   template <typename T>
-  auto store_shaded_unicode(BasicRenderer<T>& renderer,
+  auto store_shaded_unicode(basic_renderer<T>& renderer,
                             const UnicodeString& str,
                             const color& fg,
                             const color& bg) -> id_type
@@ -1090,7 +1090,7 @@ class font_cache final {
    * \see `font::render_blended_unicode()`
    */
   template <typename T>
-  auto store_blended_unicode(BasicRenderer<T>& renderer,
+  auto store_blended_unicode(basic_renderer<T>& renderer,
                              const UnicodeString& str,
                              const color& fg) -> id_type
   {
@@ -1110,7 +1110,7 @@ class font_cache final {
    * \see `font::render_wrapped_unicode()`
    */
   template <typename T>
-  auto store_wrapped_unicode(BasicRenderer<T>& renderer,
+  auto store_wrapped_unicode(basic_renderer<T>& renderer,
                              const UnicodeString& str,
                              const color& fg,
                              const uint32 wrap) -> id_type
@@ -1188,7 +1188,7 @@ class font_cache final {
    * \param glyph the glyph that will be cached.
    */
   template <typename T>
-  void store_glyph(BasicRenderer<T>& renderer, const unicode_t glyph)
+  void store_glyph(basic_renderer<T>& renderer, const unicode_t glyph)
   {
     if (has_glyph(glyph) || !mFont.is_glyph_provided(glyph)) {
       return;
@@ -1211,7 +1211,7 @@ class font_cache final {
    * \see https://unicode-table.com/en/blocks/
    */
   template <typename T>
-  void store_glyphs(BasicRenderer<T>& renderer, const unicode_t begin, const unicode_t end)
+  void store_glyphs(basic_renderer<T>& renderer, const unicode_t begin, const unicode_t end)
   {
     for (auto glyph = begin; glyph < end; ++glyph) {
       store_glyph(renderer, glyph);
@@ -1228,7 +1228,7 @@ class font_cache final {
    * \see `store_glyphs()`
    */
   template <typename T>
-  void store_basic_latin_glyphs(BasicRenderer<T>& renderer)
+  void store_basic_latin_glyphs(basic_renderer<T>& renderer)
   {
     /* https://unicode-table.com/en/blocks/basic-latin/ */
     store_glyphs(renderer, 0x20, 0x7F);
@@ -1244,7 +1244,7 @@ class font_cache final {
    * \see `store_glyphs()`
    */
   template <typename T>
-  void store_latin1_supplement_glyphs(BasicRenderer<T>& renderer)
+  void store_latin1_supplement_glyphs(basic_renderer<T>& renderer)
   {
     /* https://unicode-table.com/en/blocks/latin-1-supplement/ */
     store_glyphs(renderer, 0xA0, 0xFF + 0x1);
@@ -1259,7 +1259,7 @@ class font_cache final {
    * \see `store_latin1_supplement_glyphs()`
    */
   template <typename T>
-  void store_latin1_glyphs(BasicRenderer<T>& renderer)
+  void store_latin1_glyphs(basic_renderer<T>& renderer)
   {
     store_basic_latin_glyphs(renderer);
     store_latin1_supplement_glyphs(renderer);
@@ -1339,19 +1339,19 @@ class font_cache final {
   id_type mNextStringId{1};
 
   template <typename T>
-  [[nodiscard]] auto make_glyph_texture(BasicRenderer<T>& renderer, const unicode_t glyph)
+  [[nodiscard]] auto make_glyph_texture(basic_renderer<T>& renderer, const unicode_t glyph)
       -> texture
   {
-    return renderer.ToTexture(mFont.render_blended_glyph(glyph, renderer.GetColor()));
+    return renderer.create_texture(mFont.render_blended_glyph(glyph, renderer.get_color()));
   }
 
   template <typename T>
-  auto store(BasicRenderer<T>& renderer, surface&& surface) -> id_type
+  auto store(basic_renderer<T>& renderer, surface&& surface) -> id_type
   {
     const auto id = mNextStringId;
     assert(mStrings.find(id) == mStrings.end());
 
-    mStrings.try_emplace(id, renderer.ToTexture(surface));
+    mStrings.try_emplace(id, renderer.create_texture(surface));
     ++mNextStringId;
 
     return id;

@@ -704,7 +704,7 @@ class font_cache final {
    * \brief Provides cached information about a glyph in a font.
    */
   struct glyph_data final {
-    texture texture;        ///< The cached texture of the glyph.
+    texture glyph;          ///< The cached texture of the glyph.
     glyph_metrics metrics;  ///< The metrics associate with the glyph.
   };
 

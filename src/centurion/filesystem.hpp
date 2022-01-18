@@ -20,6 +20,12 @@
 
 namespace cen {
 
+/**
+ * \defgroup filesystem Filesystem
+ *
+ * \brief Provides low-level abstractions for files and directories.
+ */
+
 /// \addtogroup filesystem
 /// \{
 
@@ -77,23 +83,23 @@ inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostre
  * \details The enumerators directly correspond to each of the possible SDL file mode strings.
  */
 enum class file_mode {
-  r,   ///< Read existing.
-  rb,  ///< Read existing binary.
+  r,   ///< Read existing ("r").
+  rb,  ///< Read existing binary ("rb").
 
-  w,   ///< Write.
-  wb,  ///< Write binary.
+  w,   ///< Write ("w").
+  wb,  ///< Write binary ("wb").
 
-  a,   ///< Append/create.
-  ab,  ///< Append/create binary.
+  a,   ///< Append/create ("a").
+  ab,  ///< Append/create binary ("ab").
 
-  rx,   ///< Read/write existing.
-  rbx,  ///< Read/write existing binary.
+  rx,   ///< Read/write existing ("r+").
+  rbx,  ///< Read/write existing binary ("rb+").
 
-  wx,   ///< Read/write replace.
-  wbx,  ///< Read/write replace binary.
+  wx,   ///< Read/write replace ("w+").
+  wbx,  ///< Read/write replace binary ("wb+").
 
-  ax,   ///< Read/append.
-  abx,  ///< Read/append binary.
+  ax,   ///< Read/append ("a+").
+  abx,  ///< Read/append binary ("ab+").
 };
 
 /// \name File mode functions

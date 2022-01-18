@@ -82,7 +82,7 @@ int main(int, char**)
   const cen::ttf ttf;
     
   cen::window window{"Centurion"};
-  cen::renderer renderer{window};
+  cen::renderer renderer = window.create_renderer();
   
   window.show();
   

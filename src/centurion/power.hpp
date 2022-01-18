@@ -12,7 +12,7 @@
 namespace cen {
 
 /**
- * \defgroup power
+ * \defgroup power Power
  *
  * \brief Provides information about the system power resources.
  */

@@ -516,8 +516,8 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 template <typename T>
 class basic_sound_effect;
 
-using sound_effect = basic_sound_effect<detail::owner_tag>;
-using sound_effect_handle = basic_sound_effect<detail::handle_tag>;
+using sound_effect = basic_sound_effect<detail::owner_tag>;          ///< An owning sound.
+using sound_effect_handle = basic_sound_effect<detail::handle_tag>;  ///< A non-owning sound.
 
 /**
  * \brief Represents a sound effect.

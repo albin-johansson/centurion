@@ -27,7 +27,7 @@
 namespace cen {
 
 /**
- * \defgroup audio
+ * \defgroup audio Audio
  *
  * \brief Provides music and sound effect facilities, based on SDL_mixer.
  */

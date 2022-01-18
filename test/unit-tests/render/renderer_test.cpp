@@ -21,7 +21,7 @@ class RendererTest : public testing::Test {
     window = std::make_unique<cen::Window>();
 
     renderer = std::make_unique<cen::renderer>(window->create_renderer());
-    texture = std::make_unique<cen::texture>(*renderer, "resources/panda.png");
+    texture = std::make_unique<cen::texture>(renderer->create_texture("resources/panda.png"));
   }
 
   static void TearDownTestSuite()

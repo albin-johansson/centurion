@@ -3,10 +3,6 @@
 
 #include <SDL.h>
 
-#ifndef CENTURION_NO_SDL_IMAGE
-#include <SDL_image.h>
-#endif  // CENTURION_NO_SDL_IMAGE
-
 #include <cassert>      // assert
 #include <cstddef>      // size_t
 #include <ostream>      // ostream
@@ -145,78 +141,6 @@ class basic_texture final {
       if (!mTexture) {
         throw exception{"Cannot create texture from null pointer!"};
       }
-    }
-  }
-
-#ifndef CENTURION_NO_SDL_IMAGE
-
-  /**
-   * \brief Creates a texture based on an image file.
-   *
-   * \param renderer the renderer that will be used.
-   * \param path the file path to the source image.
-   *
-   * \throws img_error if the texture cannot be created.
-   */
-  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  [[deprecated]] basic_texture(const Renderer& renderer, const char* path)
-      : mTexture{IMG_LoadTexture(renderer.get(), path)}
-  {
-    if (!mTexture) {
-      throw img_error{};
-    }
-  }
-
-  /// \copydoc basic_texture(const Renderer&, const char*)
-  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  [[deprecated]] basic_texture(const Renderer& renderer, const std::string& path)
-      : basic_texture{renderer, path.c_str()}
-  {}
-
-#endif  // CENTURION_NO_SDL_IMAGE
-
-  /**
-   * \brief Creates a texture based on an existing surface.
-   *
-   * \param renderer the renderer that will be used.
-   * \param surface the surface that will be copied.
-   *
-   * \todo basic_renderer::create_texture?
-   */
-  template <typename Renderer, typename S, typename TT = T, detail::enable_for_owner<TT> = 0>
-  [[deprecated]] basic_texture(const Renderer& renderer, const basic_surface<S>& surface)
-      : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
-  {
-    if (!mTexture) {
-      throw sdl_error{};
-    }
-  }
-
-  /**
-   * \brief Creates a blank texture with the specified characteristics.
-   *
-   * \param renderer the renderer that will be used.
-   * \param format the pixel format that will be used.
-   * \param access the texture access that will be used.
-   * \param size the size of the texture.
-   *
-   * \todo basic_renderer::create_texture?
-   *
-   * \throws sdl_error if the texture cannot be created.
-   */
-  template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  [[deprecated]] basic_texture(const Renderer& renderer,
-                               const pixel_format format,
-                               const texture_access access,
-                               const iarea size)
-      : mTexture{SDL_CreateTexture(renderer.get(),
-                                   to_underlying(format),
-                                   to_underlying(access),
-                                   size.width,
-                                   size.height)}
-  {
-    if (!mTexture) {
-      throw sdl_error{};
     }
   }
 

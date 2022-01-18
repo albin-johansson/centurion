@@ -81,7 +81,7 @@ int main(int, char**)
   const cen::mix mix;
   const cen::ttf ttf;
     
-  cen::window window{"Centurion"};
+  cen::window window;
   cen::renderer renderer = window.create_renderer();
   
   window.show();

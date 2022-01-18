@@ -249,9 +249,9 @@ enum class orientation {
   }
 }
 
-inline auto operator<<(std::ostream& stream, const orientation orientation) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const orientation o) -> std::ostream&
 {
-  return stream << to_string(orientation);
+  return stream << to_string(o);
 }
 
 /// \} End of orientation functions

@@ -24,6 +24,16 @@
 
 namespace cen {
 
+/**
+ * \defgroup pixels Pixels
+ *
+ * \brief Contains utilities related to pixel formats and colors.
+ *
+ * \see `palette`
+ * \see `pixel_format`
+ * \see `pixel_format_info`
+ */
+
 /// \addtogroup pixels
 /// \{
 

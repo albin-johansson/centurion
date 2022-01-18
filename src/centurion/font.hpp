@@ -449,22 +449,22 @@ class font final {
   /// \{
 
   [[nodiscard]] auto render_solid_glyph(const unicode_t glyph, const color& fg) const
-      -> Surface
+      -> surface
   {
-    return Surface{TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
+    return surface{TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
   }
 
   [[nodiscard]] auto render_shaded_glyph(const unicode_t glyph,
                                          const color& fg,
-                                         const color& bg) const -> Surface
+                                         const color& bg) const -> surface
   {
-    return Surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
+    return surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_blended_glyph(const unicode_t glyph, const color& fg) const
-      -> Surface
+      -> surface
   {
-    return Surface{TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
+    return surface{TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
   }
 
   /// \} End of glyph rendering functions
@@ -499,134 +499,134 @@ class font final {
     return calc_size(str.c_str());
   }
 
-  [[nodiscard]] auto render_solid(const char* str, const color& fg) const -> Surface
+  [[nodiscard]] auto render_solid(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return Surface{TTF_RenderUTF8_Solid(get(), str, fg.get())};
+    return surface{TTF_RenderUTF8_Solid(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto render_solid(const std::string& str, const color& fg) const -> Surface
+  [[nodiscard]] auto render_solid(const std::string& str, const color& fg) const -> surface
   {
     return render_solid(str.c_str(), fg);
   }
 
   [[nodiscard]] auto render_shaded(const char* str, const color& fg, const color& bg) const
-      -> Surface
+      -> surface
   {
     assert(str);
-    return Surface{TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
+    return surface{TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_shaded(const std::string& str,
                                    const color& fg,
-                                   const color& bg) const -> Surface
+                                   const color& bg) const -> surface
   {
     return render_shaded(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto render_blended(const char* str, const color& fg) const -> Surface
+  [[nodiscard]] auto render_blended(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return Surface{TTF_RenderUTF8_Blended(get(), str, fg.get())};
+    return surface{TTF_RenderUTF8_Blended(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto render_blended(const std::string& str, const color& fg) const -> Surface
+  [[nodiscard]] auto render_blended(const std::string& str, const color& fg) const -> surface
   {
     return render_blended(str.c_str(), fg);
   }
 
   [[nodiscard]] auto render_wrapped(const char* str, const color& fg, const uint32 wrap) const
-      -> Surface
+      -> surface
   {
     assert(str);
-    return Surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
+    return surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_wrapped(const std::string& str,
                                     const color& fg,
-                                    const uint32 wrap) const -> Surface
+                                    const uint32 wrap) const -> surface
   {
     return render_wrapped(str.c_str(), fg, wrap);
   }
 
-  [[nodiscard]] auto render_solid_latin1(const char* str, const color& fg) const -> Surface
+  [[nodiscard]] auto render_solid_latin1(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Solid(get(), str, fg.get())};
+    return surface{TTF_RenderText_Solid(get(), str, fg.get())};
   }
 
   [[nodiscard]] auto render_solid_latin1(const std::string& str, const color& fg) const
-      -> Surface
+      -> surface
   {
     return render_solid_latin1(str.c_str(), fg);
   }
 
   [[nodiscard]] auto render_shaded_latin1(const char* str,
                                           const color& fg,
-                                          const color& bg) const -> Surface
+                                          const color& bg) const -> surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
+    return surface{TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_shaded_latin1(const std::string& str,
                                           const color& fg,
-                                          const color& bg) const -> Surface
+                                          const color& bg) const -> surface
   {
     return render_shaded_latin1(str.c_str(), fg, bg);
   }
 
-  [[nodiscard]] auto render_blended_latin1(const char* str, const color& fg) const -> Surface
+  [[nodiscard]] auto render_blended_latin1(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Blended(get(), str, fg.get())};
+    return surface{TTF_RenderText_Blended(get(), str, fg.get())};
   }
 
   [[nodiscard]] auto render_blended_latin1(const std::string& str, const color& fg) const
-      -> Surface
+      -> surface
   {
     return render_blended_latin1(str.c_str(), fg);
   }
 
   [[nodiscard]] auto render_wrapped_latin1(const char* str,
                                            const color& fg,
-                                           const uint32 wrap) const -> Surface
+                                           const uint32 wrap) const -> surface
   {
     assert(str);
-    return Surface{TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
+    return surface{TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_wrapped_latin1(const std::string& str,
                                            const color& fg,
-                                           const uint32 wrap) const -> Surface
+                                           const uint32 wrap) const -> surface
   {
     return render_wrapped_latin1(str.c_str(), fg, wrap);
   }
 
   [[nodiscard]] auto render_solid_unicode(const UnicodeString& str, const color& fg) const
-      -> Surface
+      -> surface
   {
-    return Surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
+    return surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
   }
 
   [[nodiscard]] auto render_shaded_unicode(const UnicodeString& str,
                                            const color& fg,
-                                           const color& bg) const -> Surface
+                                           const color& bg) const -> surface
   {
-    return Surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
+    return surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_blended_unicode(const UnicodeString& str, const color& fg) const
-      -> Surface
+      -> surface
   {
-    return Surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
+    return surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
   }
 
   [[nodiscard]] auto render_wrapped_unicode(const UnicodeString& str,
                                             const color& fg,
-                                            const uint32 wrap) const -> Surface
+                                            const uint32 wrap) const -> surface
   {
-    return Surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
+    return surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
   }
 
   /// \} End of string rendering functions
@@ -1346,7 +1346,7 @@ class font_cache final {
   }
 
   template <typename T>
-  auto store(BasicRenderer<T>& renderer, Surface&& surface) -> id_type
+  auto store(BasicRenderer<T>& renderer, surface&& surface) -> id_type
   {
     const auto id = mNextStringId;
     assert(mStrings.find(id) == mStrings.end());

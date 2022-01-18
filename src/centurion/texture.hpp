@@ -150,7 +150,7 @@ class basic_texture final {
 
   /* Creates a texture that is a copy of the supplied surface. */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const Surface& surface)
+  basic_texture(const Renderer& renderer, const surface& surface)
       : mTexture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!mTexture) {

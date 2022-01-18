@@ -31,20 +31,20 @@ class SurfaceTest : public testing::Test {
     RESET_FAKE(SDL_DuplicateSurface)
   }
 
-  cen::Surface m_surface;
+  cen::surface m_surface;
 };
 
 TEST_F(SurfaceTest, ConvertTo)
 {
   ASSERT_THROW(
-      { const auto s [[maybe_unused]] = m_surface.ConvertTo(cen::PixelFormat::RGBA8888); },
+      { const auto s [[maybe_unused]] = m_surface.convert_to(cen::PixelFormat::RGBA8888); },
       cen::sdl_error);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 
 TEST_F(SurfaceTest, Copy)
 {
-  cen::Surface dst;
+  cen::surface dst;
   ASSERT_THROW(dst = m_surface, cen::sdl_error);
   ASSERT_EQ(1u, SDL_DuplicateSurface_fake.call_count);
 }
@@ -54,8 +54,8 @@ TEST_F(SurfaceTest, SetRLEHint)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SetSurfaceRLE, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_surface.SetRLE(true));
-  ASSERT_TRUE(m_surface.SetRLE(true));
+  ASSERT_FALSE(m_surface.set_rle(true));
+  ASSERT_TRUE(m_surface.set_rle(true));
 
   ASSERT_EQ(2u, SDL_SetSurfaceRLE_fake.call_count);
 }
@@ -67,8 +67,8 @@ TEST_F(SurfaceTest, IsRLEEnabled)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasSurfaceRLE, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_surface.HasRLE());
-  ASSERT_TRUE(m_surface.HasRLE());
+  ASSERT_FALSE(m_surface.has_rle());
+  ASSERT_TRUE(m_surface.has_rle());
 
   ASSERT_EQ(2u, SDL_HasSurfaceRLE_fake.call_count);
 }

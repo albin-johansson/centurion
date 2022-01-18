@@ -63,7 +63,7 @@ TEST_F(TextureTest, PathConstructor)
 
 TEST_F(TextureTest, SurfaceConstructor)
 {
-  const cen::Surface surface{path};
+  const cen::surface surface{path};
   ASSERT_NO_THROW(cen::texture(*renderer, surface));
 }
 

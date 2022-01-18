@@ -158,7 +158,7 @@ class BasicWindow final {
     SDL_SetWindowResizable(mWindow, resizable ? SDL_TRUE : SDL_FALSE);
   }
 
-  void SetIcon(const Surface& icon) noexcept { SDL_SetWindowIcon(mWindow, icon.get()); }
+  void SetIcon(const surface& icon) noexcept { SDL_SetWindowIcon(mWindow, icon.get()); }
 
   void SetTitle(const char* title) noexcept
   {
@@ -311,9 +311,9 @@ class BasicWindow final {
     return static_cast<PixelFormat>(SDL_GetWindowPixelFormat(mWindow));
   }
 
-  [[nodiscard]] auto GetSurface() noexcept -> SurfaceHandle
+  [[nodiscard]] auto GetSurface() noexcept -> surface_handle
   {
-    return SurfaceHandle{SDL_GetWindowSurface(mWindow)};
+    return surface_handle{SDL_GetWindowSurface(mWindow)};
   }
 
   [[nodiscard]] auto GetFlags() const noexcept -> uint32

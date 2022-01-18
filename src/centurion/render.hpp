@@ -351,26 +351,26 @@ class BasicRenderer final {
   }
 
   /* Captures a snapshot of the current rendering target as a surface. */
-  [[nodiscard]] auto Capture(const PixelFormat format) const -> Surface
+  [[nodiscard]] auto Capture(const PixelFormat format) const -> surface
   {
-    Surface image{GetOutputSize(), format};
+    surface image{GetOutputSize(), format};
 
-    if (!image.Lock()) {
+    if (!image.lock()) {
       throw sdl_error{};
     }
 
     if (const auto res =
-            SDL_RenderReadPixels(get(), nullptr, 0, image.GetPixelData(), image.GetPitch());
+            SDL_RenderReadPixels(get(), nullptr, 0, image.pixel_data(), image.pitch());
         res == -1) {
       throw sdl_error{};
     }
 
-    image.Unlock();
+    image.unlock();
     return image;
   }
 
   template <typename U>
-  [[nodiscard]] auto ToTexture(const BasicSurface<U>& surface) const -> texture
+  [[nodiscard]] auto ToTexture(const basic_surface<U>& surface) const -> texture
   {
     return texture{*this, surface};
   }

@@ -11,16 +11,66 @@
 
 namespace cen {
 
-enum class PowerState {
-  Unknown = SDL_POWERSTATE_UNKNOWN,      /* The status is unknown. */
-  OnBattery = SDL_POWERSTATE_ON_BATTERY, /* Not plugged in and running on battery. */
-  NoBattery = SDL_POWERSTATE_NO_BATTERY, /* No battery available. */
-  Charging = SDL_POWERSTATE_CHARGING,    /* Charging the battery. */
-  Charged = SDL_POWERSTATE_CHARGED       /* Plugged in and charged. */
+/**
+ * \defgroup power
+ *
+ * \brief Provides information about the system power resources.
+ */
+
+/// \addtogroup power
+/// \{
+
+/**
+ * \brief Represents different power states of batteries.
+ */
+enum class power_state {
+  unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
+  on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
+  no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.
+  charging = SDL_POWERSTATE_CHARGING,      ///< Charging the battery.
+  charged = SDL_POWERSTATE_CHARGED         ///< Plugged in and charged.
 };
 
-/* Returns the seconds of remaining battery life. */
-[[nodiscard]] inline auto GetBatterySeconds() -> std::optional<seconds<int>>
+/// \name Power state functions
+/// \{
+
+[[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
+{
+  switch (state) {
+    case power_state::unknown:
+      return "unknown";
+
+    case power_state::on_battery:
+      return "on_battery";
+
+    case power_state::no_battery:
+      return "no_battery";
+
+    case power_state::charging:
+      return "charging";
+
+    case power_state::charged:
+      return "charged";
+
+    default:
+      throw exception{"Did not recognize power state!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const power_state state) -> std::ostream&
+{
+  return stream << to_string(state);
+}
+
+/// \} End of power state functions
+
+/**
+ * \brief Returns the seconds of remaining battery life.
+ *
+ * \return seconds of remaining battery life; an empty optional is returned if the value cannot
+ * be obtained.
+ */
+[[nodiscard]] inline auto battery_seconds() -> std::optional<seconds<int>>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -32,10 +82,15 @@ enum class PowerState {
   }
 }
 
-/* Returns the minutes of remaining battery life. */
-[[nodiscard]] inline auto GetBatteryMinutes() -> std::optional<minutes<int>>
+/**
+ * \brief Returns the minutes of remaining battery life.
+ *
+ * \return minutes of remaining battery life; an empty optional is returned if the value cannot
+ * be obtained.
+ */
+[[nodiscard]] inline auto battery_minutes() -> std::optional<minutes<int>>
 {
-  if (const auto secondsLeft = GetBatterySeconds()) {
+  if (const auto secondsLeft = battery_seconds()) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   }
   else {
@@ -43,67 +98,66 @@ enum class PowerState {
   }
 }
 
-/* Returns the percentage of remaining battery life. */
-[[nodiscard]] inline auto GetBatteryPercentage() noexcept -> std::optional<int>
+/**
+ * \brief Returns the percentage of remaining battery life.
+ *
+ * \return percentage of remaining battery life, in the range [0, 100]; an empty
+ * optional is returned if the battery percentage isn't available.
+ */
+[[nodiscard]] inline auto battery_percentage() noexcept -> std::optional<int>
 {
-  int percentageLeft = -1;
-  SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft != -1) {
-    return percentageLeft;
+  int percentage = -1;
+  SDL_GetPowerInfo(nullptr, &percentage);
+  if (percentage != -1) {
+    return percentage;
   }
   else {
     return std::nullopt;
   }
 }
 
-[[nodiscard]] inline auto QueryBattery() noexcept -> PowerState
+/**
+ * \brief Returns the current power state of a potential battery.
+ *
+ * \return the current power state.
+ */
+[[nodiscard]] inline auto query_battery() noexcept -> power_state
 {
-  return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
+  return static_cast<power_state>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
-[[nodiscard]] inline auto IsBatteryAvailable() noexcept -> bool
+/**
+ * \brief Indicate whether a battery is available.
+ *
+ * \return `true` if a battery is available; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_battery_available() noexcept -> bool
 {
-  const auto state = QueryBattery();
-  return state != PowerState::NoBattery && state != PowerState::Unknown;
+  const auto state = query_battery();
+  return state != power_state::no_battery && state != power_state::unknown;
 }
 
-[[nodiscard]] inline auto IsBatteryCharging() noexcept -> bool
+/**
+ * \brief Indicate whether the battery is being charged.
+ *
+ * \return `true` if the battery is charging; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_battery_charging() noexcept -> bool
 {
-  return QueryBattery() == PowerState::Charging;
+  return query_battery() == power_state::charging;
 }
 
-[[nodiscard]] inline auto IsBatteryCharged() noexcept -> bool
+/**
+ * \brief Indicate whether the battery is charged.
+ *
+ * \return `true` if the battery is charged; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_battery_charged() noexcept -> bool
 {
-  return QueryBattery() == PowerState::Charged;
+  return query_battery() == power_state::charged;
 }
 
-[[nodiscard]] constexpr auto ToString(const PowerState state) -> std::string_view
-{
-  switch (state) {
-    case PowerState::Unknown:
-      return "Unknown";
-
-    case PowerState::OnBattery:
-      return "OnBattery";
-
-    case PowerState::NoBattery:
-      return "NoBattery";
-
-    case PowerState::Charging:
-      return "Charging";
-
-    case PowerState::Charged:
-      return "Charged";
-
-    default:
-      throw exception{"Did not recognize power state!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const PowerState state) -> std::ostream&
-{
-  return stream << ToString(state);
-}
+/// \} End of group power
 
 }  // namespace cen
 

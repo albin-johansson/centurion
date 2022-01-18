@@ -43,80 +43,80 @@ class BatteryTest : public testing::Test {
   }
 };
 
-TEST_F(BatteryTest, GetBatterySeconds)
+TEST_F(BatteryTest, BatterySeconds)
 {
   signature_t functions[] = {PowerDelegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(seconds, cen::GetBatterySeconds());
+  ASSERT_EQ(seconds, cen::battery_seconds());
 }
 
-TEST_F(BatteryTest, GetBatteryMinutes)
+TEST_F(BatteryTest, BatteryMinutes)
 {
   signature_t functions[] = {PowerDelegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(seconds), cen::GetBatteryMinutes());
+  ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(seconds), cen::battery_minutes());
 }
 
-TEST_F(BatteryTest, GetBatteryPercentage)
+TEST_F(BatteryTest, BatteryPercentage)
 {
   signature_t functions[] = {PowerDelegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(percentage, cen::GetBatteryPercentage());
+  ASSERT_EQ(percentage, cen::battery_percentage());
 }
 
 TEST_F(BatteryTest, IsBatteryAvailable)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::IsBatteryAvailable());
+  ASSERT_FALSE(cen::is_battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::IsBatteryAvailable());
+  ASSERT_FALSE(cen::is_battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_TRUE(cen::IsBatteryAvailable());
+  ASSERT_TRUE(cen::is_battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_TRUE(cen::IsBatteryAvailable());
+  ASSERT_TRUE(cen::is_battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_TRUE(cen::IsBatteryAvailable());
+  ASSERT_TRUE(cen::is_battery_available());
 }
 
 TEST_F(BatteryTest, IsBatteryCharging)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_TRUE(cen::IsBatteryCharging());
+  ASSERT_TRUE(cen::is_battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::IsBatteryCharging());
+  ASSERT_FALSE(cen::is_battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::IsBatteryCharging());
+  ASSERT_FALSE(cen::is_battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_FALSE(cen::IsBatteryCharging());
+  ASSERT_FALSE(cen::is_battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_FALSE(cen::IsBatteryCharging());
+  ASSERT_FALSE(cen::is_battery_charging());
 }
 
 TEST_F(BatteryTest, IsBatteryCharged)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_TRUE(cen::IsBatteryCharged());
+  ASSERT_TRUE(cen::is_battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::IsBatteryCharged());
+  ASSERT_FALSE(cen::is_battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::IsBatteryCharged());
+  ASSERT_FALSE(cen::is_battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_FALSE(cen::IsBatteryCharged());
+  ASSERT_FALSE(cen::is_battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_FALSE(cen::IsBatteryCharged());
+  ASSERT_FALSE(cen::is_battery_charged());
 }

@@ -1,28 +1,28 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "power.hpp"
 
 TEST(PowerState, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::PowerState::Unknown), SDL_POWERSTATE_UNKNOWN);
-  ASSERT_EQ(cen::to_underlying(cen::PowerState::OnBattery), SDL_POWERSTATE_ON_BATTERY);
-  ASSERT_EQ(cen::to_underlying(cen::PowerState::NoBattery), SDL_POWERSTATE_NO_BATTERY);
-  ASSERT_EQ(cen::to_underlying(cen::PowerState::Charging), SDL_POWERSTATE_CHARGING);
-  ASSERT_EQ(cen::to_underlying(cen::PowerState::Charged), SDL_POWERSTATE_CHARGED);
+  ASSERT_EQ(SDL_POWERSTATE_UNKNOWN, to_underlying(cen::power_state::unknown));
+  ASSERT_EQ(SDL_POWERSTATE_ON_BATTERY, to_underlying(cen::power_state::on_battery));
+  ASSERT_EQ(SDL_POWERSTATE_NO_BATTERY, to_underlying(cen::power_state::no_battery));
+  ASSERT_EQ(SDL_POWERSTATE_CHARGING, to_underlying(cen::power_state::charging));
+  ASSERT_EQ(SDL_POWERSTATE_CHARGED, to_underlying(cen::power_state::charged));
 }
 
 TEST(PowerState, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::PowerState>(6)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::power_state>(6)), cen::exception);
 
-  ASSERT_EQ("Unknown", cen::ToString(cen::PowerState::Unknown));
-  ASSERT_EQ("OnBattery", cen::ToString(cen::PowerState::OnBattery));
-  ASSERT_EQ("NoBattery", cen::ToString(cen::PowerState::NoBattery));
-  ASSERT_EQ("Charging", cen::ToString(cen::PowerState::Charging));
-  ASSERT_EQ("Charged", cen::ToString(cen::PowerState::Charged));
+  ASSERT_EQ("unknown", to_string(cen::power_state::unknown));
+  ASSERT_EQ("on_battery", to_string(cen::power_state::on_battery));
+  ASSERT_EQ("no_battery", to_string(cen::power_state::no_battery));
+  ASSERT_EQ("charging", to_string(cen::power_state::charging));
+  ASSERT_EQ("charged", to_string(cen::power_state::charged));
 
-  std::clog << "Power state example: " << cen::PowerState::OnBattery << '\n';
+  std::cout << "power_state::on_battery == " << cen::power_state::on_battery << '\n';
 }

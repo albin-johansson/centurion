@@ -306,9 +306,9 @@ class BasicWindow final {
     return opacity;
   }
 
-  [[nodiscard]] auto GetPixelFormat() const noexcept -> PixelFormat
+  [[nodiscard]] auto GetPixelFormat() const noexcept -> pixel_format
   {
-    return static_cast<PixelFormat>(SDL_GetWindowPixelFormat(mWindow));
+    return static_cast<pixel_format>(SDL_GetWindowPixelFormat(mWindow));
   }
 
   [[nodiscard]] auto GetSurface() noexcept -> surface_handle

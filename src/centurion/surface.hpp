@@ -108,7 +108,7 @@ class basic_surface final {
    * \throws sdl_error if the surface cannot be created.
    */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_surface(const iarea& size, const PixelFormat format)
+  basic_surface(const iarea& size, const pixel_format format)
       : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
                                                 size.width,
                                                 size.height,
@@ -163,7 +163,7 @@ class basic_surface final {
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const char* file,
                                         const BlendMode mode,
-                                        const PixelFormat format) -> surface
+                                        const pixel_format format) -> surface
   {
     assert(file);
 
@@ -177,7 +177,7 @@ class basic_surface final {
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const BlendMode mode,
-                                        const PixelFormat format) -> surface
+                                        const pixel_format format) -> surface
   {
     return with_format(file.c_str(), mode, format);
   }
@@ -284,7 +284,7 @@ class basic_surface final {
    *
    * \return the copy of the surface.
    */
-  [[nodiscard]] auto convert_to(const PixelFormat format) const -> surface
+  [[nodiscard]] auto convert_to(const pixel_format format) const -> surface
   {
     if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, to_underlying(format), 0)) {
       surface result{converted};
@@ -486,9 +486,9 @@ class basic_surface final {
    *
    * \return the surface pixel format info.
    */
-  [[nodiscard]] auto format_info() const noexcept -> PixelFormatInfoHandle
+  [[nodiscard]] auto format_info() const noexcept -> pixel_format_info_handle
   {
-    return PixelFormatInfoHandle{mSurface->format};
+    return pixel_format_info_handle{mSurface->format};
   }
 
   /**

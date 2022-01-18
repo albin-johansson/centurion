@@ -58,7 +58,7 @@ TEST_F(SurfaceTest, SizePixelFormatConstructor)
   cen::surface image{{10, 10}, window.GetPixelFormat()};
   ASSERT_EQ(10, image.width());
   ASSERT_EQ(10, image.height());
-  ASSERT_EQ(window.GetPixelFormat(), image.format_info().GetFormat());
+  ASSERT_EQ(window.GetPixelFormat(), image.format_info().format());
 }
 
 TEST_F(SurfaceTest, CopyConstructor)
@@ -200,10 +200,10 @@ TEST_F(SurfaceTest, ConvertTo)
   source.set_alpha_mod(0xAE);
   source.set_color_mod(cen::colors::red);
 
-  const auto format = cen::PixelFormat::RGBA8888;
+  const auto format = cen::pixel_format::rgba8888;
   const cen::surface converted = source.convert_to(format);
 
-  ASSERT_EQ(format, converted.format_info().GetFormat());
+  ASSERT_EQ(format, converted.format_info().format());
   ASSERT_EQ(source.get_blend_mode(), converted.get_blend_mode());
   ASSERT_EQ(source.alpha(), converted.alpha());
   ASSERT_EQ(source.color_mod(), converted.color_mod());

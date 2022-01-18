@@ -206,7 +206,7 @@ class basic_texture final {
    */
   template <typename Renderer, typename TT = T, detail::enable_for_owner<TT> = 0>
   basic_texture(const Renderer& renderer,
-                const PixelFormat format,
+                const pixel_format format,
                 const texture_access access,
                 const iarea size)
       : mTexture{SDL_CreateTexture(renderer.get(),
@@ -321,11 +321,11 @@ class basic_texture final {
    *
    * \return the texture pixel format.
    */
-  [[nodiscard]] auto format() const noexcept -> PixelFormat
+  [[nodiscard]] auto format() const noexcept -> pixel_format
   {
     uint32 format{};
     SDL_QueryTexture(mTexture, &format, nullptr, nullptr, nullptr);
-    return static_cast<PixelFormat>(format);
+    return static_cast<pixel_format>(format);
   }
 
   /**

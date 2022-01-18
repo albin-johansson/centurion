@@ -69,7 +69,7 @@ TEST_F(TextureTest, SurfaceConstructor)
 
 TEST_F(TextureTest, CustomizationConstructor)
 {
-  constexpr auto format = cen::PixelFormat::RGBA32;
+  constexpr auto format = cen::pixel_format::rgba32;
   constexpr auto access = cen::texture_access::non_lockable;
   constexpr auto width = 145;
   constexpr auto height = 85;
@@ -96,16 +96,16 @@ TEST_F(TextureTest, SetBlendMode)
   texture->set_blend_mode(previous);
 }
 
-TEST_F(TextureTest, SetAlpha)
+TEST_F(TextureTest, SetAlphaMod)
 {
-  const auto previous = texture->alpha();
+  const auto previous = texture->alpha_mod();
 
   constexpr auto alpha = 0x3A;
-  texture->set_alpha(alpha);
+  texture->set_alpha_mod(alpha);
 
-  ASSERT_EQ(alpha, texture->alpha());
+  ASSERT_EQ(alpha, texture->alpha_mod());
 
-  texture->set_alpha(previous);
+  texture->set_alpha_mod(previous);
 }
 
 TEST_F(TextureTest, SetColorMod)
@@ -154,7 +154,7 @@ TEST_F(TextureTest, GetFormat)
   Uint32 format{};
   SDL_QueryTexture(texture->get(), &format, nullptr, nullptr, nullptr);
 
-  const auto actual = static_cast<cen::PixelFormat>(format);
+  const auto actual = static_cast<cen::pixel_format>(format);
   ASSERT_EQ(actual, texture->format());
 }
 

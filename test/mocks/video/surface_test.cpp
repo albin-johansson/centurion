@@ -37,7 +37,7 @@ class SurfaceTest : public testing::Test {
 TEST_F(SurfaceTest, ConvertTo)
 {
   ASSERT_THROW(
-      { const auto s [[maybe_unused]] = m_surface.convert_to(cen::PixelFormat::RGBA8888); },
+      { const auto s [[maybe_unused]] = m_surface.convert_to(cen::pixel_format::rgba8888); },
       cen::sdl_error);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }

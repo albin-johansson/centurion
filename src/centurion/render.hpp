@@ -1147,10 +1147,10 @@ class renderer_info final {
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("RendererInfo(name: {})", str_or_na(info.GetName()));
+  return std::format("renderer_info(name: '{}')", str_or_na(info.name()));
 #else
   using namespace std::string_literals;
-  return "RendererInfo(name: "s + str_or_na(info.name()) + ")";
+  return "renderer_info(name: '"s + str_or_na(info.name()) + "')";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

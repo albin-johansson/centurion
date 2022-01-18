@@ -807,7 +807,7 @@ class basic_renderer final {
    *
    * \return `success` if the blend mode was successfully set; `failure` otherwise.
    */
-  auto set_blend_mode(const BlendMode mode) noexcept -> result
+  auto set_blend_mode(const blend_mode mode) noexcept -> result
   {
     return SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode)) == 0;
   }
@@ -881,11 +881,11 @@ class basic_renderer final {
    *
    * \return the current blend mode.
    */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> BlendMode
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
     SDL_BlendMode mode{};
     SDL_GetRenderDrawBlendMode(get(), &mode);
-    return static_cast<BlendMode>(mode);
+    return static_cast<blend_mode>(mode);
   }
 
   /**

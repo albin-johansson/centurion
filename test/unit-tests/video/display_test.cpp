@@ -4,19 +4,19 @@
 
 TEST(Display, SetScreenSaverEnabled)
 {
-  ASSERT_FALSE(cen::IsScreenSaverEnabled());
+  ASSERT_FALSE(cen::is_screen_saver_enabled());
 
-  cen::SetScreenSaverEnabled(true);
-  ASSERT_TRUE(cen::IsScreenSaverEnabled());
+  cen::set_screen_saver_enabled(true);
+  ASSERT_TRUE(cen::is_screen_saver_enabled());
 
-  cen::SetScreenSaverEnabled(false);
-  ASSERT_FALSE(cen::IsScreenSaverEnabled());
+  cen::set_screen_saver_enabled(false);
+  ASSERT_FALSE(cen::is_screen_saver_enabled());
 }
 
-TEST(Display, GetDPI)
+TEST(Display, DisplayDPI)
 {
   {  // Default display
-    const auto dpi = cen::GetDisplayDPI();
+    const auto dpi = cen::display_dpi();
     ASSERT_TRUE(dpi.has_value());
 
     float diagonal{};
@@ -30,15 +30,15 @@ TEST(Display, GetDPI)
   }
 
   {  // Explicit display index
-    const auto amount = cen::GetNumDisplays();
-    ASSERT_TRUE(cen::GetDisplayDPI(amount - 1));
-    ASSERT_FALSE(cen::GetDisplayDPI(amount));
+    const auto amount = cen::display_count();
+    ASSERT_TRUE(cen::display_dpi(amount - 1));
+    ASSERT_FALSE(cen::display_dpi(amount));
   }
 }
 
-TEST(Display, GetBounds)
+TEST(Display, DisplayBounds)
 {
-  const auto bounds = cen::GetDisplayBounds();
+  const auto bounds = cen::display_bounds();
   ASSERT_TRUE(bounds.has_value());
 
   SDL_Rect rect{};
@@ -49,12 +49,12 @@ TEST(Display, GetBounds)
   ASSERT_EQ(rect.w, bounds->width());
   ASSERT_EQ(rect.h, bounds->height());
 
-  ASSERT_FALSE(cen::GetDisplayBounds(cen::GetNumDisplays()).has_value());
+  ASSERT_FALSE(cen::display_bounds(cen::display_count()).has_value());
 }
 
-TEST(Display, GetDisplayUsableBounds)
+TEST(Display, DisplayUsableBounds)
 {
-  const auto bounds = cen::GetDisplayUsableBounds();
+  const auto bounds = cen::display_usable_bounds();
   ASSERT_TRUE(bounds.has_value());
 
   SDL_Rect rect{};
@@ -65,52 +65,23 @@ TEST(Display, GetDisplayUsableBounds)
   ASSERT_EQ(rect.w, bounds->width());
   ASSERT_EQ(rect.h, bounds->height());
 
-  ASSERT_FALSE(cen::GetDisplayUsableBounds(cen::GetNumDisplays()).has_value());
+  ASSERT_FALSE(cen::display_usable_bounds(cen::display_count()).has_value());
 }
 
-TEST(Display, GetOrientation)
+TEST(Display, DisplayOrientation)
 {
-  {  // Default index
-    const auto orientation = cen::GetDisplayOrientation();
-    ASSERT_EQ(SDL_GetDisplayOrientation(0), static_cast<SDL_DisplayOrientation>(orientation));
-  }
-
-  ASSERT_EQ(cen::DisplayOrientation::Unknown,
-            cen::GetDisplayOrientation(cen::GetNumDisplays()));
+  ASSERT_EQ(cen::orientation::unknown, cen::display_orientation(cen::display_count()));
+  ASSERT_EQ(SDL_GetDisplayOrientation(0),
+            static_cast<SDL_DisplayOrientation>(cen::display_orientation()));
 }
 
-TEST(Display, GetNumDisplays)
+TEST(Display, DisplayCount)
 {
-  ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::GetNumDisplays());
+  ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count());
 }
 
-TEST(Display, GetName)
+TEST(Display, DisplayName)
 {
-  ASSERT_EQ(SDL_GetDisplayName(0), cen::GetDisplayName());
-  ASSERT_FALSE(cen::GetDisplayName(cen::GetNumDisplays()));
-}
-
-TEST(Display, GetSize)
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-
-  const auto size = cen::GetDisplaySize();
-  ASSERT_TRUE(size);
-  ASSERT_EQ(mode.w, size->width);
-  ASSERT_EQ(mode.h, size->height);
-}
-
-TEST(Display, GetRefreshRate)
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  ASSERT_EQ(mode.refresh_rate, cen::GetDisplayRefreshRate());
-}
-
-TEST(Display, GetPixelFormat)
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  ASSERT_EQ(static_cast<cen::pixel_format>(mode.format), cen::GetDisplayPixelFormat());
+  ASSERT_EQ(SDL_GetDisplayName(0), cen::display_name());
+  ASSERT_FALSE(cen::display_name(cen::display_count()));
 }

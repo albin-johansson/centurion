@@ -9,20 +9,20 @@
 
 TEST(FlashOp, Values)
 {
-  ASSERT_EQ(SDL_FLASH_CANCEL, cen::to_underlying(cen::FlashOp::Cancel));
-  ASSERT_EQ(SDL_FLASH_BRIEFLY, cen::to_underlying(cen::FlashOp::Briefly));
-  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, cen::to_underlying(cen::FlashOp::UntilFocused));
+  ASSERT_EQ(SDL_FLASH_CANCEL, to_underlying(cen::flash_op::cancel));
+  ASSERT_EQ(SDL_FLASH_BRIEFLY, to_underlying(cen::flash_op::briefly));
+  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, to_underlying(cen::flash_op::until_focused));
 }
 
 TEST(FlashOp, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::FlashOp>(42)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::flash_op>(42)), cen::exception);
 
-  ASSERT_EQ("Cancel", cen::ToString(cen::FlashOp::Cancel));
-  ASSERT_EQ("Briefly", cen::ToString(cen::FlashOp::Briefly));
-  ASSERT_EQ("UntilFocused", cen::ToString(cen::FlashOp::UntilFocused));
+  ASSERT_EQ("cancel", to_string(cen::flash_op::cancel));
+  ASSERT_EQ("briefly", to_string(cen::flash_op::briefly));
+  ASSERT_EQ("until_focused", to_string(cen::flash_op::until_focused));
 
-  std::cout << "Flash operation example: " << cen::FlashOp::Briefly << '\n';
+  std::cout << "flash_op::briefly == " << cen::flash_op::briefly << '\n';
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)

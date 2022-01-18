@@ -751,7 +751,7 @@ TEST_F(WindowTest, Flash)
   ASSERT_FALSE(m_window.Flash());
   ASSERT_EQ(SDL_FLASH_BRIEFLY, SDL_FlashWindow_fake.arg1_val);
 
-  ASSERT_TRUE(m_window.Flash(cen::FlashOp::UntilFocused));
+  ASSERT_TRUE(m_window.Flash(cen::flash_op::until_focused));
   ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, SDL_FlashWindow_fake.arg1_val);
 }
 

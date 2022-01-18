@@ -177,7 +177,7 @@ class basic_texture final {
    *
    * \param mode the new blend mode.
    */
-  void set_blend_mode(const BlendMode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetTextureBlendMode(mTexture, static_cast<SDL_BlendMode>(mode));
   }
@@ -325,11 +325,11 @@ class basic_texture final {
    *
    * \return the texture blend mode.
    */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> BlendMode
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
     SDL_BlendMode mode{};
     SDL_GetTextureBlendMode(mTexture, &mode);
-    return static_cast<BlendMode>(mode);
+    return static_cast<blend_mode>(mode);
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

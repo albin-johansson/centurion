@@ -142,7 +142,7 @@ class BasicWindow final {
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-  auto Flash(const FlashOp op = FlashOp::Briefly) noexcept -> result
+  auto Flash(const flash_op op = flash_op::briefly) noexcept -> result
   {
     return SDL_FlashWindow(mWindow, static_cast<SDL_FlashOperation>(op)) == 0;
   }

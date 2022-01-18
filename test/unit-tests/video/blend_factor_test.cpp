@@ -1,50 +1,50 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "video.hpp"
 
 TEST(BlendFactor, Values)
 {
-  ASSERT_EQ(SDL_BLENDFACTOR_ZERO, cen::to_underlying(cen::BlendFactor::Zero));
-  ASSERT_EQ(SDL_BLENDFACTOR_ONE, cen::to_underlying(cen::BlendFactor::One));
+  ASSERT_EQ(SDL_BLENDFACTOR_ZERO, to_underlying(cen::blend_factor::zero));
+  ASSERT_EQ(SDL_BLENDFACTOR_ONE, to_underlying(cen::blend_factor::one));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_SRC_COLOR, cen::to_underlying(cen::BlendFactor::SrcColor));
+  ASSERT_EQ(SDL_BLENDFACTOR_SRC_COLOR, to_underlying(cen::blend_factor::src_color));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
-            cen::to_underlying(cen::BlendFactor::OneMinusSrcColor));
+            to_underlying(cen::blend_factor::one_minus_src_color));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_SRC_ALPHA, cen::to_underlying(cen::BlendFactor::SrcAlpha));
+  ASSERT_EQ(SDL_BLENDFACTOR_SRC_ALPHA, to_underlying(cen::blend_factor::src_alpha));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-            cen::to_underlying(cen::BlendFactor::OneMinusSrcAlpha));
+            to_underlying(cen::blend_factor::one_minus_src_alpha));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_DST_COLOR, cen::to_underlying(cen::BlendFactor::DstColor));
+  ASSERT_EQ(SDL_BLENDFACTOR_DST_COLOR, to_underlying(cen::blend_factor::dst_color));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
-            cen::to_underlying(cen::BlendFactor::OneMinusDstColor));
+            to_underlying(cen::blend_factor::one_minus_dst_color));
 
-  ASSERT_EQ(SDL_BLENDFACTOR_DST_ALPHA, cen::to_underlying(cen::BlendFactor::DstAlpha));
+  ASSERT_EQ(SDL_BLENDFACTOR_DST_ALPHA, to_underlying(cen::blend_factor::dst_alpha));
   ASSERT_EQ(SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA,
-            cen::to_underlying(cen::BlendFactor::OneMinusDstAlpha));
+            to_underlying(cen::blend_factor::one_minus_dst_alpha));
 }
 
 TEST(BlendFactor, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::BlendFactor>(100)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::blend_factor>(100)), cen::exception);
 
-  ASSERT_EQ("Zero", cen::ToString(cen::BlendFactor::Zero));
-  ASSERT_EQ("One", cen::ToString(cen::BlendFactor::One));
+  ASSERT_EQ("zero", to_string(cen::blend_factor::zero));
+  ASSERT_EQ("one", to_string(cen::blend_factor::one));
 
-  ASSERT_EQ("SrcColor", cen::ToString(cen::BlendFactor::SrcColor));
-  ASSERT_EQ("OneMinusSrcColor", cen::ToString(cen::BlendFactor::OneMinusSrcColor));
+  ASSERT_EQ("src_color", to_string(cen::blend_factor::src_color));
+  ASSERT_EQ("one_minus_src_color", to_string(cen::blend_factor::one_minus_src_color));
 
-  ASSERT_EQ("SrcAlpha", cen::ToString(cen::BlendFactor::SrcAlpha));
-  ASSERT_EQ("OneMinusSrcAlpha", cen::ToString(cen::BlendFactor::OneMinusSrcAlpha));
+  ASSERT_EQ("src_alpha", to_string(cen::blend_factor::src_alpha));
+  ASSERT_EQ("one_minus_src_alpha", to_string(cen::blend_factor::one_minus_src_alpha));
 
-  ASSERT_EQ("DstColor", cen::ToString(cen::BlendFactor::DstColor));
-  ASSERT_EQ("OneMinusDstColor", cen::ToString(cen::BlendFactor::OneMinusDstColor));
+  ASSERT_EQ("dst_color", to_string(cen::blend_factor::dst_color));
+  ASSERT_EQ("one_minus_dst_color", to_string(cen::blend_factor::one_minus_dst_color));
 
-  ASSERT_EQ("DstAlpha", cen::ToString(cen::BlendFactor::DstAlpha));
-  ASSERT_EQ("OneMinusDstAlpha", cen::ToString(cen::BlendFactor::OneMinusDstAlpha));
+  ASSERT_EQ("dst_alpha", to_string(cen::blend_factor::dst_alpha));
+  ASSERT_EQ("one_minus_dst_alpha", to_string(cen::blend_factor::one_minus_dst_alpha));
 
-  std::clog << "Blend factor example: " << cen::BlendFactor::SrcColor << '\n';
+  std::cout << "blend_factor::src_color == " << cen::blend_factor::src_color << '\n';
 }

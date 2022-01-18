@@ -162,7 +162,7 @@ class basic_surface final {
    */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const char* file,
-                                        const BlendMode mode,
+                                        const blend_mode mode,
                                         const pixel_format format) -> surface
   {
     assert(file);
@@ -176,7 +176,7 @@ class basic_surface final {
   /// \copydoc with_format()
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
-                                        const BlendMode mode,
+                                        const blend_mode mode,
                                         const pixel_format format) -> surface
   {
     return with_format(file.c_str(), mode, format);
@@ -389,7 +389,7 @@ class basic_surface final {
    *
    * \param mode the new blend mode.
    */
-  void set_blend_mode(const BlendMode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetSurfaceBlendMode(mSurface, static_cast<SDL_BlendMode>(mode));
   }
@@ -446,11 +446,11 @@ class basic_surface final {
    *
    * \return the surface blend mode.
    */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> BlendMode
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
     SDL_BlendMode mode{};
     SDL_GetSurfaceBlendMode(mSurface, &mode);
-    return static_cast<BlendMode>(mode);
+    return static_cast<blend_mode>(mode);
   }
 
   /**

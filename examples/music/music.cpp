@@ -61,20 +61,20 @@ class music_example final {
 
   void load_messages()
   {
-    const auto color = cen::colors::white;
-    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_zero, color));
-    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_one, color));
-    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_two, color));
-    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_nine, color));
-    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_fade, color));
-    mInstructions.emplace_back(mRenderer, mFont.render_blended_latin1(msg_halt, color));
+    const auto load = [this](const char* msg, cen::color fg = cen::colors::white) {
+      return mRenderer.create_texture(mFont.render_blended_latin1(msg, fg));
+    };
 
-    mTexPlayingMusic = mRenderer.create_texture(
-        mFont.render_blended_latin1(msg_playing, cen::colors::lime_green));
-    mTexFadingMusic = mRenderer.create_texture(
-        mFont.render_blended_latin1(msg_fading, cen::colors::hot_pink));
-    mTexNoMusic =
-        mRenderer.create_texture(mFont.render_blended_latin1(msg_no_music, cen::colors::red));
+    mInstructions.push_back(load(msg_zero));
+    mInstructions.push_back(load(msg_one));
+    mInstructions.push_back(load(msg_two));
+    mInstructions.push_back(load(msg_nine));
+    mInstructions.push_back(load(msg_fade));
+    mInstructions.push_back(load(msg_halt));
+
+    mTexPlayingMusic = load(msg_playing, cen::colors::lime_green);
+    mTexFadingMusic = load(msg_fading, cen::colors::hot_pink);
+    mTexNoMusic = load(msg_no_music, cen::colors::red);
   }
 
   void on_quit_event(const cen::quit_event&) { m_running = false; }

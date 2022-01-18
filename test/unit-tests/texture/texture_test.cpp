@@ -88,7 +88,7 @@ TEST_F(TextureTest, SetBlendMode)
 {
   const auto previous = texture->get_blend_mode();
 
-  constexpr auto mode = cen::BlendMode::Blend;
+  constexpr auto mode = cen::blend_mode::blend;
   texture->set_blend_mode(mode);
 
   ASSERT_EQ(mode, texture->get_blend_mode());

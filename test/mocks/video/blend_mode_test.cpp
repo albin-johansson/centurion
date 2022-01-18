@@ -28,13 +28,13 @@ class BlendModeTest : public testing::Test {
 
 TEST_F(BlendModeTest, ComposeBlendMode)
 {
-  const cen::BlendTask color = {cen::BlendFactor::SrcColor,
-                                cen::BlendFactor::DstColor,
-                                cen::BlendOp::Add};
-  const cen::BlendTask alpha = {cen::BlendFactor::SrcAlpha,
-                                cen::BlendFactor::OneMinusDstAlpha,
-                                cen::BlendOp::Sub};
-  const auto mode [[maybe_unused]] = cen::ComposeBlendMode(color, alpha);
+  const cen::blend_task color = {cen::blend_factor::src_color,
+                                 cen::blend_factor::dst_color,
+                                 cen::blend_op::add};
+  const cen::blend_task alpha = {cen::blend_factor::src_alpha,
+                                 cen::blend_factor::one_minus_dst_alpha,
+                                 cen::blend_op::sub};
+  const auto mode [[maybe_unused]] = cen::compose_blend_mode(color, alpha);
 
   ASSERT_EQ(1u, SDL_ComposeCustomBlendMode_fake.call_count);
 

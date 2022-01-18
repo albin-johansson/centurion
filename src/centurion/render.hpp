@@ -82,9 +82,12 @@ inline auto operator<<(std::ostream& stream, const renderer_flip flip) -> std::o
 
 /// \} End of renderer flip functions
 
+/**
+ * \brief Provides information about rendering scale.
+ */
 struct renderer_scale final {
-  float x{};
-  float y{};
+  float x{};  ///< The x-axis scaling.
+  float y{};  ///< The y-axis scaling.
 };
 
 template <typename T>

@@ -34,12 +34,13 @@ namespace cen {
  * \details This class supports construction and conversion from various formats such as the
  * SDL color types, HSV, HSL, normalized components, and hexadecimal RGB/RGBA/ARGB color codes.
  *
- * \details See the `cen::colors` namespace for a large collection of named color constants for
- * commonly used HTML colors.
+ * \details A large collection of named color constants for commonly used HTML colors is
+ * provided in the `cen::colors` namespace.
  *
  * \serializable
  *
  * \see `blend(const color&, const color&, float)`
+ * \see `cen::colors`
  */
 class color final {
  public:

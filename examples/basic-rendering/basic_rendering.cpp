@@ -15,7 +15,7 @@ int main(int, char**)
   window.Show();
 
   // Render a string to a texture, which in turn can be rendered to our render target
-  auto text = renderer.create_texture(font.render_blended("Hello world!", cen::colors::white));
+  auto text = renderer.create_texture(font.render_blended("Hello world!", cen::colors::black));
 
   // Clear our render target with an arbitrary color
   renderer.clear_with(cen::colors::light_coral);

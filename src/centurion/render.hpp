@@ -209,7 +209,6 @@ class basic_renderer final {
     }
   }
 
-  /// \copydoc create_texture(const char*)
   [[nodiscard]] auto create_texture(const std::string& path) const -> texture
   {
     return create_texture(path.c_str());

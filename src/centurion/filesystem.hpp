@@ -695,7 +695,7 @@ class file final {
   explicit operator bool() const noexcept { return mContext != nullptr; }
 
  private:
-  Managed<SDL_RWops> mContext;
+  managed_ptr<SDL_RWops> mContext;
 
   [[nodiscard]] static auto stringify(const file_mode mode) noexcept -> const char*
   {

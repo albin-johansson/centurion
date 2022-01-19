@@ -374,7 +374,7 @@ class palette final {
   /// \} End of misc functions
 
  private:
-  Managed<SDL_Palette> mPalette;
+  managed_ptr<SDL_Palette> mPalette;
 };
 
 /// \name Palette functions

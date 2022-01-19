@@ -9,7 +9,7 @@ inline int delete_count = 0;
 namespace cen {
 
 template <>
-struct Deleter<int> final {
+struct deleter<int> final {
   void operator()(const int* ptr) noexcept
   {
     ++delete_count;

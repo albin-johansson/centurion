@@ -30,9 +30,9 @@ using enable_for_handle = std::enable_if_t<is_handle<T>, int>;
 template <typename B, typename Type>
 class pointer final {
  public:
-  using managed_ptr = Managed<Type>;
+  using smart_ptr = managed_ptr<Type>;
   using raw_ptr = Type*;
-  using pointer_type = std::conditional_t<B::value, managed_ptr, raw_ptr>;
+  using pointer_type = std::conditional_t<B::value, smart_ptr, raw_ptr>;
 
   pointer() noexcept = default;
 

@@ -166,7 +166,7 @@ class mutex final {
   [[nodiscard]] auto data() const noexcept -> const SDL_mutex* { return mMutex.get(); }
 
  private:
-  Managed<SDL_mutex> mMutex;
+  managed_ptr<SDL_mutex> mMutex;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
@@ -341,7 +341,7 @@ class condition final {
   }
 
  private:
-  Managed<SDL_cond> mCond;
+  managed_ptr<SDL_cond> mCond;
 };
 
 /**
@@ -414,7 +414,7 @@ class semaphore final {
   }
 
  private:
-  Managed<SDL_sem> mSemaphore;
+  managed_ptr<SDL_sem> mSemaphore;
 };
 
 /**

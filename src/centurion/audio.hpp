@@ -481,7 +481,7 @@ class music final {
   /// \} End of of misc functions
 
  private:
-  Managed<Mix_Music> mMusic;
+  managed_ptr<Mix_Music> mMusic;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 

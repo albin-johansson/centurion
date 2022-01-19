@@ -4,7 +4,7 @@
 
 TEST(SIMDBlock, Usage)
 {
-  cen::SIMDBlock block{100};
+  cen::simd_block block{100};
   ASSERT_TRUE(block);
   ASSERT_TRUE(block.data());
 
@@ -13,7 +13,7 @@ TEST(SIMDBlock, Usage)
   ASSERT_TRUE(cblock.data());
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  block.Reallocate(50);
+  block.reallocate(50);
   ASSERT_TRUE(block);
   ASSERT_TRUE(block.data());
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

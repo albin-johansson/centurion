@@ -640,7 +640,7 @@ class font final {
   [[nodiscard]] auto get() const noexcept -> TTF_Font* { return mFont.get(); }
 
  private:
-  Managed<TTF_Font> mFont;
+  managed_ptr<TTF_Font> mFont;
   int mSize{};
 
   void add_style(const int mask) noexcept

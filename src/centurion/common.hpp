@@ -24,6 +24,7 @@
 
 #include "features.hpp"
 #include "memory.hpp"
+#include "version.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -445,5 +446,13 @@ inline namespace time_literals {
 }  // namespace literals
 
 }  // namespace cen
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+/* Workaround for the enum being completely anonymous in SDL 2.0.10. Included here because
+   multiple files depend on this definition. */
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 #endif  // CENTURION_COMMON_HPP_

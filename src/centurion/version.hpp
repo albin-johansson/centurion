@@ -141,14 +141,6 @@ struct Version final {
 
 }  // namespace cen
 
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-/* Workaround for the enum being completely anonymous in SDL 2.0.10. Included here because
-   multiple files depend on this definition. */
-using SDL_KeyCode = decltype(SDLK_UNKNOWN);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
 /// \} End of group core
 
 #endif  // CENTURION_VERSION_HPP_

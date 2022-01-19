@@ -20,7 +20,7 @@ namespace {
 
 void verify(const SDL_DisplayMode& expected, const cen::display_mode& mode)
 {
-  ASSERT_EQ(expected.refresh_rate, mode.refresh_rate());
+  ASSERT_EQ(expected.refresh_rate, mode.refresh_rate().value_or(0));
 
   ASSERT_EQ(expected.w, mode.width());
   ASSERT_EQ(expected.h, mode.height());

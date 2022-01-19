@@ -41,6 +41,8 @@ set(SOURCE_FILES
     detail/min_test.cpp
     detail/owner_handle_api_test.cpp
 
+    endian/endian_test.cpp
+
     event/audio_device_event_test.cpp
     event/common_event_test.cpp
     event/drop_event_test.cpp
@@ -116,10 +118,14 @@ set(SOURCE_FILES
     keyboard/keyboard_test.cpp
     keyboard/scan_code_tests.cpp
 
+    locale/locale_test.cpp
+
     math/area_test.cpp
     math/rect_test.cpp
     math/point_test.cpp
     math/vector3_test.cpp
+
+    memory/simd_block_test.cpp
 
     message-box/mb_button_flags_test.cpp
     message-box/mb_button_order_test.cpp
@@ -144,15 +150,12 @@ set(SOURCE_FILES
     render/renderer_handle_test.cpp
     render/renderer_test.cpp
 
-    system/byte_order_test.cpp
     system/clipboard_test.cpp
     system/counter_test.cpp
-    system/cpu_test.cpp
-    system/locale_test.cpp
+    system/platform_id_test.cpp
     system/platform_test.cpp
     system/ram_test.cpp
     system/shared_object_test.cpp
-    system/simd_block_test.cpp
 
     texture/scale_mode_test.cpp
     texture/texture_access_test.cpp

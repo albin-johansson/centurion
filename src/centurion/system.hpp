@@ -19,6 +19,42 @@
 
 namespace cen {
 
+/// \addtogroup system
+/// \{
+
+/// \name Platform indicator constants
+/// \{
+
+/**
+ * \var on_linux
+ * \brief Indicates whether the current platform is Linux.
+ */
+
+/**
+ * \var on_apple
+ * \brief Indicates whether the current platform is some sort of Apple system.
+ */
+
+/**
+ * \var on_win32
+ * \brief Indicates whether the current platform is at least 32-bit Windows.
+ */
+
+/**
+ * \var on_win64
+ * \brief Indicates whether the current platform is 64-bit Windows.
+ */
+
+/**
+ * \var on_windows
+ * \brief Indicates whether the current platform is some variant of Windows.
+ */
+
+/**
+ * \var on_android
+ * \brief Indicates whether the current platform is Android.
+ */
+
 #ifdef __linux__
 inline constexpr bool on_linux = true;
 #else
@@ -51,40 +87,101 @@ inline constexpr bool on_android = true;
 inline constexpr bool on_android = false;
 #endif  // __ANDROID__
 
-enum class Platform {
-  Unknown,
-  Windows,
-  MacOS,
-  Linux,
-  IOS, /* Apple iOS */
-  Android
+/// \} End of platform indicator constants
+
+/**
+ * \brief Represents various operating systems.
+ */
+enum class platform_id {
+  unknown,   ///< An unknown platform.
+  windows,   ///< The Windows operating system.
+  macos,     ///< The macOS operating system.
+  linux_os,  ///< The Linux operating system.
+  ios,       ///< The iOS operating system.
+  android    ///< The Android operating system.
 };
 
-/* Represents a shared object, such as dynamic libraries. */
-class SharedObject final {
+/// \name Platform ID functions
+/// \{
+
+[[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
+{
+  switch (id) {
+    case platform_id::unknown:
+      return "unknown";
+
+    case platform_id::windows:
+      return "windows";
+
+    case platform_id::macos:
+      return "macos";
+
+    case platform_id::linux_os:
+      return "linux_os";
+
+    case platform_id::ios:
+      return "ios";
+
+    case platform_id::android:
+      return "android";
+
+    default:
+      throw exception{"Did not recognize platform!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostream&
+{
+  return stream << to_string(id);
+}
+
+/// \} End of platform ID functions
+
+/**
+ * \brief Represents a shared object, e.g. dynamic libraries.
+ */
+class shared_object final {
  public:
-  /* Loads a shared object. */
-  explicit SharedObject(const char* object) : mObject{SDL_LoadObject(object)}
+  /**
+   * \brief Loads a shared object.
+   *
+   * \param object the name of the shared object.
+   *
+   * \throws sdl_error if the object cannot be loaded.
+   */
+  explicit shared_object(const char* object) : mObject{SDL_LoadObject(object)}
   {
     if (!mObject) {
       throw sdl_error{};
     }
   }
 
-  explicit SharedObject(const std::string& object) : SharedObject{object.c_str()} {}
+  /// \copydoc shared_object()
+  explicit shared_object(const std::string& object) : shared_object{object.c_str()} {}
 
-  /* Attempts to load a C function with a specific name. */
+  /**
+   * \brief Attempts to load a C function.
+   *
+   * \note This function can only load C functions.
+   *
+   * \tparam T the signature of the function, e.g. `void(int, float)`.
+   *
+   * \param name the function name.
+   *
+   * \return the loaded function; a null pointer is returned if something goes wrong.
+   */
   template <typename T>
-  [[nodiscard]] auto LoadFunction(const char* name) const noexcept -> T*
+  [[nodiscard]] auto load_function(const char* name) const noexcept -> T*
   {
     assert(name);
     return reinterpret_cast<T*>(SDL_LoadFunction(mObject.get(), name));
   }
 
+  /// \copydoc load_function()
   template <typename T>
-  [[nodiscard]] auto LoadFunction(const std::string& name) const noexcept -> T*
+  [[nodiscard]] auto load_function(const std::string& name) const noexcept -> T*
   {
-    return LoadFunction<T>(name.c_str());
+    return load_function<T>(name.c_str());
   }
 
  private:
@@ -96,24 +193,21 @@ class SharedObject final {
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
  public:
-  SharedObject() = default;
+  shared_object() = default;
 
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
-/* Indicates whether the CPU uses little-endian byte ordering. */
-[[nodiscard]] constexpr auto IsLittleEndian() noexcept -> bool
-{
-  return SDL_BYTEORDER == SDL_LIL_ENDIAN;
-}
+/// \name Runtime platform information functions
+/// \{
 
-/* Indicates whether the CPU uses big-endian byte ordering. */
-[[nodiscard]] constexpr auto IsBigEndian() noexcept -> bool
-{
-  return SDL_BYTEORDER == SDL_BIG_ENDIAN;
-}
-
-[[nodiscard]] inline auto GetPlatformName() -> std::optional<std::string>
+/**
+ * \brief Returns the name of the current platform.
+ *
+ * \return the name of the current platform; an empty optional is returned if the name cannot
+ * be deduced.
+ */
+[[nodiscard]] inline auto platform_name() -> std::optional<std::string>
 {
   std::string name{SDL_GetPlatform()};
   if (name != "Unknown") {
@@ -124,174 +218,268 @@ class SharedObject final {
   }
 }
 
-[[nodiscard]] inline auto GetCurrentPlatform() noexcept -> Platform
+/**
+ * \brief Returns an identifier that represents the current platform.
+ *
+ * \return the current platform.
+ */
+[[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
-  const auto name = GetPlatformName();
+  const auto name = platform_name();
   if (name == "Windows") {
-    return Platform::Windows;
+    return platform_id::windows;
   }
   else if (name == "Mac OS X") {
-    return Platform::MacOS;
+    return platform_id::macos;
   }
   else if (name == "Linux") {
-    return Platform::Linux;
+    return platform_id::linux_os;
   }
   else if (name == "iOS") {
-    return Platform::IOS;
+    return platform_id::ios;
   }
   else if (name == "Android") {
-    return Platform::Android;
+    return platform_id::android;
   }
   else {
-    return Platform::Unknown;
+    return platform_id::unknown;
   }
 }
 
-[[nodiscard]] inline auto IsWindows() noexcept -> bool
+/**
+ * \brief Indicates whether the current platform is Windows.
+ *
+ * \return `true` if the platform is Windows; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_windows() noexcept -> bool
 {
-  return GetCurrentPlatform() == Platform::Windows;
+  return current_platform() == platform_id::windows;
 }
 
-[[nodiscard]] inline auto IsMacOS() noexcept -> bool
+/**
+ * \brief Indicates whether the current platform is macOS.
+ *
+ * \return `true` if the platform is macOS; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_macos() noexcept -> bool
 {
-  return GetCurrentPlatform() == Platform::MacOS;
+  return current_platform() == platform_id::macos;
 }
 
-[[nodiscard]] inline auto IsLinux() noexcept -> bool
+/**
+ * \brief Indicates whether the current platform is Linux.
+ *
+ * \return `true` if the platform is Linux; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_linux() noexcept -> bool
 {
-  return GetCurrentPlatform() == Platform::Linux;
+  return current_platform() == platform_id::linux_os;
 }
 
-[[nodiscard]] inline auto IsIOS() noexcept -> bool
+/**
+ * \brief Indicates whether the current platform is iOS.
+ *
+ * \return `true` if the platform is iOS; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_ios() noexcept -> bool
 {
-  return GetCurrentPlatform() == Platform::IOS;
+  return current_platform() == platform_id::ios;
 }
 
-[[nodiscard]] inline auto IsAndroid() noexcept -> bool
+/**
+ * \brief Indicates whether the current platform is Android.
+ *
+ * \return `true` if the platform is Android; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_android() noexcept -> bool
 {
-  return GetCurrentPlatform() == Platform::Android;
+  return current_platform() == platform_id::android;
 }
 
-[[nodiscard]] inline auto IsTablet() noexcept -> bool
+/**
+ * \brief Indicates whether the current system is a tablet.
+ *
+ * \return `true` if the system is a tablet; `false` otherwise.
+ */
+[[nodiscard]] inline auto is_tablet() noexcept -> bool
 {
   return SDL_IsTablet() == SDL_TRUE;
 }
 
-/* Returns the current value of the high-performance counter. */
-[[nodiscard]] inline auto Now() noexcept -> uint64
-{
-  return SDL_GetPerformanceCounter();
-}
+/// \} End of runtime platform information functions
 
-/* Returns the frequency of the high-performance counter. */
-[[nodiscard]] inline auto GetFrequency() noexcept -> uint64
+/// \name System counter functions
+/// \{
+
+/**
+ * \brief Returns the frequency of the system high-performance counter.
+ *
+ * \return the counter frequency.
+ */
+[[nodiscard]] inline auto frequency() noexcept -> uint64
 {
   return SDL_GetPerformanceFrequency();
 }
 
-/* Returns the value of the high-performance counter in seconds. */
-[[nodiscard]] inline auto NowInSeconds() noexcept(noexcept(seconds<double>{}))
+/**
+ * \brief Returns the current value of the high-performance counter.
+ *
+ * \note The unit of the returned value is platform dependent, see `frequency()`.
+ *
+ * \return the current value of the counter.
+ */
+[[nodiscard]] inline auto now() noexcept -> uint64
+{
+  return SDL_GetPerformanceCounter();
+}
+
+/**
+ * \brief Returns the value of the system high-performance counter in seconds.
+ *
+ * \tparam T the representation type.
+ *
+ * \return the current value of the counter.
+ */
+[[nodiscard]] inline auto now_in_seconds() noexcept(noexcept(seconds<double>{}))
     -> seconds<double>
 {
-  return seconds<double>{static_cast<double>(Now()) / static_cast<double>(GetFrequency())};
+  return seconds<double>{static_cast<double>(now()) / static_cast<double>(frequency())};
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-/* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard]] inline auto GetTicks() noexcept(noexcept(u64ms{uint64{}})) -> u64ms
+/**
+ * \brief Returns the amount of milliseconds since SDL was initialized.
+ *
+ * \return the time since SDL was initialized.
+ */
+[[nodiscard]] inline auto ticks() noexcept(noexcept(u64ms{uint64{}})) -> u64ms
 {
   return u64ms{SDL_GetTicks64()};
 }
 
 #else
 
-/* Returns the amount of milliseconds since SDL was initialized. */
-[[nodiscard, deprecated]] inline auto GetTicks() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
+/**
+ * \brief Returns the amount of milliseconds since SDL was initialized.
+ *
+ * \return the time since SDL was initialized.
+ */
+[[nodiscard, deprecated]] inline auto ticks() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
 {
   return u32ms{SDL_GetTicks()};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
-[[nodiscard]] inline auto GetMemoryMB() noexcept -> int
+/// \} End of system counter functions
+
+/// \name System RAM functions
+/// \{
+
+/**
+ * \brief Returns the total amount of system RAM.
+ *
+ * \return the amount of RAM, in megabytes.
+ */
+[[nodiscard]] inline auto ram_mb() noexcept -> int
 {
   return SDL_GetSystemRAM();
 }
 
-[[nodiscard]] inline auto GetMemoryGB() noexcept -> int
+/**
+ * \brief Returns the total amount of system RAM.
+ *
+ * \return the amount of RAM, in gigabytes.
+ */
+[[nodiscard]] inline auto ram_gb() noexcept -> int
 {
-  return GetMemoryMB() / 1'000;
+  return ram_mb() / 1'000;
 }
 
-inline auto SetClipboard(const char* text) noexcept -> result
+/// \} End of system RAM functions
+
+/// \name Clipboard functions
+/// \{
+
+/**
+ * \brief Sets the current clipboard text.
+ *
+ * \param text the text that will be stored in the clipboard.
+ *
+ * \return `success` if the clipboard text was set; `failure` otherwise.
+ */
+inline auto set_clipboard(const char* text) noexcept -> result
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
 }
 
-inline auto SetClipboard(const std::string& text) noexcept -> result
+/// \copydoc set_clipboard()
+inline auto set_clipboard(const std::string& text) noexcept -> result
 {
-  return SetClipboard(text.c_str());
+  return set_clipboard(text.c_str());
 }
 
-[[nodiscard]] inline auto GetClipboard() -> std::string
+/**
+ * \brief Indicates whether the clipboard exists and contains non-empty text.
+ *
+ * \return `true` if the clipboard has non-empty text; `false` otherwise.
+ */
+[[nodiscard]] inline auto has_clipboard() noexcept -> bool
+{
+  return SDL_HasClipboardText();
+}
+
+/**
+ * \brief Returns the current text in the clipboard.
+ *
+ * \details If the clipboard cannot be obtained, this function returns an empty string.
+ *
+ * \return the current clipboard text.
+ */
+[[nodiscard]] inline auto get_clipboard() -> std::string
 {
   const sdl_string text{SDL_GetClipboardText()};
   return text.copy();
 }
 
-/* Indicates whether the clipboard exists and contains non-empty text. */
-[[nodiscard]] inline auto HasClipboard() noexcept -> bool
-{
-  return SDL_HasClipboardText();
-}
+/// \} End of clipboard functions
+
+/// \name URL functions
+/// \{
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-inline auto OpenURL(const char* url) noexcept -> result
+/**
+ * \brief Attempts to open a URL using a web browser (or file manager for local files).
+ *
+ * \details This function will return `success` if there was at least an attempt to open
+ * the specified URL, but it doesn't mean that the URL was successfully loaded.
+ *
+ * \details This function will differ greatly in its effects depending on the current platform.
+ *
+ * \param url the URL that should be opened.
+ *
+ * \return `success` if there was an attempt to open the URL; `failure` otherwise.
+ */
+inline auto open_url(const char* url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
 }
 
-inline auto OpenURL(const std::string& url) noexcept -> result
+/// \copydoc open_url()
+inline auto open_url(const std::string& url) noexcept -> result
 {
-  return OpenURL(url.c_str());
+  return open_url(url.c_str());
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-[[nodiscard]] inline auto ToString(const Platform id) -> std::string_view
-{
-  switch (id) {
-    case Platform::Unknown:
-      return "Unknown";
+/// \} End of URL functions
 
-    case Platform::Windows:
-      return "Windows";
-
-    case Platform::MacOS:
-      return "MacOS";
-
-    case Platform::Linux:
-      return "Linux";
-
-    case Platform::IOS:
-      return "IOS";
-
-    case Platform::Android:
-      return "Android";
-
-    default:
-      throw exception{"Did not recognize platform!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const Platform id) -> std::ostream&
-{
-  return stream << ToString(id);
-}
+/// \} End of group system
 
 }  // namespace cen
 

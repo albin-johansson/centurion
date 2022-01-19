@@ -2,12 +2,12 @@
 
 #include "system.hpp"
 
-TEST(RAM, GetMemoryMB)
+TEST(RAM, MB)
 {
-  ASSERT_EQ(SDL_GetSystemRAM(), cen::GetMemoryMB());
+  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram_mb());
 }
 
-TEST(RAM, GetMemoryGB)
+TEST(RAM, GB)
 {
-  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::GetMemoryGB());
+  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram_gb());
 }

@@ -32,8 +32,8 @@ TEST_F(OpenURLTest, OpenURL)
   using namespace std::string_literals;
   const auto url = "https://www.google.com"s;
 
-  ASSERT_FALSE(cen::OpenURL(url));
-  ASSERT_TRUE(cen::OpenURL(url));
+  ASSERT_FALSE(cen::open_url(url));
+  ASSERT_TRUE(cen::open_url(url));
 
   ASSERT_EQ(2u, SDL_OpenURL_fake.call_count);
 }

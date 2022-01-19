@@ -17,6 +17,26 @@ namespace cen {
 /// \{
 
 /**
+ * \brief Indicates whether the CPU uses little-endian byte ordering.
+ *
+ * \return `true` if the CPI is little-endian; `false` otherwise.
+ */
+[[nodiscard]] constexpr auto is_little_endian() noexcept -> bool
+{
+  return SDL_BYTEORDER == SDL_LIL_ENDIAN;
+}
+
+/**
+ * \brief Indicates whether the CPU uses big-endian byte ordering.
+ *
+ * \return `true` if the CPI is big-endian; `false` otherwise.
+ */
+[[nodiscard]] constexpr auto is_big_endian() noexcept -> bool
+{
+  return SDL_BYTEORDER == SDL_BIG_ENDIAN;
+}
+
+/**
  * \brief Swaps the byte order of an integer.
  *
  * \param value the value that will be swapped.

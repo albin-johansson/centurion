@@ -26,7 +26,7 @@
 
 namespace cen {
 
-/// \addtogroup texture
+/// \addtogroup render
 /// \{
 
 /**
@@ -412,7 +412,7 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 
 /// \} End of texture functions
 
-/// \} End of group texture
+/// \} End of group render
 
 }  // namespace cen
 

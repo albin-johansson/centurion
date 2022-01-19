@@ -282,9 +282,9 @@ class message_box final {
   static void show(const char* title,
                    const char* message,
                    const message_box_type type = default_type(),
-                   const message_box_button_order buttonOrder = default_order())
+                   const message_box_button_order order = default_order())
   {
-    show(nullptr, title, message, type, buttonOrder);
+    show(nullptr, title, message, type, order);
   }
 
   /**
@@ -300,9 +300,9 @@ class message_box final {
   static void show(const std::string& title,
                    const std::string& message,
                    const message_box_type type = default_type(),
-                   const message_box_button_order buttonOrder = default_order())
+                   const message_box_button_order order = default_order())
   {
-    show(nullptr, title.c_str(), message.c_str(), type, buttonOrder);
+    show(nullptr, title.c_str(), message.c_str(), type, order);
   }
 
   /// \} End of direct message box API

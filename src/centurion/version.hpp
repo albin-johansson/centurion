@@ -18,70 +18,30 @@
 #include <cassert>  // assert
 
 /**
- * \def CENTURION_VERSION_MAJOR
- *
  * \brief Expands into the current major version of the library.
- *
- * \ingroup versioning
  */
 #define CENTURION_VERSION_MAJOR 7
 
 /**
- * \def CENTURION_VERSION_MINOR
- *
  * \brief Expands into the current minor version of the library.
- *
- * \ingroup versioning
  */
 #define CENTURION_VERSION_MINOR 0
 
 /**
- * \def CENTURION_VERSION_PATCH
- *
  * \brief Expands into the current patch version of the library.
- *
- * \ingroup versioning
  */
 #define CENTURION_VERSION_PATCH 0
 
-/**
- * \def CENTURION_MAKE_VERSION_NUMBER
- *
- * \brief Used to create comparable version values, e.g. `1.2.3` becomes `1203`.
- *
- * \ingroup versioning
- */
 #define CENTURION_MAKE_VERSION_NUMBER(X, Y, Z) (((X)*1'000) + ((Y)*100) + (Z))
 
-/**
- * \def CENTURION_VERSION_NUMBER
- *
- * \brief Expands into an integer that represents the current Centurion version.
- *
- * \ingroup versioning
- */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
-/**
- * \def CENTURION_VERSION_AT_LEAST
- *
- * \brief Indicates whether the current Centurion version satisfies a version constraint.
- *
- * \ingroup versioning
- */
 #define CENTURION_VERSION_AT_LEAST(X, Y, Z) \
   CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(X, Y, Z)
 
-/**
- * \def CENTURION_SDL_VERSION_IS
- *
- * \brief Indicates whether the current SDL version is exactly a specific version.
- *
- * \ingroup versioning
- */
 #define CENTURION_SDL_VERSION_IS(X, Y, Z) \
   ((SDL_MAJOR_VERSION == (X)) && (SDL_MINOR_VERSION == (Y)) && (SDL_PATCHLEVEL == (Z)))
 

@@ -66,13 +66,13 @@ TEST(KeyboardEvent, SetState)
 {
   cen::keyboard_event event;
 
-  event.set_state(cen::ButtonState::Pressed);
-  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
+  event.set_state(cen::button_state::pressed);
+  ASSERT_EQ(cen::button_state::pressed, event.state());
   ASSERT_TRUE(event.pressed());
   ASSERT_FALSE(event.released());
 
-  event.set_state(cen::ButtonState::Released);
-  ASSERT_EQ(cen::ButtonState::Released, event.state());
+  event.set_state(cen::button_state::released);
+  ASSERT_EQ(cen::button_state::released, event.state());
   ASSERT_TRUE(event.released());
   ASSERT_FALSE(event.pressed());
 }

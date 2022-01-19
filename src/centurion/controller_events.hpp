@@ -64,7 +64,7 @@ class controller_button_event final : public event_base<SDL_ControllerButtonEven
     mEvent.button = static_cast<uint8>(button);
   }
 
-  void set_state(const ButtonState state) noexcept { mEvent.state = to_underlying(state); }
+  void set_state(const button_state state) noexcept { mEvent.state = to_underlying(state); }
 
   [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
@@ -73,19 +73,19 @@ class controller_button_event final : public event_base<SDL_ControllerButtonEven
     return static_cast<ControllerButton>(mEvent.button);
   }
 
-  [[nodiscard]] auto state() const noexcept -> ButtonState
+  [[nodiscard]] auto state() const noexcept -> button_state
   {
-    return static_cast<ButtonState>(mEvent.state);
+    return static_cast<button_state>(mEvent.state);
   }
 
   [[nodiscard]] auto is_pressed() const noexcept -> bool
   {
-    return state() == ButtonState::Pressed;
+    return state() == button_state::pressed;
   }
 
   [[nodiscard]] auto is_released() const noexcept -> bool
   {
-    return state() == ButtonState::Released;
+    return state() == button_state::released;
   }
 };
 

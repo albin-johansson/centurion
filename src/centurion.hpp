@@ -31,6 +31,7 @@
 
 #include "centurion/audio.hpp"
 #include "centurion/audio_events.hpp"
+#include "centurion/button_state.hpp"
 #include "centurion/color.hpp"
 #include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
@@ -69,7 +70,6 @@
 
 #include "centurion/core/logging.hpp"
 #include "centurion/core/sdl_string.hpp"
-#include "centurion/input/button_state.hpp"
 #include "centurion/input/controller.hpp"
 #include "centurion/input/haptic.hpp"
 #include "centurion/input/haptic_condition.hpp"

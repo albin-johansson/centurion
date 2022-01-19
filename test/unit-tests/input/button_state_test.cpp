@@ -1,23 +1,21 @@
-#include "input/button_state.hpp"
+#include "button_state.hpp"
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
-
-#include "common.hpp"
+#include <iostream>  // cout
 
 TEST(ButtonState, Values)
 {
-  ASSERT_EQ(SDL_RELEASED, cen::to_underlying(cen::ButtonState::Released));
-  ASSERT_EQ(SDL_PRESSED, cen::to_underlying(cen::ButtonState::Pressed));
+  ASSERT_EQ(SDL_RELEASED, to_underlying(cen::button_state::released));
+  ASSERT_EQ(SDL_PRESSED, to_underlying(cen::button_state::pressed));
 }
 
 TEST(ButtonState, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::ButtonState>(3)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::button_state>(3)), cen::exception);
 
-  ASSERT_EQ("Released", cen::ToString(cen::ButtonState::Released));
-  ASSERT_EQ("Pressed", cen::ToString(cen::ButtonState::Pressed));
+  ASSERT_EQ("released", to_string(cen::button_state::released));
+  ASSERT_EQ("pressed", to_string(cen::button_state::pressed));
 
-  std::clog << "Button state example: " << cen::ButtonState::Pressed << '\n';
+  std::cout << "button_state::pressed == " << cen::button_state::pressed << '\n';
 }

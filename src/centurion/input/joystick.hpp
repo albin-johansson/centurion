@@ -187,7 +187,7 @@ class BasicJoystick final {
     return SDL_JoystickSetVirtualAxis(mJoystick, axis, value) == 0;
   }
 
-  auto SetVirtualButton(const int button, const ButtonState state) noexcept -> result
+  auto SetVirtualButton(const int button, const button_state state) noexcept -> result
   {
     return SDL_JoystickSetVirtualButton(mJoystick, button, to_underlying(state)) == 0;
   }
@@ -407,9 +407,9 @@ class BasicJoystick final {
     return static_cast<JoystickPower>(SDL_JoystickCurrentPowerLevel(mJoystick));
   }
 
-  [[nodiscard]] auto GetButtonState(const int button) const noexcept -> ButtonState
+  [[nodiscard]] auto GetButtonState(const int button) const noexcept -> button_state
   {
-    return static_cast<ButtonState>(SDL_JoystickGetButton(mJoystick, button));
+    return static_cast<button_state>(SDL_JoystickGetButton(mJoystick, button));
   }
 
   [[nodiscard]] auto GetHatState(const int hat) const noexcept -> HatState

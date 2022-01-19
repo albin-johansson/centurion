@@ -8,7 +8,7 @@
 
 #include "common.hpp"
 #include "event_base.hpp"
-#include "input/button_state.hpp"
+#include "button_state.hpp"
 #include "mouse.hpp"
 
 namespace cen {
@@ -58,7 +58,7 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
 
   void set_button(const MouseButton button) noexcept { mEvent.button = to_underlying(button); }
 
-  void set_state(const ButtonState state) noexcept { mEvent.state = to_underlying(state); }
+  void set_state(const button_state state) noexcept { mEvent.state = to_underlying(state); }
 
   void set_clicks(const uint8 clicks) noexcept { mEvent.clicks = clicks; }
 
@@ -75,19 +75,19 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
     return static_cast<MouseButton>(mEvent.button);
   }
 
-  [[nodiscard]] auto state() const noexcept -> ButtonState
+  [[nodiscard]] auto state() const noexcept -> button_state
   {
-    return static_cast<ButtonState>(mEvent.state);
+    return static_cast<button_state>(mEvent.state);
   }
 
   [[nodiscard]] auto pressed() const noexcept -> bool
   {
-    return state() == ButtonState::Pressed;
+    return state() == button_state::pressed;
   }
 
   [[nodiscard]] auto released() const noexcept -> bool
   {
-    return state() == ButtonState::Released;
+    return state() == button_state::released;
   }
 
   [[nodiscard]] auto clicks() const noexcept -> uint8 { return mEvent.clicks; }

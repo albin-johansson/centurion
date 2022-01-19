@@ -20,15 +20,15 @@ TEST(ControllerButtonEvent, SetState)
 {
   cen::controller_button_event event;
 
-  event.set_state(cen::ButtonState::Pressed);
+  event.set_state(cen::button_state::pressed);
 
-  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
+  ASSERT_EQ(cen::button_state::pressed, event.state());
   ASSERT_TRUE(event.is_pressed());
   ASSERT_FALSE(event.is_released());
 
-  event.set_state(cen::ButtonState::Released);
+  event.set_state(cen::button_state::released);
 
-  ASSERT_EQ(cen::ButtonState::Released, event.state());
+  ASSERT_EQ(cen::button_state::released, event.state());
   ASSERT_TRUE(event.is_released());
   ASSERT_FALSE(event.is_pressed());
 }

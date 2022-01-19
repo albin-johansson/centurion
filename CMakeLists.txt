@@ -62,6 +62,7 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
                src/centurion/audio_events.hpp
+               src/centurion/button_state.hpp
                src/centurion/color.hpp
                src/centurion/common.hpp
                src/centurion/concurrency.hpp
@@ -104,7 +105,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/sdl_version_at_least.hpp
                src/centurion/detail/tuple_type_index.hpp
 
-               src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp
                src/centurion/input/haptic.hpp
                src/centurion/input/haptic_condition.hpp

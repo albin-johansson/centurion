@@ -256,22 +256,22 @@ class BasicController final {
     return SDL_GameControllerGetAxis(mController, static_cast<SDL_GameControllerAxis>(axis));
   }
 
-  [[nodiscard]] auto GetState(const ControllerButton button) const noexcept -> ButtonState
+  [[nodiscard]] auto GetState(const ControllerButton button) const noexcept -> button_state
   {
     const auto state =
         SDL_GameControllerGetButton(mController,
                                     static_cast<SDL_GameControllerButton>(button));
-    return static_cast<ButtonState>(state);
+    return static_cast<button_state>(state);
   }
 
   [[nodiscard]] auto IsPressed(const ControllerButton button) const noexcept -> bool
   {
-    return GetState(button) == ButtonState::Pressed;
+    return GetState(button) == button_state::pressed;
   }
 
   [[nodiscard]] auto IsReleased(const ControllerButton button) const noexcept -> bool
   {
-    return GetState(button) == ButtonState::Released;
+    return GetState(button) == button_state::released;
   }
 
   [[nodiscard]] auto IsConnected() const noexcept -> bool
@@ -489,7 +489,7 @@ class BasicController final {
                                                          &result.x,
                                                          &result.y,
                                                          &result.pressure);
-    result.state = static_cast<ButtonState>(state);
+    result.state = static_cast<button_state>(state);
 
     if (res != -1) {
       return result;

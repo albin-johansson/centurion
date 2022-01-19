@@ -8,11 +8,11 @@
 #include <string_view>  // string_view
 #include <utility>      // move
 
+#include "button_state.hpp"
 #include "common.hpp"
 #include "detail/array_utils.hpp"
 #include "detail/stdlib.hpp"
 #include "event_base.hpp"
-#include "input/button_state.hpp"
 #include "input/controller.hpp"
 #include "input/sensor.hpp"
 #include "keyboard.hpp"
@@ -206,7 +206,7 @@ class keyboard_event final : public event_base<SDL_KeyboardEvent> {
 
   void set_key(const KeyCode code) noexcept { mEvent.keysym.sym = code.get(); }
 
-  void set_state(const ButtonState state) noexcept { mEvent.state = to_underlying(state); }
+  void set_state(const button_state state) noexcept { mEvent.state = to_underlying(state); }
 
   void set_modifier(const KeyMod mod, const bool active) noexcept
   {
@@ -249,19 +249,19 @@ class keyboard_event final : public event_base<SDL_KeyboardEvent> {
 
   [[nodiscard]] auto repeated() const noexcept -> bool { return mEvent.repeat; }
 
-  [[nodiscard]] auto state() const noexcept -> ButtonState
+  [[nodiscard]] auto state() const noexcept -> button_state
   {
-    return static_cast<ButtonState>(mEvent.state);
+    return static_cast<button_state>(mEvent.state);
   }
 
   [[nodiscard]] auto released() const noexcept -> bool
   {
-    return state() == ButtonState::Released;
+    return state() == button_state::released;
   }
 
   [[nodiscard]] auto pressed() const noexcept -> bool
   {
-    return state() == ButtonState::Pressed;
+    return state() == button_state::pressed;
   }
 
   [[nodiscard]] auto scan() const noexcept -> ScanCode { return mEvent.keysym.scancode; }

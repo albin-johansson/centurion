@@ -33,10 +33,10 @@ namespace cen::touch {
  * \since 5.2.0
  */
 struct finger_state final {
-  ButtonState state;  ///< Whether or not the finger is pressed or release.
-  float x;            ///< The current x-coordinate.
-  float y;            ///< The current y-coordinate.
-  float pressure;     ///< The current applied pressure.
+  button_state state;  ///< Whether or not the finger is pressed or release.
+  float x;             ///< The current x-coordinate.
+  float y;             ///< The current y-coordinate.
+  float pressure;      ///< The current applied pressure.
 };
 
 /**

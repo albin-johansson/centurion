@@ -31,8 +31,8 @@ TEST_F(OpenGLLibraryTest, Construction)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_LoadLibrary, values.data(), cen::isize(values));
 
-  ASSERT_THROW(cen::GLLibrary library, cen::sdl_error);
-  ASSERT_NO_THROW(cen::GLLibrary library);
+  ASSERT_THROW(cen::gl_library library, cen::sdl_error);
+  ASSERT_NO_THROW(cen::gl_library library);
 }
 
 TEST_F(OpenGLLibraryTest, AddressOf)
@@ -40,8 +40,8 @@ TEST_F(OpenGLLibraryTest, AddressOf)
   std::array values{0};
   SET_RETURN_SEQ(SDL_GL_LoadLibrary, values.data(), cen::isize(values));
 
-  cen::GLLibrary library;
-  const auto* address [[maybe_unused]] = library.AddressOf("foo");
+  cen::gl_library library;
+  const auto* address [[maybe_unused]] = library.address_of("foo");
 
   ASSERT_EQ(1u, SDL_GL_GetProcAddress_fake.call_count);
 }

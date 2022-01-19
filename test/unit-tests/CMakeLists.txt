@@ -133,9 +133,6 @@ set(SOURCE_FILES
     mouse/mouse_test.cpp
     mouse/system_cursor_test.cpp
 
-    opengl/gl_attribute_test.cpp
-    opengl/gl_swap_interval_test.cpp
-
     pixels/palette_test.cpp
     pixels/pixel_format_info_test.cpp
     pixels/pixel_format_test.cpp
@@ -177,6 +174,9 @@ set(SOURCE_FILES
     video/window_flags_test.cpp
     video/window_test.cpp
     video/window_handle_test.cpp
+
+    video/opengl/gl_attribute_test.cpp
+    video/opengl/gl_swap_interval_test.cpp
     )
 
 if (CEN_AUDIO)

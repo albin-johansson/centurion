@@ -55,7 +55,7 @@ TEST_F(OpenGLTest, Swap)
   std::array flags{Uint32{SDL_WINDOW_OPENGL}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  ASSERT_NO_FATAL_FAILURE(cen::gl::Swap(m_window));
+  ASSERT_NO_FATAL_FAILURE(cen::gl::swap(m_window));
   ASSERT_EQ(1u, SDL_GL_SwapWindow_fake.call_count);
 }
 
@@ -64,13 +64,13 @@ TEST_F(OpenGLTest, DrawableSize)
   std::array flags{Uint32{SDL_WINDOW_OPENGL}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  ASSERT_NO_FATAL_FAILURE(cen::gl::GetDrawableSize(m_window));
+  ASSERT_NO_FATAL_FAILURE(cen::gl::drawable_size(m_window));
   ASSERT_EQ(1u, SDL_GL_GetDrawableSize_fake.call_count);
 }
 
 TEST_F(OpenGLTest, ResetAttributes)
 {
-  cen::gl::ResetAttributes();
+  cen::gl::reset_attributes();
   ASSERT_EQ(1u, SDL_GL_ResetAttributes_fake.call_count);
 }
 
@@ -79,8 +79,8 @@ TEST_F(OpenGLTest, Set)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_SetAttribute, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::failure, cen::gl::Set(cen::GLAttribute::BufferSize, 42));
-  ASSERT_EQ(cen::success, cen::gl::Set(cen::GLAttribute::BufferSize, 42));
+  ASSERT_EQ(cen::failure, cen::gl::set(cen::gl_attribute::buffer_size, 42));
+  ASSERT_EQ(cen::success, cen::gl::set(cen::gl_attribute::buffer_size, 42));
   ASSERT_EQ(2u, SDL_GL_SetAttribute_fake.call_count);
 }
 
@@ -89,8 +89,8 @@ TEST_F(OpenGLTest, Get)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_GetAttribute, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::gl::Get(cen::GLAttribute::BufferSize));
-  ASSERT_TRUE(cen::gl::Get(cen::GLAttribute::BufferSize));
+  ASSERT_FALSE(cen::gl::get(cen::gl_attribute::buffer_size));
+  ASSERT_TRUE(cen::gl::get(cen::gl_attribute::buffer_size));
   ASSERT_EQ(2u, SDL_GL_GetAttribute_fake.call_count);
 }
 
@@ -99,8 +99,8 @@ TEST_F(OpenGLTest, SetSwapInterval)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_SetSwapInterval, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::gl::SetSwapInterval(cen::GLSwapInterval::Immediate));
-  ASSERT_TRUE(cen::gl::SetSwapInterval(cen::GLSwapInterval::Immediate));
+  ASSERT_FALSE(cen::gl::set_swap_interval(cen::gl_swap_interval::immediate));
+  ASSERT_TRUE(cen::gl::set_swap_interval(cen::gl_swap_interval::immediate));
   ASSERT_EQ(2u, SDL_GL_SetSwapInterval_fake.call_count);
 }
 
@@ -109,21 +109,21 @@ TEST_F(OpenGLTest, SwapInterval)
   std::array values{0, 1, -1};
   SET_RETURN_SEQ(SDL_GL_GetSwapInterval, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::GLSwapInterval::Immediate, cen::gl::GetSwapInterval());
-  ASSERT_EQ(cen::GLSwapInterval::Synchronized, cen::gl::GetSwapInterval());
-  ASSERT_EQ(cen::GLSwapInterval::LateImmediate, cen::gl::GetSwapInterval());
+  ASSERT_EQ(cen::gl_swap_interval::immediate, cen::gl::swap_interval());
+  ASSERT_EQ(cen::gl_swap_interval::synchronized, cen::gl::swap_interval());
+  ASSERT_EQ(cen::gl_swap_interval::late_immediate, cen::gl::swap_interval());
   ASSERT_EQ(3u, SDL_GL_GetSwapInterval_fake.call_count);
 }
 
 TEST_F(OpenGLTest, GetWindow)
 {
-  const auto window [[maybe_unused]] = cen::gl::GetWindow();
+  const auto window [[maybe_unused]] = cen::gl::get_window();
   ASSERT_EQ(1u, SDL_GL_GetCurrentWindow_fake.call_count);
 }
 
 TEST_F(OpenGLTest, GetContext)
 {
-  const auto context [[maybe_unused]] = cen::gl::GetContext();
+  const auto context [[maybe_unused]] = cen::gl::get_context();
   ASSERT_EQ(1u, SDL_GL_GetCurrentContext_fake.call_count);
 }
 
@@ -132,8 +132,8 @@ TEST_F(OpenGLTest, IsExtensionSupported)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GL_ExtensionSupported, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::gl::IsExtensionSupported("foo"s));
-  ASSERT_TRUE(cen::gl::IsExtensionSupported("foo"s));
+  ASSERT_FALSE(cen::gl::is_extension_supported("foo"s));
+  ASSERT_TRUE(cen::gl::is_extension_supported("foo"s));
 
   ASSERT_EQ(2u, SDL_GL_ExtensionSupported_fake.call_count);
 }
@@ -144,8 +144,8 @@ TEST_F(OpenGLTest, Bind)
   SET_RETURN_SEQ(SDL_GL_BindTexture, values.data(), cen::isize(values));
 
   cen::texture_handle texture{nullptr};
-  ASSERT_FALSE(cen::gl::Bind(texture));
-  ASSERT_TRUE(cen::gl::Bind(texture));
+  ASSERT_FALSE(cen::gl::bind(texture));
+  ASSERT_TRUE(cen::gl::bind(texture));
   ASSERT_EQ(2u, SDL_GL_BindTexture_fake.call_count);
 }
 
@@ -155,7 +155,7 @@ TEST_F(OpenGLTest, Unbind)
   SET_RETURN_SEQ(SDL_GL_UnbindTexture, values.data(), cen::isize(values));
 
   cen::texture_handle texture{nullptr};
-  ASSERT_FALSE(cen::gl::Unbind(texture));
-  ASSERT_TRUE(cen::gl::Unbind(texture));
+  ASSERT_FALSE(cen::gl::unbind(texture));
+  ASSERT_TRUE(cen::gl::unbind(texture));
   ASSERT_EQ(2u, SDL_GL_UnbindTexture_fake.call_count);
 }

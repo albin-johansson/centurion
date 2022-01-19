@@ -20,13 +20,13 @@ class OpenGLContextTest : public testing::Test {
     RESET_FAKE(SDL_GL_MakeCurrent)
   }
 
-  cen::GLContextHandle m_context{nullptr};
+  cen::gl_context_handle m_context{nullptr};
 };
 
 TEST_F(OpenGLContextTest, Construction)
 {
-  ASSERT_THROW(cen::GLContext{nullptr}, cen::exception);
-  ASSERT_NO_THROW(cen::GLContextHandle{nullptr});
+  ASSERT_THROW(cen::gl_context{nullptr}, cen::exception);
+  ASSERT_NO_THROW(cen::gl_context_handle{nullptr});
 }
 
 TEST_F(OpenGLContextTest, MakeCurrent)

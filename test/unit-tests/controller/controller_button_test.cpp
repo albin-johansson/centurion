@@ -1,84 +1,83 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "common.hpp"
-#include "input/controller.hpp"
+#include "controller.hpp"
 
-using Button = cen::ControllerButton;
+using button = cen::controller_button;
 
 TEST(ControllerButton, Values)
 {
-  ASSERT_EQ(to_underlying(Button::Invalid), SDL_CONTROLLER_BUTTON_INVALID);
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_INVALID, to_underlying(button::invalid));
 
-  ASSERT_EQ(to_underlying(Button::A), SDL_CONTROLLER_BUTTON_A);
-  ASSERT_EQ(to_underlying(Button::B), SDL_CONTROLLER_BUTTON_B);
-  ASSERT_EQ(to_underlying(Button::X), SDL_CONTROLLER_BUTTON_X);
-  ASSERT_EQ(to_underlying(Button::Y), SDL_CONTROLLER_BUTTON_Y);
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_A, to_underlying(button::a));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_B, to_underlying(button::b));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_X, to_underlying(button::x));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_Y, to_underlying(button::y));
 
-  ASSERT_EQ(to_underlying(Button::Back), SDL_CONTROLLER_BUTTON_BACK);
-  ASSERT_EQ(to_underlying(Button::Guide), SDL_CONTROLLER_BUTTON_GUIDE);
-  ASSERT_EQ(to_underlying(Button::Start), SDL_CONTROLLER_BUTTON_START);
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_BACK, to_underlying(button::back));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_GUIDE, to_underlying(button::guide));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_START, to_underlying(button::start));
 
-  ASSERT_EQ(to_underlying(Button::LeftStick), SDL_CONTROLLER_BUTTON_LEFTSTICK);
-  ASSERT_EQ(to_underlying(Button::RightStick), SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-  ASSERT_EQ(to_underlying(Button::LeftShoulder), SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-  ASSERT_EQ(to_underlying(Button::RightShoulder), SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_LEFTSTICK, to_underlying(button::left_stick));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_RIGHTSTICK, to_underlying(button::right_stick));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_LEFTSHOULDER, to_underlying(button::left_shoulder));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, to_underlying(button::right_shoulder));
 
-  ASSERT_EQ(to_underlying(Button::DpadUp), SDL_CONTROLLER_BUTTON_DPAD_UP);
-  ASSERT_EQ(to_underlying(Button::DpadDown), SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-  ASSERT_EQ(to_underlying(Button::DpadRight), SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-  ASSERT_EQ(to_underlying(Button::DpadLeft), SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-  ASSERT_EQ(to_underlying(Button::Max), SDL_CONTROLLER_BUTTON_MAX);
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_DPAD_UP, to_underlying(button::dpad_up));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_DPAD_DOWN, to_underlying(button::dpad_down));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_DPAD_RIGHT, to_underlying(button::dpad_right));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_DPAD_LEFT, to_underlying(button::dpad_left));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_MAX, to_underlying(button::max));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(to_underlying(Button::Misc1), SDL_CONTROLLER_BUTTON_MISC1);
-  ASSERT_EQ(to_underlying(Button::Paddle1), SDL_CONTROLLER_BUTTON_PADDLE1);
-  ASSERT_EQ(to_underlying(Button::Paddle2), SDL_CONTROLLER_BUTTON_PADDLE2);
-  ASSERT_EQ(to_underlying(Button::Paddle3), SDL_CONTROLLER_BUTTON_PADDLE3);
-  ASSERT_EQ(to_underlying(Button::Paddle4), SDL_CONTROLLER_BUTTON_PADDLE4);
-  ASSERT_EQ(to_underlying(Button::Touchpad), SDL_CONTROLLER_BUTTON_TOUCHPAD);
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_MISC1, to_underlying(button::misc1));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_PADDLE1, to_underlying(button::paddle1));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_PADDLE2, to_underlying(button::paddle2));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_PADDLE3, to_underlying(button::paddle3));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_PADDLE4, to_underlying(button::paddle4));
+  ASSERT_EQ(SDL_CONTROLLER_BUTTON_TOUCHPAD, to_underlying(button::touchpad));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }
 
 TEST(ControllerButton, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Button>(SDL_CONTROLLER_BUTTON_MAX + 1)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<button>(SDL_CONTROLLER_BUTTON_MAX + 1)), cen::exception);
 
-  ASSERT_EQ("Invalid", ToString(Button::Invalid));
+  ASSERT_EQ("invalid", to_string(button::invalid));
 
-  ASSERT_EQ("A", ToString(Button::A));
-  ASSERT_EQ("B", ToString(Button::B));
-  ASSERT_EQ("X", ToString(Button::X));
-  ASSERT_EQ("Y", ToString(Button::Y));
+  ASSERT_EQ("a", to_string(button::a));
+  ASSERT_EQ("b", to_string(button::b));
+  ASSERT_EQ("x", to_string(button::x));
+  ASSERT_EQ("y", to_string(button::y));
 
-  ASSERT_EQ("Back", ToString(Button::Back));
-  ASSERT_EQ("Guide", ToString(Button::Guide));
-  ASSERT_EQ("Start", ToString(Button::Start));
+  ASSERT_EQ("back", to_string(button::back));
+  ASSERT_EQ("guide", to_string(button::guide));
+  ASSERT_EQ("start", to_string(button::start));
 
-  ASSERT_EQ("LeftStick", ToString(Button::LeftStick));
-  ASSERT_EQ("RightStick", ToString(Button::RightStick));
+  ASSERT_EQ("left_stick", to_string(button::left_stick));
+  ASSERT_EQ("right_stick", to_string(button::right_stick));
 
-  ASSERT_EQ("LeftShoulder", ToString(Button::LeftShoulder));
-  ASSERT_EQ("RightShoulder", ToString(Button::RightShoulder));
+  ASSERT_EQ("left_shoulder", to_string(button::left_shoulder));
+  ASSERT_EQ("right_shoulder", to_string(button::right_shoulder));
 
-  ASSERT_EQ("DpadUp", ToString(Button::DpadUp));
-  ASSERT_EQ("DpadDown", ToString(Button::DpadDown));
-  ASSERT_EQ("DpadLeft", ToString(Button::DpadLeft));
-  ASSERT_EQ("DpadRight", ToString(Button::DpadRight));
+  ASSERT_EQ("dpad_up", to_string(button::dpad_up));
+  ASSERT_EQ("dpad_down", to_string(button::dpad_down));
+  ASSERT_EQ("dpad_left", to_string(button::dpad_left));
+  ASSERT_EQ("dpad_right", to_string(button::dpad_right));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ("Misc1", ToString(Button::Misc1));
+  ASSERT_EQ("misc1", to_string(button::misc1));
 
-  ASSERT_EQ("Paddle1", ToString(Button::Paddle1));
-  ASSERT_EQ("Paddle2", ToString(Button::Paddle2));
-  ASSERT_EQ("Paddle3", ToString(Button::Paddle3));
-  ASSERT_EQ("Paddle4", ToString(Button::Paddle4));
+  ASSERT_EQ("paddle1", to_string(button::paddle1));
+  ASSERT_EQ("paddle2", to_string(button::paddle2));
+  ASSERT_EQ("paddle3", to_string(button::paddle3));
+  ASSERT_EQ("paddle4", to_string(button::paddle4));
 
-  ASSERT_EQ("Touchpad", ToString(Button::Touchpad));
+  ASSERT_EQ("touchpad", to_string(button::touchpad));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  ASSERT_EQ("Max", ToString(Button::Max));
+  ASSERT_EQ("max", to_string(button::max));
 
-  std::clog << "Controller Button example: " << Button::X << '\n';
+  std::cout << "controller_button::x == " << button::x << '\n';
 }

@@ -9,7 +9,7 @@
 #include "detail/array_utils.hpp"
 #include "detail/stdlib.hpp"
 #include "event_base.hpp"
-#include "input/controller.hpp"
+#include "controller.hpp"
 #include "input/sensor.hpp"
 
 namespace cen {
@@ -27,15 +27,15 @@ class controller_axis_event final : public event_base<SDL_ControllerAxisEvent> {
 
   void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
-  void set_axis(const ControllerAxis axis) noexcept { mEvent.axis = static_cast<uint8>(axis); }
+  void set_axis(const controller_axis axis) noexcept { mEvent.axis = static_cast<uint8>(axis); }
 
   void set_value(const int16 value) noexcept { mEvent.value = value; }
 
   [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
-  [[nodiscard]] auto axis() const noexcept -> ControllerAxis
+  [[nodiscard]] auto axis() const noexcept -> controller_axis
   {
-    return static_cast<ControllerAxis>(mEvent.axis);
+    return static_cast<controller_axis>(mEvent.axis);
   }
 
   [[nodiscard]] auto value() const noexcept -> int16 { return mEvent.value; }
@@ -59,7 +59,7 @@ class controller_button_event final : public event_base<SDL_ControllerButtonEven
 
   void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
-  void set_button(const ControllerButton button) noexcept
+  void set_button(const controller_button button) noexcept
   {
     mEvent.button = static_cast<uint8>(button);
   }
@@ -68,9 +68,9 @@ class controller_button_event final : public event_base<SDL_ControllerButtonEven
 
   [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
 
-  [[nodiscard]] auto button() const noexcept -> ControllerButton
+  [[nodiscard]] auto button() const noexcept -> controller_button
   {
-    return static_cast<ControllerButton>(mEvent.button);
+    return static_cast<controller_button>(mEvent.button);
   }
 
   [[nodiscard]] auto state() const noexcept -> button_state

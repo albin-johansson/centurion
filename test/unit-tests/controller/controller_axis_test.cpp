@@ -1,36 +1,39 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "common.hpp"
-#include "input/controller.hpp"
+#include "controller.hpp"
 
-using Axis = cen::ControllerAxis;
+using axis = cen::controller_axis;
 
 TEST(ControllerAxis, Values)
 {
-  ASSERT_EQ(to_underlying(Axis::Invalid), SDL_CONTROLLER_AXIS_INVALID);
-  ASSERT_EQ(to_underlying(Axis::LeftX), SDL_CONTROLLER_AXIS_LEFTX);
-  ASSERT_EQ(to_underlying(Axis::LeftY), SDL_CONTROLLER_AXIS_LEFTY);
-  ASSERT_EQ(to_underlying(Axis::RightX), SDL_CONTROLLER_AXIS_RIGHTX);
-  ASSERT_EQ(to_underlying(Axis::RightY), SDL_CONTROLLER_AXIS_RIGHTY);
-  ASSERT_EQ(to_underlying(Axis::TriggerLeft), SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-  ASSERT_EQ(to_underlying(Axis::TriggerRight), SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-  ASSERT_EQ(to_underlying(Axis::Max), SDL_CONTROLLER_AXIS_MAX);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_INVALID, to_underlying(axis::invalid));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_LEFTX, to_underlying(axis::left_x));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_LEFTY, to_underlying(axis::left_y));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_RIGHTX, to_underlying(axis::right_x));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_RIGHTY, to_underlying(axis::right_y));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_TRIGGERLEFT, to_underlying(axis::trigger_left));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, to_underlying(axis::trigger_right));
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_MAX, to_underlying(axis::max));
 }
 
 TEST(ControllerAxis, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Axis>(SDL_CONTROLLER_AXIS_MAX + 1)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<axis>(SDL_CONTROLLER_AXIS_MAX + 1)), cen::exception);
 
-  ASSERT_EQ("Invalid", ToString(Axis::Invalid));
-  ASSERT_EQ("LeftX", ToString(Axis::LeftX));
-  ASSERT_EQ("LeftY", ToString(Axis::LeftY));
-  ASSERT_EQ("RightX", ToString(Axis::RightX));
-  ASSERT_EQ("RightY", ToString(Axis::RightY));
-  ASSERT_EQ("TriggerLeft", ToString(Axis::TriggerLeft));
-  ASSERT_EQ("TriggerRight", ToString(Axis::TriggerRight));
-  ASSERT_EQ("Max", ToString(Axis::Max));
+  ASSERT_EQ("invalid", to_string(axis::invalid));
 
-  std::clog << "Controller axis example: " << Axis::RightX << '\n';
+  ASSERT_EQ("left_x", to_string(axis::left_x));
+  ASSERT_EQ("left_y", to_string(axis::left_y));
+
+  ASSERT_EQ("right_x", to_string(axis::right_x));
+  ASSERT_EQ("right_y", to_string(axis::right_y));
+
+  ASSERT_EQ("trigger_left", to_string(axis::trigger_left));
+  ASSERT_EQ("trigger_right", to_string(axis::trigger_right));
+
+  ASSERT_EQ("max", to_string(axis::max));
+
+  std::cout << "controller_axis::right_x == " << axis::right_x << '\n';
 }

@@ -35,6 +35,7 @@
 #include "centurion/color.hpp"
 #include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
+#include "centurion/controller.hpp"
 #include "centurion/controller_events.hpp"
 #include "centurion/endian.hpp"
 #include "centurion/event.hpp"
@@ -70,7 +71,6 @@
 
 #include "centurion/core/logging.hpp"
 #include "centurion/core/sdl_string.hpp"
-#include "centurion/input/controller.hpp"
 #include "centurion/input/haptic.hpp"
 #include "centurion/input/haptic_condition.hpp"
 #include "centurion/input/haptic_constant.hpp"

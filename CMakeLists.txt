@@ -66,6 +66,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/color.hpp
                src/centurion/common.hpp
                src/centurion/concurrency.hpp
+               src/centurion/controller.hpp
                src/centurion/controller_events.hpp
                src/centurion/endian.hpp
                src/centurion/event.hpp
@@ -105,7 +106,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/detail/sdl_version_at_least.hpp
                src/centurion/detail/tuple_type_index.hpp
 
-               src/centurion/input/controller.hpp
                src/centurion/input/haptic.hpp
                src/centurion/input/haptic_condition.hpp
                src/centurion/input/haptic_constant.hpp

@@ -12,8 +12,8 @@ TEST(ControllerButtonEvent, SetButton)
 {
   cen::controller_button_event event;
 
-  event.set_button(cen::ControllerButton::A);
-  ASSERT_EQ(cen::ControllerButton::A, event.button());
+  event.set_button(cen::controller_button::a);
+  ASSERT_EQ(cen::controller_button::a, event.button());
 }
 
 TEST(ControllerButtonEvent, SetState)

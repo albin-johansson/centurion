@@ -1,18 +1,18 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "input/controller.hpp"
+#include "controller.hpp"
 
-using MappingResult = cen::ControllerMappingResult;
+using mapping_result = cen::controller_mapping_result;
 
 TEST(ControllerMappingResult, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<MappingResult>(4)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<mapping_result>(4)), cen::exception);
 
-  ASSERT_EQ("Error", ToString(MappingResult::Error));
-  ASSERT_EQ("Updated", ToString(MappingResult::Updated));
-  ASSERT_EQ("Added", ToString(MappingResult::Added));
+  ASSERT_EQ("error", to_string(mapping_result::error));
+  ASSERT_EQ("updated", to_string(mapping_result::updated));
+  ASSERT_EQ("added", to_string(mapping_result::added));
 
-  std::clog << "Controller mapping result example: " << MappingResult::Added << '\n';
+  std::cout << "controller_mapping_result::added == " << mapping_result::added << '\n';
 }

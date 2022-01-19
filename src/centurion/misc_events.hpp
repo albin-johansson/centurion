@@ -13,7 +13,7 @@
 #include "detail/array_utils.hpp"
 #include "detail/stdlib.hpp"
 #include "event_base.hpp"
-#include "input/controller.hpp"
+#include "controller.hpp"
 #include "input/sensor.hpp"
 #include "keyboard.hpp"
 #include "mouse.hpp"

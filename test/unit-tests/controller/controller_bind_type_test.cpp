@@ -1,28 +1,27 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "common.hpp"
-#include "input/controller.hpp"
+#include "controller.hpp"
 
-using BindType = cen::ControllerBindType;
+using bind_type = cen::controller_bind_type;
 
 TEST(ControllerBindType, Values)
 {
-  ASSERT_EQ(to_underlying(BindType::Axis), SDL_CONTROLLER_BINDTYPE_AXIS);
-  ASSERT_EQ(to_underlying(BindType::Button), SDL_CONTROLLER_BINDTYPE_BUTTON);
-  ASSERT_EQ(to_underlying(BindType::None), SDL_CONTROLLER_BINDTYPE_NONE);
-  ASSERT_EQ(to_underlying(BindType::Hat), SDL_CONTROLLER_BINDTYPE_HAT);
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_AXIS, to_underlying(bind_type::axis));
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_BUTTON, to_underlying(bind_type::button));
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_NONE, to_underlying(bind_type::none));
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_HAT, to_underlying(bind_type::hat));
 }
 
 TEST(ControllerBindType, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<BindType>(4)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<bind_type>(100)), cen::exception);
 
-  ASSERT_EQ("None", ToString(BindType::None));
-  ASSERT_EQ("Button", ToString(BindType::Button));
-  ASSERT_EQ("Axis", ToString(BindType::Axis));
-  ASSERT_EQ("Hat", ToString(BindType::Hat));
+  ASSERT_EQ("none", to_string(bind_type::none));
+  ASSERT_EQ("button", to_string(bind_type::button));
+  ASSERT_EQ("axis", to_string(bind_type::axis));
+  ASSERT_EQ("hat", to_string(bind_type::hat));
 
-  std::clog << "Controller bind type example: " << BindType::Button << '\n';
+  std::cout << "controller_bind_type::button == " << bind_type::button << '\n';
 }

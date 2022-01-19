@@ -37,6 +37,12 @@
 
 namespace cen {
 
+/**
+ * \defgroup font Font
+ *
+ * \brief Provides support for TTF fonts, based on SDL_ttf.
+ */
+
 /// \addtogroup font
 /// \{
 

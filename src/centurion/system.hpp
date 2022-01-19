@@ -19,6 +19,12 @@
 
 namespace cen {
 
+/**
+ * \defgroup system System
+ *
+ * \brief Provides system-related information, such as RAM amount, counters, and platform.
+ */
+
 /// \addtogroup system
 /// \{
 

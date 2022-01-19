@@ -17,8 +17,6 @@
 
 #include <cassert>  // assert
 
-/// \addtogroup core
-/// \{
 
 /// Expands into the current major version of the library.
 #define CENTURION_VERSION_MAJOR 7
@@ -140,7 +138,5 @@ struct Version final {
 /// \} End of SDL version queries
 
 }  // namespace cen
-
-/// \} End of group core
 
 #endif  // CENTURION_VERSION_HPP_

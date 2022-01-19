@@ -20,6 +20,12 @@
 
 namespace cen {
 
+/**
+ * \defgroup math Math
+ *
+ * \brief Provides common math utilities such as points, areas, and rectangles.
+ */
+
 /// \addtogroup math
 /// \{
 
@@ -318,7 +324,14 @@ class basic_point final {
 /// \name Point functions
 /// \{
 
-/* Returns the distance between two points. */
+/**
+ * \brief Returns the distance between two points.
+ *
+ * \param from the start point.
+ * \param to the end point.
+ *
+ * \return the euclidean distance between the points.
+ */
 template <typename T>
 [[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept ->
     typename basic_point<T>::value_type

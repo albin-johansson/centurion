@@ -1,23 +1,24 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "message_box.hpp"
 
 TEST(MessageBoxType, Values)
 {
-  ASSERT_EQ(SDL_MESSAGEBOX_INFORMATION, cen::to_underlying(cen::MessageBoxType::Information));
-  ASSERT_EQ(SDL_MESSAGEBOX_WARNING, cen::to_underlying(cen::MessageBoxType::Warning));
-  ASSERT_EQ(SDL_MESSAGEBOX_ERROR, cen::to_underlying(cen::MessageBoxType::Error));
+  ASSERT_EQ(SDL_MESSAGEBOX_INFORMATION, to_underlying(cen::message_box_type::information));
+  ASSERT_EQ(SDL_MESSAGEBOX_WARNING, to_underlying(cen::message_box_type::warning));
+  ASSERT_EQ(SDL_MESSAGEBOX_ERROR, to_underlying(cen::message_box_type::error));
 }
 
 TEST(MessageBoxType, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::MessageBoxType>(0x41)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::message_box_type>(0x41)), cen::exception);
 
-  ASSERT_EQ("Information", cen::ToString(cen::MessageBoxType::Information));
-  ASSERT_EQ("Error", cen::ToString(cen::MessageBoxType::Error));
-  ASSERT_EQ("Warning", cen::ToString(cen::MessageBoxType::Warning));
+  ASSERT_EQ("information", to_string(cen::message_box_type::information));
+  ASSERT_EQ("error", to_string(cen::message_box_type::error));
+  ASSERT_EQ("warning", to_string(cen::message_box_type::warning));
 
-  std::clog << "Message box type example: " << cen::MessageBoxType::Information << '\n';
+  std::cout << "message_box_type::information == " << cen::message_box_type::information
+            << '\n';
 }

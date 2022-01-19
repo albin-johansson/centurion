@@ -4,7 +4,7 @@
 
 TEST(MessageBoxColorScheme, Defaults)
 {
-  const cen::MessageBoxColorScheme scheme;
+  const cen::message_box_color_scheme scheme;
 
   const auto* data = scheme.data();
   const auto color = cen::colors::white;
@@ -18,16 +18,16 @@ TEST(MessageBoxColorScheme, Defaults)
 
 TEST(MessageBoxColorScheme, Custom)
 {
-  cen::MessageBoxColorScheme scheme;
+  cen::message_box_color_scheme scheme;
 
-  const auto check = [&](const cen::MessageBoxColorType type, const cen::color& color) {
-    scheme.SetColor(type, color);
+  const auto check = [&](const cen::message_box_color_type type, const cen::color& color) {
+    scheme.set_color(type, color);
     ASSERT_EQ(color, cen::color{scheme.data()->colors[cen::to_underlying(type)]});
   };
 
-  check(cen::MessageBoxColorType::Text, cen::colors::salmon);
-  check(cen::MessageBoxColorType::Background, cen::colors::pink);
-  check(cen::MessageBoxColorType::ButtonBackground, cen::colors::violet);
-  check(cen::MessageBoxColorType::ButtonBorder, cen::colors::alice_blue);
-  check(cen::MessageBoxColorType::ButtonSelected, cen::colors::wheat);
+  check(cen::message_box_color_type::text, cen::colors::salmon);
+  check(cen::message_box_color_type::background, cen::colors::pink);
+  check(cen::message_box_color_type::button_background, cen::colors::violet);
+  check(cen::message_box_color_type::button_border, cen::colors::alice_blue);
+  check(cen::message_box_color_type::button_selected, cen::colors::wheat);
 }

@@ -1,34 +1,34 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "message_box.hpp"
 
 TEST(MessageBoxColorType, Values)
 {
-  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_TEXT, cen::to_underlying(cen::MessageBoxColorType::Text));
+  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_TEXT, to_underlying(cen::message_box_color_type::text));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
-            cen::to_underlying(cen::MessageBoxColorType::ButtonSelected));
+            to_underlying(cen::message_box_color_type::button_selected));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
-            cen::to_underlying(cen::MessageBoxColorType::ButtonBackground));
+            to_underlying(cen::message_box_color_type::button_background));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
-            cen::to_underlying(cen::MessageBoxColorType::ButtonBorder));
+            to_underlying(cen::message_box_color_type::button_border));
   ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BACKGROUND,
-            cen::to_underlying(cen::MessageBoxColorType::Background));
+            to_underlying(cen::message_box_color_type::background));
 }
 
 TEST(MessageBoxColorType, ToString)
 {
   ASSERT_THROW(
-      cen::ToString(static_cast<cen::MessageBoxColorType>(SDL_MESSAGEBOX_COLOR_MAX + 1)),
+      to_string(static_cast<cen::message_box_color_type>(SDL_MESSAGEBOX_COLOR_MAX + 1)),
       cen::exception);
 
-  ASSERT_EQ("Background", cen::ToString(cen::MessageBoxColorType::Background));
-  ASSERT_EQ("Text", cen::ToString(cen::MessageBoxColorType::Text));
-  ASSERT_EQ("ButtonBorder", cen::ToString(cen::MessageBoxColorType::ButtonBorder));
-  ASSERT_EQ("ButtonBackground", cen::ToString(cen::MessageBoxColorType::ButtonBackground));
-  ASSERT_EQ("ButtonSelected", cen::ToString(cen::MessageBoxColorType::ButtonSelected));
+  ASSERT_EQ("background", to_string(cen::message_box_color_type::background));
+  ASSERT_EQ("text", to_string(cen::message_box_color_type::text));
+  ASSERT_EQ("button_border", to_string(cen::message_box_color_type::button_border));
+  ASSERT_EQ("button_background", to_string(cen::message_box_color_type::button_background));
+  ASSERT_EQ("button_selected", to_string(cen::message_box_color_type::button_selected));
 
-  std::clog << "Message box color type example: " << cen::MessageBoxColorType::Background
-            << '\n';
+  std::cout << "message_box_color_type::background == "
+            << cen::message_box_color_type::background << '\n';
 }

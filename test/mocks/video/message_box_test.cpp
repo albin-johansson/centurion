@@ -30,7 +30,7 @@ TEST_F(MessageBoxTest, ShowStatic)
   const std::string message{"bar"};
 
   {  // With defaults
-    cen::MessageBox::Show(title, message);
+    cen::message_box::show(title, message);
     ASSERT_EQ(1u, SDL_ShowSimpleMessageBox_fake.call_count);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -44,7 +44,7 @@ TEST_F(MessageBoxTest, ShowStatic)
   }
 
   {  // With custom type
-    cen::MessageBox::Show(title, message, cen::MessageBoxType::Error);
+    cen::message_box::show(title, message, cen::message_box_type::error);
     ASSERT_EQ(2u, SDL_ShowSimpleMessageBox_fake.call_count);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -58,10 +58,10 @@ TEST_F(MessageBoxTest, ShowStatic)
   }
 
   {  // With custom type and button order
-    cen::MessageBox::Show(title,
-                          message,
-                          cen::MessageBoxType::Error,
-                          cen::MessageBoxButtonOrder::RightToLeft);
+    cen::message_box::show(title,
+                           message,
+                           cen::message_box_type::error,
+                           cen::message_box_button_order::right_to_left);
     ASSERT_EQ(3u, SDL_ShowSimpleMessageBox_fake.call_count);
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -77,12 +77,12 @@ TEST_F(MessageBoxTest, ShowStatic)
 
 TEST_F(MessageBoxTest, Show)
 {
-  cen::MessageBox mb;
+  cen::message_box mb;
 
-  mb.Show();
+  mb.show();
   ASSERT_EQ(1u, SDL_ShowMessageBox_fake.call_count);
 
   cen::window_handle window{nullptr};
-  mb.Show(window);
+  mb.show(window);
   ASSERT_EQ(2u, SDL_ShowMessageBox_fake.call_count);
 }

@@ -29,31 +29,31 @@ class WindowUtilsTest : public testing::Test {
 
 TEST_F(WindowUtilsTest, GetGrabbedWindow)
 {
-  auto window [[maybe_unused]] = cen::GetGrabbedWindow();
+  auto window [[maybe_unused]] = cen::get_grabbed_window();
   ASSERT_EQ(1u, SDL_GetGrabbedWindow_fake.call_count);
 }
 
-TEST_F(WindowUtilsTest, MouseFocusWindow)
+TEST_F(WindowUtilsTest, GetMouseFocusWindow)
 {
-  auto window [[maybe_unused]] = cen::GetMouseFocusWindow();
+  auto window [[maybe_unused]] = cen::get_mouse_focus_window();
   ASSERT_EQ(1u, SDL_GetMouseFocus_fake.call_count);
 }
 
-TEST_F(WindowUtilsTest, KeyboardFocusWindow)
+TEST_F(WindowUtilsTest, GetKeyboardFocusWindow)
 {
-  auto window [[maybe_unused]] = cen::GetKeyboardFocusWindow();
+  auto window [[maybe_unused]] = cen::get_keyboard_focus_window();
   ASSERT_EQ(1u, SDL_GetKeyboardFocus_fake.call_count);
 }
 
 TEST_F(WindowUtilsTest, GetWindow)
 {
-  auto window [[maybe_unused]] = cen::GetWindow(0);
+  auto window [[maybe_unused]] = cen::get_window(0);
   ASSERT_EQ(1u, SDL_GetWindowFromID_fake.call_count);
 }
 
 TEST_F(WindowUtilsTest, GetRenderer)
 {
-  cen::WindowHandle window{nullptr};
-  auto renderer [[maybe_unused]] = cen::GetRenderer(window);
+  cen::window_handle window{nullptr};
+  auto renderer [[maybe_unused]] = window.get_renderer();
   ASSERT_EQ(1u, SDL_GetRenderer_fake.call_count);
 }

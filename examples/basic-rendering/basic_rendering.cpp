@@ -6,13 +6,14 @@ int main(int, char**)
   const cen::img img;
   const cen::ttf ttf;
 
-  // Create our window and renderer
-  auto [window, renderer] = cen::MakeWindowAndRenderer();
+  // Create a window and an associated renderer
+  cen::window window;
+  cen::renderer renderer = window.create_renderer();
 
   // Here we assume the existence of an image and font
   const cen::texture image = renderer.create_texture(RESOURCE_DIR "panda.png");
   const cen::font font{RESOURCE_DIR "daniel.ttf", 36};
-  window.Show();
+  window.show();
 
   // Render a string to a texture, which in turn can be rendered to our render target
   auto text = renderer.create_texture(font.render_blended("Hello world!", cen::colors::black));
@@ -49,7 +50,7 @@ int main(int, char**)
 
   using namespace cen::literals;  // For _ms literal
   cen::thread::sleep(2000_ms);    // Wait for 2 seconds so that we can see the result
-  window.Hide();
+  window.hide();
 
   return 0;
 }

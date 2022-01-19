@@ -103,30 +103,30 @@ class WindowTest : public testing::Test {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
-  cen::WindowHandle m_window{nullptr};
+  cen::window_handle m_window{nullptr};
 };
 
 TEST_F(WindowTest, Constructor)
 {
-  ASSERT_THROW(cen::Window{"foo"}, cen::sdl_error);
+  ASSERT_THROW(cen::window{"foo"}, cen::sdl_error);
   ASSERT_EQ(1u, SDL_CreateWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, Show)
 {
-  m_window.Show();
+  m_window.show();
   ASSERT_EQ(1u, SDL_ShowWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, Hide)
 {
-  m_window.Hide();
+  m_window.hide();
   ASSERT_EQ(1u, SDL_HideWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, Center)
 {
-  m_window.Center();
+  m_window.center();
   ASSERT_EQ(1u, SDL_SetWindowPosition_fake.call_count);
   ASSERT_EQ(SDL_WINDOWPOS_CENTERED,
             static_cast<unsigned>(SDL_SetWindowPosition_fake.arg1_val));
@@ -136,31 +136,31 @@ TEST_F(WindowTest, Center)
 
 TEST_F(WindowTest, Raise)
 {
-  m_window.Raise();
+  m_window.raise();
   ASSERT_EQ(1u, SDL_RaiseWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, Maximize)
 {
-  m_window.Maximize();
+  m_window.maximize();
   ASSERT_EQ(1u, SDL_MaximizeWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, Minimize)
 {
-  m_window.Minimize();
+  m_window.minimize();
   ASSERT_EQ(1u, SDL_MinimizeWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, Restore)
 {
-  m_window.Restore();
+  m_window.restore();
   ASSERT_EQ(1u, SDL_RestoreWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, UpdateSurface)
 {
-  m_window.UpdateSurface();
+  m_window.update_surface();
   ASSERT_EQ(1u, SDL_UpdateWindowSurface_fake.call_count);
 }
 
@@ -169,12 +169,12 @@ TEST_F(WindowTest, SetFullscreen)
   std::array values{0, 1};
   SET_RETURN_SEQ(SDL_SetWindowFullscreen, values.data(), cen::isize(values));
 
-  ASSERT_TRUE(m_window.SetFullscreen(true));
+  ASSERT_TRUE(m_window.set_fullscreen(true));
   ASSERT_EQ(1u, SDL_SetWindowFullscreen_fake.call_count);
   ASSERT_EQ(SDL_WINDOW_FULLSCREEN,
             static_cast<SDL_WindowFlags>(SDL_SetWindowFullscreen_fake.arg1_val));
 
-  ASSERT_FALSE(m_window.SetFullscreen(false));
+  ASSERT_FALSE(m_window.set_fullscreen(false));
   ASSERT_EQ(2u, SDL_SetWindowFullscreen_fake.call_count);
   ASSERT_EQ(0u, SDL_SetWindowFullscreen_fake.arg1_val);
 }
@@ -184,54 +184,54 @@ TEST_F(WindowTest, SetFullscreenDesktop)
   std::array values{0, 1};
   SET_RETURN_SEQ(SDL_SetWindowFullscreen, values.data(), cen::isize(values));
 
-  ASSERT_TRUE(m_window.SetFullscreenDesktop(true));
+  ASSERT_TRUE(m_window.set_fullscreen_desktop(true));
   ASSERT_EQ(1u, SDL_SetWindowFullscreen_fake.call_count);
   ASSERT_EQ(SDL_WINDOW_FULLSCREEN_DESKTOP, SDL_SetWindowFullscreen_fake.arg1_val);
 
-  ASSERT_FALSE(m_window.SetFullscreenDesktop(false));
+  ASSERT_FALSE(m_window.set_fullscreen_desktop(false));
   ASSERT_EQ(2u, SDL_SetWindowFullscreen_fake.call_count);
   ASSERT_EQ(0, SDL_SetWindowFullscreen_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetDecorated)
 {
-  m_window.SetDecorated(true);
+  m_window.set_decorated(true);
   ASSERT_EQ(1u, SDL_SetWindowBordered_fake.call_count);
   ASSERT_EQ(SDL_TRUE, SDL_SetWindowBordered_fake.arg1_val);
 
-  m_window.SetDecorated(false);
+  m_window.set_decorated(false);
   ASSERT_EQ(2u, SDL_SetWindowBordered_fake.call_count);
   ASSERT_EQ(SDL_FALSE, SDL_SetWindowBordered_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetResizable)
 {
-  m_window.SetResizable(true);
+  m_window.set_resizable(true);
   ASSERT_EQ(1u, SDL_SetWindowResizable_fake.call_count);
   ASSERT_EQ(SDL_TRUE, SDL_SetWindowResizable_fake.arg1_val);
 
-  m_window.SetResizable(false);
+  m_window.set_resizable(false);
   ASSERT_EQ(2u, SDL_SetWindowResizable_fake.call_count);
   ASSERT_EQ(SDL_FALSE, SDL_SetWindowResizable_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetWidth)
 {
-  m_window.SetWidth(123);
+  m_window.set_width(123);
   ASSERT_EQ(1u, SDL_SetWindowSize_fake.call_count);
   ASSERT_EQ(123, SDL_SetWindowSize_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetHeight)
 {
-  m_window.SetHeight(789);
+  m_window.set_height(789);
   ASSERT_EQ(1u, SDL_SetWindowSize_fake.call_count);
   ASSERT_EQ(789, SDL_SetWindowSize_fake.arg2_val);
 }
 
 TEST_F(WindowTest, SetSize)
 {
-  m_window.SetSize({123, 456});
+  m_window.set_size({123, 456});
   ASSERT_EQ(1u, SDL_SetWindowSize_fake.call_count);
   ASSERT_EQ(123, SDL_SetWindowSize_fake.arg1_val);
   ASSERT_EQ(456, SDL_SetWindowSize_fake.arg2_val);
@@ -240,7 +240,7 @@ TEST_F(WindowTest, SetSize)
 TEST_F(WindowTest, SetIcon)
 {
   const cen::surface icon;
-  m_window.SetIcon(icon);
+  m_window.set_icon(icon);
   ASSERT_EQ(1u, SDL_SetWindowIcon_fake.call_count);
 }
 
@@ -249,7 +249,7 @@ TEST_F(WindowTest, SetTitle)
   using namespace std::string_literals;
   const auto title = "foobar"s;
 
-  m_window.SetTitle(title);
+  m_window.set_title(title);
   ASSERT_EQ(1u, SDL_SetWindowTitle_fake.call_count);
   ASSERT_STREQ("foobar", SDL_SetWindowTitle_fake.arg1_val);
 }
@@ -259,16 +259,16 @@ TEST_F(WindowTest, SetOpacity)
   std::array values{0, 1};
   SET_RETURN_SEQ(SDL_SetWindowOpacity, values.data(), cen::isize(values));
 
-  ASSERT_TRUE(m_window.SetOpacity(0.8f));
+  ASSERT_TRUE(m_window.set_opacity(0.8f));
   ASSERT_EQ(1u, SDL_SetWindowOpacity_fake.call_count);
   ASSERT_EQ(0.8f, SDL_SetWindowOpacity_fake.arg1_val);
 
-  ASSERT_FALSE(m_window.SetOpacity(0.5f));
+  ASSERT_FALSE(m_window.set_opacity(0.5f));
 }
 
 TEST_F(WindowTest, SetMinSize)
 {
-  m_window.SetMinSize({12, 34});
+  m_window.set_min_size({12, 34});
   ASSERT_EQ(1u, SDL_SetWindowMinimumSize_fake.call_count);
   ASSERT_EQ(12, SDL_SetWindowMinimumSize_fake.arg1_val);
   ASSERT_EQ(34, SDL_SetWindowMinimumSize_fake.arg2_val);
@@ -276,7 +276,7 @@ TEST_F(WindowTest, SetMinSize)
 
 TEST_F(WindowTest, SetMaxSize)
 {
-  m_window.SetMaxSize({56, 78});
+  m_window.set_max_size({56, 78});
   ASSERT_EQ(1u, SDL_SetWindowMaximumSize_fake.call_count);
   ASSERT_EQ(56, SDL_SetWindowMaximumSize_fake.arg1_val);
   ASSERT_EQ(78, SDL_SetWindowMaximumSize_fake.arg2_val);
@@ -284,7 +284,7 @@ TEST_F(WindowTest, SetMaxSize)
 
 TEST_F(WindowTest, SetPosition)
 {
-  m_window.SetPosition({123, 456});
+  m_window.set_position({123, 456});
   ASSERT_EQ(1u, SDL_SetWindowPosition_fake.call_count);
   ASSERT_EQ(123, SDL_SetWindowPosition_fake.arg1_val);
   ASSERT_EQ(456, SDL_SetWindowPosition_fake.arg2_val);
@@ -292,11 +292,11 @@ TEST_F(WindowTest, SetPosition)
 
 TEST_F(WindowTest, SetGrabMouse)
 {
-  m_window.SetGrabMouse(true);
+  m_window.set_grab_mouse(true);
   ASSERT_EQ(1u, SDL_SetWindowGrab_fake.call_count);
   ASSERT_EQ(SDL_TRUE, SDL_SetWindowGrab_fake.arg1_val);
 
-  m_window.SetGrabMouse(false);
+  m_window.set_grab_mouse(false);
   ASSERT_EQ(2u, SDL_SetWindowGrab_fake.call_count);
   ASSERT_EQ(SDL_FALSE, SDL_SetWindowGrab_fake.arg1_val);
 }
@@ -306,15 +306,15 @@ TEST_F(WindowTest, SetBrightness)
   std::array values{-1, -1, 0};
   SET_RETURN_SEQ(SDL_SetWindowBrightness, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.SetBrightness(-0.1f));
+  ASSERT_FALSE(m_window.set_brightness(-0.1f));
   ASSERT_EQ(1u, SDL_SetWindowBrightness_fake.call_count);
   ASSERT_EQ(0, SDL_SetWindowBrightness_fake.arg1_val);
 
-  ASSERT_FALSE(m_window.SetBrightness(1.1f));
+  ASSERT_FALSE(m_window.set_brightness(1.1f));
   ASSERT_EQ(2u, SDL_SetWindowBrightness_fake.call_count);
   ASSERT_EQ(1, SDL_SetWindowBrightness_fake.arg1_val);
 
-  ASSERT_TRUE(m_window.SetBrightness(0.4f));
+  ASSERT_TRUE(m_window.set_brightness(0.4f));
   ASSERT_EQ(3u, SDL_SetWindowBrightness_fake.call_count);
   ASSERT_EQ(0.4f, SDL_SetWindowBrightness_fake.arg1_val);
 }
@@ -324,18 +324,18 @@ TEST_F(WindowTest, SetCapturingMouse)
   std::array values{0, 1};
   SET_RETURN_SEQ(SDL_CaptureMouse, values.data(), cen::isize(values));
 
-  ASSERT_TRUE(cen::Window::SetCapturingMouse(true));
+  ASSERT_TRUE(cen::window::set_capturing_mouse(true));
   ASSERT_EQ(1u, SDL_CaptureMouse_fake.call_count);
   ASSERT_EQ(SDL_TRUE, SDL_CaptureMouse_fake.arg0_val);
 
-  ASSERT_FALSE(cen::Window::SetCapturingMouse(false));
+  ASSERT_FALSE(cen::window::set_capturing_mouse(false));
   ASSERT_EQ(2u, SDL_CaptureMouse_fake.call_count);
   ASSERT_EQ(SDL_FALSE, SDL_CaptureMouse_fake.arg0_val);
 }
 
 TEST_F(WindowTest, GrabbingMouse)
 {
-  const auto grabbing [[maybe_unused]] = m_window.IsGrabbingMouse();
+  const auto grabbing [[maybe_unused]] = m_window.is_grabbing_mouse();
   ASSERT_EQ(1u, SDL_GetWindowGrab_fake.call_count);
 }
 
@@ -344,8 +344,8 @@ TEST_F(WindowTest, IsScreenKeyboardShown)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_IsScreenKeyboardShown, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsScreenKeyboardShown());
-  ASSERT_TRUE(m_window.IsScreenKeyboardShown());
+  ASSERT_FALSE(m_window.is_screen_keyboard_shown());
+  ASSERT_TRUE(m_window.is_screen_keyboard_shown());
   ASSERT_EQ(2u, SDL_IsScreenKeyboardShown_fake.call_count);
 }
 
@@ -355,10 +355,10 @@ TEST_F(WindowTest, HasInputFocus)
                     static_cast<Uint32>(SDL_WINDOW_INPUT_FOCUS)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.HasInputFocus());
+  ASSERT_FALSE(m_window.has_input_focus());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.HasInputFocus());
+  ASSERT_TRUE(m_window.has_input_focus());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -368,10 +368,10 @@ TEST_F(WindowTest, HasMouseFocus)
                     static_cast<Uint32>(SDL_WINDOW_MOUSE_FOCUS)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.HasMouseFocus());
+  ASSERT_FALSE(m_window.has_mouse_focus());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.HasMouseFocus());
+  ASSERT_TRUE(m_window.has_mouse_focus());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -381,10 +381,10 @@ TEST_F(WindowTest, IsDecorated)
                     static_cast<Uint32>(SDL_WINDOW_BORDERLESS)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_TRUE(m_window.IsDecorated());
+  ASSERT_TRUE(m_window.is_decorated());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_FALSE(m_window.IsDecorated());
+  ASSERT_FALSE(m_window.is_decorated());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -394,10 +394,10 @@ TEST_F(WindowTest, IsResizable)
                     static_cast<Uint32>(SDL_WINDOW_RESIZABLE)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsResizable());
+  ASSERT_FALSE(m_window.is_resizable());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsResizable());
+  ASSERT_TRUE(m_window.is_resizable());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -407,10 +407,10 @@ TEST_F(WindowTest, IsFullscreen)
                     static_cast<Uint32>(SDL_WINDOW_FULLSCREEN)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsFullscreen());
+  ASSERT_FALSE(m_window.is_fullscreen());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsFullscreen());
+  ASSERT_TRUE(m_window.is_fullscreen());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -420,10 +420,10 @@ TEST_F(WindowTest, IsFullscreenDesktop)
                     static_cast<Uint32>(SDL_WINDOW_FULLSCREEN_DESKTOP)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsFullscreenDesktop());
+  ASSERT_FALSE(m_window.is_fullscreen_desktop());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsFullscreenDesktop());
+  ASSERT_TRUE(m_window.is_fullscreen_desktop());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -433,10 +433,10 @@ TEST_F(WindowTest, IsVisible)
                     static_cast<Uint32>(SDL_WINDOW_SHOWN)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsVisible());
+  ASSERT_FALSE(m_window.is_visible());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsVisible());
+  ASSERT_TRUE(m_window.is_visible());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -446,10 +446,10 @@ TEST_F(WindowTest, IsOpenGL)
                     static_cast<Uint32>(SDL_WINDOW_OPENGL)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsOpenGL());
+  ASSERT_FALSE(m_window.is_opengl());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsOpenGL());
+  ASSERT_TRUE(m_window.is_opengl());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -459,10 +459,10 @@ TEST_F(WindowTest, IsVulkan)
                     static_cast<Uint32>(SDL_WINDOW_VULKAN)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsVulkan());
+  ASSERT_FALSE(m_window.is_vulkan());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsVulkan());
+  ASSERT_TRUE(m_window.is_vulkan());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -472,10 +472,10 @@ TEST_F(WindowTest, IsForeign)
                     static_cast<Uint32>(SDL_WINDOW_FOREIGN)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsForeign());
+  ASSERT_FALSE(m_window.is_foreign());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsForeign());
+  ASSERT_TRUE(m_window.is_foreign());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -485,10 +485,10 @@ TEST_F(WindowTest, IsCapturingMouse)
                     static_cast<Uint32>(SDL_WINDOW_MOUSE_CAPTURE)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsCapturingMouse());
+  ASSERT_FALSE(m_window.is_capturing_mouse());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsCapturingMouse());
+  ASSERT_TRUE(m_window.is_capturing_mouse());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -498,10 +498,10 @@ TEST_F(WindowTest, IsMinimized)
                     static_cast<Uint32>(SDL_WINDOW_MINIMIZED)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsMinimized());
+  ASSERT_FALSE(m_window.is_minimized());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsMinimized());
+  ASSERT_TRUE(m_window.is_minimized());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -511,90 +511,90 @@ TEST_F(WindowTest, IsMaximized)
                     static_cast<Uint32>(SDL_WINDOW_MAXIMIZED)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsMaximized());
+  ASSERT_FALSE(m_window.is_maximized());
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 
-  ASSERT_TRUE(m_window.IsMaximized());
+  ASSERT_TRUE(m_window.is_maximized());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsAlwaysOnTop)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::AlwaysOnTop}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::always_on_top}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsAlwaysOnTop());
-  ASSERT_TRUE(m_window.IsAlwaysOnTop());
+  ASSERT_FALSE(m_window.is_always_on_top());
+  ASSERT_TRUE(m_window.is_always_on_top());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, HasGrabbedInput)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::InputGrabbed}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::input_grabbed}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.HasGrabbedInput());
-  ASSERT_TRUE(m_window.HasGrabbedInput());
+  ASSERT_FALSE(m_window.has_grabbed_input());
+  ASSERT_TRUE(m_window.has_grabbed_input());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsHighDPI)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::AllowHighDPI}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::allow_high_dpi}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsHighDPI());
-  ASSERT_TRUE(m_window.IsHighDPI());
+  ASSERT_FALSE(m_window.is_high_dpi());
+  ASSERT_TRUE(m_window.is_high_dpi());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsHidden)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::Hidden}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::hidden}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsHidden());
-  ASSERT_TRUE(m_window.IsHidden());
+  ASSERT_FALSE(m_window.is_hidden());
+  ASSERT_TRUE(m_window.is_hidden());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsUtility)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::Utility}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::utility}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsUtility());
-  ASSERT_TRUE(m_window.IsUtility());
+  ASSERT_FALSE(m_window.is_utility());
+  ASSERT_TRUE(m_window.is_utility());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsTooltip)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::Tooltip}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::tooltip}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsTooltip());
-  ASSERT_TRUE(m_window.IsTooltip());
+  ASSERT_FALSE(m_window.is_tooltip());
+  ASSERT_TRUE(m_window.is_tooltip());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsPopupMenu)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::PopupMenu}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::popup_menu}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsPopupMenu());
-  ASSERT_TRUE(m_window.IsPopupMenu());
+  ASSERT_FALSE(m_window.is_popup_menu());
+  ASSERT_TRUE(m_window.is_popup_menu());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, IsExcludedFromTaskbar)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::SkipTaskbar}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::skip_taskbar}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsExcludedFromTaskbar());
-  ASSERT_TRUE(m_window.IsExcludedFromTaskbar());
+  ASSERT_FALSE(m_window.is_excluded_from_taskbar());
+  ASSERT_TRUE(m_window.is_excluded_from_taskbar());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -602,11 +602,11 @@ TEST_F(WindowTest, IsExcludedFromTaskbar)
 
 TEST_F(WindowTest, IsMetal)
 {
-  std::array values{Uint32{cen::Window::Fullscreen}, Uint32{cen::Window::Metal}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::metal}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.IsMetal());
-  ASSERT_TRUE(m_window.IsMetal());
+  ASSERT_FALSE(m_window.is_metal());
+  ASSERT_TRUE(m_window.is_metal());
   ASSERT_EQ(2u, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -614,13 +614,13 @@ TEST_F(WindowTest, IsMetal)
 
 TEST_F(WindowTest, GetBrightness)
 {
-  const auto brightness [[maybe_unused]] = m_window.GetBrightness();
+  const auto brightness [[maybe_unused]] = m_window.brightness();
   ASSERT_EQ(1u, SDL_GetWindowBrightness_fake.call_count);
 }
 
 TEST_F(WindowTest, GetOpacity)
 {
-  const auto opacity [[maybe_unused]] = m_window.GetOpacity();
+  const auto opacity [[maybe_unused]] = m_window.opacity();
   ASSERT_EQ(1u, SDL_GetWindowOpacity_fake.call_count);
 }
 
@@ -640,7 +640,7 @@ TEST_F(WindowTest, Y)
 
 TEST_F(WindowTest, GetID)
 {
-  const auto id [[maybe_unused]] = m_window.GetID();
+  const auto id [[maybe_unused]] = m_window.id();
   ASSERT_EQ(1u, SDL_GetWindowID_fake.call_count);
 }
 
@@ -649,10 +649,10 @@ TEST_F(WindowTest, GetDisplayIndex)
   std::array values{-1, 7};
   SET_RETURN_SEQ(SDL_GetWindowDisplayIndex, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.GetDisplayIndex().has_value());
+  ASSERT_FALSE(m_window.display_index().has_value());
   ASSERT_EQ(1u, SDL_GetWindowDisplayIndex_fake.call_count);
 
-  ASSERT_EQ(7, m_window.GetDisplayIndex());
+  ASSERT_EQ(7, m_window.display_index());
   ASSERT_EQ(2u, SDL_GetWindowDisplayIndex_fake.call_count);
 }
 
@@ -664,13 +664,13 @@ TEST_F(WindowTest, Position)
 
 TEST_F(WindowTest, GetMinSize)
 {
-  const auto size [[maybe_unused]] = m_window.GetMinSize();
+  const auto size [[maybe_unused]] = m_window.min_size();
   ASSERT_EQ(1u, SDL_GetWindowMinimumSize_fake.call_count);
 }
 
 TEST_F(WindowTest, GetMaxSize)
 {
-  const auto size [[maybe_unused]] = m_window.GetMaxSize();
+  const auto size [[maybe_unused]] = m_window.max_size();
   ASSERT_EQ(1u, SDL_GetWindowMaximumSize_fake.call_count);
 }
 
@@ -694,32 +694,32 @@ TEST_F(WindowTest, Size)
 
 TEST_F(WindowTest, CheckFlag)
 {
-  const auto a [[maybe_unused]] = m_window.CheckFlag(cen::WindowHandle::Fullscreen);
+  const auto a [[maybe_unused]] = m_window.check_flag(cen::window_handle::fullscreen);
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, GetFlags)
 {
-  const auto flags [[maybe_unused]] = m_window.GetFlags();
+  const auto flags [[maybe_unused]] = m_window.flags();
   ASSERT_EQ(1u, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, GetPixelFormat)
 {
-  const auto format [[maybe_unused]] = m_window.GetPixelFormat();
+  const auto format [[maybe_unused]] = m_window.format();
   ASSERT_EQ(1u, SDL_GetWindowPixelFormat_fake.call_count);
 }
 
 TEST_F(WindowTest, GetSurface)
 {
-  const auto surface [[maybe_unused]] = m_window.GetSurface();
+  const auto surface [[maybe_unused]] = m_window.get_surface();
   ASSERT_EQ(1u, SDL_GetWindowSurface_fake.call_count);
 }
 
 TEST_F(WindowTest, GetTitle)
 {
   SDL_GetWindowTitle_fake.return_val = "";
-  const auto title [[maybe_unused]] = m_window.GetTitle();
+  const auto title [[maybe_unused]] = m_window.title();
   ASSERT_EQ(1u, SDL_GetWindowTitle_fake.call_count);
 }
 
@@ -727,19 +727,19 @@ TEST_F(WindowTest, GetTitle)
 
 TEST_F(WindowTest, SetAlwaysOnTop)
 {
-  m_window.SetAlwaysOnTop(true);
+  m_window.set_always_on_top(true);
   ASSERT_EQ(SDL_TRUE, SDL_SetWindowAlwaysOnTop_fake.arg1_val);
 
-  m_window.SetAlwaysOnTop(false);
+  m_window.set_always_on_top(false);
   ASSERT_EQ(SDL_FALSE, SDL_SetWindowAlwaysOnTop_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetGrabKeyboard)
 {
-  m_window.SetGrabKeyboard(true);
+  m_window.set_grab_keyboard(true);
   ASSERT_EQ(SDL_TRUE, SDL_SetWindowKeyboardGrab_fake.arg1_val);
 
-  m_window.SetGrabKeyboard(false);
+  m_window.set_grab_keyboard(false);
   ASSERT_EQ(SDL_FALSE, SDL_SetWindowKeyboardGrab_fake.arg1_val);
 }
 
@@ -748,10 +748,10 @@ TEST_F(WindowTest, Flash)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_FlashWindow, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_window.Flash());
+  ASSERT_FALSE(m_window.flash());
   ASSERT_EQ(SDL_FLASH_BRIEFLY, SDL_FlashWindow_fake.arg1_val);
 
-  ASSERT_TRUE(m_window.Flash(cen::flash_op::until_focused));
+  ASSERT_TRUE(m_window.flash(cen::flash_op::until_focused));
   ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, SDL_FlashWindow_fake.arg1_val);
 }
 

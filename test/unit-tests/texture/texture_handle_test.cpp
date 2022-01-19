@@ -10,7 +10,7 @@ class TextureHandleTest : public testing::Test {
   static void SetUpTestSuite()
   {
     constexpr auto path = "resources/panda.png";
-    window = std::make_unique<cen::Window>();
+    window = std::make_unique<cen::window>();
     renderer = std::make_unique<cen::renderer>(window->create_renderer());
     texture = std::make_unique<cen::texture>(renderer->create_texture(path));
   }
@@ -22,7 +22,7 @@ class TextureHandleTest : public testing::Test {
     window.reset();
   }
 
-  inline static std::unique_ptr<cen::Window> window;
+  inline static std::unique_ptr<cen::window> window;
   inline static std::unique_ptr<cen::renderer> renderer;
   inline static std::unique_ptr<cen::texture> texture;
 };

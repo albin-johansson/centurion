@@ -93,7 +93,7 @@ class MessageBox final {
   {}
 
   template <typename T>
-  static void Show(const BasicWindow<T>& parent,
+  static void Show(const basic_window<T>& parent,
                    const std::string& title,
                    const std::string& message,
                    const MessageBoxType type = GetDefaultType(),
@@ -111,7 +111,7 @@ class MessageBox final {
   }
 
   template <typename T>
-  auto Show(const BasicWindow<T>& parent) -> std::optional<button_id>
+  auto Show(const basic_window<T>& parent) -> std::optional<button_id>
   {
     return Show(parent.get());
   }

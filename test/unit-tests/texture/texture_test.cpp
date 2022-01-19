@@ -23,7 +23,7 @@ class TextureTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    window = std::make_unique<cen::Window>();
+    window = std::make_unique<cen::window>();
     renderer = std::make_unique<cen::renderer>(window->create_renderer());
     texture = std::make_unique<cen::texture>(renderer->create_texture(path));
   }
@@ -35,7 +35,7 @@ class TextureTest : public testing::Test {
     window.reset();
   }
 
-  inline static std::unique_ptr<cen::Window> window;
+  inline static std::unique_ptr<cen::window> window;
   inline static std::unique_ptr<cen::renderer> renderer;
   inline static std::unique_ptr<cen::texture> texture;
 
@@ -133,8 +133,7 @@ TEST_F(TextureTest, Release)
 
 TEST_F(TextureTest, IsStatic)
 {
-  const auto texture = renderer->create_texture({10, 10},
-                                                window->GetPixelFormat(),
+  const auto texture = renderer->create_texture({10, 10}, window->format(),
                                                 cen::texture_access::non_lockable);
   ASSERT_TRUE(texture.is_static());
 }
@@ -143,7 +142,7 @@ TEST_F(TextureTest, IsTarget)
 {
   ASSERT_FALSE(texture->is_target());
 
-  const auto format = window->GetPixelFormat();
+  const auto format = window->format();
   const auto target = renderer->create_texture({10, 10}, format, cen::texture_access::target);
   ASSERT_TRUE(target.is_target());
 }

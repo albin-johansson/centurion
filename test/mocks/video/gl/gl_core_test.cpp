@@ -47,7 +47,7 @@ class OpenGLTest : public testing::Test {
     RESET_FAKE(SDL_GL_UnbindTexture)
   }
 
-  cen::WindowHandle m_window{nullptr};
+  cen::window_handle m_window{nullptr};
 };
 
 TEST_F(OpenGLTest, Swap)

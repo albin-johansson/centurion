@@ -172,8 +172,9 @@ set(SOURCE_FILES
     video/display_test.cpp
     video/flash_op_test.cpp
     video/orientation_test.cpp
-    video/surface_test.cpp
     video/surface_handle_test.cpp
+    video/surface_test.cpp
+    video/window_flags_test.cpp
     video/window_test.cpp
     video/window_handle_test.cpp
     )

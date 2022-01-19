@@ -9,10 +9,11 @@ int main(int, char**)
   const cen::ttf ttf;
 
   /* Create a window and an associated renderer */
-  auto [window, renderer] = cen::MakeWindowAndRenderer();
+  cen::window window;
+  cen::renderer renderer = window.create_renderer();
 
   /* Make sure our window is visible */
-  window.Show();
+  window.show();
 
   cen::event_handler event;
   bool running = true;
@@ -34,7 +35,7 @@ int main(int, char**)
   }
 
   /* Make the window invisible again, this might not be necessary, but it doesn't hurt */
-  window.Hide();
+  window.hide();
 
   return 0;
 }

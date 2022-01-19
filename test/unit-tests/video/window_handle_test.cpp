@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "core/logging.hpp"
 #include "window.hpp"
@@ -8,14 +8,14 @@
 TEST(WindowHandle, PointerConstructor)
 {
   {  // From null pointer
-    cen::WindowHandle handle{nullptr};
+    cen::window_handle handle{nullptr};
     ASSERT_FALSE(handle);
     ASSERT_FALSE(handle.get());
   }
 
   {  // From valid pointer
-    cen::Window window;
-    cen::WindowHandle handle{window.get()};
+    cen::window window;
+    cen::window_handle handle{window.get()};
     ASSERT_TRUE(handle);
     ASSERT_TRUE(handle.get());
   }
@@ -23,24 +23,24 @@ TEST(WindowHandle, PointerConstructor)
 
 TEST(WindowHandle, FromWindowRef)
 {
-  cen::Window window;
-  cen::WindowHandle handle{window};
+  cen::window window;
+  cen::window_handle handle{window};
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
 }
 
 TEST(WindowHandle, ToString)
 {
-  cen::Window window;
-  cen::WindowHandle handle{window};
+  cen::window window;
+  cen::window_handle handle{window};
 
-  cen::log_info_raw(cen::ToString(handle));
+  cen::log_info_raw(cen::to_string(handle));
 }
 
 TEST(WindowHandle, StreamOperator)
 {
-  cen::Window window;
-  cen::WindowHandle handle{window};
+  cen::window window;
+  cen::window_handle handle{window};
 
-  std::clog << handle << '\n';
+  std::cout << handle << '\n';
 }

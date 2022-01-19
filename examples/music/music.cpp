@@ -5,7 +5,7 @@ namespace {
 
 using event_dispatcher = cen::event_dispatcher<cen::quit_event, cen::KeyboardEvent>;
 
-constexpr cen::iarea window_size = cen::Window::GetDefaultSize();
+constexpr cen::iarea window_size = cen::window::default_size();
 
 constexpr auto msg_zero = "\"0\" to play the click one time.";
 constexpr auto msg_one = "\"1\" to play the click one time.";
@@ -20,7 +20,7 @@ constexpr auto msg_no_music = "No music is playing";
 class music_example final {
  public:
   music_example()
-      : mWindow{"Music example", window_size, cen::Window::Hidden | cen::Window::AllowHighDPI}
+      : mWindow{"Music example", window_size, cen::window::hidden | cen::window::allow_high_dpi}
       , mRenderer{mWindow.create_renderer()}
       , mFont{RESOURCE_DIR "fira_code.ttf", 16}
       , mSong{RESOURCE_DIR "hiddenPond.mp3"}
@@ -34,19 +34,19 @@ class music_example final {
 
   auto run() -> int
   {
-    mWindow.Show();
+    mWindow.show();
 
     while (m_running) {
       mDispatcher.poll();
       render();
     }
 
-    mWindow.Hide();
+    mWindow.hide();
     return 0;
   }
 
  private:
-  cen::Window mWindow;
+  cen::window mWindow;
   cen::renderer mRenderer;
   cen::font mFont;
   event_dispatcher mDispatcher;

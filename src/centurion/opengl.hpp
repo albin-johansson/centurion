@@ -106,7 +106,7 @@ class BasicGLContext final {
   }
 
   template <typename U>
-  explicit BasicGLContext(BasicWindow<U>& window) noexcept(detail::is_handle<T>)
+  explicit BasicGLContext(basic_window<U>& window) noexcept(detail::is_handle<T>)
       : mContext{SDL_GL_CreateContext(window.get())}
   {
     if constexpr (detail::is_owner<T>) {
@@ -117,9 +117,9 @@ class BasicGLContext final {
   }
 
   template <typename U>
-  auto MakeCurrent(BasicWindow<U>& window) -> result
+  auto MakeCurrent(basic_window<U>& window) -> result
   {
-    assert(window.IsOpenGL());
+    assert(window.is_opengl());
     return SDL_GL_MakeCurrent(window.get(), mContext.get()) == 0;
   }
 
@@ -255,16 +255,16 @@ namespace gl {
 /// \{
 
 template <typename T>
-void Swap(BasicWindow<T>& window) noexcept
+void Swap(basic_window<T>& window) noexcept
 {
-  assert(window.IsOpenGL());
+  assert(window.is_opengl());
   SDL_GL_SwapWindow(window.get());
 }
 
 template <typename T>
-[[nodiscard]] auto GetDrawableSize(const BasicWindow<T>& window) noexcept -> iarea
+[[nodiscard]] auto GetDrawableSize(const basic_window<T>& window) noexcept -> iarea
 {
-  assert(window.IsOpenGL());
+  assert(window.is_opengl());
 
   int width{};
   int height{};
@@ -304,9 +304,9 @@ inline auto SetSwapInterval(const GLSwapInterval interval) noexcept -> result
   return GLSwapInterval{SDL_GL_GetSwapInterval()};
 }
 
-[[nodiscard]] inline auto GetWindow() noexcept -> WindowHandle
+[[nodiscard]] inline auto GetWindow() noexcept -> window_handle
 {
-  return WindowHandle{SDL_GL_GetCurrentWindow()};
+  return window_handle{SDL_GL_GetCurrentWindow()};
 }
 
 [[nodiscard]] inline auto GetContext() noexcept -> GLContextHandle

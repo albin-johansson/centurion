@@ -83,11 +83,11 @@ namespace vk {
  * \since 6.0.0
  */
 template <typename T>
-auto create_surface(BasicWindow<T>& window,
+auto create_surface(basic_window<T>& window,
                     VkInstance instance,
                     VkSurfaceKHR* outSurface) noexcept -> result
 {
-  assert(window.IsVulkan());
+  assert(window.is_vulkan());
   return SDL_Vulkan_CreateSurface(window.get(), instance, outSurface) == SDL_TRUE;
 }
 
@@ -127,9 +127,9 @@ inline auto required_extensions() -> std::optional<std::vector<const char*>>
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto drawable_size(const BasicWindow<T>& window) noexcept -> iarea
+[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> iarea
 {
-  assert(window.IsVulkan());
+  assert(window.is_vulkan());
 
   int width{};
   int height{};

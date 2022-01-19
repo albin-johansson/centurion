@@ -17,52 +17,111 @@
 
 #include <cassert>  // assert
 
-
-/// Expands into the current major version of the library.
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \ingroup versioning
+ */
 #define CENTURION_VERSION_MAJOR 7
 
-/// Expands into the current minor version of the library.
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \ingroup versioning
+ */
 #define CENTURION_VERSION_MINOR 0
 
-/// Expands into the current patch version of the library.
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \ingroup versioning
+ */
 #define CENTURION_VERSION_PATCH 0
 
-/// Expands into a version identifier, e.g. `1.2.3` becomes `1203`
-#define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Used to create comparable version values, e.g. `1.2.3` becomes `1203`.
+ *
+ * \ingroup versioning
+ */
+#define CENTURION_MAKE_VERSION_NUMBER(X, Y, Z) (((X)*1'000) + ((Y)*100) + (Z))
 
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into an integer that represents the current Centurion version.
+ *
+ * \ingroup versioning
+ */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
-#define CENTURION_VERSION_AT_LEAST(x, y, z) \
-  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief Indicates whether the current Centurion version satisfies a version constraint.
+ *
+ * \ingroup versioning
+ */
+#define CENTURION_VERSION_AT_LEAST(X, Y, Z) \
+  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(X, Y, Z)
 
-#define CENTURION_SDL_VERSION_IS(x, y, z) \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief Indicates whether the current SDL version is exactly a specific version.
+ *
+ * \ingroup versioning
+ */
+#define CENTURION_SDL_VERSION_IS(X, Y, Z) \
+  ((SDL_MAJOR_VERSION == (X)) && (SDL_MINOR_VERSION == (Y)) && (SDL_PATCHLEVEL == (Z)))
 
 namespace cen {
 
 /// \name Centurion version queries
 /// \{
 
-/// Provides a snapshot of the current Centurion version.
-struct Version final {
-  int major{CENTURION_VERSION_MAJOR};
-  int minor{CENTURION_VERSION_MINOR};
-  int patch{CENTURION_VERSION_PATCH};
+/**
+ * \brief Represents a simple major/minor/patch version identifier.
+ *
+ * \ingroup versioning
+ */
+struct version final {
+  int major{};
+  int minor{};
+  int patch{};
 };
 
-/// Indicates whether the current Centurion version is greater or equal to another version.
-///
-/// \param major the major version value.
-/// \param minor the minor version value.
-/// \param patch the patch version value.
-///
-/// \return `true` if the version of Centurion is at least the specified version; `false`
-/// otherwise.
-///
-/// \see `CENTURION_VERSION_AT_LEAST`
+/**
+ * \brief Returns the current Centurion version.
+ *
+ * \return the current version of Centurion.
+ */
+[[nodiscard]] constexpr auto current_version() noexcept -> version
+{
+  return {CENTURION_VERSION_MAJOR, CENTURION_VERSION_MINOR, CENTURION_VERSION_PATCH};
+}
+
+/**
+ * \brief Indicates whether the current Centurion version is at least the specific version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the Centurion version is at least the specific version; `false` otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ */
 [[nodiscard]] constexpr auto version_at_least(const int major,
                                               const int minor,
                                               const int patch) noexcept -> bool
@@ -75,12 +134,25 @@ struct Version final {
 /// \name SDL version queries
 /// \{
 
-[[nodiscard]] constexpr auto GetCurrentSDLVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
 {
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
-[[nodiscard]] inline auto GetLinkedSDLVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2 that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
   SDL_version version{};
   SDL_GetVersion(&version);
@@ -89,12 +161,25 @@ struct Version final {
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-[[nodiscard]] constexpr auto GetCurrentIMGVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
 
-[[nodiscard]] inline auto GetLinkedIMGVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the version of SDL2_image that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_image.
+ */
+[[nodiscard]] inline auto sdl_image_linked_version() noexcept -> SDL_version
 {
   const auto* version = IMG_Linked_Version();
   assert(version);
@@ -105,12 +190,25 @@ struct Version final {
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-[[nodiscard]] constexpr auto GetCurrentMixVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
 {
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
-[[nodiscard]] inline auto GetLinkedMixVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the version of SDL2_mixer that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_mixer.
+ */
+[[nodiscard]] inline auto sdl_mixer_linked_version() noexcept -> SDL_version
 {
   const auto* version = Mix_Linked_Version();
   assert(version);
@@ -121,12 +219,25 @@ struct Version final {
 
 #ifndef CENTURION_NO_SDL_TTF
 
-[[nodiscard]] constexpr auto GetCurrentTTFVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
 
-[[nodiscard]] inline auto GetLinkedTTFVersion() noexcept -> SDL_version
+/**
+ * \brief Returns the version of SDL2_ttf that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_ttf.
+ */
+[[nodiscard]] inline auto sdl_ttf_linked_version() noexcept -> SDL_version
 {
   const auto* version = TTF_Linked_Version();
   assert(version);

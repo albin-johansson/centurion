@@ -7,6 +7,11 @@ TEST(Version, CurrentVersion)
   ASSERT_EQ(7, CENTURION_VERSION_MAJOR);
   ASSERT_EQ(0, CENTURION_VERSION_MINOR);
   ASSERT_EQ(0, CENTURION_VERSION_PATCH);
+
+  const auto version = cen::current_version();
+  ASSERT_EQ(7, version.major);
+  ASSERT_EQ(0, version.minor);
+  ASSERT_EQ(0, version.patch);
 }
 
 TEST(Version, VersionAtLeast)
@@ -19,7 +24,7 @@ TEST(Version, VersionAtLeast)
   ASSERT_TRUE(cen::version_at_least(CENTURION_VERSION_MAJOR,
                                     CENTURION_VERSION_MINOR,
                                     CENTURION_VERSION_PATCH));
-  ASSERT_TRUE(cen::version_at_least(6, 4, 0));
+  ASSERT_TRUE(cen::version_at_least(6, 3, 1));
   ASSERT_TRUE(cen::version_at_least(6, 3, 0));
   ASSERT_TRUE(cen::version_at_least(6, 2, 0));
   ASSERT_TRUE(cen::version_at_least(6, 1, 0));
@@ -34,77 +39,77 @@ TEST(Version, VersionAtLeast)
 
 TEST(Version, Defaults)
 {
-  const cen::Version version;
-  ASSERT_EQ(CENTURION_VERSION_MAJOR, version.major);
-  ASSERT_EQ(CENTURION_VERSION_MINOR, version.minor);
-  ASSERT_EQ(CENTURION_VERSION_PATCH, version.patch);
+  const cen::version version;
+  ASSERT_EQ(0, version.major);
+  ASSERT_EQ(0, version.minor);
+  ASSERT_EQ(0, version.patch);
 }
 
-TEST(Version, GetLinkedSDLVersion)
+TEST(Version, SDLLinkedVersion)
 {
   SDL_version expected{};
   SDL_GetVersion(&expected);
 
-  const auto version = cen::GetLinkedSDLVersion();
+  const auto version = cen::sdl_linked_version();
   ASSERT_EQ(expected.major, version.major);
   ASSERT_EQ(expected.minor, version.minor);
   ASSERT_EQ(expected.patch, version.patch);
 }
 
-TEST(Version, GetLinkedIMGVersion)
+TEST(Version, SDLImageLinkedVersion)
 {
   const auto expected = *IMG_Linked_Version();
-  const auto version = cen::GetLinkedIMGVersion();
+  const auto version = cen::sdl_image_linked_version();
   ASSERT_EQ(expected.major, version.major);
   ASSERT_EQ(expected.minor, version.minor);
   ASSERT_EQ(expected.patch, version.patch);
 }
 
-TEST(Version, GetLinkedMixVersion)
+TEST(Version, SDLMixerLinkedVersion)
 {
   const auto expected = *Mix_Linked_Version();
-  const auto version = cen::GetLinkedMixVersion();
+  const auto version = cen::sdl_mixer_linked_version();
   ASSERT_EQ(expected.major, version.major);
   ASSERT_EQ(expected.minor, version.minor);
   ASSERT_EQ(expected.patch, version.patch);
 }
 
-TEST(Version, GetLinkedTTFVersion)
+TEST(Version, SDLTTFLinkedVersion)
 {
   const auto expected = *TTF_Linked_Version();
-  const auto version = cen::GetLinkedTTFVersion();
+  const auto version = cen::sdl_ttf_linked_version();
   ASSERT_EQ(expected.major, version.major);
   ASSERT_EQ(expected.minor, version.minor);
   ASSERT_EQ(expected.patch, version.patch);
 }
 
-TEST(Version, GetCurrentSDLVersion)
+TEST(Version, SDLVersion)
 {
-  constexpr auto version = cen::GetCurrentSDLVersion();
+  const auto version = cen::sdl_version();
   ASSERT_EQ(SDL_MAJOR_VERSION, version.major);
   ASSERT_EQ(SDL_MINOR_VERSION, version.minor);
   ASSERT_EQ(SDL_PATCHLEVEL, version.patch);
 }
 
-TEST(Version, GetCurrentIMGVersion)
+TEST(Version, SDLImageVersion)
 {
-  constexpr auto version = cen::GetCurrentIMGVersion();
+  const auto version = cen::sdl_image_version();
   ASSERT_EQ(SDL_IMAGE_MAJOR_VERSION, version.major);
   ASSERT_EQ(SDL_IMAGE_MINOR_VERSION, version.minor);
   ASSERT_EQ(SDL_IMAGE_PATCHLEVEL, version.patch);
 }
 
-TEST(Version, GetCurrentMixVersion)
+TEST(Version, SDLMixerVersion)
 {
-  constexpr auto version = cen::GetCurrentMixVersion();
+  const auto version = cen::sdl_mixer_version();
   ASSERT_EQ(SDL_MIXER_MAJOR_VERSION, version.major);
   ASSERT_EQ(SDL_MIXER_MINOR_VERSION, version.minor);
   ASSERT_EQ(SDL_MIXER_PATCHLEVEL, version.patch);
 }
 
-TEST(Version, GetCurrentTTFVersion)
+TEST(Version, SDLTTFVersion)
 {
-  constexpr auto version = cen::GetCurrentTTFVersion();
+  const auto version = cen::sdl_ttf_version();
   ASSERT_EQ(SDL_TTF_MAJOR_VERSION, version.major);
   ASSERT_EQ(SDL_TTF_MINOR_VERSION, version.minor);
   ASSERT_EQ(SDL_TTF_PATCHLEVEL, version.patch);

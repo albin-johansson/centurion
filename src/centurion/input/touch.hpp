@@ -5,8 +5,8 @@
 
 #include <optional>  // optional
 
+#include "../button_state.hpp"
 #include "../common.hpp"
-#include "button_state.hpp"
 #include "touch_device_type.hpp"
 
 /**

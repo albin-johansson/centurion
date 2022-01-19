@@ -24,7 +24,7 @@ class FontCacheTest : public testing::Test {
 
   const char* utf8_string = "UTF-8_<!?+=";
   const char* latin1_string = "latin1_<!?+=";
-  const cen::UnicodeString unicode_string{'b', 'a', 'r'};
+  const cen::unicode_string unicode_string{'b', 'a', 'r'};
 
   inline static std::unique_ptr<cen::Window> window;
   inline static std::unique_ptr<cen::renderer> renderer;

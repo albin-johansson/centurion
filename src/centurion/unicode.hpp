@@ -10,8 +10,21 @@
 
 namespace cen {
 
-/* Represents a null-terminated string encoded in Unicode. */
-class UnicodeString final {
+/**
+ * \defgroup unicode Unicode
+ *
+ * \brief Contains Unicode-related utilities.
+ */
+
+/// \addtogroup unicode
+/// \{
+
+/**
+ * \brief Represents a null-terminated string of Unicode characters.
+ *
+ * \serializable
+ */
+class unicode_string final {
  public:
   using value_type = std::vector<unicode_t>::value_type;
 
@@ -24,25 +37,50 @@ class UnicodeString final {
   using iterator = std::vector<unicode_t>::iterator;
   using const_iterator = std::vector<unicode_t>::const_iterator;
 
-  using reverse_iterator = std::vector<unicode_t>::reverse_iterator;
-  using const_reverse_iterator = std::vector<unicode_t>::const_reverse_iterator;
-
   using size_type = std::vector<unicode_t>::size_type;
-  using difference_type = std::vector<unicode_t>::difference_type;
 
-  UnicodeString() { mData.push_back(0); }
+  /**
+   * \brief Creates an empty string.
+   */
+  unicode_string() { mData.push_back(0); }
 
-  UnicodeString(std::initializer_list<unicode_t> codes)
+  /**
+   * \brief Creates a Unicode string with the supplied characters.
+   *
+   * \param codes the list of glyphs that will be used.
+   */
+  unicode_string(std::initializer_list<unicode_t> codes)
   {
     reserve(codes.size() + 1);
     mData.insert(mData.end(), codes.begin(), codes.end());
     mData.push_back(0);
   }
 
+  /**
+   * \brief Reserves enough memory to hold the specified amount of elements.
+   *
+   * \details Use this function to optimize additions to the string when you know or can
+   * approximate the amount of elements that will be added. This can reduce the amount of
+   * unnecessary allocations and copies of the underlying array.
+   *
+   * \param n the amount of elements to allocate memory for.
+   */
   void reserve(const size_type n) { mData.reserve(n); }
 
+  /**
+   * \brief Appends a Unicode glyph to the end of the string.
+   *
+   * \param ch the glyph that will be appended.
+   */
   void append(const unicode_t ch) { mData.insert(mData.end() - 1, ch); }
 
+  /**
+   * \brief Appends a series of glyphs to the string.
+   *
+   * \tparam Character the types of the other glyphs, always `unicode_t`.
+   *
+   * \param code the pack of glyphs that will be added, cannot be empty.
+   */
   template <typename... Character>
   void append(Character... code)
   {
@@ -52,8 +90,14 @@ class UnicodeString final {
     (append(static_cast<unicode_t>(code)), ...);
   }
 
+  /// \copydoc append()
   void operator+=(const unicode_t ch) { append(ch); }
 
+  /**
+   * \brief Removes the last element from the string.
+   *
+   * \details This function has no effect if the string is empty.
+   */
   void pop_back()
   {
     if (!empty()) {
@@ -61,10 +105,87 @@ class UnicodeString final {
     }
   }
 
+  /**
+   * \brief Returns the element at the specified index.
+   *
+   * \param index the index of the desired element.
+   *
+   * \return the element at the specified index.
+   *
+   * \throws exception if the index is invalid.
+   */
+  [[nodiscard]] auto at(const size_type index) -> reference
+  {
+    if (is_valid_index(index)) {
+      return mData[index];
+    }
+    else {
+      throw exception{"Invalid unicode string index!"};
+    }
+  }
+
+  /// \copydoc at()
+  [[nodiscard]] auto at(const size_type index) const -> const_reference
+  {
+    if (is_valid_index(index)) {
+      return mData[index];
+    }
+    else {
+      throw exception{"Invalid unicode string index!"};
+    }
+  }
+
+  /**
+   * \brief Returns the element at the specified index.
+   *
+   * \pre the index must be valid.
+   *
+   * \details This function performs no bounds checking.
+   *
+   * \param index the index of the desired element.
+   *
+   * \return the element at the specified index.
+   */
+  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc) -> reference
+  {
+    assert(is_valid_index(index));
+    return mData[index];
+  }
+
+  /// \copydoc operator[]
+  [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc)
+      -> const_reference
+  {
+    assert(is_valid_index(index));
+    return mData[index];
+  }
+
+  /**
+   * \brief Returns the number of characters stored in the string.
+   *
+   * \note This function does not include the null-terminator.
+   *
+   * \return the number of elements in the string.
+   */
   [[nodiscard]] auto size() const noexcept -> size_type { return mData.size() - 1; }
 
+  /**
+   * \brief Returns the capacity of the string.
+   *
+   * \details The capacity is the amount of elements that can be stored before needing to
+   * allocate more memory.
+   *
+   * \return the string character capacity.
+   */
   [[nodiscard]] auto capacity() const noexcept -> size_type { return mData.capacity(); }
 
+  /**
+   * \brief Indicates whether the string is empty.
+   *
+   * \note The string is considered empty if the only element is the null-terminator.
+   *
+   * \return `true` if the string is empty; `false` otherwise.
+   */
   [[nodiscard]] auto empty() const noexcept -> bool { return mData.size() == 1; }
 
   [[nodiscard]] auto data() noexcept -> pointer { return mData.data(); }
@@ -76,28 +197,6 @@ class UnicodeString final {
   [[nodiscard]] auto end() noexcept -> iterator { return mData.end() - 1; }
   [[nodiscard]] auto end() const noexcept -> const_iterator { return mData.end() - 1; }
 
-  /* Checked element retrieval. */
-  [[nodiscard]] auto at(const size_type index) -> reference { return mData.at(index); }
-
-  [[nodiscard]] auto at(const size_type index) const -> const_reference
-  {
-    return mData.at(index);
-  }
-
-  /* Unchecked element retrieval. */
-  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc) -> reference
-  {
-    assert(index < mData.size());
-    return mData[index];
-  }
-
-  [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc)
-      -> const_reference
-  {
-    assert(index < mData.size());
-    return mData[index];
-  }
-
   template <typename Archive>
   void serialize(Archive& archive)
   {
@@ -106,15 +205,23 @@ class UnicodeString final {
 
  private:
   std::vector<unicode_t> mData;
+
+  [[nodiscard]] auto is_valid_index(const size_type index) const noexcept -> bool
+  {
+    return index < mData.size() - 1; /* Do not include null-terminator */
+  }
 };
 
-[[nodiscard]] inline auto operator==(const UnicodeString& a, const UnicodeString& b) -> bool
+/// \name Unicode string functions
+/// \{
+
+[[nodiscard]] inline auto operator==(const unicode_string& a, const unicode_string& b) -> bool
 {
   if (a.size() != b.size()) {
     return false;
   }
 
-  for (UnicodeString::size_type index = 0; index < a.size(); ++index) {
+  for (unicode_string::size_type index = 0; index < a.size(); ++index) {
     const auto aChar = a.at(index);
     const auto bChar = b.at(index);
     if (aChar != bChar) {
@@ -125,12 +232,14 @@ class UnicodeString final {
   return true;
 }
 
-[[nodiscard]] inline auto operator!=(const UnicodeString& a, const UnicodeString& b) -> bool
+[[nodiscard]] inline auto operator!=(const unicode_string& a, const unicode_string& b) -> bool
 {
   return !(a == b);
 }
 
-/// \} End of Unicode string comparison operators
+/// \} End of unicode string functions
+
+/// \} End of group unicode
 
 }  // namespace cen
 

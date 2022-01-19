@@ -7,32 +7,39 @@
 
 TEST(UnicodeString, Defaults)
 {
-  const cen::UnicodeString str;
-  ASSERT_EQ(0u, str.size());
+  const cen::unicode_string str;
   ASSERT_TRUE(str.empty());
-
-  ASSERT_EQ(0, str.at(0));  // null-terminator
+  ASSERT_EQ(0u, str.size());
+  ASSERT_THROW(str.at(0), cen::exception);
 }
 
 TEST(UnicodeString, InitializerListConstructor)
 {
-  const cen::UnicodeString str = {'a', 'b', 'c'};
+  const cen::unicode_string str = {'a', 'b', 'c'};
   ASSERT_EQ(3u, str.size());
   ASSERT_FALSE(str.empty());
 
   ASSERT_EQ('a', str.at(0));
   ASSERT_EQ('b', str.at(1));
   ASSERT_EQ('c', str.at(2));
-  ASSERT_EQ(0, str.at(3));  // null-terminator
+  ASSERT_THROW(str.at(3), cen::exception);
 
   ASSERT_EQ('a', str[0]);
   ASSERT_EQ('b', str[1]);
   ASSERT_EQ('c', str[2]);
+
+  EXPECT_EQ(3, str.end() - str.begin());
+
+  const auto* raw = str.data();
+  while (*raw != '\0') {
+    ++raw;
+  }
+  ASSERT_EQ(3u, raw - str.data());
 }
 
 TEST(UnicodeString, Iteration)
 {
-  const cen::UnicodeString str = {'a', 'b', 'c'};
+  const cen::unicode_string str = {'a', 'b', 'c'};
 
   ASSERT_EQ(3, str.end() - str.begin());
 
@@ -43,12 +50,11 @@ TEST(UnicodeString, Iteration)
   }
 
   ASSERT_EQ(3, count);
-  ASSERT_EQ(0, str.at(3));  // null-terminator
 }
 
 TEST(UnicodeString, Append)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
 
   str.append('A');
   ASSERT_EQ(1u, str.size());
@@ -61,7 +67,7 @@ TEST(UnicodeString, Append)
 
 TEST(UnicodeString, AppendVariadic)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
 
   str.append('B', 'A', 'R');
   ASSERT_EQ(3u, str.size());
@@ -72,7 +78,7 @@ TEST(UnicodeString, AppendVariadic)
 
 TEST(UnicodeString, AdditionAssignmentOperator)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
 
   str += 'Z';
   ASSERT_EQ(1u, str.size());
@@ -85,7 +91,8 @@ TEST(UnicodeString, AdditionAssignmentOperator)
 
 TEST(UnicodeString, PopBack)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
+  ASSERT_TRUE(str.empty());
 
   str += 'A';
   ASSERT_FALSE(str.empty());
@@ -93,33 +100,43 @@ TEST(UnicodeString, PopBack)
 
   str.pop_back();
   ASSERT_TRUE(str.empty());
-  ASSERT_EQ(0u, str.size());  // NOLINT
-  ASSERT_EQ(0, str.at(0));    // null-terminator
+  ASSERT_THROW(str.at(0), cen::exception);
 
   ASSERT_NO_THROW(str.pop_back());
   ASSERT_NO_THROW(str.pop_back());
   ASSERT_NO_THROW(str.pop_back());
 
   ASSERT_TRUE(str.empty());
-  ASSERT_EQ(0u, str.size());  // NOLINT
-  ASSERT_EQ(0, str.at(0));    // null-terminator
 }
 
 TEST(UnicodeString, At)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
 
-  ASSERT_NO_THROW(str.at(0u));  // null-terminator
-  ASSERT_ANY_THROW(str.at(123u));
-  ASSERT_ANY_THROW(str.at(1u));
+  ASSERT_THROW(str.at(0u), cen::exception);
 
   str += 'T';
+
   ASSERT_EQ('T', str.at(0u));
+  ASSERT_EQ('T', str[0u]);
+
+  ASSERT_THROW(str.at(1u), cen::exception);
+}
+
+TEST(UnicodeString, SubscriptOperator)
+{
+  const cen::unicode_string str = {'f', 'o', 'o', 'b', 'a', 'r'};
+  ASSERT_EQ('f', str[0u]);
+  ASSERT_EQ('o', str[1u]);
+  ASSERT_EQ('o', str[2u]);
+  ASSERT_EQ('b', str[3u]);
+  ASSERT_EQ('a', str[4u]);
+  ASSERT_EQ('r', str[5u]);
 }
 
 TEST(UnicodeString, Data)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
   const auto& cStr = str;
 
   ASSERT_TRUE(str.data());
@@ -136,7 +153,7 @@ TEST(UnicodeString, Data)
 
 TEST(UnicodeString, Empty)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
   ASSERT_TRUE(str.empty());
 
   str += 'A';
@@ -145,7 +162,7 @@ TEST(UnicodeString, Empty)
 
 TEST(UnicodeString, Reserve)
 {
-  cen::UnicodeString str;
+  cen::unicode_string str;
 
   str.reserve(10u);
   ASSERT_EQ(10u, str.capacity());
@@ -154,36 +171,36 @@ TEST(UnicodeString, Reserve)
 TEST(UnicodeString, EqualityOperator)
 {
   {  // Reflexivity
-    const cen::UnicodeString str;
+    const cen::unicode_string str;
     ASSERT_EQ(str, str);
   }
 
   {  // Two default constructed strings
-    const cen::UnicodeString fst;
-    const cen::UnicodeString snd;
+    const cen::unicode_string fst;
+    const cen::unicode_string snd;
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {  // Two equal strings
-    const cen::UnicodeString fst{'A', 'B', 'C'};
-    const cen::UnicodeString snd{fst};  // NOLINT
+    const cen::unicode_string fst{'A', 'B', 'C'};
+    const cen::unicode_string snd{fst};  // NOLINT
 
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {  // Two different strings
-    const cen::UnicodeString fst{'F', 'O', 'O'};
-    const cen::UnicodeString snd{'B', 'A', 'R'};
+    const cen::unicode_string fst{'F', 'O', 'O'};
+    const cen::unicode_string snd{'B', 'A', 'R'};
 
     ASSERT_FALSE(fst == snd);
     ASSERT_FALSE(snd == fst);
   }
 
   {  // Different size strings
-    const cen::UnicodeString fst{'A', 'B'};
-    const cen::UnicodeString snd{'A', 'B', 'C'};
+    const cen::unicode_string fst{'A', 'B'};
+    const cen::unicode_string snd{'A', 'B', 'C'};
 
     ASSERT_FALSE(fst == snd);
     ASSERT_FALSE(snd == fst);
@@ -193,36 +210,36 @@ TEST(UnicodeString, EqualityOperator)
 TEST(UnicodeString, InequalityOperator)
 {
   {  // Self
-    const cen::UnicodeString str;
+    const cen::unicode_string str;
     ASSERT_FALSE(str != str);
   }
 
   {  // Two default constructed strings
-    const cen::UnicodeString fst;
-    const cen::UnicodeString snd;
+    const cen::unicode_string fst;
+    const cen::unicode_string snd;
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {  // Two equal strings
-    const cen::UnicodeString fst{'A', 'B', 'C'};
-    const cen::UnicodeString snd{fst};  // NOLINT
+    const cen::unicode_string fst{'A', 'B', 'C'};
+    const cen::unicode_string snd{fst};  // NOLINT
 
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {  // Two different strings
-    const cen::UnicodeString fst{'F', 'O', 'O'};
-    const cen::UnicodeString snd{'B', 'A', 'R'};
+    const cen::unicode_string fst{'F', 'O', 'O'};
+    const cen::unicode_string snd{'B', 'A', 'R'};
 
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }
 
   {  // Different size strings
-    const cen::UnicodeString fst{'A', 'B'};
-    const cen::UnicodeString snd{'A', 'B', 'C'};
+    const cen::unicode_string fst{'A', 'B'};
+    const cen::unicode_string snd{'A', 'B', 'C'};
 
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
@@ -231,9 +248,9 @@ TEST(UnicodeString, InequalityOperator)
 
 TEST(UnicodeString, Serialize)
 {
-  cen::UnicodeString string{'f', 'o', 'o', 'b', 'a', 'r'};
+  cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
   serialize_save("unicode_string.binary", string);
 
-  const auto other = serialize_create<cen::UnicodeString>("unicode_string.binary");
+  const auto other = serialize_create<cen::unicode_string>("unicode_string.binary");
   ASSERT_EQ(string, other);
 }

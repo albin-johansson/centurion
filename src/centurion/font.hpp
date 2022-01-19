@@ -609,26 +609,26 @@ class font final {
     return render_wrapped_latin1(str.c_str(), fg, wrap);
   }
 
-  [[nodiscard]] auto render_solid_unicode(const UnicodeString& str, const color& fg) const
+  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const color& fg) const
       -> surface
   {
     return surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
   }
 
-  [[nodiscard]] auto render_shaded_unicode(const UnicodeString& str,
+  [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
                                            const color& fg,
                                            const color& bg) const -> surface
   {
     return surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto render_blended_unicode(const UnicodeString& str, const color& fg) const
+  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const color& fg) const
       -> surface
   {
     return surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
   }
 
-  [[nodiscard]] auto render_wrapped_unicode(const UnicodeString& str,
+  [[nodiscard]] auto render_wrapped_unicode(const unicode_string& str,
                                             const color& fg,
                                             const uint32 wrap) const -> surface
   {
@@ -1057,7 +1057,7 @@ class font_cache final {
    */
   template <typename T>
   auto store_solid_unicode(basic_renderer<T>& renderer,
-                           const UnicodeString& str,
+                           const unicode_string& str,
                            const color& fg) -> id_type
   {
     return store(renderer, mFont.render_solid_unicode(str, fg));
@@ -1077,7 +1077,7 @@ class font_cache final {
    */
   template <typename T>
   auto store_shaded_unicode(basic_renderer<T>& renderer,
-                            const UnicodeString& str,
+                            const unicode_string& str,
                             const color& fg,
                             const color& bg) -> id_type
   {
@@ -1097,7 +1097,7 @@ class font_cache final {
    */
   template <typename T>
   auto store_blended_unicode(basic_renderer<T>& renderer,
-                             const UnicodeString& str,
+                             const unicode_string& str,
                              const color& fg) -> id_type
   {
     return store(renderer, mFont.render_blended_unicode(str, fg));
@@ -1117,7 +1117,7 @@ class font_cache final {
    */
   template <typename T>
   auto store_wrapped_unicode(basic_renderer<T>& renderer,
-                             const UnicodeString& str,
+                             const unicode_string& str,
                              const color& fg,
                              const uint32 wrap) -> id_type
   {

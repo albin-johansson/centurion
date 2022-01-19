@@ -1,84 +1,93 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "mouse_events.hpp"
 
 TEST(MouseButtonEvent, Defaults)
 {
-  const cen::MouseButtonEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::MouseButtonDown, event.GetType());
+  const cen::mouse_button_event event;
+  ASSERT_EQ(cen::event_type::mouse_button_down, event.type());
 }
 
 TEST(MouseButtonEvent, SetWindowID)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetWindowID(64);
-  ASSERT_EQ(64u, event.GetWindowID());
+  const cen::uint32 id = 64;
+  event.set_window_id(id);
+
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(MouseButtonEvent, SetWhich)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetWhich(17);
-  ASSERT_EQ(17u, event.GetWhich());
+  const cen::uint32 which = 17;
+  event.set_which(which);
+
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(MouseButtonEvent, SetButton)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetButton(cen::MouseButton::Right);
-  ASSERT_EQ(cen::MouseButton::Right, event.GetButton());
+  event.set_button(cen::MouseButton::Right);
+  ASSERT_EQ(cen::MouseButton::Right, event.button());
 }
 
 TEST(MouseButtonEvent, SetState)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetState(cen::ButtonState::Pressed);
+  event.set_state(cen::ButtonState::Pressed);
 
-  ASSERT_EQ(cen::ButtonState::Pressed, event.GetState());
-  ASSERT_TRUE(event.IsPressed());
-  ASSERT_FALSE(event.IsReleased());
+  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
+  ASSERT_TRUE(event.pressed());
+  ASSERT_FALSE(event.released());
 
-  event.SetState(cen::ButtonState::Released);
+  event.set_state(cen::ButtonState::Released);
 
-  ASSERT_EQ(cen::ButtonState::Released, event.GetState());
-  ASSERT_TRUE(event.IsReleased());
-  ASSERT_FALSE(event.IsPressed());
+  ASSERT_EQ(cen::ButtonState::Released, event.state());
+  ASSERT_TRUE(event.released());
+  ASSERT_FALSE(event.pressed());
 }
 
 TEST(MouseButtonEvent, SetClicks)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetClicks(2);
-  ASSERT_EQ(2, event.GetClicks());
+  const cen::uint8 clicks = 2;
+  event.set_clicks(clicks);
+
+  ASSERT_EQ(clicks, event.clicks());
 }
 
 TEST(MouseButtonEvent, SetX)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetX(645);
-  ASSERT_EQ(645, event.GetX());
+  const cen::int32 x = 645;
+  event.set_x(x);
+
+  ASSERT_EQ(x, event.x());
 }
 
 TEST(MouseButtonEvent, SetY)
 {
-  cen::MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  event.SetY(177);
-  ASSERT_EQ(177, event.GetY());
+  const cen::int32 y = 177;
+  event.set_y(y);
+
+  ASSERT_EQ(y, event.y());
 }
 
 TEST(MouseButtonEvent, AsSDLEvent)
 {
-  const cen::MouseButtonEvent event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::mouse_button_event event;
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.button.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.button.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.button.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.button.timestamp, event.timestamp().count());
 }

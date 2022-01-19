@@ -1,59 +1,66 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "mouse_events.hpp"
 
 TEST(MouseWheelEvent, Defaults)
 {
-  const cen::MouseWheelEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::MouseWheel, event.GetType());
+  const cen::mouse_wheel_event event;
+  ASSERT_EQ(cen::event_type::mouse_wheel, event.type());
 }
 
 TEST(MouseWheelEvent, SetWindowID)
 {
-  cen::MouseWheelEvent event;
+  cen::mouse_wheel_event event;
 
-  event.SetWindowID(32);
-  ASSERT_EQ(32u, event.GetWindowID());
+  const cen::uint32 id = 32;
+  event.set_window_id(id);
+
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(MouseWheelEvent, SetWhich)
 {
-  cen::MouseWheelEvent event;
+  cen::mouse_wheel_event event;
 
-  event.SetWhich(32);
-  ASSERT_EQ(32u, event.GetWhich());
+  const cen::uint32 which = 65;
+  event.set_which(which);
+
+  ASSERT_EQ(which, event.which());
 }
 
-TEST(MouseWheelEvent, SetXScroll)
+TEST(MouseWheelEvent, SetX)
 {
-  cen::MouseWheelEvent event;
+  cen::mouse_wheel_event event;
 
-  event.SetXScroll(-545);
-  ASSERT_EQ(-545, event.GetXScroll());
+  const cen::int32 x = -545;
+  event.set_x(x);
+
+  ASSERT_EQ(x, event.x());
 }
 
-TEST(MouseWheelEvent, SetYScroll)
+TEST(MouseWheelEvent, SetY)
 {
-  cen::MouseWheelEvent event;
+  cen::mouse_wheel_event event;
 
-  event.SetYScroll(725);
-  ASSERT_EQ(725, event.GetYScroll());
+  const cen::int32 y = 725;
+  event.set_y(y);
+
+  ASSERT_EQ(y, event.y());
 }
 
 TEST(MouseWheelEvent, SetDirection)
 {
-  cen::MouseWheelEvent event;
+  cen::mouse_wheel_event event;
 
-  event.SetDirection(cen::MouseWheelDirection::Flipped);
-  ASSERT_EQ(cen::MouseWheelDirection::Flipped, event.GetDirection());
+  event.set_direction(cen::mouse_wheel_direction::flipped);
+  ASSERT_EQ(cen::mouse_wheel_direction::flipped, event.direction());
 }
 
 TEST(MouseWheelEvent, AsSDLEvent)
 {
-  const cen::MouseWheelEvent event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::mouse_wheel_event event;
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.wheel.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.wheel.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.wheel.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.wheel.timestamp, event.timestamp().count());
 }

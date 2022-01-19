@@ -1,23 +1,23 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "event.hpp"
+#include "mouse_events.hpp"
 
-using Direction = cen::MouseWheelDirection;
+using direction = cen::mouse_wheel_direction;
 
 TEST(MouseWheelDirection, Values)
 {
-  ASSERT_EQ(to_underlying(Direction::Normal), SDL_MOUSEWHEEL_NORMAL);
-  ASSERT_EQ(to_underlying(Direction::Flipped), SDL_MOUSEWHEEL_FLIPPED);
+  ASSERT_EQ(SDL_MOUSEWHEEL_NORMAL, to_underlying(direction::normal));
+  ASSERT_EQ(SDL_MOUSEWHEEL_FLIPPED, to_underlying(direction::flipped));
 }
 
 TEST(MouseWheelDirection, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Direction>(3)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<direction>(3)), cen::exception);
 
-  ASSERT_EQ("Normal", ToString(Direction::Normal));
-  ASSERT_EQ("Flipped", ToString(Direction::Flipped));
+  ASSERT_EQ("normal", to_string(direction::normal));
+  ASSERT_EQ("flipped", to_string(direction::flipped));
 
-  std::clog << "Mouse wheel direction example: " << Direction::Normal << '\n';
+  std::cout << "mouse_wheel_direction::normal == " << direction::normal << '\n';
 }

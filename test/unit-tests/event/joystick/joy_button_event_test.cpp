@@ -1,52 +1,55 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "joystick_events.hpp"
 
 TEST(JoyButtonEvent, Defaults)
 {
-  const cen::JoyButtonEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::JoyButtonDown, event.GetType());
+  const cen::joy_button_event event;
+  ASSERT_EQ(cen::event_type::joy_button_down, event.type());
 }
 
 TEST(JoyButtonEvent, SetWhich)
 {
-  cen::JoyButtonEvent event;
+  cen::joy_button_event event;
 
-  event.SetWhich(92);
-  ASSERT_EQ(92, event.GetWhich());
+  const SDL_JoystickID id = 92;
+  event.set_which(id);
+
+  ASSERT_EQ(id, event.which());
 }
 
 TEST(JoyButtonEvent, SetButton)
 {
-  cen::JoyButtonEvent event;
+  cen::joy_button_event event;
 
-  event.SetButton(44);
-  ASSERT_EQ(44, event.GetButton());
+  const cen::uint8 button = 44;
+  event.set_button(button);
+
+  ASSERT_EQ(button, event.button());
 }
 
 TEST(JoyButtonEvent, SetState)
 {
-  cen::JoyButtonEvent event;
+  cen::joy_button_event event;
 
-  event.SetState(cen::ButtonState::Pressed);
+  event.set_state(cen::ButtonState::Pressed);
 
-  ASSERT_EQ(cen::ButtonState::Pressed, event.GetState());
-  ASSERT_TRUE(event.IsPressed());
-  ASSERT_FALSE(event.IsReleased());
+  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
+  ASSERT_TRUE(event.is_pressed());
+  ASSERT_FALSE(event.is_released());
 
-  event.SetState(cen::ButtonState::Released);
+  event.set_state(cen::ButtonState::Released);
 
-  ASSERT_EQ(cen::ButtonState::Released, event.GetState());
-  ASSERT_TRUE(event.IsReleased());
-  ASSERT_FALSE(event.IsPressed());
+  ASSERT_EQ(cen::ButtonState::Released, event.state());
+  ASSERT_TRUE(event.is_released());
+  ASSERT_FALSE(event.is_pressed());
 }
 
 TEST(JoyButtonEvent, AsSDLEvent)
 {
-  const cen::JoyButtonEvent event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::joy_button_event event;
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.jbutton.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.jbutton.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.jbutton.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.jbutton.timestamp, event.timestamp().count());
 }

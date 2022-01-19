@@ -1,160 +1,159 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "common.hpp"
-#include "event.hpp"
+#include "event_base.hpp"
 
-using Type = cen::EventType;
+using type = cen::event_type;
 
 TEST(EventType, Values)
 {
-  ASSERT_EQ(to_underlying(Type::Quit), SDL_QUIT);
+  ASSERT_EQ(SDL_QUIT, to_underlying(type::quit));
 
-  ASSERT_EQ(to_underlying(Type::AppTerminating), SDL_APP_TERMINATING);
-  ASSERT_EQ(to_underlying(Type::AppLowMemory), SDL_APP_LOWMEMORY);
-  ASSERT_EQ(to_underlying(Type::AppWillEnterBackground), SDL_APP_WILLENTERBACKGROUND);
-  ASSERT_EQ(to_underlying(Type::AppDidEnterBackground), SDL_APP_DIDENTERBACKGROUND);
-  ASSERT_EQ(to_underlying(Type::AppDidEnterForeground), SDL_APP_DIDENTERFOREGROUND);
+  ASSERT_EQ(SDL_APP_TERMINATING, to_underlying(type::app_terminating));
+  ASSERT_EQ(SDL_APP_LOWMEMORY, to_underlying(type::app_low_memory));
+  ASSERT_EQ(SDL_APP_WILLENTERBACKGROUND, to_underlying(type::app_will_enter_background));
+  ASSERT_EQ(SDL_APP_DIDENTERBACKGROUND, to_underlying(type::app_did_enter_background));
+  ASSERT_EQ(SDL_APP_DIDENTERFOREGROUND, to_underlying(type::app_did_enter_foreground));
 
-  ASSERT_EQ(to_underlying(Type::Display), SDL_DISPLAYEVENT);
-  ASSERT_EQ(to_underlying(Type::Window), SDL_WINDOWEVENT);
-  ASSERT_EQ(to_underlying(Type::System), SDL_SYSWMEVENT);
+  ASSERT_EQ(SDL_DISPLAYEVENT, to_underlying(type::display));
+  ASSERT_EQ(SDL_WINDOWEVENT, to_underlying(type::window));
+  ASSERT_EQ(SDL_SYSWMEVENT, to_underlying(type::system));
 
-  ASSERT_EQ(to_underlying(Type::KeyDown), SDL_KEYDOWN);
-  ASSERT_EQ(to_underlying(Type::KeyUp), SDL_KEYUP);
-  ASSERT_EQ(to_underlying(Type::TextEditing), SDL_TEXTEDITING);
-  ASSERT_EQ(to_underlying(Type::TextInput), SDL_TEXTINPUT);
-  ASSERT_EQ(to_underlying(Type::KeymapChanged), SDL_KEYMAPCHANGED);
+  ASSERT_EQ(SDL_KEYDOWN, to_underlying(type::key_down));
+  ASSERT_EQ(SDL_KEYUP, to_underlying(type::key_up));
+  ASSERT_EQ(SDL_TEXTEDITING, to_underlying(type::text_editing));
+  ASSERT_EQ(SDL_TEXTINPUT, to_underlying(type::text_input));
+  ASSERT_EQ(SDL_KEYMAPCHANGED, to_underlying(type::keymap_changed));
 
-  ASSERT_EQ(to_underlying(Type::MouseMotion), SDL_MOUSEMOTION);
-  ASSERT_EQ(to_underlying(Type::MouseButtonDown), SDL_MOUSEBUTTONDOWN);
-  ASSERT_EQ(to_underlying(Type::MouseButtonUp), SDL_MOUSEBUTTONUP);
-  ASSERT_EQ(to_underlying(Type::MouseWheel), SDL_MOUSEWHEEL);
+  ASSERT_EQ(SDL_MOUSEMOTION, to_underlying(type::mouse_motion));
+  ASSERT_EQ(SDL_MOUSEBUTTONDOWN, to_underlying(type::mouse_button_down));
+  ASSERT_EQ(SDL_MOUSEBUTTONUP, to_underlying(type::mouse_button_up));
+  ASSERT_EQ(SDL_MOUSEWHEEL, to_underlying(type::mouse_wheel));
 
-  ASSERT_EQ(to_underlying(Type::JoyAxisMotion), SDL_JOYAXISMOTION);
-  ASSERT_EQ(to_underlying(Type::JoyBallMotion), SDL_JOYBALLMOTION);
-  ASSERT_EQ(to_underlying(Type::JoyHatMotion), SDL_JOYHATMOTION);
-  ASSERT_EQ(to_underlying(Type::JoyButtonDown), SDL_JOYBUTTONDOWN);
-  ASSERT_EQ(to_underlying(Type::JoyButtonUp), SDL_JOYBUTTONUP);
-  ASSERT_EQ(to_underlying(Type::JoyDeviceAdded), SDL_JOYDEVICEADDED);
-  ASSERT_EQ(to_underlying(Type::JoyDeviceRemoved), SDL_JOYDEVICEREMOVED);
+  ASSERT_EQ(SDL_JOYAXISMOTION, to_underlying(type::joy_axis_motion));
+  ASSERT_EQ(SDL_JOYBALLMOTION, to_underlying(type::joy_ball_motion));
+  ASSERT_EQ(SDL_JOYHATMOTION, to_underlying(type::joy_hat_motion));
+  ASSERT_EQ(SDL_JOYBUTTONDOWN, to_underlying(type::joy_button_down));
+  ASSERT_EQ(SDL_JOYBUTTONUP, to_underlying(type::joy_button_up));
+  ASSERT_EQ(SDL_JOYDEVICEADDED, to_underlying(type::joy_device_added));
+  ASSERT_EQ(SDL_JOYDEVICEREMOVED, to_underlying(type::joy_device_removed));
 
-  ASSERT_EQ(to_underlying(Type::ControllerAxisMotion), SDL_CONTROLLERAXISMOTION);
-  ASSERT_EQ(to_underlying(Type::ControllerButtonDown), SDL_CONTROLLERBUTTONDOWN);
-  ASSERT_EQ(to_underlying(Type::ControllerButtonUp), SDL_CONTROLLERBUTTONUP);
-  ASSERT_EQ(to_underlying(Type::ControllerDeviceAdded), SDL_CONTROLLERDEVICEADDED);
-  ASSERT_EQ(to_underlying(Type::ControllerDeviceRemoved), SDL_CONTROLLERDEVICEREMOVED);
-  ASSERT_EQ(to_underlying(Type::ControllerDeviceRemapped), SDL_CONTROLLERDEVICEREMAPPED);
+  ASSERT_EQ(SDL_CONTROLLERAXISMOTION, to_underlying(type::controller_axis_motion));
+  ASSERT_EQ(SDL_CONTROLLERBUTTONDOWN, to_underlying(type::controller_button_down));
+  ASSERT_EQ(SDL_CONTROLLERBUTTONUP, to_underlying(type::controller_button_up));
+  ASSERT_EQ(SDL_CONTROLLERDEVICEADDED, to_underlying(type::controller_device_added));
+  ASSERT_EQ(SDL_CONTROLLERDEVICEREMOVED, to_underlying(type::controller_device_removed));
+  ASSERT_EQ(SDL_CONTROLLERDEVICEREMAPPED, to_underlying(type::controller_device_remapped));
 
-  ASSERT_EQ(to_underlying(Type::FingerDown), SDL_FINGERDOWN);
-  ASSERT_EQ(to_underlying(Type::FingerUp), SDL_FINGERUP);
-  ASSERT_EQ(to_underlying(Type::FingerMotion), SDL_FINGERMOTION);
+  ASSERT_EQ(SDL_FINGERDOWN, to_underlying(type::finger_down));
+  ASSERT_EQ(SDL_FINGERUP, to_underlying(type::finger_up));
+  ASSERT_EQ(SDL_FINGERMOTION, to_underlying(type::finger_motion));
 
-  ASSERT_EQ(to_underlying(Type::DollarGesture), SDL_DOLLARGESTURE);
-  ASSERT_EQ(to_underlying(Type::DollarRecord), SDL_DOLLARRECORD);
-  ASSERT_EQ(to_underlying(Type::MultiGesture), SDL_MULTIGESTURE);
+  ASSERT_EQ(SDL_DOLLARGESTURE, to_underlying(type::dollar_gesture));
+  ASSERT_EQ(SDL_DOLLARRECORD, to_underlying(type::dollar_record));
+  ASSERT_EQ(SDL_MULTIGESTURE, to_underlying(type::multi_gesture));
 
-  ASSERT_EQ(to_underlying(Type::ClipboardUpdate), SDL_CLIPBOARDUPDATE);
+  ASSERT_EQ(SDL_CLIPBOARDUPDATE, to_underlying(type::clipboard_update));
 
-  ASSERT_EQ(to_underlying(Type::DropFile), SDL_DROPFILE);
-  ASSERT_EQ(to_underlying(Type::DropText), SDL_DROPTEXT);
-  ASSERT_EQ(to_underlying(Type::DropBegin), SDL_DROPBEGIN);
-  ASSERT_EQ(to_underlying(Type::DropComplete), SDL_DROPCOMPLETE);
+  ASSERT_EQ(SDL_DROPFILE, to_underlying(type::drop_file));
+  ASSERT_EQ(SDL_DROPTEXT, to_underlying(type::drop_text));
+  ASSERT_EQ(SDL_DROPBEGIN, to_underlying(type::drop_begin));
+  ASSERT_EQ(SDL_DROPCOMPLETE, to_underlying(type::drop_complete));
 
-  ASSERT_EQ(to_underlying(Type::AudioDeviceAdded), SDL_AUDIODEVICEADDED);
-  ASSERT_EQ(to_underlying(Type::AudioDeviceRemoved), SDL_AUDIODEVICEREMOVED);
+  ASSERT_EQ(SDL_AUDIODEVICEADDED, to_underlying(type::audio_device_added));
+  ASSERT_EQ(SDL_AUDIODEVICEREMOVED, to_underlying(type::audio_device_removed));
 
-  ASSERT_EQ(to_underlying(Type::SensorUpdate), SDL_SENSORUPDATE);
+  ASSERT_EQ(SDL_SENSORUPDATE, to_underlying(type::sensor_update));
 
-  ASSERT_EQ(to_underlying(Type::RenderTargetsReset), SDL_RENDER_TARGETS_RESET);
-  ASSERT_EQ(to_underlying(Type::RenderDeviceReset), SDL_RENDER_DEVICE_RESET);
+  ASSERT_EQ(SDL_RENDER_TARGETS_RESET, to_underlying(type::render_targets_reset));
+  ASSERT_EQ(SDL_RENDER_DEVICE_RESET, to_underlying(type::render_device_reset));
 
-  ASSERT_EQ(to_underlying(Type::User), SDL_USEREVENT);
+  ASSERT_EQ(SDL_USEREVENT, to_underlying(type::user));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(to_underlying(Type::LocaleChanged), SDL_LOCALECHANGED);
+  ASSERT_EQ(SDL_LOCALECHANGED, to_underlying(type::locale_changed));
 
-  ASSERT_EQ(to_underlying(Type::ControllerTouchpadDown), SDL_CONTROLLERTOUCHPADDOWN);
-  ASSERT_EQ(to_underlying(Type::ControllerTouchpadUp), SDL_CONTROLLERTOUCHPADUP);
-  ASSERT_EQ(to_underlying(Type::ControllerTouchpadMotion), SDL_CONTROLLERTOUCHPADMOTION);
-  ASSERT_EQ(to_underlying(Type::ControllerSensorUpdate), SDL_CONTROLLERSENSORUPDATE);
+  ASSERT_EQ(SDL_CONTROLLERTOUCHPADDOWN, to_underlying(type::controller_touchpad_down));
+  ASSERT_EQ(SDL_CONTROLLERTOUCHPADUP, to_underlying(type::controller_touchpad_up));
+  ASSERT_EQ(SDL_CONTROLLERTOUCHPADMOTION, to_underlying(type::controller_touchpad_motion));
+  ASSERT_EQ(SDL_CONTROLLERSENSORUPDATE, to_underlying(type::controller_sensor_update));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }
 
 TEST(EventType, ToString)
 {
-  ASSERT_EQ("Quit", ToString(Type::Quit));
+  ASSERT_EQ("quit", to_string(type::quit));
 
-  ASSERT_EQ("AppTerminating", ToString(Type::AppTerminating));
-  ASSERT_EQ("AppLowMemory", ToString(Type::AppLowMemory));
-  ASSERT_EQ("AppWillEnterBackground", ToString(Type::AppWillEnterBackground));
-  ASSERT_EQ("AppDidEnterBackground", ToString(Type::AppDidEnterBackground));
-  ASSERT_EQ("AppDidEnterForeground", ToString(Type::AppDidEnterForeground));
+  ASSERT_EQ("app_terminating", to_string(type::app_terminating));
+  ASSERT_EQ("app_low_memory", to_string(type::app_low_memory));
+  ASSERT_EQ("app_will_enter_background", to_string(type::app_will_enter_background));
+  ASSERT_EQ("app_did_enter_background", to_string(type::app_did_enter_background));
+  ASSERT_EQ("app_did_enter_foreground", to_string(type::app_did_enter_foreground));
 
-  ASSERT_EQ("Display", ToString(Type::Display));
-  ASSERT_EQ("Window", ToString(Type::Window));
-  ASSERT_EQ("System", ToString(Type::System));
+  ASSERT_EQ("display", to_string(type::display));
+  ASSERT_EQ("window", to_string(type::window));
+  ASSERT_EQ("system", to_string(type::system));
 
-  ASSERT_EQ("KeyDown", ToString(Type::KeyDown));
-  ASSERT_EQ("KeyUp", ToString(Type::KeyUp));
-  ASSERT_EQ("TextEditing", ToString(Type::TextEditing));
-  ASSERT_EQ("TextInput", ToString(Type::TextInput));
-  ASSERT_EQ("KeymapChanged", ToString(Type::KeymapChanged));
+  ASSERT_EQ("key_down", to_string(type::key_down));
+  ASSERT_EQ("key_up", to_string(type::key_up));
+  ASSERT_EQ("text_editing", to_string(type::text_editing));
+  ASSERT_EQ("text_input", to_string(type::text_input));
+  ASSERT_EQ("keymap_changed", to_string(type::keymap_changed));
 
-  ASSERT_EQ("MouseMotion", ToString(Type::MouseMotion));
-  ASSERT_EQ("MouseButtonDown", ToString(Type::MouseButtonDown));
-  ASSERT_EQ("MouseButtonUp", ToString(Type::MouseButtonUp));
-  ASSERT_EQ("MouseWheel", ToString(Type::MouseWheel));
+  ASSERT_EQ("mouse_motion", to_string(type::mouse_motion));
+  ASSERT_EQ("mouse_button_down", to_string(type::mouse_button_down));
+  ASSERT_EQ("mouse_button_up", to_string(type::mouse_button_up));
+  ASSERT_EQ("mouse_wheel", to_string(type::mouse_wheel));
 
-  ASSERT_EQ("JoyAxisMotion", ToString(Type::JoyAxisMotion));
-  ASSERT_EQ("JoyBallMotion", ToString(Type::JoyBallMotion));
-  ASSERT_EQ("JoyHatMotion", ToString(Type::JoyHatMotion));
-  ASSERT_EQ("JoyButtonDown", ToString(Type::JoyButtonDown));
-  ASSERT_EQ("JoyButtonUp", ToString(Type::JoyButtonUp));
-  ASSERT_EQ("JoyDeviceAdded", ToString(Type::JoyDeviceAdded));
-  ASSERT_EQ("JoyDeviceRemoved", ToString(Type::JoyDeviceRemoved));
+  ASSERT_EQ("joy_axis_motion", to_string(type::joy_axis_motion));
+  ASSERT_EQ("joy_ball_motion", to_string(type::joy_ball_motion));
+  ASSERT_EQ("joy_hat_motion", to_string(type::joy_hat_motion));
+  ASSERT_EQ("joy_button_down", to_string(type::joy_button_down));
+  ASSERT_EQ("joy_button_up", to_string(type::joy_button_up));
+  ASSERT_EQ("joy_device_added", to_string(type::joy_device_added));
+  ASSERT_EQ("joy_device_removed", to_string(type::joy_device_removed));
 
-  ASSERT_EQ("ControllerAxisMotion", ToString(Type::ControllerAxisMotion));
-  ASSERT_EQ("ControllerButtonDown", ToString(Type::ControllerButtonDown));
-  ASSERT_EQ("ControllerButtonUp", ToString(Type::ControllerButtonUp));
-  ASSERT_EQ("ControllerDeviceAdded", ToString(Type::ControllerDeviceAdded));
-  ASSERT_EQ("ControllerDeviceRemoved", ToString(Type::ControllerDeviceRemoved));
-  ASSERT_EQ("ControllerDeviceRemapped", ToString(Type::ControllerDeviceRemapped));
+  ASSERT_EQ("controller_axis_motion", to_string(type::controller_axis_motion));
+  ASSERT_EQ("controller_button_down", to_string(type::controller_button_down));
+  ASSERT_EQ("controller_button_up", to_string(type::controller_button_up));
+  ASSERT_EQ("controller_device_added", to_string(type::controller_device_added));
+  ASSERT_EQ("controller_device_removed", to_string(type::controller_device_removed));
+  ASSERT_EQ("controller_device_remapped", to_string(type::controller_device_remapped));
 
-  ASSERT_EQ("FingerDown", ToString(Type::FingerDown));
-  ASSERT_EQ("FingerUp", ToString(Type::FingerUp));
-  ASSERT_EQ("FingerMotion", ToString(Type::FingerMotion));
+  ASSERT_EQ("finger_down", to_string(type::finger_down));
+  ASSERT_EQ("finger_up", to_string(type::finger_up));
+  ASSERT_EQ("finger_motion", to_string(type::finger_motion));
 
-  ASSERT_EQ("DollarGesture", ToString(Type::DollarGesture));
-  ASSERT_EQ("DollarRecord", ToString(Type::DollarRecord));
-  ASSERT_EQ("MultiGesture", ToString(Type::MultiGesture));
+  ASSERT_EQ("dollar_gesture", to_string(type::dollar_gesture));
+  ASSERT_EQ("dollar_record", to_string(type::dollar_record));
+  ASSERT_EQ("multi_gesture", to_string(type::multi_gesture));
 
-  ASSERT_EQ("ClipboardUpdate", ToString(Type::ClipboardUpdate));
+  ASSERT_EQ("clipboard_update", to_string(type::clipboard_update));
 
-  ASSERT_EQ("DropFile", ToString(Type::DropFile));
-  ASSERT_EQ("DropText", ToString(Type::DropText));
-  ASSERT_EQ("DropBegin", ToString(Type::DropBegin));
-  ASSERT_EQ("DropComplete", ToString(Type::DropComplete));
+  ASSERT_EQ("drop_file", to_string(type::drop_file));
+  ASSERT_EQ("drop_text", to_string(type::drop_text));
+  ASSERT_EQ("drop_begin", to_string(type::drop_begin));
+  ASSERT_EQ("drop_complete", to_string(type::drop_complete));
 
-  ASSERT_EQ("AudioDeviceAdded", ToString(Type::AudioDeviceAdded));
-  ASSERT_EQ("AudioDeviceRemoved", ToString(Type::AudioDeviceRemoved));
+  ASSERT_EQ("audio_device_added", to_string(type::audio_device_added));
+  ASSERT_EQ("audio_device_removed", to_string(type::audio_device_removed));
 
-  ASSERT_EQ("SensorUpdate", ToString(Type::SensorUpdate));
+  ASSERT_EQ("sensor_update", to_string(type::sensor_update));
 
-  ASSERT_EQ("RenderTargetsReset", ToString(Type::RenderTargetsReset));
-  ASSERT_EQ("RenderDeviceReset", ToString(Type::RenderDeviceReset));
+  ASSERT_EQ("render_targets_reset", to_string(type::render_targets_reset));
+  ASSERT_EQ("render_device_reset", to_string(type::render_device_reset));
 
-  ASSERT_EQ("User", ToString(Type::User));
+  ASSERT_EQ("user", to_string(type::user));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ("LocaleChanged", ToString(Type::LocaleChanged));
+  ASSERT_EQ("locale_changed", to_string(type::locale_changed));
 
-  ASSERT_EQ("ControllerTouchpadDown", ToString(Type::ControllerTouchpadDown));
-  ASSERT_EQ("ControllerTouchpadUp", ToString(Type::ControllerTouchpadUp));
-  ASSERT_EQ("ControllerTouchpadMotion", ToString(Type::ControllerTouchpadMotion));
-  ASSERT_EQ("ControllerSensorUpdate", ToString(Type::ControllerSensorUpdate));
+  ASSERT_EQ("controller_touchpad_down", to_string(type::controller_touchpad_down));
+  ASSERT_EQ("controller_touchpad_up", to_string(type::controller_touchpad_up));
+  ASSERT_EQ("controller_touchpad_motion", to_string(type::controller_touchpad_motion));
+  ASSERT_EQ("controller_sensor_update", to_string(type::controller_sensor_update));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  std::clog << "Event type example: " << Type::AppLowMemory << '\n';
+  std::cout << "event_type::app_low_memory == " << type::app_low_memory << '\n';
 }

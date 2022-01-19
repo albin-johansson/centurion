@@ -1,82 +1,93 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "mouse_events.hpp"
 
 TEST(MouseMotionEvent, Defaults)
 {
-  const cen::MouseMotionEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::MouseMotion, event.GetType());
+  const cen::mouse_motion_event event;
+  ASSERT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
 TEST(MouseMotionEvent, SetWindowID)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetWindowID(8);
-  ASSERT_EQ(8u, event.GetWindowID());
+  const cen::uint32 id = 8;
+  event.set_window_id(id);
+
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(MouseMotionEvent, SetWhich)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetWhich(65);
-  ASSERT_EQ(65u, event.GetWhich());
+  const cen::uint32 which = 65;
+  event.set_which(which);
+
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(MouseMotionEvent, SetState)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetState(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
-  ASSERT_EQ(Uint32{SDL_BUTTON_LMASK | SDL_BUTTON_MMASK}, event.GetState());
+  event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
+  ASSERT_EQ(Uint32{SDL_BUTTON_LMASK | SDL_BUTTON_MMASK}, event.state());
 
-  ASSERT_TRUE(event.IsPressed(cen::MouseButton::Left));
-  ASSERT_TRUE(event.IsPressed(cen::MouseButton::Middle));
+  ASSERT_TRUE(event.pressed(cen::MouseButton::Left));
+  ASSERT_TRUE(event.pressed(cen::MouseButton::Middle));
 
-  ASSERT_FALSE(event.IsPressed(cen::MouseButton::Right));
-  ASSERT_FALSE(event.IsPressed(cen::MouseButton::X1));
-  ASSERT_FALSE(event.IsPressed(cen::MouseButton::X2));
+  ASSERT_FALSE(event.pressed(cen::MouseButton::Right));
+  ASSERT_FALSE(event.pressed(cen::MouseButton::X1));
+  ASSERT_FALSE(event.pressed(cen::MouseButton::X2));
 }
 
 TEST(MouseMotionEvent, SetX)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetX(745);
-  ASSERT_EQ(745, event.GetX());
+  const cen::int32 x = 745;
+  event.set_x(x);
+
+  ASSERT_EQ(x, event.x());
 }
 
 TEST(MouseMotionEvent, SetY)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetY(123);
-  ASSERT_EQ(123, event.GetY());
+  const cen::int32 y = 123;
+  event.set_y(y);
+
+  ASSERT_EQ(y, event.y());
 }
 
-TEST(MouseMotionEvent, SetDeltaX)
+TEST(MouseMotionEvent, SetDX)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetDeltaX(-456);
-  ASSERT_EQ(-456, event.GetDeltaX());
+  const cen::int32 dx = -456;
+  event.set_dx(dx);
+
+  ASSERT_EQ(dx, event.dx());
 }
 
-TEST(MouseMotionEvent, SetDeltaY)
+TEST(MouseMotionEvent, SetDY)
 {
-  cen::MouseMotionEvent event;
+  cen::mouse_motion_event event;
 
-  event.SetDeltaY(835);
-  ASSERT_EQ(835, event.GetDeltaY());
+  const cen::int32 dy = 835;
+  event.set_dy(dy);
+
+  ASSERT_EQ(dy, event.dy());
 }
 
 TEST(MouseMotionEvent, AsSDLEvent)
 {
-  const cen::MouseMotionEvent event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::mouse_motion_event event;
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.motion.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.motion.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.motion.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.motion.timestamp, event.timestamp().count());
 }

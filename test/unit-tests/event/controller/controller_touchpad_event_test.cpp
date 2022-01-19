@@ -6,78 +6,84 @@
 
 TEST(ControllerTouchpadEvent, Defaults)
 {
-  const cen::ControllerTouchpadEvent event;
-  ASSERT_EQ(0, event.GetWhich());
-  ASSERT_EQ(0, event.GetFingerIndex());
-  ASSERT_EQ(0, event.GetX());
-  ASSERT_EQ(0, event.GetY());
-  ASSERT_EQ(0, event.GetPressure());
+  const cen::controller_touchpad_event event;
+  ASSERT_EQ(0, event.which());
+  ASSERT_EQ(0, event.finger_index());
+  ASSERT_EQ(0, event.x());
+  ASSERT_EQ(0, event.y());
+  ASSERT_EQ(0, event.pressure());
 }
 
 TEST(ControllerTouchpadEvent, SetWhich)
 {
-  cen::ControllerTouchpadEvent event;
+  cen::controller_touchpad_event event;
 
-  event.SetWhich(832);
-  ASSERT_EQ(832, event.GetWhich());
+  const SDL_JoystickID id = 832;
+  event.set_which(id);
+
+  ASSERT_EQ(id, event.which());
 }
 
 TEST(ControllerTouchpadEvent, SetTouchpadIndex)
 {
-  cen::ControllerTouchpadEvent event;
+  cen::controller_touchpad_event event;
 
-  event.SetTouchpadIndex(32);
-  ASSERT_EQ(32, event.GetTouchpadIndex());
+  const cen::int32 index = 32;
+  event.set_touchpad_index(index);
+
+  ASSERT_EQ(index, event.touchpad_index());
 }
 
 TEST(ControllerTouchpadEvent, SetFingerIndex)
 {
-  cen::ControllerTouchpadEvent event;
+  cen::controller_touchpad_event event;
 
-  event.SetFingerIndex(27);
-  ASSERT_EQ(27, event.GetFingerIndex());
+  const cen::int32 index = 27;
+  event.set_finger_index(index);
+
+  ASSERT_EQ(index, event.finger_index());
 }
 
 TEST(ControllerTouchpadEvent, SetX)
 {
-  cen::ControllerTouchpadEvent event;
+  cen::controller_touchpad_event event;
 
-  event.SetX(0.4f);
-  ASSERT_EQ(0.4f, event.GetX());
+  event.set_x(0.4f);
+  ASSERT_EQ(0.4f, event.x());
 
-  event.SetX(-0.5f);
-  ASSERT_EQ(0, event.GetX());
+  event.set_x(-0.5f);
+  ASSERT_EQ(0, event.x());
 
-  event.SetX(1.2f);
-  ASSERT_EQ(1.0f, event.GetX());
+  event.set_x(1.2f);
+  ASSERT_EQ(1.0f, event.x());
 }
 
 TEST(ControllerTouchpadEvent, SetY)
 {
-  cen::ControllerTouchpadEvent event;
+  cen::controller_touchpad_event event;
 
-  event.SetY(0.8f);
-  ASSERT_EQ(0.8f, event.GetY());
+  event.set_y(0.8f);
+  ASSERT_EQ(0.8f, event.y());
 
-  event.SetY(-0.1f);
-  ASSERT_EQ(0, event.GetY());
+  event.set_y(-0.1f);
+  ASSERT_EQ(0, event.y());
 
-  event.SetY(4.2f);
-  ASSERT_EQ(1.0f, event.GetY());
+  event.set_y(4.2f);
+  ASSERT_EQ(1.0f, event.y());
 }
 
 TEST(ControllerTouchpadEvent, SetPressure)
 {
-  cen::ControllerTouchpadEvent event;
+  cen::controller_touchpad_event event;
 
-  event.SetPressure(0.1f);
-  ASSERT_EQ(0.1f, event.GetPressure());
+  event.set_pressure(0.1f);
+  ASSERT_EQ(0.1f, event.pressure());
 
-  event.SetPressure(-1.4f);
-  ASSERT_EQ(0, event.GetPressure());
+  event.set_pressure(-1.4f);
+  ASSERT_EQ(0, event.pressure());
 
-  event.SetPressure(5.3f);
-  ASSERT_EQ(1.0f, event.GetPressure());
+  event.set_pressure(5.3f);
+  ASSERT_EQ(1.0f, event.pressure());
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

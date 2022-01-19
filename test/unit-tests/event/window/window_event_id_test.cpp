@@ -1,53 +1,53 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "event.hpp"
+#include "window_events.hpp"
 
-using ID = cen::WindowEventID;
+using id = cen::window_event_id;
 
 TEST(WindowEventID, Values)
 {
-  ASSERT_EQ(SDL_WINDOWEVENT_NONE, to_underlying(ID::None));
-  ASSERT_EQ(SDL_WINDOWEVENT_SHOWN, to_underlying(ID::Shown));
-  ASSERT_EQ(SDL_WINDOWEVENT_HIDDEN, to_underlying(ID::Hidden));
-  ASSERT_EQ(SDL_WINDOWEVENT_EXPOSED, to_underlying(ID::Exposed));
-  ASSERT_EQ(SDL_WINDOWEVENT_MOVED, to_underlying(ID::Moved));
-  ASSERT_EQ(SDL_WINDOWEVENT_RESIZED, to_underlying(ID::Resized));
-  ASSERT_EQ(SDL_WINDOWEVENT_SIZE_CHANGED, to_underlying(ID::SizeChanged));
-  ASSERT_EQ(SDL_WINDOWEVENT_MINIMIZED, to_underlying(ID::Minimized));
-  ASSERT_EQ(SDL_WINDOWEVENT_MAXIMIZED, to_underlying(ID::Maximized));
-  ASSERT_EQ(SDL_WINDOWEVENT_RESTORED, to_underlying(ID::Restored));
-  ASSERT_EQ(SDL_WINDOWEVENT_ENTER, to_underlying(ID::Enter));
-  ASSERT_EQ(SDL_WINDOWEVENT_LEAVE, to_underlying(ID::Leave));
-  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_GAINED, to_underlying(ID::FocusGained));
-  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_LOST, to_underlying(ID::FocusLost));
-  ASSERT_EQ(SDL_WINDOWEVENT_CLOSE, to_underlying(ID::Close));
-  ASSERT_EQ(SDL_WINDOWEVENT_TAKE_FOCUS, to_underlying(ID::TakeFocus));
-  ASSERT_EQ(SDL_WINDOWEVENT_HIT_TEST, to_underlying(ID::HitTest));
+  ASSERT_EQ(SDL_WINDOWEVENT_NONE, to_underlying(id::none));
+  ASSERT_EQ(SDL_WINDOWEVENT_SHOWN, to_underlying(id::shown));
+  ASSERT_EQ(SDL_WINDOWEVENT_HIDDEN, to_underlying(id::hidden));
+  ASSERT_EQ(SDL_WINDOWEVENT_EXPOSED, to_underlying(id::exposed));
+  ASSERT_EQ(SDL_WINDOWEVENT_MOVED, to_underlying(id::moved));
+  ASSERT_EQ(SDL_WINDOWEVENT_RESIZED, to_underlying(id::resized));
+  ASSERT_EQ(SDL_WINDOWEVENT_SIZE_CHANGED, to_underlying(id::size_changed));
+  ASSERT_EQ(SDL_WINDOWEVENT_MINIMIZED, to_underlying(id::minimized));
+  ASSERT_EQ(SDL_WINDOWEVENT_MAXIMIZED, to_underlying(id::maximized));
+  ASSERT_EQ(SDL_WINDOWEVENT_RESTORED, to_underlying(id::restored));
+  ASSERT_EQ(SDL_WINDOWEVENT_ENTER, to_underlying(id::enter));
+  ASSERT_EQ(SDL_WINDOWEVENT_LEAVE, to_underlying(id::leave));
+  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_GAINED, to_underlying(id::focus_gained));
+  ASSERT_EQ(SDL_WINDOWEVENT_FOCUS_LOST, to_underlying(id::focus_lost));
+  ASSERT_EQ(SDL_WINDOWEVENT_CLOSE, to_underlying(id::close));
+  ASSERT_EQ(SDL_WINDOWEVENT_TAKE_FOCUS, to_underlying(id::take_focus));
+  ASSERT_EQ(SDL_WINDOWEVENT_HIT_TEST, to_underlying(id::hit_test));
 }
 
 TEST(WindowEventID, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<ID>(18)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<id>(100)), cen::exception);
 
-  ASSERT_EQ("None", ToString(ID::None));
-  ASSERT_EQ("Shown", ToString(ID::Shown));
-  ASSERT_EQ("Hidden", ToString(ID::Hidden));
-  ASSERT_EQ("Exposed", ToString(ID::Exposed));
-  ASSERT_EQ("Moved", ToString(ID::Moved));
-  ASSERT_EQ("Resized", ToString(ID::Resized));
-  ASSERT_EQ("SizeChanged", ToString(ID::SizeChanged));
-  ASSERT_EQ("Minimized", ToString(ID::Minimized));
-  ASSERT_EQ("Maximized", ToString(ID::Maximized));
-  ASSERT_EQ("Restored", ToString(ID::Restored));
-  ASSERT_EQ("Enter", ToString(ID::Enter));
-  ASSERT_EQ("Leave", ToString(ID::Leave));
-  ASSERT_EQ("FocusGained", ToString(ID::FocusGained));
-  ASSERT_EQ("FocusLost", ToString(ID::FocusLost));
-  ASSERT_EQ("Close", ToString(ID::Close));
-  ASSERT_EQ("TakeFocus", ToString(ID::TakeFocus));
-  ASSERT_EQ("HitTest", ToString(ID::HitTest));
+  ASSERT_EQ("none", to_string(id::none));
+  ASSERT_EQ("shown", to_string(id::shown));
+  ASSERT_EQ("hidden", to_string(id::hidden));
+  ASSERT_EQ("exposed", to_string(id::exposed));
+  ASSERT_EQ("moved", to_string(id::moved));
+  ASSERT_EQ("resized", to_string(id::resized));
+  ASSERT_EQ("size_changed", to_string(id::size_changed));
+  ASSERT_EQ("minimized", to_string(id::minimized));
+  ASSERT_EQ("maximized", to_string(id::maximized));
+  ASSERT_EQ("restored", to_string(id::restored));
+  ASSERT_EQ("enter", to_string(id::enter));
+  ASSERT_EQ("leave", to_string(id::leave));
+  ASSERT_EQ("focus_gained", to_string(id::focus_gained));
+  ASSERT_EQ("focus_lost", to_string(id::focus_lost));
+  ASSERT_EQ("close", to_string(id::close));
+  ASSERT_EQ("take_focus", to_string(id::take_focus));
+  ASSERT_EQ("hit_test", to_string(id::hit_test));
 
-  std::clog << "Window event ID example: " << ID::Resized << '\n';
+  std::cout << "window_event_id::resized == " << id::resized << '\n';
 }

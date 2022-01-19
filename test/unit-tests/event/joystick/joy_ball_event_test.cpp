@@ -1,51 +1,58 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "joystick_events.hpp"
 
 TEST(JoyBallEvent, Defaults)
 {
-  const cen::JoyBallEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::JoyBallMotion, event.GetType());
+  const cen::joy_ball_event event;
+  ASSERT_EQ(cen::event_type::joy_ball_motion, event.type());
 }
 
 TEST(JoyBallEvent, SetWhich)
 {
-  cen::JoyBallEvent event;
+  cen::joy_ball_event event;
 
-  event.SetWhich(3);
-  ASSERT_EQ(3, event.GetWhich());
+  const SDL_JoystickID id = 5;
+  event.set_which(id);
+
+  ASSERT_EQ(id, event.which());
 }
 
 TEST(JoyBallEvent, SetBall)
 {
-  cen::JoyBallEvent event;
+  cen::joy_ball_event event;
 
-  event.SetBall(7);
-  ASSERT_EQ(7, event.GetBall());
+  const cen::uint8 ball = 6;
+  event.set_ball(ball);
+
+  ASSERT_EQ(ball, event.ball());
 }
 
-TEST(JoyBallEvent, SetDeltaX)
+TEST(JoyBallEvent, SetDX)
 {
-  cen::JoyBallEvent event;
+  cen::joy_ball_event event;
 
-  event.SetDeltaX(173);
-  ASSERT_EQ(173, event.GetDeltaX());
+  const cen::int16 dx = 173;
+  event.set_dx(dx);
+
+  ASSERT_EQ(dx, event.dx());
 }
 
-TEST(JoyBallEvent, SetDeltaY)
+TEST(JoyBallEvent, SetDY)
 {
-  cen::JoyBallEvent event;
+  cen::joy_ball_event event;
 
-  event.SetDeltaY(-57);
-  ASSERT_EQ(-57, event.GetDeltaY());
+  const cen::int16 dy = -57;
+  event.set_dy(dy);
+
+  ASSERT_EQ(dy, event.dy());
 }
 
 TEST(JoyBallEvent, AsSDLEvent)
 {
-  const cen::JoyBallEvent event;
-  const auto underlying = cen::AsSDLEvent(event);
+  const cen::joy_ball_event event;
+  const auto underlying = cen::as_sdl_event(event);
 
-  ASSERT_EQ(underlying.jball.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(underlying.jball.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.jball.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(underlying.jball.timestamp, event.timestamp().count());
 }

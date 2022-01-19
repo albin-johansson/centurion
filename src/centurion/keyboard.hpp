@@ -315,9 +315,9 @@ class Keyboard final {
   /**
    * Indicates whether the specified modifiers are solely active.
    *
-   * This function differs from `IsActive(KeyMod)` in that this function will return `false`
+   * This function differs from `is_active(KeyMod)` in that this function will return `false`
    * if modifiers other than those specified are active. For example, if the `Shift` and `Alt`
-   * modifiers are being pressed, then `IsOnlyActive(cen::KeyMod::Shift)` would evaluate to
+   * modifiers are being pressed, then `is_only_active(cen::KeyMod::Shift)` would evaluate to
    * `false`.
    *
    * \param modifiers the modifiers to check for.
@@ -332,10 +332,10 @@ class Keyboard final {
   /**
    * Indicates whether or not only any of the specified modifiers are active.
    *
-   * This function is very similar to `IsOnlyActive()`, but differs in that not all of the
+   * This function is very similar to `is_only_active()`, but differs in that not all of the
    * specified modifiers need to be active for this function to return `true`. For example, if
    * you supply `Shift` to this function, and only the left shift key is being pressed, then
-   * `IsOnlyAnyOfActive(cen::KeyMod::Shift)` would evaluate to `true`. However, if some
+   * `is_only_any_of_active(cen::KeyMod::Shift)` would evaluate to `true`. However, if some
    * other modifiers were also being pressed other than the left shift key, the same function
    * call would instead evaluate to `false`.
    *

@@ -4,49 +4,50 @@
 
 TEST(ControllerButtonEvent, Defaults)
 {
-  const cen::ControllerButtonEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::ControllerButtonDown, event.GetType());
+  const cen::controller_button_event event;
+  ASSERT_EQ(cen::event_type::controller_button_down, event.type());
 }
 
 TEST(ControllerButtonEvent, SetButton)
 {
-  cen::ControllerButtonEvent event;
+  cen::controller_button_event event;
 
-  event.SetButton(cen::ControllerButton::A);
-  ASSERT_EQ(cen::ControllerButton::A, event.GetButton());
+  event.set_button(cen::ControllerButton::A);
+  ASSERT_EQ(cen::ControllerButton::A, event.button());
 }
 
 TEST(ControllerButtonEvent, SetState)
 {
-  cen::ControllerButtonEvent event;
+  cen::controller_button_event event;
 
-  event.SetState(cen::ButtonState::Pressed);
+  event.set_state(cen::ButtonState::Pressed);
 
-  ASSERT_EQ(cen::ButtonState::Pressed, event.GetState());
-  ASSERT_TRUE(event.IsPressed());
-  ASSERT_FALSE(event.IsReleased());
+  ASSERT_EQ(cen::ButtonState::Pressed, event.state());
+  ASSERT_TRUE(event.is_pressed());
+  ASSERT_FALSE(event.is_released());
 
-  event.SetState(cen::ButtonState::Released);
+  event.set_state(cen::ButtonState::Released);
 
-  ASSERT_EQ(cen::ButtonState::Released, event.GetState());
-  ASSERT_TRUE(event.IsReleased());
-  ASSERT_FALSE(event.IsPressed());
+  ASSERT_EQ(cen::ButtonState::Released, event.state());
+  ASSERT_TRUE(event.is_released());
+  ASSERT_FALSE(event.is_pressed());
 }
 
 TEST(ControllerButtonEvent, SetWhich)
 {
-  cen::ControllerButtonEvent event;
+  cen::controller_button_event event;
 
-  event.SetWhich(7);
-  ASSERT_EQ(7, event.GetWhich());
+  const SDL_JoystickID id = 7;
+  event.set_which(id);
+
+  ASSERT_EQ(id, event.which());
 }
 
 TEST(ControllerButtonEvent, AsSDLEvent)
 {
-  const cen::ControllerButtonEvent event;
-  const auto underlying = cen::AsSDLEvent(event);
+  const cen::controller_button_event event;
+  const auto underlying = cen::as_sdl_event(event);
 
-  ASSERT_EQ(underlying.cbutton.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(underlying.cbutton.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.cbutton.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(underlying.cbutton.timestamp, event.timestamp().count());
 }

@@ -6,7 +6,7 @@
 #include "event.hpp"
 
 using EventDispatcher =
-    cen::event_dispatcher<cen::quit_event, cen::ControllerButtonEvent, cen::WindowEvent>;
+    cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
 
 namespace {
 
@@ -18,7 +18,7 @@ void OnQuit(const cen::quit_event&)
 }
 
 struct ButtonHandler final {
-  void OnEvent(const cen::ControllerButtonEvent&) { visited = true; }
+  void OnEvent(const cen::controller_button_event&) { visited = true; }
 
   bool visited{};
 };
@@ -36,19 +36,19 @@ TEST(EventDispatcher, Bind)
   EventDispatcher dispatcher;
 
   dispatcher.bind<cen::quit_event>().to<&OnQuit>();
-  dispatcher.bind<cen::ControllerButtonEvent>().to<&ButtonHandler::OnEvent>(&handler);
+  dispatcher.bind<cen::controller_button_event>().to<&ButtonHandler::OnEvent>(&handler);
 
   bool visitedLambda{};
-  dispatcher.bind<cen::WindowEvent>().to(
-      [&](const cen::WindowEvent&) { visitedLambda = true; });
+  dispatcher.bind<cen::window_event>().to(
+      [&](const cen::window_event&) { visitedLambda = true; });
 
-  cen::WindowEvent windowEvent;
+  cen::window_event windowEvent;
   ASSERT_TRUE(cen::event_handler::push(windowEvent));
 
   cen::quit_event quitEvent;
   ASSERT_TRUE(cen::event_handler::push(quitEvent));
 
-  cen::ControllerButtonEvent buttonEvent;
+  cen::controller_button_event buttonEvent;
   ASSERT_TRUE(cen::event_handler::push(buttonEvent));
 
   dispatcher.poll();
@@ -63,8 +63,8 @@ TEST(EventDispatcher, Reset)
   ASSERT_EQ(0, dispatcher.active_count());
 
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
-  dispatcher.bind<cen::WindowEvent>().to([](cen::WindowEvent) {});
-  dispatcher.bind<cen::ControllerButtonEvent>().to([](cen::ControllerButtonEvent) {});
+  dispatcher.bind<cen::window_event>().to([](cen::window_event) {});
+  dispatcher.bind<cen::controller_button_event>().to([](cen::controller_button_event) {});
 
   ASSERT_EQ(3, dispatcher.active_count());
 
@@ -86,7 +86,7 @@ TEST(EventDispatcher, ActiveCount)
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
   ASSERT_EQ(1, dispatcher.active_count());
 
-  dispatcher.bind<cen::WindowEvent>().to([](cen::WindowEvent) {});
+  dispatcher.bind<cen::window_event>().to([](cen::window_event) {});
   ASSERT_EQ(2, dispatcher.active_count());
 }
 
@@ -98,7 +98,7 @@ TEST(EventDispatcher, Size)
   cen::event_dispatcher<cen::quit_event> one;
   ASSERT_EQ(1, one.size());
 
-  cen::event_dispatcher<cen::quit_event, cen::WindowEvent> two;
+  cen::event_dispatcher<cen::quit_event, cen::window_event> two;
   ASSERT_EQ(2, two.size());
 }
 

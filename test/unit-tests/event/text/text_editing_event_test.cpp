@@ -5,8 +5,7 @@
 TEST(TextEditingEvent, Defaults)
 {
   cen::text_editing_event event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::TextEditing, event.GetType());
+  ASSERT_EQ(cen::event_type::text_editing, event.type());
 }
 
 TEST(TextEditingEvent, SetWindowId)
@@ -93,8 +92,8 @@ TEST(TextEditingEvent, Length)
 TEST(TextEditingEvent, AsSDLEvent)
 {
   const cen::text_editing_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.edit.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.edit.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.edit.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.edit.timestamp, event.timestamp().count());
 }

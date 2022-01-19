@@ -8,47 +8,51 @@
 
 TEST(ControllerSensorEvent, Defaults)
 {
-  const cen::ControllerSensorEvent event;
-  ASSERT_EQ(0, event.GetWhich());
-  ASSERT_EQ(cen::sensor_type::unknown, event.GetSensor());
+  const cen::controller_sensor_event event;
+  ASSERT_EQ(0, event.which());
+  ASSERT_EQ(cen::sensor_type::unknown, event.sensor());
 }
 
 TEST(ControllerSensorEvent, SetWhich)
 {
-  cen::ControllerSensorEvent event;
+  cen::controller_sensor_event event;
 
-  event.SetWhich(38);
-  ASSERT_EQ(38, event.GetWhich());
+  const SDL_JoystickID id = 38;
+  event.set_which(id);
+
+  ASSERT_EQ(id, event.which());
 }
 
 TEST(ControllerSensorEvent, SetSensor)
 {
-  cen::ControllerSensorEvent event;
+  cen::controller_sensor_event event;
 
-  event.SetSensor(cen::sensor_type::accelerometer);
-  ASSERT_EQ(cen::sensor_type::accelerometer, event.GetSensor());
+  event.set_sensor(cen::sensor_type::accelerometer);
+  ASSERT_EQ(cen::sensor_type::accelerometer, event.sensor());
 }
 
 TEST(ControllerSensorEvent, SetData)
 {
-  cen::ControllerSensorEvent event;
+  cen::controller_sensor_event event;
 
-  const std::array<float, 3> values = {0.3f, 0.5f, 0.8f};
+  const std::array values = {0.3f, 0.5f, 0.8f};
 
-  event.SetData(values);
-  ASSERT_EQ(0.3f, event.GetData().at(0));
-  ASSERT_EQ(0.5f, event.GetData().at(1));
-  ASSERT_EQ(0.8f, event.GetData().at(2));
+  event.set_data(values);
+  ASSERT_EQ(0.3f, event.data().at(0));
+  ASSERT_EQ(0.5f, event.data().at(1));
+  ASSERT_EQ(0.8f, event.data().at(2));
 }
 
 TEST(ControllerSensorEvent, AsSdlEvent)
 {
-  cen::ControllerSensorEvent event;
-  event.SetTimestamp(4'895u);
-  event.SetSensor(cen::sensor_type::gyroscope);
-  event.SetWhich(21);
+  using namespace cen::literals::time_literals;
 
-  const auto sdl = cen::AsSDLEvent(event);
+  cen::controller_sensor_event event;
+  event.set_timestamp(4'895_ms);
+  event.set_sensor(cen::sensor_type::gyroscope);
+  event.set_which(21);
+
+  const auto sdl = cen::as_sdl_event(event);
   ASSERT_EQ(4'895u, sdl.csensor.timestamp);
   ASSERT_EQ(SDL_CONTROLLERSENSORUPDATE, static_cast<SDL_EventType>(sdl.csensor.type));
   ASSERT_EQ(SDL_SENSOR_GYRO, static_cast<SDL_SensorType>(sdl.csensor.sensor));

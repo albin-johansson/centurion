@@ -5,7 +5,7 @@
 TEST(SensorEvent, Defaults)
 {
   const cen::sensor_event event;
-  ASSERT_EQ(cen::EventType::SensorUpdate, event.GetType());
+  ASSERT_EQ(cen::event_type::sensor_update, event.type());
   ASSERT_EQ(0, event.which());
 }
 
@@ -37,9 +37,9 @@ TEST(SensorEvent, SetData)
 TEST(SensorEvent, AsSDLEvent)
 {
   const cen::sensor_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.sensor.type, cen::to_underlying(event.GetType()));
+  ASSERT_EQ(sdl.sensor.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.sensor.which, event.which());
-  ASSERT_EQ(sdl.sensor.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.sensor.timestamp, event.timestamp().count());
 }

@@ -5,8 +5,7 @@
 TEST(MultiGestureEvent, Defaults)
 {
   const cen::multi_gesture_event event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::MultiGesture, event.GetType());
+  ASSERT_EQ(cen::event_type::multi_gesture, event.type());
 }
 
 TEST(MultiGestureEvent, SetTouchId)
@@ -114,8 +113,8 @@ TEST(MultiGestureEvent, FingerCount)
 TEST(MultiGestureEvent, AsSDLEvent)
 {
   const cen::multi_gesture_event event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.mgesture.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.mgesture.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.mgesture.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.mgesture.timestamp, event.timestamp().count());
 }

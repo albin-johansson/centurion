@@ -4,46 +4,45 @@
 
 TEST(ControllerAxisEvent, Defaults)
 {
-  const cen::ControllerAxisEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::ControllerAxisMotion, event.GetType());
+  const cen::controller_axis_event event;
+  ASSERT_EQ(cen::event_type::controller_axis_motion, event.type());
 }
 
 TEST(ControllerAxisEvent, SetWhich)
 {
-  cen::ControllerAxisEvent event;
+  cen::controller_axis_event event;
 
   const SDL_JoystickID id = 53;
-  event.SetWhich(id);
+  event.set_which(id);
 
-  ASSERT_EQ(id, event.GetWhich());
+  ASSERT_EQ(id, event.which());
 }
 
 TEST(ControllerAxisEvent, SetAxis)
 {
-  cen::ControllerAxisEvent event;
+  cen::controller_axis_event event;
 
   const auto axis = cen::ControllerAxis::TriggerRight;
-  event.SetAxis(axis);
+  event.set_axis(axis);
 
-  ASSERT_EQ(axis, event.GetAxis());
+  ASSERT_EQ(axis, event.axis());
 }
 
 TEST(ControllerAxisEvent, SetValue)
 {
-  cen::ControllerAxisEvent event;
+  cen::controller_axis_event event;
 
-  const auto value = 4576;
-  event.SetValue(value);
+  const cen::int16 value = 4576;
+  event.set_value(value);
 
-  ASSERT_EQ(value, event.GetValue());
+  ASSERT_EQ(value, event.value());
 }
 
 TEST(ControllerAxisEvent, AsSDLEvent)
 {
-  const cen::ControllerAxisEvent event;
-  const auto underlying = cen::AsSDLEvent(event);
+  const cen::controller_axis_event event;
+  const auto underlying = cen::as_sdl_event(event);
 
-  ASSERT_EQ(underlying.caxis.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(underlying.caxis.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.caxis.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(underlying.caxis.timestamp, event.timestamp().count());
 }

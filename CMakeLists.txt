@@ -61,21 +61,26 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
+               src/centurion/audio_events.hpp
                src/centurion/color.hpp
                src/centurion/common.hpp
                src/centurion/concurrency.hpp
+               src/centurion/controller_events.hpp
                src/centurion/endian.hpp
                src/centurion/event.hpp
-               src/centurion/events.hpp
+               src/centurion/event_base.hpp
                src/centurion/features.hpp
                src/centurion/filesystem.hpp
                src/centurion/font.hpp
                src/centurion/initialization.hpp
+               src/centurion/joystick_events.hpp
                src/centurion/keyboard.hpp
                src/centurion/locale.hpp
                src/centurion/math.hpp
                src/centurion/message_box.hpp
+               src/centurion/misc_events.hpp
                src/centurion/mouse.hpp
+               src/centurion/mouse_events.hpp
                src/centurion/opengl.hpp
                src/centurion/pixels.hpp
                src/centurion/power.hpp
@@ -87,6 +92,8 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/version.hpp
                src/centurion/video.hpp
                src/centurion/vulkan.hpp
+               src/centurion/window.hpp
+               src/centurion/window_events.hpp
 
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp
@@ -113,8 +120,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/sensor.hpp
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
-
-               src/centurion/window.hpp
                )
 
 target_include_directories(${CENTURION_LIB_TARGET}

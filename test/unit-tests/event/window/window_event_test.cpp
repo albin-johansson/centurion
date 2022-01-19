@@ -1,50 +1,53 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "window_events.hpp"
 
-TEST(WindowEvent, Defaults)
+TEST(window_event, Defaults)
 {
-  const cen::WindowEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::Window, event.GetType());
-  ASSERT_EQ(cen::WindowEventID::None, event.GetEventID());
+  const cen::window_event event;
+  ASSERT_EQ(cen::event_type::window, event.type());
+  ASSERT_EQ(cen::window_event_id::none, event.event_id());
 }
 
 TEST(WindowEvent, SetEventID)
 {
-  cen::WindowEvent event;
+  cen::window_event event;
 
-  event.SetEventID(cen::WindowEventID::FocusGained);
-  ASSERT_EQ(cen::WindowEventID::FocusGained, event.GetEventID());
+  event.set_event_id(cen::window_event_id::focus_gained);
+  ASSERT_EQ(cen::window_event_id::focus_gained, event.event_id());
 }
 
 TEST(WindowEvent, SetData1)
 {
-  cen::WindowEvent event;
-  event.SetEventID(cen::WindowEventID::Resized);
-  event.SetData1(75);
+  cen::window_event event;
+  event.set_event_id(cen::window_event_id::resized);
 
-  ASSERT_EQ(cen::WindowEventID::Resized, event.GetEventID());
-  ASSERT_EQ(75, event.GetData1());
-  ASSERT_EQ(0, event.GetData2());
+  const cen::int32 data = 75;
+  event.set_data1(data);
+
+  ASSERT_EQ(cen::window_event_id::resized, event.event_id());
+  ASSERT_EQ(data, event.data1());
+  ASSERT_EQ(0, event.data2());
 }
 
-TEST(WindowEvent, Data2)
+TEST(WindowEvent, SetData2)
 {
-  cen::WindowEvent event;
-  event.SetEventID(cen::WindowEventID::Resized);
-  event.SetData2(54);
+  cen::window_event event;
+  event.set_event_id(cen::window_event_id::resized);
 
-  ASSERT_EQ(cen::WindowEventID::Resized, event.GetEventID());
-  ASSERT_EQ(0, event.GetData1());
-  ASSERT_EQ(54, event.GetData2());
+  const cen::int32 data = 54;
+  event.set_data2(data);
+
+  ASSERT_EQ(cen::window_event_id::resized, event.event_id());
+  ASSERT_EQ(0, event.data1());
+  ASSERT_EQ(data, event.data2());
 }
 
 TEST(WindowEvent, AsSDLEvent)
 {
-  const cen::WindowEvent event;
-  const auto underlying = cen::AsSDLEvent(event);
+  const cen::window_event event;
+  const auto underlying = cen::as_sdl_event(event);
 
-  ASSERT_EQ(underlying.window.type, to_underlying(event.GetType()));
-  ASSERT_EQ(underlying.window.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.window.type, to_underlying(event.type()));
+  ASSERT_EQ(underlying.window.timestamp, event.timestamp().count());
 }

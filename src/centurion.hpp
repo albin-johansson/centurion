@@ -30,22 +30,27 @@
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
 #include "centurion/audio.hpp"
+#include "centurion/audio_events.hpp"
 #include "centurion/color.hpp"
 #include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
+#include "centurion/controller_events.hpp"
 #include "centurion/endian.hpp"
 #include "centurion/event.hpp"
-#include "centurion/events.hpp"
+#include "centurion/event_base.hpp"
 #include "centurion/features.hpp"
 #include "centurion/filesystem.hpp"
 #include "centurion/font.hpp"
 #include "centurion/initialization.hpp"
+#include "centurion/joystick_events.hpp"
 #include "centurion/keyboard.hpp"
 #include "centurion/locale.hpp"
 #include "centurion/math.hpp"
 #include "centurion/memory.hpp"
 #include "centurion/message_box.hpp"
+#include "centurion/misc_events.hpp"
 #include "centurion/mouse.hpp"
+#include "centurion/mouse_events.hpp"
 #include "centurion/opengl.hpp"
 #include "centurion/pixels.hpp"
 #include "centurion/power.hpp"
@@ -58,6 +63,7 @@
 #include "centurion/video.hpp"
 #include "centurion/vulkan.hpp"
 #include "centurion/window.hpp"
+#include "centurion/window_events.hpp"
 
 //
 

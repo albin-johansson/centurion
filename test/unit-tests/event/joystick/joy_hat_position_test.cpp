@@ -1,38 +1,38 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "common.hpp"
 #include "event.hpp"
 
-using Position = cen::JoyHatPosition;
+using position = cen::joy_hat_position;
 
 TEST(JoyHatPosition, Values)
 {
-  ASSERT_EQ(to_underlying(Position::LeftUp), SDL_HAT_LEFTUP);
-  ASSERT_EQ(to_underlying(Position::Left), SDL_HAT_LEFT);
-  ASSERT_EQ(to_underlying(Position::LeftDown), SDL_HAT_LEFTDOWN);
-  ASSERT_EQ(to_underlying(Position::Up), SDL_HAT_UP);
-  ASSERT_EQ(to_underlying(Position::Centered), SDL_HAT_CENTERED);
-  ASSERT_EQ(to_underlying(Position::Down), SDL_HAT_DOWN);
-  ASSERT_EQ(to_underlying(Position::RightUp), SDL_HAT_RIGHTUP);
-  ASSERT_EQ(to_underlying(Position::Right), SDL_HAT_RIGHT);
-  ASSERT_EQ(to_underlying(Position::RightDown), SDL_HAT_RIGHTDOWN);
+  ASSERT_EQ(SDL_HAT_LEFTUP, to_underlying(position::left_up));
+  ASSERT_EQ(SDL_HAT_LEFT, to_underlying(position::left));
+  ASSERT_EQ(SDL_HAT_LEFTDOWN, to_underlying(position::left_down));
+  ASSERT_EQ(SDL_HAT_UP, to_underlying(position::up));
+  ASSERT_EQ(SDL_HAT_CENTERED, to_underlying(position::centered));
+  ASSERT_EQ(SDL_HAT_DOWN, to_underlying(position::down));
+  ASSERT_EQ(SDL_HAT_RIGHTUP, to_underlying(position::right_up));
+  ASSERT_EQ(SDL_HAT_RIGHT, to_underlying(position::right));
+  ASSERT_EQ(SDL_HAT_RIGHTDOWN, to_underlying(position::right_down));
 }
 
 TEST(JoyHatPosition, ToString)
 {
-  ASSERT_THROW(ToString(static_cast<Position>(SDL_HAT_RIGHTDOWN + 1)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<position>(SDL_HAT_RIGHTDOWN + 1)), cen::exception);
 
-  ASSERT_EQ("LeftUp", ToString(Position::LeftUp));
-  ASSERT_EQ("Left", ToString(Position::Left));
-  ASSERT_EQ("LeftDown", ToString(Position::LeftDown));
-  ASSERT_EQ("Up", ToString(Position::Up));
-  ASSERT_EQ("Centered", ToString(Position::Centered));
-  ASSERT_EQ("Down", ToString(Position::Down));
-  ASSERT_EQ("RightUp", ToString(Position::RightUp));
-  ASSERT_EQ("Right", ToString(Position::Right));
-  ASSERT_EQ("RightDown", ToString(Position::RightDown));
+  ASSERT_EQ("left_up", to_string(position::left_up));
+  ASSERT_EQ("left", to_string(position::left));
+  ASSERT_EQ("left_down", to_string(position::left_down));
+  ASSERT_EQ("up", to_string(position::up));
+  ASSERT_EQ("centered", to_string(position::centered));
+  ASSERT_EQ("down", to_string(position::down));
+  ASSERT_EQ("right_up", to_string(position::right_up));
+  ASSERT_EQ("right", to_string(position::right));
+  ASSERT_EQ("right_down", to_string(position::right_down));
 
-  std::clog << "Joystick hat position example: " << Position::Left << '\n';
+  std::cout << "joystick_hat_position::left == " << position::left << '\n';
 }

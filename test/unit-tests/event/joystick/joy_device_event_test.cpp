@@ -1,27 +1,28 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "joystick_events.hpp"
 
 TEST(JoyDeviceEvent, Defaults)
 {
-  const cen::JoyDeviceEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::JoyDeviceAdded, event.GetType());
+  const cen::joy_device_event event;
+  ASSERT_EQ(cen::event_type::joy_device_added, event.type());
 }
 
 TEST(JoyDeviceEvent, SetWhich)
 {
-  cen::JoyDeviceEvent event;
+  cen::joy_device_event event;
 
-  event.SetWhich(84);
-  ASSERT_EQ(84, event.GetWhich());
+  const cen::int32 which = 84;
+  event.set_which(which);
+
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(JoyDeviceEvent, AsSDLEvent)
 {
-  const cen::JoyDeviceEvent event;
-  const auto sdl = cen::AsSDLEvent(event);
+  const cen::joy_device_event event;
+  const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.jdevice.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(sdl.jdevice.timestamp, event.GetTimestamp());
+  ASSERT_EQ(sdl.jdevice.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(sdl.jdevice.timestamp, event.timestamp().count());
 }

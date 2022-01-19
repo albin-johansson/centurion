@@ -4,11 +4,11 @@ namespace {
 
 // Here we specify that we want to subscribe to four different kinds of events
 using event_dispatcher = cen::event_dispatcher<cen::quit_event,
-                                               cen::WindowEvent,
-                                               cen::KeyboardEvent,
-                                               cen::MouseButtonEvent>;
+                                               cen::window_event,
+                                               cen::keyboard_event,
+                                               cen::mouse_button_event>;
 
-void on_mouse_button_event(const cen::MouseButtonEvent& event)
+void on_mouse_button_event(const cen::mouse_button_event& event)
 {
   cen::log_info("MouseButtonEvent");
 }
@@ -19,14 +19,14 @@ class Game final {
   {
     // Member function handlers
     m_dispatcher.bind<cen::quit_event>().to<&Game::on_quit_event>(this);
-    m_dispatcher.bind<cen::WindowEvent>().to<&Game::on_window_event>(this);
+    m_dispatcher.bind<cen::window_event>().to<&Game::on_window_event>(this);
 
     // Lambda handler
-    m_dispatcher.bind<cen::KeyboardEvent>().to(
-        [](const cen::KeyboardEvent& event) { cen::log_info("keyboard_event"); });
+    m_dispatcher.bind<cen::keyboard_event>().to(
+        [](const cen::keyboard_event& event) { cen::log_info("keyboard_event"); });
 
     // Free function handler
-    m_dispatcher.bind<cen::MouseButtonEvent>().to<&on_mouse_button_event>();
+    m_dispatcher.bind<cen::mouse_button_event>().to<&on_mouse_button_event>();
   }
 
   auto run() -> int
@@ -57,7 +57,7 @@ class Game final {
   }
 
   // Invoked for each window event
-  void on_window_event(const cen::WindowEvent& event) { cen::log_info("window_event"); }
+  void on_window_event(const cen::window_event& event) { cen::log_info("window_event"); }
 };
 
 }  // namespace

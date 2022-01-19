@@ -4,26 +4,25 @@
 
 TEST(ControllerDeviceEvent, Defaults)
 {
-  const cen::ControllerDeviceEvent event;
-  ASSERT_GT(event.GetTimestamp(), 0u);
-  ASSERT_EQ(cen::EventType::ControllerDeviceAdded, event.GetType());
+  const cen::controller_device_event event;
+  ASSERT_EQ(cen::event_type::controller_device_added, event.type());
 }
 
 TEST(ControllerDeviceEvent, SetWhich)
 {
-  cen::ControllerDeviceEvent event;
+  cen::controller_device_event event;
 
-  constexpr auto which = 4;
-  event.SetWhich(which);
+  const cen::int32 which = 4;
+  event.set_which(which);
 
-  ASSERT_EQ(which, event.GetWhich());
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(ControllerDeviceEvent, AsSDLEvent)
 {
-  const cen::ControllerDeviceEvent event;
-  const auto underlying = cen::AsSDLEvent(event);
+  const cen::controller_device_event event;
+  const auto underlying = cen::as_sdl_event(event);
 
-  ASSERT_EQ(underlying.cdevice.type, cen::to_underlying(event.GetType()));
-  ASSERT_EQ(underlying.cdevice.timestamp, event.GetTimestamp());
+  ASSERT_EQ(underlying.cdevice.type, cen::to_underlying(event.type()));
+  ASSERT_EQ(underlying.cdevice.timestamp, event.timestamp().count());
 }

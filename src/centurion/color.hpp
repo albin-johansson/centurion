@@ -662,9 +662,6 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 /// \ingroup video
 namespace colors {
 
-/// \addtogroup video
-/// \{
-
 /// \name Color constants
 /// \{
 
@@ -823,8 +820,6 @@ inline constexpr color dark_turquoise{0, 0xCE, 0xD1};
 inline constexpr color dark_violet{0x94, 0, 0xD3};
 
 /// \} End of color constants
-
-/// \} End of group video
 
 }  // namespace colors
 }  // namespace cen

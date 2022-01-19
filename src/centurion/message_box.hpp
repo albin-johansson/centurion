@@ -165,7 +165,7 @@ class message_box_color_scheme final {
    */
   void set_color(const message_box_color_type id, const color& color) noexcept
   {
-    assert(to_underlying(id) < 4);
+    assert(to_underlying(id) < 5);
     mScheme.colors[to_underlying(id)] = color.as_message_box_color();
   }
 

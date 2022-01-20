@@ -11,6 +11,7 @@
  * | --------------------------------------- | -------- |
  * | \subpage page-minimal-centurion-program | Shows a minimal Centurion program |
  * | \subpage page-custom-configuration      | Shows how to use a custom configuration |
+ * | \subpage page-message-box               | An example of the message box API |
  * | \subpage page-responsive-window         | Shows how to set up a responsive window |
  * | \subpage page-basic-rendering           | Shows the basics of the rendering API |
  * | \subpage page-event-dispatcher          | Shows how to use `event_dispatcher` |

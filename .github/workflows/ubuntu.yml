@@ -3,7 +3,7 @@ name: "CI: Ubuntu"
 on: [ push, pull_request ]
 
 env:
-  SDL_LATEST: 2.0.16
+  SDL_LATEST: 2.0.20
   SDL_VIDEODRIVER: x11
   DISPLAY: :99.0
 
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16 ]
+        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20 ]
         CPP_VERSION: [ 17, 20 ]
     steps:
       - uses: actions/checkout@main

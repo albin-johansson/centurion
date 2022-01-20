@@ -5,14 +5,14 @@ on: [ push, pull_request ]
 env:
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
-  TTF_VERSION: 2.0.15
+  TTF_VERSION: 2.0.18
 
 jobs:
   windows-latest-test:
     runs-on: windows-latest
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16 ]
+        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20 ]
         CPP_VERSION: [ 17, 20, 23 ]
     steps:
       - uses: actions/checkout@main

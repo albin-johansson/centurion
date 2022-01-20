@@ -25,7 +25,14 @@
 
 namespace cen {
 
-/// \addtogroup input
+/**
+ * \ingroup input
+ * \defgroup haptic Haptic
+ *
+ * \brief Provides the force feedback API.
+ */
+
+/// \addtogroup haptic
 /// \{
 
 template <typename B>
@@ -930,7 +937,7 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 
 /// \} End of streaming
 
-/// \} End of input group
+/// \} End of input haptic
 
 }  // namespace cen
 

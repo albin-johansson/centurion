@@ -94,7 +94,7 @@ enum class system_cursor {
       return "size_ns";
 
     case system_cursor::size_all:
-      return "size_al";
+      return "size_all";
 
     case system_cursor::no:
       return "no";

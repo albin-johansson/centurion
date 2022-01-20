@@ -10,13 +10,13 @@
 
 #include "button_state.hpp"
 #include "common.hpp"
+#include "controller.hpp"
 #include "detail/array_utils.hpp"
 #include "detail/stdlib.hpp"
 #include "event_base.hpp"
-#include "controller.hpp"
-#include "input/sensor.hpp"
 #include "keyboard.hpp"
 #include "mouse.hpp"
+#include "sensor.hpp"
 
 namespace cen {
 

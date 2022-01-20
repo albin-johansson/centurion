@@ -19,8 +19,8 @@
 #include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
-#include "input/sensor.hpp"
 #include "joystick.hpp"
+#include "sensor.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

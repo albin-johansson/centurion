@@ -88,6 +88,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/pixels.hpp
                src/centurion/power.hpp
                src/centurion/render.hpp
+               src/centurion/sensor.hpp
                src/centurion/surface.hpp
                src/centurion/system.hpp
                src/centurion/texture.hpp
@@ -118,7 +119,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_left_right.hpp
                src/centurion/input/haptic_periodic.hpp
                src/centurion/input/haptic_ramp.hpp
-               src/centurion/input/sensor.hpp
                )
 
 target_include_directories(${CENTURION_LIB_TARGET}

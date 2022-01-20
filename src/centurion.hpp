@@ -58,6 +58,7 @@
 #include "centurion/pixels.hpp"
 #include "centurion/power.hpp"
 #include "centurion/render.hpp"
+#include "centurion/sensor.hpp"
 #include "centurion/surface.hpp"
 #include "centurion/system.hpp"
 #include "centurion/texture.hpp"
@@ -84,6 +85,5 @@
 #include "centurion/input/haptic_left_right.hpp"
 #include "centurion/input/haptic_periodic.hpp"
 #include "centurion/input/haptic_ramp.hpp"
-#include "centurion/input/sensor.hpp"
 
 #endif  // CENTURION_HPP_

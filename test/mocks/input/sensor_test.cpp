@@ -1,4 +1,4 @@
-#include "input/sensor.hpp"
+#include "sensor.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

@@ -6,11 +6,11 @@
 #include <array>  // array
 
 #include "common.hpp"
+#include "controller.hpp"
 #include "detail/array_utils.hpp"
 #include "detail/stdlib.hpp"
 #include "event_base.hpp"
-#include "controller.hpp"
-#include "input/sensor.hpp"
+#include "sensor.hpp"
 
 namespace cen {
 
@@ -27,7 +27,10 @@ class controller_axis_event final : public event_base<SDL_ControllerAxisEvent> {
 
   void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
-  void set_axis(const controller_axis axis) noexcept { mEvent.axis = static_cast<uint8>(axis); }
+  void set_axis(const controller_axis axis) noexcept
+  {
+    mEvent.axis = static_cast<uint8>(axis);
+  }
 
   void set_value(const int16 value) noexcept { mEvent.value = value; }
 

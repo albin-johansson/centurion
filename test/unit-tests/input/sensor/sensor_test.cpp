@@ -1,6 +1,11 @@
-#include "input/sensor.hpp"
+#include "sensor.hpp"
 
 #include <gtest/gtest.h>
+
+TEST(Sensor, StandardGravity)
+{
+  ASSERT_EQ(SDL_STANDARD_GRAVITY, cen::standard_gravity());
+}
 
 TEST(Sensor, PointerConstructor)
 {
@@ -11,9 +16,4 @@ TEST(Sensor, PointerConstructor)
 TEST(Sensor, IndexConstructor)
 {
   ASSERT_THROW(cen::sensor{0}, cen::sdl_error);
-}
-
-TEST(Sensor, StandardGravity)
-{
-  ASSERT_EQ(SDL_STANDARD_GRAVITY, cen::standard_gravity());
 }

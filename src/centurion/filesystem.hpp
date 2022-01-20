@@ -15,7 +15,6 @@
 #include <string_view>  // string_view
 
 #include "common.hpp"
-#include "core/sdl_string.hpp"
 #include "memory.hpp"
 
 namespace cen {

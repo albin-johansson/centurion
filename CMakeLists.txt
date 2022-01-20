@@ -101,7 +101,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/window_events.hpp
 
                src/centurion/core/logging.hpp
-               src/centurion/core/sdl_string.hpp
 
                src/centurion/detail/array_utils.hpp
                src/centurion/detail/owner_handle_api.hpp

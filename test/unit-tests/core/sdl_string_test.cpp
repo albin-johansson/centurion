@@ -1,6 +1,6 @@
-#include "core/sdl_string.hpp"
-
 #include <gtest/gtest.h>
+
+#include "common.hpp"
 
 TEST(SDLString, Constructor)
 {

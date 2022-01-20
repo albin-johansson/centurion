@@ -73,7 +73,6 @@
 //
 
 #include "centurion/core/logging.hpp"
-#include "centurion/core/sdl_string.hpp"
 #include "centurion/input/haptic.hpp"
 #include "centurion/input/haptic_condition.hpp"
 #include "centurion/input/haptic_constant.hpp"

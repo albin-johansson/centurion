@@ -17,11 +17,13 @@
 
 #include <chrono>       // duration
 #include <exception>    // exception
+#include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <ratio>        // ratio, milli, micro, nano
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
 
+#include "detail/sdl_deleter.hpp"
 #include "features.hpp"
 #include "memory.hpp"
 #include "version.hpp"
@@ -345,6 +347,61 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 }
 
 /// \} End of result functions
+
+/**
+ * \brief Represents an SDL style string.
+ *
+ * \details Certain SDL APIs return `char*` strings that need to be freed using `SDL_free()`,
+ * this class serves as a small wrapper around such strings. Use the `copy()` member function
+ * to convert the string into a corresponding `std::string`.
+ *
+ * \note Instances of `sdl_string` can hold null strings. Use the overloaded `operator
+ * bool()` in order to determine whether the associated string is null.
+ */
+class sdl_string final {
+ public:
+  /**
+   * \brief Creates a string.
+   *
+   * \param str the string that will be claimed, can be null.
+   */
+  explicit sdl_string(owner<char*> str) noexcept : mStr{str} {}
+
+  /**
+   * \brief Returns the internal string, which might be null.
+   *
+   * \return the internal string; `nullptr` if there is none.
+   */
+  [[nodiscard]] auto get() const noexcept -> const char* { return mStr.get(); }
+
+  /**
+   * \brief Returns a copy of the internal string.
+   *
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
+   *
+   * \return a copy of the internal string.
+   */
+  [[nodiscard]] auto copy() const -> std::string
+  {
+    if (mStr) {
+      return std::string{get()};
+    }
+    else {
+      return std::string{};
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not the internal string is non-null.
+   *
+   * \return `true` if the internal string is non-null; `false` otherwise.
+   */
+  explicit operator bool() const noexcept { return mStr != nullptr; }
+
+ private:
+  std::unique_ptr<char, detail::sdl_deleter> mStr;
+};
 
 /// \name Common utility functions
 /// \{

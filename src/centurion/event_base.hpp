@@ -168,8 +168,12 @@ enum class event_type : uint32 {
       return "locale_changed";
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
     case event_type::display:
       return "display";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::window:
       return "window";

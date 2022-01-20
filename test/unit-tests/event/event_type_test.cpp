@@ -10,7 +10,10 @@ TEST(EventType, Values)
 {
   ASSERT_EQ(SDL_FIRSTEVENT, to_underlying(type::first_event));
   ASSERT_EQ(SDL_LASTEVENT, to_underlying(type::last_event));
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
   ASSERT_EQ(SDL_POLLSENTINEL, to_underlying(type::poll_sentinel));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   ASSERT_EQ(SDL_QUIT, to_underlying(type::quit));
 
@@ -20,7 +23,9 @@ TEST(EventType, Values)
   ASSERT_EQ(SDL_APP_DIDENTERBACKGROUND, to_underlying(type::app_did_enter_background));
   ASSERT_EQ(SDL_APP_DIDENTERFOREGROUND, to_underlying(type::app_did_enter_foreground));
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   ASSERT_EQ(SDL_DISPLAYEVENT, to_underlying(type::display));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   ASSERT_EQ(SDL_WINDOWEVENT, to_underlying(type::window));
   ASSERT_EQ(SDL_SYSWMEVENT, to_underlying(type::system));
 

@@ -28,8 +28,8 @@ TEST(KeyboardEvent, SetModifier)
 {
   cen::keyboard_event event;
 
-  const auto shift = cen::KeyMod::LShift;
-  const auto caps = cen::KeyMod::Caps;
+  const auto shift = cen::key_mod::lshift;
+  const auto caps = cen::key_mod::caps;
 
   event.set_modifier(shift, true);
   ASSERT_TRUE(event.is_active(shift));
@@ -93,63 +93,63 @@ TEST(KeyboardEvent, IsActive)
 TEST(KeyboardEvent, IsOnlyActive)
 {
   cen::keyboard_event event;
-  ASSERT_TRUE(event.is_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
 
-  event.set_modifier(cen::KeyMod::Shift, true);
-  ASSERT_FALSE(event.is_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::LShift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::RShift));
+  event.set_modifier(cen::key_mod::shift, true);
+  ASSERT_FALSE(event.is_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::lshift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::rshift));
 
-  event.set_modifier(cen::KeyMod::Alt, true);
-  ASSERT_FALSE(event.is_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Alt));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Alt));
+  event.set_modifier(cen::key_mod::alt, true);
+  ASSERT_FALSE(event.is_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::alt));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::alt));
 
-  event.set_modifier(cen::KeyMod::Alt, false);
-  event.set_modifier(cen::KeyMod::RShift, false);
-  ASSERT_FALSE(event.is_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::LShift));
-  ASSERT_FALSE(event.is_active(cen::KeyMod::RShift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::LShift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::RShift));
+  event.set_modifier(cen::key_mod::alt, false);
+  event.set_modifier(cen::key_mod::rshift, false);
+  ASSERT_FALSE(event.is_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::lshift));
+  ASSERT_FALSE(event.is_active(cen::key_mod::rshift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::lshift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::rshift));
 }
 
 TEST(KeyboardEvent, IsOnlyAnyOfActive)
 {
   cen::keyboard_event event;
-  ASSERT_TRUE(event.is_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::None));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::None));
-  ASSERT_FALSE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_any_of_active(cen::KeyMod::Shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_only_subset_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_subset_active(cen::key_mod::shift));
 
-  event.set_modifier(cen::KeyMod::LShift, true);
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::Shift));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::LShift));
+  event.set_modifier(cen::key_mod::lshift, true);
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_subset_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_subset_active(cen::key_mod::lshift));
 
-  event.set_modifier(cen::KeyMod::RGui, true);
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_active(cen::KeyMod::Shift));
-  ASSERT_FALSE(event.is_only_any_of_active(cen::KeyMod::Shift));
+  event.set_modifier(cen::key_mod::rgui, true);
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_subset_active(cen::key_mod::shift));
 
-  ASSERT_TRUE(event.is_only_active(cen::KeyMod::LShift | cen::KeyMod::RGui));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::LShift | cen::KeyMod::RGui));
-  ASSERT_TRUE(event.is_only_any_of_active(cen::KeyMod::Shift | cen::KeyMod::Gui));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::lshift | cen::key_mod::rgui));
+  ASSERT_TRUE(event.is_only_subset_active(cen::key_mod::lshift | cen::key_mod::rgui));
+  ASSERT_TRUE(event.is_only_subset_active(cen::key_mod::shift | cen::key_mod::gui));
 }
 
 TEST(KeyboardEvent, IsActiveModifier)
@@ -164,8 +164,8 @@ TEST(KeyboardEvent, IsActiveModifier)
   const cen::keyboard_event event{sdl};
 
   // Check that multiple key modifiers can be active at the same time
-  ASSERT_TRUE(event.is_active(cen::KeyMod::LAlt));
-  ASSERT_TRUE(event.is_active(cen::KeyMod::Caps));
+  ASSERT_TRUE(event.is_active(cen::key_mod::lalt));
+  ASSERT_TRUE(event.is_active(cen::key_mod::caps));
 }
 
 TEST(keyboard_event, AsSDLEvent)

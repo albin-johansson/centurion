@@ -8,20 +8,20 @@
 
 TEST(ScanCode, DefaultValue)
 {
-  const cen::ScanCode code;
+  const cen::scan_code code;
   ASSERT_EQ(cen::scancodes::unknown, code);
   ASSERT_EQ(SDL_SCANCODE_UNKNOWN, code.get());
 }
 
 TEST(ScanCode, ScancodeConstructor)
 {
-  const cen::ScanCode code{SDL_SCANCODE_W};
+  const cen::scan_code code{SDL_SCANCODE_W};
   ASSERT_EQ(SDL_SCANCODE_W, code.get());
 }
 
 TEST(ScanCode, KeycodeConstructor)
 {
-  const cen::ScanCode code{SDLK_LSHIFT};
+  const cen::scan_code code{SDLK_LSHIFT};
   ASSERT_EQ(SDL_GetScancodeFromKey(SDLK_LSHIFT), code.get());
 }
 
@@ -31,24 +31,24 @@ TEST(ScanCode, StringConstructor)
 
   {  // Good name
     const auto name = "Escape"s;
-    const cen::ScanCode code{name};
+    const cen::scan_code code{name};
 
     ASSERT_EQ(cen::scancodes::escape, code);
     ASSERT_EQ(SDL_SCANCODE_ESCAPE, code.get());
-    ASSERT_EQ(name, code.GetName());
+    ASSERT_EQ(name, code.name());
   }
 
   {  // Bad name
-    const cen::ScanCode code{"foobar"};
+    const cen::scan_code code{"foobar"};
     ASSERT_EQ(cen::scancodes::unknown, code);
     ASSERT_EQ(SDL_SCANCODE_UNKNOWN, code.get());
-    ASSERT_TRUE(code.GetName().empty());
+    ASSERT_TRUE(code.name().empty());
   }
 }
 
 TEST(ScanCode, SDLScancodeAssignmentOperator)
 {
-  cen::ScanCode code;
+  cen::scan_code code;
   code = SDL_SCANCODE_B;
 
   ASSERT_EQ(cen::scancodes::b, code);
@@ -57,7 +57,7 @@ TEST(ScanCode, SDLScancodeAssignmentOperator)
 
 TEST(ScanCode, SDLKeycodeAssignmentOperator)
 {
-  cen::ScanCode code;
+  cen::scan_code code;
   code = SDLK_q;
 
   ASSERT_EQ(SDL_GetScancodeFromKey(SDLK_q), code.get());
@@ -69,50 +69,50 @@ TEST(ScanCode, StringAssignmentOperator)
 
   {  // Good name
     const auto name = "A"s;
-    cen::ScanCode code;
+    cen::scan_code code;
     code = name;
 
     ASSERT_EQ(cen::scancodes::a, code);
     ASSERT_EQ(SDL_SCANCODE_A, code.get());
-    ASSERT_EQ(name, code.GetName());
+    ASSERT_EQ(name, code.name());
   }
 
   {  // Bad name
-    cen::ScanCode code;
+    cen::scan_code code;
     code = "qwerty";
 
     ASSERT_EQ(cen::scancodes::unknown, code);
     ASSERT_EQ(SDL_SCANCODE_UNKNOWN, code.get());
-    ASSERT_TRUE(code.GetName().empty());
+    ASSERT_TRUE(code.name().empty());
   }
 }
 
-TEST(ScanCode, GetAmount)
+TEST(ScanCode, Count)
 {
-  ASSERT_EQ(SDL_NUM_SCANCODES, cen::ScanCode::GetAmount());
+  ASSERT_EQ(SDL_NUM_SCANCODES, cen::scan_code::count());
 }
 
-TEST(ScanCode, IsUnknown)
+TEST(ScanCode, Unknown)
 {
-  cen::ScanCode code;
-  ASSERT_TRUE(code.IsUnknown());
+  cen::scan_code code;
+  ASSERT_TRUE(code.unknown());
 
   code = SDL_SCANCODE_O;
-  ASSERT_FALSE(code.IsUnknown());
+  ASSERT_FALSE(code.unknown());
 }
 
 TEST(ScanCode, Name)
 {
-  cen::ScanCode code;
-  ASSERT_TRUE(code.GetName().empty());
+  cen::scan_code code;
+  ASSERT_TRUE(code.name().empty());
 
   code = SDL_SCANCODE_L;
-  ASSERT_EQ("L", code.GetName());
+  ASSERT_EQ("L", code.name());
 }
 
 TEST(ScanCode, Get)
 {
-  cen::ScanCode code;
+  cen::scan_code code;
   ASSERT_EQ(SDL_SCANCODE_UNKNOWN, code.get());
 
   code = SDL_SCANCODE_Z;
@@ -122,27 +122,27 @@ TEST(ScanCode, Get)
 TEST(KeyCode, ToKeyCode)
 {
   const auto code = cen::scancodes::y;
-  const auto keycode = code.ToKeyCode();
+  const auto keycode = code.to_key();
   ASSERT_EQ(SDL_GetKeyFromScancode(code.get()), keycode);
 }
 
 TEST(ScanCode, EqualityOperator)
 {
   {
-    const cen::ScanCode code;
+    const cen::scan_code code;
     ASSERT_EQ(code, code);
   }
 
   {
-    const cen::ScanCode fst{SDL_SCANCODE_W};
-    const cen::ScanCode snd{fst};
+    const cen::scan_code fst{SDL_SCANCODE_W};
+    const cen::scan_code snd{fst};
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {
-    const cen::ScanCode fst{SDL_SCANCODE_P};
-    const cen::ScanCode snd{SDL_SCANCODE_X};
+    const cen::scan_code fst{SDL_SCANCODE_P};
+    const cen::scan_code snd{SDL_SCANCODE_X};
     ASSERT_FALSE(fst == snd);
     ASSERT_FALSE(snd == fst);
   }
@@ -151,20 +151,20 @@ TEST(ScanCode, EqualityOperator)
 TEST(ScanCode, InequalityOperator)
 {
   {
-    const cen::ScanCode code;
+    const cen::scan_code code;
     ASSERT_FALSE(code != code);
   }
 
   {
-    const cen::ScanCode fst{SDL_SCANCODE_W};
-    const cen::ScanCode snd{fst};
+    const cen::scan_code fst{SDL_SCANCODE_W};
+    const cen::scan_code snd{fst};
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {
-    const cen::ScanCode fst{SDL_SCANCODE_P};
-    const cen::ScanCode snd{SDL_SCANCODE_X};
+    const cen::scan_code fst{SDL_SCANCODE_P};
+    const cen::scan_code snd{SDL_SCANCODE_X};
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }
@@ -172,7 +172,7 @@ TEST(ScanCode, InequalityOperator)
 
 TEST(ScanCode, ToString)
 {
-  cen::log_info_raw(cen::ToString(cen::scancodes::x));
+  cen::log_info_raw(cen::to_string(cen::scancodes::x));
 }
 
 TEST(ScanCode, StreamOperator)
@@ -267,6 +267,6 @@ TEST(ScanCode, Serialization)
 {
   serialize_save("scan_code.binary", cen::scancodes::u);
 
-  const auto code = serialize_create<cen::ScanCode>("scan_code.binary");
+  const auto code = serialize_create<cen::scan_code>("scan_code.binary");
   ASSERT_EQ(cen::scancodes::u, code);
 }

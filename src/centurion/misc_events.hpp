@@ -202,13 +202,13 @@ class keyboard_event final : public event_base<SDL_KeyboardEvent> {
 
   explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : event_base{event} {}
 
-  void set_scan(const ScanCode code) noexcept { mEvent.keysym.scancode = code.get(); }
+  void set_scan(const scan_code code) noexcept { mEvent.keysym.scancode = code.get(); }
 
-  void set_key(const KeyCode code) noexcept { mEvent.keysym.sym = code.get(); }
+  void set_key(const key_code code) noexcept { mEvent.keysym.sym = code.get(); }
 
   void set_state(const button_state state) noexcept { mEvent.state = to_underlying(state); }
 
-  void set_modifier(const KeyMod mod, const bool active) noexcept
+  void set_modifier(const key_mod mod, const bool active) noexcept
   {
     if (active) {
       mEvent.keysym.mod |= to_underlying(mod);
@@ -222,29 +222,29 @@ class keyboard_event final : public event_base<SDL_KeyboardEvent> {
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
-  [[nodiscard]] auto is_active(const ScanCode& code) const noexcept -> bool
+  [[nodiscard]] auto is_active(const scan_code& code) const noexcept -> bool
   {
     return mEvent.keysym.scancode == code.get();
   }
 
-  [[nodiscard]] auto is_active(const KeyCode& code) const noexcept -> bool
+  [[nodiscard]] auto is_active(const key_code& code) const noexcept -> bool
   {
     return static_cast<SDL_KeyCode>(mEvent.keysym.sym) == code.get();
   }
 
-  [[nodiscard]] auto is_active(const KeyMod mod) const noexcept -> bool
+  [[nodiscard]] auto is_active(const key_mod mod) const noexcept -> bool
   {
-    return detail::IsActive(mod, mEvent.keysym.mod);
+    return detail::is_active(mod, mEvent.keysym.mod);
   }
 
-  [[nodiscard]] auto is_only_active(const KeyMod mod) const noexcept -> bool
+  [[nodiscard]] auto is_only_active(const key_mod mod) const noexcept -> bool
   {
-    return detail::IsOnlyActive(mod, mEvent.keysym.mod);
+    return detail::is_only_active(mod, mEvent.keysym.mod);
   }
 
-  [[nodiscard]] auto is_only_any_of_active(const KeyMod mod) const noexcept -> bool
+  [[nodiscard]] auto is_only_subset_active(const key_mod mod) const noexcept -> bool
   {
-    return detail::IsOnlyAnyOfActive(mod, mEvent.keysym.mod);
+    return detail::is_only_subset_active(mod, mEvent.keysym.mod);
   }
 
   [[nodiscard]] auto repeated() const noexcept -> bool { return mEvent.repeat; }
@@ -264,9 +264,9 @@ class keyboard_event final : public event_base<SDL_KeyboardEvent> {
     return state() == button_state::pressed;
   }
 
-  [[nodiscard]] auto scan() const noexcept -> ScanCode { return mEvent.keysym.scancode; }
+  [[nodiscard]] auto scan() const noexcept -> scan_code { return mEvent.keysym.scancode; }
 
-  [[nodiscard]] auto key() const noexcept -> KeyCode
+  [[nodiscard]] auto key() const noexcept -> key_code
   {
     return static_cast<SDL_KeyCode>(mEvent.keysym.sym);
   }

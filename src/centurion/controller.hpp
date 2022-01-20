@@ -20,7 +20,6 @@
 #include "detail/stdlib.hpp"
 #include "features.hpp"
 #include "input/sensor.hpp"
-#include "input/touch.hpp"
 #include "joystick.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -387,6 +386,13 @@ inline auto operator<<(std::ostream& stream, const controller_mapping_result res
 }
 
 /// \} End of controller mapping result functions
+
+struct controller_finger_state final {
+  button_state state{};  ///< Whether or not the finger is pressed or release.
+  float x{};             ///< The current x-coordinate.
+  float y{};             ///< The current y-coordinate.
+  float pressure{};      ///< The current applied pressure.
+};
 
 template <typename T>
 class basic_controller;
@@ -987,9 +993,9 @@ class basic_controller final {
    * \return the state of the finger; an empty optional is returned upon failure.
    */
   [[nodiscard]] auto touchpad_finger_state(const int touchpad, const int finger) const noexcept
-      -> std::optional<touch::finger_state>
+      -> std::optional<controller_finger_state>
   {
-    touch::finger_state result{};
+    controller_finger_state result;
     uint8 state{};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(mController,

@@ -91,6 +91,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/surface.hpp
                src/centurion/system.hpp
                src/centurion/texture.hpp
+               src/centurion/touch.hpp
                src/centurion/unicode.hpp
                src/centurion/version.hpp
                src/centurion/video.hpp
@@ -118,7 +119,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_periodic.hpp
                src/centurion/input/haptic_ramp.hpp
                src/centurion/input/sensor.hpp
-               src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp
                )
 

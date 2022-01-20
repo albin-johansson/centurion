@@ -1,4 +1,4 @@
-#include "input/touch.hpp"
+#include "touch.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -28,45 +28,56 @@ class TouchTest : public testing::Test {
   }
 };
 
-TEST_F(TouchTest, DeviceCount)
+TEST_F(TouchTest, TouchDeviceCount)
 {
-  const auto count [[maybe_unused]] = cen::touch::device_count();
+  const auto count [[maybe_unused]] = cen::touch_device_count();
   ASSERT_EQ(1u, SDL_GetNumTouchDevices_fake.call_count);
 }
 
-TEST_F(TouchTest, GetDevice)
+TEST_F(TouchTest, GetTouchDevice)
 {
   SDL_GetTouchDevice_fake.return_val = 3;
-  ASSERT_EQ(3, cen::touch::get_device(7));
+  ASSERT_EQ(3, cen::get_touch_device(7));
   ASSERT_EQ(1u, SDL_GetTouchDevice_fake.call_count);
   ASSERT_EQ(7, SDL_GetTouchDevice_fake.arg0_val);
 
   SDL_GetTouchDevice_fake.return_val = 0;
-  ASSERT_FALSE(cen::touch::get_device(0).has_value());
+  ASSERT_FALSE(cen::get_touch_device(0).has_value());
 }
 
-TEST_F(TouchTest, TypeOf)
+TEST_F(TouchTest, GetTouchType)
 {
-  const auto type [[maybe_unused]] = cen::touch::type_of(0);
+  const auto type [[maybe_unused]] = cen::get_touch_type(0);
   ASSERT_EQ(1u, SDL_GetTouchDeviceType_fake.call_count);
 }
 
-TEST_F(TouchTest, FingerCount)
+TEST_F(TouchTest, GetTouchFingerCount)
 {
-  const auto count [[maybe_unused]] = cen::touch::finger_count(0);
+  const auto count [[maybe_unused]] = cen::get_touch_finger_count(0);
   ASSERT_EQ(1u, SDL_GetNumTouchFingers_fake.call_count);
 }
 
-TEST_F(TouchTest, GetFinger)
+TEST_F(TouchTest, Finger)
 {
-  ASSERT_FALSE(cen::touch::get_finger(4, 2).has_value());
+  ASSERT_FALSE(cen::finger::find(4, 2).has_value());
   ASSERT_EQ(1u, SDL_GetTouchFinger_fake.call_count);
   ASSERT_EQ(4, SDL_GetTouchFinger_fake.arg0_val);
   ASSERT_EQ(2, SDL_GetTouchFinger_fake.arg1_val);
 
-  SDL_Finger finger{};
-  SDL_GetTouchFinger_fake.return_val = &finger;
-  ASSERT_TRUE(cen::touch::get_finger(3, 6).has_value());
-  ASSERT_EQ(3, SDL_GetTouchFinger_fake.arg0_val);
-  ASSERT_EQ(6, SDL_GetTouchFinger_fake.arg1_val);
+  SDL_Finger expected;
+  expected.id = 12;
+  expected.x = 42;
+  expected.y = 28;
+  expected.pressure = 0.8f;
+  SDL_GetTouchFinger_fake.return_val = &expected;
+
+  const auto finger = cen::finger::find(1, 2);
+  ASSERT_EQ(1, SDL_GetTouchFinger_fake.arg0_val);
+  ASSERT_EQ(2, SDL_GetTouchFinger_fake.arg1_val);
+
+  ASSERT_TRUE(finger.has_value());
+  ASSERT_EQ(expected.id, finger->id());
+  ASSERT_EQ(expected.x, finger->x());
+  ASSERT_EQ(expected.y, finger->y());
+  ASSERT_EQ(expected.pressure, finger->pressure());
 }

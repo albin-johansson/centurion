@@ -61,6 +61,7 @@
 #include "centurion/surface.hpp"
 #include "centurion/system.hpp"
 #include "centurion/texture.hpp"
+#include "centurion/touch.hpp"
 #include "centurion/unicode.hpp"
 #include "centurion/version.hpp"
 #include "centurion/video.hpp"
@@ -84,7 +85,5 @@
 #include "centurion/input/haptic_periodic.hpp"
 #include "centurion/input/haptic_ramp.hpp"
 #include "centurion/input/sensor.hpp"
-#include "centurion/input/touch.hpp"
-#include "centurion/input/touch_device_type.hpp"
 
 #endif  // CENTURION_HPP_

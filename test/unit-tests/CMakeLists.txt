@@ -17,13 +17,6 @@ set(SOURCE_FILES
     concurrency/thread_test.cpp
     concurrency/try_lock_test.cpp
 
-    controller/controller_axis_test.cpp
-    controller/controller_bind_type_test.cpp
-    controller/controller_button_test.cpp
-    controller/controller_mapping_result_test.cpp
-    controller/controller_test.cpp
-    controller/controller_type_test.cpp
-
     core/exception_test.cpp
     core/features_test.cpp
     core/log_category_test.cpp
@@ -103,23 +96,38 @@ set(SOURCE_FILES
     hints/hints_test.cpp
 
     input/button_state_test.cpp
-    input/haptic_direction_type_test.cpp
-    input/haptic_feature_test.cpp
-    input/haptic_test.cpp
-    input/sensor_test.cpp
-    input/sensor_type_test.cpp
-    input/touch_device_type_test.cpp
-    input/touch_test.cpp
 
-    joystick/hat_state_test.cpp
-    joystick/joystick_power_test.cpp
-    joystick/joystick_test.cpp
-    joystick/joystick_type_test.cpp
+    input/controller/controller_axis_test.cpp
+    input/controller/controller_bind_type_test.cpp
+    input/controller/controller_button_test.cpp
+    input/controller/controller_mapping_result_test.cpp
+    input/controller/controller_test.cpp
+    input/controller/controller_type_test.cpp
 
-    keyboard/key_code_tests.cpp
-    keyboard/key_modifier_test.cpp
-    keyboard/keyboard_test.cpp
-    keyboard/scan_code_tests.cpp
+    input/haptic/haptic_direction_type_test.cpp
+    input/haptic/haptic_feature_test.cpp
+    input/haptic/haptic_test.cpp
+
+    input/joystick/hat_state_test.cpp
+    input/joystick/joystick_power_test.cpp
+    input/joystick/joystick_test.cpp
+    input/joystick/joystick_type_test.cpp
+
+    input/keyboard/key_code_tests.cpp
+    input/keyboard/key_modifier_test.cpp
+    input/keyboard/keyboard_test.cpp
+    input/keyboard/scan_code_tests.cpp
+
+    input/mouse/cursor_test.cpp
+    input/mouse/mouse_button_test.cpp
+    input/mouse/mouse_test.cpp
+    input/mouse/system_cursor_test.cpp
+
+    input/sensor/sensor_test.cpp
+    input/sensor/sensor_type_test.cpp
+
+    input/touch/touch_device_type_test.cpp
+    input/touch/touch_test.cpp
 
     locale/locale_test.cpp
 
@@ -137,11 +145,6 @@ set(SOURCE_FILES
     message-box/mb_type_test.cpp
     message-box/message_box_test.cpp
 
-    mouse/cursor_test.cpp
-    mouse/mouse_button_test.cpp
-    mouse/mouse_test.cpp
-    mouse/system_cursor_test.cpp
-
     pixels/palette_test.cpp
     pixels/pixel_format_info_test.cpp
     pixels/pixel_format_test.cpp
@@ -153,6 +156,11 @@ set(SOURCE_FILES
     render/renderer_handle_test.cpp
     render/renderer_test.cpp
 
+    render/texture/scale_mode_test.cpp
+    render/texture/texture_access_test.cpp
+    render/texture/texture_handle_test.cpp
+    render/texture/texture_test.cpp
+
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/platform_id_test.cpp
@@ -160,29 +168,28 @@ set(SOURCE_FILES
     system/ram_test.cpp
     system/shared_object_test.cpp
 
-    texture/scale_mode_test.cpp
-    texture/texture_access_test.cpp
-    texture/texture_handle_test.cpp
-    texture/texture_test.cpp
-
     unicode/unicode_string_test.cpp
 
-    video/blend_factor_test.cpp
-    video/blend_mode_test.cpp
-    video/blend_op_test.cpp
     video/color_test.cpp
-    video/display_mode_test.cpp
-    video/display_test.cpp
-    video/flash_op_test.cpp
-    video/orientation_test.cpp
-    video/surface_handle_test.cpp
-    video/surface_test.cpp
-    video/window_flags_test.cpp
-    video/window_test.cpp
-    video/window_handle_test.cpp
+
+    video/blend-mode/blend_factor_test.cpp
+    video/blend-mode/blend_mode_test.cpp
+    video/blend-mode/blend_op_test.cpp
+
+    video/display/display_mode_test.cpp
+    video/display/display_test.cpp
+    video/display/orientation_test.cpp
 
     video/opengl/gl_attribute_test.cpp
     video/opengl/gl_swap_interval_test.cpp
+
+    video/surface/surface_handle_test.cpp
+    video/surface/surface_test.cpp
+
+    video/window/flash_op_test.cpp
+    video/window/window_flags_test.cpp
+    video/window/window_test.cpp
+    video/window/window_handle_test.cpp
     )
 
 if (CEN_AUDIO)

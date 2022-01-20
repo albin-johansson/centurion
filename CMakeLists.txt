@@ -119,7 +119,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_periodic.hpp
                src/centurion/input/haptic_ramp.hpp
                src/centurion/input/sensor.hpp
-               src/centurion/input/touch_device_type.hpp
                )
 
 target_include_directories(${CENTURION_LIB_TARGET}

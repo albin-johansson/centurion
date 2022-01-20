@@ -106,14 +106,15 @@ set(SOURCE_FILES
     input/haptic_direction_type_test.cpp
     input/haptic_feature_test.cpp
     input/haptic_test.cpp
-    input/hat_state_test.cpp
-    input/joystick_power_test.cpp
-    input/joystick_test.cpp
-    input/joystick_type_test.cpp
     input/sensor_test.cpp
     input/sensor_type_test.cpp
     input/touch_device_type_test.cpp
     input/touch_test.cpp
+
+    joystick/hat_state_test.cpp
+    joystick/joystick_power_test.cpp
+    joystick/joystick_test.cpp
+    joystick/joystick_type_test.cpp
 
     keyboard/key_code_tests.cpp
     keyboard/key_modifier_test.cpp

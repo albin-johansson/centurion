@@ -19,9 +19,9 @@
 #include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
-#include "input/joystick.hpp"
 #include "input/sensor.hpp"
 #include "input/touch.hpp"
+#include "joystick.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -553,13 +553,22 @@ class basic_controller final {
   /**
    * \brief Starts a rumble effect in the controller's triggers.
    *
-   * \copydetails rumble()
+   * \details This function cancels any previously active rumble effect. Furthermore, supplying
+   * 0 as the intensities will stop the rumble effect.
+   *
+   * \note This function has no effect if rumbling isn't supported by the controller.
+   *
+   * \param left the intensity of the left trigger motor.
+   * \param right the intensity of the right trigger motor.
+   * \param duration the duration of the rumble effect.
+   *
+   * \return `success` if the rumble was successful; `failure` otherwise.
    */
-  auto rumble_triggers(const uint16 lo,
-                       const uint16 hi,
+  auto rumble_triggers(const uint16 left,
+                       const uint16 right,
                        const u32ms duration) noexcept(noexcept(duration.count())) -> result
   {
-    return SDL_GameControllerRumbleTriggers(mController, lo, hi, duration.count()) == 0;
+    return SDL_GameControllerRumbleTriggers(mController, left, right, duration.count()) == 0;
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
@@ -1187,9 +1196,9 @@ class basic_controller final {
    *
    * \return the associated joystick.
    */
-  [[nodiscard]] auto get_joystick() noexcept -> JoystickHandle
+  [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
   {
-    return JoystickHandle{SDL_GameControllerGetJoystick(mController)};
+    return joystick_handle{SDL_GameControllerGetJoystick(mController)};
   }
 
   /// \} End of queries

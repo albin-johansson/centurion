@@ -32,7 +32,7 @@ TEST(Controller, ControllerMappingCount)
 TEST(Controller, Count)
 {
   int amount = 0;
-  for (auto i = 0, count = cen::Joystick::GetAmount().value(); i < count; ++i) {
+  for (auto i = 0, count = cen::joystick::count().value(); i < count; ++i) {
     if (SDL_IsGameController(i)) {
       ++amount;
     }

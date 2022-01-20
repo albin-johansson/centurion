@@ -75,6 +75,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/filesystem.hpp
                src/centurion/font.hpp
                src/centurion/initialization.hpp
+               src/centurion/joystick.hpp
                src/centurion/joystick_events.hpp
                src/centurion/keyboard.hpp
                src/centurion/locale.hpp
@@ -116,7 +117,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_left_right.hpp
                src/centurion/input/haptic_periodic.hpp
                src/centurion/input/haptic_ramp.hpp
-               src/centurion/input/joystick.hpp
                src/centurion/input/sensor.hpp
                src/centurion/input/touch.hpp
                src/centurion/input/touch_device_type.hpp

@@ -14,6 +14,9 @@ jobs:
       matrix:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20 ]
         CPP_VERSION: [ 17, 20 ]
+        include:
+          - SDL_VERSION: 2.0.20
+            CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main
       - uses: seanmiddleditch/gha-setup-ninja@master

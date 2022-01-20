@@ -1,12 +1,11 @@
-#include "joystick.hpp"
+#include "centurion/joystick.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
-#include "color.hpp"
-#include "common.hpp"
+#include "centurion/color.hpp"
 #include "core_mocks.hpp"
 
 using namespace cen::literals;

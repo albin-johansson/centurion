@@ -1,8 +1,8 @@
-#include "event_base.hpp"
+#include "centurion/event_base.hpp"
 
 #include <gtest/gtest.h>
 
-#include "misc_events.hpp"
+#include "centurion/misc_events.hpp"
 
 using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing
 using common_event = cen::quit_event;

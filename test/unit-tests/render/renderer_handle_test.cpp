@@ -3,9 +3,9 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
-#include "core/logging.hpp"
-#include "render.hpp"
-#include "window.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/render.hpp"
+#include "centurion/window.hpp"
 
 class RendererHandleTest : public testing::Test {
  protected:

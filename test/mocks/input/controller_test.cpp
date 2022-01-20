@@ -1,4 +1,4 @@
-#include "controller.hpp"
+#include "centurion/controller.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -6,8 +6,7 @@
 #include <array>     // array
 #include <iostream>  // cout
 
-#include "color.hpp"
-#include "common.hpp"
+#include "centurion/color.hpp"
 #include "core_mocks.hpp"
 
 using namespace cen::literals;

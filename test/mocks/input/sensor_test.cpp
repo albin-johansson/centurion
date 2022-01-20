@@ -1,4 +1,4 @@
-#include "sensor.hpp"
+#include "centurion/sensor.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -6,7 +6,6 @@
 #include <array>     // array
 #include <iostream>  // cout
 
-#include "common.hpp"
 #include "core_mocks.hpp"
 
 extern "C"

@@ -3,13 +3,12 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
-#include "color.hpp"
-#include "common.hpp"
-#include "core/logging.hpp"
-#include "font.hpp"
-#include "math.hpp"
-#include "render.hpp"
-#include "window.hpp"
+#include "centurion/color.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/font.hpp"
+#include "centurion/math.hpp"
+#include "centurion/render.hpp"
+#include "centurion/window.hpp"
 
 using namespace std::string_literals;
 

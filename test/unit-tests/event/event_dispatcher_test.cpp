@@ -2,8 +2,8 @@
 
 #include <iostream>  // cout
 
-#include "core/logging.hpp"
-#include "event.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/event.hpp"
 
 using EventDispatcher =
     cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;

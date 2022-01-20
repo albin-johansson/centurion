@@ -3,8 +3,8 @@
 #include <iostream>
 #include <type_traits>
 
-#include "concurrency.hpp"
-#include "core/logging.hpp"
+#include "centurion/concurrency.hpp"
+#include "centurion/core/logging.hpp"
 
 namespace {
 

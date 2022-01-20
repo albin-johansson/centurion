@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "video.hpp"
+#include "centurion/video.hpp"
 
 TEST(Display, SetScreenSaverEnabled)
 {

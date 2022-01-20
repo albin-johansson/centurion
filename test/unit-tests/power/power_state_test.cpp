@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "power.hpp"
+#include "centurion/power.hpp"
 
 TEST(PowerState, Values)
 {

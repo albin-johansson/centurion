@@ -3,9 +3,8 @@
 
 #include <array>  // array
 
-#include "common.hpp"
+#include "centurion/system.hpp"
 #include "core_mocks.hpp"
-#include "system.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

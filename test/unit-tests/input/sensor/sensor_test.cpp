@@ -1,4 +1,4 @@
-#include "sensor.hpp"
+#include "centurion/sensor.hpp"
 
 #include <gtest/gtest.h>
 

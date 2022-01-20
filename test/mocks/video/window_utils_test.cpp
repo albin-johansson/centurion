@@ -1,8 +1,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "centurion/window.hpp"
 #include "core_mocks.hpp"
-#include "window.hpp"
 
 extern "C"
 {

@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "mouse.hpp"
+#include "centurion/mouse.hpp"
 
 TEST(MouseButton, Values)
 {

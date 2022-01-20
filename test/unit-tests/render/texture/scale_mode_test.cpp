@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "texture.hpp"
+#include "centurion/texture.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 

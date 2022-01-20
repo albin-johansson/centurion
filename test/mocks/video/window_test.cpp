@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "centurion/window.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

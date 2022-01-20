@@ -5,8 +5,8 @@
 #include <tuple>        // tuple, make_tuple
 #include <type_traits>  // is_same_v
 
+#include "centurion/render.hpp"
 #include "core_mocks.hpp"
-#include "render.hpp"
 
 extern "C"
 {
@@ -488,7 +488,6 @@ TEST_F(RendererTest, SetBlendMode)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SetRenderDrawBlendMode, values.data(), cen::isize(values));
 
-  const cen::irect rect{12, 34, 56, 78};
   ASSERT_EQ(cen::failure, renderer.set_blend_mode(cen::blend_mode::blend));
   ASSERT_EQ(cen::success, renderer.set_blend_mode(cen::blend_mode::blend));
   ASSERT_EQ(2u, SDL_SetRenderDrawBlendMode_fake.call_count);

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "font.hpp"
+#include "centurion/font.hpp"
 
 TEST(FontBundle, Usage)
 {

@@ -1,10 +1,10 @@
-#include "message_box.hpp"
+#include "centurion/message_box.hpp"
 
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
-#include "color.hpp"
+#include "centurion/color.hpp"
 
 static_assert(std::is_final_v<cen::message_box>);
 static_assert(std::is_default_constructible_v<cen::message_box>);

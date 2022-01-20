@@ -1,8 +1,8 @@
-#include "detail/owner_handle_api.hpp"
+#include "centurion/detail/owner_handle_api.hpp"
 
 #include <gtest/gtest.h>
 
-#include "memory.hpp"
+#include "centurion/memory.hpp"
 
 inline int delete_count = 0;
 

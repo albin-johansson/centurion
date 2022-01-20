@@ -1,12 +1,12 @@
-#include "window.hpp"
+#include "centurion/window.hpp"
 
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
-#include "core/logging.hpp"
-#include "video.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/video.hpp"
 
 class WindowTest : public testing::Test {
  protected:

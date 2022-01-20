@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "controller.hpp"
+#include "centurion/controller.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "memory.hpp"
+#include "centurion/memory.hpp"
 
 TEST(SIMDBlock, Usage)
 {

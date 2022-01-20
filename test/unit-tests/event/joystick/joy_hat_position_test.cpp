@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "event.hpp"
+#include "centurion/event.hpp"
 
 using position = cen::joy_hat_position;
 

@@ -2,9 +2,9 @@
 
 #include <memory>  // unique_ptr
 
-#include "font.hpp"
-#include "render.hpp"
-#include "window.hpp"
+#include "centurion/font.hpp"
+#include "centurion/render.hpp"
+#include "centurion/window.hpp"
 
 class FontCacheTest : public testing::Test {
  protected:

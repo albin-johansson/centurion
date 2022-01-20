@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "video.hpp"
+#include "centurion/video.hpp"
 
 TEST(BlendMode, Values)
 {

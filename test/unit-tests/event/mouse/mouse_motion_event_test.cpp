@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "mouse_events.hpp"
+#include "centurion/mouse_events.hpp"
 
 TEST(MouseMotionEvent, Defaults)
 {

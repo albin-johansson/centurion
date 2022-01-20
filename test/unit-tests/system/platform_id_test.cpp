@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "system.hpp"
+#include "centurion/system.hpp"
 
 TEST(PlatformID, ToString)
 {

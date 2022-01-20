@@ -2,8 +2,8 @@
 
 #include <cereal/types/vector.hpp>
 
+#include "centurion/unicode.hpp"
 #include "serialization_utils.hpp"
-#include "unicode.hpp"
 
 TEST(UnicodeString, Defaults)
 {

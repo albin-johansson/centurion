@@ -3,9 +3,8 @@
 
 #include <array>  // array
 
-#include "common.hpp"
+#include "centurion/opengl.hpp"
 #include "core_mocks.hpp"
-#include "opengl.hpp"
 
 extern "C"
 {

@@ -1,10 +1,8 @@
-#include "input/haptic_feature.hpp"
+#include "centurion/input/haptic_feature.hpp"
 
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
-
-#include "common.hpp"
 
 TEST(HapticFeature, Values)
 {

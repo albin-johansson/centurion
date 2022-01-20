@@ -3,8 +3,8 @@
 
 #include <array>  // array
 
+#include "centurion/vulkan.hpp"
 #include "core_mocks.hpp"
-#include "vulkan.hpp"
 
 extern "C"
 {

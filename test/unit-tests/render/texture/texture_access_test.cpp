@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "render.hpp"
+#include "centurion/render.hpp"
 
 TEST(TextureAccess, Values)
 {

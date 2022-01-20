@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "joystick_events.hpp"
+#include "centurion/joystick_events.hpp"
 
 TEST(JoyButtonEvent, Defaults)
 {

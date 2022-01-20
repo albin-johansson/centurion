@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "core/logging.hpp"
-#include "keyboard.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/keyboard.hpp"
 #include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)

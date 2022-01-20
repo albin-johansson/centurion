@@ -3,8 +3,8 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "color.hpp"
-#include "pixels.hpp"
+#include "centurion/color.hpp"
+#include "centurion/pixels.hpp"
 
 class PixelFormatInfoTest : public testing::Test {
  protected:

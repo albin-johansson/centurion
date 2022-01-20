@@ -3,8 +3,8 @@
 
 #include <array>  // array
 
+#include "centurion/opengl.hpp"
 #include "core_mocks.hpp"
-#include "opengl.hpp"
 
 extern "C"
 {

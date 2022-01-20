@@ -4,8 +4,8 @@
 #include <array>     // array
 #include <iostream>  // cout
 
+#include "centurion/render.hpp"
 #include "core_mocks.hpp"
-#include "render.hpp"
 
 extern "C"
 {

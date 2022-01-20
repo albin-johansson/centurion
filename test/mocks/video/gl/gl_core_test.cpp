@@ -4,8 +4,8 @@
 #include <array>   // array
 #include <string>  // string
 
+#include "centurion/opengl.hpp"
 #include "core_mocks.hpp"
-#include "opengl.hpp"
 
 using namespace std::string_literals;
 

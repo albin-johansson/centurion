@@ -3,7 +3,7 @@
 
 #include <array>  // array
 
-#include "audio.hpp"
+#include "centurion/audio.hpp"
 #include "core_mocks.hpp"
 #include "mixer_mocks.hpp"
 

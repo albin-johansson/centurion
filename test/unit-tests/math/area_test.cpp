@@ -2,8 +2,8 @@
 
 #include <iostream>  // clog
 
-#include "core/logging.hpp"
-#include "math.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/math.hpp"
 #include "serialization_utils.hpp"
 
 TEST(Area, DefaultConstruction)

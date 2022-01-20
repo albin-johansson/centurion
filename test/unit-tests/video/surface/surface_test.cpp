@@ -1,17 +1,16 @@
-#include "surface.hpp"
+#include "centurion/surface.hpp"
 
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
-#include <memory>    // unique_ptr
-#include <type_traits>
-#include <utility>  // move
+#include <iostream>     // clog
+#include <memory>       // unique_ptr
+#include <type_traits>  // ...
+#include <utility>      // move
 
-#include "color.hpp"
-#include "common.hpp"
-#include "core/logging.hpp"
-#include "window.hpp"
+#include "centurion/color.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);
 static_assert(std::is_copy_assignable_v<cen::surface>);

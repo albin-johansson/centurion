@@ -26,9 +26,9 @@ set(SOURCE_FILES
     input/sensor_test.cpp
     input/touch_test.cpp
 
-    system/battery_test.cpp
     system/open_url_test.cpp
     system/platform_test.cpp
+    system/power_test.cpp
     system/shared_object_test.cpp
 
     thread/condition_test.cpp
@@ -75,16 +75,19 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                          /W4
                          /Zc:preprocessor # Enable conforming preprocessor
                          /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
-                         /wd4834  # "discarding return value of function with 'nodiscard' attribute"
-                         /wd4702  # "unreachable code"
+                         /wd4834          # Disable [[nodiscard]] warnings
+                         /wd4702          # Disable "unreachable code" warnings
                          )
 
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
   target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
                          -Wall
                          -Wextra
                          -Wpedantic
                          -Wconversion
+
+                         -Wno-unused-result
+                         -Wno-gnu-zero-variadic-macro-arguments
                          )
 
 else ()
@@ -93,14 +96,10 @@ endif ()
 
 target_include_directories(${CENTURION_MOCK_TARGET}
                            PRIVATE
-                           ${CEN_SOURCE_DIR}  # TODO remove and fix includes
                            ${PROJECT_SOURCE_DIR}
+                           ${CEN_SOURCE_DIR}
 
                            SYSTEM PRIVATE
-                           ${SDL2_INCLUDE_DIR}
-                           ${SDL2_IMAGE_INCLUDE_DIRS}
-                           ${SDL2_TTF_INCLUDE_DIRS}
-                           ${SDL2_MIXER_INCLUDE_DIRS}
                            ${gtest_SOURCE_DIR}/include
                            ${gtest_SOURCE_DIR}
                            ${gmock_SOURCE_DIR}/include
@@ -108,8 +107,8 @@ target_include_directories(${CENTURION_MOCK_TARGET}
                            )
 
 target_link_libraries(${CENTURION_MOCK_TARGET} PRIVATE
+                      ${CENTURION_LIB_TARGET}
                       gtest
-                      libFFF
-                      )
+                      libFFF)
 
 add_test(NAME ${CENTURION_MOCK_TARGET} COMMAND ${CENTURION_MOCK_TARGET})

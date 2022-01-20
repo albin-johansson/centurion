@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "centurion/event.hpp"
 
 namespace {
 

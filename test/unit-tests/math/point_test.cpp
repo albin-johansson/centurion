@@ -4,8 +4,8 @@
 #include <iostream>     // clog
 #include <type_traits>  // ...
 
-#include "core/logging.hpp"
-#include "math.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/math.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);

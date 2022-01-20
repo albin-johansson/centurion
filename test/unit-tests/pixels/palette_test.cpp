@@ -2,9 +2,9 @@
 
 #include <iostream>  // clog
 
-#include "color.hpp"
-#include "core/logging.hpp"
-#include "pixels.hpp"
+#include "centurion/color.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/pixels.hpp"
 
 TEST(Palette, Constructor)
 {

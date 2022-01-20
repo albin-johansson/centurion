@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "keyboard.hpp"
+#include "centurion/keyboard.hpp"
 
 TEST(KeyMod, Values)
 {

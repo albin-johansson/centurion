@@ -1,4 +1,4 @@
-#include "mouse.hpp"
+#include "centurion/mouse.hpp"
 
 #include <gtest/gtest.h>
 

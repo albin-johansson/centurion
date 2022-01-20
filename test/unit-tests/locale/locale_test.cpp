@@ -1,4 +1,4 @@
-#include "locale.hpp"
+#include "centurion/locale.hpp"
 
 #include <gtest/gtest.h>
 

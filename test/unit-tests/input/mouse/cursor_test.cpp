@@ -2,8 +2,7 @@
 
 #include <type_traits>
 
-#include "common.hpp"
-#include "mouse.hpp"
+#include "centurion/mouse.hpp"
 
 static_assert(std::is_move_constructible_v<cen::cursor>);
 static_assert(std::is_move_assignable_v<cen::cursor>);

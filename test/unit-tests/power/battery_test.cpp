@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "power.hpp"
+#include "centurion/power.hpp"
 
 TEST(Battery, BatteryPercentage)
 {

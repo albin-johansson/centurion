@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "surface.hpp"
+#include "centurion/surface.hpp"
 
 namespace {
 inline constexpr auto path = "resources/panda.png";
-}
+}  // namespace
 
 TEST(SurfaceHandle, Constructor)
 {

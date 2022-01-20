@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "message_box.hpp"
+#include "centurion/message_box.hpp"
 
 TEST(MessageBoxButtonFlags, Values)
 {

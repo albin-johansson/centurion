@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "filesystem.hpp"
+#include "centurion/filesystem.hpp"
 
 TEST(SeekMode, Values)
 {

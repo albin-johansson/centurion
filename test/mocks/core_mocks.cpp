@@ -2,7 +2,7 @@
 
 #include <array>  // array
 
-#include "common.hpp"
+#include "centurion/common.hpp"
 
 extern "C"
 {

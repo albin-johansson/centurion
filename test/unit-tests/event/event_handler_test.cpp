@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include "event.hpp"
+#include "centurion/event.hpp"
 
 namespace {
 

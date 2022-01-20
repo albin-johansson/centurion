@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "joystick.hpp"
+#include "centurion/joystick.hpp"
 
 TEST(HatState, Values)
 {

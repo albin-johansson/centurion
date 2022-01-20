@@ -2,8 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "common.hpp"
-#include "core/hints.hpp"
+#include "centurion/core/hints.hpp"
 
 TEST(HintPriority, Values)
 {

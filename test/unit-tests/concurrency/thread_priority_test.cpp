@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "concurrency.hpp"
+#include "centurion/concurrency.hpp"
 
 TEST(ThreadPriority, Values)
 {

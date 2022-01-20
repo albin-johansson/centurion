@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "audio.hpp"
-#include "common.hpp"
+#include "centurion/audio.hpp"
 
 TEST(MusicType, Values)
 {

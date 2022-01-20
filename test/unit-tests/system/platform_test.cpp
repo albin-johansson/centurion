@@ -2,7 +2,7 @@
 
 #include <string>  // string
 
-#include "system.hpp"
+#include "centurion/system.hpp"
 
 TEST(Platform, IsWindows)
 {

@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "input.hpp"
+#include "centurion/input.hpp"
 
 TEST(ButtonState, Values)
 {

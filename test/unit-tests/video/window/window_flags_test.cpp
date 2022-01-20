@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "window.hpp"
+#include "centurion/window.hpp"
 
 TEST(WindowFlags, Values)
 {

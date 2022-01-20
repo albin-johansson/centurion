@@ -1,4 +1,4 @@
-#include "color.hpp"
+#include "centurion/color.hpp"
 
 #include <gtest/gtest.h>
 
@@ -6,8 +6,7 @@
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "color.hpp"
-#include "core/logging.hpp"
+#include "centurion/core/logging.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_final_v<cen::color>);

@@ -2,8 +2,8 @@
 
 #include <iostream>  // cout
 
-#include "core/logging.hpp"
-#include "window.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/window.hpp"
 
 TEST(WindowHandle, PointerConstructor)
 {

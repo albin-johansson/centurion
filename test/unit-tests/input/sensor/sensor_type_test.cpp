@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "sensor.hpp"
+#include "centurion/sensor.hpp"
 
 TEST(SensorType, Values)
 {

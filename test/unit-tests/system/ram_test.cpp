@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "system.hpp"
+#include "centurion/system.hpp"
 
 TEST(RAM, MB)
 {

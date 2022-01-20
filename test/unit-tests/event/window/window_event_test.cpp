@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "window_events.hpp"
+#include "centurion/window_events.hpp"
 
 TEST(window_event, Defaults)
 {

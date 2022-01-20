@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "render.hpp"
+#include "centurion/render.hpp"
 
 TEST(GraphicsDrivers, RenderDriverCount)
 {

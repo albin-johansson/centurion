@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
+#include "centurion/common.hpp"
 
 TEST(Result, Values)
 {

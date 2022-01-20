@@ -1,8 +1,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "centurion/video.hpp"
 #include "core_mocks.hpp"
-#include "video.hpp"
 
 extern "C"
 {

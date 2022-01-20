@@ -1,4 +1,4 @@
-#include "input/haptic.hpp"
+#include "centurion/input/haptic.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -6,8 +6,8 @@
 #include <array>     // array
 #include <iostream>  // cout
 
+#include "centurion/input/haptic_constant.hpp"
 #include "core_mocks.hpp"
-#include "input/haptic_constant.hpp"
 
 extern "C"
 {

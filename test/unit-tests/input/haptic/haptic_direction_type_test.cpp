@@ -1,10 +1,8 @@
-#include "input/haptic_direction_type.hpp"
+#include "centurion/input/haptic_direction_type.hpp"
 
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
-
-#include "common.hpp"
 
 TEST(HapticDirectionType, Values)
 {

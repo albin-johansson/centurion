@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "concurrency.hpp"
+#include "centurion/concurrency.hpp"
 #include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 

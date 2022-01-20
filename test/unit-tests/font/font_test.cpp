@@ -1,11 +1,11 @@
-#include "font.hpp"
+#include "centurion/font.hpp"
 
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 #include <type_traits>
 
-#include "core/logging.hpp"
+#include "centurion/core/logging.hpp"
 
 using namespace std::string_literals;
 

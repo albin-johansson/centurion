@@ -5,11 +5,10 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
-#include "color.hpp"
-#include "common.hpp"
-#include "core/logging.hpp"
-#include "render.hpp"
-#include "window.hpp"
+#include "centurion/color.hpp"
+#include "centurion/core/logging.hpp"
+#include "centurion/render.hpp"
+#include "centurion/window.hpp"
 
 static_assert(std::is_final_v<cen::texture>);
 

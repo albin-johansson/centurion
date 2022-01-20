@@ -25,10 +25,10 @@ set(CXX_EXTENSIONS OFF)
 include(Dependencies)
 include(Utilities)
 
-set(CEN_ROOT_DIR ${PROJECT_SOURCE_DIR})
-set(CEN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/test/resources)
-set(CEN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src/centurion)
-set(CEN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
+set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")
+set(CEN_RESOURCES_DIR "${PROJECT_SOURCE_DIR}/test/resources")
+set(CEN_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
+set(CEN_BINARIES_DIR "${PROJECT_SOURCE_DIR}/bin")
 
 set(CENTURION_LIB_TARGET libcenturion)
 set(CENTURION_TEST_TARGET testcenturion)
@@ -37,14 +37,8 @@ set(CENTURION_MOCK_TARGET mockcenturion)
 option(CEN_COVERAGE "Enable coverage data" OFF)
 option(CEN_TESTS "Build the Centurion tests" ON)
 option(CEN_EXAMPLES "Build the examples" ON)
-option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
 
-if (WIN32)
-  find_env_var(SDL2DIR SDL2)
-  find_env_var(SDL2IMAGEDIR SDL2_image)
-  find_env_var(SDL2MIXERDIR SDL2_mixer)
-  find_env_var(SDL2TTFDIR SDL2_ttf)
-endif ()
+option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -59,71 +53,7 @@ endif ()
 
 add_library(${CENTURION_LIB_TARGET} INTERFACE)
 
-target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
-               src/centurion/audio.hpp
-               src/centurion/audio_events.hpp
-               src/centurion/color.hpp
-               src/centurion/common.hpp
-               src/centurion/concurrency.hpp
-               src/centurion/controller.hpp
-               src/centurion/controller_events.hpp
-               src/centurion/endian.hpp
-               src/centurion/event.hpp
-               src/centurion/event_base.hpp
-               src/centurion/features.hpp
-               src/centurion/filesystem.hpp
-               src/centurion/font.hpp
-               src/centurion/initialization.hpp
-               src/centurion/input.hpp
-               src/centurion/joystick.hpp
-               src/centurion/joystick_events.hpp
-               src/centurion/keyboard.hpp
-               src/centurion/locale.hpp
-               src/centurion/math.hpp
-               src/centurion/message_box.hpp
-               src/centurion/misc_events.hpp
-               src/centurion/mouse.hpp
-               src/centurion/mouse_events.hpp
-               src/centurion/opengl.hpp
-               src/centurion/pixels.hpp
-               src/centurion/power.hpp
-               src/centurion/render.hpp
-               src/centurion/sensor.hpp
-               src/centurion/surface.hpp
-               src/centurion/system.hpp
-               src/centurion/texture.hpp
-               src/centurion/touch.hpp
-               src/centurion/unicode.hpp
-               src/centurion/version.hpp
-               src/centurion/video.hpp
-               src/centurion/vulkan.hpp
-               src/centurion/window.hpp
-               src/centurion/window_events.hpp
-
-               src/centurion/core/logging.hpp
-
-               src/centurion/detail/array_utils.hpp
-               src/centurion/detail/owner_handle_api.hpp
-               src/centurion/detail/sdl_deleter.hpp
-               src/centurion/detail/sdl_version_at_least.hpp
-               src/centurion/detail/tuple_type_index.hpp
-
-               src/centurion/input/haptic.hpp
-               src/centurion/input/haptic_condition.hpp
-               src/centurion/input/haptic_constant.hpp
-               src/centurion/input/haptic_custom.hpp
-               src/centurion/input/haptic_direction.hpp
-               src/centurion/input/haptic_direction_type.hpp
-               src/centurion/input/haptic_effect.hpp
-               src/centurion/input/haptic_left_right.hpp
-               src/centurion/input/haptic_periodic.hpp
-               src/centurion/input/haptic_ramp.hpp
-               )
-
 target_include_directories(${CENTURION_LIB_TARGET}
-                           PUBLIC INTERFACE
-                           ${PROJECT_SOURCE_DIR}/src
-
                            SYSTEM PUBLIC INTERFACE
                            ${SDL2_INCLUDE_DIR}
                            ${SDL2_IMAGE_INCLUDE_DIRS}
@@ -137,26 +67,6 @@ target_link_libraries(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                       ${SDL2_TTF_LIBRARIES}
                       ${SDL2_MIXER_LIBRARIES}
                       )
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_compile_options(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
-                         /EHsc
-                         /MP
-                         /W4
-                         /Zc:preprocessor # Enable conforming preprocessor
-                         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
-                         )
-
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
-                         -Wall
-                         -Wextra
-                         -Wpedantic
-                         -Wconversion
-                         )
-else ()
-  message("[centurion]: could not determine compiler options")
-endif ()
 
 if (CEN_TESTS)
   add_subdirectory(test)

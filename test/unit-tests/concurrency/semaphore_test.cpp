@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "concurrency.hpp"
+#include "centurion/concurrency.hpp"
 
 TEST(Semaphore, Acquire)
 {

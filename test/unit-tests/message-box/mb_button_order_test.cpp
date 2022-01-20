@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "message_box.hpp"
+#include "centurion/message_box.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 

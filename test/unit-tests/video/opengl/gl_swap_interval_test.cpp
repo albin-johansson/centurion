@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "opengl.hpp"
+#include "centurion/opengl.hpp"
 
 TEST(GLSwapInterval, Values)
 {

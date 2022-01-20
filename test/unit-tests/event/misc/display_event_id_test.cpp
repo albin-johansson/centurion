@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "misc_events.hpp"
+#include "centurion/misc_events.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

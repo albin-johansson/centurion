@@ -2,8 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "common.hpp"
-#include "video.hpp"
+#include "centurion/video.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 

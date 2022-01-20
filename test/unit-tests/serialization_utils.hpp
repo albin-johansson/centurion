@@ -4,8 +4,6 @@
 #include <cereal/cereal.hpp>
 #include <fstream>
 
-#include "common.hpp"
-
 using input_archive = cereal::BinaryInputArchive;
 using output_archive = cereal::BinaryOutputArchive;
 

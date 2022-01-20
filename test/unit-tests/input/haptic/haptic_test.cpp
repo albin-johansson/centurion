@@ -1,13 +1,13 @@
-#include "input/haptic.hpp"
+#include "centurion/input/haptic.hpp"
 
 #include <gtest/gtest.h>
 
-#include "input/haptic_condition.hpp"
-#include "input/haptic_constant.hpp"
-#include "input/haptic_custom.hpp"
-#include "input/haptic_left_right.hpp"
-#include "input/haptic_periodic.hpp"
-#include "input/haptic_ramp.hpp"
+#include "centurion/input/haptic_condition.hpp"
+#include "centurion/input/haptic_constant.hpp"
+#include "centurion/input/haptic_custom.hpp"
+#include "centurion/input/haptic_left_right.hpp"
+#include "centurion/input/haptic_periodic.hpp"
+#include "centurion/input/haptic_ramp.hpp"
 #include "typed_test_macros.hpp"
 
 using namespace cen::literals;

@@ -3,8 +3,8 @@
 
 #include <array>  // array
 
+#include "centurion/system.hpp"
 #include "core_mocks.hpp"
-#include "system.hpp"
 
 extern "C"
 {

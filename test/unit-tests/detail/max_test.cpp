@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "detail/stdlib.hpp"
+#include "centurion/detail/stdlib.hpp"
 
 TEST(Max, Correctness)
 {

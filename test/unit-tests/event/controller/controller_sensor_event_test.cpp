@@ -2,7 +2,7 @@
 
 #include <array>  // array
 
-#include "event.hpp"
+#include "centurion/event.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

@@ -94,7 +94,6 @@ set(SOURCE_FILES
     font/font_test.cpp
 
     hints/hint_priority_test.cpp
-    hints/hints_test.cpp
 
     input/button_state_test.cpp
 
@@ -221,16 +220,24 @@ target_include_directories(${CENTURION_TEST_TARGET}
 
 target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE
                       ${CENTURION_LIB_TARGET}
-                      gtest
-                      )
+                      gtest)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-                         /wd4834  # "discarding return value of function with 'nodiscard' attribute"
+                         /EHsc
+                         /MP
+                         /W4
+                         /Zc:preprocessor # Enable conforming preprocessor
+                         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
+                         /wd4834          # Disable [[nodiscard]] warnings
                          )
 
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
   target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+                         -Wall
+                         -Wextra
+                         -Wpedantic
+                         -Wconversion
                          -Wno-unused-result
                          )
 endif ()

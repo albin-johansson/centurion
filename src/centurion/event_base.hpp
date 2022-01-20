@@ -20,7 +20,10 @@ namespace cen {
 enum class event_type : uint32 {
   first_event = SDL_FIRSTEVENT,
   last_event = SDL_LASTEVENT,
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
   poll_sentinel = SDL_POLLSENTINEL,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   quit = SDL_QUIT,
 
@@ -130,8 +133,12 @@ enum class event_type : uint32 {
     case event_type::last_event:
       return "last_event";
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
     case event_type::poll_sentinel:
       return "poll_sentinel";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
     case event_type::quit:
       return "quit";

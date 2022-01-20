@@ -68,6 +68,7 @@ int main(int, char**)
   const cen::img img;
   const cen::mix mix;
   const cen::ttf ttf;
+
   Game game;
   return game.run();
 }

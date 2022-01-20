@@ -14,5 +14,5 @@
  * them at compile-time by defining any of the `CENTURION_NO_SDL_IMAGE`,
  * `CENTURION_NO_SDL_MIXER` or `CENTURION_NO_SDL_TTF` macros.
  *
- * \include dynamic-configuration/dynamic_configuration.cpp
+ * \include dynamic-configuration/demo.cpp
  */

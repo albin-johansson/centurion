@@ -11,7 +11,7 @@
  * all rendering calls have been made for the frame, call `basic_renderer::present()` to
  * present the batched draw calls to the rendering target.
  *
- * \include basic-rendering/basic_rendering.cpp
+ * \include basic-rendering/demo.cpp
  *
  * Running this example program should result in a window that looks like the following.
  *

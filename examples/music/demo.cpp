@@ -20,12 +20,16 @@ constexpr auto msg_no_music = "No music is playing";
 class music_example final {
  public:
   music_example()
-      : mWindow{"Music example", window_size, cen::window::hidden | cen::window::allow_high_dpi}
+      : mWindow{"Music example",
+                window_size,
+                cen::window::hidden | cen::window::allow_high_dpi}
       , mRenderer{mWindow.create_renderer()}
       , mFont{RESOURCE_DIR "fira_code.ttf", 16}
       , mSong{RESOURCE_DIR "hiddenPond.mp3"}
       , mClick{RESOURCE_DIR "click.wav"}
   {
+    mRenderer.set_logical_size(window_size);
+
     mDispatcher.bind<cen::quit_event>().to<&music_example::on_quit_event>(this);
     mDispatcher.bind<cen::keyboard_event>().to<&music_example::on_keyboard_event>(this);
 

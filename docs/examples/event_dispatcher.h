@@ -11,5 +11,5 @@
  * lambdas, as long as they accept an argument equivalent to `const Event&`, where `Event`
  * is the subscribed event.
  *
- * \include event-dispatcher/event_dispatcher.cpp
+ * \include event-dispatcher/demo.cpp
  */

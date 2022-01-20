@@ -30,7 +30,14 @@
 
 namespace cen {
 
-/// \addtogroup input
+/**
+ * \ingroup input
+ * \defgroup game-controller Controller
+ *
+ * \brief Provides the game controller API.
+ */
+
+/// \addtogroup game-controller
 /// \{
 
 /**
@@ -1415,7 +1422,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller) -> 
 
 /// \} End of controller functions
 
-/// \} End of group input
+/// \} End of group game-controller
 
 }  // namespace cen
 

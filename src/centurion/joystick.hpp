@@ -25,7 +25,14 @@
 
 namespace cen {
 
-/// \addtogroup input
+/**
+ * \ingroup input
+ * \defgroup joystick Joystick
+ *
+ * \brief Provides the low-level joystick API.
+ */
+
+/// \addtogroup joystick
 /// \{
 
 /**
@@ -1112,7 +1119,7 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 /// \} End of joystick functions
 
-/// \} End of group input
+/// \} End of group joystick
 
 }  // namespace cen
 

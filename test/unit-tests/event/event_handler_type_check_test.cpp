@@ -27,10 +27,14 @@ void check(const SDL_EventType type)
 
 }  // namespace
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST(EventHandlerTypeChecks, DisplayEvent)
 {
   check<cen::display_event>(SDL_DISPLAYEVENT);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST(EventHandlerTypeChecks, WindowEvent)
 {

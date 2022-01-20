@@ -418,6 +418,8 @@ using controller_handle = basic_controller<detail::handle_tag>;  ///< A non-owni
  *
  * \see `add_controller_mapping()`
  * \see `load_controller_mappings()`
+ *
+ * \see `SDL_GameController`
  */
 template <typename T>
 class basic_controller final {

@@ -1,28 +1,27 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "common.hpp"
 #include "mouse.hpp"
 
 TEST(MouseButton, Values)
 {
-  ASSERT_EQ(SDL_BUTTON_LEFT, cen::to_underlying(cen::MouseButton::Left));
-  ASSERT_EQ(SDL_BUTTON_MIDDLE, cen::to_underlying(cen::MouseButton::Middle));
-  ASSERT_EQ(SDL_BUTTON_RIGHT, cen::to_underlying(cen::MouseButton::Right));
-  ASSERT_EQ(SDL_BUTTON_X1, cen::to_underlying(cen::MouseButton::X1));
-  ASSERT_EQ(SDL_BUTTON_X2, cen::to_underlying(cen::MouseButton::X2));
+  ASSERT_EQ(SDL_BUTTON_LEFT, to_underlying(cen::mouse_button::left));
+  ASSERT_EQ(SDL_BUTTON_MIDDLE, to_underlying(cen::mouse_button::middle));
+  ASSERT_EQ(SDL_BUTTON_RIGHT, to_underlying(cen::mouse_button::right));
+  ASSERT_EQ(SDL_BUTTON_X1, to_underlying(cen::mouse_button::x1));
+  ASSERT_EQ(SDL_BUTTON_X2, to_underlying(cen::mouse_button::x2));
 }
 
 TEST(MouseButton, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::MouseButton>(6)), cen::exception);
+  ASSERT_THROW(to_string(static_cast<cen::mouse_button>(6)), cen::exception);
 
-  ASSERT_EQ("left", cen::ToString(cen::MouseButton::Left));
-  ASSERT_EQ("middle", cen::ToString(cen::MouseButton::Middle));
-  ASSERT_EQ("right", cen::ToString(cen::MouseButton::Right));
-  ASSERT_EQ("x1", cen::ToString(cen::MouseButton::X1));
-  ASSERT_EQ("x2", cen::ToString(cen::MouseButton::X2));
+  ASSERT_EQ("left", to_string(cen::mouse_button::left));
+  ASSERT_EQ("middle", to_string(cen::mouse_button::middle));
+  ASSERT_EQ("right", to_string(cen::mouse_button::right));
+  ASSERT_EQ("x1", to_string(cen::mouse_button::x1));
+  ASSERT_EQ("x2", to_string(cen::mouse_button::x2));
 
-  std::clog << "Mouse button example: " << cen::MouseButton::Middle << '\n';
+  std::cout << "moues_button::middle == " << cen::mouse_button::middle << '\n';
 }

@@ -2,71 +2,71 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
-#include <type_traits>
+#include <iostream>     // cout
+#include <type_traits>  // ...
 
-static_assert(std::is_final_v<cen::Mouse>);
+static_assert(std::is_final_v<cen::mouse>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::Mouse>);
-static_assert(std::is_nothrow_move_assignable_v<cen::Mouse>);
+static_assert(std::is_nothrow_move_constructible_v<cen::mouse>);
+static_assert(std::is_nothrow_move_assignable_v<cen::mouse>);
 
-static_assert(std::is_nothrow_copy_constructible_v<cen::Mouse>);
-static_assert(std::is_nothrow_copy_assignable_v<cen::Mouse>);
+static_assert(std::is_nothrow_copy_constructible_v<cen::mouse>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::mouse>);
 
 TEST(Mouse, Defaults)
 {
-  const cen::Mouse mouse;
+  const cen::mouse mouse;
 
   ASSERT_EQ(0, mouse.x());
   ASSERT_EQ(0, mouse.y());
 
-  ASSERT_EQ(1, mouse.GetLogicalWidth());
-  ASSERT_EQ(1, mouse.GetLogicalHeight());
+  ASSERT_EQ(1, mouse.logical_width());
+  ASSERT_EQ(1, mouse.logical_height());
 
-  ASSERT_FALSE(mouse.IsLeftButtonPressed());
-  ASSERT_FALSE(mouse.IsMiddleButtonPressed());
-  ASSERT_FALSE(mouse.IsRightButtonPressed());
+  ASSERT_FALSE(mouse.is_left_pressed());
+  ASSERT_FALSE(mouse.is_middle_pressed());
+  ASSERT_FALSE(mouse.is_right_pressed());
 
-  ASSERT_FALSE(mouse.WasLeftButtonReleased());
-  ASSERT_FALSE(mouse.WasMiddleButtonReleased());
-  ASSERT_FALSE(mouse.WasRightButtonReleased());
+  ASSERT_FALSE(mouse.was_left_released());
+  ASSERT_FALSE(mouse.was_middle_released());
+  ASSERT_FALSE(mouse.was_right_released());
 
-  ASSERT_FALSE(mouse.WasMoved());
+  ASSERT_FALSE(mouse.was_moved());
 }
 
 TEST(Mouse, Update)
 {
-  cen::Mouse mouse;
-  ASSERT_NO_THROW(mouse.Update({12, 632}));
+  cen::mouse mouse;
+  ASSERT_NO_THROW(mouse.update({12, 632}));
 }
 
 TEST(Mouse, ResetLogicalSize)
 {
-  cen::Mouse mouse;
+  cen::mouse mouse;
 
   const cen::farea size{455, 183};
-  mouse.SetLogicalSize(size);
+  mouse.set_logical_size(size);
 
-  mouse.ResetLogicalSize();
-  ASSERT_EQ(1, mouse.GetLogicalWidth());
-  ASSERT_EQ(1, mouse.GetLogicalHeight());
+  mouse.reset_logical_size();
+  ASSERT_EQ(1, mouse.logical_width());
+  ASSERT_EQ(1, mouse.logical_height());
 }
 
 TEST(Mouse, SetLogicalSize)
 {
-  cen::Mouse mouse;
+  cen::mouse mouse;
 
   const cen::farea size{821, 219};
-  mouse.SetLogicalSize(size);
+  mouse.set_logical_size(size);
 
-  ASSERT_EQ(size.width, mouse.GetLogicalSize().width);
-  ASSERT_EQ(size.height, mouse.GetLogicalSize().height);
+  ASSERT_EQ(size.width, mouse.logical_width());
+  ASSERT_EQ(size.height, mouse.logical_height());
 }
 
 TEST(Mouse, ToString)
 {
-  const cen::Mouse mouse;
-  ASSERT_EQ("Mouse(x: 0, y: 0)", cen::ToString(mouse));
+  const cen::mouse mouse;
+  ASSERT_EQ("mouse(x: 0, y: 0)", cen::to_string(mouse));
 
-  std::clog << mouse << '\n';
+  std::cout << mouse << '\n';
 }

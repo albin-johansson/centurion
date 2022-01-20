@@ -56,7 +56,7 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
 
   void set_which(const uint32 which) noexcept { mEvent.which = which; }
 
-  void set_button(const MouseButton button) noexcept { mEvent.button = to_underlying(button); }
+  void set_button(const mouse_button button) noexcept { mEvent.button = to_underlying(button); }
 
   void set_state(const button_state state) noexcept { mEvent.state = to_underlying(state); }
 
@@ -70,9 +70,9 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
 
   [[nodiscard]] auto which() const noexcept -> uint32 { return mEvent.which; }
 
-  [[nodiscard]] auto button() const noexcept -> MouseButton
+  [[nodiscard]] auto button() const noexcept -> mouse_button
   {
-    return static_cast<MouseButton>(mEvent.button);
+    return static_cast<mouse_button>(mEvent.button);
   }
 
   [[nodiscard]] auto state() const noexcept -> button_state
@@ -132,7 +132,7 @@ class mouse_motion_event final : public event_base<SDL_MouseMotionEvent> {
 
   [[nodiscard]] auto state() const noexcept -> uint32 { return mEvent.state; }
 
-  [[nodiscard]] auto pressed(const MouseButton button) const noexcept -> bool
+  [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
   {
     return mEvent.state & SDL_BUTTON(to_underlying(button));
   }

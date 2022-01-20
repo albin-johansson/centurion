@@ -32,8 +32,8 @@ TEST(MouseButtonEvent, SetButton)
 {
   cen::mouse_button_event event;
 
-  event.set_button(cen::MouseButton::Right);
-  ASSERT_EQ(cen::MouseButton::Right, event.button());
+  event.set_button(cen::mouse_button::right);
+  ASSERT_EQ(cen::mouse_button::right, event.button());
 }
 
 TEST(MouseButtonEvent, SetState)

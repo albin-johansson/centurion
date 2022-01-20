@@ -35,12 +35,12 @@ TEST(MouseMotionEvent, SetState)
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
   ASSERT_EQ(Uint32{SDL_BUTTON_LMASK | SDL_BUTTON_MMASK}, event.state());
 
-  ASSERT_TRUE(event.pressed(cen::MouseButton::Left));
-  ASSERT_TRUE(event.pressed(cen::MouseButton::Middle));
+  ASSERT_TRUE(event.pressed(cen::mouse_button::left));
+  ASSERT_TRUE(event.pressed(cen::mouse_button::middle));
 
-  ASSERT_FALSE(event.pressed(cen::MouseButton::Right));
-  ASSERT_FALSE(event.pressed(cen::MouseButton::X1));
-  ASSERT_FALSE(event.pressed(cen::MouseButton::X2));
+  ASSERT_FALSE(event.pressed(cen::mouse_button::right));
+  ASSERT_FALSE(event.pressed(cen::mouse_button::x1));
+  ASSERT_FALSE(event.pressed(cen::mouse_button::x2));
 }
 
 TEST(MouseMotionEvent, SetX)

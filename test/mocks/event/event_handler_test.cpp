@@ -1,9 +1,8 @@
-#include "event.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "event.hpp"
 
 extern "C"
 {
@@ -34,13 +33,6 @@ TEST_F(EventTest, Update)
   ASSERT_EQ(1u, SDL_PumpEvents_fake.call_count);
 }
 
-TEST_F(EventTest, Push)
-{
-  cen::event_handler event;
-  cen::event_handler::push(event);
-  ASSERT_EQ(1u, SDL_PushEvent_fake.call_count);
-}
-
 TEST_F(EventTest, Flush)
 {
   cen::event_handler::flush();
@@ -60,8 +52,8 @@ TEST_F(EventTest, FlushAll)
 
 TEST_F(EventTest, Poll)
 {
-  cen::event_handler event;
-  event.poll();
+  cen::event_handler handler;
+  handler.poll();
 
   ASSERT_EQ(1u, SDL_PollEvent_fake.call_count);
 }

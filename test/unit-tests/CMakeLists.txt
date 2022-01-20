@@ -39,6 +39,7 @@ set(SOURCE_FILES
     event/event_base_test.cpp
     event/event_dispatcher_test.cpp
     event/event_handler_test.cpp
+    event/event_handler_type_check_test.cpp
     event/event_type_test.cpp
 
     event/audio/audio_device_event_test.cpp

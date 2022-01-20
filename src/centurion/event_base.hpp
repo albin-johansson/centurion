@@ -18,6 +18,10 @@ namespace cen {
  * \brief Represents the different event types.
  */
 enum class event_type : uint32 {
+  first_event = SDL_FIRSTEVENT,
+  last_event = SDL_LASTEVENT,
+  poll_sentinel = SDL_POLLSENTINEL,
+
   quit = SDL_QUIT,
 
   app_terminating = SDL_APP_TERMINATING,
@@ -97,9 +101,38 @@ enum class event_type : uint32 {
 /// \name Event type functions
 /// \{
 
+/**
+ * \brief Indicates whether an event type is a user event.
+ *
+ * \details This function considers any event type enumerator in the range [`user`,
+ * `last_event`) to be a user event.
+ *
+ * \param type the event type to check.
+ *
+ * \return `true` if the event type is reserved for user events; `false` otherwise.
+ */
+[[nodiscard]] constexpr auto is_user_event(const event_type type) noexcept -> bool
+{
+  const auto raw = to_underlying(type);
+  return raw >= SDL_USEREVENT && raw < SDL_LASTEVENT;
+}
+
 [[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
+  if (is_user_event(type)) {
+    return "user";
+  }
+
   switch (type) {
+    case event_type::first_event:
+      return "first_event";
+
+    case event_type::last_event:
+      return "last_event";
+
+    case event_type::poll_sentinel:
+      return "poll_sentinel";
+
     case event_type::quit:
       return "quit";
 

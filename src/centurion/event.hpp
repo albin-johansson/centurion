@@ -18,6 +18,7 @@
 #include "common.hpp"
 #include "controller_events.hpp"
 #include "detail/tuple_type_index.hpp"
+#include "event_base.hpp"
 #include "features.hpp"
 #include "joystick_events.hpp"
 #include "misc_events.hpp"
@@ -51,17 +52,6 @@ class event_handler final {
    */
   event_handler() noexcept = default;
 
-  explicit event_handler(const SDL_Event& event) noexcept : mEvent{event}
-  {
-    update_data(static_cast<event_type>(event.type));
-  }
-
-  template <typename T>
-  explicit event_handler(const event_base<T>& event) noexcept : mEvent{as_sdl_event(event)}
-  {
-    update_data(event.type());
-  }
-
   /**
    * \brief Updates the event loop, gathering events from the input devices.
    *
@@ -69,17 +59,11 @@ class event_handler final {
    */
   static void update() noexcept { SDL_PumpEvents(); }
 
-  static auto push(event_handler& event) noexcept -> result
-  {
-    auto& sdlEvent = event.mEvent;
-    return SDL_PushEvent(&sdlEvent) >= 0;
-  }
-
   template <typename T>
   static auto push(const event_base<T>& event) noexcept -> result
   {
-    auto sdlEvent = as_sdl_event(event);
-    return SDL_PushEvent(&sdlEvent) >= 0;
+    auto underlying = as_sdl_event(event);
+    return SDL_PushEvent(&underlying) >= 0;
   }
 
   /**
@@ -103,22 +87,24 @@ class event_handler final {
    */
   auto poll() noexcept -> bool
   {
-    const bool result = SDL_PollEvent(&mEvent);
-
-    if (result) {
-      update_data(event_type{mEvent.type});
+    SDL_Event event{};
+    if (SDL_PollEvent(&event)) {
+      store(event);
+      return true;
     }
     else {
-      mData.emplace<std::monostate>();
+      reset_state();
+      return false;
     }
-
-    return result;
   }
 
   /**
    * \brief Indicates whether the currently stored event is of a particular type.
    *
-   * \tparam T the event type to check for.
+   * \note Not all event types have dedicated event classes, so you might want to use
+   * `is(event_type)` to perform more fine-grained type checks.
+   *
+   * \tparam T the event type to check for, e.g. `window_event`.
    *
    * \return `true` if the stored event is of the specified type; `false` otherwise.
    */
@@ -127,6 +113,67 @@ class event_handler final {
   {
     return std::holds_alternative<T>(mData);
   }
+
+  /**
+   * \brief Indicates whether the current event is of a specific type.
+   *
+   * \param type the type to check for.
+   *
+   * \return `true` if the current event is of the specified type; `false` otherwise.
+   */
+  [[nodiscard]] auto is(const event_type type) const noexcept -> bool
+  {
+    if (type == event_type::user && is_user_event(mType)) {
+      return true;
+    }
+    else {
+      return mType == type;
+    }
+  }
+
+  /**
+   * \brief Returns the type of the internal event.
+   *
+   * \return the type of the event;
+   *         an empty optional is returned if there is no valid internal event.
+   */
+  [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
+  {
+    if (mType != event_type::last_event) {
+      return mType;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Returns the raw integral value of the event type.
+   *
+   * \details This function is useful when combined with the use of user events.
+   *
+   * \return the integral value of the current event type;
+   *         an empty optional is returned if there is no valid internal event.
+   */
+  [[nodiscard]] auto raw_type() const noexcept -> std::optional<uint32>
+  {
+    if (mType != event_type::last_event) {
+      return to_underlying(mType);
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Indicates whether there is no internal event instance.
+   *
+   * \note There may still be information about the event type, this function just checks
+   * whether there is additional information about the event, i.e. a dedicated event type.
+   *
+   * \return `true` if there is no internal event; `false` otherwise.
+   */
+  [[nodiscard]] auto empty() const noexcept -> bool { return is<std::monostate>(); }
 
   /**
    * \brief Returns the current event representation.
@@ -176,31 +223,6 @@ class event_handler final {
   {
     return std::get_if<T>(&mData);
   }
-
-  /**
-   * \brief Returns the type of the internal event.
-   *
-   * \return the type of the event;
-   *         an empty optional is returned if there is no internal event.
-   */
-  [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
-  {
-    if (empty()) {
-      return std::nullopt;
-    }
-    else {
-      return event_type{mEvent.type};
-    }
-  }
-
-  /**
-   * \brief Indicates whether there is no internal event.
-   *
-   * \return `true` if there is no internal event; `false` otherwise.
-   */
-  [[nodiscard]] auto empty() const noexcept -> bool { return is<std::monostate>(); }
-
-  [[nodiscard]] auto data() const noexcept -> const SDL_Event* { return &mEvent; }
 
   /**
    * \brief Returns the current amount of events in the event queue.
@@ -286,162 +308,198 @@ class event_handler final {
 
                                  window_event>;
 
-  SDL_Event mEvent{};
+  event_type mType{event_type::last_event}; /* `last_event` is used as the "empty" state */
   data_type mData{};
 
-  void update_data(const event_type type) noexcept
+  void reset_state()
   {
+    mType = event_type::last_event;
+    mData.emplace<std::monostate>();
+  }
+
+  void store(const SDL_Event& event) noexcept
+  {
+    const auto type = static_cast<SDL_EventType>(event.type);
+    mType = static_cast<event_type>(type);
+
+    /* Special case for user events with custom types */
+    if (is_user_event(mType)) {
+      mData.emplace<user_event>(event.user);
+      return;
+    }
+
+    /* Use the SDL event type in the switch, so that we get hopefully get warnings if we were
+       to miss new event types. */
     switch (type) {
-      case event_type::quit:
-        mData.emplace<quit_event>(mEvent.quit);
+      case SDL_FIRSTEVENT:
+      case SDL_LASTEVENT:
+      case SDL_POLLSENTINEL:
+        reset_state();
         break;
 
-      case event_type::app_terminating:
-      case event_type::app_low_memory:
-      case event_type::app_will_enter_background:
-      case event_type::app_did_enter_background:
-      case event_type::app_will_enter_foreground:
-      case event_type::app_did_enter_foreground:
+      case SDL_QUIT:
+        mData.emplace<quit_event>(event.quit);
         break;
 
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-      case event_type::locale_changed:
-        break;
-
-      case event_type::display:
-        mData.emplace<display_event>(mEvent.display);
-        break;
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-      case event_type::window:
-        mData.emplace<window_event>(mEvent.window);
-        break;
-
-      case event_type::system:
-        break;
-
-      case event_type::key_down:
-      case event_type::key_up:
-        mData.emplace<keyboard_event>(mEvent.key);
-        break;
-
-      case event_type::text_editing:
-        mData.emplace<text_editing_event>(mEvent.edit);
-        break;
-
-      case event_type::text_input:
-        mData.emplace<text_input_event>(mEvent.text);
-        break;
-
-      case event_type::keymap_changed:
-        break;
-
-      case event_type::mouse_motion:
-        mData.emplace<mouse_motion_event>(mEvent.motion);
-        break;
-
-      case event_type::mouse_button_down:
-      case event_type::mouse_button_up:
-        mData.emplace<mouse_button_event>(mEvent.button);
-        break;
-
-      case event_type::mouse_wheel:
-        mData.emplace<mouse_wheel_event>(mEvent.wheel);
-        break;
-
-      case event_type::joy_axis_motion:
-        mData.emplace<joy_axis_event>(mEvent.jaxis);
-        break;
-
-      case event_type::joy_ball_motion:
-        mData.emplace<joy_ball_event>(mEvent.jball);
-        break;
-
-      case event_type::joy_hat_motion:
-        mData.emplace<joy_hat_event>(mEvent.jhat);
-        break;
-
-      case event_type::joy_button_down:
-      case event_type::joy_button_up:
-        mData.emplace<joy_button_event>(mEvent.jbutton);
-        break;
-
-      case event_type::joy_device_added:
-      case event_type::joy_device_removed:
-        mData.emplace<joy_device_event>(mEvent.jdevice);
-        break;
-
-      case event_type::controller_axis_motion:
-        mData.emplace<controller_axis_event>(mEvent.caxis);
-        break;
-
-      case event_type::controller_button_down:
-      case event_type::controller_button_up:
-        mData.emplace<controller_button_event>(mEvent.cbutton);
-        break;
-
-      case event_type::controller_device_added:
-      case event_type::controller_device_removed:
-      case event_type::controller_device_remapped:
-        mData.emplace<controller_device_event>(mEvent.cdevice);
+      case SDL_APP_TERMINATING:
+      case SDL_APP_LOWMEMORY:
+      case SDL_APP_WILLENTERBACKGROUND:
+      case SDL_APP_DIDENTERBACKGROUND:
+      case SDL_APP_WILLENTERFOREGROUND:
+      case SDL_APP_DIDENTERFOREGROUND:
         break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-      case event_type::controller_touchpad_down:
-      case event_type::controller_touchpad_up:
-      case event_type::controller_touchpad_motion:
-        mData.emplace<controller_touchpad_event>(mEvent.ctouchpad);
+
+      case SDL_LOCALECHANGED:
         break;
 
-      case event_type::controller_sensor_update:
-        mData.emplace<controller_sensor_event>(mEvent.csensor);
-        break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-      case event_type::finger_down:
-      case event_type::finger_up:
-      case event_type::finger_motion:
-        mData.emplace<touch_finger_event>(mEvent.tfinger);
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case SDL_DISPLAYEVENT:
+        mData.emplace<display_event>(event.display);
         break;
 
-      case event_type::dollar_gesture:
-      case event_type::dollar_record:
-        mData.emplace<dollar_gesture_event>(mEvent.dgesture);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case SDL_WINDOWEVENT:
+        mData.emplace<window_event>(event.window);
         break;
 
-      case event_type::multi_gesture:
-        mData.emplace<multi_gesture_event>(mEvent.mgesture);
+      case SDL_SYSWMEVENT:
+        // TODO
         break;
 
-      case event_type::clipboard_update:
+      case SDL_KEYDOWN:
+      case SDL_KEYUP:
+        mData.emplace<keyboard_event>(event.key);
         break;
 
-      case event_type::drop_file:
-      case event_type::drop_text:
-      case event_type::drop_begin:
-      case event_type::drop_complete:
-        mData.emplace<drop_event>(mEvent.drop);
+      case SDL_TEXTEDITING:
+        mData.emplace<text_editing_event>(event.edit);
         break;
 
-      case event_type::audio_device_added:
-      case event_type::audio_device_removed:
-        mData.emplace<audio_device_event>(mEvent.adevice);
+      case SDL_TEXTINPUT:
+        mData.emplace<text_input_event>(event.text);
         break;
 
-      case event_type::sensor_update:
-        mData.emplace<sensor_event>(mEvent.sensor);
+      case SDL_KEYMAPCHANGED:
         break;
 
-      case event_type::render_targets_reset:
-      case event_type::render_device_reset:
+      case SDL_MOUSEMOTION:
+        mData.emplace<mouse_motion_event>(event.motion);
         break;
 
-      case event_type::user:
-        mData.emplace<user_event>(mEvent.user);
+      case SDL_MOUSEBUTTONDOWN:
+      case SDL_MOUSEBUTTONUP:
+        mData.emplace<mouse_button_event>(event.button);
+        break;
+
+      case SDL_MOUSEWHEEL:
+        mData.emplace<mouse_wheel_event>(event.wheel);
+        break;
+
+      case SDL_JOYAXISMOTION:
+        mData.emplace<joy_axis_event>(event.jaxis);
+        break;
+
+      case SDL_JOYBALLMOTION:
+        mData.emplace<joy_ball_event>(event.jball);
+        break;
+
+      case SDL_JOYHATMOTION:
+        mData.emplace<joy_hat_event>(event.jhat);
+        break;
+
+      case SDL_JOYBUTTONDOWN:
+      case SDL_JOYBUTTONUP:
+        mData.emplace<joy_button_event>(event.jbutton);
+        break;
+
+      case SDL_JOYDEVICEADDED:
+      case SDL_JOYDEVICEREMOVED:
+        mData.emplace<joy_device_event>(event.jdevice);
+        break;
+
+      case SDL_CONTROLLERAXISMOTION:
+        mData.emplace<controller_axis_event>(event.caxis);
+        break;
+
+      case SDL_CONTROLLERBUTTONDOWN:
+      case SDL_CONTROLLERBUTTONUP:
+        mData.emplace<controller_button_event>(event.cbutton);
+        break;
+
+      case SDL_CONTROLLERDEVICEADDED:
+      case SDL_CONTROLLERDEVICEREMOVED:
+      case SDL_CONTROLLERDEVICEREMAPPED:
+        mData.emplace<controller_device_event>(event.cdevice);
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case SDL_CONTROLLERTOUCHPADDOWN:
+      case SDL_CONTROLLERTOUCHPADMOTION:
+      case SDL_CONTROLLERTOUCHPADUP:
+        mData.emplace<controller_touchpad_event>(event.ctouchpad);
+        break;
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case SDL_CONTROLLERSENSORUPDATE:
+        mData.emplace<controller_sensor_event>(event.csensor);
+        break;
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case SDL_FINGERDOWN:
+      case SDL_FINGERUP:
+      case SDL_FINGERMOTION:
+        mData.emplace<touch_finger_event>(event.tfinger);
+        break;
+
+      case SDL_DOLLARGESTURE:
+      case SDL_DOLLARRECORD:
+        mData.emplace<dollar_gesture_event>(event.dgesture);
+        break;
+
+      case SDL_MULTIGESTURE:
+        mData.emplace<multi_gesture_event>(event.mgesture);
+        break;
+
+      case SDL_CLIPBOARDUPDATE:
+        break;
+
+      case SDL_DROPFILE:
+      case SDL_DROPTEXT:
+      case SDL_DROPBEGIN:
+      case SDL_DROPCOMPLETE:
+        mData.emplace<drop_event>(event.drop);
+        break;
+
+      case SDL_AUDIODEVICEADDED:
+      case SDL_AUDIODEVICEREMOVED:
+        mData.emplace<audio_device_event>(event.adevice);
+        break;
+
+      case SDL_SENSORUPDATE:
+        mData.emplace<sensor_event>(event.sensor);
+        break;
+
+      case SDL_RENDER_TARGETS_RESET:
+      case SDL_RENDER_DEVICE_RESET:
+        break;
+
+      case SDL_USEREVENT:
+        mData.emplace<user_event>(event.user);
         break;
 
       default:
-        mData.emplace<std::monostate>();
+        reset_state();
         break;
     }
   }

@@ -13,7 +13,7 @@ set(SOURCE_FILES
 
     core/initialization_test.cpp
 
-    event/event_test.cpp
+    event/event_handler_test.cpp
 
     filesystem/base_path_test.cpp
     filesystem/file_test.cpp

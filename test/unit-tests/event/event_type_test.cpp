@@ -8,6 +8,10 @@ using type = cen::event_type;
 
 TEST(EventType, Values)
 {
+  ASSERT_EQ(SDL_FIRSTEVENT, to_underlying(type::first_event));
+  ASSERT_EQ(SDL_LASTEVENT, to_underlying(type::last_event));
+  ASSERT_EQ(SDL_POLLSENTINEL, to_underlying(type::poll_sentinel));
+
   ASSERT_EQ(SDL_QUIT, to_underlying(type::quit));
 
   ASSERT_EQ(SDL_APP_TERMINATING, to_underlying(type::app_terminating));
@@ -83,6 +87,10 @@ TEST(EventType, Values)
 
 TEST(EventType, ToString)
 {
+  ASSERT_EQ("first_event", to_string(type::first_event));
+  ASSERT_EQ("last_event", to_string(type::last_event));
+  ASSERT_EQ("poll_sentinel", to_string(type::poll_sentinel));
+
   ASSERT_EQ("quit", to_string(type::quit));
 
   ASSERT_EQ("app_terminating", to_string(type::app_terminating));
@@ -145,6 +153,8 @@ TEST(EventType, ToString)
   ASSERT_EQ("render_device_reset", to_string(type::render_device_reset));
 
   ASSERT_EQ("user", to_string(type::user));
+  ASSERT_EQ("user", to_string(static_cast<type>(SDL_USEREVENT + 1)));
+  ASSERT_EQ("user", to_string(static_cast<type>(SDL_LASTEVENT - 1)));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
   ASSERT_EQ("locale_changed", to_string(type::locale_changed));

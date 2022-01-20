@@ -333,7 +333,9 @@ class event_handler final {
     switch (type) {
       case SDL_FIRSTEVENT:
       case SDL_LASTEVENT:
+#if SDL_VERSION_ATLEAST(2, 0, 18)
       case SDL_POLLSENTINEL:
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
         reset_state();
         break;
 

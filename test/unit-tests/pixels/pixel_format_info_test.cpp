@@ -66,7 +66,8 @@ TEST_F(PixelFormatInfoTest, RGBAToPixel)
 TEST_F(PixelFormatInfoTest, PixelToRGB)
 {
   const auto color = cen::colors::hot_pink;
-  const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
+  const auto pixel = static_cast<Uint32>((color.red() << 24u) | (color.green() << 16u) |
+                                         (color.blue() << 8u));
   ASSERT_EQ(color, info->pixel_to_rgb(pixel));
 }
 

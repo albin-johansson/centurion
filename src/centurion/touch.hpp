@@ -7,8 +7,8 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "button_state.hpp"
 #include "common.hpp"
+#include "input.hpp"
 
 namespace cen {
 

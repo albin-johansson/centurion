@@ -11,7 +11,6 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "button_state.hpp"
 #include "color.hpp"
 #include "common.hpp"
 #include "core/sdl_string.hpp"
@@ -19,6 +18,7 @@
 #include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
+#include "input.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
 

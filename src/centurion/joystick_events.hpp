@@ -8,7 +8,7 @@
 
 #include "common.hpp"
 #include "event_base.hpp"
-#include "button_state.hpp"
+#include "input.hpp"
 
 namespace cen {
 

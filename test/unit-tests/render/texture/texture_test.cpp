@@ -133,8 +133,8 @@ TEST_F(TextureTest, Release)
 
 TEST_F(TextureTest, IsStatic)
 {
-  const auto texture = renderer->create_texture({10, 10}, window->format(),
-                                                cen::texture_access::non_lockable);
+  const auto texture =
+      renderer->create_texture({10, 10}, window->format(), cen::texture_access::non_lockable);
   ASSERT_TRUE(texture.is_static());
 }
 

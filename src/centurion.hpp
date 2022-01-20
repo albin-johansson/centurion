@@ -31,7 +31,6 @@
 
 #include "centurion/audio.hpp"
 #include "centurion/audio_events.hpp"
-#include "centurion/button_state.hpp"
 #include "centurion/color.hpp"
 #include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
@@ -44,6 +43,7 @@
 #include "centurion/filesystem.hpp"
 #include "centurion/font.hpp"
 #include "centurion/initialization.hpp"
+#include "centurion/input.hpp"
 #include "centurion/joystick.hpp"
 #include "centurion/joystick_events.hpp"
 #include "centurion/keyboard.hpp"

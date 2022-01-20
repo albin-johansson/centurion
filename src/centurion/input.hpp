@@ -1,5 +1,5 @@
-#ifndef CENTURION_BUTTON_STATE_HPP_
-#define CENTURION_BUTTON_STATE_HPP_
+#ifndef CENTURION_INPUT_HPP_
+#define CENTURION_INPUT_HPP_
 
 #include <SDL.h>
 
@@ -9,6 +9,12 @@
 #include "common.hpp"
 
 namespace cen {
+
+/**
+ * \defgroup input Input
+ *
+ * \brief Provides APIs related to different kinds of input.
+ */
 
 /// \addtogroup input
 /// \{
@@ -46,4 +52,4 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_BUTTON_STATE_HPP_
+#endif  // CENTURION_INPUT_HPP_

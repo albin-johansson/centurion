@@ -62,7 +62,6 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio.hpp
                src/centurion/audio_events.hpp
-               src/centurion/button_state.hpp
                src/centurion/color.hpp
                src/centurion/common.hpp
                src/centurion/concurrency.hpp
@@ -75,6 +74,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/filesystem.hpp
                src/centurion/font.hpp
                src/centurion/initialization.hpp
+               src/centurion/input.hpp
                src/centurion/joystick.hpp
                src/centurion/joystick_events.hpp
                src/centurion/keyboard.hpp

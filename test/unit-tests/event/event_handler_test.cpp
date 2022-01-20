@@ -1,8 +1,8 @@
-#include "event.hpp"
-
 #include <gtest/gtest.h>
 
 #include <type_traits>
+
+#include "event.hpp"
 
 namespace {
 

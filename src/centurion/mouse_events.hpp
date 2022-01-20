@@ -8,7 +8,7 @@
 
 #include "common.hpp"
 #include "event_base.hpp"
-#include "button_state.hpp"
+#include "input.hpp"
 #include "mouse.hpp"
 
 namespace cen {
@@ -56,7 +56,10 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
 
   void set_which(const uint32 which) noexcept { mEvent.which = which; }
 
-  void set_button(const mouse_button button) noexcept { mEvent.button = to_underlying(button); }
+  void set_button(const mouse_button button) noexcept
+  {
+    mEvent.button = to_underlying(button);
+  }
 
   void set_state(const button_state state) noexcept { mEvent.state = to_underlying(state); }
 

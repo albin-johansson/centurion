@@ -1,8 +1,8 @@
-#include "button_state.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
+
+#include "input.hpp"
 
 TEST(ButtonState, Values)
 {

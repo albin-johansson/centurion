@@ -1,6 +1,7 @@
+#include "event_base.hpp"
+
 #include <gtest/gtest.h>
 
-#include "event_base.hpp"
 #include "misc_events.hpp"
 
 using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing

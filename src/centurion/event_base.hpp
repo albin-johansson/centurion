@@ -38,7 +38,9 @@ enum class event_type : uint32 {
   locale_changed = SDL_LOCALECHANGED,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   display = SDL_DISPLAYEVENT,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   window = SDL_WINDOWEVENT,
   system = SDL_SYSWMEVENT,
 

@@ -5,7 +5,6 @@ on: [ push, pull_request ]
 env:
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
-  TTF_VERSION: 2.0.18
 
 jobs:
   windows-latest-test:
@@ -13,6 +12,7 @@ jobs:
     strategy:
       matrix:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20 ]
+        TTF_VERSION: [ 2.0.15, 2.0.18 ]
         CPP_VERSION: [ 17, 20, 23 ]
     steps:
       - uses: actions/checkout@main
@@ -41,7 +41,7 @@ jobs:
       - name: Download SDL2_ttf
         uses: albin-johansson/download-sdl2-ttf@latest
         with:
-          version: ${{env.TTF_VERSION}}
+          version: ${{matrix.TTF_VERSION}}
           sources_destination: .
           binaries_destination: bin
 
@@ -61,7 +61,7 @@ jobs:
           SDL2DIR: ${{github.workspace}}/SDL2-${{matrix.SDL_VERSION}}
           SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{env.IMG_VERSION}}
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
-          SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{env.TTF_VERSION}}
+          SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{matrix.TTF_VERSION}}
         run: |
           cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -GNinja
           ninja

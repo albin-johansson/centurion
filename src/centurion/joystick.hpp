@@ -1005,7 +1005,7 @@ class basic_joystick final {
    *
    * \details If polling is disabled, then you have to call `update()` by yourself.
    *
-   * \param polling `true` to enable automatic joystick event polling; `false` otherwise.
+   * \param enabled `true` to enable automatic joystick event polling; `false` otherwise.
    */
   static void set_polling(const bool enabled) noexcept
   {

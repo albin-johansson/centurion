@@ -89,7 +89,9 @@ TEST(EventType, ToString)
 {
   ASSERT_EQ("first_event", to_string(type::first_event));
   ASSERT_EQ("last_event", to_string(type::last_event));
+#if SDL_VERSION_ATLEAST(2, 0, 18)
   ASSERT_EQ("poll_sentinel", to_string(type::poll_sentinel));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   ASSERT_EQ("quit", to_string(type::quit));
 
@@ -99,7 +101,9 @@ TEST(EventType, ToString)
   ASSERT_EQ("app_did_enter_background", to_string(type::app_did_enter_background));
   ASSERT_EQ("app_did_enter_foreground", to_string(type::app_did_enter_foreground));
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   ASSERT_EQ("display", to_string(type::display));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   ASSERT_EQ("window", to_string(type::window));
   ASSERT_EQ("system", to_string(type::system));
 

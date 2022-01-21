@@ -8,4 +8,4 @@ option(CEN_AUDIO "Test audio components" ON)
 set(CEN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 
 add_subdirectory(unit-tests)
-add_subdirectory(mocks)
+add_subdirectory(mocked-tests)

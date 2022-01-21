@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(centurion-test-mocks CXX)
+project(centurion-test-mocked-tests CXX)
 
 set(SOURCE_FILES
     core_mocks.hpp

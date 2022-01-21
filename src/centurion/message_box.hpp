@@ -191,6 +191,8 @@ class message_box_color_scheme final {
  * \brief Represents a modal message box that can be used display information, warnings
  * and errors.
  *
+ * \details An example usage of this class can be found \subpage page-message-box "here".
+ *
  * \note The appearance of message boxes varies depending on the platform, and certain
  * styling options are not available on all platforms.
  */

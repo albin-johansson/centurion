@@ -21,6 +21,7 @@
 namespace cen {
 
 /**
+ * \ingroup common
  * \defgroup math Math
  *
  * \brief Provides common math utilities such as points, areas, and rectangles.

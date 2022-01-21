@@ -37,7 +37,8 @@
 namespace cen {
 
 /**
- * \defgroup render Render
+ * \ingroup video
+ * \defgroup render Rendering
  *
  * \brief Contains components related to hardware-accelerated 2D rendering.
  *

@@ -24,6 +24,7 @@
 namespace cen {
 
 /**
+ * \ingroup common
  * \defgroup initialization Initialization
  *
  * \brief Contains components related to SDL initialization.

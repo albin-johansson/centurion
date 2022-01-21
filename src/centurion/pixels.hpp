@@ -25,6 +25,7 @@
 namespace cen {
 
 /**
+ * \ingroup video
  * \defgroup pixels Pixels
  *
  * \brief Contains utilities related to pixel formats and colors.

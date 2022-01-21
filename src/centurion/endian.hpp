@@ -8,6 +8,7 @@
 namespace cen {
 
 /**
+ * \ingroup system
  * \defgroup endian Endian
  *
  * \brief Provides utilities related to the system endianness.

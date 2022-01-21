@@ -17,6 +17,7 @@
 namespace cen {
 
 /**
+ * \ingroup common
  * \defgroup memory Memory
  *
  * \brief Provides utilities related to memory management and SIMD.

@@ -37,7 +37,7 @@
 /**
  * \defgroup common Common
  *
- * \brief Common utilities used throughout the library.
+ * \brief Common utilities and APIs.
  */
 
 /// \addtogroup common

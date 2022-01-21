@@ -11,6 +11,7 @@
 namespace cen {
 
 /**
+ * \ingroup text
  * \defgroup unicode Unicode
  *
  * \brief Contains Unicode-related utilities.

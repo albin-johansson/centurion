@@ -16,6 +16,36 @@ TEST(UnicodeString, Defaults)
   ASSERT_THROW(str.at(0), cen::exception);
 }
 
+TEST(UnicodeString, StringViewConstructor)
+{
+  using namespace std::string_view_literals;
+
+  const cen::unicode_string str = u"foobar"sv;
+  ASSERT_EQ(6u, str.size());
+  ASSERT_EQ(6u, str.capacity());
+
+  ASSERT_EQ('f', str.at(0));
+  ASSERT_EQ('o', str.at(1));
+  ASSERT_EQ('o', str.at(2));
+  ASSERT_EQ('b', str.at(3));
+  ASSERT_EQ('a', str.at(4));
+  ASSERT_EQ('r', str.at(5));
+
+  ASSERT_THROW(str.at(6), cen::exception);
+}
+
+TEST(UnicodeString, StringViewConstructorEmpty)
+{
+  using namespace std::string_view_literals;
+
+  const cen::unicode_string str = u""sv;
+  ASSERT_TRUE(str.empty());
+  ASSERT_EQ(0u, str.size());
+  ASSERT_EQ(0u, str.capacity());
+
+  ASSERT_THROW(str.at(0), cen::exception);
+}
+
 TEST(UnicodeString, InitializerListConstructor)
 {
   const cen::unicode_string str = {'a', 'b', 'c'};

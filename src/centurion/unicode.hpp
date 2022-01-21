@@ -3,6 +3,7 @@
 
 #include <cassert>           // assert
 #include <initializer_list>  // initializer_list
+#include <string_view>       // u16string_view
 #include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
@@ -44,6 +45,22 @@ class unicode_string final {
    * \brief Creates an empty string.
    */
   unicode_string() { mData.push_back(0); }
+
+  /**
+   * \brief Creates a Unicode string from a `char16_t` string view.
+   *
+   * \param str the string that will be copied.
+   */
+  /* implicit */ unicode_string(const std::u16string_view str)
+  {
+    reserve(str.size());
+
+    for (const auto ch : str) {
+      mData.push_back(ch);
+    }
+
+    mData.push_back(0);
+  }
 
   /**
    * \brief Creates a Unicode string with the supplied characters.

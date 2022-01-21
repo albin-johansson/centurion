@@ -44,6 +44,8 @@ namespace cen {
 
 /**
  * \brief The main interface for dealing with events.
+ *
+ * \details An example usage of this class can be found \subpage page-event-handler "here".
  */
 class event_handler final {
  public:

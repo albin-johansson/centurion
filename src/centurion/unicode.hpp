@@ -66,7 +66,7 @@ class unicode_string final {
    *
    * \param n the amount of elements to allocate memory for.
    */
-  void reserve(const size_type n) { mData.reserve(n); }
+  void reserve(const size_type n) { mData.reserve(n + 1u); }
 
   /**
    * \brief Appends a Unicode glyph to the end of the string.
@@ -168,7 +168,11 @@ class unicode_string final {
    *
    * \return the number of elements in the string.
    */
-  [[nodiscard]] auto size() const noexcept -> size_type { return mData.size() - 1; }
+  [[nodiscard]] auto size() const noexcept -> size_type
+  {
+    assert(!mData.empty());
+    return mData.size() - 1u;
+  }
 
   /**
    * \brief Returns the capacity of the string.
@@ -178,7 +182,11 @@ class unicode_string final {
    *
    * \return the string character capacity.
    */
-  [[nodiscard]] auto capacity() const noexcept -> size_type { return mData.capacity(); }
+  [[nodiscard]] auto capacity() const noexcept -> size_type
+  {
+    assert(mData.capacity() >= 1u);
+    return mData.capacity() - 1u;
+  }
 
   /**
    * \brief Indicates whether the string is empty.

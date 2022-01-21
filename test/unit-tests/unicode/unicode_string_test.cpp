@@ -9,7 +9,10 @@ TEST(UnicodeString, Defaults)
 {
   const cen::unicode_string str;
   ASSERT_TRUE(str.empty());
+
   ASSERT_EQ(0u, str.size());
+  ASSERT_EQ(0u, str.capacity());
+
   ASSERT_THROW(str.at(0), cen::exception);
 }
 
@@ -163,9 +166,18 @@ TEST(UnicodeString, Empty)
 TEST(UnicodeString, Reserve)
 {
   cen::unicode_string str;
+  ASSERT_EQ(0u, str.capacity());
 
-  str.reserve(10u);
-  ASSERT_EQ(10u, str.capacity());
+  str.reserve(5u);
+  ASSERT_EQ(5u, str.capacity());
+
+  str.append('a', 'b', 'c', 'd', 'e');
+  ASSERT_EQ(5u, str.size());
+  ASSERT_EQ(5u, str.capacity());
+
+  str += 'f';
+  ASSERT_EQ(6u, str.size());
+  ASSERT_LT(5u, str.capacity());
 }
 
 TEST(UnicodeString, EqualityOperator)

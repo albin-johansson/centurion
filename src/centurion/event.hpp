@@ -584,6 +584,8 @@ class event_sink final {
  * \details The signature of all event handlers should be `void(const Event&)`, where `Event`
  * is the subscribed event type.
  *
+ * \details An example usage of this class can be found \subpage page-event-dispatcher "here".
+ *
  * \note It is advisable to always typedef the signature of this class with the events that you
  * want to handle, since the class name quickly grows in size.
  *

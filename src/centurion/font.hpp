@@ -234,7 +234,7 @@ class font final {
    *
    * \param hint the hint that will be used.
    */
-  void set_font_hinting(const font_hint hint) noexcept
+  void set_hinting(const font_hint hint) noexcept
   {
     TTF_SetFontHinting(mFont.get(), to_underlying(hint));
   }
@@ -311,7 +311,7 @@ class font final {
    *
    * \return the current font hint.
    */
-  [[nodiscard]] auto font_hinting() const noexcept -> font_hint
+  [[nodiscard]] auto hinting() const noexcept -> font_hint
   {
     return static_cast<font_hint>(TTF_GetFontHinting(mFont.get()));
   }
@@ -367,7 +367,7 @@ class font final {
    *
    * \return the amount of font faces.
    */
-  [[nodiscard]] auto font_face_count() const noexcept -> int
+  [[nodiscard]] auto face_count() const noexcept -> int
   {
     return static_cast<int>(TTF_FontFaces(mFont.get()));
   }

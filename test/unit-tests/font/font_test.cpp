@@ -116,21 +116,21 @@ TEST(Font, SetOutline)
   ASSERT_FALSE(font.is_outlined());
 }
 
-TEST(Font, SetFontHinting)
+TEST(Font, SetHinting)
 {
   cen::font font{typeWriterPath, 12};
 
-  font.set_font_hinting(cen::font_hint::mono);
-  ASSERT_EQ(font.font_hinting(), cen::font_hint::mono);
+  font.set_hinting(cen::font_hint::mono);
+  ASSERT_EQ(font.hinting(), cen::font_hint::mono);
 
-  font.set_font_hinting(cen::font_hint::none);
-  ASSERT_EQ(font.font_hinting(), cen::font_hint::none);
+  font.set_hinting(cen::font_hint::none);
+  ASSERT_EQ(font.hinting(), cen::font_hint::none);
 
-  font.set_font_hinting(cen::font_hint::light);
-  ASSERT_EQ(font.font_hinting(), cen::font_hint::light);
+  font.set_hinting(cen::font_hint::light);
+  ASSERT_EQ(font.hinting(), cen::font_hint::light);
 
-  font.set_font_hinting(cen::font_hint::normal);
-  ASSERT_EQ(font.font_hinting(), cen::font_hint::normal);
+  font.set_hinting(cen::font_hint::normal);
+  ASSERT_EQ(font.hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, SetKerning)
@@ -217,16 +217,16 @@ TEST(Font, CalcSize)
   ASSERT_GT(size.height, 0);
 }
 
-TEST(Font, FontFaceCount)
+TEST(Font, FaceCount)
 {
   const cen::font font{typeWriterPath, 12};
-  ASSERT_GE(font.font_face_count(), 1);
+  ASSERT_GE(font.face_count(), 1);
 }
 
-TEST(Font, FontHinting)
+TEST(Font, Hinting)
 {
   const cen::font font{typeWriterPath, 12};
-  ASSERT_EQ(font.font_hinting(), cen::font_hint::normal);
+  ASSERT_EQ(font.hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, HasKerning)

@@ -104,6 +104,8 @@ using renderer_handle = basic_renderer<detail::handle_tag>;  ///< A non-owning r
  *
  * \details Rendering primitives such as points, rectangles, lines and circles are supported.
  *
+ * \details An example usage of this class can be found \subpage page-basic-rendering "here".
+ *
  * \note Each window is associated with at most one renderer.
  *
  * \see `renderer`

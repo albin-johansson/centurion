@@ -10,7 +10,10 @@
  *
  * \li \subpage page-minimal-centurion-program "A minimal Centurion program"
  * \li \subpage page-custom-configuration "How to use a custom configuration"
- * \li \subpage page-responsive-window "How to set up a responsive window"
+ *
+ * \section ex-section-audio Audio
+ *
+ * \li \subpage example-music "An interactive example of music playback"
  *
  * \section ex-section-event-handling Event handling
  *
@@ -19,6 +22,7 @@
  *
  * \section ex-section-video Video
  *
+ * \li \subpage page-responsive-window "How to set up a responsive window"
  * \li \subpage page-basic-rendering "Rendering basics"
  *
  * \section ex-section-misc Miscellaneous

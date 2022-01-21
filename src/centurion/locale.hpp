@@ -12,19 +12,49 @@
 
 namespace cen {
 
+/**
+ * \ingroup system
+ * \defgroup locale Locale
+ *
+ * \brief Provides locale information.
+ */
+
+/// \addtogroup locale
+/// \{
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-class Locale final {
+/**
+ * \brief Represents a set of locale entries.
+ *
+ * \see `SDL_Locale`
+ */
+class locale final {
  public:
-  /* Returns the current preferred locales on the system. */
-  [[nodiscard]] static auto GetPreferred() noexcept -> Locale
+  using size_type = std::size_t;
+
+  /**
+   * \brief Returns the current preferred locales on the system.
+   *
+   * \note The preferred locale might change during the execution of the program.
+   *
+   * \return the preferred locales on the system.
+   */
+  [[nodiscard]] static auto get_preferred() noexcept -> locale
   {
-    return Locale{SDL_GetPreferredLocales()};
+    return locale{SDL_GetPreferredLocales()};
   }
 
-  /* Indicates whether a language (and optionally a country) is a part of the locale. */
-  [[nodiscard]] auto HasLanguage(const char* language,
-                                 const char* country = nullptr) const noexcept -> bool
+  /**
+   * \brief Indicates whether a language (and optionally a country) is part of the locale.
+   *
+   * \param language the language that will be checked, e.g. "en" for english.
+   * \param country optional country code that will be checked, e.g. "US" or "GB".
+   *
+   * \return `true` if the language and country is a part of the locale; `false` otherwise.
+   */
+  [[nodiscard]] auto has_language(const char* language,
+                                  const char* country = nullptr) const noexcept -> bool
   {
     assert(language);
 
@@ -48,10 +78,14 @@ class Locale final {
     return false;
   }
 
-  /* Returns the amount of entries in the locale. */
-  [[nodiscard]] auto GetSize() const noexcept -> std::size_t
+  /**
+   * \brief Returns the amount of entries in the locale.
+   *
+   * \return the locale entry count.
+   */
+  [[nodiscard]] auto size() const noexcept -> size_type
   {
-    std::size_t result{0};
+    size_type result{0};
 
     if (const auto* array = mLocales.get()) {
       for (auto index = 0u; array[index].language; ++index) {
@@ -62,16 +96,22 @@ class Locale final {
     return result;
   }
 
-  /* Indicates whether the locale contains a non-null pointer. */
+  /**
+   * \brief Indicates whether the locale contains a non-null pointer.
+   *
+   * \return `true` if the internal pointer is non-null; `false` otherwise.
+   */
   explicit operator bool() const noexcept { return mLocales != nullptr; }
 
  private:
   std::unique_ptr<SDL_Locale, detail::sdl_deleter> mLocales;
 
-  explicit Locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
+  explicit locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
 };
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \} End of group locale
 
 }  // namespace cen
 

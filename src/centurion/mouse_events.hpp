@@ -98,6 +98,8 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
   [[nodiscard]] auto x() const noexcept -> int32 { return mEvent.x; }
 
   [[nodiscard]] auto y() const noexcept -> int32 { return mEvent.y; }
+
+  [[nodiscard]] auto position() const noexcept -> ipoint { return {x(), y()}; }
 };
 
 template <>

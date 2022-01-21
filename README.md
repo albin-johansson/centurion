@@ -89,9 +89,9 @@ int main(int, char**)
   
   bool running = true;
   while (running) {
-    cen::event event;
-    while (event.poll()) {
-      if (event.is<cen::quit_event>()) {
+    cen::event_handler handler;
+    while (handler.poll()) {
+      if (handler.is(cen::event_type::quit)) {
         running = false;
         break;
       }  

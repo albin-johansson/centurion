@@ -38,6 +38,7 @@
 namespace cen {
 
 /**
+ * \brief TTF font and UTF-8/Latin-1/Unicode rendering support.
  * \defgroup text Text
  */
 

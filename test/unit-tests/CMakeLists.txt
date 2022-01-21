@@ -93,8 +93,6 @@ set(SOURCE_FILES
     font/font_hint_test.cpp
     font/font_test.cpp
 
-    hints/hint_priority_test.cpp
-
     input/button_state_test.cpp
 
     input/controller/controller_axis_test.cpp

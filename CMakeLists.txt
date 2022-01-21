@@ -51,23 +51,6 @@ if (CEN_COVERAGE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
 endif ()
 
-add_library(${CENTURION_LIB_TARGET} INTERFACE)
-
-target_include_directories(${CENTURION_LIB_TARGET}
-                           SYSTEM PUBLIC INTERFACE
-                           ${SDL2_INCLUDE_DIR}
-                           ${SDL2_IMAGE_INCLUDE_DIRS}
-                           ${SDL2_TTF_INCLUDE_DIRS}
-                           ${SDL2_MIXER_INCLUDE_DIRS}
-                           )
-
-target_link_libraries(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
-                      ${SDL2_LIBRARY}
-                      ${SDL2_IMAGE_LIBRARIES}
-                      ${SDL2_TTF_LIBRARIES}
-                      ${SDL2_MIXER_LIBRARIES}
-                      )
-
 if (CEN_TESTS)
   add_subdirectory(test)
 endif ()

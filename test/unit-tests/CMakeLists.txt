@@ -201,7 +201,6 @@ if (CEN_AUDIO)
 endif ()
 
 add_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
-add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
                            PRIVATE
@@ -216,27 +215,25 @@ target_include_directories(${CENTURION_TEST_TARGET}
                            ${CEN_LIBRARY_DIR}/cereal
                            )
 
-target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE
-                      ${CENTURION_LIB_TARGET}
-                      gtest)
+cen_include_sdl_headers(${CENTURION_TEST_TARGET})
+
+cen_link_sdl_libs(${CENTURION_TEST_TARGET})
+
+target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE gtest)
+
+cen_set_basic_compiler_options(${CENTURION_TEST_TARGET})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-                         /EHsc
-                         /MP
-                         /W4
-                         /Zc:preprocessor # Enable conforming preprocessor
-                         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
-                         /wd4834          # Disable [[nodiscard]] warnings
+  target_compile_options(${CENTURION_TEST_TARGET}
+                         PRIVATE
+                         /wd4834 # Disable [[nodiscard]] warnings
                          )
 
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
-  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-                         -Wall
-                         -Wextra
-                         -Wpedantic
-                         -Wconversion
+  target_compile_options(${CENTURION_TEST_TARGET}
+                         PRIVATE
                          -Wno-unused-result
+                         -Wno-gnu-zero-variadic-macro-arguments
                          )
 endif ()
 

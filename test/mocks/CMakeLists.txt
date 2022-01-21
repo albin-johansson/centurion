@@ -60,39 +60,12 @@ if (CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
-add_dependencies(${CENTURION_MOCK_TARGET} ${CENTURION_LIB_TARGET})
 
 if (CENTURION_MOCK_FRIENDLY_MODE)
   target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
 add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
-                         /EHsc
-                         /MP
-                         /W4
-                         /Zc:preprocessor # Enable conforming preprocessor
-                         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
-                         /wd4834          # Disable [[nodiscard]] warnings
-                         /wd4702          # Disable "unreachable code" warnings
-                         )
-
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
-  target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
-                         -Wall
-                         -Wextra
-                         -Wpedantic
-                         -Wconversion
-
-                         -Wno-unused-result
-                         -Wno-gnu-zero-variadic-macro-arguments
-                         )
-
-else ()
-  message("[centurion::mocks]: could not determine compiler options")
-endif ()
 
 target_include_directories(${CENTURION_MOCK_TARGET}
                            PRIVATE
@@ -106,9 +79,29 @@ target_include_directories(${CENTURION_MOCK_TARGET}
                            ${gmock_SOURCE_DIR}
                            )
 
-target_link_libraries(${CENTURION_MOCK_TARGET} PRIVATE
-                      ${CENTURION_LIB_TARGET}
+cen_include_sdl_headers(${CENTURION_MOCK_TARGET})
+cen_link_sdl_libs(${CENTURION_MOCK_TARGET})
+
+target_link_libraries(${CENTURION_MOCK_TARGET}
+                      PRIVATE
                       gtest
                       libFFF)
+
+cen_set_basic_compiler_options(${CENTURION_MOCK_TARGET})
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  target_compile_options(${CENTURION_MOCK_TARGET}
+                         PRIVATE
+                         /wd4834 # Disable [[nodiscard]] warnings
+                         /wd4702 # Disable "unreachable code" warnings
+                         )
+
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
+  target_compile_options(${CENTURION_MOCK_TARGET}
+                         PRIVATE
+                         -Wno-unused-result
+                         -Wno-gnu-zero-variadic-macro-arguments
+                         )
+endif ()
 
 add_test(NAME ${CENTURION_MOCK_TARGET} COMMAND ${CENTURION_MOCK_TARGET})

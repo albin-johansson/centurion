@@ -45,3 +45,41 @@ function(copy_directory_post_build target from to)
       ${from}
       ${to})
 endfunction()
+
+function(cen_include_sdl_headers target)
+  target_include_directories(${target}
+                             SYSTEM PRIVATE
+                             ${SDL2_INCLUDE_DIR}
+                             ${SDL2_IMAGE_INCLUDE_DIRS}
+                             ${SDL2_TTF_INCLUDE_DIRS}
+                             ${SDL2_MIXER_INCLUDE_DIRS})
+endfunction()
+
+function(cen_link_sdl_libs target)
+  target_link_libraries(${target}
+                        PRIVATE
+                        ${SDL2_LIBRARY}
+                        ${SDL2_IMAGE_LIBRARIES}
+                        ${SDL2_TTF_LIBRARIES}
+                        ${SDL2_MIXER_LIBRARIES})
+endfunction()
+
+function(cen_set_basic_compiler_options target)
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${target} PRIVATE
+                           /EHsc
+                           /MP
+                           /W4
+                           /Zc:preprocessor # Enable conforming preprocessor
+                           /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
+                           )
+
+  elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
+    target_compile_options(${target} PRIVATE
+                           -Wall
+                           -Wextra
+                           -Wpedantic
+                           -Wconversion
+                           )
+  endif ()
+endfunction()

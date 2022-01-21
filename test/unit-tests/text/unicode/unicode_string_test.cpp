@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <cereal/types/vector.hpp>
+#include "cereal/types/vector.hpp"
 
 #include "centurion/unicode.hpp"
 #include "serialization_utils.hpp"

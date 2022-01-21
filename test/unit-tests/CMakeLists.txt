@@ -17,15 +17,15 @@ set(SOURCE_FILES
     concurrency/thread_test.cpp
     concurrency/try_lock_test.cpp
 
-    core/exception_test.cpp
-    core/features_test.cpp
-    core/log_category_test.cpp
-    core/log_priority_test.cpp
-    core/log_test.cpp
-    core/result_test.cpp
-    core/sdl_string_test.cpp
-    core/to_underlying_test.cpp
-    core/version_test.cpp
+    common/exception_test.cpp
+    common/features_test.cpp
+    common/log_category_test.cpp
+    common/log_priority_test.cpp
+    common/log_test.cpp
+    common/result_test.cpp
+    common/sdl_string_test.cpp
+    common/to_underlying_test.cpp
+    common/version_test.cpp
 
     detail/address_of_test.cpp
     detail/clamp_test.cpp
@@ -34,7 +34,7 @@ set(SOURCE_FILES
     detail/min_test.cpp
     detail/owner_handle_api_test.cpp
 
-    endian/endian_test.cpp
+    system/endian/endian_test.cpp
 
     event/event_base_test.cpp
     event/event_dispatcher_test.cpp
@@ -88,10 +88,10 @@ set(SOURCE_FILES
     filesystem/preferred_path_test.cpp
     filesystem/seek_mode_test.cpp
 
-    font/font_bundle_test.cpp
-    font/font_cache_test.cpp
-    font/font_hint_test.cpp
-    font/font_test.cpp
+    text/font/font_bundle_test.cpp
+    text/font/font_cache_test.cpp
+    text/font/font_hint_test.cpp
+    text/font/font_test.cpp
 
     input/button_state_test.cpp
 
@@ -127,12 +127,12 @@ set(SOURCE_FILES
     input/touch/touch_device_type_test.cpp
     input/touch/touch_test.cpp
 
-    math/area_test.cpp
-    math/rect_test.cpp
-    math/point_test.cpp
-    math/vector3_test.cpp
+    common/math/area_test.cpp
+    common/math/rect_test.cpp
+    common/math/point_test.cpp
+    common/math/vector3_test.cpp
 
-    memory/simd_block_test.cpp
+    common/memory/simd_block_test.cpp
 
     message-box/mb_button_flags_test.cpp
     message-box/mb_button_order_test.cpp
@@ -141,21 +141,21 @@ set(SOURCE_FILES
     message-box/mb_type_test.cpp
     message-box/message_box_test.cpp
 
-    pixels/palette_test.cpp
-    pixels/pixel_format_info_test.cpp
-    pixels/pixel_format_test.cpp
+    video/pixels/palette_test.cpp
+    video/pixels/pixel_format_info_test.cpp
+    video/pixels/pixel_format_test.cpp
 
-    power/battery_test.cpp
-    power/power_state_test.cpp
+    system/power/battery_test.cpp
+    system/power/power_state_test.cpp
 
-    render/graphics_drivers_test.cpp
-    render/renderer_handle_test.cpp
-    render/renderer_test.cpp
+    video/render/graphics_drivers_test.cpp
+    video/render/renderer_handle_test.cpp
+    video/render/renderer_test.cpp
 
-    render/texture/scale_mode_test.cpp
-    render/texture/texture_access_test.cpp
-    render/texture/texture_handle_test.cpp
-    render/texture/texture_test.cpp
+    video/render/texture/scale_mode_test.cpp
+    video/render/texture/texture_access_test.cpp
+    video/render/texture/texture_handle_test.cpp
+    video/render/texture/texture_test.cpp
 
     system/clipboard_test.cpp
     system/counter_test.cpp
@@ -166,7 +166,7 @@ set(SOURCE_FILES
 
     system/locale/locale_test.cpp
 
-    unicode/unicode_string_test.cpp
+    text/unicode/unicode_string_test.cpp
 
     video/color_test.cpp
 

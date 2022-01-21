@@ -11,7 +11,12 @@ set(SOURCE_FILES
     thread_mocks.hpp
     thread_mocks.cpp
 
-    core/initialization_test.cpp
+    common/initialization_test.cpp
+
+    concurrency/condition_test.cpp
+    concurrency/mutex_test.cpp
+    concurrency/scoped_lock_test.cpp
+    concurrency/semaphore_test.cpp
 
     event/event_handler_test.cpp
 
@@ -26,30 +31,27 @@ set(SOURCE_FILES
     input/sensor_test.cpp
     input/touch_test.cpp
 
+    message-box/message_box_test.cpp
+
     system/open_url_test.cpp
     system/platform_test.cpp
     system/power_test.cpp
     system/shared_object_test.cpp
 
-    thread/condition_test.cpp
-    thread/mutex_test.cpp
-    thread/scoped_lock_test.cpp
-    thread/semaphore_test.cpp
-
-    video/gl/gl_context_test.cpp
-    video/gl/gl_core_test.cpp
-    video/gl/gl_library_test.cpp
-
-    video/vulkan/vk_core_test.cpp
-    video/vulkan/vk_library_test.cpp
-
     video/blend_mode_test.cpp
-    video/message_box_test.cpp
-    video/renderer_info_test.cpp
-    video/renderer_test.cpp
     video/surface_test.cpp
     video/window_test.cpp
     video/window_utils_test.cpp
+
+    video/opengl/gl_context_test.cpp
+    video/opengl/gl_core_test.cpp
+    video/opengl/gl_library_test.cpp
+
+    video/render/renderer_info_test.cpp
+    video/render/renderer_test.cpp
+
+    video/vulkan/vk_core_test.cpp
+    video/vulkan/vk_library_test.cpp
     )
 
 if (CENTURION_MOCK_FRIENDLY_MODE)

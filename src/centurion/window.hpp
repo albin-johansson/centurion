@@ -179,30 +179,6 @@ class basic_window final {
   /**
    * \brief Creates a renderer associated with the window.
    *
-   * \param index the index of the render driver.
-   * \param flags the renderer flags that will be used.
-   *
-   * \return the created renderer.
-   *
-   * \throws sdl_error if the renderer cannot be created.
-   *
-   * \see `basic_renderer::default_flags()`
-   */
-  [[nodiscard]] auto create_renderer(const int index,
-                                     const uint32 flags = renderer::default_flags())
-      -> renderer
-  {
-    if (auto* ptr = SDL_CreateRenderer(get(), index, flags)) {
-      return renderer{ptr};
-    }
-    else {
-      throw sdl_error{};
-    }
-  }
-
-  /**
-   * \brief Creates a renderer associated with the window.
-   *
    * \param flags the renderer flags that will be used.
    *
    * \return the created renderer.
@@ -214,7 +190,12 @@ class basic_window final {
   [[nodiscard]] auto create_renderer(const uint32 flags = renderer::default_flags())
       -> renderer
   {
-    return create_renderer(-1, flags);
+    if (auto* ptr = SDL_CreateRenderer(get(), -1, flags)) {
+      return renderer{ptr};
+    }
+    else {
+      throw sdl_error{};
+    }
   }
 
   /**

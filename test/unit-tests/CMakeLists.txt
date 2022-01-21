@@ -129,8 +129,6 @@ set(SOURCE_FILES
     input/touch/touch_device_type_test.cpp
     input/touch/touch_test.cpp
 
-    locale/locale_test.cpp
-
     math/area_test.cpp
     math/rect_test.cpp
     math/point_test.cpp
@@ -167,6 +165,8 @@ set(SOURCE_FILES
     system/platform_test.cpp
     system/ram_test.cpp
     system/shared_object_test.cpp
+
+    system/locale/locale_test.cpp
 
     unicode/unicode_string_test.cpp
 

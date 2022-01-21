@@ -20,6 +20,10 @@
  * \li \subpage page-event-handler "event_handler"
  * \li \subpage page-event-dispatcher "event_dispatcher"
  *
+ * \section ex-section-text Text
+ *
+ * \li \subpage example-font "Overview of basic font API"
+ *
  * \section ex-section-video Video
  *
  * \li \subpage page-responsive-window "How to set up a responsive window"

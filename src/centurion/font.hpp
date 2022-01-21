@@ -105,6 +105,8 @@ struct glyph_metrics final {
  * with fonts, in order to easily deal with fonts of different sizes and more efficient text
  * rendering.
  *
+ * \details An overview of this API can be viewed \subpage example-font "here".
+ *
  * \see `font_cache`
  * \see `font_bundle`
  */

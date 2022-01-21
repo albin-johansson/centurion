@@ -1,26 +1,17 @@
-#ifndef CENTURION_CORE_LOGGING_HPP_
-#define CENTURION_CORE_LOGGING_HPP_
+#ifndef CENTURION_LOGGING_HPP_
+#define CENTURION_LOGGING_HPP_
 
 #include <SDL.h>
 
-#include <array>        // array
 #include <cassert>      // assert
-#include <chrono>       // zoned_time, current_zone, system_clock
-#include <iostream>     // clog
 #include <ostream>      // ostream
 #include <string>       // string
 #include <string_view>  // string_view
 #include <utility>      // forward
 
-#include "../common.hpp"
-#include "../features.hpp"
-#include "../version.hpp"
-
-#if CENTURION_HAS_FEATURE_FORMAT
-
-#include <format>  // format_to_n
-
-#endif  // CENTURION_HAS_FEATURE_FORMAT
+#include "common.hpp"
+#include "features.hpp"
+#include "version.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
@@ -31,11 +22,21 @@ using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
 
 namespace cen {
 
-/// \addtogroup core
+/**
+ * \ingroup common
+ * \defgroup logging
+ *
+ * \brief Provides logging utilities.
+ */
+
+/// \addtogroup logging
 /// \{
 
-/// \brief Represents different logging priorities.
-/// \since 3.0.0
+/**
+ * \brief Represents different logging priorities.
+ *
+ * \see `SDL_LogPriority`
+ */
 enum class log_priority {
   verbose = SDL_LOG_PRIORITY_VERBOSE,
   debug = SDL_LOG_PRIORITY_DEBUG,
@@ -45,8 +46,47 @@ enum class log_priority {
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
 
-/// \brief Represents different logging categories.
-/// \since 3.0.0
+/// \name Log priority functions
+/// \{
+
+[[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
+{
+  switch (priority) {
+    case log_priority::verbose:
+      return "verbose";
+
+    case log_priority::debug:
+      return "debug";
+
+    case log_priority::info:
+      return "info";
+
+    case log_priority::warn:
+      return "warn";
+
+    case log_priority::error:
+      return "error";
+
+    case log_priority::critical:
+      return "critical";
+
+    default:
+      throw exception{"Did not recognize log priority!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
+{
+  return stream << to_string(priority);
+}
+
+/// \} End of log priority functions
+
+/**
+ * \brief Represents different logging categories.
+ *
+ * \see `SDL_LogCategory`
+ */
 enum class log_category {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
@@ -60,49 +100,20 @@ enum class log_category {
   custom = SDL_LOG_CATEGORY_CUSTOM
 };
 
-/**
- * \brief Returns the number of enumerators for the `log_category` enum.
- *
- * \return the number of enumerators.
- *
- * \since 6.3.0
- */
-[[nodiscard]] constexpr auto log_category_count() noexcept -> int
-{
-  return 10;
-}
-
-/**
- * \brief Returns the number of available log priorities.
- *
- * \return the number of log priorities.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto log_priority_count() noexcept -> int
-{
-  return SDL_NUM_LOG_PRIORITIES;
-}
-
-/// \name String conversions
+/// \name Log category functions
 /// \{
 
-/**
- * \brief Returns a textual version of the supplied log category.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `ToString(log_category::app) == "app"`.
- *
- * \param category the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws exception if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto ToString(const log_category category) -> std::string_view
+[[nodiscard]] constexpr auto is_custom(const log_category category) noexcept -> bool
 {
+  return to_underlying(category) >= SDL_LOG_CATEGORY_CUSTOM;
+}
+
+[[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
+{
+  if (is_custom(category)) {
+    return "custom";
+  }
+
   switch (category) {
     case log_category::app:
       return "app";
@@ -139,92 +150,19 @@ enum class log_category {
   }
 }
 
-/**
- * \brief Returns a textual version of the supplied log priority.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `ToString(log_priority::debug) == "debug"`.
- *
- * \param priority the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws exception if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto ToString(const log_priority priority) -> std::string_view
-{
-  switch (priority) {
-    case log_priority::verbose:
-      return "verbose";
-
-    case log_priority::debug:
-      return "debug";
-
-    case log_priority::info:
-      return "info";
-
-    case log_priority::warn:
-      return "warn";
-
-    case log_priority::error:
-      return "error";
-
-    case log_priority::critical:
-      return "critical";
-
-    default:
-      throw exception{"Did not recognize log priority!"};
-  }
-}
-
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a log category enumerator.
- *
- * \param stream the output stream that will be used.
- * \param priority the enumerator that will be printed.
- *
- * \see `ToString(log_category)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
 inline auto operator<<(std::ostream& stream, const log_category category) -> std::ostream&
 {
-  return stream << ToString(category);
+  return stream << to_string(category);
 }
 
-/**
- * \brief Prints a textual representation of a log priority enumerator.
- *
- * \param stream the output stream that will be used.
- * \param priority the enumerator that will be printed.
- *
- * \see `ToString(log_priority)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
-{
-  return stream << ToString(priority);
-}
+/// \} End of log category functions
 
-/// \} End of streaming
-
-/// \name Logging
+/// \name Log functions
 /// \{
 
-/// \brief Resets all of the logging priorities.
-/// \since 7.0.0
+/**
+ * \brief Resets all of the logging priorities.
+ */
 inline void reset_log_priorities() noexcept
 {
   SDL_LogResetPriorities();
@@ -234,8 +172,6 @@ inline void reset_log_priorities() noexcept
  * \brief Sets the priority used by all logging categories.
  *
  * \param priority the priority that will be used.
- *
- * \since 7.0.0
  */
 inline void set_priority(const log_priority priority) noexcept
 {
@@ -249,8 +185,6 @@ inline void set_priority(const log_priority priority) noexcept
  *
  * \param category the category that will be affected.
  * \param priority the new priority.
- *
- * \since 7.0.0
  */
 inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
@@ -262,9 +196,7 @@ inline void set_priority(const log_category category, const log_priority priorit
  *
  * \param category the log category that will be queried.
  *
- * \return the associated log priority.
- *
- * \since 3.0.0
+ * \return the log priority.
  */
 [[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
@@ -272,12 +204,9 @@ inline void set_priority(const log_category category, const log_priority priorit
 }
 
 /**
- * \brief Returns the largest amount of characters that a logged string can contain without
- * being truncated.
+ * \brief Returns the most characters a logged string may contain without being truncated.
  *
  * \return the maximum amount of characters in a logged string.
- *
- * \since 7.0.0
  */
 [[nodiscard]] constexpr auto max_log_message_size() noexcept -> int
 {
@@ -369,82 +298,14 @@ void log_critical(const char* fmt, Args&&... args) noexcept
   log_critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
-inline void log_info_raw(const char* str) noexcept
+inline void unformatted(const char* str)
 {
-  log_info("%s", str);
+  SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "%s", str);
 }
 
-inline void log_info_raw(const std::string& str) noexcept
-{
-  log_info("%s", str.c_str());
-}
+/// \} End of log functions
 
-#if CENTURION_HAS_FEATURE_CONCEPTS
-
-template <is_stateless_callable<log_category, log_priority, const char*> Callable>
-inline void set_output_function([[maybe_unused]] Callable callable) noexcept
-{
-  const auto wrapper = [](void* /*erased*/,
-                          const int category,
-                          const SDL_LogPriority priority,
-                          const char* message) {
-    Callable call;
-    call(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
-  };
-
-  SDL_LogSetOutputFunction(wrapper, nullptr);
-}
-
-template <typename UserData,
-          is_stateless_callable<UserData*, log_category, log_priority, const char*> Callable>
-inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
-{
-  const auto wrapper = [](void* erased,
-                          const int category,
-                          const SDL_LogPriority priority,
-                          const char* message) {
-    Callable tmp;
-    tmp(static_cast<UserData*>(erased),
-        static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
-  };
-
-  SDL_LogSetOutputFunction(wrapper, data);
-}
-
-#if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
-
-inline void use_preset_output_function() noexcept
-{
-  using std::chrono::current_zone;
-  using std::chrono::system_clock;
-  using std::chrono::zoned_time;
-
-  set_output_function(
-      [](const log_category, const log_priority priority, const char* message) {
-        const zoned_time time{current_zone(), system_clock::now()};
-
-        std::array<char, 512> buffer;  // NOLINT
-        const auto result = std::format_to_n(buffer.data(),
-                                             buffer.size() - 1,
-                                             "LOG {:%T} [{}] > {}\n",
-                                             time,
-                                             ToString(priority),
-                                             message);
-        *result.out = '\0';
-
-        std::clog << std::string_view{buffer.data(), result.out};
-      });
-}
-
-#endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
-
-#endif  // CENTURION_HAS_FEATURE_CONCEPTS
-
-/// \} End of logging
-
-/// \} End of core
+/// \} End of group logging
 
 }  // namespace cen
 
@@ -483,4 +344,4 @@ inline void use_preset_output_function() noexcept
 #endif  // NDEBUG
 #endif  // CENTURION_NO_DEBUG_LOG_MACROS
 
-#endif  // CENTURION_CORE_LOGGING_HPP_
+#endif  // CENTURION_LOGGING_HPP_

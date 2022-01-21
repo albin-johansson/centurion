@@ -2,10 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 #include <type_traits>
-
-#include "centurion/core/logging.hpp"
 
 using namespace std::string_literals;
 
@@ -261,14 +259,8 @@ TEST(Font, Get)
   ASSERT_TRUE(font.get());
 }
 
-TEST(Font, ToString)
-{
-  const cen::font font{typeWriterPath, 12};
-  cen::log_info_raw(cen::to_string(font));
-}
-
 TEST(Font, StreamOperator)
 {
   const cen::font font{typeWriterPath, 12};
-  std::clog << font << '\n';
+  std::cout << font << '\n';
 }

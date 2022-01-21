@@ -3,13 +3,12 @@
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
-#include <iostream>     // clog
+#include <iostream>     // cout
 #include <memory>       // unique_ptr
 #include <type_traits>  // ...
 #include <utility>      // move
 
 #include "centurion/color.hpp"
-#include "centurion/core/logging.hpp"
 #include "centurion/window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);
@@ -213,12 +212,7 @@ TEST_F(SurfaceTest, Get)
   ASSERT_TRUE(surface->get());
 }
 
-TEST_F(SurfaceTest, ToString)
-{
-  cen::log_info_raw(cen::to_string(*surface));
-}
-
 TEST_F(SurfaceTest, StreamOperator)
 {
-  std::clog << *surface << '\n';
+  std::cout << *surface << '\n';
 }

@@ -2,11 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 #include <memory>    // unique_ptr
-
-#include "centurion/core/logging.hpp"
-#include "centurion/video.hpp"
 
 class WindowTest : public testing::Test {
  protected:
@@ -81,12 +78,7 @@ TEST_F(WindowTest, DefaultSize)
   ASSERT_EQ(600, size.height);
 }
 
-TEST_F(WindowTest, ToString)
-{
-  cen::log_info_raw(cen::to_string(*window));
-}
-
 TEST_F(WindowTest, StreamOperator)
 {
-  std::clog << *window << '\n';
+  std::cout << *window << '\n';
 }

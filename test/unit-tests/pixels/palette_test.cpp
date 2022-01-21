@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
 #include "centurion/color.hpp"
-#include "centurion/core/logging.hpp"
 #include "centurion/pixels.hpp"
 
 TEST(Palette, Constructor)
@@ -62,14 +61,8 @@ TEST(Palette, GetSize)
   ASSERT_EQ(7, palette.size());
 }
 
-TEST(Palette, ToString)
-{
-  const cen::palette palette{7};
-  cen::log_info_raw(cen::to_string(palette));
-}
-
 TEST(Palette, StreamOperator)
 {
   const cen::palette palette{7};
-  std::clog << palette << '\n';
+  std::cout << palette << '\n';
 }

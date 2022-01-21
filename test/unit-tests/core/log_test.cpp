@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "centurion/core/logging.hpp"
+#include "centurion/logging.hpp"
 
 TEST(Log, SetPriorityAllCategories)
 {

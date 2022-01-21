@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <iostream>
+#include <iostream>  // cout
 
-#include "centurion/core/logging.hpp"
 #include "centurion/keyboard.hpp"
 #include "serialization_utils.hpp"
 
@@ -170,14 +169,9 @@ TEST(ScanCode, InequalityOperator)
   }
 }
 
-TEST(ScanCode, ToString)
-{
-  cen::log_info_raw(cen::to_string(cen::scancodes::x));
-}
-
 TEST(ScanCode, StreamOperator)
 {
-  std::clog << cen::scancodes::x << '\n';
+  std::cout << cen::scancodes::x << '\n';
 }
 
 TEST(ScanCode, Constants)

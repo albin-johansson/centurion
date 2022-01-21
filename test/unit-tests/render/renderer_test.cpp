@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 #include <memory>    // unique_ptr
 
 #include "centurion/color.hpp"
-#include "centurion/core/logging.hpp"
 #include "centurion/font.hpp"
 #include "centurion/math.hpp"
 #include "centurion/render.hpp"
@@ -167,14 +166,9 @@ TEST_F(RendererTest, Capture)
   window->hide();
 }
 
-TEST_F(RendererTest, ToString)
-{
-  cen::log_info_raw(cen::to_string(*renderer));
-}
-
 TEST_F(RendererTest, StreamOperator)
 {
-  std::clog << *renderer << '\n';
+  std::cout << *renderer << '\n';
 }
 
 TEST_F(RendererTest, RendererFlagsEnum)

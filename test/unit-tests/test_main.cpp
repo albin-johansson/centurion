@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "centurion/core/logging.hpp"
+#include "centurion/logging.hpp"
 #include "centurion/initialization.hpp"
 
 int main(int argc, char* argv[])

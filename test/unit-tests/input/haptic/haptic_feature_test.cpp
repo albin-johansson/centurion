@@ -45,5 +45,5 @@ TEST(HapticFeature, ToString)
   ASSERT_EQ("status", cen::ToString(cen::haptic_feature::status));
   ASSERT_EQ("pause", cen::ToString(cen::haptic_feature::pause));
 
-  std::clog << "Haptic feature example: " << cen::haptic_feature::spring << '\n';
+  std::cout << "Haptic feature example: " << cen::haptic_feature::spring << '\n';
 }

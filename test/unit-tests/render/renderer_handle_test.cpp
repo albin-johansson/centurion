@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "centurion/core/logging.hpp"
 #include "centurion/render.hpp"
 #include "centurion/window.hpp"
 
@@ -49,10 +48,8 @@ TEST_F(RendererHandleTest, FromOwningRenderer)
   ASSERT_TRUE(handle.get());
 }
 
-TEST_F(RendererHandleTest, ToStringAndStreamOperator)
+TEST_F(RendererHandleTest, StreamOperator)
 {
   const cen::renderer_handle handle{*renderer};
-
-  std::clog << handle << '\n';
-  cen::log_info_raw(cen::to_string(handle));
+  std::cout << handle << '\n';
 }

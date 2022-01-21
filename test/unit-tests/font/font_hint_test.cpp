@@ -21,5 +21,5 @@ TEST(FontHint, ToString)
   ASSERT_EQ("mono", to_string(cen::font_hint::mono));
   ASSERT_EQ("none", to_string(cen::font_hint::none));
 
-  std::clog << "Font hint example: " << cen::font_hint::normal << '\n';
+  std::cout << "Font hint example: " << cen::font_hint::normal << '\n';
 }

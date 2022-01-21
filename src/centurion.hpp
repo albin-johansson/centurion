@@ -48,6 +48,7 @@
 #include "centurion/joystick_events.hpp"
 #include "centurion/keyboard.hpp"
 #include "centurion/locale.hpp"
+#include "centurion/logging.hpp"
 #include "centurion/math.hpp"
 #include "centurion/memory.hpp"
 #include "centurion/message_box.hpp"
@@ -72,7 +73,6 @@
 
 //
 
-#include "centurion/core/logging.hpp"
 #include "centurion/input/haptic.hpp"
 #include "centurion/input/haptic_condition.hpp"
 #include "centurion/input/haptic_constant.hpp"

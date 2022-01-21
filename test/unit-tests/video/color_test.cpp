@@ -2,11 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>     // clog
+#include <iostream>     // cout
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "centurion/core/logging.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_final_v<cen::color>);
@@ -355,16 +354,9 @@ TEST(Color, AsARGB)
   ASSERT_EQ("#CEF185B3", color.as_argb());
 }
 
-TEST(Color, ToString)
-{
-  constexpr cen::color color{0x12, 0xFA, 0xCC, 0xAD};
-  cen::log_info_raw(cen::to_string(color));
-}
-
 TEST(Color, StreamOperator)
 {
-  constexpr cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
-  std::clog << color << '\n';
+  std::cout << cen::color{0xAA, 0xBB, 0xCC, 0xDD} << '\n';
 }
 
 TEST(Color, Serialization)

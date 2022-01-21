@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "centurion/core/logging.hpp"
 #include "centurion/math.hpp"
 #include "serialization_utils.hpp"
 
@@ -79,21 +78,12 @@ TEST(Area, NotEqComparisonDifferent)
   ASSERT_NE(second, first);
 }
 
-TEST(Area, ToString)
-{
-  constexpr cen::iarea ia{123, 456};
-  constexpr cen::farea fa{78.9f, 23.4f};
-
-  cen::log_info_raw(cen::to_string(ia));
-  cen::log_info_raw(cen::to_string(fa));
-}
-
 TEST(Area, StreamOperator)
 {
   constexpr cen::iarea ia{123, 456};
   constexpr cen::farea fa{12.3f, 45.6f};
-  std::clog << ia << '\n';
-  std::clog << fa << '\n';
+  std::cout << ia << '\n';
+  std::cout << fa << '\n';
 }
 
 TEST(Area, Cast)

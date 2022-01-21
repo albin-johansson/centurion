@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
 
 #include <cmath>        // abs, sqrt
-#include <iostream>     // clog
+#include <iostream>     // cout
 #include <type_traits>  // ...
 
-#include "centurion/core/logging.hpp"
 #include "centurion/math.hpp"
 #include "serialization_utils.hpp"
 
@@ -180,22 +179,10 @@ TEST(Point, Data)
   ASSERT_EQ(456, ip.data()->y);
 }
 
-TEST(Point, ToString)
-{
-  const cen::ipoint ip{123, 456};
-  cen::log_info_raw(cen::to_string(ip));
-
-  const cen::fpoint fp{12.3f, 45.6f};
-  cen::log_info_raw(cen::to_string(fp));
-}
-
 TEST(Point, StreamOperator)
 {
-  const cen::ipoint ip{123, 456};
-  std::clog << ip << '\n';
-
-  const cen::fpoint fp{12.3f, 45.6f};
-  std::clog << fp << '\n';
+  std::cout << cen::ipoint{123, 456} << '\n';
+  std::cout << cen::fpoint{12.3f, 45.6f} << '\n';
 }
 
 TEST(Point, Serialization)

@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <iostream>     // clog
+#include <iostream>     // cout
 #include <type_traits>  // ...
 
-#include "centurion/core/logging.hpp"
 #include "centurion/math.hpp"
 #include "serialization_utils.hpp"
 
@@ -525,16 +524,10 @@ TEST(Rect, Collides)
   }
 }
 
-TEST(Rect, ToString)
-{
-  const cen::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
-  cen::log_info_raw(cen::to_string(rect));
-}
-
 TEST(Rect, StreamOperator)
 {
-  const cen::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
-  std::clog << rect << '\n';
+  std::cout << cen::irect{12, 34, 56, 78} << '\n';
+  std::cout << cen::frect{14.3f, 34.2f, 182.8f, 120.9f} << '\n';
 }
 
 TEST(Rect, GetUnion)

@@ -5,7 +5,7 @@
 #include <type_traits>  // ...
 
 #include "centurion/audio.hpp"
-#include "centurion/core/logging.hpp"
+#include "centurion/logging.hpp"
 
 static_assert(std::is_final_v<cen::music>);
 

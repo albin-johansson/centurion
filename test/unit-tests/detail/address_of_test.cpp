@@ -10,7 +10,7 @@ TEST(AddressOf, Correctness)
     int i = 42;
     const auto str = cen::detail::address_of(&i);
     ASSERT_FALSE(str.empty());
-    std::clog << "detail::address_of output: " << str << '\n';
+    std::cout << "detail::address_of output: " << str << '\n';
   }
 
   {  // Null pointer

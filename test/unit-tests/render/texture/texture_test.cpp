@@ -1,12 +1,11 @@
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
-#include <memory>    // unique_ptr
-#include <type_traits>
+#include <iostream>     // cout
+#include <memory>       // unique_ptr
+#include <type_traits>  // ...
 
 #include "centurion/color.hpp"
-#include "centurion/core/logging.hpp"
 #include "centurion/render.hpp"
 #include "centurion/window.hpp"
 
@@ -181,14 +180,9 @@ TEST_F(TextureTest, Get)
   ASSERT_TRUE(texture->get());
 }
 
-TEST_F(TextureTest, ToString)
-{
-  cen::log_info_raw(cen::to_string(*texture));
-}
-
 TEST_F(TextureTest, StreamOperator)
 {
-  std::clog << *texture << '\n';
+  std::cout << *texture << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

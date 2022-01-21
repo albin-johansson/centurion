@@ -2,7 +2,6 @@
 
 #include <iostream>  // cout
 
-#include "centurion/core/logging.hpp"
 #include "centurion/event.hpp"
 
 using EventDispatcher =
@@ -100,12 +99,6 @@ TEST(EventDispatcher, Size)
 
   cen::event_dispatcher<cen::quit_event, cen::window_event> two;
   ASSERT_EQ(2, two.size());
-}
-
-TEST(EventDispatcher, ToString)
-{
-  EventDispatcher dispatcher;
-  cen::log_info_raw(cen::to_string(dispatcher));
 }
 
 TEST(EventDispatcher, StreamOperator)

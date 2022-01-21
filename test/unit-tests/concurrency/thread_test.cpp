@@ -4,7 +4,7 @@
 #include <type_traits>
 
 #include "centurion/concurrency.hpp"
-#include "centurion/core/logging.hpp"
+#include "centurion/logging.hpp"
 
 namespace {
 
@@ -127,16 +127,10 @@ TEST(Thread, CurrentId)
   ASSERT_EQ(cen::thread::current_id(), SDL_ThreadID());
 }
 
-TEST(Thread, ToString)
-{
-  cen::thread thread{dummy, "myThread"};
-  cen::log_info_raw(cen::to_string(thread));
-}
-
 TEST(Thread, StreamOperator)
 {
-  cen::thread thread{dummy, "myThread"};
-  std::cout << cen::to_string(thread) << '\n';
+  cen::thread thread{dummy, "cen-thread"};
+  std::cout << thread << '\n';
 }
 
 #if CENTURION_HAS_FEATURE_CONCEPTS

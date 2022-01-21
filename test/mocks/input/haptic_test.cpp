@@ -582,5 +582,5 @@ TEST_F(HapticTest, IsPlaying)
 TEST_F(HapticTest, StreamOperator)
 {
   SDL_HapticName_fake.return_val = "foo";
-  std::clog << m_haptic << '\n';
+  std::cout << m_haptic << '\n';
 }

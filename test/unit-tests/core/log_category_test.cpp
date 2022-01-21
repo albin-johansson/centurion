@@ -1,39 +1,39 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "centurion/core/logging.hpp"
+#include "centurion/logging.hpp"
 
 TEST(LogCategory, Values)
 {
-  ASSERT_EQ(10, cen::log_category_count());
-  ASSERT_EQ(cen::to_underlying(cen::log_category::app), SDL_LOG_CATEGORY_APPLICATION);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::error), SDL_LOG_CATEGORY_ERROR);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::assert), SDL_LOG_CATEGORY_ASSERT);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::system), SDL_LOG_CATEGORY_SYSTEM);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::audio), SDL_LOG_CATEGORY_AUDIO);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::video), SDL_LOG_CATEGORY_VIDEO);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::render), SDL_LOG_CATEGORY_RENDER);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::input), SDL_LOG_CATEGORY_INPUT);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::test), SDL_LOG_CATEGORY_TEST);
-  ASSERT_EQ(cen::to_underlying(cen::log_category::custom), SDL_LOG_CATEGORY_CUSTOM);
+  ASSERT_EQ(SDL_LOG_CATEGORY_APPLICATION, to_underlying(cen::log_category::app));
+  ASSERT_EQ(SDL_LOG_CATEGORY_ERROR, to_underlying(cen::log_category::error));
+  ASSERT_EQ(SDL_LOG_CATEGORY_ASSERT, to_underlying(cen::log_category::assert));
+  ASSERT_EQ(SDL_LOG_CATEGORY_SYSTEM, to_underlying(cen::log_category::system));
+  ASSERT_EQ(SDL_LOG_CATEGORY_AUDIO, to_underlying(cen::log_category::audio));
+  ASSERT_EQ(SDL_LOG_CATEGORY_VIDEO, to_underlying(cen::log_category::video));
+  ASSERT_EQ(SDL_LOG_CATEGORY_RENDER, to_underlying(cen::log_category::render));
+  ASSERT_EQ(SDL_LOG_CATEGORY_INPUT, to_underlying(cen::log_category::input));
+  ASSERT_EQ(SDL_LOG_CATEGORY_TEST, to_underlying(cen::log_category::test));
+  ASSERT_EQ(SDL_LOG_CATEGORY_CUSTOM, to_underlying(cen::log_category::custom));
 }
 
 TEST(LogCategory, ToString)
 {
-  ASSERT_THROW(cen::ToString(static_cast<cen::log_category>(SDL_LOG_CATEGORY_CUSTOM + 1)),
-               cen::exception);
+  ASSERT_THROW(to_string(cen::log_category(SDL_LOG_CATEGORY_RESERVED1)), cen::exception);
 
-  ASSERT_EQ("app", cen::ToString(cen::log_category::app));
-  ASSERT_EQ("error", cen::ToString(cen::log_category::error));
-  ASSERT_EQ("assert", cen::ToString(cen::log_category::assert));
-  ASSERT_EQ("system", cen::ToString(cen::log_category::system));
-  ASSERT_EQ("audio", cen::ToString(cen::log_category::audio));
-  ASSERT_EQ("video", cen::ToString(cen::log_category::video));
-  ASSERT_EQ("render", cen::ToString(cen::log_category::render));
-  ASSERT_EQ("input", cen::ToString(cen::log_category::input));
-  ASSERT_EQ("test", cen::ToString(cen::log_category::test));
-  ASSERT_EQ("custom", cen::ToString(cen::log_category::custom));
+  ASSERT_EQ("app", to_string(cen::log_category::app));
+  ASSERT_EQ("error", to_string(cen::log_category::error));
+  ASSERT_EQ("assert", to_string(cen::log_category::assert));
+  ASSERT_EQ("system", to_string(cen::log_category::system));
+  ASSERT_EQ("audio", to_string(cen::log_category::audio));
+  ASSERT_EQ("video", to_string(cen::log_category::video));
+  ASSERT_EQ("render", to_string(cen::log_category::render));
+  ASSERT_EQ("input", to_string(cen::log_category::input));
+  ASSERT_EQ("test", to_string(cen::log_category::test));
 
-  std::clog << "Log category example: " << cen::log_category::video << '\n';
+  ASSERT_EQ("custom", to_string(cen::log_category::custom));
+  ASSERT_EQ("custom", to_string(cen::log_category(SDL_LOG_CATEGORY_CUSTOM + 1)));
+
+  std::cout << "log_category::video == " << cen::log_category::video << '\n';
 }

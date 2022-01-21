@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <iostream>
+#include <iostream>  // cout
 
-#include "centurion/core/logging.hpp"
 #include "centurion/keyboard.hpp"
 #include "serialization_utils.hpp"
 
@@ -203,14 +202,9 @@ TEST(KeyCode, InequalityOperator)
   }
 }
 
-TEST(KeyCode, ToString)
-{
-  cen::log_info_raw(cen::to_string(cen::keycodes::a));
-}
-
 TEST(KeyCode, StreamOperator)
 {
-  std::clog << cen::keycodes::a << '\n';
+  std::cout << cen::keycodes::a << '\n';
 }
 
 TEST(KeyCode, Constants)

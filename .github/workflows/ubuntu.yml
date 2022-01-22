@@ -104,7 +104,7 @@ jobs:
         run: ninja
 
       - name: Run mocked test suite
-        working-directory: ./build/test/mocks
+        working-directory: ./build/test/mocked-tests
         shell: bash
         run: ./mockcenturion
 

@@ -80,5 +80,5 @@ jobs:
 
       - name: Run mocked test suite
         shell: cmd
-        working-directory: ./build/test/mocks
+        working-directory: ./build/test/mocked-tests
         run: mockcenturion

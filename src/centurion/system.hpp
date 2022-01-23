@@ -358,24 +358,26 @@ class shared_object final {
  *
  * \return the time since SDL was initialized.
  */
-[[nodiscard]] inline auto ticks() noexcept(noexcept(u64ms{uint64{}})) -> u64ms
+[[nodiscard]] inline auto ticks64() noexcept(noexcept(u64ms{uint64{}})) -> u64ms
 {
   return u64ms{SDL_GetTicks64()};
 }
 
-#else
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 /**
  * \brief Returns the amount of milliseconds since SDL was initialized.
  *
  * \return the time since SDL was initialized.
+ *
+ * \deprecated since 7.0.0, since underlying `SDL_GetTicks()` is deprecated.
+ *
+ * \see `ticks64()`
  */
-[[nodiscard, deprecated]] inline auto ticks() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
+[[nodiscard, deprecated]] inline auto ticks32() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
 {
   return u32ms{SDL_GetTicks()};
 }
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 /// \} End of system counter functions
 

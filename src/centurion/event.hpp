@@ -276,6 +276,8 @@ class event_handler final {
     return queue_count(type) > 0;
   }
 
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event* { return &mEvent; }
+
  private:
   /* Behold, the beast! */
   using data_type = std::variant<std::monostate,
@@ -310,17 +312,21 @@ class event_handler final {
 
                                  window_event>;
 
-  event_type mType{event_type::last_event}; /* `last_event` is used as the "empty" state */
+  SDL_Event mEvent{}; /* Only here to support data() member function */
+  event_type mType{event_type::last_event};
   data_type mData{};
 
   void reset_state()
   {
+    mEvent = {};
     mType = event_type::last_event;
     mData.emplace<std::monostate>();
   }
 
   void store(const SDL_Event& event) noexcept
   {
+    mEvent = event;
+
     const auto type = static_cast<SDL_EventType>(event.type);
     mType = static_cast<event_type>(type);
 

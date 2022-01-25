@@ -84,6 +84,11 @@ namespace cen {
 enum class font_hint {
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+  light_subpixel = TTF_HINTING_LIGHT_SUBPIXEL,
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
   mono = TTF_HINTING_MONO,
   none = TTF_HINTING_NONE
 };
@@ -99,6 +104,13 @@ enum class font_hint {
 
     case font_hint::light:
       return "light";
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+    case font_hint::light_subpixel:
+      return "light_subpixel";
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
     case font_hint::mono:
       return "mono";

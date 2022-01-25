@@ -48,6 +48,30 @@ TEST(MouseWheelEvent, SetY)
   ASSERT_EQ(y, event.y());
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST(MouseWheelEvent, SetPreciseX)
+{
+  cen::mouse_wheel_event event;
+
+  const float x = 4.5f;
+  event.set_precise_x(x);
+
+  ASSERT_EQ(x, event.precise_x());
+}
+
+TEST(MouseWheelEvent, SetPreciseY)
+{
+  cen::mouse_wheel_event event;
+
+  const float y = -89.3f;
+  event.set_precise_y(y);
+
+  ASSERT_EQ(y, event.precise_y());
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
 TEST(MouseWheelEvent, SetDirection)
 {
   cen::mouse_wheel_event event;

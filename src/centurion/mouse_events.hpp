@@ -173,6 +173,14 @@ class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent> {
 
   void set_y(const int32 yScroll) noexcept { mEvent.y = yScroll; }
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  void set_precise_x(const float x) noexcept { mEvent.preciseX = x; }
+
+  void set_precise_y(const float y) noexcept { mEvent.preciseY = y; }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
     mEvent.direction = to_underlying(direction);
@@ -185,6 +193,14 @@ class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent> {
   [[nodiscard]] auto x() const noexcept -> int32 { return mEvent.x; }
 
   [[nodiscard]] auto y() const noexcept -> int32 { return mEvent.y; }
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  [[nodiscard]] auto precise_x() const noexcept -> float { return mEvent.preciseX; }
+
+  [[nodiscard]] auto precise_y() const noexcept -> float { return mEvent.preciseY; }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   [[nodiscard]] auto direction() const noexcept -> mouse_wheel_direction
   {

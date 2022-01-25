@@ -28,6 +28,7 @@ TEST(WindowEventID, Values)
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
   ASSERT_EQ(SDL_WINDOWEVENT_DISPLAY_CHANGED, to_underlying(id::display_changed));
+  ASSERT_EQ(SDL_WINDOWEVENT_ICCPROF_CHANGED, to_underlying(id::icc_profile_changed));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 }
 
@@ -55,6 +56,7 @@ TEST(WindowEventID, ToString)
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
   ASSERT_EQ("display_changed", to_string(id::display_changed));
+  ASSERT_EQ("icc_profile_changed", to_string(id::icc_profile_changed));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   std::cout << "window_event_id::resized == " << id::resized << '\n';

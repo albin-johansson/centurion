@@ -31,6 +31,7 @@ enum class window_event_id {
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
   display_changed = SDL_WINDOWEVENT_DISPLAY_CHANGED,
+  icc_profile_changed = SDL_WINDOWEVENT_ICCPROF_CHANGED,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   hit_test = SDL_WINDOWEVENT_HIT_TEST
@@ -97,6 +98,9 @@ enum class window_event_id {
 
     case window_event_id::display_changed:
       return "display_changed";
+
+    case window_event_id::icc_profile_changed:
+      return "icc_profile_changed";
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 

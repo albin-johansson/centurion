@@ -144,6 +144,19 @@ TEST(Font, SetKerning)
   ASSERT_FALSE(font.has_kerning());
 }
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+TEST(Font, SetSize)
+{
+  cen::font font{danielPath, 12};
+  ASSERT_EQ(12, font.size());
+
+  ASSERT_EQ(cen::success, font.set_size(16));
+  ASSERT_EQ(16, font.size());
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
 TEST(Font, Size)
 {
   constexpr auto size = 12;

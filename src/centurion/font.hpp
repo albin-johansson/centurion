@@ -184,6 +184,32 @@ class font final {
 
   /// \} End of construction
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Sets the size of the font dynamically.
+   *
+   * \param size the new font size.
+   *
+   * \return `success` if the size was successfully changed; `failure` otherwise.
+   */
+  auto set_size(const int size) -> result
+  {
+    if (size <= 0) {
+      return failure;
+    }
+
+    mSize = size;
+
+    if (TTF_SetFontSize(mFont.get(), mSize) < 0) {
+      return failure;
+    }
+
+    return success;
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
   /// \name Style functions
   /// \{
 

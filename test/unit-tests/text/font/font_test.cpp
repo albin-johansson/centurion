@@ -264,3 +264,33 @@ TEST(Font, StreamOperator)
   const cen::font font{typeWriterPath, 12};
   std::cout << font << '\n';
 }
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+TEST(Font, TTFHarfBuzzVersion)
+{
+  int major{};
+  int minor{};
+  int patch{};
+  TTF_GetHarfBuzzVersion(&major, &minor, &patch);
+
+  const auto ver = cen::ttf_harf_buzz_version();
+  ASSERT_EQ(major, ver.major);
+  ASSERT_EQ(minor, ver.minor);
+  ASSERT_EQ(patch, ver.patch);
+}
+
+TEST(Font, TTFFreeTypeVersion)
+{
+  int major{};
+  int minor{};
+  int patch{};
+  TTF_GetFreeTypeVersion(&major, &minor, &patch);
+
+  const auto ver = cen::ttf_free_type_version();
+  ASSERT_EQ(major, ver.major);
+  ASSERT_EQ(minor, ver.minor);
+  ASSERT_EQ(patch, ver.patch);
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)

@@ -28,6 +28,7 @@
 #include "surface.hpp"
 #include "texture.hpp"
 #include "unicode.hpp"
+#include "version.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -51,6 +52,34 @@ namespace cen {
 
 /// \addtogroup font
 /// \{
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+/**
+ * \brief Returns the version of FreeType2 that SDL_ttf uses.
+ *
+ * \return the FreeType2 version.
+ */
+[[nodiscard]] inline auto ttf_free_type_version() noexcept -> version
+{
+  version ver;
+  TTF_GetFreeTypeVersion(&ver.major, &ver.minor, &ver.patch);
+  return ver;
+}
+
+/**
+ * \brief Returns the versio of HarfBuzz that SDL_ttf uses.
+ *
+ * \return the HarfBuzz version.
+ */
+[[nodiscard]] inline auto ttf_harf_buzz_version() noexcept -> version
+{
+  version ver;
+  TTF_GetHarfBuzzVersion(&ver.major, &ver.minor, &ver.patch);
+  return ver;
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
 enum class font_hint {
   normal = TTF_HINTING_NORMAL,

@@ -4,7 +4,9 @@
 #include <SDL.h>
 
 #include <cassert>   // assert
-#include <optional>  // optional
+#include <cstddef>   // size_t
+#include <memory>    // unique_ptr
+#include <optional>  // optional, nullopt
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 #include <utility>   // pair, make_pair, move
@@ -702,6 +704,36 @@ class basic_window final {
   {
     return SDL_IsScreenKeyboardShown(get()) == SDL_TRUE;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Represents raw ICC profile data.
+   */
+  struct icc_profile_data final {
+    using data_type = std::unique_ptr<void, detail::sdl_deleter>;
+
+    data_type data;      ///< Pointer to the raw ICC profile data.
+    std::size_t size{};  ///< The size of the raw data, in bytes.
+  };
+
+  /**
+   * \brief Returns the ICC profile data for the screen containing the window.
+   *
+   * \return the ICC profile data; an empty optional is returned upon failure.
+   */
+  [[nodiscard]] auto icc_profile() const noexcept -> std::optional<icc_profile_data>
+  {
+    std::size_t size{};
+    if (auto* icc = SDL_GetWindowICCProfile(get(), &size)) {
+      return icc_profile_data{icc, size};
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   /// \} End of queries
 

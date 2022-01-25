@@ -626,30 +626,6 @@ class basic_window final {
   /// \{
 
   /**
-   * \brief Returns the identifier associated with the window.
-   *
-   * \return the window identifier.
-   */
-  [[nodiscard]] auto id() const noexcept -> uint32 { return SDL_GetWindowID(mWindow); }
-
-  /**
-   * \brief Returns the display index associated with the window.
-   *
-   * \return the display index associated with the window; an empty optional is returned if the
-   * display index cannot be obtained.
-   */
-  [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
-  {
-    const auto index = SDL_GetWindowDisplayIndex(mWindow);
-    if (index != -1) {
-      return index;
-    }
-    else {
-      return std::nullopt;
-    }
-  }
-
-  /**
    * \brief Returns the title of the window.
    *
    * \return the window title.
@@ -678,6 +654,35 @@ class basic_window final {
     return opacity;
   }
 
+  /// \} End of getters
+
+  /// \name Queries
+  /// \{
+
+  /**
+   * \brief Returns the identifier associated with the window.
+   *
+   * \return the window identifier.
+   */
+  [[nodiscard]] auto id() const noexcept -> uint32 { return SDL_GetWindowID(mWindow); }
+
+  /**
+   * \brief Returns the display index associated with the window.
+   *
+   * \return the display index associated with the window; an empty optional is returned if the
+   * display index cannot be obtained.
+   */
+  [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
+  {
+    const auto index = SDL_GetWindowDisplayIndex(mWindow);
+    if (index != -1) {
+      return index;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
   /**
    * \brief Returns the pixel format used by the window.
    *
@@ -698,7 +703,7 @@ class basic_window final {
     return SDL_IsScreenKeyboardShown(get()) == SDL_TRUE;
   }
 
-  /// \} End of getters
+  /// \} End of queries
 
   /// \name Flag queries
   /// \{

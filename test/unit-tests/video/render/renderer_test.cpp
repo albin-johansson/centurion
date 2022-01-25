@@ -188,7 +188,7 @@ TEST_F(RendererTest, ToLogical)
   const cen::ipoint real{42, 85};
 
   const auto logical = renderer->to_logical(real);
-  ASSERT_NE(logical, cast<cen::fpoint>(real));
+  ASSERT_NE(logical, cen::cast<cen::fpoint>(real));
 
   ASSERT_EQ(real, renderer->from_logical(logical));
 }

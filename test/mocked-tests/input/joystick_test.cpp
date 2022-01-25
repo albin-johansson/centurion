@@ -15,10 +15,8 @@ extern "C"
   FAKE_VOID_FUNC(SDL_JoystickUpdate)
   FAKE_VOID_FUNC(SDL_LockJoysticks)
   FAKE_VOID_FUNC(SDL_UnlockJoysticks)
-  FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
 
   FAKE_VALUE_FUNC(int, SDL_JoystickRumble, SDL_Joystick*, Uint16, Uint16, Uint32)
-  FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
 
   FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromInstanceID, SDL_JoystickID)
   FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromPlayerIndex, int)
@@ -59,12 +57,25 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasLED, SDL_Joystick*)
   FAKE_VALUE_FUNC(SDL_JoystickPowerLevel, SDL_JoystickCurrentPowerLevel, SDL_Joystick*)
   FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
-  FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
   FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
   FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
 #if SDL_VERSION_ATLEAST(2, 0, 16)
   FAKE_VALUE_FUNC(int, SDL_JoystickSendEffect, SDL_Joystick*, const void*, int)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumble, SDL_Joystick*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumbleTriggers, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 }
 
@@ -80,11 +91,8 @@ class JoystickTest : public testing::Test {
     RESET_FAKE(SDL_LockJoysticks)
     RESET_FAKE(SDL_UnlockJoysticks)
     RESET_FAKE(SDL_JoystickRumble)
-    RESET_FAKE(SDL_JoystickRumbleTriggers)
-    RESET_FAKE(SDL_JoystickSetPlayerIndex)
 
     RESET_FAKE(SDL_JoystickFromInstanceID)
-    RESET_FAKE(SDL_JoystickFromPlayerIndex)
 
     RESET_FAKE(SDL_JoystickGetPlayerIndex)
     RESET_FAKE(SDL_JoystickGetDevicePlayerIndex)
@@ -109,26 +117,40 @@ class JoystickTest : public testing::Test {
 
     RESET_FAKE(SDL_NumJoysticks)
     RESET_FAKE(SDL_JoystickGetBall)
-    RESET_FAKE(SDL_JoystickSetLED)
+
     RESET_FAKE(SDL_JoystickGetAxis)
     RESET_FAKE(SDL_JoystickGetHat)
     RESET_FAKE(SDL_JoystickGetButton)
     RESET_FAKE(SDL_JoystickGetAxisInitialState)
     RESET_FAKE(SDL_JoystickGetAttached)
-    RESET_FAKE(SDL_JoystickHasLED)
     RESET_FAKE(SDL_JoystickCurrentPowerLevel)
     RESET_FAKE(SDL_JoystickNumHats)
     RESET_FAKE(SDL_JoystickNumAxes)
     RESET_FAKE(SDL_JoystickNumBalls)
     RESET_FAKE(SDL_JoystickNumButtons)
     RESET_FAKE(SDL_JoystickName)
-    RESET_FAKE(SDL_JoystickGetSerial)
     RESET_FAKE(SDL_JoystickEventState)
     RESET_FAKE(SDL_JoystickGetGUIDFromString)
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+    RESET_FAKE(SDL_JoystickSetPlayerIndex)
+    RESET_FAKE(SDL_JoystickFromPlayerIndex)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    RESET_FAKE(SDL_JoystickRumbleTriggers)
+    RESET_FAKE(SDL_JoystickGetSerial)
+    RESET_FAKE(SDL_JoystickSetLED)
+    RESET_FAKE(SDL_JoystickHasLED)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
     RESET_FAKE(SDL_JoystickSendEffect)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+    RESET_FAKE(SDL_JoystickHasRumble) RESET_FAKE(SDL_JoystickHasRumbleTriggers)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
   }
 
   cen::joystick_handle joystick{nullptr};
@@ -508,3 +530,29 @@ TEST_F(JoystickTest, SendEffect)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST_F(JoystickTest, HasRumble)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_JoystickHasRumble, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(joystick.has_rumble());
+  ASSERT_TRUE(joystick.has_rumble());
+
+  ASSERT_EQ(2u, SDL_JoystickHasRumble_fake.call_count);
+}
+
+TEST_F(JoystickTest, HasRumbleTriggers)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_JoystickHasRumbleTriggers, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(joystick.has_rumble_triggers());
+  ASSERT_TRUE(joystick.has_rumble_triggers());
+
+  ASSERT_EQ(2u, SDL_JoystickHasRumbleTriggers_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

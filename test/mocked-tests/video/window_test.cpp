@@ -50,6 +50,13 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  FAKE_VALUE_FUNC(int, SDL_SetWindowMouseRect, SDL_Window*, const SDL_Rect*)
+  FAKE_VALUE_FUNC(const SDL_Rect*, SDL_GetWindowMouseRect, SDL_Window*)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 }
 
 class WindowTest : public testing::Test {
@@ -101,6 +108,13 @@ class WindowTest : public testing::Test {
     RESET_FAKE(SDL_FlashWindow)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+    RESET_FAKE(SDL_SetWindowMouseRect)
+    RESET_FAKE(SDL_GetWindowMouseRect)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
   }
 
   cen::window_handle m_window{nullptr};
@@ -756,3 +770,40 @@ TEST_F(WindowTest, Flash)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST_F(WindowTest, ResetMouseRect)
+{
+  m_window.reset_mouse_rect();
+  ASSERT_EQ(1u, SDL_SetWindowMouseRect_fake.call_count);
+  ASSERT_EQ(nullptr, SDL_SetWindowMouseRect_fake.arg1_val);
+}
+
+TEST_F(WindowTest, SetMouseRect)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_SetWindowMouseRect, values.data(), cen::isize(values));
+
+  const cen::irect region{12, 94, 150, 100};
+
+  ASSERT_EQ(cen::failure, m_window.set_mouse_rect(region));
+  ASSERT_EQ(cen::success, m_window.set_mouse_rect(region));
+
+  ASSERT_EQ(2u, SDL_SetWindowMouseRect_fake.call_count);
+}
+
+TEST_F(WindowTest, MouseRect)
+{
+  const SDL_Rect region{75, 32, 83, 53};
+
+  std::array<const SDL_Rect*, 2> values{nullptr, &region};
+  SET_RETURN_SEQ(SDL_GetWindowMouseRect, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.mouse_rect().has_value());
+  ASSERT_EQ(cen::irect(75, 32, 83, 53), m_window.mouse_rect());
+
+  ASSERT_EQ(2u, SDL_GetWindowMouseRect_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

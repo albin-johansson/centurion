@@ -622,6 +622,51 @@ class basic_window final {
     return SDL_GetWindowGrab(mWindow);
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Removes any previous set mouse confinement region.
+   *
+   * \return `success` if nothing goes wrong; `failure` otherwise.
+   *
+   * \see `set_mouse_rect()`
+   */
+  auto reset_mouse_rect() noexcept -> result
+  {
+    return SDL_SetWindowMouseRect(mWindow, nullptr) == 0;
+  }
+
+  /**
+   * \brief Confines the mouse to a specific region of the window.
+   *
+   * \param rect the area of the window to restrict the mouse to.
+   *
+   * \return `success` if the mouse rect was updated; `failure` otherwise.
+   *
+   * \see `reset_mouse_rect()`
+   */
+  auto set_mouse_rect(const irect& rect) noexcept -> result
+  {
+    return SDL_SetWindowMouseRect(mWindow, rect.data()) == 0;
+  }
+
+  /**
+   * \brief Returns the region of the window that the mouse is confined to, if there is one.
+   *
+   * \return the mouse confinement region; an empty optional is returned if there is none.
+   */
+  [[nodiscard]] auto mouse_rect() const noexcept -> std::optional<irect>
+  {
+    if (const auto* rect = SDL_GetWindowMouseRect(mWindow)) {
+      return irect{*rect};
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
   /// \} End of mouse functions
 
   /// \name Getters

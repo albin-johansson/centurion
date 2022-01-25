@@ -25,6 +25,10 @@ TEST(WindowEventID, Values)
   ASSERT_EQ(SDL_WINDOWEVENT_CLOSE, to_underlying(id::close));
   ASSERT_EQ(SDL_WINDOWEVENT_TAKE_FOCUS, to_underlying(id::take_focus));
   ASSERT_EQ(SDL_WINDOWEVENT_HIT_TEST, to_underlying(id::hit_test));
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+  ASSERT_EQ(SDL_WINDOWEVENT_DISPLAY_CHANGED, to_underlying(id::display_changed));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 }
 
 TEST(WindowEventID, ToString)
@@ -48,6 +52,10 @@ TEST(WindowEventID, ToString)
   ASSERT_EQ("close", to_string(id::close));
   ASSERT_EQ("take_focus", to_string(id::take_focus));
   ASSERT_EQ("hit_test", to_string(id::hit_test));
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+  ASSERT_EQ("display_changed", to_string(id::display_changed));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   std::cout << "window_event_id::resized == " << id::resized << '\n';
 }

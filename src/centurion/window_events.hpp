@@ -28,6 +28,11 @@ enum class window_event_id {
   focus_lost = SDL_WINDOWEVENT_FOCUS_LOST,
   close = SDL_WINDOWEVENT_CLOSE,
   take_focus = SDL_WINDOWEVENT_TAKE_FOCUS,
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+  display_changed = SDL_WINDOWEVENT_DISPLAY_CHANGED,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
   hit_test = SDL_WINDOWEVENT_HIT_TEST
 };
 
@@ -87,6 +92,13 @@ enum class window_event_id {
 
     case window_event_id::hit_test:
       return "hit_test";
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+    case window_event_id::display_changed:
+      return "display_changed";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
     default:
       throw exception{"Did not recognize window event ID!"};

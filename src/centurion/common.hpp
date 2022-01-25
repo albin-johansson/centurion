@@ -16,6 +16,7 @@
 #endif  // CENTURION_NO_SDL_TTF
 
 #include <chrono>       // duration
+#include <cstddef>      // size_t
 #include <exception>    // exception
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
@@ -162,6 +163,14 @@ template <typename T>
 using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
 /// \} End of SFINAE helpers
+
+/// \name Array helper aliases
+/// \{
+
+template <typename T, std::size_t Size>
+using bounded_array_ref = T (&)[Size];
+
+/// \} End of array helper aliases
 
 /// \name Pointer tag aliases
 /// \{

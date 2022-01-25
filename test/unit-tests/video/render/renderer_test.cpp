@@ -36,6 +36,16 @@ class RendererTest : public testing::Test {
   inline static std::unique_ptr<cen::texture> texture;
 };
 
+TEST_F(RendererTest, RendererFlagsEnum)
+{
+  ASSERT_EQ(SDL_RENDERER_ACCELERATED,
+            static_cast<SDL_RendererFlags>(cen::renderer::accelerated));
+  ASSERT_EQ(SDL_RENDERER_SOFTWARE, static_cast<SDL_RendererFlags>(cen::renderer::software));
+  ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE,
+            static_cast<SDL_RendererFlags>(cen::renderer::target_textures));
+  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, static_cast<SDL_RendererFlags>(cen::renderer::vsync));
+}
+
 TEST_F(RendererTest, PointerConstructor)
 {
   SDL_Renderer* renderer{};
@@ -171,12 +181,18 @@ TEST_F(RendererTest, StreamOperator)
   std::cout << *renderer << '\n';
 }
 
-TEST_F(RendererTest, RendererFlagsEnum)
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST_F(RendererTest, ToLogical)
 {
-  ASSERT_EQ(SDL_RENDERER_ACCELERATED,
-            static_cast<SDL_RendererFlags>(cen::renderer::accelerated));
-  ASSERT_EQ(SDL_RENDERER_SOFTWARE, static_cast<SDL_RendererFlags>(cen::renderer::software));
-  ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE,
-            static_cast<SDL_RendererFlags>(cen::renderer::target_textures));
-  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, static_cast<SDL_RendererFlags>(cen::renderer::vsync));
+  renderer->set_logical_size({400, 300});
+
+  const cen::ipoint real{42, 85};
+
+  const auto logical = renderer->to_logical(real);
+  ASSERT_NE(logical, cast<cen::fpoint>(real));
+
+  ASSERT_EQ(real, renderer->from_logical(logical));
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

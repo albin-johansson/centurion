@@ -781,6 +781,95 @@ class basic_renderer final {
     return SDL_RenderGetIntegerScale(get());
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Convert real coordinates to logical coordinates.
+   *
+   * \param realX the real window x-coordinate.
+   * \param realY the real window y-coordinate.
+   *
+   * \return the corresponding logical coordinate.
+   *
+   * \see `from_logical()`
+   *
+   * \see `set_scale()`
+   * \see `set_logical_size()`
+   * \see `scale()`
+   * \see `logical_size()`
+   */
+  [[nodiscard]] auto to_logical(const int realX, const int realY) const noexcept -> fpoint
+  {
+    float logicalX{};
+    float logicalY{};
+    SDL_RenderWindowToLogical(get(), realX, realY, &logicalX, &logicalY);
+    return {logicalX, logicalY};
+  }
+
+  /**
+   * \brief Convert real coordinates to logical coordinates.
+   *
+   * \param real the real window coordinates.
+   *
+   * \return the corresponding logical coordinate.
+   *
+   * \see `from_logical()`
+   *
+   * \see `set_scale()`
+   * \see `set_logical_size()`
+   * \see `scale()`
+   * \see `logical_size()`
+   */
+  [[nodiscard]] auto to_logical(const ipoint& real) const noexcept -> fpoint
+  {
+    return to_logical(real.x(), real.y());
+  }
+
+  /**
+   * \brief Convert logical coordinates to real window coordinates.
+   *
+   * \param logicalX the logical x-coordinate.
+   * \param logicalY the logical y-coordinate.
+   *
+   * \return the corresponding real window coordinate.
+   *
+   * \see `to_logical()`
+   *
+   * \see `set_scale()`
+   * \see `set_logical_size()`
+   * \see `scale()`
+   * \see `logical_size()`
+   */
+  [[nodiscard]] auto from_logical(const float logicalX, const float logicalY) const noexcept
+      -> ipoint
+  {
+    int realX{};
+    int realY{};
+    SDL_RenderLogicalToWindow(get(), logicalX, logicalY, &realX, &realY);
+    return {realX, realY};
+  }
+
+  /**
+   * \brief Convert logical coordinates to real window coordinates.
+   *
+   * \param logical the logical coordinate.
+   *
+   * \return the corresponding real window coordinate.
+   *
+   * \see `to_logical()`
+   *
+   * \see `set_scale()`
+   * \see `set_logical_size()`
+   * \see `scale()`
+   * \see `logical_size()`
+   */
+  [[nodiscard]] auto from_logical(const fpoint& logical) const noexcept -> ipoint
+  {
+    return from_logical(logical.x(), logical.y());
+  }
+
+#endif  // #if SDL_VERSION_ATLEAST(2, 0, 18)
+
   /// \} End of resolution-independent rendering
 
   /// \name Setters

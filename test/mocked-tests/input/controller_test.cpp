@@ -120,6 +120,11 @@ extern "C"
                   SDL_SensorType)
   FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumble, SDL_GameController*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumbleTriggers, SDL_GameController*)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 }
 
 class ControllerTest : public testing::Test {
@@ -177,6 +182,11 @@ class ControllerTest : public testing::Test {
     RESET_FAKE(SDL_GameControllerGetSensorDataRate)
     RESET_FAKE(SDL_GameControllerSendEffect)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+    RESET_FAKE(SDL_GameControllerHasRumble)
+    RESET_FAKE(SDL_GameControllerHasRumbleTriggers)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
   }
 
   /**
@@ -638,3 +648,29 @@ TEST_F(ControllerTest, SendEffect)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST_F(ControllerTest, HasRumble)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasRumble, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(controller.has_rumble());
+  ASSERT_TRUE(controller.has_rumble());
+
+  ASSERT_EQ(2u, SDL_GameControllerHasRumble_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasRumbleTriggers)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasRumbleTriggers, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(controller.has_rumble_triggers());
+  ASSERT_TRUE(controller.has_rumble_triggers());
+
+  ASSERT_EQ(2u, SDL_GameControllerHasRumbleTriggers_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

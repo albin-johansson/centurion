@@ -587,6 +587,30 @@ class basic_controller final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Indicates whether the controller has rumble support.
+   *
+   * \return `true` if there is rumble support; `false` otherwise.
+   */
+  [[nodiscard]] auto has_rumble() const noexcept -> bool
+  {
+    return SDL_GameControllerHasRumble(mController) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Indicates whether the controller has rumble support for triggers.
+   *
+   * \return `true` if there is trigger rumble support; `false` otherwise.
+   */
+  [[nodiscard]] auto has_rumble_triggers() const noexcept -> bool
+  {
+    return SDL_GameControllerHasRumbleTriggers(mController) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18
+
   /// \} End of rumble functions
 
   /// \name Button functions

@@ -38,12 +38,10 @@ class RendererTest : public testing::Test {
 
 TEST_F(RendererTest, RendererFlagsEnum)
 {
-  ASSERT_EQ(SDL_RENDERER_ACCELERATED,
-            static_cast<SDL_RendererFlags>(cen::renderer::accelerated));
-  ASSERT_EQ(SDL_RENDERER_SOFTWARE, static_cast<SDL_RendererFlags>(cen::renderer::software));
-  ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE,
-            static_cast<SDL_RendererFlags>(cen::renderer::target_textures));
-  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, static_cast<SDL_RendererFlags>(cen::renderer::vsync));
+  ASSERT_EQ(SDL_RENDERER_ACCELERATED, to_underlying(cen::renderer::accelerated));
+  ASSERT_EQ(SDL_RENDERER_SOFTWARE, to_underlying(cen::renderer::software));
+  ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE, to_underlying(cen::renderer::target_textures));
+  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, to_underlying(cen::renderer::vsync));
 }
 
 TEST_F(RendererTest, PointerConstructor)

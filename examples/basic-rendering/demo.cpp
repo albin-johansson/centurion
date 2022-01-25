@@ -56,6 +56,12 @@ int main(int, char**)
     renderer.render(image, cen::fpoint{600.0, 450.0});
     renderer.render(text, cen::fpoint{450.0, 230.0});
 
+    // Render a triangle, using the low level "geometry" rendering API
+    const SDL_Vertex vertices[] = {{{650, 400}, cen::colors::red.get(), {}},
+                                   {{410, 310}, cen::colors::lime.get(), {}},
+                                   {{450, 550}, cen::colors::blue.get(), {}}};
+    renderer.render_geo(vertices);
+
     // Apply our draw calls to the render target (the window)
     renderer.present();
   }

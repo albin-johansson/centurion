@@ -212,3 +212,17 @@ TEST_F(TextureTest, GetScaleMode)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST_F(TextureTest, UserData)
+{
+  int i = 42;
+  ASSERT_EQ(cen::success, texture->set_user_data(&i));
+
+  auto* ptr = reinterpret_cast<int*>(texture->user_data());
+  ASSERT_TRUE(ptr);
+  ASSERT_EQ(i, *ptr);
+}
+
+#endif  // #if SDL_VERSION_ATLEAST(2, 0, 18)

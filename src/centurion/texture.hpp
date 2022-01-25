@@ -196,6 +196,22 @@ class basic_texture final {
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Sets the user data associated with the texture.
+   *
+   * \param data a pointer to the user data.
+   *
+   * \return `success` if the user data was updated; `failure` otherwise.
+   */
+  auto set_user_data(void* data) noexcept -> result
+  {
+    return SDL_SetTextureUserData(mTexture, data) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
   /// \} End of setters
 
   /// \name Getters
@@ -347,6 +363,17 @@ class basic_texture final {
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Returns the associated user data.
+   *
+   * \return a potentially null pointer to the user data.
+   */
+  [[nodiscard]] auto user_data() noexcept -> void* { return SDL_GetTextureUserData(mTexture); }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   /// \} End of getters
 

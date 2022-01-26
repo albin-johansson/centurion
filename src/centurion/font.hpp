@@ -235,7 +235,7 @@ class font final {
    *
    * \return `success` if the size was successfully changed; `failure` otherwise.
    */
-  auto set_size(const int size) -> result
+  auto set_size(const int size) noexcept -> result
   {
     if (size <= 0) {
       return failure;

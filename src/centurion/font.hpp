@@ -138,6 +138,15 @@ struct glyph_metrics final {
   int advance{};  ///< The advance offset.
 };
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+struct font_dpi final {
+  uint horizontal{};
+  uint vertical{};
+};
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
 /**
  * \brief Represents a TrueType font.
  *
@@ -181,6 +190,39 @@ class font final {
 
   /// \copydoc font(const char*, int)
   font(const std::string& file, const int size) : font{file.c_str(), size} {}
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Opens a font with the specified DPI settings.
+   *
+   * \param file the path to the source font file.
+   * \param size the size of the font.
+   * \param dpi the DPI information.
+   *
+   * \throws exception if the font size is invalid.
+   * \throws ttf_error if the font cannot be opened.
+   */
+  font(const char* file, const int size, const font_dpi& dpi) : mSize{size}
+  {
+    assert(file);
+
+    if (mSize <= 0) {
+      throw exception{"Bad font size!"};
+    }
+
+    mFont.reset(TTF_OpenFontDPI(file, mSize, dpi.horizontal, dpi.vertical));
+    if (!mFont) {
+      throw ttf_error{};
+    }
+  }
+
+  /// \copydoc font(const char*, int, const font_dpi&)
+  font(const std::string& file, const int size, const font_dpi& dpi)
+      : font{file.c_str(), size, dpi}
+  {}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
   /// \} End of construction
 

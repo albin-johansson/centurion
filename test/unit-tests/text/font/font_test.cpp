@@ -30,6 +30,10 @@ TEST(Font, Constructor)
 
   ASSERT_THROW(cen::font(""s, 1), cen::ttf_error);
   ASSERT_THROW(cen::font(std::string{danielPath}, 0), cen::exception);
+
+  cen::font_dpi dpi;
+  ASSERT_THROW(cen::font("", 0, dpi), cen::exception);
+  ASSERT_THROW(cen::font("", 1, dpi), cen::ttf_error);
 }
 
 TEST(Font, ResetStyle)

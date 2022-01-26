@@ -166,7 +166,7 @@ class font final {
   /// \{
 
   /**
-   * \brief Creates a font based on the TTF-font at the specified path.
+   * \brief Opens a font.
    *
    * \param file the file path of the font file.
    * \param size the size of the font.
@@ -178,11 +178,11 @@ class font final {
   {
     assert(file);
 
-    if (size <= 0) {
+    if (mSize <= 0) {
       throw exception{"Bad font size!"};
     }
 
-    mFont.reset(TTF_OpenFont(file, size));
+    mFont.reset(TTF_OpenFont(file, mSize));
     if (!mFont) {
       throw ttf_error{};
     }

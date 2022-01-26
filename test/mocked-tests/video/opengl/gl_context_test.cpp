@@ -38,7 +38,7 @@ TEST_F(OpenGLContextTest, MakeCurrent)
   SET_RETURN_SEQ(SDL_GL_MakeCurrent, values.data(), cen::isize(values));
 
   cen::window_handle window{nullptr};
-  ASSERT_EQ(cen::failure, m_context.MakeCurrent(window));
-  ASSERT_EQ(cen::success, m_context.MakeCurrent(window));
+  ASSERT_EQ(cen::failure, m_context.make_current(window));
+  ASSERT_EQ(cen::success, m_context.make_current(window));
   ASSERT_EQ(2u, SDL_GL_MakeCurrent_fake.call_count);
 }

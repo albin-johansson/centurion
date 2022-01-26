@@ -269,7 +269,7 @@ class basic_gl_context final {
   }
 
   template <typename U>
-  auto MakeCurrent(basic_window<U>& window) -> result
+  auto make_current(basic_window<U>& window) -> result
   {
     assert(window.is_opengl());
     return SDL_GL_MakeCurrent(window.get(), mContext.get()) == 0;

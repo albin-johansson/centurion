@@ -652,7 +652,7 @@ class basic_renderer final {
    * \brief Render arbitrary triangles.
    *
    * \tparam VertexCount the deduced amount of vertices.
-   * \ntparam IndexCount the deduced amount of indices.
+   * \tparam IndexCount the deduced amount of indices.
    *
    * \param vertices the vertices that will be rendered.
    * \param indices the indices of the vertices that will be rendered.

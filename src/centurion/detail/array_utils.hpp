@@ -12,7 +12,7 @@
 namespace cen::detail {
 
 template <typename T, std::size_t Size>
-constexpr void assign(const std::array<T, Size>& array, T (&out)[Size])
+constexpr void assign(const std::array<T, Size>& array, bounded_array_ref<T, Size> out)
 {
   std::size_t index = 0;
   for (auto&& value : array) {
@@ -22,7 +22,8 @@ constexpr void assign(const std::array<T, Size>& array, T (&out)[Size])
 }
 
 template <typename T, std::size_t Size>
-[[nodiscard]] constexpr auto to_array(const T (&data)[Size]) -> std::array<T, Size>
+[[nodiscard]] constexpr auto to_array(bounded_array_ref<const T, Size> data)
+    -> std::array<T, Size>
 {
 #if CENTURION_HAS_FEATURE_TO_ARRAY
   return std::to_array(data);

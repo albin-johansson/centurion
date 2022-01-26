@@ -124,6 +124,14 @@ extern "C"
 #if SDL_VERSION_ATLEAST(2, 0, 18)
   FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumble, SDL_GameController*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumbleTriggers, SDL_GameController*)
+  FAKE_VALUE_FUNC(const char*,
+                  SDL_GameControllerGetAppleSFSymbolsNameForButton,
+                  SDL_GameController*,
+                  SDL_GameControllerButton)
+  FAKE_VALUE_FUNC(const char*,
+                  SDL_GameControllerGetAppleSFSymbolsNameForAxis,
+                  SDL_GameController*,
+                  SDL_GameControllerAxis)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 }
 
@@ -186,6 +194,8 @@ class ControllerTest : public testing::Test {
 #if SDL_VERSION_ATLEAST(2, 0, 18)
     RESET_FAKE(SDL_GameControllerHasRumble)
     RESET_FAKE(SDL_GameControllerHasRumbleTriggers)
+    RESET_FAKE(SDL_GameControllerGetAppleSFSymbolsNameForButton)
+    RESET_FAKE(SDL_GameControllerGetAppleSFSymbolsNameForAxis)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
   }
 
@@ -671,6 +681,32 @@ TEST_F(ControllerTest, HasRumbleTriggers)
   ASSERT_TRUE(controller.has_rumble_triggers());
 
   ASSERT_EQ(2u, SDL_GameControllerHasRumbleTriggers_fake.call_count);
+}
+
+TEST_F(ControllerTest, AppleSFSymbolsNameForButton)
+{
+  std::array<const char*, 2> values{nullptr, "foo"};
+  SET_RETURN_SEQ(SDL_GameControllerGetAppleSFSymbolsNameForButton,
+                 values.data(),
+                 cen::isize(values));
+
+  ASSERT_FALSE(controller.apple_sf_symbols_name(cen::controller_button::x));
+  ASSERT_STREQ("foo", controller.apple_sf_symbols_name(cen::controller_button::x));
+
+  ASSERT_EQ(2u, SDL_GameControllerGetAppleSFSymbolsNameForButton_fake.call_count);
+}
+
+TEST_F(ControllerTest, AppleSFSymbolsNameForAxis)
+{
+  std::array<const char*, 2> values{nullptr, "bar"};
+  SET_RETURN_SEQ(SDL_GameControllerGetAppleSFSymbolsNameForAxis,
+                 values.data(),
+                 cen::isize(values));
+
+  ASSERT_FALSE(controller.apple_sf_symbols_name(cen::controller_axis::left_x));
+  ASSERT_STREQ("bar", controller.apple_sf_symbols_name(cen::controller_axis::left_x));
+
+  ASSERT_EQ(2u, SDL_GameControllerGetAppleSFSymbolsNameForAxis_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

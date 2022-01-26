@@ -724,6 +724,24 @@ class basic_controller final {
     }
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Returns the `sfSymbolsName` property for a button (on Apple platforms).
+   *
+   * \param button the controller button to query.
+   *
+   * \return a potentially null string.
+   */
+  [[nodiscard]] auto apple_sf_symbols_name(const controller_button button) const noexcept
+      -> const char*
+  {
+    const auto value = static_cast<SDL_GameControllerButton>(button);
+    return SDL_GameControllerGetAppleSFSymbolsNameForButton(mController, value);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
   /// \} End of button functions
 
   /// \name Axis functions
@@ -810,6 +828,24 @@ class basic_controller final {
       return std::nullopt;
     }
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Returns the `sfSymbolsName` property for an axis (on Apple platforms).
+   *
+   * \param button the controller axis to query.
+   *
+   * \return a potentially null string.
+   */
+  [[nodiscard]] auto apple_sf_symbols_name(const controller_axis axis) const noexcept
+      -> const char*
+  {
+    const auto value = static_cast<SDL_GameControllerAxis>(axis);
+    return SDL_GameControllerGetAppleSFSymbolsNameForAxis(mController, value);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   /// \} End of axis functions
 

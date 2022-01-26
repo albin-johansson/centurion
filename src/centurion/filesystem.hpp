@@ -396,7 +396,7 @@ class file final {
    * \return the number of objects that were read.
    */
   template <typename T, size_type Size>
-  auto read_to(T (&data)[Size]) noexcept -> size_type
+  auto read_to(bounded_array_ref<T, Size> data) noexcept -> size_type
   {
     return read_to(data, Size);
   }

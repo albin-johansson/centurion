@@ -173,7 +173,7 @@ class font final {
    * \brief Opens a font.
    *
    * \param file the file path of the font file.
-   * \param size the size of the font.
+   * \param size the point size of the font.
    *
    * \throws exception if the font size is not greater than zero.
    * \throws ttf_error if the font cannot be opened.
@@ -201,7 +201,7 @@ class font final {
    * \brief Opens a font with the specified DPI settings.
    *
    * \param file the path to the source font file.
-   * \param size the size of the font.
+   * \param size the point size of the font.
    * \param dpi the DPI information.
    *
    * \throws exception if the font size is invalid.

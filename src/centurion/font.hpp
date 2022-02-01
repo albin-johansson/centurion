@@ -235,9 +235,11 @@ class font final {
   /**
    * \brief Sets the size of the font dynamically.
    *
-   * \param size the new font size.
+   * \param size the new point size.
    *
    * \return `success` if the size was successfully changed; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.18
    */
   auto set_size(const int size) noexcept -> result
   {

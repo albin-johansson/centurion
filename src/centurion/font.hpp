@@ -59,6 +59,8 @@ namespace cen {
  * \brief Returns the version of FreeType2 that SDL_ttf uses.
  *
  * \return the FreeType2 version.
+ *
+ * \atleastsdl 2.0.18
  */
 [[nodiscard]] inline auto ttf_free_type_version() noexcept -> version
 {
@@ -71,6 +73,8 @@ namespace cen {
  * \brief Returns the versio of HarfBuzz that SDL_ttf uses.
  *
  * \return the HarfBuzz version.
+ *
+ * \atleastsdl 2.0.18
  */
 [[nodiscard]] inline auto ttf_harf_buzz_version() noexcept -> version
 {

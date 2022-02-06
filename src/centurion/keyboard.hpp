@@ -247,7 +247,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  * other modifiers were also being pressed other than the left shift key, the same function
  * call would instead evaluate to `false`.
  *
- * \param modifiers the modifiers to check for.
+ * \param mods the modifiers to check for.
  *
  * \return `true` if a subset of the supplied modifiers are active, but none others; `false`
  * otherwise.

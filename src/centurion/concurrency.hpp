@@ -29,7 +29,7 @@
 namespace cen {
 
 /**
- * \defgroup concurrency
+ * \defgroup concurrency Concurrency
  *
  * \brief Provides low-level abstractions related to concurrent programming.
  */

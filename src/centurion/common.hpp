@@ -96,31 +96,6 @@ using u64ms = millis<uint64>;
 /// \name Build and compiler information
 /// \{
 
-/**
- * \var is_debug_build
- * \brief Indicates whether the compiler is in debug build mode.
- */
-
-/**
- * \var is_release_build
- * \brief Indicates whether the compiler is in release build mode.
- */
-
-/**
- * \var on_msvc
- * \brief Indicates whether the compiler is MSVC.
- */
-
-/**
- * \var on_gcc
- * \brief Indicates whether the compiler is GNU (GCC).
- */
-
-/**
- * \var on_clang
- * \brief Indicates whether the compiler is Clang.
- */
-
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
 inline constexpr bool is_release_build = true;

@@ -183,18 +183,34 @@ TEST_F(MusicTest, IsPaused)
 TEST_F(MusicTest, IsFading)
 {
   ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::music::is_fading_in());
+  ASSERT_FALSE(cen::music::is_fading_out());
 
   music->play();
   ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::music::is_fading_in());
+  ASSERT_FALSE(cen::music::is_fading_out());
 
   cen::music::halt();
 
   music->fade_in(cen::music::ms_type{200});
   ASSERT_TRUE(cen::music::is_fading());
+  ASSERT_TRUE(cen::music::is_fading_in());
+  ASSERT_FALSE(cen::music::is_fading_out());
 
   // This should have no effect, since the Music is fading in
   cen::music::fade_out(cen::music::ms_type{50});
-  ASSERT_EQ(cen::fade_status::in, cen::music::get_fade_status());
+  ASSERT_TRUE(cen::music::is_fading());
+  ASSERT_TRUE(cen::music::is_fading_in());
+  ASSERT_FALSE(cen::music::is_fading_out());
+
+  cen::music::halt();
+
+  music->play();
+  cen::music::fade_out(cen::music::ms_type{50});
+  ASSERT_TRUE(cen::music::is_fading());
+  ASSERT_FALSE(cen::music::is_fading_in());
+  ASSERT_TRUE(cen::music::is_fading_out());
 
   cen::music::halt();
 }

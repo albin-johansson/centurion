@@ -335,8 +335,25 @@ class music final
     return status == fade_status::in || status == fade_status::out;
   }
 
-  // TODO is_fading_in()
-  // TODO is_fading_out()
+  /**
+   * \brief Indicates whether any music is currently being faded in.
+   *
+   * \return `true` if music is being faded in; `false` otherwise.
+   */
+  [[nodiscard]] static auto is_fading_in() noexcept -> bool
+  {
+    return get_fade_status() == fade_status::in;
+  }
+
+  /**
+   * \brief Indicates whether any music is currently being faded out.
+   *
+   * \return `true` if music is being faded out; `false` otherwise.
+   */
+  [[nodiscard]] static auto is_fading_out() noexcept -> bool
+  {
+    return get_fade_status() == fade_status::out;
+  }
 
   /// \} End of fade functions
 

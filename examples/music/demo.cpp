@@ -67,7 +67,7 @@ class music_example final {
   void load_messages()
   {
     const auto load = [this](const char* msg, cen::color fg = cen::colors::white) {
-      return mRenderer.create_texture(mFont.render_blended_latin1(msg, fg));
+      return mRenderer.create_texture(mFont.render_blended(msg, fg));
     };
 
     mInstructions.push_back(load(msg_zero));

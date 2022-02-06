@@ -263,7 +263,8 @@ TAB_SIZE               = 2
 
 ALIASES                = "ownerhandle=\details This class is a part of the owner/handle API, the owner/handle versions of this class are" \
                          "serializable=\details This type is serializable, see the associated `serialize` function.\n" \
-                         "atleastsdl=\remarks This function requires at least SDL "
+                         "atleastsdl=\remarks This function requires at least SDL " \
+                         "atleastsdlttf=\remarks This function requires at least SDL_ttf "
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For
@@ -465,7 +466,7 @@ LOOKUP_CACHE_SIZE      = 0
 # DOT_NUM_THREADS setting.
 # Minimum value: 0, maximum value: 32, default value: 1.
 
-NUM_PROC_THREADS       = 0
+NUM_PROC_THREADS       = 1
 
 #---------------------------------------------------------------------------
 # Build related configuration options

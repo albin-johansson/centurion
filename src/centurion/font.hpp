@@ -83,6 +83,16 @@ namespace cen {
   return ver;
 }
 
+inline auto ttf_set_script(const int script) noexcept -> result
+{
+  return TTF_SetScript(script) == 0;
+}
+
+inline auto ttf_set_direction(const int direction) noexcept -> result
+{
+  return TTF_SetDirection(direction) == 0;
+}
+
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
 enum class font_hint {

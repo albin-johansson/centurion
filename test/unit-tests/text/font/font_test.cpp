@@ -31,9 +31,11 @@ TEST(Font, Constructor)
   ASSERT_THROW(cen::font(""s, 1), cen::ttf_error);
   ASSERT_THROW(cen::font(std::string{daniel}, 0), cen::exception);
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
   cen::font_dpi dpi;
   ASSERT_THROW(cen::font("", 0, dpi), cen::exception);
   ASSERT_THROW(cen::font("", 1, dpi), cen::ttf_error);
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 }
 
 TEST(Font, ResetStyle)

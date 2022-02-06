@@ -93,9 +93,9 @@ jobs:
         run: |
           if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" && "${{matrix.CPP_VERSION}}" == "20" ]];
           then
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_EXAMPLES=OFF -GNinja
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -DCEN_EXAMPLES=ON -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -GNinja
           else
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_EXAMPLES=OFF -GNinja
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -DCEN_AUDIO=OFF -GNinja
           fi
 
       - name: Build

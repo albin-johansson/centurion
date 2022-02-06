@@ -35,8 +35,8 @@ set(CENTURION_TEST_TARGET testcenturion)
 set(CENTURION_MOCK_TARGET mockcenturion)
 
 option(CEN_COVERAGE "Enable coverage data" OFF)
-option(CEN_TESTS "Build the Centurion tests" ON)
-option(CEN_EXAMPLES "Build the examples" ON)
+option(CEN_TESTS "Build the Centurion tests" OFF)
+option(CEN_EXAMPLES "Build the examples" OFF)
 
 option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
 

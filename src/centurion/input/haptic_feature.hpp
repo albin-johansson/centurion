@@ -40,24 +40,10 @@ enum class haptic_feature : uint
   pause = SDL_HAPTIC_PAUSE
 };
 
-/// \name String conversions
+/// \name Haptic feature functions
 /// \{
 
-/**
- * \brief Returns a textual version of the supplied haptic feature.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `ToString(haptic_feature::spring) == "spring"`.
- *
- * \param feature the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws exception if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto ToString(const haptic_feature feature) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature) {
     case haptic_feature::constant:
@@ -113,29 +99,12 @@ enum class haptic_feature : uint
   }
 }
 
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a haptic feature enumerator.
- *
- * \param stream the output stream that will be used.
- * \param feature the enumerator that will be printed.
- *
- * \see `ToString(haptic_feature)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
 inline auto operator<<(std::ostream& stream, const haptic_feature feature) -> std::ostream&
 {
-  return stream << ToString(feature);
+  return stream << to_string(feature);
 }
 
-/// \} End of streaming
+/// \} End of haptic feature functions
 
 /// \} End of group input
 

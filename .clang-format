@@ -36,8 +36,8 @@ BreakBeforeConceptDeclarations: true
 
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterClass: false
-  AfterStruct: false
+  AfterClass: true
+  AfterStruct: true
   AfterUnion: false
   AfterEnum: false
   AfterFunction: true

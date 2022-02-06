@@ -206,6 +206,8 @@ class font final {
    *
    * \throws exception if the font size is invalid.
    * \throws ttf_error if the font cannot be opened.
+   *
+   * \atleastsdlttf 2.0.18
    */
   font(const char* file, const int size, const font_dpi& dpi) : mSize{size}
   {
@@ -239,7 +241,7 @@ class font final {
    *
    * \return `success` if the size was successfully changed; `failure` otherwise.
    *
-   * \atleastsdl 2.0.18
+   * \atleastsdlttf 2.0.18
    */
   auto set_size(const int size) noexcept -> result
   {

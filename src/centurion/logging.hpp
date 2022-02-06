@@ -24,7 +24,7 @@ namespace cen {
 
 /**
  * \ingroup common
- * \defgroup logging
+ * \defgroup logging Logging
  *
  * \brief Provides logging utilities.
  */

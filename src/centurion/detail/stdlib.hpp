@@ -1,6 +1,9 @@
 #ifndef CENTURION_DETAIL_STDLIB_HPP_
 #define CENTURION_DETAIL_STDLIB_HPP_
 
+#include "../common.hpp"
+#include "../features.hpp"
+
 #include <cassert>       // assert
 #include <charconv>      // from_chars
 #include <cmath>         // lerp
@@ -12,8 +15,11 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_integral_v
 
-#include "../common.hpp"
-#include "../features.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 /// \cond FALSE
 
@@ -92,7 +98,9 @@ template <typename T = int>
 /* Returns a string that represents the address of the supplied pointer */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  // TODO use std::format if available
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("{}", ptr);
+#else
   if (ptr) {
     std::stringstream stream;
 
@@ -106,6 +114,7 @@ template <typename T = int>
   else {
     return std::string{};
   }
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 }  // namespace cen::detail

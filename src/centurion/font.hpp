@@ -60,7 +60,7 @@ namespace cen {
  *
  * \return the FreeType2 version.
  *
- * \atleastsdl 2.0.18
+ * \atleastsdlttf 2.0.18
  */
 [[nodiscard]] inline auto ttf_free_type_version() noexcept -> version
 {
@@ -74,7 +74,7 @@ namespace cen {
  *
  * \return the HarfBuzz version.
  *
- * \atleastsdl 2.0.18
+ * \atleastsdlttf 2.0.18
  */
 [[nodiscard]] inline auto ttf_harf_buzz_version() noexcept -> version
 {

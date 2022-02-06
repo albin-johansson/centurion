@@ -76,6 +76,7 @@ using int32 = Sint32;
 using int64 = Sint64;
 
 using unicode_t = uint16;
+using unicode32_t = uint32;
 
 template <typename T>
 using seconds = std::chrono::duration<T>;

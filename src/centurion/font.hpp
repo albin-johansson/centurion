@@ -95,7 +95,8 @@ inline auto ttf_set_direction(const int direction) noexcept -> result
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-enum class font_hint {
+enum class font_hint
+{
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
 
@@ -144,7 +145,8 @@ inline auto operator<<(std::ostream& stream, const font_hint hint) -> std::ostre
 
 /// \} End of font hint functions
 
-struct glyph_metrics final {
+struct glyph_metrics final
+{
   int min_x{};    ///< The minimum X-offset.
   int min_y{};    ///< The minimum Y-offset.
   int max_x{};    ///< The maximum X-offset.
@@ -154,7 +156,8 @@ struct glyph_metrics final {
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-struct font_dpi final {
+struct font_dpi final
+{
   uint horizontal{};
   uint vertical{};
 };
@@ -174,7 +177,8 @@ struct font_dpi final {
  * \see `font_cache`
  * \see `font_bundle`
  */
-class font final {
+class font final
+{
  public:
   /// \name Construction
   /// \{
@@ -261,11 +265,28 @@ class font final {
 
     mSize = size;
 
-    if (TTF_SetFontSize(mFont.get(), mSize) < 0) {
+    return TTF_SetFontSize(mFont.get(), mSize) >= 0;
+  }
+
+  /**
+   * \brief Sets the size of the font dynamically.
+   *
+   * \param size the new point size.
+   * \param dpi the DPI size information.
+   *
+   * \return `success` if the size was successfully changed; `failure` otherwise.
+   *
+   * \atleastsdlttf 2.0.18
+   */
+  auto set_size(const int size, const font_dpi& dpi) noexcept -> result
+  {
+    if (size <= 0) {
       return failure;
     }
 
-    return success;
+    mSize = size;
+
+    return TTF_SetFontSizeDPI(mFont.get(), size, dpi.horizontal, dpi.vertical) == 0;
   }
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
@@ -586,15 +607,71 @@ class font final {
 
   /// \} End of glyph information functions
 
+  /// \name SDF functions
+  /// \{
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Sets whether SDF (Signed Distance Field) rendering is enabled.
+   *
+   * \param enable `true` to enable SDF rendering; `false` otherwise.
+   *
+   * \return `success` if nothing goes wrong; `failure` otherwise.
+   *
+   * \atleastsdlttf 2.0.18
+   */
+  auto set_sdf_enabled(const bool enable) noexcept -> result
+  {
+    return TTF_SetFontSDF(mFont.get(), enable ? SDL_TRUE : SDL_FALSE) == 0;
+  }
+
+  /**
+   * \brief Indicates whether SDF rendering is enabled.
+   *
+   * \return `true` if SDF rendering is enabled; `false` otherwise.
+   *
+   * \atleastsdlttf 2.0.18
+   */
+  [[nodiscard]] auto sdf_enabled() const noexcept -> bool
+  {
+    return TTF_GetFontSDF(mFont.get()) == SDL_TRUE;
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /// \} End of SDF functions
+
   /// \name Glyph rendering functions
   /// \{
 
+  /**
+   * \brief Renders a single solid glyph.
+   *
+   * \param glyph the glyph that will be rendered.
+   * \param fg the glyph foreground color.
+   *
+   * \return the rendered glyph.
+   *
+   * \throws ttf_error if the glyph cannot be rendered.
+   */
   [[nodiscard]] auto render_solid_glyph(const unicode_t glyph, const color& fg) const
       -> surface
   {
     return surface{TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
   }
 
+  /**
+   * \brief Renders a single shaded glyph.
+   *
+   * \param glyph the glyph that will be rendered.
+   * \param fg the glyph foreground color.
+   * \param bg the glyph background color.
+   *
+   * \return the rendered glyph.
+   *
+   * \throws ttf_error if the glyph cannot be rendered.
+   */
   [[nodiscard]] auto render_shaded_glyph(const unicode_t glyph,
                                          const color& fg,
                                          const color& bg) const -> surface
@@ -602,15 +679,54 @@ class font final {
     return surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
+  /**
+   * \brief Renders a single blended glyph.
+   *
+   * \param glyph the glyph that will be rendered.
+   * \param fg the glyph foreground color.
+   *
+   * \return the rendered glyph.
+   *
+   * \throws ttf_error if the glyph cannot be rendered.
+   */
   [[nodiscard]] auto render_blended_glyph(const unicode_t glyph, const color& fg) const
       -> surface
   {
     return surface{TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
   }
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /// \copydoc render_solid_glyph()
+  /// \atleastsdlttf 2.0.18
+  [[nodiscard]] auto render_solid_glyph_w(const unicode32_t glyph, const color& fg) const
+      -> surface
+  {
+    return surface{TTF_RenderGlyph32_Solid(get(), glyph, fg.get())};
+  }
+
+  /// \copydoc render_shaded_glyph()
+  /// \atleastsdlttf 2.0.18
+  [[nodiscard]] auto render_shaded_glyph_w(const unicode32_t glyph,
+                                           const color& fg,
+                                           const color& bg) const -> surface
+  {
+    return surface{TTF_RenderGlyph32_Shaded(get(), glyph, fg.get(), bg.get())};
+  }
+
+  /// \copydoc render_blended_glyph()
+  /// \atleastsdlttf 2.0.18
+  [[nodiscard]] auto render_blended_glyph_w(const unicode32_t glyph, const color& fg) const
+      -> surface
+  {
+    return surface{TTF_RenderGlyph32_Blended(get(), glyph, fg.get())};
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
   /// \} End of glyph rendering functions
 
-  /// \name String rendering functions
+  /// \name Measurement functions
   /// \{
 
   /**
@@ -640,135 +756,207 @@ class font final {
     return calc_size(str.c_str());
   }
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /**
+   * \brief Provides information about the measurement of a string.
+   */
+  struct measure_result final
+  {
+    int count{};   ///< The amount of characters that can be rendered
+    int extent{};  ///< The width of the characters that can be rendered
+  };
+
+  /**
+   * \brief Measures a string without rendering it.
+   *
+   * \param str the string that will be measured.
+   * \param width the maximum allowed width of the rendered string.
+   *
+   * \return the measurement result; an empty optional is returned upon failure.
+   *
+   * \atleastsdlttf 2.0.18
+   */
+  [[nodiscard]] auto measure_text(const char* str, const int width) const noexcept
+      -> std::optional<measure_result>
+  {
+    measure_result result;
+    if (TTF_MeasureText(mFont.get(), str, width, &result.extent, &result.count) < 0) {
+      return std::nullopt;
+    }
+    else {
+      return result;
+    }
+  }
+
+  /// \copydoc measure_text()
+  [[nodiscard]] auto measure_utf8(const char* str, const int width) const noexcept
+      -> std::optional<measure_result>
+  {
+    measure_result result;
+    if (TTF_MeasureUTF8(mFont.get(), str, width, &result.extent, &result.count) < 0) {
+      return std::nullopt;
+    }
+    else {
+      return result;
+    }
+  }
+
+  /// \copydoc measure_text()
+  [[nodiscard]] auto measure_unicode(const unicode_string& str, const int width) const noexcept
+      -> std::optional<measure_result>
+  {
+    measure_result result;
+    if (TTF_MeasureUNICODE(mFont.get(), str.data(), width, &result.extent, &result.count) <
+        0) {
+      return std::nullopt;
+    }
+    else {
+      return result;
+    }
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /// \} End of text measurement functions
+
+  /// \name String rendering functions
+  /// \{
+
+  [[nodiscard]] auto render_blended(const char* str, const color& fg) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderText_Blended(get(), str, fg.get())};
+  }
+
+  [[nodiscard]] auto render_blended_utf8(const char* str, const color& fg) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderUTF8_Blended(get(), str, fg.get())};
+  }
+
+  [[nodiscard]] auto render_blended_uni(const unicode_string& str, const color& fg) const
+      -> surface
+  {
+    return surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
+  }
+
   [[nodiscard]] auto render_solid(const char* str, const color& fg) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderText_Solid(get(), str, fg.get())};
+  }
+
+  [[nodiscard]] auto render_solid_utf8(const char* str, const color& fg) const -> surface
   {
     assert(str);
     return surface{TTF_RenderUTF8_Solid(get(), str, fg.get())};
   }
 
-  [[nodiscard]] auto render_solid(const std::string& str, const color& fg) const -> surface
+  [[nodiscard]] auto render_solid_uni(const unicode_string& str, const color& fg) const
+      -> surface
   {
-    return render_solid(str.c_str(), fg);
+    return surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
   }
 
   [[nodiscard]] auto render_shaded(const char* str, const color& fg, const color& bg) const
       -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
-  }
-
-  [[nodiscard]] auto render_shaded(const std::string& str,
-                                   const color& fg,
-                                   const color& bg) const -> surface
-  {
-    return render_shaded(str.c_str(), fg, bg);
-  }
-
-  [[nodiscard]] auto render_blended(const char* str, const color& fg) const -> surface
-  {
-    assert(str);
-    return surface{TTF_RenderUTF8_Blended(get(), str, fg.get())};
-  }
-
-  [[nodiscard]] auto render_blended(const std::string& str, const color& fg) const -> surface
-  {
-    return render_blended(str.c_str(), fg);
-  }
-
-  [[nodiscard]] auto render_wrapped(const char* str, const color& fg, const uint32 wrap) const
-      -> surface
-  {
-    assert(str);
-    return surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
-  }
-
-  [[nodiscard]] auto render_wrapped(const std::string& str,
-                                    const color& fg,
-                                    const uint32 wrap) const -> surface
-  {
-    return render_wrapped(str.c_str(), fg, wrap);
-  }
-
-  [[nodiscard]] auto render_solid_latin1(const char* str, const color& fg) const -> surface
-  {
-    assert(str);
-    return surface{TTF_RenderText_Solid(get(), str, fg.get())};
-  }
-
-  [[nodiscard]] auto render_solid_latin1(const std::string& str, const color& fg) const
-      -> surface
-  {
-    return render_solid_latin1(str.c_str(), fg);
-  }
-
-  [[nodiscard]] auto render_shaded_latin1(const char* str,
-                                          const color& fg,
-                                          const color& bg) const -> surface
-  {
-    assert(str);
     return surface{TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
-                                          const color& fg,
-                                          const color& bg) const -> surface
-  {
-    return render_shaded_latin1(str.c_str(), fg, bg);
-  }
-
-  [[nodiscard]] auto render_blended_latin1(const char* str, const color& fg) const -> surface
+  [[nodiscard]] auto render_shaded_utf8(const char* str,
+                                        const color& fg,
+                                        const color& bg) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Blended(get(), str, fg.get())};
+    return surface{TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto render_blended_latin1(const std::string& str, const color& fg) const
-      -> surface
+  [[nodiscard]] auto render_shaded_uni(const unicode_string& str,
+                                       const color& fg,
+                                       const color& bg) const -> surface
   {
-    return render_blended_latin1(str.c_str(), fg);
+    return surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
-  [[nodiscard]] auto render_wrapped_latin1(const char* str,
-                                           const color& fg,
-                                           const uint32 wrap) const -> surface
+  [[nodiscard]] auto render_blended_wrapped(const char* str,
+                                            const color& fg,
+                                            const uint32 wrap) const -> surface
   {
     assert(str);
     return surface{TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
-  [[nodiscard]] auto render_wrapped_latin1(const std::string& str,
-                                           const color& fg,
-                                           const uint32 wrap) const -> surface
+  [[nodiscard]] auto render_blended_wrapped_utf8(const char* str,
+                                                 const color& fg,
+                                                 const uint32 wrap) const -> surface
   {
-    return render_wrapped_latin1(str.c_str(), fg, wrap);
+    assert(str);
+    return surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
-  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const color& fg) const
-      -> surface
-  {
-    return surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
-  }
-
-  [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
-                                           const color& fg,
-                                           const color& bg) const -> surface
-  {
-    return surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
-  }
-
-  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const color& fg) const
-      -> surface
-  {
-    return surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
-  }
-
-  [[nodiscard]] auto render_wrapped_unicode(const unicode_string& str,
-                                            const color& fg,
-                                            const uint32 wrap) const -> surface
+  [[nodiscard]] auto render_blended_wrapped_uni(const unicode_string& str,
+                                                const color& fg,
+                                                const uint32 wrap) const -> surface
   {
     return surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
   }
+
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  [[nodiscard]] auto render_solid_wrapped(const char* str,
+                                          const color& fg,
+                                          const uint32 wrap) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderText_Solid_Wrapped(get(), str, fg.get(), wrap)};
+  }
+
+  [[nodiscard]] auto render_solid_wrapped_utf8(const char* str,
+                                               const color& fg,
+                                               const uint32 wrap) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderUTF8_Solid_Wrapped(get(), str, fg.get(), wrap)};
+  }
+
+  [[nodiscard]] auto render_solid_wrapped_uni(const unicode_string& str,
+                                              const color& fg,
+                                              const uint32 wrap) const -> surface
+  {
+    return surface{TTF_RenderUNICODE_Solid_Wrapped(get(), str.data(), fg.get(), wrap)};
+  }
+
+  [[nodiscard]] auto render_shaded_wrapped(const char* str,
+                                           const color& fg,
+                                           const color& bg,
+                                           const uint32 wrap) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderText_Shaded_Wrapped(get(), str, fg.get(), bg.get(), wrap)};
+  }
+
+  [[nodiscard]] auto render_shaded_wrapped_utf8(const char* str,
+                                                const color& fg,
+                                                const color& bg,
+                                                const uint32 wrap) const -> surface
+  {
+    assert(str);
+    return surface{TTF_RenderUTF8_Shaded_Wrapped(get(), str, fg.get(), bg.get(), wrap)};
+  }
+
+  [[nodiscard]] auto render_shaded_wrapped_uni(const unicode_string& str,
+                                               const color& fg,
+                                               const color& bg,
+                                               const uint32 wrap) const -> surface
+  {
+    return surface{
+        TTF_RenderUNICODE_Shaded_Wrapped(get(), str.data(), fg.get(), bg.get(), wrap)};
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
   /// \} End of string rendering functions
 
@@ -789,6 +977,13 @@ class font final {
     const auto style = TTF_GetFontStyle(mFont.get());
     TTF_SetFontStyle(mFont.get(), style & ~mask);
   }
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+
+ public:
+  font() = default;
+
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /// \name Font functions
@@ -836,7 +1031,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
  * \see `font`
  * \see `font_bundle`
  */
-class font_cache final {
+class font_cache final
+{
  public:
   using id_type = std::size_t;
   using size_type = std::size_t;
@@ -844,7 +1040,8 @@ class font_cache final {
   /**
    * \brief Provides cached information about a glyph in a font.
    */
-  struct glyph_data final {
+  struct glyph_data final
+  {
     texture glyph;          ///< The cached texture of the glyph.
     glyph_metrics metrics;  ///< The metrics associate with the glyph.
   };
@@ -945,324 +1142,33 @@ class font_cache final {
   /// \{
 
   /**
-   * \brief Renders a UTF-8 string to a texture and caches it.
+   * \brief Caches a rendered string as a texture.
    *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
+   * \details Whilst this function takes any surface as input, it is intended to be used in
+   * collaboration with the text rendering functions provided by the `font` class. As a result,
+   * the related functions use "string" in their names, e.g. `find_string()` and
+   * `has_string()`.
    *
-   * \return the identifier assigned to the texture.
+   * \param renderer the associated renderer.
+   * \param surface the surface obtained through one of the `font` rendering functions.
    *
-   * \see `font::render_solid()`
+   * \return the identifier assigned to the cached string.
+   *
+   * \see `find_string()`
+   * \see `has_string()`
+   * \see `get_string()`
    */
   template <typename T>
-  auto store_solid(basic_renderer<T>& renderer, const char* str, const color& fg) -> id_type
+  auto store(basic_renderer<T>& renderer, const surface& surface) -> id_type
   {
-    assert(str);
-    return store(renderer, mFont.render_solid(str, fg));
+    const auto id = mNextStringId;
+    assert(mStrings.find(id) == mStrings.end());
+
+    mStrings.try_emplace(id, renderer.create_texture(surface));
+    ++mNextStringId;
+
+    return id;
   }
-
-  /// \copydoc store_solid()
-  template <typename T>
-  auto store_solid(basic_renderer<T>& renderer, const std::string& str, const color& fg)
-      -> id_type
-  {
-    return store_solid(renderer, str.c_str(), fg);
-  }
-
-  /**
-   * \brief Renders a UTF-8 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the foreground color of the rendered text.
-   * \param bg the background color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_shaded()`
-   */
-  template <typename T>
-  auto store_shaded(basic_renderer<T>& renderer,
-                    const char* str,
-                    const color& fg,
-                    const color& bg) -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_shaded(str, fg, bg));
-  }
-
-  /// \copydoc store_shaded()
-  template <typename T>
-  auto store_shaded(basic_renderer<T>& renderer,
-                    const std::string& str,
-                    const color& fg,
-                    const color& bg) -> id_type
-  {
-    return store_shaded(renderer, str.c_str(), fg, bg);
-  }
-
-  /**
-   * \brief Renders a UTF-8 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_blended()`
-   */
-  template <typename T>
-  auto store_blended(basic_renderer<T>& renderer, const char* str, const color& fg) -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_blended(str, fg));
-  }
-
-  /// \copydoc store_blended()
-  template <typename T>
-  auto store_blended(basic_renderer<T>& renderer, const std::string& str, const color& fg)
-      -> id_type
-  {
-    return store_blended(renderer, str.c_str(), fg);
-  }
-
-  /**
-   * \brief Renders a UTF-8 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   * \param wrap the width in pixels after which the text will be wrapped.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_wrapped()`
-   */
-  template <typename T>
-  auto store_wrapped(basic_renderer<T>& renderer,
-                     const char* str,
-                     const color& fg,
-                     const uint32 wrap) -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_wrapped(str, fg, wrap));
-  }
-
-  /// \copydoc store_wrapped()
-  template <typename T>
-  auto store_wrapped(basic_renderer<T>& renderer,
-                     const std::string& str,
-                     const color& fg,
-                     const uint32 wrap) -> id_type
-  {
-    return store_wrapped(renderer, str.c_str(), fg, wrap);
-  }
-
-  /**
-   * \brief Renders a Latin-1 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_solid_latin1()`
-   */
-  template <typename T>
-  auto store_solid_latin1(basic_renderer<T>& renderer, const char* str, const color& fg)
-      -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_solid_latin1(str, fg));
-  }
-
-  /// \copydoc store_solid_latin1()
-  template <typename T>
-  auto store_solid_latin1(basic_renderer<T>& renderer, const std::string& str, const color& fg)
-      -> id_type
-  {
-    return store_solid_latin1(renderer, str.c_str(), fg);
-  }
-
-  /**
-   * \brief Renders a Latin-1 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the foreground color of the rendered text.
-   * \param bg the background color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_shaded_latin1()`
-   */
-  template <typename T>
-  auto store_shaded_latin1(basic_renderer<T>& renderer,
-                           const char* str,
-                           const color& fg,
-                           const color& bg) -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_shaded_latin1(str, fg, bg));
-  }
-
-  /// \copydoc store_shaded_latin1()
-  template <typename T>
-  auto store_shaded_latin1(basic_renderer<T>& renderer,
-                           const std::string& str,
-                           const color& fg,
-                           const color& bg) -> id_type
-  {
-    return store_shaded_latin1(renderer, str.c_str(), fg, bg);
-  }
-
-  /**
-   * \brief Renders a Latin-1 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_blended_latin1()`
-   */
-  template <typename T>
-  auto store_blended_latin1(basic_renderer<T>& renderer, const char* str, const color& fg)
-      -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_blended_latin1(str, fg));
-  }
-
-  /// \copydoc store_blended_latin1()
-  template <typename T>
-  auto store_blended_latin1(basic_renderer<T>& renderer,
-                            const std::string& str,
-                            const color& fg) -> id_type
-  {
-    return store_blended_latin1(renderer, str.c_str(), fg);
-  }
-
-  /**
-   * \brief Renders a Latin-1 string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   * \param wrap the width in pixels after which the text will be wrapped.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_wrapped_latin1()`
-   */
-  template <typename T>
-  auto store_wrapped_latin1(basic_renderer<T>& renderer,
-                            const char* str,
-                            const color& fg,
-                            const uint32 wrap) -> id_type
-  {
-    assert(str);
-    return store(renderer, mFont.render_wrapped_latin1(str, fg, wrap));
-  }
-
-  /// \copydoc store_wrapped_latin1()
-  template <typename T>
-  auto store_wrapped_latin1(basic_renderer<T>& renderer,
-                            const std::string& str,
-                            const color& fg,
-                            const uint32 wrap) -> id_type
-  {
-    return store_wrapped_latin1(renderer, str.c_str(), fg, wrap);
-  }
-
-  /**
-   * \brief Renders a Unicode string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_solid_unicode()`
-   */
-  template <typename T>
-  auto store_solid_unicode(basic_renderer<T>& renderer,
-                           const unicode_string& str,
-                           const color& fg) -> id_type
-  {
-    return store(renderer, mFont.render_solid_unicode(str, fg));
-  }
-
-  /**
-   * \brief Renders a Unicode string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the foreground color of the rendered text.
-   * \param bg the background color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_shaded_unicode()`
-   */
-  template <typename T>
-  auto store_shaded_unicode(basic_renderer<T>& renderer,
-                            const unicode_string& str,
-                            const color& fg,
-                            const color& bg) -> id_type
-  {
-    return store(renderer, mFont.render_shaded_unicode(str, fg, bg));
-  }
-
-  /**
-   * \brief Renders a Unicode string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_blended_unicode()`
-   */
-  template <typename T>
-  auto store_blended_unicode(basic_renderer<T>& renderer,
-                             const unicode_string& str,
-                             const color& fg) -> id_type
-  {
-    return store(renderer, mFont.render_blended_unicode(str, fg));
-  }
-
-  /**
-   * \brief Renders a Unicode string to a texture and caches it.
-   *
-   * \param renderer the renderer that will be used to create the string texture.
-   * \param str the string that will be rendered and cached.
-   * \param fg the color of the rendered text.
-   * \param wrap the width in pixels after which the text will be wrapped.
-   *
-   * \return the identifier assigned to the texture.
-   *
-   * \see `font::render_wrapped_unicode()`
-   */
-  template <typename T>
-  auto store_wrapped_unicode(basic_renderer<T>& renderer,
-                             const unicode_string& str,
-                             const color& fg,
-                             const uint32 wrap) -> id_type
-  {
-    return store(renderer, mFont.render_wrapped_unicode(str, fg, wrap));
-  }
-
-  /// \} End of string caching functions
-
-  /// \name String cache query functions
-  /// \{
 
   /**
    * \brief Returns the cached string texture for an identifier, if there is one.
@@ -1314,7 +1220,7 @@ class font_cache final {
     }
   }
 
-  /// \} End of string cache query functions
+  /// \} End of string caching functions
 
   /// \name Glyph caching functions
   /// \{
@@ -1485,18 +1391,6 @@ class font_cache final {
   {
     return renderer.create_texture(mFont.render_blended_glyph(glyph, renderer.get_color()));
   }
-
-  template <typename T>
-  auto store(basic_renderer<T>& renderer, surface&& surface) -> id_type
-  {
-    const auto id = mNextStringId;
-    assert(mStrings.find(id) == mStrings.end());
-
-    mStrings.try_emplace(id, renderer.create_texture(surface));
-    ++mNextStringId;
-
-    return id;
-  }
 };
 
 /// \name Font cache functions
@@ -1542,7 +1436,8 @@ inline auto operator<<(std::ostream& stream, const font_cache& cache) -> std::os
  * \see `font`
  * \see `font_cache`
  */
-class font_bundle final {
+class font_bundle final
+{
  public:
   using id_type = std::size_t;
   using size_type = std::size_t;
@@ -1711,7 +1606,8 @@ class font_bundle final {
   [[nodiscard]] auto pool_count() const -> size_type { return mPools.size(); }
 
  private:
-  struct font_pool final {
+  struct font_pool final
+  {
     std::string path;
     std::unordered_map<int, font_cache> caches;  ///< Size -> Cache
   };

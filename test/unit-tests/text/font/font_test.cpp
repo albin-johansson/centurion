@@ -310,4 +310,18 @@ TEST(Font, TTFFreeTypeVersion)
   ASSERT_EQ(patch, ver.patch);
 }
 
+TEST(Font, MeasureText)
+{
+  const cen::font font{type_writer, 12};
+
+  const auto measurement = font.measure_text("foobar", 1000);
+  ASSERT_TRUE(measurement.has_value());
+
+  const auto size = font.calc_size("foobar");
+  ASSERT_TRUE(size.has_value());
+
+  ASSERT_EQ(6, measurement->count);
+  ASSERT_EQ(size->width, measurement->extent);
+}
+
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)

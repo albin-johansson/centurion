@@ -38,66 +38,6 @@ TEST_F(FontCacheTest, Constructors)
   EXPECT_ANY_THROW(cen::font_cache("foo.ttf", 12));
 }
 
-TEST_F(FontCacheTest, StoreBlendedUnicode)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreWrappedUnicode)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreSolidUnicode)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreShadedUnicode)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreBlendedUTF8)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreWrappedUTF8)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreSolidUTF8)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreShadedUTF8)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreBlendedLatin1)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreWrappedLatin1)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreSolidLatin1)
-{
-  // TODO
-}
-
-TEST_F(FontCacheTest, StoreShadedLatin1)
-{
-  // TODO
-}
-
 TEST_F(FontCacheTest, HasGlyph)
 {
   cache.store_latin1_glyphs(*renderer);
@@ -241,7 +181,8 @@ TEST_F(FontCacheTest, GetString)
 {
   cache.store_latin1_glyphs(*renderer);
 
-  const auto id = cache.store_blended_latin1(*renderer, "bar!?<,.", cen::colors::white);
+  const auto& font = cache.get_font();
+  const auto id = cache.store(*renderer, font.render_blended("bar!?<,.", cen::colors::white));
   ASSERT_TRUE(cache.has_string(id));
 
   ASSERT_TRUE(cache.get_string(id).get());
@@ -252,7 +193,8 @@ TEST_F(FontCacheTest, FindString)
 {
   cache.store_basic_latin_glyphs(*renderer);
 
-  const auto id = cache.store_blended_latin1(*renderer, "bar!?<,.", cen::colors::white);
+  const auto& font = cache.get_font();
+  const auto id = cache.store(*renderer, font.render_blended("bar!?<,.", cen::colors::white));
 
   ASSERT_NE(cache.find_string(id), nullptr);
   ASSERT_EQ(cache.find_string(id + 1), nullptr);

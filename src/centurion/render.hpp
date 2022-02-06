@@ -50,7 +50,8 @@ namespace cen {
 /// \addtogroup render
 /// \{
 
-enum class renderer_flip {
+enum class renderer_flip
+{
   none = SDL_FLIP_NONE,
   horizontal = SDL_FLIP_HORIZONTAL,
   vertical = SDL_FLIP_VERTICAL
@@ -86,7 +87,8 @@ inline auto operator<<(std::ostream& stream, const renderer_flip flip) -> std::o
 /**
  * \brief Provides information about rendering scale.
  */
-struct renderer_scale final {
+struct renderer_scale final
+{
   float x{};  ///< The x-axis scaling.
   float y{};  ///< The y-axis scaling.
 };
@@ -113,7 +115,8 @@ using renderer_handle = basic_renderer<detail::handle_tag>;  ///< A non-owning r
  * \see `renderer_info`
  */
 template <typename T>
-class basic_renderer final {
+class basic_renderer final
+{
  public:
   /// \brief Represents different renderer features.
   enum renderer_flags : uint32 {
@@ -1205,7 +1208,8 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
  *
  * \see `get_info(const basic_renderer&)`
  */
-class renderer_info final {
+class renderer_info final
+{
   template <typename T>
   friend auto get_info(const basic_renderer<T>& renderer) noexcept
       -> std::optional<renderer_info>;

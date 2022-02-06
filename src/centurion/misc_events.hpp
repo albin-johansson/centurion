@@ -23,7 +23,8 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-class quit_event final : public event_base<SDL_QuitEvent> {
+class quit_event final : public event_base<SDL_QuitEvent>
+{
  public:
   quit_event() : event_base{event_type::quit} {}
 
@@ -40,7 +41,8 @@ inline auto as_sdl_event(const event_base<SDL_QuitEvent>& event) -> SDL_Event
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-enum class display_event_id {
+enum class display_event_id
+{
   none = SDL_DISPLAYEVENT_NONE,
   orientation = SDL_DISPLAYEVENT_ORIENTATION,
   connected = SDL_DISPLAYEVENT_CONNECTED,
@@ -77,7 +79,8 @@ inline auto operator<<(std::ostream& stream, const display_event_id id) -> std::
 
 /// \} End of display event ID functions
 
-class display_event final : public event_base<SDL_DisplayEvent> {
+class display_event final : public event_base<SDL_DisplayEvent>
+{
  public:
   display_event() : event_base{event_type::display} {}
 
@@ -112,7 +115,8 @@ inline auto as_sdl_event(const event_base<SDL_DisplayEvent>& event) -> SDL_Event
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-class dollar_gesture_event final : public event_base<SDL_DollarGestureEvent> {
+class dollar_gesture_event final : public event_base<SDL_DollarGestureEvent>
+{
  public:
   dollar_gesture_event() : event_base{event_type::dollar_gesture} {}
 
@@ -153,7 +157,8 @@ inline auto as_sdl_event(const event_base<SDL_DollarGestureEvent>& event) -> SDL
   return e;
 }
 
-class drop_event final : public event_base<SDL_DropEvent> {
+class drop_event final : public event_base<SDL_DropEvent>
+{
  public:
   drop_event() : event_base{event_type::drop_file} {}
 
@@ -196,7 +201,8 @@ inline auto as_sdl_event(const event_base<SDL_DropEvent>& event) -> SDL_Event
   return e;
 }
 
-class keyboard_event final : public event_base<SDL_KeyboardEvent> {
+class keyboard_event final : public event_base<SDL_KeyboardEvent>
+{
  public:
   keyboard_event() : event_base{event_type::key_down} {}
 
@@ -282,7 +288,8 @@ inline auto as_sdl_event(const event_base<SDL_KeyboardEvent>& event) -> SDL_Even
   return e;
 }
 
-class multi_gesture_event final : public event_base<SDL_MultiGestureEvent> {
+class multi_gesture_event final : public event_base<SDL_MultiGestureEvent>
+{
  public:
   multi_gesture_event() : event_base{event_type::multi_gesture} {}
 
@@ -322,7 +329,8 @@ inline auto as_sdl_event(const event_base<SDL_MultiGestureEvent>& event) -> SDL_
   return e;
 }
 
-class sensor_event final : public event_base<SDL_SensorEvent> {
+class sensor_event final : public event_base<SDL_SensorEvent>
+{
  public:
   using data_type = std::array<float, 6>;
 
@@ -347,7 +355,8 @@ inline auto as_sdl_event(const event_base<SDL_SensorEvent>& event) -> SDL_Event
   return e;
 }
 
-class text_editing_event final : public event_base<SDL_TextEditingEvent> {
+class text_editing_event final : public event_base<SDL_TextEditingEvent>
+{
  public:
   text_editing_event() : event_base{event_type::text_editing} { check_length(); }
 
@@ -388,7 +397,8 @@ inline auto as_sdl_event(const event_base<SDL_TextEditingEvent>& event) -> SDL_E
   return e;
 }
 
-class text_input_event final : public event_base<SDL_TextInputEvent> {
+class text_input_event final : public event_base<SDL_TextInputEvent>
+{
  public:
   text_input_event() : event_base{event_type::text_input} {}
 
@@ -412,7 +422,8 @@ inline auto as_sdl_event(const event_base<SDL_TextInputEvent>& event) -> SDL_Eve
   return e;
 }
 
-class touch_finger_event final : public event_base<SDL_TouchFingerEvent> {
+class touch_finger_event final : public event_base<SDL_TouchFingerEvent>
+{
  public:
   touch_finger_event() : event_base{event_type::finger_down} {}
 
@@ -471,7 +482,8 @@ inline auto as_sdl_event(const event_base<SDL_TouchFingerEvent>& event) -> SDL_E
   return e;
 }
 
-class user_event final : public event_base<SDL_UserEvent> {
+class user_event final : public event_base<SDL_UserEvent>
+{
  public:
   user_event() : event_base{event_type::user} {}
 

@@ -97,7 +97,8 @@ inline constexpr bool on_android = false;
 /**
  * \brief Represents various operating systems.
  */
-enum class platform_id {
+enum class platform_id
+{
   unknown,   ///< An unknown platform.
   windows,   ///< The Windows operating system.
   macos,     ///< The macOS operating system.
@@ -145,7 +146,8 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 /**
  * \brief Represents a shared object, e.g. dynamic libraries.
  */
-class shared_object final {
+class shared_object final
+{
  public:
   /**
    * \brief Loads a shared object.
@@ -190,7 +192,8 @@ class shared_object final {
   }
 
  private:
-  struct deleter final {
+  struct deleter final
+  {
     void operator()(void* object) noexcept { SDL_UnloadObject(object); }
   };
   std::unique_ptr<void, deleter> mObject;

@@ -36,7 +36,8 @@ namespace cen {
 /**
  * \brief Represents different OpenGL attributes.
  */
-enum class gl_attribute {
+enum class gl_attribute
+{
   red_size = SDL_GL_RED_SIZE,
   green_size = SDL_GL_GREEN_SIZE,
   blue_size = SDL_GL_BLUE_SIZE,
@@ -172,7 +173,8 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
 /**
  * \brief Represents different swap interval modes.
  */
-enum class gl_swap_interval {
+enum class gl_swap_interval
+{
   late_immediate = -1,
   immediate = 0,
   synchronized = 1,
@@ -208,7 +210,8 @@ inline auto operator<<(std::ostream& stream, const gl_swap_interval interval) ->
 /**
  * \brief Manages the initialization and de-initialization of an OpenGL library.
  */
-class gl_library final {
+class gl_library final
+{
  public:
   CENTURION_DISABLE_COPY(gl_library)
   CENTURION_DISABLE_MOVE(gl_library)
@@ -245,7 +248,8 @@ using gl_context_handle = basic_gl_context<detail::handle_tag>;  ///< A non-owni
  * \see `gl_context_handle`
  */
 template <typename T>
-class basic_gl_context final {
+class basic_gl_context final
+{
  public:
   explicit basic_gl_context(maybe_owner<SDL_GLContext> context) noexcept(detail::is_handle<T>)
       : mContext{context}
@@ -278,7 +282,8 @@ class basic_gl_context final {
   [[nodiscard]] auto get() const noexcept -> SDL_GLContext { return mContext.get(); }
 
  private:
-  struct Deleter final {
+  struct Deleter final
+  {
     void operator()(SDL_GLContext context) noexcept { SDL_GL_DeleteContext(context); }
   };
 

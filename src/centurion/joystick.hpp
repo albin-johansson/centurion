@@ -38,7 +38,8 @@ namespace cen {
 /**
  * \brief Represents the difference in a joystick ball axis position.
  */
-struct ball_axis_delta final {
+struct ball_axis_delta final
+{
   int dx{};  ///< Difference in x-axis position since last poll.
   int dy{};  ///< Difference in y-axis position since last poll.
 };
@@ -46,7 +47,8 @@ struct ball_axis_delta final {
 /**
  * \brief Represents different types of joysticks.
  */
-enum class joystick_type {
+enum class joystick_type
+{
   unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
   game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
   wheel = SDL_JOYSTICK_TYPE_WHEEL,
@@ -110,7 +112,8 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
 /**
  * \brief Represents different joystick power states.
  */
-enum class joystick_power {
+enum class joystick_power
+{
   unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
   empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
   low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
@@ -163,7 +166,8 @@ inline auto operator<<(std::ostream& stream, const joystick_power power) -> std:
 /**
  * \brief Represents the various states of a joystick "hat".
  */
-enum class hat_state : uint8 {
+enum class hat_state : uint8
+{
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
   right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
@@ -241,7 +245,8 @@ using joystick_handle = basic_joystick<detail::handle_tag>;  ///< A non-owning j
  * \see `basic_controller`
  */
 template <typename T>
-class basic_joystick final {
+class basic_joystick final
+{
  public:
   using device_index = int;
   using id_type = SDL_JoystickID;

@@ -34,7 +34,8 @@ namespace cen {
  *
  * \remarks The `non_lockable` enumerator refers to "static" texture access.
  */
-enum class texture_access {
+enum class texture_access
+{
   non_lockable = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely and isn't lockable.
   streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
   target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
@@ -72,7 +73,8 @@ inline auto operator<<(std::ostream& stream, const texture_access access) -> std
 /**
  * \brief Represents different texture scale modes.
  */
-enum class scale_mode {
+enum class scale_mode
+{
   nearest = SDL_ScaleModeNearest,  ///< Nearest pixel sampling.
   linear = SDL_ScaleModeLinear,    ///< Linear filtering.
   best = SDL_ScaleModeBest         ///< Anisotropic filtering.
@@ -122,7 +124,8 @@ using texture_handle = basic_texture<detail::handle_tag>;  ///< A non-owning tex
  * \see `texture_handle`
  */
 template <typename T>
-class basic_texture final {
+class basic_texture final
+{
  public:
   /// \name Construction
   /// \{

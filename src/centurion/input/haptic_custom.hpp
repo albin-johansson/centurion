@@ -25,7 +25,8 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class haptic_custom final : public haptic_effect<haptic_custom> {
+class haptic_custom final : public haptic_effect<haptic_custom>
+{
  public:
   inline constexpr static bool hasDirection = true;
   inline constexpr static bool hasEnvelope = true;

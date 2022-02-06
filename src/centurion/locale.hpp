@@ -29,7 +29,8 @@ namespace cen {
  *
  * \see `SDL_Locale`
  */
-class locale final {
+class locale final
+{
  public:
   using size_type = std::size_t;
 

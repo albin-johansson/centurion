@@ -19,7 +19,8 @@ namespace cen {
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-enum class flash_op {
+enum class flash_op
+{
   cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
   briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
   until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
@@ -54,7 +55,8 @@ inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
-enum class blend_mode {
+enum class blend_mode
+{
   none = SDL_BLENDMODE_NONE,    ///< No blending.
   blend = SDL_BLENDMODE_BLEND,  ///< Alpha blending.
   add = SDL_BLENDMODE_ADD,      ///< Additive blending.
@@ -109,7 +111,8 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 
 /// \} End of blend mode functions
 
-enum class blend_factor {
+enum class blend_factor
+{
   zero = SDL_BLENDFACTOR_ZERO,
   one = SDL_BLENDFACTOR_ONE,
 
@@ -174,7 +177,8 @@ inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::
 
 /// \} End of blend factor functions
 
-enum class blend_op {
+enum class blend_op
+{
   add = SDL_BLENDOPERATION_ADD,
   sub = SDL_BLENDOPERATION_SUBTRACT,
   reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
@@ -215,7 +219,8 @@ inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
 
 /// \} End of blend operation functions
 
-enum class orientation {
+enum class orientation
+{
   unknown = SDL_ORIENTATION_UNKNOWN,
   landscape = SDL_ORIENTATION_LANDSCAPE,
   landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
@@ -259,7 +264,8 @@ inline auto operator<<(std::ostream& stream, const orientation o) -> std::ostrea
 /**
  * \brief Represents the mode of a display.
  */
-class display_mode final {
+class display_mode final
+{
  public:
   /// \name Factory functions
   /// \{
@@ -371,7 +377,8 @@ class display_mode final {
 /**
  * \brief Describes how a blend mode factors should be combined.
  */
-struct blend_task final {
+struct blend_task final
+{
   blend_factor src;  ///< The blend factor applied to the source pixels.
   blend_factor dst;  ///< The blend factor applied to the destination pixels.
   blend_op op;       ///< The operation used to combine the source and destination pixels.
@@ -380,7 +387,8 @@ struct blend_task final {
 /**
  * \brief Provides diagonal, horizontal and vertical DPI information.
  */
-struct dpi_info final {
+struct dpi_info final
+{
   float diagonal{};
   float horizontal{};
   float vertical{};

@@ -26,7 +26,8 @@ namespace cen {
  *
  * \serializable
  */
-class unicode_string final {
+class unicode_string final
+{
  public:
   using value_type = std::vector<unicode_t>::value_type;
 

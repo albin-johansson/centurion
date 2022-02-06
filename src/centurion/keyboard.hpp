@@ -41,7 +41,8 @@ namespace cen {
  * \see `operator|(key_mod, key_mod)`
  * \see `operator&(key_mod, key_mod)`
  */
-enum class key_mod : uint16 {
+enum class key_mod : uint16
+{
   none = KMOD_NONE,
 
   lshift = KMOD_LSHIFT,  ///< Left Shift.
@@ -278,7 +279,8 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \see `SDL_KeyCode`
  */
-class key_code final {
+class key_code final
+{
  public:
   /// \name Construction
   /// \{
@@ -418,7 +420,8 @@ inline auto operator<<(std::ostream& stream, const key_code& code) -> std::ostre
  *
  * \see `SDL_ScanCode`
  */
-class scan_code final {
+class scan_code final
+{
  public:
   /// \name Construction
   /// \{
@@ -550,7 +553,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& code) -> std::ostr
  *
  * \see `mouse`
  */
-class keyboard final {
+class keyboard final
+{
  public:
   keyboard() noexcept { mState = SDL_GetKeyboardState(&mKeyCount); }
 

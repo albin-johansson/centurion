@@ -29,7 +29,8 @@ namespace cen {
 /**
  * \brief Represents different message box types.
  */
-enum class message_box_type : uint32 {
+enum class message_box_type : uint32
+{
   error = SDL_MESSAGEBOX_ERROR,
   warning = SDL_MESSAGEBOX_WARNING,
   information = SDL_MESSAGEBOX_INFORMATION
@@ -62,7 +63,8 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 
 /// \} End of message box type functions
 
-enum class message_box_button_order : uint32 {
+enum class message_box_button_order : uint32
+{
 #if SDL_VERSION_ATLEAST(2, 0, 12)
   left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
   right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
@@ -98,7 +100,8 @@ inline auto operator<<(std::ostream& stream, const message_box_button_order orde
 
 /// \} End of message box button order functions
 
-enum class message_box_color_type : int {
+enum class message_box_color_type : int
+{
   background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
   text = SDL_MESSAGEBOX_COLOR_TEXT,
   button_border = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
@@ -143,7 +146,8 @@ inline auto operator<<(std::ostream& stream, const message_box_color_type type)
 /**
  * \brief Represents color schemes used by message boxes.
  */
-class message_box_color_scheme final {
+class message_box_color_scheme final
+{
  public:
   /**
    * \brief Creates a color scheme using only white.
@@ -196,7 +200,8 @@ class message_box_color_scheme final {
  * \note The appearance of message boxes varies depending on the platform, and certain
  * styling options are not available on all platforms.
  */
-class message_box final {
+class message_box final
+{
  public:
   using button_id = int;
 
@@ -489,7 +494,8 @@ class message_box final {
   /// \} End of defaults
 
  private:
-  struct button final {
+  struct button final
+  {
     button_id id;
     button_flags flags;
     std::string text;

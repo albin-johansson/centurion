@@ -28,7 +28,8 @@ template <typename T>
 using enable_for_handle = std::enable_if_t<is_handle<T>, int>;
 
 template <typename B, typename Type>
-class pointer final {
+class pointer final
+{
  public:
   using smart_ptr = managed_ptr<Type>;
   using raw_ptr = Type*;

@@ -36,7 +36,8 @@ namespace cen {
 /**
  * \brief Used to specify how the core SDL library is initialized.
  */
-struct sdl_cfg final {
+struct sdl_cfg final
+{
   /// \brief Controls which SDL subsystems are initialized, see `SDL_INIT_` macros.
   uint32 flags{SDL_INIT_EVERYTHING};
 };
@@ -48,7 +49,8 @@ struct sdl_cfg final {
  * \see `mix`
  * \see `ttf`
  */
-class sdl final {
+class sdl final
+{
  public:
   /**
    * \brief Loads the core SDL library.
@@ -72,7 +74,8 @@ class sdl final {
 /**
  * \brief Used to specify how the SDL_image library is initialized.
  */
-struct img_cfg final {
+struct img_cfg final
+{
   /// \brief Controls which image formats to support, see `IMG_INIT_` macros.
   int flags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
 };
@@ -80,7 +83,8 @@ struct img_cfg final {
 /**
  * \brief Used to load and subsequently unload the SDL_image library.
  */
-class img final {
+class img final
+{
  public:
   /**
    * \brief Loads the SDL_image library.
@@ -106,7 +110,8 @@ class img final {
 /**
  * \brief Used to specify how the SDL_mixer library is initialized.
  */
-struct mix_cfg final {
+struct mix_cfg final
+{
   /// \brief Controls which file formats to be supported, see `MIX_INIT_` macros.
   int flags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD |
             MIX_INIT_OPUS};
@@ -127,7 +132,8 @@ struct mix_cfg final {
 /**
  * \brief Used to load and subsequently unload the SDL_mixer library.
  */
-class mix final {
+class mix final
+{
  public:
   /**
    * \brief Loads the SDL_mixer library.
@@ -162,7 +168,8 @@ class mix final {
 /**
  * \brief Used to load and subsequently unload the SDL_ttf library.
  */
-class ttf final {
+class ttf final
+{
  public:
   /**
    * \brief Loads the SDL_ttf library.

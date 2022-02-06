@@ -42,7 +42,8 @@ namespace cen {
 /**
  * \brief Represents various game controller buttons.
  */
-enum class controller_button {
+enum class controller_button
+{
   invalid = SDL_CONTROLLER_BUTTON_INVALID,
 
   a = SDL_CONTROLLER_BUTTON_A,
@@ -173,7 +174,8 @@ inline auto operator<<(std::ostream& stream, const controller_button button) -> 
 /**
  * \brief Represents different game controller axes.
  */
-enum class controller_axis {
+enum class controller_axis
+{
   invalid = SDL_CONTROLLER_AXIS_INVALID,
 
   left_x = SDL_CONTROLLER_AXIS_LEFTX,
@@ -232,7 +234,8 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
 /**
  * \brief Represents different game controller bind types.
  */
-enum class controller_bind_type {
+enum class controller_bind_type
+{
   none = SDL_CONTROLLER_BINDTYPE_NONE,
   button = SDL_CONTROLLER_BINDTYPE_BUTTON,
   axis = SDL_CONTROLLER_BINDTYPE_AXIS,
@@ -274,7 +277,8 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type) ->
 /**
  * \brief Represents different game controller types.
  */
-enum class controller_type {
+enum class controller_type
+{
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,
 
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,
@@ -359,7 +363,8 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 /**
  * \brief Represents different results from adding controller mappings.
  */
-enum class controller_mapping_result {
+enum class controller_mapping_result
+{
   error,    ///< An error occurred.
   updated,  ///< Updated a previous mapping.
   added     ///< Added a new mapping.
@@ -393,7 +398,8 @@ inline auto operator<<(std::ostream& stream, const controller_mapping_result res
 
 /// \} End of controller mapping result functions
 
-struct controller_finger_state final {
+struct controller_finger_state final
+{
   button_state state{};  ///< Whether or not the finger is pressed or release.
   float x{};             ///< The current x-coordinate.
   float y{};             ///< The current y-coordinate.
@@ -428,7 +434,8 @@ using controller_handle = basic_controller<detail::handle_tag>;  ///< A non-owni
  * \see `SDL_GameController`
  */
 template <typename T>
-class basic_controller final {
+class basic_controller final
+{
  public:
   using mapping_index = int;
   using joystick_index = int;
@@ -854,8 +861,8 @@ class basic_controller final {
    *
    * \atleastsdl 2.0.18
    */
-  [[nodiscard]] auto apple_sf_symbols_name(const controller_axis axis) const noexcept
-      -> const char*
+  [[nodiscard]] auto apple_sf_symbols_name(const controller_axis axis) const noexcept -> const
+      char*
   {
     const auto value = static_cast<SDL_GameControllerAxis>(axis);
     return SDL_GameControllerGetAppleSFSymbolsNameForAxis(mController, value);

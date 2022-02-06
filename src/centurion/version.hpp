@@ -55,7 +55,8 @@ namespace cen {
  *
  * \ingroup versioning
  */
-struct version final {
+struct version final
+{
   int major{};
   int minor{};
   int patch{};

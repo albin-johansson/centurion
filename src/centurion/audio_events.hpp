@@ -11,7 +11,8 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-class audio_device_event final : public event_base<SDL_AudioDeviceEvent> {
+class audio_device_event final : public event_base<SDL_AudioDeviceEvent>
+{
  public:
   audio_device_event() : event_base{event_type::audio_device_added} {}
 

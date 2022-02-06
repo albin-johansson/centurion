@@ -19,7 +19,8 @@ namespace cen {
 /// \addtogroup input
 /// \{
 
-enum class button_state : uint8 {
+enum class button_state : uint8
+{
   released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
 };

@@ -181,7 +181,8 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
  * \see `mix_error`
  * \see `ttf_error`
  */
-class exception : public std::exception {
+class exception : public std::exception
+{
  public:
   exception() noexcept = default;
 
@@ -196,7 +197,8 @@ class exception : public std::exception {
 /**
  * \brief Represents an error related to the core SDL library.
  */
-class sdl_error final : public exception {
+class sdl_error final : public exception
+{
  public:
   sdl_error() noexcept : exception{SDL_GetError()} {}
 
@@ -208,7 +210,8 @@ class sdl_error final : public exception {
 /**
  * \brief Represents an error related to the core SDL_image library.
  */
-class img_error final : public exception {
+class img_error final : public exception
+{
  public:
   img_error() noexcept : exception{IMG_GetError()} {}
 
@@ -222,7 +225,8 @@ class img_error final : public exception {
 /**
  * \brief Represents an error related to the core SDL_ttf library.
  */
-class ttf_error final : public exception {
+class ttf_error final : public exception
+{
  public:
   ttf_error() noexcept : exception{TTF_GetError()} {}
 
@@ -236,7 +240,8 @@ class ttf_error final : public exception {
 /**
  * \brief Represents an error related to the core SDL_mixer library.
  */
-class mix_error final : public exception {
+class mix_error final : public exception
+{
  public:
   mix_error() noexcept : exception{Mix_GetError()} {}
 
@@ -278,7 +283,8 @@ class mix_error final : public exception {
  * \see `success`
  * \see `failure`
  */
-class result final {
+class result final
+{
  public:
   /**
    * \brief Creates a result.
@@ -343,7 +349,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
  * \note Instances of `sdl_string` can hold null strings. Use the overloaded `operator
  * bool()` in order to determine whether the associated string is null.
  */
-class sdl_string final {
+class sdl_string final
+{
  public:
   /**
    * \brief Creates a string.

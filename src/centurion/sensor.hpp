@@ -50,7 +50,8 @@ using sensor_id = SDL_SensorID;
  *
  * \see `SDL_SensorType`
  */
-enum class sensor_type {
+enum class sensor_type
+{
   invalid = SDL_SENSOR_INVALID,      ///< Invalid sensor.
   unknown = SDL_SENSOR_UNKNOWN,      ///< Unknown sensor.
   accelerometer = SDL_SENSOR_ACCEL,  ///< Accelerometer.
@@ -104,7 +105,8 @@ using sensor_handle = basic_sensor<detail::handle_tag>;  ///< A non-owning senso
  * \see `SDL_Sensor`
  */
 template <typename T>
-class basic_sensor final {
+class basic_sensor final
+{
  public:
   using device_index = int;
   using size_type = std::size_t;

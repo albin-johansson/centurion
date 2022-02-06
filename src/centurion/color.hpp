@@ -42,7 +42,8 @@ namespace cen {
  * \see `blend(const color&, const color&, float)`
  * \see `cen::colors`
  */
-class color final {
+class color final
+{
  public:
   /// \name Construction
   /// \{

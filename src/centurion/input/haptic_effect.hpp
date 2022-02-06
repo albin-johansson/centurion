@@ -52,7 +52,8 @@ inline constexpr uint32 haptic_infinity = SDL_HAPTIC_INFINITY;
  * \since 5.2.0
  */
 template <typename Derived>
-class haptic_effect {
+class haptic_effect
+{
   template <typename T>
   using has_direction = std::enable_if_t<T::hasDirection, int>;
 

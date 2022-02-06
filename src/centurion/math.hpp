@@ -37,7 +37,8 @@ using ivec3 = basic_vector3<int>;
 using fvec3 = basic_vector3<float>;
 
 template <typename T>
-struct basic_vector3 final {
+struct basic_vector3 final
+{
   static_assert(is_number<T>);
 
   using value_type = T;
@@ -114,7 +115,8 @@ using farea = basic_area<float>;  ///< A `float`-based area.
  * \see `area_of()`
  */
 template <typename T>
-struct basic_area final {
+struct basic_area final
+{
   static_assert(is_number<T>);
 
   using value_type = T;
@@ -198,7 +200,8 @@ template <typename T>
  * \see `basic_point`
  */
 template <typename T, enable_for_convertible_t<T, int, float> = 0>
-class point_traits final {
+class point_traits final
+{
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;
   inline constexpr static bool floating = std::is_floating_point_v<T>;
@@ -228,7 +231,8 @@ using fpoint = basic_point<float>;  ///< A `float`-based 2D point.
  * \see `distance(const basic_point&, const basic_point&)`
  */
 template <typename T>
-class basic_point final {
+class basic_point final
+{
  public:
   inline constexpr static bool integral = point_traits<T>::integral;
   inline constexpr static bool floating = point_traits<T>::floating;
@@ -436,7 +440,8 @@ template <typename T>
  * \see `basic_rect`
  */
 template <typename T, enable_for_convertible_t<T, int, float> = 0>
-class rect_traits final {
+class rect_traits final
+{
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;
   inline constexpr static bool floating = std::is_floating_point_v<T>;
@@ -468,7 +473,8 @@ using frect = basic_rect<float>;  ///< A rectangle based on `SDL_FPoint`.
  * \see `get_union(const basic_rect&, const basic_rect&)`
  */
 template <typename T>
-class basic_rect final {
+class basic_rect final
+{
  public:
   inline constexpr static bool integral = rect_traits<T>::integral;
   inline constexpr static bool floating = rect_traits<T>::floating;

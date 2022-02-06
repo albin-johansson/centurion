@@ -41,7 +41,8 @@ namespace cen {
 /**
  * \brief Represents different pixel formats.
  */
-enum class pixel_format : uint32 {
+enum class pixel_format : uint32
+{
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
   index1_lsb = SDL_PIXELFORMAT_INDEX1LSB,
@@ -268,7 +269,8 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
  * \details This class features an interface similar to a general container type, with support
  * for the subscript operator and element iteration.
  */
-class palette final {
+class palette final
+{
  public:
   using iterator = SDL_Color*;
   using const_iterator = const SDL_Color*;
@@ -416,7 +418,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_tag>;
  * \see `pixel_format_info_handle`
  */
 template <typename T>
-class basic_pixel_format_info final {
+class basic_pixel_format_info final
+{
  public:
   /// \name Construction
   /// \{

@@ -38,7 +38,8 @@ namespace cen {
 /**
  * \brief Represents the various supported music types.
  */
-enum class music_type {
+enum class music_type
+{
   none = MUS_NONE,
   mp3 = MUS_MP3,
   wav = MUS_WAV,
@@ -98,7 +99,8 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
 /**
  * \brief Represents different playback states.
  */
-enum class fade_status {
+enum class fade_status
+{
   none = MIX_NO_FADING,
   in = MIX_FADING_IN,
   out = MIX_FADING_OUT
@@ -149,7 +151,8 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \see `sound_effect`
  */
-class music final {
+class music final
+{
  public:
   using ms_type = millis<int>;
   using music_hook_callback = void (*)(void*, uint8*, int);
@@ -538,7 +541,8 @@ using sound_effect_handle = basic_sound_effect<detail::handle_tag>;  ///< A non-
  * \see `get_sound()`
  */
 template <typename T>
-class basic_sound_effect final {
+class basic_sound_effect final
+{
  public:
   using ms_type = millis<int>;
 

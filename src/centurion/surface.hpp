@@ -54,7 +54,8 @@ using surface_handle = basic_surface<detail::handle_tag>;  ///< A non-owning sur
  * \see `surface_handle`
  */
 template <typename T>
-class basic_surface final {
+class basic_surface final
+{
  public:
   /**
    * \brief Creates a surface from an SDL surface.

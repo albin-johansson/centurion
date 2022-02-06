@@ -44,7 +44,8 @@ using thread_id = SDL_threadID;
  *
  * \note You might need higher privileges to use `high` or `critical` priorities.
  */
-enum class thread_priority {
+enum class thread_priority
+{
   low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
   normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is the default.
   high = SDL_THREAD_PRIORITY_HIGH,      ///< High-priority processing.
@@ -81,7 +82,8 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority) -> 
 
 /// \} End of thread priority functions
 
-enum class lock_status {
+enum class lock_status
+{
   success = 0,
   timed_out = SDL_MUTEX_TIMEDOUT,
   error = -1
@@ -123,7 +125,8 @@ inline auto operator<<(std::ostream& stream, const lock_status status) -> std::o
  * \see `scoped_lock`
  * \see `try_lock`
  */
-class mutex final {
+class mutex final
+{
  public:
   /**
    * \brief Creates an unlocked mutex.
@@ -179,7 +182,8 @@ class mutex final {
 /**
  * \brief An RAII blocking lock that unlocks an associated mutex upon destruction.
  */
-class scoped_lock final {
+class scoped_lock final
+{
  public:
   /**
    * \brief Attempts to lock a mutex.
@@ -209,7 +213,8 @@ class scoped_lock final {
 /**
  * \brief An RAII non-blocking lock that unlocks an associated mutex upon destruction.
  */
-class try_lock final {
+class try_lock final
+{
  public:
   /**
    * \brief Attempts to lock a mutex.
@@ -278,7 +283,8 @@ class try_lock final {
 /**
  * \brief Represents a condition variable.
  */
-class condition final {
+class condition final
+{
  public:
   /**
    * \brief Creates a condition variable.
@@ -347,7 +353,8 @@ class condition final {
 /**
  * \brief Represents a semaphore with a set of "tokens" (or permits).
  */
-class semaphore final {
+class semaphore final
+{
  public:
   /**
    * \brief Creates a semaphore.
@@ -426,7 +433,8 @@ class semaphore final {
  * \remarks Beware that the C++ standard provides `std::thread` and `std::jthread`, along
  * with several other threading utilities. You should consider using the standard library API.
  */
-class thread final {
+class thread final
+{
  public:
   /// \name Construction
   /// \{

@@ -47,7 +47,8 @@ namespace cen {
  *
  * \details An example usage of this class can be found \subpage page-event-handler "here".
  */
-class event_handler final {
+class event_handler final
+{
  public:
   /**
    * \brief Creates an empty event handler.
@@ -526,7 +527,8 @@ class event_handler final {
  * \see `event_dispatcher`
  */
 template <typename E>
-class event_sink final {
+class event_sink final
+{
  public:
   using event_type = std::decay_t<E>;              ///< Associated event type.
   using signature_type = void(const event_type&);  ///< Signature of handler.
@@ -598,7 +600,8 @@ class event_sink final {
  * \tparam Events the list of events to "subscribe" to, all other events are ignored.
  */
 template <typename... Events>
-class event_dispatcher final {
+class event_dispatcher final
+{
   static_assert((!std::is_const_v<Events> && ...));
   static_assert((!std::is_volatile_v<Events> && ...));
   static_assert((!std::is_reference_v<Events> && ...));

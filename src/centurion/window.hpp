@@ -52,7 +52,8 @@ using window_handle = basic_window<detail::handle_tag>;  ///< A non-owning windo
  * \see `get_renderer()`
  */
 template <typename T>
-class basic_window final {
+class basic_window final
+{
  public:
   /**
    * \brief Represents different window features and options.
@@ -755,7 +756,8 @@ class basic_window final {
   /**
    * \brief Represents raw ICC profile data.
    */
-  struct icc_profile_data final {
+  struct icc_profile_data final
+  {
     using data_type = std::unique_ptr<void, detail::sdl_deleter>;
 
     data_type data;      ///< Pointer to the raw ICC profile data.

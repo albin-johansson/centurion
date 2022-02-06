@@ -15,7 +15,8 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-enum class joy_hat_position : uint8 {
+enum class joy_hat_position : uint8
+{
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
   left_down = SDL_HAT_LEFTDOWN,
@@ -72,7 +73,8 @@ inline auto operator<<(std::ostream& stream, const joy_hat_position position) ->
 
 /// \} End of joystick hat position functions
 
-class joy_axis_event final : public event_base<SDL_JoyAxisEvent> {
+class joy_axis_event final : public event_base<SDL_JoyAxisEvent>
+{
  public:
   joy_axis_event() : event_base{event_type::joy_axis_motion} {}
 
@@ -99,7 +101,8 @@ inline auto as_sdl_event(const event_base<SDL_JoyAxisEvent>& event) -> SDL_Event
   return e;
 }
 
-class joy_ball_event final : public event_base<SDL_JoyBallEvent> {
+class joy_ball_event final : public event_base<SDL_JoyBallEvent>
+{
  public:
   joy_ball_event() : event_base{event_type::joy_ball_motion} {}
 
@@ -130,7 +133,8 @@ inline auto as_sdl_event(const event_base<SDL_JoyBallEvent>& event) -> SDL_Event
   return e;
 }
 
-class joy_button_event final : public event_base<SDL_JoyButtonEvent> {
+class joy_button_event final : public event_base<SDL_JoyButtonEvent>
+{
  public:
   joy_button_event() : event_base{event_type::joy_button_down} {}
 
@@ -170,7 +174,8 @@ inline auto as_sdl_event(const event_base<SDL_JoyButtonEvent>& event) -> SDL_Eve
   return e;
 }
 
-class joy_device_event final : public event_base<SDL_JoyDeviceEvent> {
+class joy_device_event final : public event_base<SDL_JoyDeviceEvent>
+{
  public:
   joy_device_event() : event_base{event_type::joy_device_added} {}
 
@@ -189,7 +194,8 @@ inline auto as_sdl_event(const event_base<SDL_JoyDeviceEvent>& event) -> SDL_Eve
   return e;
 }
 
-class joy_hat_event final : public event_base<SDL_JoyHatEvent> {
+class joy_hat_event final : public event_base<SDL_JoyHatEvent>
+{
  public:
   joy_hat_event() : event_base{event_type::joy_hat_motion} {}
 

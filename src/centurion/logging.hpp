@@ -37,7 +37,8 @@ namespace cen {
  *
  * \see `SDL_LogPriority`
  */
-enum class log_priority {
+enum class log_priority
+{
   verbose = SDL_LOG_PRIORITY_VERBOSE,
   debug = SDL_LOG_PRIORITY_DEBUG,
   info = SDL_LOG_PRIORITY_INFO,
@@ -87,7 +88,8 @@ inline auto operator<<(std::ostream& stream, const log_priority priority) -> std
  *
  * \see `SDL_LogCategory`
  */
-enum class log_category {
+enum class log_category
+{
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
   assert = SDL_LOG_CATEGORY_ASSERT,

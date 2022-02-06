@@ -17,7 +17,8 @@ namespace cen {
 /**
  * \brief Represents the different event types.
  */
-enum class event_type : uint32 {
+enum class event_type : uint32
+{
   first_event = SDL_FIRSTEVENT,
   last_event = SDL_LASTEVENT,
 
@@ -333,7 +334,8 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  * \tparam T the SDL event type.
  */
 template <typename T>
-class event_base {
+class event_base
+{
  public:
   explicit event_base(const event_type type)
   {

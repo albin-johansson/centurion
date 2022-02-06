@@ -11,7 +11,8 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-enum class window_event_id {
+enum class window_event_id
+{
   none = SDL_WINDOWEVENT_NONE,
   shown = SDL_WINDOWEVENT_SHOWN,
   hidden = SDL_WINDOWEVENT_HIDDEN,
@@ -116,7 +117,8 @@ inline auto operator<<(std::ostream& stream, const window_event_id id) -> std::o
 
 /// \} End of window event ID functions
 
-class window_event final : public event_base<SDL_WindowEvent> {
+class window_event final : public event_base<SDL_WindowEvent>
+{
  public:
   window_event() : event_base{event_type::window} {}
 

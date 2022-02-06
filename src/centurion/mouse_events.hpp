@@ -16,7 +16,8 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-enum class mouse_wheel_direction : uint32 {
+enum class mouse_wheel_direction : uint32
+{
   normal = SDL_MOUSEWHEEL_NORMAL,
   flipped = SDL_MOUSEWHEEL_FLIPPED
 };
@@ -45,7 +46,8 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) ->
 
 /// \} End of mouse wheel direction functions
 
-class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
+class mouse_button_event final : public event_base<SDL_MouseButtonEvent>
+{
  public:
   mouse_button_event() : event_base{event_type::mouse_button_down} {}
 
@@ -110,7 +112,8 @@ inline auto as_sdl_event(const event_base<SDL_MouseButtonEvent>& event) -> SDL_E
   return e;
 }
 
-class mouse_motion_event final : public event_base<SDL_MouseMotionEvent> {
+class mouse_motion_event final : public event_base<SDL_MouseMotionEvent>
+{
  public:
   mouse_motion_event() : event_base{event_type::mouse_motion} {}
 
@@ -159,7 +162,8 @@ inline auto as_sdl_event(const event_base<SDL_MouseMotionEvent>& event) -> SDL_E
   return e;
 }
 
-class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent> {
+class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent>
+{
  public:
   mouse_wheel_event() : event_base{event_type::mouse_wheel} {}
 

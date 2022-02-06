@@ -16,7 +16,8 @@ template <typename Target, typename Tuple>
 class tuple_type_index;
 
 template <typename Target, typename... T>
-class tuple_type_index<Target, std::tuple<T...>> {
+class tuple_type_index<Target, std::tuple<T...>>
+{
  private:
   template <std::size_t... Index>
   [[nodiscard]] constexpr static auto Find([[maybe_unused]] std::index_sequence<Index...> seq)

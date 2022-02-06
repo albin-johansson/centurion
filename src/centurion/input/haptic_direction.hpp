@@ -19,7 +19,8 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class haptic_direction final {
+class haptic_direction final
+{
  public:
   using direction_type = basic_vector3<int32>;
 

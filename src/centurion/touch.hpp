@@ -50,7 +50,8 @@ using touch_id = SDL_TouchID;
  *
  * \see `SDL_TouchDeviceType`
  */
-enum class touch_device_type {
+enum class touch_device_type
+{
   invalid = SDL_TOUCH_DEVICE_INVALID,  ///< Invalid touch device.
 
   /**
@@ -102,7 +103,8 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
 /**
  * \brief Provides a read-only view into the state of a touch finger.
  */
-class finger final {
+class finger final
+{
  public:
   using id_type = SDL_FingerID;
 

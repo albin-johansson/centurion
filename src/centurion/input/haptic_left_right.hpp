@@ -23,7 +23,8 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class haptic_left_right final : public haptic_effect<haptic_left_right> {
+class haptic_left_right final : public haptic_effect<haptic_left_right>
+{
  public:
   inline constexpr static bool hasDirection = false;
   inline constexpr static bool hasEnvelope = false;

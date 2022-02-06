@@ -69,7 +69,8 @@ using haptic_handle = basic_haptic<detail::handle_tag>;
  * \since 5.2.0
  */
 template <typename T>
-class basic_haptic final {
+class basic_haptic final
+{
  public:
   using effect_id = int;
 

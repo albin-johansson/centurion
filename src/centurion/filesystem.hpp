@@ -31,7 +31,8 @@ namespace cen {
 /**
  * \brief Represents various file types.
  */
-enum class file_type : unsigned {
+enum class file_type : unsigned
+{
   unknown = SDL_RWOPS_UNKNOWN,
   win = SDL_RWOPS_WINFILE,
   std = SDL_RWOPS_STDFILE,
@@ -81,7 +82,8 @@ inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostre
  *
  * \details The enumerators directly correspond to each of the possible SDL file mode strings.
  */
-enum class file_mode {
+enum class file_mode
+{
   r,   ///< Read existing ("r").
   rb,  ///< Read existing binary ("rb").
 
@@ -155,7 +157,8 @@ inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostre
 
 /// \} End of file mode functions
 
-enum class seek_mode {
+enum class seek_mode
+{
   from_beginning = RW_SEEK_SET,       ///< From the beginning.
   relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
   relative_to_end = RW_SEEK_END       ///< Relative to the end.
@@ -195,7 +198,8 @@ inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostre
  * does not throw if the internal pointer can't be created, etc. This is because file
  * operations are error-prone, and we don't want to use exceptions for control flow.
  */
-class file final {
+class file final
+{
  public:
   using size_type = std::size_t;
 

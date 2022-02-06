@@ -17,7 +17,8 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
-class controller_axis_event final : public event_base<SDL_ControllerAxisEvent> {
+class controller_axis_event final : public event_base<SDL_ControllerAxisEvent>
+{
  public:
   controller_axis_event() : event_base{event_type::controller_axis_motion} {}
 
@@ -52,7 +53,8 @@ inline auto as_sdl_event(const event_base<SDL_ControllerAxisEvent>& event) -> SD
   return e;
 }
 
-class controller_button_event final : public event_base<SDL_ControllerButtonEvent> {
+class controller_button_event final : public event_base<SDL_ControllerButtonEvent>
+{
  public:
   controller_button_event() : event_base{event_type::controller_button_down} {}
 
@@ -100,7 +102,8 @@ inline auto as_sdl_event(const event_base<SDL_ControllerButtonEvent>& event) -> 
   return e;
 }
 
-class controller_device_event final : public event_base<SDL_ControllerDeviceEvent> {
+class controller_device_event final : public event_base<SDL_ControllerDeviceEvent>
+{
  public:
   controller_device_event() : event_base{event_type::controller_device_added} {}
 
@@ -123,7 +126,8 @@ inline auto as_sdl_event(const event_base<SDL_ControllerDeviceEvent>& event) -> 
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-class controller_sensor_event final : public event_base<SDL_ControllerSensorEvent> {
+class controller_sensor_event final : public event_base<SDL_ControllerSensorEvent>
+{
  public:
   controller_sensor_event() : event_base{event_type::controller_sensor_update} {}
 
@@ -158,7 +162,8 @@ inline auto as_sdl_event(const event_base<SDL_ControllerSensorEvent>& event) -> 
   return e;
 }
 
-class controller_touchpad_event final : public event_base<SDL_ControllerTouchpadEvent> {
+class controller_touchpad_event final : public event_base<SDL_ControllerTouchpadEvent>
+{
  public:
   controller_touchpad_event() : event_base{event_type::controller_touchpad_down} {}
 

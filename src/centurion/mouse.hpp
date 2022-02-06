@@ -35,7 +35,8 @@ namespace cen {
 /**
  * \brief Represents different standard system cursors.
  */
-enum class system_cursor {
+enum class system_cursor
+{
   arrow = SDL_SYSTEM_CURSOR_ARROW,
   ibeam = SDL_SYSTEM_CURSOR_IBEAM,
   wait = SDL_SYSTEM_CURSOR_WAIT,
@@ -117,7 +118,8 @@ inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std:
 /**
  * \brief Represents different mouse buttons.
  */
-enum class mouse_button : uint8 {
+enum class mouse_button : uint8
+{
   left = SDL_BUTTON_LEFT,
   middle = SDL_BUTTON_MIDDLE,
   right = SDL_BUTTON_RIGHT,
@@ -161,7 +163,8 @@ inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::
 /**
  * \brief Provides a view into the mouse state.
  */
-class mouse final {
+class mouse final
+{
  public:
   mouse() noexcept = default;
 
@@ -392,7 +395,8 @@ using cursor_handle = basic_cursor<detail::handle_tag>;  ///< A non-owning curso
  * \see `SDL_Cursor`
  */
 template <typename T>
-class basic_cursor final {
+class basic_cursor final
+{
  public:
   /// \name Construction
   /// \{

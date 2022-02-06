@@ -20,7 +20,8 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_feature : uint {
+enum class haptic_feature : uint
+{
   constant = SDL_HAPTIC_CONSTANT,
   sine = SDL_HAPTIC_SINE,
   left_right = SDL_HAPTIC_LEFTRIGHT,

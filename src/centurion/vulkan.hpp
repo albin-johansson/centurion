@@ -32,7 +32,8 @@ namespace cen {
 /**
  * \brief Responsible for loading and unloading a Vulkan library.
  */
-class vk_library final {
+class vk_library final
+{
  public:
   CENTURION_DISABLE_COPY(vk_library)
   CENTURION_DISABLE_MOVE(vk_library)

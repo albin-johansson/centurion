@@ -848,7 +848,7 @@ class basic_controller final {
   /**
    * \brief Returns the `sfSymbolsName` property for an axis (on Apple platforms).
    *
-   * \param button the controller axis to query.
+   * \param axis the controller axis to query.
    *
    * \return a potentially null string.
    *

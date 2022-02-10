@@ -605,6 +605,45 @@ class font final
     }
   }
 
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+  /// \copydoc get_kerning()
+  /// \atleastsdlttf 2.0.18
+  [[nodiscard]] auto get_kerning_w(const unicode32_t previous,
+                                   const unicode32_t current) const noexcept -> int
+  {
+    return TTF_GetFontKerningSizeGlyphs32(mFont.get(), previous, current);
+  }
+
+  /// \copydoc is_glyph_provided()
+  /// \atleastsdlttf 2.0.18
+  [[nodiscard]] auto is_glyph_provided_w(const unicode32_t glyph) const noexcept -> bool
+  {
+    return TTF_GlyphIsProvided32(mFont.get(), glyph);
+  }
+
+  /// \copydoc get_metrics()
+  /// \atleastsdlttf 2.0.18
+  [[nodiscard]] auto get_metrics_w(const unicode32_t glyph) const noexcept
+      -> std::optional<glyph_metrics>
+  {
+    glyph_metrics metrics;
+    if (TTF_GlyphMetrics32(mFont.get(),
+                           glyph,
+                           &metrics.min_x,
+                           &metrics.max_x,
+                           &metrics.min_y,
+                           &metrics.max_y,
+                           &metrics.advance) != -1) {
+      return metrics;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
   /// \} End of glyph information functions
 
   /// \name SDF functions

@@ -154,6 +154,7 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 class music final
 {
  public:
+  using channel_index = int;
   using ms_type = millis<int>;
   using music_hook_callback = void (*)(void*, uint8*, int);
 
@@ -202,7 +203,7 @@ class music final
    *
    * \see `music::forever`
    */
-  auto play(const int iterations = 0) noexcept -> std::optional<int>
+  auto play(const int iterations = 0) noexcept -> std::optional<channel_index>
   {
     const auto channel = Mix_PlayMusic(mMusic.get(), detail::max(iterations, forever));
     if (channel != -1) {
@@ -561,8 +562,10 @@ template <typename T>
 class basic_sound_effect final
 {
  public:
+  using channel_index = int;
   using ms_type = millis<int>;
 
+  inline constexpr static channel_index undefined_channel = -1;
   inline constexpr static int forever = -1;  ///< Used to play sounds indefinitely.
 
   /// \name Construction
@@ -639,7 +642,7 @@ class basic_sound_effect final
   {
     if (is_playing()) {
       Mix_Pause(mChannel);
-      mChannel = undefined_channel();
+      mChannel = undefined_channel;
     }
   }
 
@@ -650,7 +653,7 @@ class basic_sound_effect final
    */
   [[nodiscard]] auto is_playing() const noexcept -> bool
   {
-    return (mChannel != undefined_channel()) && Mix_Playing(mChannel);
+    return (mChannel != undefined_channel) && Mix_Playing(mChannel);
   }
 
   /**
@@ -661,7 +664,7 @@ class basic_sound_effect final
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto is_any_playing() noexcept -> bool
   {
-    return Mix_Playing(undefined_channel());
+    return Mix_Playing(undefined_channel);
   }
 
   /// \} End of ordinary playback functions
@@ -806,9 +809,9 @@ class basic_sound_effect final
    * \return the channel currently associated with the sound effect; an empty optional is
    * returned if there is none.
    */
-  [[nodiscard]] auto channel() const noexcept -> std::optional<int>
+  [[nodiscard]] auto channel() const noexcept -> std::optional<channel_index>
   {
-    if (mChannel != undefined_channel()) {
+    if (mChannel != undefined_channel) {
       return mChannel;
     }
     else {
@@ -822,14 +825,12 @@ class basic_sound_effect final
 
  private:
   detail::pointer<T, Mix_Chunk> mChunk;
-  int mChannel{undefined_channel()};
-
-  [[nodiscard]] constexpr static auto undefined_channel() noexcept -> int { return -1; }
+  channel_index mChannel{undefined_channel};
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
  public:
-  void set_channel(const int channel) noexcept { mChannel = channel; }
+  void set_channel(const channel_index channel) noexcept { mChannel = channel; }
 
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };

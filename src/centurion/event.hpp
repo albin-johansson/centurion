@@ -380,7 +380,6 @@ class event_handler final
         break;
 
       case SDL_SYSWMEVENT:
-        // TODO
         break;
 
       case SDL_KEYDOWN:

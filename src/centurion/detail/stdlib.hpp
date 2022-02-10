@@ -44,13 +44,13 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto min(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
+[[nodiscard]] constexpr auto (min)(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
 {
   return (a < b) ? a : b;
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto max(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
+[[nodiscard]] constexpr auto (max)(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
 {
   /* Purposefully use less-than operator, since it's more commonly overloaded */
   return (a < b) ? b : a;

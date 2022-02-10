@@ -300,11 +300,6 @@ void log_critical(const char* fmt, Args&&... args) noexcept
   log_critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
-inline void unformatted(const char* str)
-{
-  SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "%s", str);
-}
-
 /// \} End of log functions
 
 /// \} End of group logging

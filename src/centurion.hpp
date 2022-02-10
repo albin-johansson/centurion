@@ -71,18 +71,4 @@
 #include "centurion/window.hpp"
 #include "centurion/window_events.hpp"
 
-//
-
-#include "centurion/input/haptic.hpp"
-#include "centurion/input/haptic_condition.hpp"
-#include "centurion/input/haptic_constant.hpp"
-#include "centurion/input/haptic_custom.hpp"
-#include "centurion/input/haptic_direction.hpp"
-#include "centurion/input/haptic_direction_type.hpp"
-#include "centurion/input/haptic_effect.hpp"
-#include "centurion/input/haptic_feature.hpp"
-#include "centurion/input/haptic_left_right.hpp"
-#include "centurion/input/haptic_periodic.hpp"
-#include "centurion/input/haptic_ramp.hpp"
-
 #endif  // CENTURION_HPP_

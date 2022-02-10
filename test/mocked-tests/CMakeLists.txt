@@ -25,7 +25,6 @@ set(SOURCE_FILES
     filesystem/preferred_path_test.cpp
 
     input/controller_test.cpp
-    input/haptic_test.cpp
     input/joystick_test.cpp
     input/keyboard_test.cpp
     input/sensor_test.cpp

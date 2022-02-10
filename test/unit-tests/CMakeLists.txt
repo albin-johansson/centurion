@@ -102,10 +102,6 @@ set(SOURCE_FILES
     input/controller/controller_test.cpp
     input/controller/controller_type_test.cpp
 
-    input/haptic/haptic_direction_type_test.cpp
-    input/haptic/haptic_feature_test.cpp
-    input/haptic/haptic_test.cpp
-
     input/joystick/hat_state_test.cpp
     input/joystick/joystick_power_test.cpp
     input/joystick/joystick_test.cpp

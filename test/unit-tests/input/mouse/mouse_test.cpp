@@ -20,9 +20,6 @@ TEST(Mouse, Defaults)
   ASSERT_EQ(0, mouse.x());
   ASSERT_EQ(0, mouse.y());
 
-  ASSERT_EQ(1, mouse.logical_width());
-  ASSERT_EQ(1, mouse.logical_height());
-
   ASSERT_FALSE(mouse.is_left_pressed());
   ASSERT_FALSE(mouse.is_middle_pressed());
   ASSERT_FALSE(mouse.is_right_pressed());
@@ -37,30 +34,7 @@ TEST(Mouse, Defaults)
 TEST(Mouse, Update)
 {
   cen::mouse mouse;
-  ASSERT_NO_THROW(mouse.update({12, 632}));
-}
-
-TEST(Mouse, ResetLogicalSize)
-{
-  cen::mouse mouse;
-
-  const cen::farea size{455, 183};
-  mouse.set_logical_size(size);
-
-  mouse.reset_logical_size();
-  ASSERT_EQ(1, mouse.logical_width());
-  ASSERT_EQ(1, mouse.logical_height());
-}
-
-TEST(Mouse, SetLogicalSize)
-{
-  cen::mouse mouse;
-
-  const cen::farea size{821, 219};
-  mouse.set_logical_size(size);
-
-  ASSERT_EQ(size.width, mouse.logical_width());
-  ASSERT_EQ(size.height, mouse.logical_height());
+  ASSERT_NO_THROW(mouse.update());
 }
 
 TEST(Mouse, ToString)

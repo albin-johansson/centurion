@@ -12,7 +12,9 @@
 #include "detail/stdlib.hpp"
 #include "features.hpp"
 #include "math.hpp"
+#include "render.hpp"
 #include "surface.hpp"
+#include "window.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -169,62 +171,114 @@ class mouse final
   mouse() noexcept = default;
 
   /**
-   * \brief Updates the mouse state.
+   * \brief Moves the mouse cursor to the specified position.
    *
-   * \details The width and height will be adjusted to be at least 1.
+   * \param pos the global mouse position destination.
    *
-   * \param width the window width.
-   * \param height the window height.
+   * \return `success` if the mouse cursor was successfully moved; `failure` otherwise.
    */
-  void update(const int width = 1, const int height = 1) noexcept
+  static auto warp(const ipoint& pos) noexcept -> result
   {
-    mPreviousPosition = mCurrentPosition;
+    return SDL_WarpMouseGlobal(pos.x(), pos.y()) == 0;
+  }
+
+  /**
+   * \brief Moves the mouse cursor to the specified position in the focused window.
+   *
+   * \param pos a coordinate in the focused window.
+   */
+  static void warp_in_window(const ipoint& pos) noexcept
+  {
+    SDL_WarpMouseInWindow(nullptr, pos.x(), pos.y());
+  }
+
+  /**
+   * \brief Moves the mouse cursor to the specified position in a window.
+   *
+   * \param window the source window.
+   * \param pos a coordinate in the window.
+   */
+  template <typename T>
+  static void warp_in_window(const basic_window<T>& window, const ipoint& pos) noexcept
+  {
+    SDL_WarpMouseInWindow(window.get(), pos.x(), pos.y());
+  }
+
+  /**
+   * \brief Sets whether relative mouse mode is enabled.
+   *
+   * \param enabled `true` to enable relative mouse mode; `false` otherwise.
+   *
+   * \return `success` if the mouse mode was updated; `failure` otherwise.
+   *
+   * \see `SDL_SetRelativeMouseMode`
+   */
+  static auto set_relative_mode(const bool enabled) noexcept -> result
+  {
+    return SDL_SetRelativeMouseMode(enabled ? SDL_TRUE : SDL_FALSE) == 0;
+  }
+
+  /**
+   * \brief Indicates whether relative mouse mode is enabled.
+   *
+   * \return `true` if relative mode is enabled; `false` otherwise.
+   */
+  [[nodiscard]] static auto is_relative_mode_enabled() noexcept -> bool
+  {
+    return SDL_GetRelativeMouseMode() == SDL_TRUE;
+  }
+
+  /**
+   * \brief
+   *
+   * \note This function just reads the  take
+   */
+  void update() noexcept
+  {
     mPreviousMask = mCurrentMask;
+    mPreviousPosition = mCurrentPosition;
 
     int mx{};
     int my{};
     mCurrentMask = SDL_GetMouseState(&mx, &my);
 
-    const auto clampedWidth = detail::max(static_cast<float>(width), 1.0f);
-    const auto clampedHeight = detail::max(static_cast<float>(height), 1.0f);
-
-    const auto xRatio = static_cast<float>(mx) / clampedWidth;
-    const auto yRatio = static_cast<float>(my) / clampedHeight;
-
-    mCurrentPosition.set_x(static_cast<int>(xRatio * mLogicalSize.width));
-    mCurrentPosition.set_y(static_cast<int>(yRatio * mLogicalSize.height));
+    mCurrentPosition.set_x(mx);
+    mCurrentPosition.set_y(my);
   }
 
-  /**
-   * \brief Updates the mouse state.
-   *
-   * \details The width and height will be adjusted to be at least 1.
-   *
-   * \param size the window size.
-   */
-  void update(const iarea& size) noexcept { update(size.width, size.height); }
+#if SDL_VERSION_ATLEAST(2, 0, 18)
 
   /**
-   * \brief Resets the logical size.
+   * \brief Updates the mouse state according to the logical size of a renderer.
+   *
+   * \details Use this function if you are making use of logical renderer coordinates.
+   *
+   * \param renderer the current renderer.
+   *
+   * \atleastsdl 2.0.18
    */
-  void reset_logical_size() noexcept
+  template <typename T>
+  void update(const basic_renderer<T>& renderer) noexcept
   {
-    mLogicalSize.width = 1;
-    mLogicalSize.height = 1;
+    mPreviousMask = mCurrentMask;
+    mPreviousPosition = mCurrentPosition;
+
+    int mx{};
+    int my{};
+    mCurrentMask = SDL_GetMouseState(&mx, &my);
+
+    const auto logicalSize = renderer.logical_size();
+    if (logicalSize.width != 0 && logicalSize.height != 0) {
+      mCurrentPosition = renderer.to_logical(mx, my);
+    }
+    else {
+      /* No logical size has been set for the renderer */
+      mCurrentPosition.set_x(mx);
+      mCurrentPosition.set_y(my);
+    }
   }
 
-  /**
-   * \brief Updates the logical size, used to calculate the mouse position.
-   *
-   * \details The width and height will be adjusted to be at least 1.
-   *
-   * \param size the logical size.
-   */
-  void set_logical_size(const farea& size) noexcept
-  {
-    mLogicalSize.width = detail::max(size.width, 1.0f);
-    mLogicalSize.height = detail::max(size.height, 1.0f);
-  }
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
   /**
    * \brief Returns the position of the mouse.
@@ -246,29 +300,6 @@ class mouse final
    * \return the mouse y-coordinate.
    */
   [[nodiscard]] auto y() const noexcept -> int { return mCurrentPosition.y(); }
-
-  /**
-   * \brief Returns the used logical size.
-   *
-   * \note The logical size is by default set to (1, 1).
-   *
-   * \return the logical size.
-   */
-  [[nodiscard]] auto logical_size() const noexcept -> farea { return mLogicalSize; }
-
-  /**
-   * \brief Returns the logical width used.
-   *
-   * \return the logical width.
-   */
-  [[nodiscard]] auto logical_width() const noexcept -> float { return mLogicalSize.width; }
-
-  /**
-   * \brief Returns the logical height used.
-   *
-   * \return the logical height.
-   */
-  [[nodiscard]] auto logical_height() const noexcept -> float { return mLogicalSize.height; }
 
   /**
    * \brief Indicates whether the left mouse button is pressed.
@@ -341,12 +372,60 @@ class mouse final
            (mCurrentPosition.y() != mPreviousPosition.y());
   }
 
+  /**
+   * \brief Returns the position of the mouse relative to the currently focused window.
+   *
+   * \return the mouse position.
+   */
+  [[nodiscard]] static auto position_relative_window() noexcept -> ipoint
+  {
+    int x{};
+    int y{};
+    SDL_GetMouseState(&x, &y);
+    return {x, y};
+  }
+
+  /**
+   * \brief Returns the position of the mouse relative to the desktop environment.
+   *
+   * \return the mouse position.
+   */
+  [[nodiscard]] static auto position_relative_desktop() noexcept -> ipoint
+  {
+    int x{};
+    int y{};
+    SDL_GetGlobalMouseState(&x, &y);
+    return {x, y};
+  }
+
+  /**
+   * \brief Returns the position delta.
+   *
+   * \return the difference in position.
+   */
+  [[nodiscard]] static auto delta() noexcept -> ipoint
+  {
+    int x{};
+    int y{};
+    SDL_GetRelativeMouseState(&x, &y);
+    return {x, y};
+  }
+
+  /**
+   * \brief Indicates whether the mouse is haptic.
+   *
+   * \return `true` if the mouse has haptic features; `false` otherwise.
+   */
+  [[nodiscard]] static auto is_haptic() noexcept -> bool
+  {
+    return SDL_MouseIsHaptic() == SDL_TRUE;
+  }
+
  private:
   ipoint mCurrentPosition;
   ipoint mPreviousPosition;
   uint32 mCurrentMask{};
   uint32 mPreviousMask{};
-  farea mLogicalSize{1, 1}; /* Logical size of (1, 1) has no effect */
 
   [[nodiscard]] auto is_pressed(const uint32 mask) const noexcept -> bool
   {

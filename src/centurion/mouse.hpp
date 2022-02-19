@@ -229,9 +229,10 @@ class mouse final
   }
 
   /**
-   * \brief
+   * \brief Updates the mouse state.
    *
-   * \note This function just reads the  take
+   * \note This function just reads the state reported by `SDL_GetMouseState()`, it does not
+   * account for any scaling, etc.
    */
   void update() noexcept
   {

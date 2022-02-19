@@ -250,7 +250,7 @@ class file final
    * \return the number of objects that were written to the file.
    */
   template <typename T>
-  auto write(not_null<const T*> data, const size_type count) noexcept -> size_type
+  auto write(const T* data, const size_type count) noexcept -> size_type
   {
     assert(mContext);
     return SDL_RWwrite(mContext.get(), data, sizeof(T), count);

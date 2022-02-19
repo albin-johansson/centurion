@@ -152,9 +152,6 @@ using bounded_array_ref = T (&)[Size];
 /// \{
 
 template <typename T, enable_for_pointer_t<T> = 0>
-using not_null = T;
-
-template <typename T, enable_for_pointer_t<T> = 0>
 using owner = T;
 
 template <typename T, enable_for_pointer_t<T> = 0>

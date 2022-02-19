@@ -131,7 +131,7 @@ class basic_window final
    * \see `default_flags()`
    */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_window(not_null<const char*> title,
+  explicit basic_window(const char* title,
                         const iarea size = default_size(),
                         const uint32 flags = default_flags())
   {
@@ -340,7 +340,7 @@ class basic_window final
    *
    * \param title the new window title.
    */
-  void set_title(not_null<const char*> title) noexcept
+  void set_title(const char* title) noexcept
   {
     assert(title);
     SDL_SetWindowTitle(mWindow, title);

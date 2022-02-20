@@ -324,6 +324,8 @@ class basic_joystick final
    * \param index the player index of the desired joystick.
    *
    * \return a potentially empty joystick handle.
+   *
+   * \atleastsdl 2.0.12
    */
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   [[nodiscard]] static auto from_player_index(const int index) noexcept -> joystick_handle
@@ -509,7 +511,10 @@ class basic_joystick final
   /**
    * \brief Returns the serial number associated with the joystick.
    *
-   * \return the joystick serial number; a null pointer is returned upon failure.
+   * \return the joystick serial number;
+   *         a null pointer is returned upon failure.
+   *
+   * \atleastsdl 2.0.14
    */
   [[nodiscard]] auto serial() const noexcept -> const char*
   {
@@ -657,6 +662,8 @@ class basic_joystick final
    * \param duration the duration of the rumble effect.
    *
    * \return `success` if the rumble was successful; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.14
    */
   auto rumble_triggers(const uint16 left,
                        const uint16 right,
@@ -673,6 +680,8 @@ class basic_joystick final
    * \brief Indicates whether the joystick has rumble support.
    *
    * \return `true` if there is rumble support; `false` otherwise.
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto has_rumble() const noexcept -> bool
   {
@@ -683,6 +692,8 @@ class basic_joystick final
    * \brief Indicates whether the joystick has rumble support for triggers.
    *
    * \return `true` if there is trigger rumble support; `false` otherwise.
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto has_rumble_triggers() const noexcept -> bool
   {
@@ -698,6 +709,15 @@ class basic_joystick final
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
+  /**
+   * \brief Sets the color of the associated LED light.
+   *
+   * \param color the new LED color.
+   *
+   * \return `success` if the LED color was updated; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.14
+   */
   auto set_led(const color& color) noexcept -> result
   {
     return SDL_JoystickSetLED(mJoystick, color.red(), color.green(), color.blue()) == 0;
@@ -707,6 +727,8 @@ class basic_joystick final
    * \brief Indicates whether the joystick features a LED light.
    *
    * \return `true` if the joystick has a LED light; `false` otherwise.
+   *
+   * \atleastsdl 2.0.14
    */
   [[nodiscard]] auto has_led() const noexcept -> bool
   {
@@ -911,8 +933,10 @@ class basic_joystick final
    * \param data the data that will be sent.
    * \param size the size of the data.
    *
-   * \return `success` if the data was sent successfully; `failure` if the joystick
-   * or driver doesn't support effect packets.
+   * \return `success` if the data was sent successfully;
+   *         `failure` if the joystick or driver doesn't support effect packets.
+   *
+   * \atleastsdl 2.0.16
    */
   auto send_effect(const void* data, const int size) -> result
   {
@@ -932,6 +956,8 @@ class basic_joystick final
    * \brief Sets the player index associated with the joystick.
    *
    * \param index new the player index.
+   *
+   * \atleastsdl 2.0.12
    */
   void set_player_index(const int index) noexcept
   {

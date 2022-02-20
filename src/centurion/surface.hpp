@@ -505,6 +505,8 @@ class basic_surface final
    * \brief Indicates whether the surface is RLE-enabled.
    *
    * \return `true` if the surface is RLE-enabled; `false` otherwise.
+   *
+   * \atleastsdl 2.0.14
    */
   [[nodiscard]] auto has_rle() const noexcept -> bool
   {

@@ -182,6 +182,8 @@ class simd_block final
    * \brief Reallocates the associated memory block.
    *
    * \param size the size of the new memory block.
+   *
+   * \atleastsdl 2.0.14
    */
   void reallocate(const size_type size) noexcept
   {

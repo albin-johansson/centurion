@@ -191,6 +191,8 @@ class basic_texture final
    * \brief Sets the scale mode that will be used by the texture.
    *
    * \param mode the new scale mode.
+   *
+   * \atleastsdl 2.0.12
    */
   void set_scale_mode(const scale_mode mode) noexcept
   {
@@ -207,6 +209,8 @@ class basic_texture final
    * \param data a pointer to the user data.
    *
    * \return `success` if the user data was updated; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.18
    */
   auto set_user_data(void* data) noexcept -> result
   {
@@ -357,6 +361,8 @@ class basic_texture final
    * \brief Returns the scale mode used by the texture.
    *
    * \return the texture scale mode.
+   *
+   * \atleastsdl 2.0.12
    */
   [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
   {
@@ -373,6 +379,8 @@ class basic_texture final
    * \brief Returns the associated user data.
    *
    * \return a potentially null pointer to the user data.
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto user_data() noexcept -> void* { return SDL_GetTextureUserData(mTexture); }
 

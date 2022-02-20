@@ -318,11 +318,15 @@ class basic_sensor final
 
   /**
    * \brief Locks access to all sensors.
+   *
+   * \atleastsdl 2.0.14
    */
   static void lock() noexcept { SDL_LockSensors(); }
 
   /**
    * \brief Unlocks access to all sensors.
+   *
+   * \atleastsdl 2.0.14
    */
   static void unlock() noexcept { SDL_UnlockSensors(); }
 

@@ -639,6 +639,8 @@ class basic_renderer final
    * \param vertices the vertices that will be rendered.
    *
    * \return `success` if the rendering is successful; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.18
    */
   template <std::size_t Size>
   auto render_geo(bounded_array_ref<const SDL_Vertex, Size> vertices) noexcept -> result
@@ -901,6 +903,8 @@ class basic_renderer final
    * \see `set_logical_size()`
    * \see `scale()`
    * \see `logical_size()`
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto to_logical(const int realX, const int realY) const noexcept -> fpoint
   {
@@ -923,6 +927,8 @@ class basic_renderer final
    * \see `set_logical_size()`
    * \see `scale()`
    * \see `logical_size()`
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto to_logical(const ipoint& real) const noexcept -> fpoint
   {
@@ -943,6 +949,8 @@ class basic_renderer final
    * \see `set_logical_size()`
    * \see `scale()`
    * \see `logical_size()`
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto from_logical(const float logicalX, const float logicalY) const noexcept
       -> ipoint
@@ -966,6 +974,8 @@ class basic_renderer final
    * \see `set_logical_size()`
    * \see `scale()`
    * \see `logical_size()`
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto from_logical(const fpoint& logical) const noexcept -> ipoint
   {
@@ -1043,6 +1053,8 @@ class basic_renderer final
    * \param enabled `true` if VSync should be enabled; `false` otherwise.
    *
    * \return `success` if VSync was successfully enabled/disabled; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.18
    */
   auto set_vsync(const bool enabled) noexcept -> result
   {

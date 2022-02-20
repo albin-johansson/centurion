@@ -266,6 +266,8 @@ class basic_window final
    * \param op the flash operation that will be performed.
    *
    * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \atleastsdl 2.0.16
    */
   auto flash(const flash_op op = flash_op::briefly) noexcept -> result
   {
@@ -383,6 +385,8 @@ class basic_window final
    * \brief Sets whether the keyboard input should be grabbed by the window.
    *
    * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \atleastsdl 2.0.16
    */
   void set_grab_keyboard(const bool grab) noexcept
   {
@@ -393,6 +397,8 @@ class basic_window final
    * \brief Sets whether a window is always on top of other windows.
    *
    * \param enabled `true` if the window should be on top; `false` otherwise.
+   *
+   * \atleastsdl 2.0.16
    */
   void set_always_on_top(const bool enabled) noexcept
   {
@@ -631,6 +637,8 @@ class basic_window final
    * \return `success` if nothing goes wrong; `failure` otherwise.
    *
    * \see `set_mouse_rect()`
+   *
+   * \atleastsdl 2.0.18
    */
   auto reset_mouse_rect() noexcept -> result
   {
@@ -645,6 +653,8 @@ class basic_window final
    * \return `success` if the mouse rect was updated; `failure` otherwise.
    *
    * \see `reset_mouse_rect()`
+   *
+   * \atleastsdl 2.0.18
    */
   auto set_mouse_rect(const irect& rect) noexcept -> result
   {
@@ -655,6 +665,8 @@ class basic_window final
    * \brief Returns the region of the window that the mouse is confined to, if there is one.
    *
    * \return the mouse confinement region; an empty optional is returned if there is none.
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto mouse_rect() const noexcept -> std::optional<irect>
   {
@@ -768,6 +780,8 @@ class basic_window final
    * \brief Returns the ICC profile data for the screen containing the window.
    *
    * \return the ICC profile data; an empty optional is returned upon failure.
+   *
+   * \atleastsdl 2.0.18
    */
   [[nodiscard]] auto icc_profile() const noexcept -> std::optional<icc_profile_data>
   {
@@ -929,6 +943,8 @@ class basic_window final
    * \brief Indicates whether the window can be used as a Metal view.
    *
    * \return `true` if the window can be used as a Metal view; `false` otherwise.
+   *
+   * \atleastsdl 2.0.14
    */
   [[nodiscard]] auto is_metal() const noexcept -> bool { return check_flag(metal); }
 

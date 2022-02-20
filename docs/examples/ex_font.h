@@ -1,5 +1,5 @@
 /**
- * \page example-font Font example
+ * \page page-example-font Font example
  *
  * \include font/demo.cpp
  */

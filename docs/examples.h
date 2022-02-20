@@ -13,7 +13,7 @@
  *
  * \section ex-section-audio Audio
  *
- * \li \subpage example-music "An interactive example of music playback"
+ * \li \subpage page-example-music "An interactive example of music playback"
  *
  * \section ex-section-event-handling Event handling
  *
@@ -22,7 +22,7 @@
  *
  * \section ex-section-text Text
  *
- * \li \subpage example-font "Overview of basic font API"
+ * \li \subpage page-example-font "Overview of basic font API"
  *
  * \section ex-section-video Video
  *

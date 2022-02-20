@@ -155,7 +155,7 @@ class basic_window final
     }
   }
 
-  /// \copydoc basic_window(not_null<const char*>, iarea, uint32)
+  /// \copydoc basic_window(const char*, iarea, uint32)
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),

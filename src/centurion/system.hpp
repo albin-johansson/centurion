@@ -375,9 +375,7 @@ class shared_object final
  *
  * \return the time since SDL was initialized.
  *
- * \deprecated since 7.0.0, since underlying `SDL_GetTicks()` is deprecated.
- *
- * \see `ticks64()`
+ * \deprecated since 7.0.0, use `ticks64()` instead.
  */
 [[nodiscard, deprecated]] inline auto ticks32() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
 {

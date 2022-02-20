@@ -6,7 +6,7 @@ on:
       - stable
 
 env:
-  DOXYGEN_VERSION: 1.9.1
+  DOXYGEN_VERSION: 1.9.3
 
 jobs:
   doxygen:
@@ -36,7 +36,7 @@ jobs:
         run: doxygen
 
       - name: Deploy to GH Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@4.2.5
         with:
           branch: gh-pages
           folder: doxygen-out/html

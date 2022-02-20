@@ -5,7 +5,7 @@ https://github.com/jothepro/doxygen-awesome-css
 
 MIT License
 
-Copyright (c) 2021 jothepro
+Copyright (c) 2021 - 2022 jothepro
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ html {
     /* default box shadow used for raising an element above the normal content. Used in dropdowns, Searchresult, ... */
     --box-shadow: 0 2px 10px 0 rgba(0,0,0,.1);
 
-    --odd-color: rgba(0,0,0,.03);
+    --odd-color: rgba(0,0,0,.028);
 
     /* font-families. will affect all text on the website
      * font-family: the normal font for text, headlines, menus
@@ -74,7 +74,7 @@ html {
     /* content text properties. These only affect the page content, not the navigation or any other ui elements */
     --content-line-height: 27px;
     /* The content is centered and constraint in it's width. To make the content fill the whole page, set the variable to auto.*/
-    --content-maxwidth: 900px;
+    --content-maxwidth: 1000px;
 
     /* colors for various content boxes: @warning, @note, @deprecated @bug */
     --warning-color: #fca49b;
@@ -83,6 +83,9 @@ html {
     --note-color: rgba(255,229,100,.3);
     --note-color-dark: #c39900;
     --note-color-darker: #8d7400;
+    --todo-color: rgba(100,160,200,.3);
+    --todo-color-dark: #00C0E0;
+    --todo-color-darker: #274a5c;
     --deprecated-color: rgb(214, 216, 224);
     --deprecated-color-dark: #5b6269;
     --deprecated-color-darker: #43454a;
@@ -150,10 +153,14 @@ html {
     --side-nav-arrow-opacity: 0;
     --side-nav-arrow-hover-opacity: 0.9;
 
+    --toc-background: var(--side-nav-background);
+    --toc-foreground: var(--side-nav-foreground);
+
     /* height of an item in any tree / collapsable table */
     --tree-item-height: 30px;
 
-    --darkmode-toggle-button-icon: '☀️'
+    --darkmode-toggle-button-icon: '☀️';
+    --memname-font-size: var(--page-font-size);
 }
 
 @media screen and (max-width: 767px) {
@@ -167,6 +174,8 @@ html {
 
 @media (prefers-color-scheme: dark) {
     html:not(.light-mode) {
+        color-scheme: dark;
+
         --primary-color: #1982d2;
         --primary-dark-color: #5ca8e2;
         --primary-light-color: #4779ac;
@@ -175,7 +184,7 @@ html {
 
         --box-shadow: 0 2px 10px 0 rgba(0,0,0,.35);
 
-        --odd-color: rgba(0,0,0,.1);
+        --odd-color: rgba(100,100,100,.06);
 
         --menu-selected-background: rgba(0,0,0,.4);
 
@@ -197,7 +206,10 @@ html {
         --warning-color-darker: #f5b1aa;
         --note-color: rgb(255, 183, 0);
         --note-color-dark: #9f7300;
-        --note-color-darker: #fff6df;
+        --note-color-darker: #645b39;
+        --todo-color: rgba(100,160,200,.3);
+        --todo-color-dark: #00C0E0;
+        --todo-color-darker: #dcf0fa;
         --deprecated-color: rgb(88, 90, 96);
         --deprecated-color-dark: #262e37;
         --deprecated-color-darker: #a0a5b0;
@@ -211,6 +223,8 @@ html {
 
 /* dark mode variables are defined twice, to support both the dark-mode without and with doxygen-awesome-darkmode-toggle.js */
 html.dark-mode {
+    color-scheme: dark;
+
     --primary-color: #1982d2;
     --primary-dark-color: #5ca8e2;
     --primary-light-color: #4779ac;
@@ -219,7 +233,7 @@ html.dark-mode {
 
     --box-shadow: 0 2px 10px 0 rgba(0,0,0,.35);
 
-    --odd-color: rgba(0,0,0,.1);
+    --odd-color: rgba(100,100,100,.06);
 
     --menu-selected-background: rgba(0,0,0,.4);
 
@@ -241,7 +255,10 @@ html.dark-mode {
     --warning-color-darker: #f5b1aa;
     --note-color: rgb(255, 183, 0);
     --note-color-dark: #9f7300;
-    --note-color-darker: #fff6df;
+    --note-color-darker: #645b39;
+    --todo-color: rgba(100,160,200,.3);
+    --todo-color-dark: #00C0E0;
+    --todo-color-darker: #dcf0fa;
     --deprecated-color: rgb(88, 90, 96);
     --deprecated-color-dark: #262e37;
     --deprecated-color-darker: #a0a5b0;
@@ -478,6 +495,11 @@ a:link, a:visited, a:hover, a:focus, a:active {
 
 .left #MSearchSelect {
     left: 0;
+    user-select: none;
+}
+
+.SelectionMark {
+    user-select: none;
 }
 
 .tabs .left #MSearchSelect {
@@ -577,6 +599,10 @@ iframe#MSearchResults {
     margin: 4px;
 }
 
+iframe {
+    color-scheme: normal;
+}
+
 @media (prefers-color-scheme: dark) {
     html:not(.light-mode) iframe#MSearchResults {
         filter: invert() hue-rotate(180deg);
@@ -592,6 +618,8 @@ html.dark-mode iframe#MSearchResults {
     border-radius: var(--border-radius-medium);
     box-shadow: var(--box-shadow);
     background: var(--page-background-color);
+    padding-top: var(--spacing-small);
+    padding-bottom: var(--spacing-small);
 }
 
 #MSearchSelectWindow a.SelectItem {
@@ -642,6 +670,23 @@ html.dark-mode iframe#MSearchResults {
         transform: translate(0, 20px);
         animation: ease-out 280ms slideInSearchResultsMobile;
     }
+
+    /*
+     * Overwrites for fixing the searchbox on mobile in doxygen 1.9.2
+     */
+    label.main-menu-btn ~ #searchBoxPos1 {
+        top: 3px !important;
+        right: 6px !important;
+        left: 45px;
+        display: flex;
+    }
+
+    label.main-menu-btn ~ #searchBoxPos1 > #MSearchBox {
+        margin-top: 0;
+        margin-bottom: 0;
+        flex-grow: 2;
+        float: left;
+    }
 }
 
 /*
@@ -679,8 +724,10 @@ html.dark-mode iframe#MSearchResults {
 }
 
 #nav-sync {
-    top: 12px !important;
+    bottom: 12px;
     right: 12px;
+    top: auto !important;
+    user-select: none;
 }
 
 #nav-tree .selected {
@@ -808,13 +855,21 @@ div.contents div.dyncontent {
 
 @media (prefers-color-scheme: dark) {
     html:not(.light-mode) div.contents div.dyncontent img,
-    html:not(.light-mode) div.contents div.dyncontent iframe {
+    html:not(.light-mode) div.contents center img,
+    html:not(.light-mode) div.contents table img,
+    html:not(.light-mode) div.contents div.dyncontent iframe,
+    html:not(.light-mode) div.contents center iframe,
+    html:not(.light-mode) div.contents table iframe {
         filter: hue-rotate(180deg) invert();
     }
 }
 
 html.dark-mode div.contents div.dyncontent img,
-html.dark-mode div.contents div.dyncontent iframe {
+html.dark-mode div.contents center img,
+html.dark-mode div.contents table img,
+html.dark-mode div.contents div.dyncontent iframe,
+html.dark-mode div.contents center iframe,
+html.dark-mode div.contents table iframe {
     filter: hue-rotate(180deg) invert();
 }
 
@@ -852,7 +907,7 @@ blockquote p {
  */
 
 div.toc {
-    background-color: var(--side-nav-background);
+    background-color: var(--toc-background);
     border: 1px solid var(--separator-color);
     border-radius: var(--border-radius-medium);
     box-shadow: var(--box-shadow);
@@ -861,7 +916,7 @@ div.toc {
 }
 
 div.toc h3 {
-    color: var(--side-nav-foreground);
+    color: var(--toc-foreground);
     font-size: var(--navigation-font-size);
     margin: var(--spacing-large) 0;
 }
@@ -877,7 +932,7 @@ div.toc li:before {
     font-weight: 800;
     font-family: var(--font-family);
     margin-right: var(--spacing-small);
-    color: var(--side-nav-foreground);
+    color: var(--toc-foreground);
     opacity: .4;
 }
 
@@ -1013,7 +1068,7 @@ div.fragment .line:first-child .lineno {
  dl warning, attention, note, deprecated, bug, ...
  */
 
-dl.warning, dl.attention, dl.note, dl.deprecated, dl.bug, dl.invariant, dl.pre {
+dl.warning, dl.attention, dl.note, dl.deprecated, dl.bug, dl.invariant, dl.pre, dl.todo, dl.remark {
     padding: var(--spacing-medium);
     margin: var(--spacing-medium) 0;
     color: var(--page-background-color);
@@ -1036,14 +1091,24 @@ dl.warning dt, dl.attention dt {
     color: var(--warning-color-dark);
 }
 
-dl.note {
+dl.note, dl.remark {
     background: var(--note-color);
     border-left: 8px solid var(--note-color-dark);
     color: var(--note-color-darker);
 }
 
-dl.note dt {
+dl.note dt, dl.remark dt {
     color: var(--note-color-dark);
+}
+
+dl.todo {
+    background: var(--todo-color);
+    border-left: 8px solid var(--todo-color-dark);
+    color: var(--todo-color-darker);
+}
+
+dl.todo dt {
+    color: var(--todo-color-dark);
 }
 
 dl.bug {
@@ -1066,7 +1131,7 @@ dl.deprecated dt a {
     color: var(--deprecated-color-dark) !important;
 }
 
-dl.section dd, dl.bug dd, dl.deprecated dd {
+dl.section dd, dl.bug dd, dl.deprecated dd, dl.todo dd {
     margin-inline-start: 0px;
 }
 
@@ -1149,6 +1214,7 @@ div.memtitle {
 div.memproto table.memname {
     font-family: monospace, fixed;
     color: var(--page-foreground-color);
+    font-size: var(--memname-font-size);
 }
 
 table.mlabels, table.mlabels > tbody {
@@ -1275,8 +1341,9 @@ hr {
     box-shadow: var(--content-maxwidth) 0 0 0 var(--separator-color), calc(0px - var(--content-maxwidth)) 0 0 0 var(--separator-color);
 }
 
-.contents img {
+.contents img, .contents .center, .contents center, .contents div.image object {
     max-width: 100%;
+    overflow: auto;
 }
 
 /*
@@ -1358,6 +1425,27 @@ html.dark-mode .iconfopen, html.dark-mode .iconfclosed {
     }
 }
 
+/* 
+ Class Index Doxygen 1.8 
+*/
+
+table.classindex table div.ah {
+    background-image: none;
+    background-color: initial;
+    border-color: var(--separator-color);
+    color: var(--page-foreground-color);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-small);
+}
+
+div.qindex {
+    background-color: var(--odd-color);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--separator-color);
+    padding: var(--spacing-small) 0;
+}
+
 /*
   Footer and nav-path
  */
@@ -1398,6 +1486,11 @@ address.footer {
     text-shadow: none;
     display: inline-block;
     color: var(--primary-color) !important;
+}
+
+.navpath li.navelem b {
+    color: var(--primary-dark-color);
+    font-weight: 500;
 }
 
 li.navelem {
@@ -1443,6 +1536,7 @@ li.navelem:first-child:before {
 */
 
 doxygen-awesome-dark-mode-toggle {
+    display: inline-block;
     margin: 0 0 0 var(--spacing-small);
     padding: 0;
     width: var(--searchbar-height);
@@ -1454,6 +1548,8 @@ doxygen-awesome-dark-mode-toggle {
     vertical-align: middle;
     text-align: center;
     line-height: var(--searchbar-height);
+    user-select: none;
+    cursor: pointer;
 }
 
 doxygen-awesome-dark-mode-toggle:hover {

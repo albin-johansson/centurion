@@ -172,7 +172,7 @@ struct font_dpi final
  * with fonts, in order to easily deal with fonts of different sizes and more efficient text
  * rendering.
  *
- * \details An overview of this API can be viewed \subpage example-font "here".
+ * \details An overview of this API can be viewed \subpage page-example-font "here".
  *
  * \see `font_cache`
  * \see `font_bundle`

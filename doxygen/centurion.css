@@ -3,13 +3,13 @@
 
   --fragment-background: #151B25;
   --fragment-foreground: #FFFFFF;
-  --fragment-keyword: #5A85FD; /* #C792EA */
+  --fragment-keyword: #FF7B72; /* #C792EA */
   --fragment-keywordtype: var(--fragment-keyword);
   --fragment-keywordflow: var(--fragment-keyword);
-  --fragment-token: #C3E88D;
+  --fragment-token: #A5FFC9;
   --fragment-comment: #959DA5;
-  --fragment-link: #FFCB6B;
-  --fragment-preprocessor: #82AAFF;
+  --fragment-link: #79C0FF;
+  --fragment-preprocessor: #FF7B72;
   --fragment-linenumber-background: #151B25;
 }
 

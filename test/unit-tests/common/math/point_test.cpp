@@ -162,6 +162,24 @@ TEST(Point, FPointToIPoint)
   ASSERT_EQ(result.y(), static_cast<int>(source.y()));
 }
 
+TEST(Point, AsI)
+{
+  const cen::fpoint source{58.8f, 123.4f};
+  const auto result = source.as_i();
+
+  ASSERT_EQ(result.x(), static_cast<int>(source.x()));
+  ASSERT_EQ(result.y(), static_cast<int>(source.y()));
+}
+
+TEST(Point, AsF)
+{
+  const cen::ipoint source{573, 9'382};
+  const auto result = source.as_f();
+
+  ASSERT_EQ(result.x(), static_cast<float>(source.x()));
+  ASSERT_EQ(result.y(), static_cast<float>(source.y()));
+}
+
 TEST(Point, Get)
 {
   const cen::fpoint point{3923.3f, 7718.1f};

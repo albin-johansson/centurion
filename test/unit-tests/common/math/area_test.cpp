@@ -22,6 +22,24 @@ TEST(Area, Construction)
   ASSERT_EQ(area.height, height);
 }
 
+TEST(Area, AsI)
+{
+  const cen::farea source{84.3f, 29.6f};
+  const auto result = source.as_i();
+
+  ASSERT_EQ(result.width, static_cast<int>(source.width));
+  ASSERT_EQ(result.height, static_cast<int>(source.height));
+}
+
+TEST(Area, AsF)
+{
+  const cen::iarea source{843, 203};
+  const auto result = source.as_f();
+
+  ASSERT_EQ(result.width, static_cast<float>(source.width));
+  ASSERT_EQ(result.height, static_cast<float>(source.height));
+}
+
 TEST(Area, Area)
 {
   const cen::iarea iarea{123, 456};

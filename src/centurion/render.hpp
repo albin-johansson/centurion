@@ -491,7 +491,7 @@ class basic_renderer final
   auto render(const basic_texture<X>& texture, const basic_point<Y>& pos) noexcept -> result
   {
     if constexpr (basic_point<Y>::floating) {
-      const auto size = cast<farea>(texture.size());
+      const auto size = texture.size().as_f();
       const SDL_FRect dst{pos.x(), pos.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }

@@ -239,6 +239,28 @@ TEST(Rect, OffsetHeight)
   ASSERT_EQ(height + offset, rect.height());
 }
 
+TEST(Rect, AsI)
+{
+  const cen::frect source{-32.5f, 74.7f, 325.8f, 145.3f};
+  const auto result = source.as_i();
+
+  ASSERT_EQ(result.x(), static_cast<int>(source.x()));
+  ASSERT_EQ(result.y(), static_cast<int>(source.y()));
+  ASSERT_EQ(result.width(), static_cast<int>(source.width()));
+  ASSERT_EQ(result.height(), static_cast<int>(source.height()));
+}
+
+TEST(Rect, AsF)
+{
+  const cen::irect source{85, -32, 434, 275};
+  const auto result = source.as_f();
+
+  ASSERT_EQ(result.x(), static_cast<float>(source.x()));
+  ASSERT_EQ(result.y(), static_cast<float>(source.y()));
+  ASSERT_EQ(result.width(), static_cast<float>(source.width()));
+  ASSERT_EQ(result.height(), static_cast<float>(source.height()));
+}
+
 TEST(Rect, Contains)
 {
   const cen::frect rect{{277.5f, 189.2f}, {79.2f, 58.2f}};

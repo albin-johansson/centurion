@@ -28,12 +28,6 @@
  * of `basic_window`. Subsequently, handles always feature a `_handle` suffix. So the
  * handle version of `basic_window` is therefore `window_handle`.
  *
- * \section extensions Extensions
- *
- * Some classes that come in both owner and handle versions may provide API extensions for
- * the owning version. For example, `basic_renderer` provides APIs for automatically
- * translated rendering and font handling with its owning version, `renderer`.
- *
  * \section examples Examples
  *
  * In order to clarify this concept, let’s look at some examples.

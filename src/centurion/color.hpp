@@ -512,7 +512,7 @@ class color final
   [[nodiscard]] auto as_rgb() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
-    return std::format("#{:0<2X}{:0<2X}{:0<2X}", +mColor.r, +mColor.g, +mColor.b);
+    return std::format("#{:02X}{:02X}{:02X}", +mColor.r, +mColor.g, +mColor.b);
 #else
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
@@ -539,7 +539,7 @@ class color final
   [[nodiscard]] auto as_rgba() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
-    return std::format("#{:0<2X}{:0<2X}{:0<2X}{:0<2X}",
+    return std::format("#{:02X}{:02X}{:02X}{:02X}",
                        +mColor.r,
                        +mColor.g,
                        +mColor.b,
@@ -571,7 +571,7 @@ class color final
   [[nodiscard]] auto as_argb() const -> std::string
   {
 #if CENTURION_HAS_FEATURE_FORMAT
-    return std::format("#{:0<2X}{:0<2X}{:0<2X}{:0<2X}",
+    return std::format("#{:02X}{:02X}{:02X}{:02X}",
                        +mColor.a,
                        +mColor.r,
                        +mColor.g,

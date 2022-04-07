@@ -149,6 +149,8 @@ TEST(Color, FromRGB)
   ASSERT_EQ(0xEB, color->green());
   ASSERT_EQ(0x9C, color->blue());
   ASSERT_EQ(0xFF, color->alpha());
+
+  ASSERT_EQ("#108D0E", cen::color::from_rgb("#108D0E").value().as_rgb());
 }
 
 TEST(Color, FromRGBA)
@@ -166,6 +168,8 @@ TEST(Color, FromRGBA)
   ASSERT_EQ(0xCF, color->green());
   ASSERT_EQ(0x39, color->blue());
   ASSERT_EQ(0xEA, color->alpha());
+
+  ASSERT_EQ("#0710F3C0", cen::color::from_rgba("#0710F3C0").value().as_rgba());
 }
 
 TEST(Color, FromARGB)
@@ -183,6 +187,8 @@ TEST(Color, FromARGB)
   ASSERT_EQ(0x81, color->red());
   ASSERT_EQ(0xCD, color->green());
   ASSERT_EQ(0xA7, color->blue());
+
+  ASSERT_EQ("#890FE1CA", cen::color::from_argb("#890FE1CA").value().as_argb());
 }
 
 TEST(Color, FromNorm)

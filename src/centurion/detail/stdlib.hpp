@@ -25,9 +25,6 @@
 #ifndef CENTURION_DETAIL_STDLIB_HPP_
 #define CENTURION_DETAIL_STDLIB_HPP_
 
-#include "../common.hpp"
-#include "../features.hpp"
-
 #include <cassert>       // assert
 #include <charconv>      // from_chars
 #include <cmath>         // lerp
@@ -38,6 +35,9 @@
 #include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_integral_v
+
+#include "../common.hpp"
+#include "../features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -123,7 +123,7 @@ template <typename T = int>
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("{}", ptr);
+  return ptr ? std::format("{}", ptr) : std::string{};
 #else
   if (ptr) {
     std::stringstream stream;

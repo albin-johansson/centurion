@@ -38,13 +38,14 @@
 *.user
 *.filters
 
-# Custom stuff
-*.afdesign
 .idea
 .vs
 .vscode
-.clangd
+.DS_Store
+
+*.afdesign
+
 build
-bin
 cmake-build-*
 doxygen-out
+docs

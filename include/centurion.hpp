@@ -5364,7 +5364,7 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -8161,7 +8161,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -10022,7 +10022,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -13614,7 +13614,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -25420,7 +25420,7 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -40433,7 +40433,7 @@ class mix_error final : public cen_error
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -44721,7 +44721,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -57803,7 +57803,7 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -61254,7 +61254,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -61646,13 +61646,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -64438,7 +64438,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -64830,13 +64830,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -65357,7 +65357,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -65716,13 +65716,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -78129,7 +78129,7 @@ class pointer_manager final
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -78627,13 +78627,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -79865,7 +79865,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -80224,13 +80224,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -94823,7 +94823,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -95182,13 +95182,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -101910,7 +101910,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -102269,13 +102269,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 
@@ -116525,7 +116525,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <SDL.h>
 
-#include <cmath>        // sqrt, abs, round
+#include <cmath>        // sqrt, pow, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
@@ -116884,13 +116884,13 @@ template <typename T>
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral) {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
+    const auto xDiff = std::pow(from.x() - to.x(), T{2});
+    const auto yDiff = std::pow(from.y() - to.y(), T{2});
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
   else {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+    return std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
   }
 }
 

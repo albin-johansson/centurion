@@ -45,7 +45,7 @@
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 /**
  * \def CENTURION_SDL_VERSION_IS

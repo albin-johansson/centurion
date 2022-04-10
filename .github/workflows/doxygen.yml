@@ -23,8 +23,8 @@ jobs:
         shell: bash
         run: |
           mkdir doxy-bin && cd doxy-bin
-          wget https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
-          tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
+          wget https://sourceforge.net/projects/doxygen/files/rel-${{env.DOXYGEN_VERSION}}/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz/download
+          tar xf download
           cd doxygen-${{env.DOXYGEN_VERSION}}
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release

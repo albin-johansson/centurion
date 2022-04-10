@@ -102,21 +102,17 @@ class basic_rect final
 {
  public:
   /// \brief Indicates whether or not the rectangle is based on an integral type.
-  /// \deprecated Since 6.4.0, use `integral` instead.
   /// \since 5.0.0
   inline constexpr static bool isIntegral [[deprecated]] = rect_traits<T>::isIntegral;
 
   /// \brief Indicates whether or not the rectangle is based on a floating-point type.
-  /// \deprecated Since 6.4.0, use `floating` instead.
   /// \since 5.0.0
   inline constexpr static bool isFloating [[deprecated]] = rect_traits<T>::isFloating;
 
   /// \brief Indicates whether or not the rectangle uses integral components.
-  /// \since 6.4.0
   inline constexpr static bool integral = rect_traits<T>::integral;
 
   /// \brief Indicates whether or not the rectangle uses floating-point components.
-  /// \since 6.4.0
   inline constexpr static bool floating = rect_traits<T>::floating;
 
   /// \typedef value_type

@@ -40,21 +40,17 @@ class point_traits final
 {
  public:
   /// \brief Indicates whether or not the point has integral components.
-  /// \deprecated Since 6.4.0, use `integral` instead.
   /// \since 5.0.0
   inline constexpr static bool isIntegral [[deprecated]] = std::is_integral_v<T>;
 
   /// \brief Indicates whether or not the point has floating-point components.
-  /// \deprecated Since 6.4.0, use `floating` instead.
   /// \since 5.0.0
   inline constexpr static bool isFloating [[deprecated]] = std::is_floating_point_v<T>;
 
   /// \brief Indicates whether or not the point has integral components.
-  /// \since 6.4.0
   inline constexpr static bool integral = std::is_integral_v<T>;
 
   /// \brief Indicates whether or not the point has floating-point components.
-  /// \since 6.4.0
   inline constexpr static bool floating = std::is_floating_point_v<T>;
 
   /// \brief The actual representation type, i.e. `int` or `float`.

@@ -84,7 +84,6 @@ class basic_sound_effect final
 {
  public:
   /// \brief The milliseconds type used in the sound effect API.
-  /// \since 6.4.0
   using ms_type = milliseconds<int>;
 
   /// \brief Indicates that an audio snippet should be looped indefinitely.

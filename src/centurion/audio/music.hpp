@@ -65,7 +65,6 @@ class music final
 {
  public:
   /// \brief The milliseconds type used in the music API.
-  /// \since 6.4.0
   using ms_type = milliseconds<int>;
 
   /// \brief A constant that indicates that the music should be looped indefinitely.

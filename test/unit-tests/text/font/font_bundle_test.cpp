@@ -4,7 +4,7 @@
 
 TEST(FontBundle, Usage)
 {
-  cen::font_bundle bundle;
+  cen::experimental::font_bundle bundle;
 
   ASSERT_THROW(bundle.load_font("foo", 12), cen::ttf_error);
 
@@ -48,8 +48,8 @@ TEST(FontBundle, Usage)
 
 TEST(FontBundle, ToString)
 {
-  cen::font_bundle bundle;
+  cen::experimental::font_bundle bundle;
   bundle.load_font("resources/daniel.ttf", 12);
   bundle.load_font("resources/daniel.ttf", 16);
-  ASSERT_EQ("font_bundle(#pools: 1, #fonts: 2)", cen::to_string(bundle));
+  ASSERT_EQ("font_bundle(#pools: 1, #fonts: 2)", to_string(bundle));
 }

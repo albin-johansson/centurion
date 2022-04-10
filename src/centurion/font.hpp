@@ -1481,6 +1481,13 @@ inline auto operator<<(std::ostream& stream, const font_cache& cache) -> std::os
 
 /// \} End of font cache functions
 
+/// \} End of group font
+
+namespace experimental {
+
+/// \addtogroup font
+/// \{
+
 /**
  * \brief Utility for handling fonts of various sizes.
  *
@@ -1716,6 +1723,7 @@ inline auto operator<<(std::ostream& stream, const font_bundle& bundle) -> std::
 
 /// \} End of group font
 
+}  // namespace experimental
 }  // namespace cen
 
 #endif  // CENTURION_NO_SDL_TTF

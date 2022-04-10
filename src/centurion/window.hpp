@@ -214,8 +214,7 @@ class basic_window final
    *
    * \see `basic_renderer::default_flags()`
    */
-  [[nodiscard]] auto create_renderer(const uint32 flags = renderer::default_flags())
-      -> renderer
+  [[nodiscard]] auto make_renderer(const uint32 flags = renderer::default_flags()) -> renderer
   {
     if (auto* ptr = SDL_CreateRenderer(get(), -1, flags)) {
       return renderer{ptr};
@@ -233,7 +232,7 @@ class basic_window final
    *
    * \return a potentially empty renderer handle.
    *
-   * \see `create_renderer()`
+   * \see `make_renderer()`
    */
   [[nodiscard]] auto get_renderer() noexcept -> renderer_handle
   {

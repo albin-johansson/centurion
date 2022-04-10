@@ -11,7 +11,7 @@ class TextureHandleTest : public testing::Test {
   {
     constexpr auto path = "resources/panda.png";
     window = std::make_unique<cen::window>();
-    renderer = std::make_unique<cen::renderer>(window->create_renderer());
+    renderer = std::make_unique<cen::renderer>(window->make_renderer());
     texture = std::make_unique<cen::texture>(renderer->make_texture(path));
   }
 

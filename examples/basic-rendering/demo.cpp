@@ -8,7 +8,7 @@ int main(int, char**)
 
   // Create a window and an associated renderer
   cen::window window;
-  cen::renderer renderer = window.create_renderer();
+  cen::renderer renderer = window.make_renderer();
 
   // Here we assume the existence of an image and font
   const cen::texture image = renderer.make_texture(RESOURCE_DIR "panda.png");

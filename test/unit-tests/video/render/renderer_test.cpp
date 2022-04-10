@@ -18,7 +18,7 @@ class RendererTest : public testing::Test {
     font = std::make_unique<cen::font>("resources/daniel.ttf", 12);
     window = std::make_unique<cen::window>();
 
-    renderer = std::make_unique<cen::renderer>(window->create_renderer());
+    renderer = std::make_unique<cen::renderer>(window->make_renderer());
     texture = std::make_unique<cen::texture>(renderer->make_texture("resources/panda.png"));
   }
 
@@ -53,7 +53,7 @@ TEST_F(RendererTest, PointerConstructor)
 TEST_F(RendererTest, FlagsConstructor)
 {
   // This throws because there is already a renderer associated with the window
-  ASSERT_THROW(window->create_renderer(), cen::sdl_error);
+  ASSERT_THROW(window->make_renderer(), cen::sdl_error);
 }
 
 TEST_F(RendererTest, SetColor)

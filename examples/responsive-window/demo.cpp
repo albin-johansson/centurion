@@ -10,7 +10,7 @@ int main(int, char**)
 
   /* Create a window and an associated renderer */
   cen::window window;
-  cen::renderer renderer = window.create_renderer();
+  cen::renderer renderer = window.make_renderer();
 
   /* Make sure our window is visible */
   window.show();

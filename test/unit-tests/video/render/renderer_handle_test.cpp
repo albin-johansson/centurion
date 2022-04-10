@@ -11,7 +11,7 @@ class RendererHandleTest : public testing::Test {
   [[maybe_unused]] static void SetUpTestSuite()
   {
     window = std::make_unique<cen::window>();
-    renderer = std::make_unique<cen::renderer>(window->create_renderer());
+    renderer = std::make_unique<cen::renderer>(window->make_renderer());
   }
 
   [[maybe_unused]] static void TearDownTestSuite()

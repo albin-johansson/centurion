@@ -17,7 +17,7 @@ int main(int, char**)
   const cen::sdl sdl;
 
   cen::window window{"event_handler demo"};
-  cen::renderer renderer = window.create_renderer();
+  cen::renderer renderer = window.make_renderer();
 
   window.show();
 

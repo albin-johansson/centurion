@@ -180,7 +180,7 @@ class basic_renderer final
    * \return the created texture.
    */
   template <typename X>
-  [[nodiscard]] auto create_texture(const basic_surface<X>& surface) const -> texture
+  [[nodiscard]] auto make_texture(const basic_surface<X>& surface) const -> texture
   {
     if (auto* ptr = SDL_CreateTextureFromSurface(get(), surface.get())) {
       return texture{ptr};
@@ -201,9 +201,9 @@ class basic_renderer final
    *
    * \return the created texture.
    */
-  [[nodiscard]] auto create_texture(const iarea& size,
-                                    const pixel_format format,
-                                    const texture_access access) const -> texture
+  [[nodiscard]] auto make_texture(const iarea& size,
+                                  const pixel_format format,
+                                  const texture_access access) const -> texture
   {
     if (auto* ptr = SDL_CreateTexture(get(),
                                       to_underlying(format),
@@ -228,7 +228,7 @@ class basic_renderer final
    *
    * \return the loaded texture.
    */
-  [[nodiscard]] auto create_texture(const char* path) const -> texture
+  [[nodiscard]] auto make_texture(const char* path) const -> texture
   {
     assert(path);
     if (auto* ptr = IMG_LoadTexture(get(), path)) {
@@ -239,9 +239,9 @@ class basic_renderer final
     }
   }
 
-  [[nodiscard]] auto create_texture(const std::string& path) const -> texture
+  [[nodiscard]] auto make_texture(const std::string& path) const -> texture
   {
-    return create_texture(path.c_str());
+    return make_texture(path.c_str());
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE

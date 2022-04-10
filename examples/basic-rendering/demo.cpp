@@ -11,11 +11,11 @@ int main(int, char**)
   cen::renderer renderer = window.create_renderer();
 
   // Here we assume the existence of an image and font
-  const cen::texture image = renderer.create_texture(RESOURCE_DIR "panda.png");
+  const cen::texture image = renderer.make_texture(RESOURCE_DIR "panda.png");
   const cen::font font{RESOURCE_DIR "daniel.ttf", 36};
 
   // Render a string to a texture, which in turn can be rendered to our render target
-  auto text = renderer.create_texture(font.render_blended("Hello world!", cen::colors::black));
+  auto text = renderer.make_texture(font.render_blended("Hello world!", cen::colors::black));
 
   window.show();
 

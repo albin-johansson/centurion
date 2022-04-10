@@ -23,7 +23,7 @@ class TextureTest : public testing::Test {
   {
     window = std::make_unique<cen::window>();
     renderer = std::make_unique<cen::renderer>(window->create_renderer());
-    texture = std::make_unique<cen::texture>(renderer->create_texture(path));
+    texture = std::make_unique<cen::texture>(renderer->make_texture(path));
   }
 
   static void TearDownTestSuite()
@@ -53,7 +53,7 @@ TEST_F(TextureTest, PointerConstructor)
 TEST_F(TextureTest, PathConstructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(renderer->create_texture("badpath"s), cen::img_error);
+  ASSERT_THROW(renderer->make_texture("badpath"s), cen::img_error);
 
   ASSERT_EQ(imageWidth, texture->width());
   ASSERT_EQ(imageHeight, texture->height());
@@ -62,7 +62,7 @@ TEST_F(TextureTest, PathConstructor)
 TEST_F(TextureTest, SurfaceConstructor)
 {
   const cen::surface surface{path};
-  ASSERT_NO_THROW(renderer->create_texture(surface));
+  ASSERT_NO_THROW(renderer->make_texture(surface));
 }
 
 TEST_F(TextureTest, CustomizationConstructor)
@@ -73,7 +73,7 @@ TEST_F(TextureTest, CustomizationConstructor)
   constexpr auto height = 85;
   constexpr cen::iarea size{width, height};
 
-  const auto texture = renderer->create_texture(size, format, access);
+  const auto texture = renderer->make_texture(size, format, access);
 
   ASSERT_EQ(format, texture.format());
   ASSERT_EQ(access, texture.access());
@@ -121,7 +121,7 @@ TEST_F(TextureTest, SetColorMod)
 
 TEST_F(TextureTest, Release)
 {
-  auto texture = renderer->create_texture(path);
+  auto texture = renderer->make_texture(path);
 
   auto ptr = texture.release();
   ASSERT_TRUE(ptr);
@@ -132,7 +132,7 @@ TEST_F(TextureTest, Release)
 TEST_F(TextureTest, IsStatic)
 {
   const auto texture =
-      renderer->create_texture({10, 10}, window->format(), cen::texture_access::non_lockable);
+      renderer->make_texture({10, 10}, window->format(), cen::texture_access::non_lockable);
   ASSERT_TRUE(texture.is_static());
 }
 
@@ -141,7 +141,7 @@ TEST_F(TextureTest, IsTarget)
   ASSERT_FALSE(texture->is_target());
 
   const auto format = window->format();
-  const auto target = renderer->create_texture({10, 10}, format, cen::texture_access::target);
+  const auto target = renderer->make_texture({10, 10}, format, cen::texture_access::target);
   ASSERT_TRUE(target.is_target());
 }
 

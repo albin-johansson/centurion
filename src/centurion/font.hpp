@@ -1227,7 +1227,7 @@ class font_cache final
     const auto id = mNextStringId;
     assert(mStrings.find(id) == mStrings.end());
 
-    mStrings.try_emplace(id, renderer.create_texture(surface));
+    mStrings.try_emplace(id, renderer.make_texture(surface));
     ++mNextStringId;
 
     return id;
@@ -1452,7 +1452,7 @@ class font_cache final
   [[nodiscard]] auto make_glyph_texture(basic_renderer<T>& renderer, const unicode_t glyph)
       -> texture
   {
-    return renderer.create_texture(mFont.render_blended_glyph(glyph, renderer.get_color()));
+    return renderer.make_texture(mFont.render_blended_glyph(glyph, renderer.get_color()));
   }
 };
 

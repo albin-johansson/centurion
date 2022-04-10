@@ -3,7 +3,7 @@ name: "Doxygen"
 on:
   push:
     branches:
-      - main
+      - stable
 
 env:
   DOXYGEN_VERSION: 1.9.1

@@ -49,8 +49,8 @@ TEST_F(VulkanCoreTest, CreateSurface)
   cen::window_handle window{nullptr};
   VkSurfaceKHR surface;
 
-  ASSERT_EQ(cen::failure, cen::vk::create_surface(window, instance, &surface));
-  ASSERT_EQ(cen::success, cen::vk::create_surface(window, instance, &surface));
+  ASSERT_EQ(cen::failure, cen::vk::make_surface(window, instance, &surface));
+  ASSERT_EQ(cen::success, cen::vk::make_surface(window, instance, &surface));
   ASSERT_EQ(2u, SDL_Vulkan_CreateSurface_fake.call_count);
 }
 

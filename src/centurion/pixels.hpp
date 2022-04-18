@@ -426,7 +426,7 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 
 /// \} End of palette functions
 
-template <typename B>
+template <typename T>
 class basic_pixel_format_info;
 
 using pixel_format_info = basic_pixel_format_info<detail::owner_tag>;

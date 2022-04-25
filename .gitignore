@@ -38,8 +38,6 @@
 *.user
 *.filters
 
-bin
-
 # macOS Desktop Services Store files
 .DS_Store
 
@@ -53,9 +51,9 @@ bin
 .vs
 .vscode
 
-# Build folders
+.DS_Store
+
 build
 cmake-build-*
-
-# Doxygen output folder
 doxygen-out
+docs/book

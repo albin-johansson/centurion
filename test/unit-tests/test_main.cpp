@@ -1,26 +1,21 @@
 #include <gtest/gtest.h>
 
-#include "core/library.hpp"
-#include "core/log.hpp"
+#include "centurion/logging.hpp"
+#include "centurion/initialization.hpp"
 
 int main(int argc, char* argv[])
 {
-#ifndef CEN_AUDIO
-  cen::config cfg;
-
-  cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-  cfg.initMixer = false;
-
-  const cen::library lib{cfg};
+#ifdef CEN_AUDIO
+  const cen::sdl sdl;
+  const cen::mix mix;
 #else
-  const cen::library lib;
+  cen::sdl_cfg cfg;
+  cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
+  const cen::sdl sdl{cfg};
 #endif
 
-#if CENTURION_HAS_FEATURE_CONCEPTS
-#if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
-  cen::log::use_preset_output_function();
-#endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
-#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+  const cen::img img;
+  const cen::ttf ttf;
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

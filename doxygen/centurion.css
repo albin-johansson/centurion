@@ -1,10 +1,49 @@
-:root
-{
-  --code-foreground: #f97583;
-  --fragment-keywordtype: #f97583;
-  --fragment-keywordflow: #f97583;
-  --fragment-keyword: #f97583;
-  --fragment-token: #ffb97b;
-  --fragment-link: #b392f0;
-  --fragment-comment: #959da5;
+:root {
+  --code-foreground: #F97583;
+
+  --fragment-background: #151B25;
+  --fragment-foreground: #FFFFFF;
+  --fragment-keyword: #FF7B72; /* #C792EA */
+  --fragment-keywordtype: var(--fragment-keyword);
+  --fragment-keywordflow: var(--fragment-keyword);
+  --fragment-token: #A5FFC9;
+  --fragment-comment: #959DA5;
+  --fragment-link: #79C0FF;
+  --fragment-preprocessor: #FF7B72;
+  --fragment-linenumber-background: #151B25;
+}
+
+/* light-mode variable overrides go here */
+html {
+}
+
+/* dark-mode variable overrides go here */
+html.dark-mode {
+  --page-background-color: #0D1117;
+  --page-foreground-color: rgb(255, 255, 255);
+
+  --side-nav-background: var(--page-background-color);
+  --code-background: var(--page-background-color);
+
+  --primary-color: #3194E0;
+  --primary-dark-color: #2C82C4;
+  --primary-light-color: #3BA9FD;
+  --primary-lighter-color: #191E21;
+  --primary-lightest-color: rgb(11, 12, 12);
+
+  --note-color: rgba(55, 49, 10, 0.5);
+  --note-color-dark: rgb(255, 246, 86);
+  --note-color-darker: rgba(255, 246, 86, 0.9);
+
+  --warning-color: rgba(171, 0, 0, 0.5);
+  --warning-color-dark: rgb(232, 43, 43);
+  --warning-color-darker: rgb(202, 43, 43);
+}
+
+.directory .levels span {
+  color: gray;
+}
+
+address {
+  color: gray;
 }

@@ -1,19 +1,19 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "system/platform.hpp"
+#include "centurion/system.hpp"
 
 TEST(PlatformID, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::platform_id>(7)), cen::cen_error);
+  ASSERT_THROW(to_string(static_cast<cen::platform_id>(100)), cen::exception);
 
-  ASSERT_EQ("unknown", cen::to_string(cen::platform_id::unknown));
-  ASSERT_EQ("windows", cen::to_string(cen::platform_id::windows));
-  ASSERT_EQ("mac_osx", cen::to_string(cen::platform_id::mac_osx));
-  ASSERT_EQ("linux_os", cen::to_string(cen::platform_id::linux_os));
-  ASSERT_EQ("ios", cen::to_string(cen::platform_id::ios));
-  ASSERT_EQ("android", cen::to_string(cen::platform_id::android));
+  ASSERT_EQ("unknown", to_string(cen::platform_id::unknown));
+  ASSERT_EQ("windows", to_string(cen::platform_id::windows));
+  ASSERT_EQ("macos", to_string(cen::platform_id::macos));
+  ASSERT_EQ("linux_os", to_string(cen::platform_id::linux_os));
+  ASSERT_EQ("ios", to_string(cen::platform_id::ios));
+  ASSERT_EQ("android", to_string(cen::platform_id::android));
 
-  std::clog << "Platform ID example: " << cen::platform_id::windows << '\n';
+  std::cout << "platform_id::windows == " << cen::platform_id::windows << '\n';
 }

@@ -6,5 +6,5 @@
  * should result in a blank window that can be moved around and closed to quit the
  * program.
  *
- * \include responsive-window/responsive_window.cpp
+ * \include responsive-window/demo.cpp
  */

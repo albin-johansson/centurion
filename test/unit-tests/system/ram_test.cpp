@@ -1,13 +1,13 @@
-#include "system/ram.hpp"
-
 #include <gtest/gtest.h>
 
-TEST(RAM, AmountMB)
+#include "centurion/system.hpp"
+
+TEST(RAM, MB)
 {
-  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram::amount_mb());
+  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram_mb());
 }
 
-TEST(RAM, AmountGB)
+TEST(RAM, GB)
 {
-  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram::amount_gb());
+  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram_gb());
 }

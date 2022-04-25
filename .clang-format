@@ -1,35 +1,47 @@
----
 BasedOnStyle: Google
-IndentWidth: 2
----
+
 Language: Cpp
 Standard: c++20
 
 ColumnLimit: 95
+IndentWidth: 2
 
 DerivePointerAlignment: false
 PointerAlignment: Left
 
-AllowAllParametersOfDeclarationOnNextLine: false
+IndentRequires: true
+
+NamespaceIndentation: None
+FixNamespaceComments: true
+
+EmptyLineBeforeAccessModifier: Always
+
 AllowAllArgumentsOnNextLine: false
-AllowShortLambdasOnASingleLine: All
-AllowShortFunctionsOnASingleLine: None
-AllowShortBlocksOnASingleLine: Never
-AllowShortEnumsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
 
 BinPackParameters: false
 BinPackArguments: false
+
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortBlocksOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: All
+AllowShortEnumsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+BreakBeforeConceptDeclarations: true
 
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterClass: true
   AfterStruct: true
-  AfterUnion: true
-  AfterEnum: true
+  AfterUnion: false
+  AfterEnum: false
   AfterFunction: true
   AfterExternBlock: true
-  AfterControlStatement: MultiLine
   AfterCaseLabel: false
   BeforeElse: true
   BeforeCatch: true
@@ -37,13 +49,5 @@ BraceWrapping:
   SplitEmptyRecord: false
   SplitEmptyFunction: false
 
-EmptyLineBeforeAccessModifier: Always
-
-NamespaceIndentation: None
-FixNamespaceComments: true
-
-BreakInheritanceList: BeforeColon
+BreakInheritanceList: BeforeComma
 BreakConstructorInitializers: BeforeComma
-AllowAllConstructorInitializersOnNextLine: false
-
-IndentRequires: true

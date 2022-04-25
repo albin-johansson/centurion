@@ -1,16 +1,12 @@
-#include "filesystem/file.hpp"
-
 #include <gtest/gtest.h>
 
-#include <array>   // array
-#include <vector>  // vector
+#include <array>    // array
+#include <cstddef>  // size_t
+#include <vector>   // vector
 
-#include "filesystem/preferred_path.hpp"
+#include "centurion/filesystem.hpp"
 
-using namespace cen::literals;
-
-class FileTest : public testing::Test
-{
+class FileTest : public testing::Test {
  public:
   inline static const auto prefs = cen::preferred_path("centurion", "tests").copy();
   inline static const auto path = prefs + "file";
@@ -25,7 +21,7 @@ TEST_F(FileTest, WriteAndRead)
 {
   {
     // Create a file which we will write some data to
-    cen::file file{path, cen::file_mode::read_write_replace_binary};
+    cen::file file{path, cen::file_mode::wbx};
     ASSERT_TRUE(file);
 
     ASSERT_EQ(4, file.write("abc"));
@@ -42,17 +38,17 @@ TEST_F(FileTest, WriteAndRead)
 
     ASSERT_TRUE(file.write_byte(42u));
 
-    ASSERT_TRUE(file.write_as_big_endian(12_u16));
-    ASSERT_TRUE(file.write_as_big_endian(34_u32));
-    ASSERT_TRUE(file.write_as_big_endian(56_u64));
+    ASSERT_TRUE(file.write_native_as_big_endian(Uint16{12}));
+    ASSERT_TRUE(file.write_native_as_big_endian(Uint32{34}));
+    ASSERT_TRUE(file.write_native_as_big_endian(Uint64{56}));
 
-    ASSERT_TRUE(file.write_as_little_endian(78_u16));
-    ASSERT_TRUE(file.write_as_little_endian(90_u32));
-    ASSERT_TRUE(file.write_as_little_endian(27_u64));
+    ASSERT_TRUE(file.write_native_as_little_endian(Uint16{78}));
+    ASSERT_TRUE(file.write_native_as_little_endian(Uint32{90}));
+    ASSERT_TRUE(file.write_native_as_little_endian(Uint64{27}));
   }
 
   {
-    cen::file file{path, cen::file_mode::read_existing_binary};
+    cen::file file{path, cen::file_mode::rb};
     ASSERT_TRUE(file);
 
     char str[] = "___";
@@ -99,15 +95,15 @@ TEST_F(FileTest, WriteAndRead)
 
 TEST_F(FileTest, Queries)
 {
-  const cen::file file{path, cen::file_mode::read_existing_binary};
-  ASSERT_EQ(SDL_RWtell(file.get()), file.offset());
-  ASSERT_EQ(static_cast<cen::file::size_type>(SDL_RWsize(file.get())), file.size());
-  ASSERT_EQ(file.get()->type, cen::to_underlying(file.type()));
+  const cen::file file{path, cen::file_mode::rb};
+  ASSERT_EQ(SDL_RWtell(file.data()), file.offset());
+  ASSERT_EQ(static_cast<std::size_t>(SDL_RWsize(file.data())), file.size());
+  ASSERT_EQ(file.data()->type, cen::to_underlying(file.type()));
 }
 
 TEST_F(FileTest, IsPNG)
 {
-  cen::file file{"resources/panda.png", cen::file_mode::read_existing};
+  cen::file file{"resources/panda.png", cen::file_mode::r};
   ASSERT_TRUE(file);
 
   ASSERT_TRUE(file.is_png());

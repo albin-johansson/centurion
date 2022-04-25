@@ -14,7 +14,10 @@
  *
  * int main(int, char**)
  * {
- *   cen::library centurion;
+ *   cen::sdl sdl;
+ *   cen::img img;
+ *   cen::mix mix;
+ *   cen::ttf ttf;
  *
  *   // ...
  *

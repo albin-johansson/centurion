@@ -1,31 +1,27 @@
-#include "filesystem/file_type.hpp"
-
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "core/to_underlying.hpp"
+#include "centurion/filesystem.hpp"
 
 TEST(FileType, Values)
 {
-  ASSERT_EQ(SDL_RWOPS_UNKNOWN, cen::to_underlying(cen::file_type::unknown));
-  ASSERT_EQ(SDL_RWOPS_WINFILE, cen::to_underlying(cen::file_type::win32));
-  ASSERT_EQ(SDL_RWOPS_STDFILE, cen::to_underlying(cen::file_type::stdio));
-  ASSERT_EQ(SDL_RWOPS_JNIFILE, cen::to_underlying(cen::file_type::jni));
-  ASSERT_EQ(SDL_RWOPS_MEMORY, cen::to_underlying(cen::file_type::memory));
-  ASSERT_EQ(SDL_RWOPS_MEMORY_RO, cen::to_underlying(cen::file_type::memory_ro));
+  ASSERT_EQ(SDL_RWOPS_UNKNOWN, to_underlying(cen::file_type::unknown));
+  ASSERT_EQ(SDL_RWOPS_WINFILE, to_underlying(cen::file_type::win));
+  ASSERT_EQ(SDL_RWOPS_STDFILE, to_underlying(cen::file_type::std));
+  ASSERT_EQ(SDL_RWOPS_JNIFILE, to_underlying(cen::file_type::jni));
+  ASSERT_EQ(SDL_RWOPS_MEMORY, to_underlying(cen::file_type::memory));
+  ASSERT_EQ(SDL_RWOPS_MEMORY_RO, to_underlying(cen::file_type::memory_ro));
 }
 
 TEST(FileType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::file_type>(6)), cen::cen_error);
+  ASSERT_EQ("unknown", to_string(cen::file_type::unknown));
+  ASSERT_EQ("win", to_string(cen::file_type::win));
+  ASSERT_EQ("std", to_string(cen::file_type::std));
+  ASSERT_EQ("jni", to_string(cen::file_type::jni));
+  ASSERT_EQ("memory", to_string(cen::file_type::memory));
+  ASSERT_EQ("memory_ro", to_string(cen::file_type::memory_ro));
 
-  ASSERT_EQ("unknown", cen::to_string(cen::file_type::unknown));
-  ASSERT_EQ("win32", cen::to_string(cen::file_type::win32));
-  ASSERT_EQ("stdio", cen::to_string(cen::file_type::stdio));
-  ASSERT_EQ("jni", cen::to_string(cen::file_type::jni));
-  ASSERT_EQ("memory", cen::to_string(cen::file_type::memory));
-  ASSERT_EQ("memory_ro", cen::to_string(cen::file_type::memory_ro));
-
-  std::clog << "File type example: " << cen::file_type::win32 << '\n';
+  std::cout << "file_type::std == " << cen::file_type::std << '\n';
 }

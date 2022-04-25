@@ -8,5 +8,5 @@
  *
  * \note The signature of the `main` function must be equivalent to `int(int, char**)`.
  *
- * \include minimal-program/minimal_program.cpp
+ * \include minimal-program/demo.cpp
  */

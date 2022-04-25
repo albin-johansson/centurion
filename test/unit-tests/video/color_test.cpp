@@ -1,14 +1,12 @@
-#include "video/color.hpp"
+#include "centurion/color.hpp"
 
 #include <gtest/gtest.h>
 
-#include <iostream>     // clog
+#include <iostream>     // cout
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "core/log.hpp"
 #include "serialization_utils.hpp"
-#include "video/colors.hpp"
 
 static_assert(std::is_final_v<cen::color>);
 
@@ -26,12 +24,12 @@ TEST(Color, DefaultConstruction)
   ASSERT_EQ(0, color.red());
   ASSERT_EQ(0, color.green());
   ASSERT_EQ(0, color.blue());
-  ASSERT_EQ(cen::color::max(), color.alpha());
+  ASSERT_EQ(0xFF, color.alpha());
 
-  ASSERT_EQ(0, color.red_norm());
-  ASSERT_EQ(0, color.green_norm());
-  ASSERT_EQ(0, color.blue_norm());
-  ASSERT_EQ(1, color.alpha_norm());
+  ASSERT_EQ(0, color.norm_red());
+  ASSERT_EQ(0, color.norm_green());
+  ASSERT_EQ(0, color.norm_blue());
+  ASSERT_EQ(1, color.norm_alpha());
 }
 
 TEST(Color, ValueConstruction)
@@ -60,7 +58,7 @@ TEST(Color, ValueConstructionDefaultedAlpha)
   ASSERT_EQ(red, color.red());
   ASSERT_EQ(green, color.green());
   ASSERT_EQ(blue, color.blue());
-  ASSERT_EQ(color.alpha(), cen::color::max());
+  ASSERT_EQ(color.alpha(), 0xFF);
 }
 
 TEST(Color, FromSDLColor)
@@ -84,7 +82,7 @@ TEST(Color, FromSDLMessageBoxColor)
   ASSERT_EQ(color.blue(), msgColor.b);
 
   // SDL_MessageBoxColor has no alpha component
-  ASSERT_EQ(color.alpha(), cen::color::max());
+  ASSERT_EQ(color.alpha(), 0xFF);
 }
 
 TEST(Color, FromHSV)
@@ -197,18 +195,18 @@ TEST(Color, FromNorm)
 {
   {
     const auto negative = cen::color::from_norm(-0.3f, -5, -0.4f, -234);
-    ASSERT_EQ(0, negative.red_norm());
-    ASSERT_EQ(0, negative.green_norm());
-    ASSERT_EQ(0, negative.blue_norm());
-    ASSERT_EQ(0, negative.alpha_norm());
+    ASSERT_EQ(0, negative.norm_red());
+    ASSERT_EQ(0, negative.norm_green());
+    ASSERT_EQ(0, negative.norm_blue());
+    ASSERT_EQ(0, negative.norm_alpha());
   }
 
   {
     const auto overflow = cen::color::from_norm(1.1f, 6.5, 53, 394);
-    ASSERT_EQ(1, overflow.red_norm());
-    ASSERT_EQ(1, overflow.green_norm());
-    ASSERT_EQ(1, overflow.blue_norm());
-    ASSERT_EQ(1, overflow.alpha_norm());
+    ASSERT_EQ(1, overflow.norm_red());
+    ASSERT_EQ(1, overflow.norm_green());
+    ASSERT_EQ(1, overflow.norm_blue());
+    ASSERT_EQ(1, overflow.norm_alpha());
   }
 
   {
@@ -218,10 +216,10 @@ TEST(Color, FromNorm)
     const auto alpha = 0.8f;
 
     const auto color = cen::color::from_norm(red, green, blue, alpha);
-    ASSERT_FLOAT_EQ(red, color.red_norm());
-    ASSERT_FLOAT_EQ(green, color.green_norm());
-    ASSERT_FLOAT_EQ(blue, color.blue_norm());
-    ASSERT_FLOAT_EQ(alpha, color.alpha_norm());
+    ASSERT_FLOAT_EQ(red, color.norm_red());
+    ASSERT_FLOAT_EQ(green, color.norm_green());
+    ASSERT_FLOAT_EQ(blue, color.norm_blue());
+    ASSERT_FLOAT_EQ(alpha, color.norm_alpha());
   }
 }
 
@@ -232,35 +230,12 @@ TEST(Color, EqualityOperatorReflexivity)
   ASSERT_FALSE(color != color);
 }
 
-TEST(Color, EqualityOperatorComparison)
-{
-  const auto red = 0x43;
-  const auto green = 0x8A;
-  const auto blue = 0x14;
-  const auto alpha = 0x86;
-
-  constexpr SDL_Color sdlColor{red, green, blue, alpha};
-  constexpr SDL_MessageBoxColor msgColor{red, green, blue};
-  constexpr cen::color color{red, green, blue, alpha};
-
-  ASSERT_EQ(color, sdlColor);
-  ASSERT_EQ(sdlColor, color);
-
-  ASSERT_EQ(color, msgColor);
-  ASSERT_EQ(msgColor, color);
-}
-
 TEST(Color, EqualityOperatorComparisonWithDifferentColors)
 {
-  const cen::color color{0x34, 0xD2, 0xCA, 0xDE};
-  const SDL_Color sdlColor{0x84, 0x45, 0x11, 0xFA};
-  const SDL_MessageBoxColor msgColor{0xAA, 0x57, 0x99};
-
-  ASSERT_NE(color, sdlColor);
-  ASSERT_NE(sdlColor, color);
-
-  ASSERT_NE(color, msgColor);
-  ASSERT_NE(msgColor, color);
+  const cen::color a{0x34, 0xD2, 0xCA, 0xDE};
+  const cen::color b{0x84, 0x45, 0x11, 0xFA};
+  ASSERT_NE(a, b);
+  ASSERT_NE(b, a);
 }
 
 TEST(Color, SetRed)
@@ -312,10 +287,10 @@ TEST(Color, NormalizedColorGetters)
 
   const cen::color color{red, green, blue, alpha};
 
-  ASSERT_EQ(red / 255.0f, color.red_norm());
-  ASSERT_EQ(green / 255.0f, color.green_norm());
-  ASSERT_EQ(blue / 255.0f, color.blue_norm());
-  ASSERT_EQ(alpha / 255.0f, color.alpha_norm());
+  ASSERT_EQ(red / 255.0f, color.norm_red());
+  ASSERT_EQ(green / 255.0f, color.norm_green());
+  ASSERT_EQ(blue / 255.0f, color.norm_blue());
+  ASSERT_EQ(alpha / 255.0f, color.norm_alpha());
 }
 
 TEST(Color, WithAlpha)
@@ -329,7 +304,7 @@ TEST(Color, WithAlpha)
   ASSERT_EQ(color.alpha(), 0x12);
 }
 
-TEST(Color, Blend)
+TEST(Color, blend)
 {
   ASSERT_EQ(cen::colors::gray, cen::blend(cen::colors::white, cen::colors::black));
   ASSERT_EQ(cen::colors::white, cen::blend(cen::colors::white, cen::colors::black, 0.0f));
@@ -385,57 +360,9 @@ TEST(Color, AsARGB)
   ASSERT_EQ("#CEF185B3", color.as_argb());
 }
 
-TEST(Color, ConversionToSDLColor)
-{
-  constexpr auto color = cen::colors::dark_orchid;
-  constexpr auto sdlColor = static_cast<SDL_Color>(color);
-
-  ASSERT_EQ(color, sdlColor);
-  ASSERT_EQ(sdlColor, color);
-
-  ASSERT_EQ(color.red(), sdlColor.r);
-  ASSERT_EQ(color.green(), sdlColor.g);
-  ASSERT_EQ(color.blue(), sdlColor.b);
-  ASSERT_EQ(color.alpha(), sdlColor.a);
-}
-
-TEST(Color, ConversionToSDLMessageBoxColor)
-{
-  constexpr auto color = cen::colors::dark_orchid;
-  constexpr auto msgColor = static_cast<SDL_MessageBoxColor>(color);
-
-  ASSERT_EQ(color, msgColor);
-  ASSERT_EQ(msgColor, color);
-
-  ASSERT_EQ(color.red(), msgColor.r);
-  ASSERT_EQ(color.green(), msgColor.g);
-  ASSERT_EQ(color.blue(), msgColor.b);
-}
-
-TEST(Color, ConversionToSDLColorPointer)
-{
-  const cen::color color = cen::colors::bisque;
-  const auto* sdlColor = static_cast<const SDL_Color*>(color);
-
-  const void* colorAdr = &color;
-  ASSERT_EQ(sdlColor, colorAdr);
-
-  ASSERT_EQ(color.red(), sdlColor->r);
-  ASSERT_EQ(color.green(), sdlColor->g);
-  ASSERT_EQ(color.blue(), sdlColor->b);
-  ASSERT_EQ(color.alpha(), sdlColor->a);
-}
-
-TEST(Color, ToString)
-{
-  constexpr cen::color color{0x12, 0xFA, 0xCC, 0xAD};
-  cen::log::put(cen::to_string(color));
-}
-
 TEST(Color, StreamOperator)
 {
-  constexpr cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
-  std::clog << color << '\n';
+  std::cout << cen::color{0xAA, 0xBB, 0xCC, 0xDD} << '\n';
 }
 
 TEST(Color, Serialization)

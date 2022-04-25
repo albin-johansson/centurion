@@ -29,11 +29,9 @@
  * version does not.
  *
  * \section non-null-pointers Non-Null Pointers
- * The `not_null` alias is used throughout the library to explicitly designate that a
- * pointer argument must not be null. Wherever possible, assertions will abort the
- * execution of the program in debug builds if a violation of a `not_null` contract is
- * detected. However, passing a null pointer as an argument to something that expects a
- * `not_null` parameter is effectively **undefined behaviour**.
+ * Wherever possible, assertions will abort the execution of the program in debug builds if a
+ * null pointer is supplied to an API that does not allow them. In general, make sure to avoid
+ * passing null C-style strings (`const char*`), since that is generally disallowed.
  *
  * \section stringification Stringification
  * Most Centurion classes and enums feature stringification support in the form of

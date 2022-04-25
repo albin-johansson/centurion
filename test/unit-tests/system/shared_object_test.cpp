@@ -1,6 +1,6 @@
-#include "system/shared_object.hpp"
-
 #include <gtest/gtest.h>
+
+#include "centurion/system.hpp"
 
 TEST(SharedObject, Constructor)
 {

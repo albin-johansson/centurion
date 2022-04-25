@@ -1,23 +1,21 @@
-#include "input/button_state.hpp"
-
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "core/to_underlying.hpp"
+#include "centurion/input.hpp"
 
 TEST(ButtonState, Values)
 {
-  ASSERT_EQ(SDL_RELEASED, cen::to_underlying(cen::button_state::released));
-  ASSERT_EQ(SDL_PRESSED, cen::to_underlying(cen::button_state::pressed));
+  ASSERT_EQ(SDL_RELEASED, to_underlying(cen::button_state::released));
+  ASSERT_EQ(SDL_PRESSED, to_underlying(cen::button_state::pressed));
 }
 
 TEST(ButtonState, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::button_state>(3)), cen::cen_error);
+  ASSERT_THROW(to_string(static_cast<cen::button_state>(3)), cen::exception);
 
-  ASSERT_EQ("released", cen::to_string(cen::button_state::released));
-  ASSERT_EQ("pressed", cen::to_string(cen::button_state::pressed));
+  ASSERT_EQ("released", to_string(cen::button_state::released));
+  ASSERT_EQ("pressed", to_string(cen::button_state::pressed));
 
-  std::clog << "Button state example: " << cen::button_state::pressed << '\n';
+  std::cout << "button_state::pressed == " << cen::button_state::pressed << '\n';
 }

@@ -1,6 +1,6 @@
-#include "detail/min.hpp"
-
 #include <gtest/gtest.h>
+
+#include "centurion/detail/stdlib.hpp"
 
 TEST(Min, Correctness)
 {

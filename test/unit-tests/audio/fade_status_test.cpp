@@ -1,30 +1,21 @@
-#include "audio/fade_status.hpp"
-
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
+
+#include "centurion/audio.hpp"
 
 TEST(FadeStatus, Values)
 {
-  ASSERT_EQ(3, cen::fade_status_count());
-
-  ASSERT_EQ(cen::fade_status::none, MIX_NO_FADING);
-  ASSERT_EQ(cen::fade_status::in, MIX_FADING_IN);
-  ASSERT_EQ(cen::fade_status::out, MIX_FADING_OUT);
-
-  ASSERT_EQ(MIX_NO_FADING, cen::fade_status::none);
-  ASSERT_EQ(MIX_FADING_IN, cen::fade_status::in);
-  ASSERT_EQ(MIX_FADING_OUT, cen::fade_status::out);
-
-  ASSERT_NE(cen::fade_status::in, MIX_FADING_OUT);
-  ASSERT_NE(MIX_FADING_OUT, cen::fade_status::none);
+  ASSERT_EQ(MIX_NO_FADING, to_underlying(cen::fade_status::none));
+  ASSERT_EQ(MIX_FADING_IN, to_underlying(cen::fade_status::in));
+  ASSERT_EQ(MIX_FADING_OUT, to_underlying(cen::fade_status::out));
 }
 
 TEST(FadeStatus, ToString)
 {
-  ASSERT_EQ("none", cen::to_string(cen::fade_status::none));
-  ASSERT_EQ("in", cen::to_string(cen::fade_status::in));
-  ASSERT_EQ("out", cen::to_string(cen::fade_status::out));
+  ASSERT_EQ("none", to_string(cen::fade_status::none));
+  ASSERT_EQ("in", to_string(cen::fade_status::in));
+  ASSERT_EQ("out", to_string(cen::fade_status::out));
 
-  std::clog << "Fade status example: " << cen::fade_status::in << '\n';
+  std::cout << "fade_status::in == " << cen::fade_status::in << '\n';
 }

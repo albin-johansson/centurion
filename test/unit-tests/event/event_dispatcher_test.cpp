@@ -1,29 +1,23 @@
-#include "events/event_dispatcher.hpp"
-
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
+#include <iostream>  // cout
 
-#include "core/log.hpp"
+#include "centurion/event.hpp"
 
-using event_dispatcher =
+using EventDispatcher =
     cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
 
 namespace {
 
-inline bool visitedFreeFunction{};
+inline bool gVisitedFreeFunction{};
 
-void on_quit(const cen::quit_event&)
+void OnQuit(const cen::quit_event&)
 {
-  visitedFreeFunction = true;
+  gVisitedFreeFunction = true;
 }
 
-struct button_handler final
-{
-  void on_event(const cen::controller_button_event&)
-  {
-    visited = true;
-  }
+struct ButtonHandler final {
+  void OnEvent(const cen::controller_button_event&) { visited = true; }
 
   bool visited{};
 };
@@ -32,49 +26,43 @@ struct button_handler final
 
 TEST(EventDispatcher, Bind)
 {
-  /* Ensure that it is possible to connect free functions, member functions and
-   * lambdas as event handlers.
-   */
+  /* Ensure that it is possible to connect free functions, member functions, and
+     lambdas as event handlers. */
 
-  cen::event::flush_all();
+  cen::event_handler::flush_all();
 
-  button_handler buttonHandler;
-  event_dispatcher dispatcher;
+  ButtonHandler handler;
+  EventDispatcher dispatcher;
 
-  // clang-format off
-  dispatcher.bind<cen::quit_event>().to<&on_quit>();
-  dispatcher.bind<cen::controller_button_event>()
-            .to<&button_handler::on_event>(&buttonHandler);
-  // clang-format on
+  dispatcher.bind<cen::quit_event>().to<&OnQuit>();
+  dispatcher.bind<cen::controller_button_event>().to<&ButtonHandler::OnEvent>(&handler);
 
   bool visitedLambda{};
   dispatcher.bind<cen::window_event>().to(
       [&](const cen::window_event&) { visitedLambda = true; });
 
   cen::window_event windowEvent;
-  ASSERT_TRUE(cen::event::push(windowEvent));
+  ASSERT_TRUE(cen::event_handler::push(windowEvent));
 
   cen::quit_event quitEvent;
-  ASSERT_TRUE(cen::event::push(quitEvent));
+  ASSERT_TRUE(cen::event_handler::push(quitEvent));
 
   cen::controller_button_event buttonEvent;
-  ASSERT_TRUE(cen::event::push(buttonEvent));
+  ASSERT_TRUE(cen::event_handler::push(buttonEvent));
 
   dispatcher.poll();
-  ASSERT_TRUE(buttonHandler.visited);
-  ASSERT_TRUE(visitedFreeFunction);
+  ASSERT_TRUE(handler.visited);
+  ASSERT_TRUE(gVisitedFreeFunction);
   ASSERT_TRUE(visitedLambda);
 }
 
 TEST(EventDispatcher, Reset)
 {
-  event_dispatcher dispatcher;
+  EventDispatcher dispatcher;
   ASSERT_EQ(0, dispatcher.active_count());
 
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
-
   dispatcher.bind<cen::window_event>().to([](cen::window_event) {});
-
   dispatcher.bind<cen::controller_button_event>().to([](cen::controller_button_event) {});
 
   ASSERT_EQ(3, dispatcher.active_count());
@@ -87,7 +75,7 @@ TEST(EventDispatcher, Reset)
 
 TEST(EventDispatcher, ActiveCount)
 {
-  event_dispatcher dispatcher;
+  EventDispatcher dispatcher;
   ASSERT_EQ(0, dispatcher.active_count());
 
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
@@ -113,14 +101,8 @@ TEST(EventDispatcher, Size)
   ASSERT_EQ(2, two.size());
 }
 
-TEST(EventDispatcher, ToString)
-{
-  event_dispatcher dispatcher;
-  cen::log::put(cen::to_string(dispatcher));
-}
-
 TEST(EventDispatcher, StreamOperator)
 {
-  event_dispatcher dispatcher;
-  std::clog << dispatcher << '\n';
+  EventDispatcher dispatcher;
+  std::cout << dispatcher << '\n';
 }

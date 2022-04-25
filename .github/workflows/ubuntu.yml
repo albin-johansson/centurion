@@ -3,7 +3,7 @@ name: "CI: Ubuntu"
 on: [ push, pull_request ]
 
 env:
-  SDL_LATEST: 2.0.16
+  SDL_LATEST: 2.0.20
   SDL_VIDEODRIVER: x11
   DISPLAY: :99.0
 
@@ -12,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16 ]
+        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20 ]
         CPP_VERSION: [ 17, 20 ]
+        include:
+          - SDL_VERSION: 2.0.20
+            CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main
       - uses: seanmiddleditch/gha-setup-ninja@master
@@ -90,9 +93,9 @@ jobs:
         run: |
           if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" && "${{matrix.CPP_VERSION}}" == "20" ]];
           then
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_EXAMPLES=OFF -GNinja
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -DCEN_EXAMPLES=ON -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -GNinja
           else
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_EXAMPLES=OFF -GNinja
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -DCEN_AUDIO=OFF -GNinja
           fi
 
       - name: Build
@@ -101,7 +104,7 @@ jobs:
         run: ninja
 
       - name: Run mocked test suite
-        working-directory: ./build/test/mocks
+        working-directory: ./build/test/mocked-tests
         shell: bash
         run: ./mockcenturion
 

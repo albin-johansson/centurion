@@ -1,47 +1,48 @@
-#include "detail/owner_handle_api.hpp"
+#include "centurion/detail/owner_handle_api.hpp"
 
 #include <gtest/gtest.h>
 
-namespace {
+#include "centurion/memory.hpp"
 
-inline int deleteCount = 0;
+inline int delete_count = 0;
 
-struct int_deleter final
-{
+namespace cen {
+
+template <>
+struct deleter<int> final {
   void operator()(const int* ptr) noexcept
   {
-    ++deleteCount;
+    ++delete_count;
     delete ptr;
   }
 };
 
-}  // namespace
+}  // namespace cen
 
-using cen::detail::pointer_manager;
-using owner_t = pointer_manager<std::true_type, int, int_deleter>;
-using handle_t = pointer_manager<std::false_type, int, int_deleter>;
+using Owner = cen::detail::pointer<cen::detail::owner_tag, int>;
+using Handle = cen::detail::pointer<cen::detail::handle_tag, int>;
 
-static_assert(std::is_nothrow_default_constructible_v<handle_t>);
-static_assert(std::is_nothrow_default_constructible_v<owner_t>);
+static_assert(std::is_nothrow_default_constructible_v<Owner>);
+static_assert(std::is_nothrow_default_constructible_v<Handle>);
 
-static_assert(std::is_nothrow_copy_constructible_v<handle_t>);
-static_assert(!std::is_copy_constructible_v<owner_t>);
+static_assert(!std::is_copy_constructible_v<Owner>);
+static_assert(std::is_nothrow_copy_constructible_v<Handle>);
 
-static_assert(std::is_nothrow_move_constructible_v<handle_t>);
-static_assert(std::is_nothrow_move_constructible_v<owner_t>);
+static_assert(std::is_nothrow_move_constructible_v<Owner>);
+static_assert(std::is_nothrow_move_constructible_v<Handle>);
 
-static_assert(noexcept(owner_t{nullptr}));
-static_assert(noexcept(handle_t{nullptr}));
+static_assert(noexcept(Owner{nullptr}));
+static_assert(noexcept(Handle{nullptr}));
 
 TEST(OwnerHandleAPI, Constructor)
 {
-  ASSERT_NO_THROW(owner_t{nullptr});
-  ASSERT_NO_THROW(handle_t{nullptr});
+  ASSERT_NO_THROW(Owner{nullptr});
+  ASSERT_NO_THROW(Handle{nullptr});
 
   {
     int i = 42;
 
-    handle_t handle{&i};
+    Handle handle{&i};
     const auto& cHandle = handle;
 
     ASSERT_TRUE(handle);
@@ -55,7 +56,7 @@ TEST(OwnerHandleAPI, Constructor)
   }
 
   {
-    handle_t handle{nullptr};
+    Handle handle{nullptr};
     const auto& cHandle = handle;
 
     ASSERT_FALSE(handle);
@@ -69,17 +70,17 @@ TEST(OwnerHandleAPI, Constructor)
 
 TEST(OwnerHandleAPI, DeleteCorrectness)
 {
-  owner_t{new int{7}};
+  Owner{new int{7}};
 
   int i = 7;
-  handle_t{&i};
+  Handle{&i};
 
-  ASSERT_EQ(1, deleteCount);
+  ASSERT_EQ(1, delete_count);
 }
 
 TEST(OwnerHandleAPI, Get)
 {
   int i = 7;
-  handle_t handle{&i};
+  Handle handle{&i};
   ASSERT_EQ(&i, handle.get());
 }

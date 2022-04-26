@@ -11,19 +11,23 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16, 2.0.18, 2.0.20 ]
+        SDL_VERSION: [ 2.0.14, 2.0.16, 2.0.18, 2.0.20, 2.0.22 ]
         TTF_VERSION: [ 2.0.15 ]
         CPP_VERSION: [ 17, 20 ]
         include:
-          - SDL_VERSION: 2.0.18
+          - SDL_VERSION: 2.0.10
+            TTF_VERSION: 2.0.15
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.12
+            TTF_VERSION: 2.0.15
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.22
             TTF_VERSION: 2.0.18
             CPP_VERSION: 20
 
-          - SDL_VERSION: 2.0.20
-            TTF_VERSION: 2.0.18
-            CPP_VERSION: 20
-
-          - SDL_VERSION: 2.0.20
+          - SDL_VERSION: 2.0.22
             TTF_VERSION: 2.0.18
             CPP_VERSION: 23
     steps:

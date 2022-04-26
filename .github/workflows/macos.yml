@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        CPP_VERSION: [ 17, 20 ]
+        CPP_VERSION: [ 17, 20, 23 ]
     steps:
       - uses: actions/checkout@v2
 

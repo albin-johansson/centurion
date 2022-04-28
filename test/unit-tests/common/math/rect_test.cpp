@@ -318,25 +318,25 @@ TEST(Rect, HasArea)
   }
 }
 
-TEST(Rect, x)
+TEST(Rect, X)
 {
   const cen::frect rect;
   ASSERT_EQ(rect.x(), 0);
 }
 
-TEST(Rect, y)
+TEST(Rect, Y)
 {
   const cen::frect rect;
   ASSERT_EQ(rect.y(), 0);
 }
 
-TEST(Rect, width)
+TEST(Rect, Width)
 {
   const cen::frect rect;
   ASSERT_EQ(rect.width(), 0);
 }
 
-TEST(Rect, height)
+TEST(Rect, Height)
 {
   const cen::frect rect;
   ASSERT_EQ(rect.height(), 0);

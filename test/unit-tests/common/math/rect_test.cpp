@@ -554,29 +554,29 @@ TEST(Rect, StreamOperator)
 
 TEST(Rect, GetUnion)
 {
-  const cen::frect fst{{10.0f, 10.0f}, {50.0f, 50.0f}};
-  const cen::frect snd{{40.0f, 40.0f}, {50.0f, 50.0f}};
+  const cen::frect a{{10.0f, 10.0f}, {50.0f, 50.0f}};
+  const cen::frect b{{40.0f, 40.0f}, {50.0f, 50.0f}};
 
   {  // With empty rectangle
     const cen::frect empty;
 
     ASSERT_EQ(cen::get_union(empty, empty), empty);
-    ASSERT_EQ(cen::get_union(empty, fst), fst);
-    ASSERT_EQ(cen::get_union(fst, empty), fst);
+    ASSERT_EQ(cen::get_union(empty, a), a);
+    ASSERT_EQ(cen::get_union(a, empty), a);
   }
 
-  const auto fstSnd = cen::get_union(fst, snd);
-  const auto sndFst = cen::get_union(snd, fst);
+  const auto ab = cen::get_union(a, b);
+  const auto ba = cen::get_union(b, a);
 
-  ASSERT_TRUE(fstSnd.has_area());
+  ASSERT_TRUE(ab.has_area());
 
-  ASSERT_EQ(fstSnd.x(), 10.0f);
-  ASSERT_EQ(fstSnd.y(), 10.0f);
-  ASSERT_EQ(fstSnd.width(), 80.0f);
-  ASSERT_EQ(fstSnd.height(), 80.0f);
+  ASSERT_EQ(ab.x(), 10.0f);
+  ASSERT_EQ(ab.y(), 10.0f);
+  ASSERT_EQ(ab.width(), 80.0f);
+  ASSERT_EQ(ab.height(), 80.0f);
 
-  ASSERT_EQ(fstSnd, sndFst);
-  ASSERT_EQ(sndFst, fstSnd);
+  ASSERT_EQ(ab, ba);
+  ASSERT_EQ(ba, ab);
 }
 
 TEST(Rect, IRectToFRect)

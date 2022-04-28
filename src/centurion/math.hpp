@@ -33,6 +33,7 @@
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #include "common.hpp"
+#include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
 
@@ -997,25 +998,39 @@ template <typename T>
 [[nodiscard]] constexpr auto get_union(const basic_rect<T>& a, const basic_rect<T>& b) noexcept
     -> basic_rect<T>
 {
-  const auto aHasArea = a.has_area();
-  const auto bHasArea = b.has_area();
-
-  if (!aHasArea && !bHasArea) {
-    return {};
+  if constexpr (detail::sdl_version_at_least(2, 0, 22)) {
+    if constexpr (basic_rect<T>::floating) {
+      cen::frect res;
+      SDL_UnionFRect(a.data(), b.data(), res.data());
+      return res;
+    }
+    else {
+      cen::irect res;
+      SDL_UnionRect(a.data(), b.data(), res.data());
+      return res;
+    }
   }
-  else if (!aHasArea) {
-    return b;
-  }
-  else if (!bHasArea) {
-    return a;
-  }
+  else {
+    const auto aHasArea = a.has_area();
+    const auto bHasArea = b.has_area();
 
-  const auto x = detail::min(a.x(), b.x());
-  const auto y = detail::min(a.y(), b.y());
-  const auto maxX = detail::max(a.max_x(), b.max_x());
-  const auto maxY = detail::max(a.max_y(), b.max_y());
+    if (!aHasArea && !bHasArea) {
+      return {};
+    }
+    else if (!aHasArea) {
+      return b;
+    }
+    else if (!bHasArea) {
+      return a;
+    }
 
-  return {{x, y}, {maxX - x, maxY - y}};
+    const auto x = detail::min(a.x(), b.x());
+    const auto y = detail::min(a.y(), b.y());
+    const auto maxX = detail::max(a.max_x(), b.max_x());
+    const auto maxY = detail::max(a.max_y(), b.max_y());
+
+    return {{x, y}, {maxX - x, maxY - y}};
+  }
 }
 
 template <>

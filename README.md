@@ -68,3 +68,13 @@ SDL2.
 
 The Doxygen documentation for the latest stable release can be
 found [here](https://albin-johansson.github.io/centurion/).
+
+## Projects using Centurion
+
+The following is a list of known projects that make use of Centurion in some extent. Open a pull request if you're using Centurion and want to featured in this list.
+
+* [albin-johansson/tactile](https://github.com/albin-johansson/tactile)
+* [albin-johansson/wanderer](https://github.com/albin-johansson/wanderer)
+* [larrabyte/bongcloud](https://github.com/larrabyte/bongcloud)
+* [Vortetty/Com32](https://github.com/Vortetty/Com32)
+* [GunpowderGuy/simulador_contagio](https://github.com/GunpowderGuy/simulador_contagio)

@@ -1171,6 +1171,24 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
   return window_handle{SDL_GetWindowFromID(id)};
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
+/**
+ * \brief Returns a handle to the window associated with a renderer.
+ *
+ * \param renderer a handle to the window's renderer.
+ *
+ * \return a potentially empty window handle.
+ *
+ * \atleastsdl 2.0.22
+ */
+[[nodiscard]] inline auto get_window(const renderer_handle renderer) noexcept -> window_handle
+{
+  return window_handle{SDL_RenderGetWindow(renderer.get())};
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
+
 /// \} End of window functions
 
 /// \} End of group video

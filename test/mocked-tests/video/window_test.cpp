@@ -57,9 +57,16 @@ extern "C"
   FAKE_VALUE_FUNC(const SDL_Rect*, SDL_GetWindowMouseRect, SDL_Window*)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
+  FAKE_VALUE_FUNC(SDL_Window*, SDL_RenderGetWindow, SDL_Renderer*)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
 }
 
-class WindowTest : public testing::Test {
+class WindowTest : public testing::Test
+{
  protected:
   void SetUp() override
   {
@@ -115,6 +122,12 @@ class WindowTest : public testing::Test {
     RESET_FAKE(SDL_GetWindowMouseRect)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
+    RESET_FAKE(SDL_RenderGetWindow)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 2)
   }
 
   cen::window_handle m_window{nullptr};
@@ -807,3 +820,14 @@ TEST_F(WindowTest, MouseRect)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
+TEST_F(WindowTest, GetWindowFromRenderer)
+{
+  cen::renderer_handle renderer{nullptr};
+  auto window [[maybe_unused]] = cen::get_window(renderer);
+  ASSERT_EQ(1u, SDL_RenderGetWindow_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)

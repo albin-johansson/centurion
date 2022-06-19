@@ -395,7 +395,7 @@ class text_editing_event final : public event_base<SDL_TextEditingEvent>
 
   void set_length(const int32 length) noexcept
   {
-    mEvent.length = detail::clamp(length, 0, 32);
+    mEvent.length = detail::clamp(length, 0, SDL_TEXTEDITINGEVENT_TEXT_SIZE);
   }
 
   [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
@@ -410,7 +410,10 @@ class text_editing_event final : public event_base<SDL_TextEditingEvent>
   [[nodiscard]] auto length() const noexcept -> int32 { return mEvent.length; }
 
  private:
-  void check_length() noexcept { mEvent.length = detail::clamp(mEvent.length, 0, 32); }
+  void check_length() noexcept
+  {
+    mEvent.length = detail::clamp(mEvent.length, 0, SDL_TEXTEDITINGEVENT_TEXT_SIZE);
+  }
 };
 
 template <>

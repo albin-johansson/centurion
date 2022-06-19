@@ -32,6 +32,9 @@ TEST(EventType, Values)
   ASSERT_EQ(SDL_KEYDOWN, to_underlying(type::key_down));
   ASSERT_EQ(SDL_KEYUP, to_underlying(type::key_up));
   ASSERT_EQ(SDL_TEXTEDITING, to_underlying(type::text_editing));
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+  ASSERT_EQ(SDL_TEXTEDITING_EXT, to_underlying(type::text_editing_ext));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
   ASSERT_EQ(SDL_TEXTINPUT, to_underlying(type::text_input));
   ASSERT_EQ(SDL_KEYMAPCHANGED, to_underlying(type::keymap_changed));
 
@@ -115,6 +118,9 @@ TEST(EventType, ToString)
   ASSERT_EQ("key_down", to_string(type::key_down));
   ASSERT_EQ("key_up", to_string(type::key_up));
   ASSERT_EQ("text_editing", to_string(type::text_editing));
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+  ASSERT_EQ("text_editing_ext", to_string(type::text_editing_ext));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
   ASSERT_EQ("text_input", to_string(type::text_input));
   ASSERT_EQ("keymap_changed", to_string(type::keymap_changed));
 

@@ -424,6 +424,42 @@ inline auto as_sdl_event(const event_base<SDL_TextEditingEvent>& event) -> SDL_E
   return e;
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
+class text_editing_ext_event final : public event_base<SDL_TextEditingExtEvent>
+{
+ public:
+  text_editing_ext_event() : event_base{event_type::text_editing_ext} {}
+
+  explicit text_editing_ext_event(const SDL_TextEditingExtEvent& event) noexcept
+      : event_base{event}
+  {}
+
+  void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
+
+  void set_start(const int32 start) noexcept { mEvent.start = start; }
+
+  void set_length(const int32 length) noexcept { mEvent.length = length; }
+
+  [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
+
+  [[nodiscard]] auto text() const noexcept -> char* { return mEvent.text; }
+
+  [[nodiscard]] auto start() const noexcept -> int32 { return mEvent.start; }
+
+  [[nodiscard]] auto length() const noexcept -> int32 { return mEvent.length; }
+};
+
+template <>
+inline auto as_sdl_event(const event_base<SDL_TextEditingExtEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.editExt = event.get();
+  return e;
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
+
 class text_input_event final : public event_base<SDL_TextInputEvent>
 {
  public:

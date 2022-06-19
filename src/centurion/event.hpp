@@ -335,6 +335,10 @@ class event_handler final
                                  controller_sensor_event,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+                                 text_editing_ext_event,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
+
                                  window_event>;
 
   SDL_Event mEvent{}; /* Only here to support data() member function */
@@ -414,6 +418,14 @@ class event_handler final
       case SDL_TEXTEDITING:
         mData.emplace<text_editing_event>(event.edit);
         break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
+      case SDL_TEXTEDITING_EXT:
+        mData.emplace<text_editing_ext_event>(event.editExt);
+        break;
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
 
       case SDL_TEXTINPUT:
         mData.emplace<text_input_event>(event.text);

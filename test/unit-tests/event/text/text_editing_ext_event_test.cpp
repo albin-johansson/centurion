@@ -2,6 +2,8 @@
 
 #include "centurion/event.hpp"
 
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+
 TEST(TextEditingExtEvent, Defaults)
 {
   cen::text_editing_ext_event event;
@@ -42,3 +44,5 @@ TEST(TextEditingExtEvent, AsSDLEvent)
   ASSERT_EQ(sdl.edit.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.edit.timestamp, event.timestamp().count());
 }
+
+#endif // SDL_VERSION_ATLEAST(2, 0, 22)

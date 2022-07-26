@@ -23,7 +23,7 @@ AllowAllConstructorInitializersOnNextLine: false
 BinPackParameters: false
 BinPackArguments: false
 
-AllowShortFunctionsOnASingleLine: Inline
+AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortBlocksOnASingleLine: Empty
 AllowShortLambdasOnASingleLine: All
@@ -39,7 +39,7 @@ BraceWrapping:
   AfterClass: true
   AfterStruct: true
   AfterUnion: false
-  AfterEnum: false
+  AfterEnum: true
   AfterFunction: true
   AfterExternBlock: true
   AfterCaseLabel: false

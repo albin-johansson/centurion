@@ -5,12 +5,12 @@
 TEST(Version, CurrentVersion)
 {
   ASSERT_EQ(7, CENTURION_VERSION_MAJOR);
-  ASSERT_EQ(0, CENTURION_VERSION_MINOR);
+  ASSERT_EQ(1, CENTURION_VERSION_MINOR);
   ASSERT_EQ(0, CENTURION_VERSION_PATCH);
 
   const auto version = cen::current_version();
   ASSERT_EQ(7, version.major);
-  ASSERT_EQ(0, version.minor);
+  ASSERT_EQ(1, version.minor);
   ASSERT_EQ(0, version.patch);
 }
 
@@ -24,6 +24,7 @@ TEST(Version, VersionAtLeast)
   ASSERT_TRUE(cen::version_at_least(CENTURION_VERSION_MAJOR,
                                     CENTURION_VERSION_MINOR,
                                     CENTURION_VERSION_PATCH));
+  ASSERT_TRUE(cen::version_at_least(7, 0, 0));
   ASSERT_TRUE(cen::version_at_least(6, 3, 1));
   ASSERT_TRUE(cen::version_at_least(6, 3, 0));
   ASSERT_TRUE(cen::version_at_least(6, 2, 0));

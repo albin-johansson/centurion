@@ -41,19 +41,8 @@
 
 #include <cassert>  // assert
 
-/**
- * \brief Expands into the current major version of the library.
- */
 #define CENTURION_VERSION_MAJOR 7
-
-/**
- * \brief Expands into the current minor version of the library.
- */
-#define CENTURION_VERSION_MINOR 0
-
-/**
- * \brief Expands into the current patch version of the library.
- */
+#define CENTURION_VERSION_MINOR 1
 #define CENTURION_VERSION_PATCH 0
 
 #define CENTURION_MAKE_VERSION_NUMBER(X, Y, Z) (((X)*1'000) + ((Y)*100) + (Z))

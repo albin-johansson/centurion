@@ -16,9 +16,15 @@ extern "C"
   FAKE_VALUE_FUNC(int, Mix_FadeOutChannel, int, int)
   FAKE_VALUE_FUNC(int, Mix_Playing, int)
   FAKE_VALUE_FUNC(int, Mix_VolumeChunk, Mix_Chunk*, int)
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+  FAKE_VALUE_FUNC(int, Mix_PlayChannel, int, Mix_Chunk*, int)
+  FAKE_VALUE_FUNC(int, Mix_FadeInChannel, int, Mix_Chunk*, int, int)
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 }
 
-class SoundEffectTest : public testing::Test {
+class SoundEffectTest : public testing::Test
+{
  protected:
   void SetUp() override
   {
@@ -32,28 +38,37 @@ class SoundEffectTest : public testing::Test {
     RESET_FAKE(Mix_FadeOutChannel)
     RESET_FAKE(Mix_Playing)
     RESET_FAKE(Mix_VolumeChunk)
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+    RESET_FAKE(Mix_PlayChannel)
+    RESET_FAKE(Mix_FadeInChannel)
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
   }
 
   cen::sound_effect_handle sound{nullptr};
 };
 
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
 TEST_F(SoundEffectTest, Play)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(Mix_PlayChannelTimed, values.data(), cen::isize(values));
+  SET_RETURN_SEQ(Mix_PlayChannel, values.data(), cen::isize(values));
 
   ASSERT_FALSE(sound.play());
-  ASSERT_EQ(1u, Mix_PlayChannelTimed_fake.call_count);
-  ASSERT_EQ(0, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_EQ(1u, Mix_PlayChannel_fake.call_count);
+  ASSERT_EQ(0, Mix_PlayChannel_fake.arg2_val);
 
   ASSERT_TRUE(sound.play(-2));
-  ASSERT_EQ(2u, Mix_PlayChannelTimed_fake.call_count);
-  ASSERT_EQ(-1, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_EQ(2u, Mix_PlayChannel_fake.call_count);
+  ASSERT_EQ(-1, Mix_PlayChannel_fake.arg2_val);
 
   ASSERT_TRUE(sound.play(7));
-  ASSERT_EQ(3u, Mix_PlayChannelTimed_fake.call_count);
-  ASSERT_EQ(7, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_EQ(3u, Mix_PlayChannel_fake.call_count);
+  ASSERT_EQ(7, Mix_PlayChannel_fake.arg2_val);
 }
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 
 TEST_F(SoundEffectTest, Pause)
 {
@@ -72,22 +87,26 @@ TEST_F(SoundEffectTest, Pause)
   ASSERT_EQ(1u, Mix_Pause_fake.call_count);
 }
 
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
 TEST_F(SoundEffectTest, FadeIn)
 {
   // Not playing
   sound.fade_in(cen::sound_effect::ms_type{5});
-  ASSERT_EQ(1u, Mix_FadeInChannelTimed_fake.call_count);
+  ASSERT_EQ(1u, Mix_FadeInChannel_fake.call_count);
 
   // Not playing but with an associated channel
   sound.set_channel(1);
   sound.fade_in(cen::sound_effect::ms_type{5});
-  ASSERT_EQ(2u, Mix_FadeInChannelTimed_fake.call_count);
+  ASSERT_EQ(2u, Mix_FadeInChannel_fake.call_count);
 
   // Already playing
   Mix_Playing_fake.return_val = 1;
   sound.fade_in(cen::sound_effect::ms_type{5});
-  ASSERT_EQ(2u, Mix_FadeInChannelTimed_fake.call_count);
+  ASSERT_EQ(2u, Mix_FadeInChannel_fake.call_count);
 }
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 
 TEST_F(SoundEffectTest, FadeOut)
 {

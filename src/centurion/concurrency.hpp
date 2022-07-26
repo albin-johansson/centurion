@@ -54,7 +54,8 @@ namespace cen {
 
 using thread_id = SDL_threadID;
 
-enum class thread_priority {
+enum class thread_priority
+{
   low = SDL_THREAD_PRIORITY_LOW,
   normal = SDL_THREAD_PRIORITY_NORMAL,
   high = SDL_THREAD_PRIORITY_HIGH,
@@ -86,7 +87,8 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority) -> 
   return stream << to_string(priority);
 }
 
-enum class lock_status {
+enum class lock_status
+{
   success = 0,
   timed_out = SDL_MUTEX_TIMEDOUT,
   error = -1

@@ -53,7 +53,8 @@
 
 namespace cen {
 
-enum class controller_button {
+enum class controller_button
+{
   invalid = SDL_CONTROLLER_BUTTON_INVALID,
 
   a = SDL_CONTROLLER_BUTTON_A,
@@ -176,7 +177,8 @@ inline auto operator<<(std::ostream& stream, const controller_button button) -> 
   return stream << to_string(button);
 }
 
-enum class controller_axis {
+enum class controller_axis
+{
   invalid = SDL_CONTROLLER_AXIS_INVALID,
 
   left_x = SDL_CONTROLLER_AXIS_LEFTX,
@@ -227,7 +229,8 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
   return stream << to_string(axis);
 }
 
-enum class controller_bind_type {
+enum class controller_bind_type
+{
   none = SDL_CONTROLLER_BINDTYPE_NONE,
   button = SDL_CONTROLLER_BINDTYPE_BUTTON,
   axis = SDL_CONTROLLER_BINDTYPE_AXIS,
@@ -261,7 +264,8 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type) ->
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class controller_type {
+enum class controller_type
+{
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,
 
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,
@@ -338,7 +342,8 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class controller_mapping_result {
+enum class controller_mapping_result
+{
   error,    ///< An error occurred.
   updated,  ///< Updated a previous mapping.
   added     ///< Added a new mapping.

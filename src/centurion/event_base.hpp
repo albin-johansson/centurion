@@ -204,7 +204,7 @@ enum class event_type : uint32
     case event_type::text_editing_ext:
       return "text_editing_ext";
 
-#endif // SDL_VERSION_ATLEAST(2, 0, 22)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)
 
     case event_type::text_input:
       return "text_input";

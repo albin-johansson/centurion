@@ -50,7 +50,8 @@
 
 namespace cen {
 
-enum class texture_access {
+enum class texture_access
+{
   non_lockable = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely and isn't lockable.
   streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
   target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
@@ -80,7 +81,8 @@ inline auto operator<<(std::ostream& stream, const texture_access access) -> std
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class scale_mode {
+enum class scale_mode
+{
   nearest = SDL_ScaleModeNearest,  ///< Nearest pixel sampling.
   linear = SDL_ScaleModeLinear,    ///< Linear filtering.
   best = SDL_ScaleModeBest         ///< Anisotropic filtering.

@@ -35,7 +35,8 @@
 
 namespace cen {
 
-enum class power_state {
+enum class power_state
+{
   unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
   on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
   no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.

@@ -50,7 +50,8 @@
 
 namespace cen {
 
-enum class music_type {
+enum class music_type
+{
   none = MUS_NONE,
   mp3 = MUS_MP3,
   wav = MUS_WAV,
@@ -102,7 +103,8 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
   return stream << to_string(type);
 }
 
-enum class fade_status {
+enum class fade_status
+{
   none = MIX_NO_FADING,
   in = MIX_FADING_IN,
   out = MIX_FADING_OUT

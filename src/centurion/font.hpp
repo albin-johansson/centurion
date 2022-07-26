@@ -90,7 +90,8 @@ inline auto ttf_set_direction(const int direction) noexcept -> result
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-enum class font_hint {
+enum class font_hint
+{
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
 

@@ -45,7 +45,8 @@
 
 namespace cen {
 
-enum class gl_attribute {
+enum class gl_attribute
+{
   red_size = SDL_GL_RED_SIZE,
   green_size = SDL_GL_GREEN_SIZE,
   blue_size = SDL_GL_BLUE_SIZE,
@@ -173,7 +174,8 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
   return stream << to_string(attr);
 }
 
-enum class gl_swap_interval {
+enum class gl_swap_interval
+{
   late_immediate = -1,
   immediate = 0,
   synchronized = 1,

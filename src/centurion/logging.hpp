@@ -153,10 +153,7 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
   return stream << to_string(category);
 }
 
-inline void reset_log_priorities() noexcept
-{
-  SDL_LogResetPriorities();
-}
+inline void reset_log_priorities() noexcept { SDL_LogResetPriorities(); }
 
 inline void set_priority(const log_priority priority) noexcept
 {

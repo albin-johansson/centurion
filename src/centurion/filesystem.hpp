@@ -43,7 +43,8 @@
 
 namespace cen {
 
-enum class file_type : unsigned {
+enum class file_type : unsigned
+{
   unknown = SDL_RWOPS_UNKNOWN,
   win = SDL_RWOPS_WINFILE,
   std = SDL_RWOPS_STDFILE,
@@ -83,7 +84,8 @@ inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostre
   return stream << to_string(type);
 }
 
-enum class file_mode {
+enum class file_mode
+{
   r,   ///< Read existing ("r").
   rb,  ///< Read existing binary ("rb").
 
@@ -152,7 +154,8 @@ inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostre
   return stream << to_string(mode);
 }
 
-enum class seek_mode {
+enum class seek_mode
+{
   from_beginning = RW_SEEK_SET,       ///< From the beginning.
   relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
   relative_to_end = RW_SEEK_END       ///< Relative to the end.

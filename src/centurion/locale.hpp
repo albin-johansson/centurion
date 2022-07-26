@@ -36,48 +36,21 @@
 
 namespace cen {
 
-/**
- * \ingroup system
- * \defgroup locale Locale
- *
- * \brief Provides locale information.
- */
-
-/// \addtogroup locale
-/// \{
-
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-/**
- * \brief Represents a set of locale entries.
- *
- * \see `SDL_Locale`
- */
+/// Represents a set of locale entries.
 class locale final
 {
  public:
   using size_type = std::size_t;
 
-  /**
-   * \brief Returns the current preferred locales on the system.
-   *
-   * \note The preferred locale might change during the execution of the program.
-   *
-   * \return the preferred locales on the system.
-   */
+  /// Returns the current preferred locales on the system.
   [[nodiscard]] static auto get_preferred() noexcept -> locale
   {
     return locale{SDL_GetPreferredLocales()};
   }
 
-  /**
-   * \brief Indicates whether a language (and optionally a country) is part of the locale.
-   *
-   * \param language the language that will be checked, e.g. "en" for english.
-   * \param country optional country code that will be checked, e.g. "US" or "GB".
-   *
-   * \return `true` if the language and country is a part of the locale; `false` otherwise.
-   */
+  /// Indicates whether a language (and optionally a country) is part of the locale.
   [[nodiscard]] auto has_language(const char* language,
                                   const char* country = nullptr) const noexcept -> bool
   {
@@ -103,11 +76,7 @@ class locale final
     return false;
   }
 
-  /**
-   * \brief Returns the amount of entries in the locale.
-   *
-   * \return the locale entry count.
-   */
+  /// Returns the amount of entries in the locale.
   [[nodiscard]] auto size() const noexcept -> size_type
   {
     size_type result{0};
@@ -121,11 +90,7 @@ class locale final
     return result;
   }
 
-  /**
-   * \brief Indicates whether the locale contains a non-null pointer.
-   *
-   * \return `true` if the internal pointer is non-null; `false` otherwise.
-   */
+  /// Indicates whether the locale contains a non-null pointer.
   explicit operator bool() const noexcept { return mLocales != nullptr; }
 
  private:
@@ -135,8 +100,6 @@ class locale final
 };
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-/// \} End of group locale
 
 }  // namespace cen
 

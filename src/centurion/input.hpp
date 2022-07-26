@@ -34,23 +34,11 @@
 
 namespace cen {
 
-/**
- * \defgroup input Input
- *
- * \brief Provides APIs related to different kinds of input.
- */
-
-/// \addtogroup input
-/// \{
-
 enum class button_state : uint8
 {
-  released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
-  pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
+  released = SDL_RELEASED,
+  pressed = SDL_PRESSED
 };
-
-/// \name Button state functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
@@ -70,10 +58,6 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 {
   return stream << to_string(state);
 }
-
-/// \} End of button state functions
-
-/// \} End of group input
 
 }  // namespace cen
 

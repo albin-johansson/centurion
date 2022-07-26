@@ -31,8 +31,6 @@
 #include "../common.hpp"
 #include "../features.hpp"
 
-/// \cond FALSE
-
 namespace cen::detail {
 
 template <typename T, std::size_t Size>
@@ -63,7 +61,5 @@ template <typename T, std::size_t Size>
 }
 
 }  // namespace cen::detail
-
-/// \endcond
 
 #endif  // CENTURION_DETAIL_ARRAY_UTILS_HPP_

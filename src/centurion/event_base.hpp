@@ -35,12 +35,6 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
-/**
- * \brief Represents the different event types.
- */
 enum class event_type : uint32
 {
   first_event = SDL_FIRSTEVENT,
@@ -131,19 +125,6 @@ enum class event_type : uint32
   user = SDL_USEREVENT
 };
 
-/// \name Event type functions
-/// \{
-
-/**
- * \brief Indicates whether an event type is a user event.
- *
- * \details This function considers any event type enumerator in the range [`user`,
- * `last_event`) to be a user event.
- *
- * \param type the event type to check.
- *
- * \return `true` if the event type is reserved for user events; `false` otherwise.
- */
 [[nodiscard]] constexpr auto is_user_event(const event_type type) noexcept -> bool
 {
   const auto raw = to_underlying(type);
@@ -357,16 +338,7 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
   return stream << to_string(type);
 }
 
-/// \} End of event type functions
-
-/**
- * \brief The base class of all events.
- *
- * \details This class provides the common API of all events and handles the storage of the
- * underlying SDL event.
- *
- * \tparam T the SDL event type.
- */
+/// The base class of all events.
 template <typename T>
 class event_base
 {
@@ -398,15 +370,7 @@ class event_base
   T mEvent{};
 };
 
-/**
- * \brief Extracts the underlying SDL event from a Centurion event.
- *
- * \tparam T the SDL event type.
- *
- * \param event the event to query.
- *
- * \return a copy of the underlying SDL event.
- */
+/// Extracts the underlying SDL event from a Centurion event.
 template <typename T>
 [[nodiscard]] auto as_sdl_event(const event_base<T>& event) -> SDL_Event;
 

@@ -50,23 +50,11 @@
 
 namespace cen {
 
-/// \addtogroup render
-/// \{
-
-/**
- * \brief Represents different texture access modes.
- *
- * \remarks The `non_lockable` enumerator refers to "static" texture access.
- */
-enum class texture_access
-{
+enum class texture_access {
   non_lockable = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely and isn't lockable.
   streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
   target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
 };
-
-/// \name Texture access functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
@@ -90,22 +78,13 @@ inline auto operator<<(std::ostream& stream, const texture_access access) -> std
   return stream << to_string(access);
 }
 
-/// \} End of texture access functions
-
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-/**
- * \brief Represents different texture scale modes.
- */
-enum class scale_mode
-{
+enum class scale_mode {
   nearest = SDL_ScaleModeNearest,  ///< Nearest pixel sampling.
   linear = SDL_ScaleModeLinear,    ///< Linear filtering.
   best = SDL_ScaleModeBest         ///< Anisotropic filtering.
 };
-
-/// \name Scale mode functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
@@ -129,35 +108,28 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
   return stream << to_string(mode);
 }
 
-/// \} End of scale mode functions
-
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 template <typename T>
 class basic_texture;
 
-using texture = basic_texture<detail::owner_tag>;          ///< An owning texture.
-using texture_handle = basic_texture<detail::handle_tag>;  ///< A non-owning texture.
+using texture = basic_texture<detail::owner_tag>;
+using texture_handle = basic_texture<detail::handle_tag>;
 
 /**
- * \brief Represents a hardware-accelerated image.
+ * Represents a hardware-accelerated image.
  *
- * \ownerhandle `texture`/`texture_handle`
- *
- * \see `texture`
- * \see `texture_handle`
+ * \see texture
+ * \see texture_handle
  */
 template <typename T>
 class basic_texture final
 {
  public:
-  /// \name Construction
-  /// \{
-
   /**
-   * \brief Creates a texture based on an existing SDL texture.
+   * Creates a texture based on an existing SDL texture.
    *
-   * \details Ownership of the supplied texture is claimed if the texture is owning.
+   * Ownership of the supplied texture is claimed only if the texture is owning!
    *
    * \param source the source texture.
    */
@@ -175,35 +147,13 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : mTexture{owner.get()}
   {}
 
-  /// \} End of construction
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the alpha modulation of the texture.
-   *
-   * \param alpha the new alpha modulation, in the range [0, 255].
-   */
   void set_alpha_mod(const uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
 
-  /**
-   * \brief Sets the color modulation of the texture.
-   *
-   * \note The alpha component of the color is ignored, see `set_alpha_mod()`.
-   *
-   * \param color the new color modulation.
-   */
   void set_color_mod(const color& color) noexcept
   {
     SDL_SetTextureColorMod(mTexture, color.red(), color.green(), color.blue());
   }
 
-  /**
-   * \brief Sets the blend mode used by the texture.
-   *
-   * \param mode the new blend mode.
-   */
   void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetTextureBlendMode(mTexture, static_cast<SDL_BlendMode>(mode));
@@ -211,13 +161,6 @@ class basic_texture final
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  /**
-   * \brief Sets the scale mode that will be used by the texture.
-   *
-   * \param mode the new scale mode.
-   *
-   * \atleastsdl 2.0.12
-   */
   void set_scale_mode(const scale_mode mode) noexcept
   {
     SDL_SetTextureScaleMode(mTexture, static_cast<SDL_ScaleMode>(mode));
@@ -227,15 +170,6 @@ class basic_texture final
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-  /**
-   * \brief Sets the user data associated with the texture.
-   *
-   * \param data a pointer to the user data.
-   *
-   * \return `success` if the user data was updated; `failure` otherwise.
-   *
-   * \atleastsdl 2.0.18
-   */
   auto set_user_data(void* data) noexcept -> result
   {
     return SDL_SetTextureUserData(mTexture, data) == 0;
@@ -243,16 +177,6 @@ class basic_texture final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the size of the texture.
-   *
-   * \return the texture size.
-   */
   [[nodiscard]] auto size() const noexcept -> iarea
   {
     int width{};
@@ -261,37 +185,18 @@ class basic_texture final
     return {width, height};
   }
 
-  /**
-   * \brief Returns the width of the texture.
-   *
-   * \return the texture width.
-   *
-   * \see `size()`
-   */
   [[nodiscard]] auto width() const noexcept -> int
   {
     const auto [width, height] = size();
     return width;
   }
 
-  /**
-   * \brief Returns the height of the texture.
-   *
-   * \return the texture height.
-   *
-   * \see `size()`
-   */
   [[nodiscard]] auto height() const noexcept -> int
   {
     const auto [width, height] = size();
     return height;
   }
 
-  /**
-   * \brief Returns the pixel format used by the texture.
-   *
-   * \return the texture pixel format.
-   */
   [[nodiscard]] auto format() const noexcept -> pixel_format
   {
     uint32 format{};
@@ -299,11 +204,6 @@ class basic_texture final
     return static_cast<pixel_format>(format);
   }
 
-  /**
-   * \brief Returns the texture access used by the texture.
-   *
-   * \return the texture access.
-   */
   [[nodiscard]] auto access() const noexcept -> texture_access
   {
     int access{};
@@ -311,41 +211,21 @@ class basic_texture final
     return static_cast<texture_access>(access);
   }
 
-  /**
-   * \brief Indicates whether the texture has static texture access.
-   *
-   * \return `true` if the texture has static texture access; `false` otherwise.
-   */
   [[nodiscard]] auto is_static() const noexcept -> bool
   {
     return access() == texture_access::non_lockable;
   }
 
-  /**
-   * \brief Indicates whether the texture has target texture access.
-   *
-   * \return `true` if the texture has target texture access; `false` otherwise.
-   */
   [[nodiscard]] auto is_target() const noexcept -> bool
   {
     return access() == texture_access::target;
   }
 
-  /**
-   * \brief Indicates whether the texture has streaming texture access.
-   *
-   * \return `true` if the texture has streaming texture access; `false` otherwise.
-   */
   [[nodiscard]] auto is_streaming() const noexcept -> bool
   {
     return access() == texture_access::streaming;
   }
 
-  /**
-   * \brief Returns the alpha modulation of the texture.
-   *
-   * \return the texture alpha modulation.
-   */
   [[nodiscard]] auto alpha_mod() const noexcept -> uint8
   {
     uint8 alpha{};
@@ -353,11 +233,6 @@ class basic_texture final
     return alpha;
   }
 
-  /**
-   * \brief Returns the color modulation of the texture.
-   *
-   * \return the texture color modulation.
-   */
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
     uint8 red{};
@@ -367,11 +242,6 @@ class basic_texture final
     return {red, green, blue};
   }
 
-  /**
-   * \brief Returns the blend mode used by the texture.
-   *
-   * \return the texture blend mode.
-   */
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
     SDL_BlendMode mode{};
@@ -381,13 +251,6 @@ class basic_texture final
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-  /**
-   * \brief Returns the scale mode used by the texture.
-   *
-   * \return the texture scale mode.
-   *
-   * \atleastsdl 2.0.12
-   */
   [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
   {
     SDL_ScaleMode mode{};
@@ -399,30 +262,11 @@ class basic_texture final
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-  /**
-   * \brief Returns the associated user data.
-   *
-   * \return a potentially null pointer to the user data.
-   *
-   * \atleastsdl 2.0.18
-   */
   [[nodiscard]] auto user_data() noexcept -> void* { return SDL_GetTextureUserData(mTexture); }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
-  /// \} End of getters
-
-  /// \name Misc functions
-  /// \{
-
-  /**
-   * \brief Releases ownership of the associated SDL texture.
-   *
-   * \warning Think twice before using this function, and make sure you know what you are doing
-   * before using it.
-   *
-   * \return the released SDL texture.
-   */
+  /// Releases ownership of the associated SDL texture, use at your own risk.
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
@@ -431,25 +275,16 @@ class basic_texture final
 
   [[nodiscard]] auto get() const noexcept -> SDL_Texture* { return mTexture.get(); }
 
-  /**
-   * \brief Indicates whether a handle holds a non-null pointer.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   */
+  /// Indicates whether the handle holds a non-null pointer.
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return mTexture != nullptr;
   }
 
-  /// \} End of misc functions
-
  private:
   detail::pointer<T, SDL_Texture> mTexture;
 };
-
-/// \name Texture functions
-/// \{
 
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
@@ -471,10 +306,6 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 {
   return stream << to_string(texture);
 }
-
-/// \} End of texture functions
-
-/// \} End of group render
 
 }  // namespace cen
 

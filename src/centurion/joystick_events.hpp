@@ -36,9 +36,6 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
 enum class joy_hat_position : uint8
 {
   left_up = SDL_HAT_LEFTUP,
@@ -51,9 +48,6 @@ enum class joy_hat_position : uint8
   right = SDL_HAT_RIGHT,
   right_down = SDL_HAT_RIGHTDOWN
 };
-
-/// \name Joystick hat position functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const joy_hat_position position) -> std::string_view
 {
@@ -94,8 +88,6 @@ inline auto operator<<(std::ostream& stream, const joy_hat_position position) ->
 {
   return stream << to_string(position);
 }
-
-/// \} End of joystick hat position functions
 
 class joy_axis_event final : public event_base<SDL_JoyAxisEvent>
 {
@@ -247,8 +239,6 @@ inline auto as_sdl_event(const event_base<SDL_JoyHatEvent>& event) -> SDL_Event
   e.jhat = event.get();
   return e;
 }
-
-/// \} End of group event
 
 }  // namespace cen
 

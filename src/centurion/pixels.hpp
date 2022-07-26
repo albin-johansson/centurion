@@ -48,23 +48,6 @@
 
 namespace cen {
 
-/**
- * \ingroup video
- * \defgroup pixels Pixels
- *
- * \brief Contains utilities related to pixel formats and colors.
- *
- * \see `palette`
- * \see `pixel_format`
- * \see `pixel_format_info`
- */
-
-/// \addtogroup pixels
-/// \{
-
-/**
- * \brief Represents different pixel formats.
- */
 enum class pixel_format : uint32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
@@ -139,9 +122,6 @@ enum class pixel_format : uint32
   xbgr8888 = SDL_PIXELFORMAT_XBGR8888
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 };
-
-/// \name Pixel format functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
@@ -285,30 +265,13 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
   return stream << to_string(format);
 }
 
-/// \} End of pixel format functions
-
-/**
- * \brief Represents a palette of colors.
- *
- * \details This class features an interface similar to a general container type, with support
- * for the subscript operator and element iteration.
- */
+/// Represents a palette of colors.
 class palette final
 {
  public:
   using iterator = SDL_Color*;
   using const_iterator = const SDL_Color*;
 
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a palette.
-   *
-   * \param count the number of colors in the palette.
-   *
-   * \throws sdl_error if the palette cannot be created.
-   */
   explicit palette(const int count) : mPalette{SDL_AllocPalette(count)}
   {
     if (!mPalette) {
@@ -316,20 +279,6 @@ class palette final
     }
   }
 
-  /// \} End of construction
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets a color in the palette.
-   *
-   * \pre `index` must not be negative.
-   * \pre `index` must be less than the size of the palette.
-   *
-   * \param index the index of the color slot that will be changed.
-   * \param color the new color that will be used.
-   */
   auto set_color(const int index, const color& color) noexcept -> result
   {
     assert(index >= 0);
@@ -337,20 +286,6 @@ class palette final
     return SDL_SetPaletteColors(mPalette.get(), color.data(), index, 1) == 0;
   }
 
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the color in the palette at the specified index.
-   *
-   * \param index the index of color in the palette.
-   *
-   * \throws cen_error if the index is invalid.
-   *
-   * \return the found color.
-   */
   [[nodiscard]] auto at(const int index) const -> color
   {
     if (index >= 0 && index < size()) {
@@ -361,29 +296,11 @@ class palette final
     }
   }
 
-  /// \copydoc at()
   [[nodiscard]] auto operator[](const int index) const -> color { return at(index); }
 
-  /**
-   * \brief Returns the amount of colors in the palette.
-   *
-   * \return the amount of colors.
-   */
   [[nodiscard]] auto size() const noexcept -> int { return mPalette->ncolors; }
 
-  /**
-   * \brief Returns the version of the palette.
-   *
-   * \note This value can be incremented by `set_color()`.
-   *
-   * \return the palette version.
-   */
   [[nodiscard]] auto version() const noexcept -> uint32 { return mPalette->version; }
-
-  /// \} End of getters
-
-  /// \name Misc functions
-  /// \{
 
   [[nodiscard]] auto get() const noexcept -> SDL_Palette* { return mPalette.get(); }
 
@@ -398,14 +315,9 @@ class palette final
     return mPalette->colors + size();
   }
 
-  /// \} End of misc functions
-
  private:
   managed_ptr<SDL_Palette> mPalette;
 };
-
-/// \name Palette functions
-/// \{
 
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
@@ -424,8 +336,6 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
   return stream << to_string(palette);
 }
 
-/// \} End of palette functions
-
 template <typename T>
 class basic_pixel_format_info;
 
@@ -433,31 +343,24 @@ using pixel_format_info = basic_pixel_format_info<detail::owner_tag>;
 using pixel_format_info_handle = basic_pixel_format_info<detail::handle_tag>;
 
 /**
- * \brief Provides information about a pixel format.
+ * Provides information about a pixel format.
  *
- * \ownerhandle `pixel_format_info`/`pixel_format_info_handle`
- *
- * \see `pixel_format`
- * \see `pixel_format_info`
- * \see `pixel_format_info_handle`
+ * \see pixel_format
+ * \see pixel_format_info
+ * \see pixel_format_info_handle
  */
 template <typename T>
 class basic_pixel_format_info final
 {
  public:
-  /// \name Construction
-  /// \{
-
   // clang-format off
 
   /**
-   * \brief Creates a pixel format info instance.
+   * Creates a pixel format info instance.
    *
-   * \details Ownership of the supplied pointer is claimed if the instance has owning semantics.
+   * Ownership of the supplied pointer is claimed if the instance has owning semantics.
    *
    * \param format the associated pixel format.
-   *
-   * \throws exception if the pointer is null and the class has owning semantics.
    */
   explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(detail::is_handle<T>)
       : mFormat{format}
@@ -471,13 +374,6 @@ class basic_pixel_format_info final
 
   // clang-format on
 
-  /**
-   * \brief Creates a pixel format info instance.
-   *
-   * \param format the pixel format to query.
-   *
-   * \throws sdl_error if the pixel format information cannot be obtained.
-   */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : mFormat{SDL_AllocFormat(to_underlying(format))}
@@ -492,20 +388,6 @@ class basic_pixel_format_info final
       : mFormat{owner.get()}
   {}
 
-  /// \} End of construction
-
-  /// \name Pixel/RGB/RGBA conversions
-  /// \{
-
-  /**
-   * \brief Returns an RGB color that corresponds to a masked pixel value.
-   *
-   * \details The returned color is always fully opaque.
-   *
-   * \param pixel the pixel value.
-   *
-   * \return a color that corresponds to a pixel value, according to the format.
-   */
   [[nodiscard]] auto pixel_to_rgb(const uint32 pixel) const noexcept -> color
   {
     uint8 red{};
@@ -515,13 +397,6 @@ class basic_pixel_format_info final
     return {red, green, blue};
   }
 
-  /**
-   * \brief Returns an RGBA color that corresponds to a masked pixel value.
-   *
-   * \param pixel the pixel value.
-   *
-   * \return a color that corresponds to a pixel value, according to the format.
-   */
   [[nodiscard]] auto pixel_to_rgba(const uint32 pixel) const noexcept -> color
   {
     uint8 red{};
@@ -532,85 +407,38 @@ class basic_pixel_format_info final
     return {red, green, blue, alpha};
   }
 
-  /**
-   * \brief Returns a pixel color value based on the RGB values of a color.
-   *
-   * \details The pixel is assumed to be fully opaque.
-   *
-   * \param color the color that will be converted.
-   *
-   * \return a masked pixel color value, based on the format.
-   */
   [[nodiscard]] auto rgb_to_pixel(const color& color) const noexcept -> uint32
   {
     return SDL_MapRGB(mFormat, color.red(), color.green(), color.blue());
   }
 
-  /**
-   * \brief Returns a pixel color value based on the RGBA values of a color.
-   *
-   * \param color the color that will be converted.
-   *
-   * \return a masked pixel color value, based on the format.
-   */
   [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> uint32
   {
     return SDL_MapRGBA(mFormat, color.red(), color.green(), color.blue(), color.alpha());
   }
 
-  /// \} End of pixel/RGB/RGBA conversions
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the associated pixel format.
-   *
-   * \return the associated pixel format.
-   */
   [[nodiscard]] auto format() const noexcept -> pixel_format
   {
     return static_cast<pixel_format>(mFormat->format);
   }
 
-  /**
-   * \brief Returns a human-readable name associated with the format.
-   *
-   * \details This function returns `"SDL_PIXELFORMAT_UNKNOWN"` if the format is ill-formed.
-   *
-   * \return a non-null human-readable name associated with the format.
-   */
   [[nodiscard]] auto name() const noexcept -> const char*
   {
     return SDL_GetPixelFormatName(mFormat->format);
   }
 
-  /// \} End of getters
-
-  /// \name Misc functions
-  /// \{
-
   [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat* { return mFormat.get(); }
 
-  /**
-   * \brief Indicates whether a handle holds a non-null pointer.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   */
+  /// Indicates whether a handle holds a non-null pointer.
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return mFormat;
   }
 
-  /// \} End of misc functions
-
  private:
   detail::pointer<T, SDL_PixelFormat> mFormat;
 };
-
-/// \name Pixel format info functions
-/// \{
 
 template <typename T>
 [[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
@@ -630,10 +458,6 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) ->
 {
   return stream << to_string(info);
 }
-
-/// \} End of pixel format info functions
-
-/// \} End of group pixels
 
 }  // namespace cen
 

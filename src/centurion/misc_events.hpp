@@ -44,9 +44,6 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
 class quit_event final : public event_base<SDL_QuitEvent>
 {
  public:
@@ -580,8 +577,6 @@ inline auto as_sdl_event(const event_base<SDL_UserEvent>& event) -> SDL_Event
   e.user = event.get();
   return e;
 }
-
-/// \} End of group event
 
 }  // namespace cen
 

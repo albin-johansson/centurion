@@ -32,8 +32,6 @@
 #include "../common.hpp"
 #include "../memory.hpp"
 
-/// \cond FALSE
-
 namespace cen::detail {
 
 using owner_tag = std::true_type;
@@ -110,7 +108,5 @@ class pointer final
 };
 
 }  // namespace cen::detail
-
-/// \endcond
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HPP_

@@ -32,9 +32,6 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
 enum class window_event_id
 {
   none = SDL_WINDOWEVENT_NONE,
@@ -61,9 +58,6 @@ enum class window_event_id
 
   hit_test = SDL_WINDOWEVENT_HIT_TEST
 };
-
-/// \name Window event ID functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
@@ -139,8 +133,6 @@ inline auto operator<<(std::ostream& stream, const window_event_id id) -> std::o
   return stream << to_string(id);
 }
 
-/// \} End of window event ID functions
-
 class window_event final : public event_base<SDL_WindowEvent>
 {
  public:
@@ -174,8 +166,6 @@ inline auto as_sdl_event(const event_base<SDL_WindowEvent>& event) -> SDL_Event
   e.window = event.get();
   return e;
 }
-
-/// \} End of group event
 
 }  // namespace cen
 

@@ -49,42 +49,22 @@
 
 namespace cen {
 
-/// \addtogroup video
-/// \{
-
 /**
- * \brief A representation of an 8-bit RGBA color.
+ * A representation of an 8-bit RGBA color.
  *
- * \details This class supports construction and conversion from various formats such as the
- * SDL color types, HSV, HSL, normalized components, and hexadecimal RGB/RGBA/ARGB color codes.
- *
- * \details A large collection of named color constants for commonly used HTML colors is
+ * This class supports construction and conversion from various formats such as the SDL color
+ * types, HSV, HSL, normalized components, and hexadecimal RGB/RGBA/ARGB color codes.
+ * Additionally, A large collection of named color constants for commonly used HTML colors is
  * provided in the `cen::colors` namespace.
  *
- * \serializable
- *
- * \see `blend(const color&, const color&, float)`
- * \see `cen::colors`
+ * \see cen::colors
  */
 class color final
 {
  public:
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates an opaque black color.
-   */
+  /// Creates an opaque black color.
   constexpr color() noexcept = default;
 
-  /**
-   * \brief Creates a color.
-   *
-   * \param red the red component value.
-   * \param green the green component value.
-   * \param blue the blue component value.
-   * \param alpha the alpha component value.
-   */
   constexpr color(const uint8 red,
                   const uint8 green,
                   const uint8 blue,
@@ -92,28 +72,16 @@ class color final
       : mColor{red, green, blue, alpha}
   {}
 
-  /**
-   * \brief Copies a plain SDL color.
-   *
-   * \param color the color that will be copied.
-   */
   constexpr explicit color(const SDL_Color& color) noexcept : mColor{color} {}
 
-  /**
-   * \brief Copies an SDL message box color.
-   *
-   * \details The created color is fully opaque.
-   *
-   * \param color the color that will be copied.
-   */
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : mColor{color.r, color.g, color.b, 0xFF}
   {}
 
   /**
-   * \brief Creates a color from HSV-encoded values.
+   * Creates a color from HSV-encoded values.
    *
-   * \details The values will be clamped to be within their respective ranges.
+   * The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -178,9 +146,9 @@ class color final
   }
 
   /**
-   * \brief Creates a color from HSL-encoded values.
+   * Creates a color from HSL-encoded values.
    *
-   * \details The values will be clamped to be within their respective ranges.
+   * The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -247,9 +215,9 @@ class color final
   }
 
   /**
-   * \brief Attempts to create a color based on a hexadecimal RGB color code.
+   * Attempts to create a color based on a hexadecimal RGB color code.
    *
-   * \details The color code string must feature a `#` prefix, and be 7 characters long.
+   * The color code string must feature a `#` prefix, and be 7 characters long.
    *
    * \param rgb the RGB color code, using the format "#RRGGBB".
    *
@@ -283,9 +251,9 @@ class color final
   }
 
   /**
-   * \brief Attempts to create a color based on a hexadecimal RGBA color code.
+   * Attempts to create a color based on a hexadecimal RGBA color code.
    *
-   * \details The color code string must feature a `#` prefix, and be 9 characters long.
+   * The color code string must feature a `#` prefix, and be 9 characters long.
    *
    * \param rgba the RGBA color code, using the format "#RRGGBBAA".
    *
@@ -321,9 +289,9 @@ class color final
   }
 
   /**
-   * \brief Attempts to create a color based on a hexadecimal ARGB color code.
+   * Attempts to create a color based on a hexadecimal ARGB color code.
    *
-   * \details The color code string must feature a `#` prefix, and be 9 characters long.
+   * The color code string must feature a `#` prefix, and be 9 characters long.
    *
    * \param argb the ARGB color code, using the format "#AARRGGBB".
    *
@@ -376,133 +344,46 @@ class color final
     return color{r, g, b, a};
   }
 
-  /**
-   * \brief Returns a copy of the color with the specified alpha value.
-   *
-   * \param alpha the alpha component value that will be used by the new color.
-   *
-   * \return a color that is identical to the color except for the alpha component.
-   */
+  /// Returns a copy of the color, with the specified alpha value.
   [[nodiscard]] constexpr auto with_alpha(const uint8 alpha) const noexcept -> color
   {
     return {red(), green(), blue(), alpha};
   }
 
-  /// \} End of construction
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the red component value.
-   *
-   * \param red the new red component.
-   */
   constexpr void set_red(const uint8 red) noexcept { mColor.r = red; }
-
-  /**
-   * \brief Sets the green component value.
-   *
-   * \param green the new green component.
-   */
   constexpr void set_green(const uint8 green) noexcept { mColor.g = green; }
-
-  /**
-   * \brief Sets the blue component value.
-   *
-   * \param blue the new blue component.
-   */
   constexpr void set_blue(const uint8 blue) noexcept { mColor.b = blue; }
-
-  /**
-   * \brief Sets the alpha component value.
-   *
-   * \param alpha the new alpha component.
-   */
   constexpr void set_alpha(const uint8 alpha) noexcept { mColor.a = alpha; }
 
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the value of the red component.
-   *
-   * \return the red component value, in the range [0, 255].
-   */
   [[nodiscard]] constexpr auto red() const noexcept -> uint8 { return mColor.r; }
-
-  /**
-   * \brief Returns the value of the green component.
-   *
-   * \return the green component value, in the range [0, 255].
-   */
   [[nodiscard]] constexpr auto green() const noexcept -> uint8 { return mColor.g; }
-
-  /**
-   * \brief Returns the value of the blue component.
-   *
-   * \return the blue component value, in the range [0, 255].
-   */
   [[nodiscard]] constexpr auto blue() const noexcept -> uint8 { return mColor.b; }
-
-  /**
-   * \brief Returns the value of the alpha component.
-   *
-   * \return the alpha component value, in the range [0, 255].
-   */
   [[nodiscard]] constexpr auto alpha() const noexcept -> uint8 { return mColor.a; }
 
-  /**
-   * \brief Returns the normalized red component of the color.
-   *
-   * \return the red component value, in the range [0, 1].
-   */
   [[nodiscard]] constexpr auto norm_red() const noexcept -> float
   {
     return static_cast<float>(mColor.r) / 255.0f;
   }
 
-  /**
-   * \brief Returns the normalized green component of the color.
-   *
-   * \return the green component value, in the range [0, 1].
-   */
   [[nodiscard]] constexpr auto norm_green() const noexcept -> float
   {
     return static_cast<float>(mColor.g) / 255.0f;
   }
 
-  /**
-   * \brief Returns the normalized blue component of the color.
-   *
-   * \return the blue component value, in the range [0, 1].
-   */
   [[nodiscard]] constexpr auto norm_blue() const noexcept -> float
   {
     return static_cast<float>(mColor.b) / 255.0f;
   }
 
-  /**
-   * \brief Returns the normalized alpha component of the color.
-   *
-   * \return the alpha component value, in the range [0, 1].
-   */
   [[nodiscard]] constexpr auto norm_alpha() const noexcept -> float
   {
     return static_cast<float>(mColor.a) / 255.0f;
   }
 
-  /// \} End of getters
-
-  /// \name Conversions
-  /// \{
-
   /**
-   * \brief Returns a hexadecimal RGB color code, representing the color.
+   * Returns a hexadecimal RGB color code, representing the color.
    *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   * The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
    *
    * \return a string encoding the color according to the format "#RRGGBB".
    *
@@ -527,9 +408,9 @@ class color final
   }
 
   /**
-   * \brief Returns a hexadecimal RGBA color code, representing the color.
+   * Returns a hexadecimal RGBA color code, representing the color.
    *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   * The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
    *
    * \return a string encoding the color according to the format "#RRGGBBAA".
    *
@@ -559,9 +440,9 @@ class color final
   }
 
   /**
-   * \brief Returns a hexadecimal ARGB color code, representing the color.
+   * Returns a hexadecimal ARGB color code, representing the color.
    *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   * The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
    *
    * \return a string encoding the color according to the format "#AARRGGBB".
    *
@@ -590,22 +471,10 @@ class color final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
   }
 
-  /**
-   * \brief Converts the color into a message box color.
-   *
-   * \note Message box colors do not feature an alpha component.
-   *
-   * \return a message box color with the same component values as the color.
-   */
   [[nodiscard]] auto as_message_box_color() const noexcept -> SDL_MessageBoxColor
   {
     return {mColor.r, mColor.g, mColor.b};
   }
-
-  /// \} End of conversions
-
-  /// \name Misc functions
-  /// \{
 
   template <typename Archive>
   void serialize(Archive& archive)
@@ -619,25 +488,20 @@ class color final
 
   [[nodiscard]] auto get() const noexcept -> const SDL_Color& { return mColor; }
 
-  /// \} End of misc functions
-
  private:
   SDL_Color mColor{0, 0, 0, 0xFF};
 };
 
-/// \name Color functions
-/// \{
-
 /**
- * \brief Blends two colors according to the specified bias.
+ * Blends two colors according to the specified bias.
  *
  * \pre `bias` should be in the range [0, 1].
  *
- * \details This function applies a linear interpolation for each color component to
- * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
- * which determines how the input colors are blended. For example, a bias of 0 or 1 will
- * simply result in the first or second color being returned, respectively.
- * Subsequently, a bias of 0.5 will blend the two colors evenly.
+ * This function applies a linear interpolation for each color component to obtain the blended
+ * color. The bias parameter is the "alpha" for the interpolation, which determines how the
+ * input colors are blended. For example, a bias of 0 or 1 will simply result in the first or
+ * second color being returned, respectively. Subsequently, a bias of 0.5 will blend the two
+ * colors evenly.
  *
  * \param a the first color.
  * \param b the second color.
@@ -680,15 +544,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
   return !(a == b);
 }
 
-/// \} End of color functions
-
-/// \} End of group video
-
-/// \ingroup video
 namespace colors {
-
-/// \name Color constants
-/// \{
 
 inline constexpr color transparent{0, 0, 0, 0};
 inline constexpr color white{0xFF, 0xFF, 0xFF};
@@ -843,8 +699,6 @@ inline constexpr color dark_slate_gray{0x2F, 0x4F, 0x4F};
 inline constexpr color dark_slate_grey{dark_slate_gray};
 inline constexpr color dark_turquoise{0, 0xCE, 0xD1};
 inline constexpr color dark_violet{0x94, 0, 0xD3};
-
-/// \} End of color constants
 
 }  // namespace colors
 }  // namespace cen

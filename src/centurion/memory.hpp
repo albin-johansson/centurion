@@ -40,23 +40,9 @@
 
 namespace cen {
 
-/**
- * \ingroup common
- * \defgroup memory Memory
- *
- * \brief Provides utilities related to memory management and SIMD.
- */
-
-/// \addtogroup memory
-/// \{
-
-/**
- * \brief Specialized for SDL types to provide uniform memory management.
- *
- * \see `managed_ptr`
- */
+/// Specialized for SDL types to provide uniform memory management.
 template <typename T>
-struct deleter; /* Intentionally no base definition  */
+struct deleter;  // Intentionally no base definition
 
 template <>
 struct deleter<SDL_Window> final
@@ -177,38 +163,18 @@ struct deleter<TTF_Font> final
 
 #endif  // CENTURION_NO_SDL_TTF
 
-/**
- * \brief A unique pointer that uses a custom deleter specialized for SDL types.
- */
 template <typename T>
 using managed_ptr = std::unique_ptr<T, deleter<T>>;
 
-/**
- * \brief Represents a block of memory, allocated in SIMD-friendly way.
- */
 class simd_block final
 {
  public:
   using size_type = std::size_t;
 
-  /**
-   * \brief Attempts to allocate a block of SIMD-friendly memory.
-   *
-   * \details Check the success of the allocation using the overloaded `operator bool()`.
-   *
-   * \param size the size of the block, in bytes.
-   */
   explicit simd_block(const size_type size) noexcept : mData{SDL_SIMDAlloc(size)} {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-  /**
-   * \brief Reallocates the associated memory block.
-   *
-   * \param size the size of the new memory block.
-   *
-   * \atleastsdl 2.0.14
-   */
   void reallocate(const size_type size) noexcept
   {
     /* We temporarily release the ownership of the pointer in order to avoid a double
@@ -223,11 +189,7 @@ class simd_block final
 
   [[nodiscard]] auto data() const noexcept -> const void* { return mData.get(); }
 
-  /**
-   * \brief Indicates whether the internal pointer is non-null.
-   *
-   * \return `true` if the internal pointer isn't null; `false` otherwise.
-   */
+  /// Indicates whether the internal pointer is non-null.
   explicit operator bool() const noexcept { return mData != nullptr; }
 
  private:
@@ -237,8 +199,6 @@ class simd_block final
   };
   std::unique_ptr<void, simd_deleter> mData;
 };
-
-/// \} End of group memory
 
 }  // namespace cen
 

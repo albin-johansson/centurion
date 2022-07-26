@@ -27,8 +27,6 @@
 
 #include <SDL.h>
 
-/// \cond FALSE
-
 namespace cen::detail {
 
 struct sdl_deleter final
@@ -37,7 +35,5 @@ struct sdl_deleter final
 };
 
 }  // namespace cen::detail
-
-/// \endcond
 
 #endif  // CENTURION_DETAIL_SDL_DELETER_HPP_

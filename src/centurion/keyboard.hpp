@@ -46,51 +46,30 @@
 
 namespace cen {
 
-/**
- * \ingroup input
- * \defgroup keyboard Keyboard
- *
- * \brief Provides APIs related to keyboard input.
- */
-
-/// \addtogroup keyboard
-/// \{
-
-/**
- * \brief Represents different key modifiers.
- *
- * \note This is a flag enum, and provides overloads for the common bitwise operators.
- *
- * \see `operator~(key_mod)`
- * \see `operator|(key_mod, key_mod)`
- * \see `operator&(key_mod, key_mod)`
- */
 enum class key_mod : uint16
 {
   none = KMOD_NONE,
 
-  lshift = KMOD_LSHIFT,  ///< Left Shift.
-  rshift = KMOD_RSHIFT,  ///< Right Shift.
-  shift = KMOD_SHIFT,    ///< Both left and right Shift.
+  lshift = KMOD_LSHIFT,
+  rshift = KMOD_RSHIFT,
+  shift = KMOD_SHIFT,
 
-  lctrl = KMOD_LCTRL,  ///< Left Control.
-  rctrl = KMOD_RCTRL,  ///< Right Control.
-  ctrl = KMOD_CTRL,    ///< Both left and right Control.
+  lctrl = KMOD_LCTRL,
+  rctrl = KMOD_RCTRL,
+  ctrl = KMOD_CTRL,
 
-  lalt = KMOD_LALT,  ///< Left Alt.
-  ralt = KMOD_RALT,  ///< Right Alt.
-  alt = KMOD_ALT,    ///< Both left and right Alt.
+  lalt = KMOD_LALT,
+  ralt = KMOD_RALT,
+  alt = KMOD_ALT,
 
-  lgui = KMOD_LGUI,  ///< Left GUI.
-  rgui = KMOD_RGUI,  ///< Right GUI.
-  gui = KMOD_GUI,    ///< Both left and right GUI.
+  lgui = KMOD_LGUI,
+  rgui = KMOD_RGUI,
+  gui = KMOD_GUI,
 
   num = KMOD_NUM,
   caps = KMOD_CAPS,
   mode = KMOD_MODE
 };
-
-/// \cond FALSE
 
 namespace detail {
 
@@ -140,11 +119,6 @@ namespace detail {
 }
 
 }  // namespace detail
-
-/// \endcond
-
-/// \name Key modifier functions
-/// \{
 
 [[nodiscard]] constexpr auto operator~(const key_mod mods) noexcept -> key_mod
 {
@@ -205,57 +179,33 @@ inline auto operator<<(std::ostream& stream, const key_mod& mods) -> std::ostrea
   return stream << to_string(mods);
 }
 
-/**
- * \brief Sets the current key modifiers.
- *
- * \param mods the key modifiers.
- */
 inline void set_modifiers(const key_mod mods) noexcept
 {
   SDL_SetModState(static_cast<SDL_Keymod>(mods));
 }
 
-/**
- * \brief Returns the currently active key modifiers.
- *
- * \return the active key modifiers.
- */
 [[nodiscard]] inline auto get_modifiers() noexcept -> key_mod
 {
   return static_cast<key_mod>(SDL_GetModState());
 }
 
-/**
- * \brief Indicates whether any of the specified modifiers are active.
- *
- * \note Multiple key modifiers can be active at the same time.
- *
- * \param mods the modifiers that will be checked.
- *
- * \return `true` if any of the modifiers are active; `false` otherwise.
- *
- * \see `is_only_active()`
- * \see `is_only_subset_active()`
- */
+/// Indicates whether any of the specified modifiers are active.
 [[nodiscard]] inline auto is_active(const key_mod mods) noexcept -> bool
 {
   return detail::is_active(mods, static_cast<uint16>(SDL_GetModState()));
 }
 
 /**
- * \brief Indicates whether the specified modifiers are solely active.
+ * Indicates whether the specified modifiers are solely active.
  *
- * \details This function differs from `is_active(key_mod)` in that this function will return
- * `false` if modifiers other than those specified are active. For example, if the `shift` and
- * `alt` modifiers are being pressed, then `is_only_active(cen::key_mod::shift)` would evaluate
- * to `false`.
+ * This function differs from `is_active(key_mod)` in that this function will return `false` if
+ * modifiers other than those specified are active. For example, if the `shift` and `alt`
+ * modifiers are being pressed, then `is_only_active(cen::key_mod::shift)` would evaluate to
+ * `false`.
  *
  * \param mods the modifiers to check for.
  *
  * \return `true` if only the specified modifiers are active; `false` otherwise.
- *
- * \see `is_active(key_mod)`
- * \see `is_only_subset_active(key_mod)`
  */
 [[nodiscard]] inline auto is_only_active(const key_mod mods) noexcept -> bool
 {
@@ -263,55 +213,34 @@ inline void set_modifiers(const key_mod mods) noexcept
 }
 
 /**
- * \brief Indicates whether only a subset the specified modifiers are active.
+ * Indicates whether only a subset the specified modifiers are active.
  *
- * \details This function is very similar to `is_only_active()`, but differs in that not all of
- * the specified modifiers need to be active for this function to return `true`. For example,
- * if you supply `shift` to this function, and only the left shift key is being pressed, then
+ * This function is very similar to `is_only_active()`, but differs in that not all of the
+ * specified modifiers need to be active for this function to return `true`. For example, if
+ * you supply `shift` to this function, and only the left shift key is being pressed, then
  * `is_only_subset_active(cen::key_mod::shift)` would evaluate to `true`. However, if some
  * other modifiers were also being pressed other than the left shift key, the same function
  * call would instead evaluate to `false`.
  *
  * \param mods the modifiers to check for.
  *
- * \return `true` if a subset of the supplied modifiers are active, but none others; `false`
- * otherwise.
- *
- * \see `is_active(key_mod)`
- * \see `is_only_active(key_mod)`
+ * \return `true` if a subset of the supplied modifiers are active, but no others;
+ *         `false` otherwise.
  */
 [[nodiscard]] inline auto is_only_subset_active(const key_mod mods) noexcept -> bool
 {
   return detail::is_only_subset_active(mods, static_cast<uint16>(SDL_GetModState()));
 }
 
-/// \} End of key modifier functions
-
 /**
- * \brief Represents a key code (or virtual key).
+ * Represents a key code (or virtual key).
  *
- * \details Key codes are mapped to the current layout of the keyboard and correlate to some
- * scan code. Key codes are mainly useful to represent keys with specific labels, e.g. 'A' or
- * 'I', regardless of keyboard layout.
- *
- * \serializable
- *
- * \note Key codes are sometimes referred to as "keysyms" in the SDL documentation.
- *
- * \see `cen::keycodes`
- * \see `scan_code`
- *
- * \see `SDL_KeyCode`
+ * \see scan_code
+ * \see cen::keycodes
  */
 class key_code final
 {
  public:
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a key using the `SDLK_UNKNOWN` code.
-   */
   constexpr key_code() noexcept = default;
 
   constexpr key_code(const key_code&) noexcept = default;
@@ -324,17 +253,11 @@ class key_code final
       : mKey{static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode))}
   {}
 
-  /** Creates a key code based on a key name. */
   explicit key_code(const char* name) noexcept
       : mKey{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
   explicit key_code(const std::string& name) noexcept : key_code{name.c_str()} {}
-
-  /// \} End of construction
-
-  /// \name Assignment
-  /// \{
 
   constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
@@ -364,11 +287,6 @@ class key_code final
     return this->operator=(name.c_str());  // NOLINT
   }
 
-  /// \} End of assignment
-
-  /// \name Queries
-  /// \{
-
   [[nodiscard]] constexpr auto unknown() const noexcept -> bool
   {
     return mKey == SDLK_UNKNOWN;
@@ -381,11 +299,6 @@ class key_code final
     return SDL_GetScancodeFromKey(mKey);
   }
 
-  /// \} End of queries
-
-  /// \name Misc functions
-  /// \{
-
   template <typename Archive>
   void serialize(Archive& archive)
   {
@@ -394,14 +307,9 @@ class key_code final
 
   [[nodiscard]] constexpr auto get() const noexcept -> SDL_KeyCode { return mKey; }
 
-  /// \} End of misc functions
-
  private:
   SDL_KeyCode mKey{SDLK_UNKNOWN};
 };
-
-/// \name Key code functions
-/// \{
 
 [[nodiscard]] constexpr auto operator==(const key_code& a, const key_code& b) noexcept -> bool
 {
@@ -427,30 +335,15 @@ inline auto operator<<(std::ostream& stream, const key_code& code) -> std::ostre
   return stream << to_string(code);
 }
 
-/// \} End of key code functions
-
 /**
- * \brief Represents a scan code.
+ * Represents a scan code.
  *
- * \details Scan codes represent the physical location of a key on the keyboard, regardless of
- * the keyboard layout used. This is achieved by basing the scan codes on the positions of
- * keys on a US QWERTY keyboard. As a result, the scan code for the key 'Q' refers to the upper
- * left position of a keyboard, even on other layouts such as DVORAK.
- *
- * \serializable
- *
- * \see `cen::scancodes`
- * \see `key_code`
- *
- * \see `SDL_ScanCode`
+ * \see key_code
+ * \see cen::scancodes
  */
 class scan_code final
 {
  public:
-  /// \name Construction
-  /// \{
-
-  /** Creates a scan code with the value `SDL_SCANCODE_UNKNOWN`. */
   constexpr scan_code() noexcept = default;
 
   constexpr scan_code(const scan_code&) noexcept = default;
@@ -464,11 +357,6 @@ class scan_code final
   explicit scan_code(const char* name) noexcept : mCode{SDL_GetScancodeFromName(name)} {}
 
   explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()} {}
-
-  /// \} End of construction
-
-  /// \name Assignment
-  /// \{
 
   constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
@@ -498,17 +386,7 @@ class scan_code final
     return operator=(name.c_str());  // NOLINT
   }
 
-  /// \} End of assignment
-
-  /// \name General information
-  /// \{
-
   [[nodiscard]] constexpr static auto count() noexcept -> int { return SDL_NUM_SCANCODES; }
-
-  /// \} End of general information
-
-  /// \name Queries
-  /// \{
 
   [[nodiscard]] constexpr auto unknown() const noexcept -> bool
   {
@@ -522,11 +400,6 @@ class scan_code final
     return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(mCode));
   }
 
-  /// \} End of queries
-
-  /// \name Misc functions
-  /// \{
-
   [[nodiscard]] constexpr auto get() const noexcept -> SDL_Scancode { return mCode; }
 
   template <typename Archive>
@@ -535,14 +408,9 @@ class scan_code final
     archive(mCode);
   }
 
-  /// \} End of misc functions
-
  private:
   SDL_Scancode mCode{SDL_SCANCODE_UNKNOWN};
 };
-
-/// \name Scan code functions
-/// \{
 
 [[nodiscard]] constexpr auto operator==(const scan_code& a, const scan_code& b) noexcept
     -> bool
@@ -570,52 +438,30 @@ inline auto operator<<(std::ostream& stream, const scan_code& code) -> std::ostr
   return stream << to_string(code);
 }
 
-/// \} End of scan code functions
-
 /**
- * \brief Provides a read-only view into the keyboard state.
+ * Provides a view into the keyboard state.
  *
- * \see `mouse`
+ * \see mouse
  */
 class keyboard final
 {
  public:
   keyboard() noexcept { mState = SDL_GetKeyboardState(&mKeyCount); }
 
-  /**
-   * \brief Refreshes the key state.
-   */
   void refresh() { std::copy(mState, mState + mKeyCount, mPrevious.begin()); }
 
-  /**
-   * \brief Indicates whether a key is being pressed.
-   *
-   * \details This function returns `false` if the key isn't recognized.
-   *
-   * \param code the key that will be checked.
-   *
-   * \return `true` if the key is being pressed; `false` otherwise.
-   */
+  /// Indicates whether a key is being pressed.
   [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
   {
     return check(code, [this](const SDL_Scancode sc) noexcept { return mState[sc]; });
   }
 
-  /// \copydoc is_pressed()
   [[nodiscard]] auto is_pressed(const key_code& code) const noexcept -> bool
   {
     return is_pressed(code.to_scancode());
   }
 
-  /**
-   * \brief Indicates whether a key is held, i.e. pressed for at least two consecutive updates.
-   *
-   * \details This function returns false if the supplied key isn't recognized.
-   *
-   * \param code the key that will be checked.
-   *
-   * \return `true` if the key is held; `false` otherwise.
-   */
+  /// Indicates whether a key is held, i.e. pressed for at least two consecutive updates.
   [[nodiscard]] auto is_held(const scan_code& code) const noexcept(on_msvc) -> bool
   {
     return check(code, [this](const SDL_Scancode sc) noexcept(on_msvc) {
@@ -623,21 +469,12 @@ class keyboard final
     });
   }
 
-  /// \copydoc is_held()
   [[nodiscard]] auto is_held(const key_code& code) const noexcept(on_msvc) -> bool
   {
     return is_held(code.to_scancode());
   }
 
-  /**
-   * \brief Indicates whether a key was initially pressed during the the last update.
-   *
-   * \details This function returns false if the supplied key isn't recognized.
-   *
-   * \param code the key that will be checked.
-   *
-   * \return `true` if the key was just pressed; `false` otherwise.
-   */
+  /// Indicates whether a key was initially pressed during the the last update.
   [[nodiscard]] auto just_pressed(const scan_code& code) const noexcept(on_msvc) -> bool
   {
     return check(code, [this](const SDL_Scancode sc) noexcept(on_msvc) {
@@ -645,21 +482,12 @@ class keyboard final
     });
   }
 
-  /// \copydoc just_pressed()
   [[nodiscard]] auto just_pressed(const key_code& code) const noexcept(on_msvc) -> bool
   {
     return just_pressed(code.to_scancode());
   }
 
-  /**
-   * \brief Indicates whether a key was released during the the last update.
-   *
-   * \details This function returns false if the supplied key isn't recognized.
-   *
-   * \param code the key that will be checked.
-   *
-   * \return `true` if the key was just released; `false` otherwise.
-   */
+  /// Indicates whether a key was released during the the last update.
   [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc) -> bool
   {
     return check(code, [this](const SDL_Scancode sc) noexcept(on_msvc) {
@@ -667,17 +495,11 @@ class keyboard final
     });
   }
 
-  /// \copydoc just_released()
   [[nodiscard]] auto just_released(const key_code& code) const noexcept(on_msvc) -> bool
   {
     return just_released(code.to_scancode());
   }
 
-  /**
-   * \brief Returns the total amount of keys.
-   *
-   * \return the key count.
-   */
   [[nodiscard]] auto size() const noexcept -> int { return mKeyCount; }
 
  private:
@@ -699,14 +521,6 @@ class keyboard final
   }
 };
 
-/// \name Keyboard functions
-/// \{
-
-/**
- * \brief Indicates whether the platform has screen keyboard support.
- *
- * \return `true` if screen keyboard is supported; `false` otherwise.
- */
 [[nodiscard]] inline auto has_screen_keyboard() noexcept -> bool
 {
   return SDL_HasScreenKeyboardSupport() == SDL_TRUE;
@@ -726,16 +540,7 @@ inline auto operator<<(std::ostream& stream, const keyboard& keyboard) -> std::o
   return stream << to_string(keyboard);
 }
 
-/// \} End of keyboard functions
-
-/// \} End of group keyboard
-
-/// \brief Contains a large selection of key code constants.
-/// \ingroup keyboard
 namespace keycodes {
-
-/// \name Key code constants
-/// \{
 
 inline constexpr key_code unknown;
 
@@ -811,16 +616,9 @@ inline constexpr key_code right_alt{SDLK_RALT};
 inline constexpr key_code left_gui{SDLK_LGUI};
 inline constexpr key_code right_gui{SDLK_RGUI};
 
-/// \} End of key code constants
-
 }  // namespace keycodes
 
-/// \brief Contains a large selection of scan code constants.
-/// \ingroup keyboard
 namespace scancodes {
-
-/// \name Scan code constants
-/// \{
 
 inline constexpr scan_code unknown;
 
@@ -895,8 +693,6 @@ inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
 inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
 inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
-
-/// \} End of scan code constants
 
 }  // namespace scancodes
 

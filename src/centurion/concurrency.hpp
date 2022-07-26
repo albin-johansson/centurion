@@ -52,32 +52,14 @@
 
 namespace cen {
 
-/**
- * \defgroup concurrency Concurrency
- *
- * \brief Provides low-level abstractions related to concurrent programming.
- */
-
-/// \addtogroup concurrency
-/// \{
-
 using thread_id = SDL_threadID;
 
-/**
- * \brief Represents different thread priorities.
- *
- * \note You might need higher privileges to use `high` or `critical` priorities.
- */
-enum class thread_priority
-{
-  low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
-  normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is the default.
-  high = SDL_THREAD_PRIORITY_HIGH,      ///< High-priority processing.
-  critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< Time-critical processing.
+enum class thread_priority {
+  low = SDL_THREAD_PRIORITY_LOW,
+  normal = SDL_THREAD_PRIORITY_NORMAL,
+  high = SDL_THREAD_PRIORITY_HIGH,
+  critical = SDL_THREAD_PRIORITY_TIME_CRITICAL
 };
-
-/// \name Thread priority functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const thread_priority priority) -> std::string_view
 {
@@ -104,17 +86,11 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority) -> 
   return stream << to_string(priority);
 }
 
-/// \} End of thread priority functions
-
-enum class lock_status
-{
+enum class lock_status {
   success = 0,
   timed_out = SDL_MUTEX_TIMEDOUT,
   error = -1
 };
-
-/// \name Lock status functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const lock_status status) -> std::string_view
 {
@@ -138,25 +114,16 @@ inline auto operator<<(std::ostream& stream, const lock_status status) -> std::o
   return stream << to_string(status);
 }
 
-/// \} End of lock status functions
-
 /**
- * \brief Represents a recursive mutex.
+ * Represents a recursive mutex.
  *
- * \details The fact that the mutex is recursive means that it's possible to nest lock
- * and unlock calls with the same mutex.
- *
- * \see `scoped_lock`
- * \see `try_lock`
+ * \see scoped_lock
+ * \see try_lock
  */
 class mutex final
 {
  public:
-  /**
-   * \brief Creates an unlocked mutex.
-   *
-   * \throws sdl_error if the mutex could not be created.
-   */
+  /// Creates an unlocked mutex.
   mutex() : mMutex{SDL_CreateMutex()}
   {
     if (!mMutex) {
@@ -164,28 +131,15 @@ class mutex final
     }
   }
 
-  /**
-   * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
-   *
-   * \return `success` if the mutex was successfully locked; `failure` otherwise.
-   */
+  /// Attempts to lock the mutex, blocks if the mutex isn't available.
   auto lock() noexcept -> result { return SDL_LockMutex(data()) == 0; }
 
-  /**
-   * \brief Attempts to lock the mutex, returns if the mutex isn't available.
-   *
-   * \return the result of the operation.
-   */
+  /// Attempts to lock the mutex and returns immediately.
   auto try_lock() noexcept -> lock_status
   {
     return static_cast<lock_status>(SDL_TryLockMutex(data()));
   }
 
-  /**
-   * \brief Attempts to unlock the mutex.
-   *
-   * \return `success` if the mutex was successfully unlocked; `failure` otherwise.
-   */
   auto unlock() noexcept -> result { return SDL_UnlockMutex(data()) == 0; }
 
   [[nodiscard]] auto data() noexcept -> SDL_mutex* { return mMutex.get(); }
@@ -203,19 +157,11 @@ class mutex final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
-/**
- * \brief An RAII blocking lock that unlocks an associated mutex upon destruction.
- */
+/// An RAII style blocking lock that unlocks the associated mutex upon destruction.
 class scoped_lock final
 {
  public:
-  /**
-   * \brief Attempts to lock a mutex.
-   *
-   * \param mutex the mutex that will be locked.
-   *
-   * \throws sdl_error if the mutex couldn't be locked.
-   */
+  /// Attempts to lock a mutex.
   CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : mMutex{&mutex}
   {
     if (!mutex.lock()) {
@@ -224,27 +170,19 @@ class scoped_lock final
   }
 
   CENTURION_DISABLE_COPY(scoped_lock)
+  CENTURION_DISABLE_MOVE(scoped_lock)
 
-  /**
-   * \brief Unlocks the associated mutex.
-   */
   ~scoped_lock() noexcept { mMutex->unlock(); }
 
  private:
   mutex* mMutex{};
 };
 
-/**
- * \brief An RAII non-blocking lock that unlocks an associated mutex upon destruction.
- */
+/// An RAII style non-blocking lock that unlocks the associated mutex upon destruction.
 class try_lock final
 {
  public:
-  /**
-   * \brief Attempts to lock a mutex.
-   *
-   * \param mutex the mutex to lock.
-   */
+  /// Attempts to lock a mutex.
   CENTURION_NODISCARD_CTOR explicit try_lock(mutex& mutex) noexcept
       : mMutex{&mutex}
       , mStatus{mutex.try_lock()}
@@ -252,9 +190,6 @@ class try_lock final
 
   CENTURION_DISABLE_COPY(try_lock)
 
-  /**
-   * \brief Unlocks the associated mutex if it was successfully locked.
-   */
   ~try_lock() noexcept
   {
     if (mStatus == lock_status::success) {
@@ -262,41 +197,21 @@ class try_lock final
     }
   }
 
-  /**
-   * \brief Returns the result of trying to lock the associated mutex.
-   *
-   * \return the lock result.
-   */
   [[nodiscard]] auto status() const noexcept -> lock_status { return mStatus; }
 
-  /**
-   * \brief Indicates whether the mutex was successfully locked.
-   *
-   * \return `true` if the mutex was locked; `false` otherwise.
-   */
   [[nodiscard]] auto locked() const noexcept -> bool
   {
     return status() == lock_status::success;
   }
 
-  /**
-   * \brief Indicates whether the lock timed out whilst trying to lock the mutex.
-   *
-   * \return `true` if the locking timed out; `false` otherwise.
-   */
   [[nodiscard]] auto timed_out() const noexcept -> bool
   {
     return status() == lock_status::timed_out;
   }
 
-  /**
-   * \brief Indicates whether there was an error whilst locking the mutex.
-   *
-   * \return `true` if something went wrong whilst locking the mutex; `false` otherwise.
-   */
   [[nodiscard]] auto failed() const noexcept -> bool { return status() == lock_status::error; }
 
-  /// \copydoc locked()
+  /// Indicates whether the mutex was successfully locked.
   [[nodiscard]] explicit operator bool() const noexcept { return locked(); }
 
  private:
@@ -304,17 +219,10 @@ class try_lock final
   lock_status mStatus{};
 };
 
-/**
- * \brief Represents a condition variable.
- */
+/// Represents a condition variable.
 class condition final
 {
  public:
-  /**
-   * \brief Creates a condition variable.
-   *
-   * \throws sdl_error if the condition variable cannot be initialized.
-   */
   condition() : mCond{SDL_CreateCond()}
   {
     if (!mCond) {
@@ -322,47 +230,17 @@ class condition final
     }
   }
 
-  /**
-   * \brief Wakes up one of the threads waiting on the condition variable.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   */
+  /// Wakes up one of the threads waiting on the condition variable.
   auto signal() noexcept -> result { return SDL_CondSignal(mCond.get()) == 0; }
 
-  /**
-   * \brief Wakes up all threads that are waiting on the condition variable.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   */
+  /// Wakes up all threads that are waiting on the condition variable.
   auto broadcast() noexcept -> result { return SDL_CondBroadcast(mCond.get()) == 0; }
 
-  /**
-   * \brief Waits until the condition variable is signaled.
-   *
-   * \pre the mutex must be locked when this function is called.
-   *
-   * \param mutex the mutex that will be used.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   */
   auto wait(mutex& mutex) noexcept -> result
   {
     return SDL_CondWait(mCond.get(), mutex.data()) == 0;
   }
 
-  /**
-   * \brief Waits until signalled or if the specified amount of time passes.
-   *
-   * \details This function is implement by looping with a delay of 1 ms on some platforms, and
-   * should therefore be avoided if possible.
-   *
-   * \pre the mutex must be locked when this function is called.
-   *
-   * \param mutex the mutex that will be used.
-   * \param duration the maximum amount of time to wait.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   */
   auto wait(mutex& mutex, const u32ms duration) noexcept(noexcept(duration.count()))
       -> lock_status
   {
@@ -374,17 +252,11 @@ class condition final
   managed_ptr<SDL_cond> mCond;
 };
 
-/**
- * \brief Represents a semaphore with a set of "tokens" (or permits).
- */
+/// Represents a semaphore with a set of "tokens" (or "permits").
 class semaphore final
 {
  public:
-  /**
-   * \brief Creates a semaphore.
-   *
-   * \param tokens the initial amount of tokens.
-   */
+  /// Creates a semaphore with an initial amount of tokens.
   explicit semaphore(const uint32 tokens) : mSemaphore{SDL_CreateSemaphore(tokens)}
   {
     if (!mSemaphore) {
@@ -392,53 +264,23 @@ class semaphore final
     }
   }
 
-  /**
-   * \brief Acquires a token from the semaphore.
-   *
-   * \note This function blocks the calling thread until a token is available.
-   *
-   * \return `success` if a token was acquired; `failure` otherwise.
-   */
+  /// Acquires a token from the semaphore, blocks until a token is available.
   auto acquire() noexcept -> result { return SDL_SemWait(mSemaphore.get()) == 0; }
 
-  /**
-   * \brief Attempts to acquire a token from the semaphore.
-   *
-   * \param duration the maximum amount of time to wait.
-   *
-   * \return `success` if a token was acquired;
-   *         `timed_out` if no token was acquired in the specified duration;
-   *         `error` if something goes wrong.
-   */
   auto acquire(const u32ms duration) noexcept(noexcept(duration.count())) -> lock_status
   {
     return static_cast<lock_status>(SDL_SemWaitTimeout(mSemaphore.get(), duration.count()));
   }
 
-  /**
-   * \brief Attempts to acquire a token from the semaphore.
-   *
-   * \return `success` if a token was acquired;
-   *         `timed_out` if the thread would've been blocked;
-   *         `error` if something goes wrong.
-   */
   auto try_acquire() noexcept -> lock_status
   {
     return static_cast<lock_status>(SDL_SemTryWait(mSemaphore.get()));
   }
 
-  /**
-   * \brief Returns a token to the semaphore and notifies waiting threads.
-   *
-   * \return `success` if nothing went wrong; `failure` otherwise.
-   */
+  /// Returns a token to the semaphore and notifies waiting threads.
   auto release() noexcept -> result { return SDL_SemPost(mSemaphore.get()) == 0; }
 
-  /**
-   * \brief Returns the amount of currently available tokens.
-   *
-   * \return the amount of tokens.
-   */
+  /// Returns the amount of available tokens.
   [[nodiscard]] auto count() const noexcept -> uint32
   {
     return SDL_SemValue(mSemaphore.get());
@@ -449,29 +291,15 @@ class semaphore final
 };
 
 /**
- * \brief Represents a single thread of execution.
+ * Represents a single thread of execution.
  *
- * \details Unlike `std::thread`, this class will automatically join itself upon destruction,
- * given that it wasn't already detached or joined.
- *
- * \remarks Beware that the C++ standard provides `std::thread` and `std::jthread`, along
- * with several other threading utilities. You should consider using the standard library API.
+ * Unlike std::thread, this class will automatically join itself upon destruction (given that
+ * it wasn't already detached or joined).
  */
 class thread final
 {
  public:
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a thread and starts executing it.
-   *
-   * \param task the task that will be performed.
-   * \param name the name of the thread, cannot be null.
-   * \param data optional user data that will be supplied to the task function object.
-   *
-   * \throws sdl_error if the thread cannot be created.
-   */
+  /// Creates a thread and starts executing it.
   CENTURION_NODISCARD_CTOR explicit thread(SDL_ThreadFunction task,
                                            const char* name = "thread",
                                            void* data = nullptr)
@@ -484,9 +312,6 @@ class thread final
 
   CENTURION_DISABLE_COPY(thread)
 
-  /**
-   * \brief Joins the thread, if it hasn't already been joined.
-   */
   ~thread() noexcept
   {
     if (joinable()) {
@@ -497,15 +322,12 @@ class thread final
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
   /**
-   * \brief Creates a thread that will execute the supplied callable.
+   * Creates a thread and starts executing it.
    *
-   * \details The supplied callable can either either return nothing or return a value
-   * convertible to an `int`. If the callable returns nothing, the thread will simply
-   * return `0`.
+   * The supplied callable can either either return nothing or return a value convertible to an
+   * `int`. If the callable returns nothing, the thread will simply return `0`.
    *
-   * \note If you supply a lambda to this function, it must be stateless.
-   *
-   * \tparam Callable the type of the callable.
+   * Note, any lambda you supply to this function must be stateless.
    *
    * \param task the callable that will be invoked when the thread starts running.
    * \param name the name of the thread.
@@ -534,23 +356,6 @@ class thread final
     return thread{wrapper, name};
   }
 
-  /**
-   * \brief Creates a thread that will execute the supplied callable.
-   *
-   * \details The supplied callable can either either return nothing or return a value
-   * convertible to an `int`. If the callable returns nothing, the thread will simply
-   * return `0`.
-   *
-   * \note If you supply a lambda to this function, it must be stateless.
-   *
-   * \tparam Callable the type of the callable.
-   *
-   * \param task the callable that will be invoked when the thread starts running.
-   * \param userData optional user data that will be supplied to the callable.
-   * \param name the name of the thread.
-   *
-   * \return the created thread.
-   */
   template <typename T = void, is_stateless_callable<T*> Callable>
   [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
                                  T* userData = nullptr,
@@ -578,43 +383,17 @@ class thread final
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-  /// \} End of construction
-
-  /**
-   * \brief Forces the current thread to halt for at least the specified duration.
-   *
-   * \details The actual time spent sleeping may differ, depending on the scheduling of the
-   * operating system. You shouldn't use this function for precise timing.
-   *
-   * \param duration the minimum amount of time to sleep for.
-   */
   static void sleep(const u32ms duration) noexcept(noexcept(duration.count()))
   {
     SDL_Delay(duration.count());
   }
 
-  /**
-   * \brief Sets the priority of the current thread.
-   *
-   * \param priority the priority that will be used.
-   *
-   * \return `success` if the priority was successfully set; `failure` otherwise.
-   */
   static auto set_priority(const thread_priority priority) noexcept -> result
   {
     return SDL_SetThreadPriority(static_cast<SDL_ThreadPriority>(priority)) == 0;
   }
 
-  /// \name Mutators
-  /// \{
-
-  /**
-   * \brief Waits for the thread to finish its execution.
-   *
-   * \details This function just returns `0` if the thread has already been joined or detached.
-   *
-   * \return the status code.
-   */
+  /// Waits for the thread to stop running.
   auto join() noexcept -> int
   {
     if (mJoined || mDetached) {
@@ -630,11 +409,7 @@ class thread final
     return status;
   }
 
-  /**
-   * \brief Lets the thread terminate without having another thread join it.
-   *
-   * \details This function has no effect if the thread has already been joined or detached.
-   */
+  /// Lets the thread terminate without having another thread join it.
   void detach() noexcept
   {
     if (mJoined || mDetached) {
@@ -647,76 +422,27 @@ class thread final
     assert(mDetached != mJoined);
   }
 
-  /// \} End of mutators
-
-  /// \name Queries
-  /// \{
-
-  /**
-   * \brief Returns the identifier associated with the current thread.
-   *
-   * \return the ID of the current thread.
-   */
   [[nodiscard]] static auto current_id() noexcept -> thread_id { return SDL_ThreadID(); }
 
-  /**
-   * \brief Returns the identifier associated with the thread.
-   *
-   * \return the ID of the thread.
-   */
   [[nodiscard]] auto id() const noexcept -> thread_id { return SDL_GetThreadID(mThread); }
 
-  /**
-   * \brief Returns the name of the thread.
-   *
-   * \return the thread name.
-   */
   [[nodiscard]] auto name() const -> std::string { return SDL_GetThreadName(mThread); }
 
-  /**
-   * \brief Indicates whether the thread can be joined.
-   *
-   * \details A thread is joinable if it hasn't been previously detached or joined.
-   *
-   * \note A joinable thread is also detachable.
-   *
-   * \return `true` if the thread is joinable; `false` otherwise.
-   */
   [[nodiscard]] auto joinable() const noexcept -> bool { return !mJoined && !mDetached; }
 
-  /**
-   * \brief Indicates whether or not the thread was joined.
-   *
-   * \return `true` if the thread has been joined; `false` otherwise.
-   */
   [[nodiscard]] auto joined() const noexcept -> bool { return mJoined; }
 
-  /**
-   * \brief Indicates whether or not the thread was detached.
-   *
-   * \return `true` if the thread has been detached; `false` otherwise.
-   */
   [[nodiscard]] auto detached() const noexcept -> bool { return mDetached; }
-
-  /// \} End of queries
-
-  /// \name Misc functions
-  /// \{
 
   [[nodiscard]] auto data() noexcept -> SDL_Thread* { return mThread; }
 
   [[nodiscard]] auto data() const noexcept -> const SDL_Thread* { return mThread; }
-
-  /// \} End of misc functions
 
  private:
   SDL_Thread* mThread{};
   bool mJoined{false};
   bool mDetached{false};
 };
-
-/// \name Thread functions
-/// \{
 
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
@@ -735,10 +461,6 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
 {
   return stream << to_string(thread);
 }
-
-/// \} End of thread functions
-
-/// \} End of group concurrency
 
 }  // namespace cen
 

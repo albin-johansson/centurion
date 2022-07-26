@@ -59,15 +59,6 @@
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-/**
- * \defgroup common Common
- *
- * \brief Common utilities and APIs.
- */
-
-/// \addtogroup common
-/// \{
-
 #define CENTURION_DISABLE_COPY(Class) \
   Class(const Class&) = delete;       \
   Class& operator=(const Class&) = delete;
@@ -76,15 +67,7 @@
   Class(Class&&) = delete;            \
   Class& operator=(Class&&) = delete;
 
-/// \} End of group common
-
 namespace cen {
-
-/// \addtogroup common
-/// \{
-
-/// \name Integral aliases
-/// \{
 
 using uint = unsigned int;
 using ulonglong = unsigned long long;
@@ -115,11 +98,6 @@ using u16ms = millis<uint16>;
 using u32ms = millis<uint32>;
 using u64ms = millis<uint64>;
 
-/// \} End of integral aliases
-
-/// \name Build and compiler information
-/// \{
-
 #ifdef NDEBUG
 inline constexpr bool is_debug_build = false;
 inline constexpr bool is_release_build = true;
@@ -146,11 +124,6 @@ inline constexpr bool on_clang = true;
 inline constexpr bool on_clang = false;
 #endif  // __clang__
 
-/// \} End of build and compiler information
-
-/// \name SFINAE helpers
-/// \{
-
 template <typename T>
 using enable_for_pointer_t = std::enable_if_t<std::is_pointer_v<T>, int>;
 
@@ -162,26 +135,14 @@ using enable_for_convertible_t =
 template <typename T>
 using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
-/// \} End of SFINAE helpers
-
-/// \name Array helper aliases
-/// \{
-
 template <typename T, std::size_t Size>
 using bounded_array_ref = T (&)[Size];
-
-/// \} End of array helper aliases
-
-/// \name Pointer tag aliases
-/// \{
 
 template <typename T, enable_for_pointer_t<T> = 0>
 using owner = T;
 
 template <typename T, enable_for_pointer_t<T> = 0>
 using maybe_owner = T;
-
-/// \} End of pointer tag aliases
 
 template <typename T>
 inline constexpr bool is_number =
@@ -194,14 +155,7 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-/**
- * \brief The base class of all exceptions explicitly thrown by the library.
- *
- * \see `sdl_error`
- * \see `img_error`
- * \see `mix_error`
- * \see `ttf_error`
- */
+/// The base class of all exceptions explicitly thrown by the library.
 class exception : public std::exception
 {
  public:
@@ -215,9 +169,6 @@ class exception : public std::exception
   const char* mWhat{"?"};
 };
 
-/**
- * \brief Represents an error related to the core SDL library.
- */
 class sdl_error final : public exception
 {
  public:
@@ -228,9 +179,6 @@ class sdl_error final : public exception
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-/**
- * \brief Represents an error related to the core SDL_image library.
- */
 class img_error final : public exception
 {
  public:
@@ -243,9 +191,6 @@ class img_error final : public exception
 
 #ifndef CENTURION_NO_SDL_TTF
 
-/**
- * \brief Represents an error related to the core SDL_ttf library.
- */
 class ttf_error final : public exception
 {
  public:
@@ -258,9 +203,6 @@ class ttf_error final : public exception
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-/**
- * \brief Represents an error related to the core SDL_mixer library.
- */
 class mix_error final : public exception
 {
  public:
@@ -272,16 +214,16 @@ class mix_error final : public exception
 #endif  // CENTURION_NO_SDL_MIXER
 
 /**
- * \brief A simple indicator for the result of different operations.
+ * A simple indicator for the result of different operations.
  *
- * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
- * of Centurion would usually return a `bool` in those cases, where `true` and `false`
- * would indicate success and failure, respectively. This class is a development of that
- * practice. For instance, this class is contextually convertible to `bool`, where a
- * successful result is still converted to `true`, and vice versa. However, this class
- * also enables explicit checks against `success` and `failure` constants, which makes
- * code very easy to read and unambiguous.
+ * The idea behind this class is to make results of various operations unambiguous. Quite an
+ * amount of functions in the library may fail, and earlier versions of Centurion would usually
+ * return a `bool` in those cases, where `true` and `false` would indicate success and failure,
+ * respectively. This class is a development of that practice. For instance, this class is
+ * contextually convertible to `bool`, where a successful result is still converted to `true`,
+ * and vice versa. However, this class also enables explicit checks against `success` and
+ * `failure` constants, which makes code very easy to read and unambiguous.
+ *
  * \code{cpp}
  *   cen::window window;
  *
@@ -301,42 +243,25 @@ class mix_error final : public exception
  *   }
  * \endcode
  *
- * \see `success`
- * \see `failure`
+ * \see success
+ * \see failure
  */
 class result final
 {
  public:
-  /**
-   * \brief Creates a result.
-   *
-   * \param success `true` if the result is successful; `false` otherwise.
-   */
   constexpr result(const bool success) noexcept  // NOLINT implicit
       : mSuccess{success}
   {}
 
-  /**
-   * \brief Indicates whether the result is a success.
-   *
-   * \return `true` if the result is a success; `false` otherwise.
-   */
+  /// Indicates whether the result was a success.
   [[nodiscard]] constexpr explicit operator bool() const noexcept { return mSuccess; }
 
  private:
   bool mSuccess{};
 };
 
-/// \name Result constants
-/// \{
-
-inline constexpr result success{true};   ///< Represents a successful result.
-inline constexpr result failure{false};  ///< Represents a failure.
-
-/// \} End of result constants
-
-/// \name Result functions
-/// \{
+inline constexpr result success{true};   ///< A successful result.
+inline constexpr result failure{false};  ///< A failure.
 
 [[nodiscard]] inline auto to_string(const result result) -> std::string
 {
@@ -358,42 +283,30 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
   return !(a == b);
 }
 
-/// \} End of result functions
-
 /**
- * \brief Represents an SDL style string.
+ * Represents an SDL style string.
  *
- * \details Certain SDL APIs return `char*` strings that need to be freed using `SDL_free()`,
- * this class serves as a small wrapper around such strings. Use the `copy()` member function
- * to convert the string into a corresponding `std::string`.
+ * Certain SDL APIs return `char*` strings that need to be freed using `SDL_free()`, this class
+ * serves as a small wrapper around such strings. Use the `copy()` member function to convert
+ * the string into a corresponding `std::string`.
  *
- * \note Instances of `sdl_string` can hold null strings. Use the overloaded `operator
- * bool()` in order to determine whether the associated string is null.
+ * Note, instances of `sdl_string` may hold null strings. Use the overloaded `operator bool()`
+ * in order to determine whether the associated string is null.
  */
 class sdl_string final
 {
  public:
-  /**
-   * \brief Creates a string.
-   *
-   * \param str the string that will be claimed, can be null.
-   */
   explicit sdl_string(owner<char*> str) noexcept : mStr{str} {}
 
-  /**
-   * \brief Returns the internal string, which might be null.
-   *
-   * \return the internal string; `nullptr` if there is none.
-   */
+  /// Returns a potentially null pointer to the internal string.
   [[nodiscard]] auto get() const noexcept -> const char* { return mStr.get(); }
 
   /**
-   * \brief Returns a copy of the internal string.
+   * Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string is a null
-   * pointer.
+   * The empty string is returned if the internal pointer is null.
    *
-   * \return a copy of the internal string.
+   * \return a standard string instance.
    */
   [[nodiscard]] auto copy() const -> std::string
   {
@@ -405,26 +318,19 @@ class sdl_string final
     }
   }
 
-  /**
-   * \brief Indicates whether or not the internal string is non-null.
-   *
-   * \return `true` if the internal string is non-null; `false` otherwise.
-   */
+  /// Indicates whether the internal pointer is non-null.
   explicit operator bool() const noexcept { return mStr != nullptr; }
 
  private:
   std::unique_ptr<char, detail::sdl_deleter> mStr;
 };
 
-/// \name Common utility functions
-/// \{
-
 /**
- * \brief Casts a value to a value of another type.
+ * Casts a value to a value of another type.
  *
- * \details This is the default implementation, which simply attempts to use `static_cast`. The
- * idea is that this function will be specialized for various Centurion and SDL types. This is
- * useful because it isn't always possible to implement conversion operators as members.
+ * This is the default implementation, which simply attempts to use `static_cast`. The idea is
+ * that this function will be specialized for various Centurion and SDL types. This is useful
+ * because it isn't always possible to implement conversion operators as members.
  *
  * \tparam To the target type of the value that will be converted.
  * \tparam From the original type of the value.
@@ -439,17 +345,7 @@ template <typename To, typename From>
   return static_cast<To>(from);
 }
 
-/**
- * \brief Converts an enum value to its underlying integral value.
- *
- * \details This function is basically just `std::to_underlying()` from C++23.
- *
- * \tparam Enum the enum type.
- *
- * \param value the enumerator that will be converted.
- *
- * \return the integral value of the enumerator.
- */
+/// Converts an enum value to its underlying integral value.
 template <typename Enum, enable_for_enum_t<Enum> = 0>
 [[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
     -> std::underlying_type_t<Enum>
@@ -457,15 +353,7 @@ template <typename Enum, enable_for_enum_t<Enum> = 0>
   return static_cast<std::underlying_type_t<Enum>>(value);
 }
 
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container that will be queried.
- *
- * \return the container size as an `int`.
- */
+/// Obtains the size of a container as a plain integer.
 template <typename T>
 [[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
     -> int
@@ -473,26 +361,13 @@ template <typename T>
   return static_cast<int>(container.size());
 }
 
-/**
- * \brief Simply returns the string if it is non-null, returning a placeholder otherwise.
- *
- * \param str the string that will be returned if it is not null.
- *
- * \return the supplied string or a placeholder.
- */
+/// Returns the string if it isn't null, returning a placeholder otherwise.
 [[nodiscard]] inline auto str_or_na(const char* str) noexcept -> const char*
 {
   return str ? str : "null";
 }
 
-/// \} End of common utility functions
-
-/// \} End of group common
-
-/// \ingroup common
 namespace literals {
-
-/// \ingroup common
 inline namespace time_literals {
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
@@ -512,7 +387,6 @@ inline namespace time_literals {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 }  // namespace time_literals
-
 }  // namespace literals
 
 }  // namespace cen

@@ -32,8 +32,6 @@
 
 #include "../common.hpp"
 
-/// \cond FALSE
-
 namespace cen::detail {
 
 template <typename Target, typename Tuple>
@@ -58,7 +56,5 @@ template <typename Target, typename... T>
 inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 }  // namespace cen::detail
-
-/// \endcond
 
 #endif  // CENTURION_DETAIL_TUPLE_TYPE_INDEX_HPP_

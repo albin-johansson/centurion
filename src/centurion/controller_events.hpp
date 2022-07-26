@@ -38,9 +38,6 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
 class controller_axis_event final : public event_base<SDL_ControllerAxisEvent>
 {
  public:
@@ -232,8 +229,6 @@ inline auto as_sdl_event(const event_base<SDL_ControllerTouchpadEvent>& event) -
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-/// \} End of group event
 
 }  // namespace cen
 

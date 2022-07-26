@@ -45,11 +45,9 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-/// \cond FALSE
-
 namespace cen::detail {
 
-/* Clamps a value in the range [min, max] */
+/// Clamps a value in the range [min, max]
 template <typename T>
 [[nodiscard]] constexpr auto clamp(const T& value,
                                    const T& min,
@@ -119,7 +117,7 @@ template <typename T = int>
   }
 }
 
-/* Returns a string that represents the address of the supplied pointer */
+/// Returns a string that represents the address of the supplied pointer
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -142,7 +140,5 @@ template <typename T = int>
 }
 
 }  // namespace cen::detail
-
-/// \endcond
 
 #endif  // CENTURION_DETAIL_STDLIB_HPP_

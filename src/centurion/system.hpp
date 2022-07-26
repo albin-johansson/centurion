@@ -42,48 +42,6 @@
 
 namespace cen {
 
-/**
- * \defgroup system System
- *
- * \brief Provides system-related information, such as RAM amount, counters, and platform.
- */
-
-/// \addtogroup system
-/// \{
-
-/// \name Platform indicator constants
-/// \{
-
-/**
- * \var on_linux
- * \brief Indicates whether the current platform is Linux.
- */
-
-/**
- * \var on_apple
- * \brief Indicates whether the current platform is some sort of Apple system.
- */
-
-/**
- * \var on_win32
- * \brief Indicates whether the current platform is at least 32-bit Windows.
- */
-
-/**
- * \var on_win64
- * \brief Indicates whether the current platform is 64-bit Windows.
- */
-
-/**
- * \var on_windows
- * \brief Indicates whether the current platform is some variant of Windows.
- */
-
-/**
- * \var on_android
- * \brief Indicates whether the current platform is Android.
- */
-
 #ifdef __linux__
 inline constexpr bool on_linux = true;
 #else
@@ -116,23 +74,15 @@ inline constexpr bool on_android = true;
 inline constexpr bool on_android = false;
 #endif  // __ANDROID__
 
-/// \} End of platform indicator constants
-
-/**
- * \brief Represents various operating systems.
- */
 enum class platform_id
 {
-  unknown,   ///< An unknown platform.
-  windows,   ///< The Windows operating system.
-  macos,     ///< The macOS operating system.
-  linux_os,  ///< The Linux operating system.
-  ios,       ///< The iOS operating system.
-  android    ///< The Android operating system.
+  unknown,
+  windows,
+  macos,
+  linux_os,
+  ios,
+  android
 };
-
-/// \name Platform ID functions
-/// \{
 
 [[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
 {
@@ -165,21 +115,10 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
   return stream << to_string(id);
 }
 
-/// \} End of platform ID functions
-
-/**
- * \brief Represents a shared object, e.g. dynamic libraries.
- */
+/// Represents a shared object, i.e. dynamic libraries.
 class shared_object final
 {
  public:
-  /**
-   * \brief Loads a shared object.
-   *
-   * \param object the name of the shared object.
-   *
-   * \throws sdl_error if the object cannot be loaded.
-   */
   explicit shared_object(const char* object) : mObject{SDL_LoadObject(object)}
   {
     if (!mObject) {
@@ -187,19 +126,18 @@ class shared_object final
     }
   }
 
-  /// \copydoc shared_object()
   explicit shared_object(const std::string& object) : shared_object{object.c_str()} {}
 
   /**
-   * \brief Attempts to load a C function.
+   * Attempts to load a C function.
    *
-   * \note This function can only load C functions.
+   * Note, this can only be used to load C functions.
    *
    * \tparam T the signature of the function, e.g. `void(int, float)`.
    *
    * \param name the function name.
    *
-   * \return the loaded function; a null pointer is returned if something goes wrong.
+   * \return a potentially null function pointer.
    */
   template <typename T>
   [[nodiscard]] auto load_function(const char* name) const noexcept -> T*
@@ -208,7 +146,6 @@ class shared_object final
     return reinterpret_cast<T*>(SDL_LoadFunction(mObject.get(), name));
   }
 
-  /// \copydoc load_function()
   template <typename T>
   [[nodiscard]] auto load_function(const std::string& name) const noexcept -> T*
   {
@@ -230,15 +167,6 @@ class shared_object final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
-/// \name Runtime platform information functions
-/// \{
-
-/**
- * \brief Returns the name of the current platform.
- *
- * \return the name of the current platform; an empty optional is returned if the name cannot
- * be deduced.
- */
 [[nodiscard]] inline auto platform_name() -> std::optional<std::string>
 {
   std::string name{SDL_GetPlatform()};
@@ -250,11 +178,6 @@ class shared_object final
   }
 }
 
-/**
- * \brief Returns an identifier that represents the current platform.
- *
- * \return the current platform.
- */
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
   const auto name = platform_name();
@@ -278,100 +201,43 @@ class shared_object final
   }
 }
 
-/**
- * \brief Indicates whether the current platform is Windows.
- *
- * \return `true` if the platform is Windows; `false` otherwise.
- */
 [[nodiscard]] inline auto is_windows() noexcept -> bool
 {
   return current_platform() == platform_id::windows;
 }
 
-/**
- * \brief Indicates whether the current platform is macOS.
- *
- * \return `true` if the platform is macOS; `false` otherwise.
- */
 [[nodiscard]] inline auto is_macos() noexcept -> bool
 {
   return current_platform() == platform_id::macos;
 }
 
-/**
- * \brief Indicates whether the current platform is Linux.
- *
- * \return `true` if the platform is Linux; `false` otherwise.
- */
 [[nodiscard]] inline auto is_linux() noexcept -> bool
 {
   return current_platform() == platform_id::linux_os;
 }
 
-/**
- * \brief Indicates whether the current platform is iOS.
- *
- * \return `true` if the platform is iOS; `false` otherwise.
- */
 [[nodiscard]] inline auto is_ios() noexcept -> bool
 {
   return current_platform() == platform_id::ios;
 }
 
-/**
- * \brief Indicates whether the current platform is Android.
- *
- * \return `true` if the platform is Android; `false` otherwise.
- */
 [[nodiscard]] inline auto is_android() noexcept -> bool
 {
   return current_platform() == platform_id::android;
 }
 
-/**
- * \brief Indicates whether the current system is a tablet.
- *
- * \return `true` if the system is a tablet; `false` otherwise.
- */
-[[nodiscard]] inline auto is_tablet() noexcept -> bool
-{
-  return SDL_IsTablet() == SDL_TRUE;
-}
+[[nodiscard]] inline auto is_tablet() noexcept -> bool { return SDL_IsTablet() == SDL_TRUE; }
 
-/// \} End of runtime platform information functions
-
-/// \name System counter functions
-/// \{
-
-/**
- * \brief Returns the frequency of the system high-performance counter.
- *
- * \return the counter frequency.
- */
+/// Returns the frequency of the system high-performance counter.
 [[nodiscard]] inline auto frequency() noexcept -> uint64
 {
   return SDL_GetPerformanceFrequency();
 }
 
-/**
- * \brief Returns the current value of the high-performance counter.
- *
- * \note The unit of the returned value is platform dependent, see `frequency()`.
- *
- * \return the current value of the counter.
- */
-[[nodiscard]] inline auto now() noexcept -> uint64
-{
-  return SDL_GetPerformanceCounter();
-}
+/// Returns the current value of the high-performance counter.
+[[nodiscard]] inline auto now() noexcept -> uint64 { return SDL_GetPerformanceCounter(); }
 
-/**
- * \brief Returns the value of the system high-performance counter in seconds.
- *
- * \tparam T the representation type.
- *
- * \return the current value of the counter.
- */
+/// Returns the value of the system high-performance counter in seconds.
 [[nodiscard]] inline auto now_in_seconds() noexcept(noexcept(seconds<double>{}))
     -> seconds<double>
 {
@@ -380,13 +246,6 @@ class shared_object final
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-/**
- * \brief Returns the amount of milliseconds since SDL was initialized.
- *
- * \return the time since SDL was initialized.
- *
- * \atleastsdl 2.0.18
- */
 [[nodiscard]] inline auto ticks64() noexcept(noexcept(u64ms{uint64{}})) -> u64ms
 {
   return u64ms{SDL_GetTicks64()};
@@ -394,128 +253,48 @@ class shared_object final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
-/**
- * \brief Returns the amount of milliseconds since SDL was initialized.
- *
- * \return the time since SDL was initialized.
- *
- * \deprecated since 7.0.0, use `ticks64()` instead.
- */
 [[nodiscard, deprecated]] inline auto ticks32() noexcept(noexcept(u32ms{uint32{}})) -> u32ms
 {
   return u32ms{SDL_GetTicks()};
 }
 
-/// \} End of system counter functions
+[[nodiscard]] inline auto ram_mb() noexcept -> int { return SDL_GetSystemRAM(); }
 
-/// \name System RAM functions
-/// \{
+[[nodiscard]] inline auto ram_gb() noexcept -> int { return ram_mb() / 1'000; }
 
-/**
- * \brief Returns the total amount of system RAM.
- *
- * \return the amount of RAM, in megabytes.
- */
-[[nodiscard]] inline auto ram_mb() noexcept -> int
-{
-  return SDL_GetSystemRAM();
-}
-
-/**
- * \brief Returns the total amount of system RAM.
- *
- * \return the amount of RAM, in gigabytes.
- */
-[[nodiscard]] inline auto ram_gb() noexcept -> int
-{
-  return ram_mb() / 1'000;
-}
-
-/// \} End of system RAM functions
-
-/// \name Clipboard functions
-/// \{
-
-/**
- * \brief Sets the current clipboard text.
- *
- * \param text the text that will be stored in the clipboard.
- *
- * \return `success` if the clipboard text was set; `failure` otherwise.
- */
 inline auto set_clipboard(const char* text) noexcept -> result
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
 }
 
-/// \copydoc set_clipboard()
 inline auto set_clipboard(const std::string& text) noexcept -> result
 {
   return set_clipboard(text.c_str());
 }
 
-/**
- * \brief Indicates whether the clipboard exists and contains non-empty text.
- *
- * \return `true` if the clipboard has non-empty text; `false` otherwise.
- */
-[[nodiscard]] inline auto has_clipboard() noexcept -> bool
-{
-  return SDL_HasClipboardText();
-}
+[[nodiscard]] inline auto has_clipboard() noexcept -> bool { return SDL_HasClipboardText(); }
 
-/**
- * \brief Returns the current text in the clipboard.
- *
- * \details If the clipboard cannot be obtained, this function returns an empty string.
- *
- * \return the current clipboard text.
- */
 [[nodiscard]] inline auto get_clipboard() -> std::string
 {
   const sdl_string text{SDL_GetClipboardText()};
   return text.copy();
 }
 
-/// \} End of clipboard functions
-
-/// \name URL functions
-/// \{
-
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-/**
- * \brief Attempts to open a URL using a web browser (or file manager for local files).
- *
- * \details This function will return `success` if there was at least an attempt to open
- * the specified URL, but it doesn't mean that the URL was successfully loaded.
- *
- * \details This function will differ greatly in its effects depending on the current platform.
- *
- * \param url the URL that should be opened.
- *
- * \return `success` if there was an attempt to open the URL; `failure` otherwise.
- *
- * \atleastsdl 2.0.14
- */
 inline auto open_url(const char* url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
 }
 
-/// \copydoc open_url()
 inline auto open_url(const std::string& url) noexcept -> result
 {
   return open_url(url.c_str());
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-/// \} End of URL functions
-
-/// \} End of group system
 
 }  // namespace cen
 

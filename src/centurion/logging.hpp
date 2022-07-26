@@ -46,21 +46,6 @@ using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
 
 namespace cen {
 
-/**
- * \ingroup common
- * \defgroup logging Logging
- *
- * \brief Provides logging utilities.
- */
-
-/// \addtogroup logging
-/// \{
-
-/**
- * \brief Represents different logging priorities.
- *
- * \see `SDL_LogPriority`
- */
 enum class log_priority
 {
   verbose = SDL_LOG_PRIORITY_VERBOSE,
@@ -70,9 +55,6 @@ enum class log_priority
   error = SDL_LOG_PRIORITY_ERROR,
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
-
-/// \name Log priority functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
@@ -105,13 +87,6 @@ inline auto operator<<(std::ostream& stream, const log_priority priority) -> std
   return stream << to_string(priority);
 }
 
-/// \} End of log priority functions
-
-/**
- * \brief Represents different logging categories.
- *
- * \see `SDL_LogCategory`
- */
 enum class log_category
 {
   app = SDL_LOG_CATEGORY_APPLICATION,
@@ -125,9 +100,6 @@ enum class log_category
   test = SDL_LOG_CATEGORY_TEST,
   custom = SDL_LOG_CATEGORY_CUSTOM
 };
-
-/// \name Log category functions
-/// \{
 
 [[nodiscard]] constexpr auto is_custom(const log_category category) noexcept -> bool
 {
@@ -181,24 +153,11 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
   return stream << to_string(category);
 }
 
-/// \} End of log category functions
-
-/// \name Log functions
-/// \{
-
-/**
- * \brief Resets all of the logging priorities.
- */
 inline void reset_log_priorities() noexcept
 {
   SDL_LogResetPriorities();
 }
 
-/**
- * \brief Sets the priority used by all logging categories.
- *
- * \param priority the priority that will be used.
- */
 inline void set_priority(const log_priority priority) noexcept
 {
   const auto value = static_cast<SDL_LogPriority>(priority);
@@ -206,34 +165,16 @@ inline void set_priority(const log_priority priority) noexcept
   SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, value); /* Apparently not set by SDL */
 }
 
-/**
- * \brief Sets the priority used by a specific category.
- *
- * \param category the category that will be affected.
- * \param priority the new priority.
- */
 inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
   SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
 
-/**
- * \brief Returns the priority of a specific log category.
- *
- * \param category the log category that will be queried.
- *
- * \return the log priority.
- */
 [[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
   return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
 
-/**
- * \brief Returns the most characters a logged string may contain without being truncated.
- *
- * \return the maximum amount of characters in a logged string.
- */
 [[nodiscard]] constexpr auto max_log_message_size() noexcept -> int
 {
   return SDL_MAX_LOG_MESSAGE;
@@ -323,10 +264,6 @@ void log_critical(const char* fmt, Args&&... args) noexcept
 {
   log_critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
-
-/// \} End of log functions
-
-/// \} End of group logging
 
 }  // namespace cen
 

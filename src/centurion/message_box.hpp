@@ -41,27 +41,12 @@
 
 namespace cen {
 
-/**
- * \defgroup message-box Message box
- *
- * \brief Provides message box support.
- */
-
-/// \addtogroup message-box
-/// \{
-
-/**
- * \brief Represents different message box types.
- */
 enum class message_box_type : uint32
 {
   error = SDL_MESSAGEBOX_ERROR,
   warning = SDL_MESSAGEBOX_WARNING,
   information = SDL_MESSAGEBOX_INFORMATION
 };
-
-/// \name Message box type functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
@@ -85,8 +70,6 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
   return stream << to_string(type);
 }
 
-/// \} End of message box type functions
-
 enum class message_box_button_order : uint32
 {
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -97,9 +80,6 @@ enum class message_box_button_order : uint32
   right_to_left
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 };
-
-/// \name Message box button order functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const message_box_button_order order)
     -> std::string_view
@@ -122,8 +102,6 @@ inline auto operator<<(std::ostream& stream, const message_box_button_order orde
   return stream << to_string(order);
 }
 
-/// \} End of message box button order functions
-
 enum class message_box_color_type : int
 {
   background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
@@ -132,9 +110,6 @@ enum class message_box_color_type : int
   button_background = SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
   button_selected = SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED
 };
-
-/// \name Message box color type functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const message_box_color_type type) -> std::string_view
 {
@@ -165,17 +140,9 @@ inline auto operator<<(std::ostream& stream, const message_box_color_type type)
   return stream << to_string(type);
 }
 
-/// \} End of message box color type functions
-
-/**
- * \brief Represents color schemes used by message boxes.
- */
 class message_box_color_scheme final
 {
  public:
-  /**
-   * \brief Creates a color scheme using only white.
-   */
   message_box_color_scheme() noexcept
   {
     set_color(message_box_color_type::background, colors::white);
@@ -185,12 +152,6 @@ class message_box_color_scheme final
     set_color(message_box_color_type::button_selected, colors::white);
   }
 
-  /**
-   * \brief Updates a color.
-   *
-   * \param id the identifier of the color that will be updated.
-   * \param color the new color (the alpha component is ignored).
-   */
   void set_color(const message_box_color_type id, const color& color) noexcept
   {
     assert(to_underlying(id) < 5);
@@ -215,60 +176,25 @@ class message_box_color_scheme final
   SDL_MessageBoxColorScheme mScheme{};
 };
 
-/**
- * \brief Represents a modal message box that can be used display information, warnings
- * and errors.
- *
- * \details An example usage of this class can be found \subpage page-message-box "here".
- *
- * \note The appearance of message boxes varies depending on the platform, and certain
- * styling options are not available on all platforms.
- */
+/// Represents a modal message box that can be used display information, warnings and errors.
 class message_box final
 {
  public:
   using button_id = int;
 
-  enum button_flags : uint32 {
+  enum button_flags : uint32
+  {
     return_key_default = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key_default = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
   };
 
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a basic message box.
-   */
   message_box() = default;
 
-  /**
-   * \brief Creates a message box.
-   *
-   * \param title the title of the message box.
-   * \param message the message of the message box.
-   */
   message_box(std::string title, std::string message)
       : mTitle{std::move(title)}
       , mMessage{std::move(message)}
   {}
 
-  /// \} End of construction
-
-  /// \name Direct message box API
-  /// \{
-
-  /**
-   * \brief Displays a message box.
-   *
-   * \param parent the parent window.
-   * \param title the message box title.
-   * \param message the message that will be displayed.
-   * \param type the message box type.
-   * \param order the button order that will be used.
-   *
-   * \throws sdl_error if the message box cannot be shown.
-   */
   template <typename T>
   static void show(const basic_window<T>& parent,
                    const char* title,
@@ -279,17 +205,6 @@ class message_box final
     show(parent.ptr(), title, message, type, order);
   }
 
-  /**
-   * \brief Displays a message box.
-   *
-   * \param parent the parent window.
-   * \param title the message box title.
-   * \param message the message that will be displayed.
-   * \param type the message box type.
-   * \param order the button order that will be used.
-   *
-   * \throws sdl_error if the message box cannot be shown.
-   */
   template <typename T>
   static void show(const basic_window<T>& parent,
                    const std::string& title,
@@ -300,16 +215,6 @@ class message_box final
     show(parent.ptr(), title.c_str(), message.c_str(), type, order);
   }
 
-  /**
-   * \brief Displays a message box.
-   *
-   * \param title the message box title.
-   * \param message the message that will be displayed.
-   * \param type the message box type.
-   * \param order the button order that will be used.
-   *
-   * \throws sdl_error if the message box cannot be shown.
-   */
   static void show(const char* title,
                    const char* message,
                    const message_box_type type = default_type(),
@@ -318,16 +223,6 @@ class message_box final
     show(nullptr, title, message, type, order);
   }
 
-  /**
-   * \brief Displays a message box.
-   *
-   * \param title the message box title.
-   * \param message the message that will be displayed.
-   * \param type the message box type.
-   * \param order the button order that will be used.
-   *
-   * \throws sdl_error if the message box cannot be shown.
-   */
   static void show(const std::string& title,
                    const std::string& message,
                    const message_box_type type = default_type(),
@@ -336,47 +231,14 @@ class message_box final
     show(nullptr, title.c_str(), message.c_str(), type, order);
   }
 
-  /// \} End of direct message box API
-
-  /// \name Instance-based message box API
-  /// \{
-
-  /**
-   * \brief Shows the message box.
-   *
-   * \param parent the parent window.
-   *
-   * \return the identifier of the pressed button; an empty optional is returned if something
-   * goes wrong.
-   */
   template <typename T>
   auto show(const basic_window<T>& parent) -> std::optional<button_id>
   {
     return show(parent.get());
   }
 
-  /**
-   * \brief Shows the message box.
-   *
-   * \return the identifier of the pressed button; an empty optional is returned if something
-   * goes wrong.
-   */
   auto show() -> std::optional<button_id> { return show(nullptr); }
 
-  /// \} End of instance-based message box API
-
-  /// \name Mutators
-  /// \{
-
-  /**
-   * \brief Adds a button to the message box.
-   *
-   * \param id the unique identifier used by the button.
-   * \param text the button label.
-   * \param button the button flags.
-   *
-   * \throws exception if the button identifier is already taken.
-   */
   void add_button(const button_id id,
                   std::string text,
                   const button_flags button = button_flags::return_key_default)
@@ -389,18 +251,6 @@ class message_box final
     }
   }
 
-  /// \} End of mutators
-
-  /// \name Queries
-  /// \{
-
-  /**
-   * \brief Indicates whether the message box has a button.
-   *
-   * \param id the identifier of the button to look for.
-   *
-   * \return `true` if the button was found; `false` otherwise.
-   */
   [[nodiscard]] auto has_button(const button_id id) const -> bool
   {
     return std::any_of(mButtons.begin(), mButtons.end(), [id](const button& button) noexcept {
@@ -408,114 +258,41 @@ class message_box final
     });
   }
 
-  /// \} End of queries
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the title of the message box.
-   *
-   * \param title the new title.
-   */
   void set_title(std::string title) { mTitle = std::move(title); }
-
-  /**
-   * \brief Sets the message of the message box.
-   *
-   * \param message the new message.
-   */
   void set_message(std::string message) { mMessage = std::move(message); }
 
-  /**
-   * \brief Sets the color scheme used by the message box.
-   *
-   * \param scheme the new color scheme.
-   */
   void set_color_scheme(const message_box_color_scheme& scheme) noexcept
   {
     mColorScheme = scheme;
   }
 
-  /**
-   * \brief Sets the type of the message box.
-   *
-   * \param type the new type.
-   */
   void set_type(const message_box_type type) noexcept { mType = type; }
 
-  /**
-   * \brief Sets the button order used by the message box.
-   *
-   * \param order the new button order.
-   */
   void set_button_order(const message_box_button_order order) noexcept
   {
     mButtonOrder = order;
   }
 
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the title of the message box.
-   *
-   * \return the message box title.
-   */
   [[nodiscard]] auto title() const -> const std::string& { return mTitle; }
 
-  /**
-   * \brief Returns the message associated with the message box.
-   *
-   * \return the message box message.
-   */
   [[nodiscard]] auto message() const -> const std::string& { return mMessage; }
 
-  /**
-   * \brief Returns the type of the message box.
-   *
-   * \return the message box type.
-   */
   [[nodiscard]] auto type() const noexcept -> message_box_type { return mType; }
 
-  /**
-   * \brief Returns the button order used by the message box.
-   *
-   * \return the button order.
-   */
   [[nodiscard]] auto button_order() const noexcept -> message_box_button_order
   {
     return mButtonOrder;
   }
 
-  /// \} End of getters
-
-  /// \name Defaults
-  /// \{
-
-  /**
-   * \brief Returns the default message box type.
-   *
-   * \return the default type.
-   */
   [[nodiscard]] constexpr static auto default_type() noexcept -> message_box_type
   {
     return message_box_type::information;
   }
 
-  /**
-   * \brief Returns the default message box button order.
-   *
-   * \return the default button order.
-   */
   [[nodiscard]] constexpr static auto default_order() noexcept -> message_box_button_order
   {
     return message_box_button_order::left_to_right;
   }
-
-  /// \} End of defaults
 
  private:
   struct button final
@@ -608,8 +385,6 @@ class message_box final
     }
   }
 };
-
-/// \} End of group message-box
 
 }  // namespace cen
 

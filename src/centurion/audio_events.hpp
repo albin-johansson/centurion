@@ -32,9 +32,6 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
 class audio_device_event final : public event_base<SDL_AudioDeviceEvent>
 {
  public:
@@ -61,8 +58,6 @@ inline auto as_sdl_event(const event_base<SDL_AudioDeviceEvent>& event) -> SDL_E
   e.adevice = event.get();
   return e;
 }
-
-/// \} End of group event
 
 }  // namespace cen
 

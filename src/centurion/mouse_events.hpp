@@ -37,17 +37,11 @@
 
 namespace cen {
 
-/// \addtogroup event
-/// \{
-
 enum class mouse_wheel_direction : uint32
 {
   normal = SDL_MOUSEWHEEL_NORMAL,
   flipped = SDL_MOUSEWHEEL_FLIPPED
 };
-
-/// \name Mouse wheel direction functions
-/// \{
 
 [[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
@@ -67,8 +61,6 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) ->
 {
   return stream << to_string(dir);
 }
-
-/// \} End of mouse wheel direction functions
 
 class mouse_button_event final : public event_base<SDL_MouseButtonEvent>
 {
@@ -92,7 +84,6 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent>
   void set_clicks(const uint8 clicks) noexcept { mEvent.clicks = clicks; }
 
   void set_x(const int32 x) noexcept { mEvent.x = x; }
-
   void set_y(const int32 y) noexcept { mEvent.y = y; }
 
   [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
@@ -122,7 +113,6 @@ class mouse_button_event final : public event_base<SDL_MouseButtonEvent>
   [[nodiscard]] auto clicks() const noexcept -> uint8 { return mEvent.clicks; }
 
   [[nodiscard]] auto x() const noexcept -> int32 { return mEvent.x; }
-
   [[nodiscard]] auto y() const noexcept -> int32 { return mEvent.y; }
 
   [[nodiscard]] auto position() const noexcept -> ipoint { return {x(), y()}; }
@@ -151,11 +141,9 @@ class mouse_motion_event final : public event_base<SDL_MouseMotionEvent>
   void set_state(const uint32 state) noexcept { mEvent.state = state; }
 
   void set_x(const int32 x) noexcept { mEvent.x = x; }
-
   void set_y(const int32 y) noexcept { mEvent.y = y; }
 
   void set_dx(const int32 dx) noexcept { mEvent.xrel = dx; }
-
   void set_dy(const int32 dy) noexcept { mEvent.yrel = dy; }
 
   [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
@@ -170,11 +158,9 @@ class mouse_motion_event final : public event_base<SDL_MouseMotionEvent>
   }
 
   [[nodiscard]] auto x() const noexcept -> int32 { return mEvent.x; }
-
   [[nodiscard]] auto y() const noexcept -> int32 { return mEvent.y; }
 
   [[nodiscard]] auto dx() const noexcept -> int32 { return mEvent.xrel; }
-
   [[nodiscard]] auto dy() const noexcept -> int32 { return mEvent.yrel; }
 };
 
@@ -198,13 +184,11 @@ class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent>
   void set_which(const uint32 which) noexcept { mEvent.which = which; }
 
   void set_x(const int32 xScroll) noexcept { mEvent.x = xScroll; }
-
   void set_y(const int32 yScroll) noexcept { mEvent.y = yScroll; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
   void set_precise_x(const float x) noexcept { mEvent.preciseX = x; }
-
   void set_precise_y(const float y) noexcept { mEvent.preciseY = y; }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
@@ -219,13 +203,11 @@ class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent>
   [[nodiscard]] auto which() const noexcept -> uint32 { return mEvent.which; }
 
   [[nodiscard]] auto x() const noexcept -> int32 { return mEvent.x; }
-
   [[nodiscard]] auto y() const noexcept -> int32 { return mEvent.y; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
   [[nodiscard]] auto precise_x() const noexcept -> float { return mEvent.preciseX; }
-
   [[nodiscard]] auto precise_y() const noexcept -> float { return mEvent.preciseY; }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
@@ -243,8 +225,6 @@ inline auto as_sdl_event(const event_base<SDL_MouseWheelEvent>& event) -> SDL_Ev
   e.wheel = event.get();
   return e;
 }
-
-/// \} End of group event
 
 }  // namespace cen
 

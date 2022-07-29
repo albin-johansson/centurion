@@ -461,7 +461,6 @@ class basic_rect final
   constexpr void offset_height(const value_type dh) noexcept { mRect.h += dh; }
 
   [[nodiscard]] constexpr auto x() const noexcept -> value_type { return mRect.x; }
-
   [[nodiscard]] constexpr auto y() const noexcept -> value_type { return mRect.y; }
 
   [[nodiscard]] constexpr auto position() const noexcept -> point_type
@@ -470,7 +469,6 @@ class basic_rect final
   }
 
   [[nodiscard]] constexpr auto width() const noexcept -> value_type { return mRect.w; }
-
   [[nodiscard]] constexpr auto height() const noexcept -> value_type { return mRect.h; }
 
   [[nodiscard]] constexpr auto size() const noexcept -> area_type
@@ -479,7 +477,6 @@ class basic_rect final
   }
 
   [[nodiscard]] constexpr auto max_x() const noexcept -> value_type { return x() + width(); }
-
   [[nodiscard]] constexpr auto max_y() const noexcept -> value_type { return y() + height(); }
 
   [[nodiscard]] constexpr auto has_area() const noexcept -> bool
@@ -543,11 +540,9 @@ class basic_rect final
   }
 
   [[nodiscard]] auto data() noexcept -> rect_type* { return &mRect; }
-
   [[nodiscard]] auto data() const noexcept -> const rect_type* { return &mRect; }
 
   [[nodiscard]] constexpr auto get() noexcept -> rect_type& { return mRect; }
-
   [[nodiscard]] constexpr auto get() const noexcept -> const rect_type& { return mRect; }
 
  private:

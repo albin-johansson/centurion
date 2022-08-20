@@ -70,6 +70,10 @@ enum class gl_attribute
   multisample_buffers = SDL_GL_MULTISAMPLEBUFFERS,
   multisample_samples = SDL_GL_MULTISAMPLESAMPLES,
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  float_buffers = SDL_GL_FLOATBUFFERS,
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
   egl = SDL_GL_CONTEXT_EGL,
   context_flags = SDL_GL_CONTEXT_FLAGS,
   context_major_version = SDL_GL_CONTEXT_MAJOR_VERSION,
@@ -145,6 +149,13 @@ enum class gl_attribute
 
     case gl_attribute::multisample_samples:
       return "multisample_samples";
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+    case gl_attribute::float_buffers:
+      return "float_buffers";
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
     case gl_attribute::context_major_version:
       return "context_major_version";

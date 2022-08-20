@@ -67,6 +67,10 @@ TEST(GLAttribute, Values)
   ASSERT_EQ(SDL_GL_SHARE_WITH_CURRENT_CONTEXT,
             to_underlying(attr::share_with_current_context));
   ASSERT_EQ(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, to_underlying(attr::framebuffer_srgb_capable));
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  ASSERT_EQ(SDL_GL_FLOATBUFFERS, to_underlying(attr::float_buffers));
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
 TEST(GLAttribute, ToString)
@@ -105,6 +109,10 @@ TEST(GLAttribute, ToString)
 
   ASSERT_EQ("share_with_current_context", to_string(attr::share_with_current_context));
   ASSERT_EQ("framebuffer_srgb_capable", to_string(attr::framebuffer_srgb_capable));
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  ASSERT_EQ("float_buffers", to_string(attr::float_buffers));
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   std::cout << "gl_attribute::double_buffer == " << attr::double_buffer << '\n';
 }

@@ -42,7 +42,7 @@
 #include <cassert>  // assert
 
 #define CENTURION_VERSION_MAJOR 7
-#define CENTURION_VERSION_MINOR 1
+#define CENTURION_VERSION_MINOR 2
 #define CENTURION_VERSION_PATCH 0
 
 #define CENTURION_MAKE_VERSION_NUMBER(X, Y, Z) (((X)*1'000) + ((Y)*100) + (Z))

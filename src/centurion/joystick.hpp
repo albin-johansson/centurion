@@ -435,6 +435,20 @@ class basic_joystick final
     return SDL_JoystickGetDeviceGUID(index);
   }
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+  [[nodiscard]] auto path() const noexcept -> const char*
+  {
+    return SDL_JoystickPath(mJoystick);
+  }
+
+  [[nodiscard]] static auto path(const device_index index) noexcept -> const char*
+  {
+    return SDL_JoystickPathForIndex(index);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
   [[nodiscard]] auto serial() const noexcept -> const char*

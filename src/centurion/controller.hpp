@@ -492,6 +492,15 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+  [[nodiscard]] auto path() const noexcept -> const char*
+  {
+    return SDL_GameControllerPath(mController);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
   static void update() { SDL_GameControllerUpdate(); }
 
   static void set_polling(const bool polling) noexcept

@@ -101,11 +101,17 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumble, SDL_Joystick*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumbleTriggers, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickPath, SDL_Joystick*)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickPathForIndex, int)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
 using namespace cen::literals;
 
-class JoystickTest : public testing::Test {
+class JoystickTest : public testing::Test
+{
  protected:
   void SetUp() override
   {
@@ -173,8 +179,14 @@ class JoystickTest : public testing::Test {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-    RESET_FAKE(SDL_JoystickHasRumble) RESET_FAKE(SDL_JoystickHasRumbleTriggers)
+    RESET_FAKE(SDL_JoystickHasRumble)
+    RESET_FAKE(SDL_JoystickHasRumbleTriggers)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+    RESET_FAKE(SDL_JoystickPath)
+    RESET_FAKE(SDL_JoystickPathForIndex)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
   }
 
   cen::joystick_handle joystick{nullptr};
@@ -580,3 +592,19 @@ TEST_F(JoystickTest, HasRumbleTriggers)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+TEST_F(JoystickTest, Path)
+{
+  const char* path [[maybe_unused]] = joystick.path();
+  ASSERT_EQ(1u, SDL_JoystickPath_fake.call_count);
+}
+
+TEST_F(JoystickTest, PathForIndex)
+{
+  const char* path [[maybe_unused]] = cen::joystick::path(0);
+  ASSERT_EQ(1u, SDL_JoystickPathForIndex_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)

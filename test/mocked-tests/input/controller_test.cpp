@@ -157,9 +157,14 @@ extern "C"
                   SDL_GameController*,
                   SDL_GameControllerAxis)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  FAKE_VALUE_FUNC(const char*, SDL_GameControllerPath, SDL_GameController*)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
-class ControllerTest : public testing::Test {
+class ControllerTest : public testing::Test
+{
  protected:
   void SetUp() override
   {
@@ -221,6 +226,10 @@ class ControllerTest : public testing::Test {
     RESET_FAKE(SDL_GameControllerGetAppleSFSymbolsNameForButton)
     RESET_FAKE(SDL_GameControllerGetAppleSFSymbolsNameForAxis)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+    RESET_FAKE(SDL_GameControllerPath)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
   }
 
   /**
@@ -734,3 +743,13 @@ TEST_F(ControllerTest, AppleSFSymbolsNameForAxis)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+TEST_F(ControllerTest, Path)
+{
+  const char* path [[maybe_unused]] = controller.path();
+  ASSERT_EQ(1u, SDL_GameControllerPath_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)

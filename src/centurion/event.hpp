@@ -266,6 +266,10 @@ class event_handler final
                                  text_editing_ext_event,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 22)
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+                                 joy_battery_event,
+#endif  // SDL_VERSION_ATLEAST(2, 24,0)
+
                                  window_event>;
 
   SDL_Event mEvent{};  // Only needed to support the data member function
@@ -395,6 +399,14 @@ class event_handler final
       case SDL_JOYDEVICEREMOVED:
         mData.emplace<joy_device_event>(event.jdevice);
         break;
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+      case SDL_JOYBATTERYUPDATED:
+        mData.emplace<joy_battery_event>(event.jbattery);
+        break;
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
       case SDL_CONTROLLERAXISMOTION:
         mData.emplace<controller_axis_event>(event.caxis);

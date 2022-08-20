@@ -74,6 +74,9 @@ TEST(EventType, Values)
   ASSERT_EQ(SDL_JOYBUTTONUP, to_underlying(type::joy_button_up));
   ASSERT_EQ(SDL_JOYDEVICEADDED, to_underlying(type::joy_device_added));
   ASSERT_EQ(SDL_JOYDEVICEREMOVED, to_underlying(type::joy_device_removed));
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  ASSERT_EQ(SDL_JOYBATTERYUPDATED, to_underlying(type::joy_battery_updated));
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   ASSERT_EQ(SDL_CONTROLLERAXISMOTION, to_underlying(type::controller_axis_motion));
   ASSERT_EQ(SDL_CONTROLLERBUTTONDOWN, to_underlying(type::controller_button_down));
@@ -160,6 +163,9 @@ TEST(EventType, ToString)
   ASSERT_EQ("joy_button_up", to_string(type::joy_button_up));
   ASSERT_EQ("joy_device_added", to_string(type::joy_device_added));
   ASSERT_EQ("joy_device_removed", to_string(type::joy_device_removed));
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  ASSERT_EQ("joy_battery_updated", to_string(type::joy_battery_updated));
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   ASSERT_EQ("controller_axis_motion", to_string(type::controller_axis_motion));
   ASSERT_EQ("controller_button_down", to_string(type::controller_button_down));

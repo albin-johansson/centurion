@@ -9,6 +9,10 @@ extern "C"
 {
   FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  FAKE_VOID_FUNC(SDL_ResetKeyboard)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
 TEST(Keyboard, Constructor)
@@ -26,3 +30,13 @@ TEST(Keyboard, HasScreenKeyboard)
   ASSERT_TRUE(cen::has_screen_keyboard());
   ASSERT_EQ(2u, SDL_HasScreenKeyboardSupport_fake.call_count);
 }
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+TEST(Keyboard, ResetKeyboard)
+{
+  cen::keyboard::reset();
+  ASSERT_EQ(1u, SDL_ResetKeyboard_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)

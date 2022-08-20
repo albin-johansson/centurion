@@ -73,3 +73,18 @@ TEST(Joystick, VirtualAPI)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+TEST(Joystick, AttachVirtualEx)
+{
+  const cen::virtual_joystick_desc desc;
+  const auto index = cen::joystick::attach_virtual(desc);
+
+  ASSERT_TRUE(index.has_value());
+  ASSERT_TRUE(cen::joystick::is_virtual(*index));
+
+  ASSERT_EQ(cen::success, cen::joystick::detach_virtual(*index));
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)

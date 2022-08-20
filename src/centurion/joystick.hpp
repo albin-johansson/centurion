@@ -211,6 +211,66 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
   return stream << to_string(state);
 }
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+class virtual_joystick_desc final
+{
+ public:
+  using update_callback = void(SDLCALL*)(void*);
+  using set_player_index_callback = void(SDLCALL*)(void*, int);
+  using rumble_callback = int(SDLCALL*)(void*, uint16, uint16);
+  using rumble_triggers_callback = int(SDLCALL*)(void*, uint16, uint16);
+  using set_led_callback = int(SDLCALL*)(void*, uint8, uint8, uint8);
+  using send_effect_callback = int(SDLCALL*)(void*, const void*, int);
+
+  virtual_joystick_desc() noexcept { mDesc.version = SDL_VIRTUAL_JOYSTICK_DESC_VERSION; }
+
+  void set_type(const joystick_type type) noexcept { mDesc.type = static_cast<uint16>(type); }
+
+  void set_axis_count(const uint16 n) noexcept { mDesc.naxes = n; }
+  void set_button_count(const uint16 n) noexcept { mDesc.nbuttons = n; }
+  void set_hat_count(const uint16 n) noexcept { mDesc.nhats = n; }
+
+  void set_vendor_id(const uint16 id) noexcept { mDesc.vendor_id = id; }
+  void set_product_id(const uint16 id) noexcept { mDesc.product_id = id; }
+
+  void set_button_mask(const uint32 mask) noexcept { mDesc.button_mask = mask; }
+  void set_axis_mask(const uint32 mask) noexcept { mDesc.axis_mask = mask; }
+
+  void set_name(const char* name) noexcept { mDesc.name = name; }
+
+  void set_user_data(void* data) noexcept { mDesc.userdata = data; }
+
+  void on_update(update_callback callback) noexcept { mDesc.Update = callback; }
+
+  void on_set_player_index(set_player_index_callback callback) noexcept
+  {
+    mDesc.SetPlayerIndex = callback;
+  }
+
+  void on_rumble(rumble_callback callback) noexcept { mDesc.Rumble = callback; }
+
+  void on_rumble_triggers(rumble_triggers_callback callback) noexcept
+  {
+    mDesc.RumbleTriggers = callback;
+  }
+
+  void on_set_led(set_led_callback callback) noexcept { mDesc.SetLED = callback; }
+
+  void on_send_effect(send_effect_callback callback) noexcept { mDesc.SendEffect = callback; }
+
+  [[nodiscard]] auto data() noexcept -> SDL_VirtualJoystickDesc* { return &mDesc; }
+  [[nodiscard]] auto data() const noexcept -> const SDL_VirtualJoystickDesc* { return &mDesc; }
+
+  [[nodiscard]] auto get() noexcept -> SDL_VirtualJoystickDesc& { return mDesc; }
+  [[nodiscard]] auto get() const noexcept -> const SDL_VirtualJoystickDesc& { return mDesc; }
+
+ private:
+  SDL_VirtualJoystickDesc mDesc{};
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
 template <typename T>
 class basic_joystick;
 
@@ -477,6 +537,22 @@ class basic_joystick final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+  [[nodiscard]] static auto attach_virtual(const virtual_joystick_desc& desc) noexcept
+      -> std::optional<device_index>
+  {
+    const auto index = SDL_JoystickAttachVirtualEx(desc.data());
+    if (index != -1) {
+      return index;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

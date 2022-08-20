@@ -1,7 +1,5 @@
 #include <centurion.hpp>
 
-namespace {}
-
 int main(int, char**)
 {
   /* The font API requires the SDL_ttf extension */

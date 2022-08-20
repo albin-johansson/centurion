@@ -403,6 +403,32 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
   }
 }
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+[[nodiscard]] inline auto display_with(const ipoint& point) noexcept -> std::optional<int>
+{
+  const auto index = SDL_GetPointDisplayIndex(point.data());
+  if (index >= 0) {
+    return index;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto display_with(const irect& rect) noexcept -> std::optional<int>
+{
+  const auto index = SDL_GetRectDisplayIndex(rect.data());
+  if (index >= 0) {
+    return index;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
 }  // namespace cen
 
 #endif  // CENTURION_VIDEO_HPP_

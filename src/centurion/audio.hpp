@@ -453,6 +453,14 @@ class basic_sound_effect final
 
   [[nodiscard]] auto get() const noexcept -> Mix_Chunk* { return mChunk.get(); }
 
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+  static void set_master_volume(const int volume) noexcept { Mix_MasterVolume(volume); }
+
+  [[nodiscard]] static auto master_volume() noexcept -> int { return Mix_MasterVolume(-1); }
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
  private:
   detail::pointer<T, Mix_Chunk> mChunk;
   channel_index mChannel{undefined_channel};

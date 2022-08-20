@@ -44,6 +44,7 @@ extern "C"
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
   FAKE_VALUE_FUNC(int, Mix_PlayChannel, int, Mix_Chunk*, int)
   FAKE_VALUE_FUNC(int, Mix_FadeInChannel, int, Mix_Chunk*, int, int)
+  FAKE_VALUE_FUNC(int, Mix_MasterVolume, int)
 #endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 }
 
@@ -66,6 +67,7 @@ class SoundEffectTest : public testing::Test
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
     RESET_FAKE(Mix_PlayChannel)
     RESET_FAKE(Mix_FadeInChannel)
+    RESET_FAKE(Mix_MasterVolume)
 #endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
   }
 
@@ -197,3 +199,21 @@ TEST_F(SoundEffectTest, DecoderCount)
   const auto count [[maybe_unused]] = cen::sound_effect::decoder_count();
   ASSERT_EQ(1u, Mix_GetNumChunkDecoders_fake.call_count);
 }
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+TEST_F(SoundEffectTest, SetMasterVolume)
+{
+  cen::sound_effect::set_master_volume(53);
+  ASSERT_EQ(53, Mix_MasterVolume_fake.arg0_val);
+  ASSERT_EQ(1u, Mix_MasterVolume_fake.call_count);
+}
+
+TEST_F(SoundEffectTest, MasterVolume)
+{
+  const auto volume [[maybe_unused]] = cen::sound_effect::master_volume();
+  ASSERT_EQ(-1, Mix_MasterVolume_fake.arg0_val);
+  ASSERT_EQ(1u, Mix_MasterVolume_fake.call_count);
+}
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)

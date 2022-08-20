@@ -160,6 +160,7 @@ extern "C"
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
   FAKE_VALUE_FUNC(const char*, SDL_GameControllerPath, SDL_GameController*)
+  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetFirmwareVersion, SDL_GameController*)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
@@ -229,6 +230,7 @@ class ControllerTest : public testing::Test
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
     RESET_FAKE(SDL_GameControllerPath)
+    RESET_FAKE(SDL_GameControllerGetFirmwareVersion)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
   }
 
@@ -390,10 +392,7 @@ TEST_F(ControllerTest, LoadControllerMappings)
   ASSERT_EQ(7, cen::load_controller_mappings("foo"s));
 }
 
-TEST_F(ControllerTest, Mapping)
-{
-  ASSERT_EQ(nullptr, controller.mapping().get());
-}
+TEST_F(ControllerTest, Mapping) { ASSERT_EQ(nullptr, controller.mapping().get()); }
 
 TEST_F(ControllerTest, MappingJoystickIndex)
 {
@@ -750,6 +749,17 @@ TEST_F(ControllerTest, Path)
 {
   const char* path [[maybe_unused]] = controller.path();
   ASSERT_EQ(1u, SDL_GameControllerPath_fake.call_count);
+}
+
+TEST_F(ControllerTest, FirmwareVersion)
+{
+  std::array<Uint16, 2> values{0, 42};
+  SET_RETURN_SEQ(SDL_GameControllerGetFirmwareVersion, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(controller.firmware_version().has_value());
+  ASSERT_EQ(42, controller.firmware_version());
+
+  ASSERT_EQ(2u, SDL_GameControllerGetFirmwareVersion_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)

@@ -499,6 +499,17 @@ class basic_controller final
     return SDL_GameControllerPath(mController);
   }
 
+  [[nodiscard]] auto firmware_version() const noexcept -> std::optional<uint16>
+  {
+    const auto version = SDL_GameControllerGetFirmwareVersion(mController);
+    if (version != 0) {
+      return version;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   static void update() { SDL_GameControllerUpdate(); }

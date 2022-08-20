@@ -105,6 +105,7 @@ extern "C"
 #if SDL_VERSION_ATLEAST(2, 24, 0)
   FAKE_VALUE_FUNC(const char*, SDL_JoystickPath, SDL_Joystick*)
   FAKE_VALUE_FUNC(const char*, SDL_JoystickPathForIndex, int)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetFirmwareVersion, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
@@ -186,6 +187,7 @@ class JoystickTest : public testing::Test
 #if SDL_VERSION_ATLEAST(2, 24, 0)
     RESET_FAKE(SDL_JoystickPath)
     RESET_FAKE(SDL_JoystickPathForIndex)
+    RESET_FAKE(SDL_JoystickGetFirmwareVersion)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
   }
 
@@ -605,6 +607,17 @@ TEST_F(JoystickTest, PathForIndex)
 {
   const char* path [[maybe_unused]] = cen::joystick::path(0);
   ASSERT_EQ(1u, SDL_JoystickPathForIndex_fake.call_count);
+}
+
+TEST_F(JoystickTest, FirmwareVersion)
+{
+  std::array<Uint16, 2> values{0, 42};
+  SET_RETURN_SEQ(SDL_JoystickGetFirmwareVersion, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(joystick.firmware_version().has_value());
+  ASSERT_EQ(42, joystick.firmware_version());
+
+  ASSERT_EQ(2u, SDL_JoystickGetFirmwareVersion_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)

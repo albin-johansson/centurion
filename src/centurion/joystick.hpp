@@ -28,7 +28,7 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <optional>     // optional
+#include <optional>     // optional, nullopt
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
@@ -445,6 +445,17 @@ class basic_joystick final
   [[nodiscard]] static auto path(const device_index index) noexcept -> const char*
   {
     return SDL_JoystickPathForIndex(index);
+  }
+
+  [[nodiscard]] auto firmware_version() const noexcept -> std::optional<uint16>
+  {
+    const auto version = SDL_JoystickGetFirmwareVersion(mJoystick);
+    if (version != 0) {
+      return version;
+    }
+    else {
+      return std::nullopt;
+    }
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)

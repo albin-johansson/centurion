@@ -202,7 +202,7 @@ class message_box final
                    const message_box_type type = default_type(),
                    const message_box_button_order order = default_order())
   {
-    show(parent.ptr(), title, message, type, order);
+    show(parent.get(), title, message, type, order);
   }
 
   template <typename T>
@@ -212,7 +212,7 @@ class message_box final
                    const message_box_type type = default_type(),
                    const message_box_button_order order = default_order())
   {
-    show(parent.ptr(), title.c_str(), message.c_str(), type, order);
+    show(parent.get(), title.c_str(), message.c_str(), type, order);
   }
 
   static void show(const char* title,

@@ -51,7 +51,7 @@ jobs:
             CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main
-      - uses: ilammy/msvc-dev-cmd@master
+      - uses: ilammy/msvc-dev-cmd@v1.11.0
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: lukka/get-cmake@latest
 

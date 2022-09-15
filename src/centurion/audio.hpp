@@ -32,7 +32,7 @@
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
-#include <optional>  // optional
+#include <optional>  // optional, nullopt
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
@@ -277,6 +277,95 @@ class music final
   {
     return static_cast<music_type>(Mix_GetMusicType(mMusic.get()));
   }
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+  [[nodiscard]] static auto current_title() noexcept -> const char*
+  {
+    return Mix_GetMusicTitle(nullptr);
+  }
+
+  [[nodiscard]] auto title() const noexcept -> const char*
+  {
+    return Mix_GetMusicTitle(mMusic.get());
+  }
+
+  [[nodiscard]] auto title_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicTitleTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto artist_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicArtistTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto album_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicAlbumTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto copyright_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicCopyrightTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto position() const noexcept -> std::optional<double>
+  {
+    const auto pos = Mix_GetMusicPosition(mMusic.get());
+    if (pos != -1) {
+      return pos;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+  [[nodiscard]] auto duration() const noexcept -> std::optional<double>
+  {
+    const auto duration = Mix_MusicDuration(mMusic.get());
+    if (duration != -1) {
+      return duration;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+  [[nodiscard]] auto loop_start_time() const noexcept -> std::optional<double>
+  {
+    const auto start = Mix_GetMusicLoopStartTime(mMusic.get());
+    if (start != -1) {
+      return start;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+  [[nodiscard]] auto loop_end_time() const noexcept -> std::optional<double>
+  {
+    const auto end = Mix_GetMusicLoopEndTime(mMusic.get());
+    if (end != -1) {
+      return end;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+  [[nodiscard]] auto loop_length() const noexcept -> std::optional<double>
+  {
+    const auto length = Mix_GetMusicLoopLengthTime(mMusic.get());
+    if (length != -1) {
+      return length;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 
   [[nodiscard]] auto get() const noexcept -> Mix_Music* { return mMusic.get(); }
 

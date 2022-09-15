@@ -29,6 +29,7 @@
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
+#include "centurion/animation.hpp"
 #include "centurion/audio.hpp"
 #include "centurion/audio_events.hpp"
 #include "centurion/color.hpp"

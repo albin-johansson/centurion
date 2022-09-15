@@ -154,6 +154,39 @@ struct font_dpi final
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
+#if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+enum class wrap_alignment
+{
+  left = TTF_WRAPPED_ALIGN_LEFT,
+  center = TTF_WRAPPED_ALIGN_CENTER,
+  right = TTF_WRAPPED_ALIGN_RIGHT,
+};
+
+[[nodiscard]] inline auto to_string(const wrap_alignment align) -> std::string_view
+{
+  switch (align) {
+    case wrap_alignment::left:
+      return "left";
+
+    case wrap_alignment::center:
+      return "center";
+
+    case wrap_alignment::right:
+      return "right";
+
+    default:
+      throw exception{"Invalid alignment!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const wrap_alignment align) -> std::ostream&
+{
+  return stream << to_string(align);
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
 /**
  * Represents a TrueType font.
  *
@@ -474,6 +507,20 @@ class font final
   }
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+  void set_wrap_align(const wrap_alignment align) noexcept
+  {
+    TTF_SetFontWrappedAlign(get(), to_underlying(align));
+  }
+
+  [[nodiscard]] auto wrap_align() const noexcept -> wrap_alignment
+  {
+    return static_cast<wrap_alignment>(TTF_GetFontWrappedAlign(get()));
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 20, 0)
 
   [[nodiscard]] auto calc_size(const char* str) const noexcept -> maybe<iarea>
   {

@@ -351,3 +351,21 @@ TEST(Font, MeasureText)
 }
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+TEST(Font, SetWrapAlign)
+{
+  cen::font font{type_writer, 12};
+
+  font.set_wrap_align(cen::wrap_alignment::left);
+  ASSERT_EQ(cen::wrap_alignment::left, font.wrap_align());
+
+  font.set_wrap_align(cen::wrap_alignment::center);
+  ASSERT_EQ(cen::wrap_alignment::center, font.wrap_align());
+
+  font.set_wrap_align(cen::wrap_alignment::right);
+  ASSERT_EQ(cen::wrap_alignment::right, font.wrap_align());
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 20, 0)

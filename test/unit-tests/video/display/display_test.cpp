@@ -54,7 +54,7 @@ TEST(Display, DisplayDPI)
   }
 
   {  // Explicit display index
-    const auto amount = cen::display_count();
+    const auto amount = cen::display_count().value();
     ASSERT_TRUE(cen::display_dpi(amount - 1));
     ASSERT_FALSE(cen::display_dpi(amount));
   }
@@ -73,7 +73,7 @@ TEST(Display, DisplayBounds)
   ASSERT_EQ(rect.w, bounds->width());
   ASSERT_EQ(rect.h, bounds->height());
 
-  ASSERT_FALSE(cen::display_bounds(cen::display_count()).has_value());
+  ASSERT_FALSE(cen::display_bounds(cen::display_count().value()).has_value());
 }
 
 TEST(Display, DisplayUsableBounds)
@@ -89,23 +89,20 @@ TEST(Display, DisplayUsableBounds)
   ASSERT_EQ(rect.w, bounds->width());
   ASSERT_EQ(rect.h, bounds->height());
 
-  ASSERT_FALSE(cen::display_usable_bounds(cen::display_count()).has_value());
+  ASSERT_FALSE(cen::display_usable_bounds(cen::display_count().value()).has_value());
 }
 
 TEST(Display, DisplayOrientation)
 {
-  ASSERT_EQ(cen::orientation::unknown, cen::display_orientation(cen::display_count()));
+  ASSERT_EQ(cen::orientation::unknown, cen::display_orientation(cen::display_count().value()));
   ASSERT_EQ(SDL_GetDisplayOrientation(0),
             static_cast<SDL_DisplayOrientation>(cen::display_orientation()));
 }
 
-TEST(Display, DisplayCount)
-{
-  ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count());
-}
+TEST(Display, DisplayCount) { ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count()); }
 
 TEST(Display, DisplayName)
 {
   ASSERT_EQ(SDL_GetDisplayName(0), cen::display_name());
-  ASSERT_FALSE(cen::display_name(cen::display_count()));
+  ASSERT_FALSE(cen::display_name(cen::display_count().value()));
 }

@@ -60,8 +60,8 @@ void verify(const SDL_DisplayMode& expected, const cen::display_mode& mode)
 
 TEST(DisplayMode, InvalidDisplayIndex)
 {
-  ASSERT_THROW(cen::display_mode::desktop(cen::display_count()), cen::sdl_error);
-  ASSERT_THROW(cen::display_mode::current(cen::display_count()), cen::sdl_error);
+  ASSERT_THROW(cen::display_mode::desktop(cen::display_count().value()), cen::sdl_error);
+  ASSERT_THROW(cen::display_mode::current(cen::display_count().value()), cen::sdl_error);
 }
 
 TEST(DisplayMode, Desktop)

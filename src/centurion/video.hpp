@@ -352,7 +352,16 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
   return SDL_IsScreenSaverEnabled();
 }
 
-[[nodiscard]] inline auto display_count() noexcept -> int { return SDL_GetNumVideoDisplays(); }
+[[nodiscard]] inline auto display_count() noexcept -> maybe<int>
+{
+  const auto count = SDL_GetNumVideoDisplays();
+  if (count >= 1) {
+    return count;
+  }
+  else {
+    return nothing;
+  }
+}
 
 [[nodiscard]] inline auto display_name(const int index = 0) -> maybe<std::string>
 {

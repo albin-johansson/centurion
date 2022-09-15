@@ -583,7 +583,7 @@ class event_dispatcher final
 
   /// Returns the index of an event type in the function tuple.
   template <typename Event>
-  [[nodiscard]] constexpr static auto index_of() -> std::size_t
+  [[nodiscard]] constexpr static auto index_of() -> usize
   {
     using sink_type = event_sink<std::decay_t<Event>>;
 
@@ -654,13 +654,13 @@ class event_dispatcher final
   void reset() noexcept { (bind<Events>().reset(), ...); }
 
   /// Returns the amount of set event handlers.
-  [[nodiscard]] auto active_count() const -> std::size_t
+  [[nodiscard]] auto active_count() const -> usize
   {
     return (0u + ... + (get_sink<Events>().function() ? 1u : 0u));
   }
 
   /// Returns the total number of subscribed events.
-  [[nodiscard]] constexpr static auto size() noexcept -> std::size_t
+  [[nodiscard]] constexpr static auto size() noexcept -> usize
   {
     return sizeof...(Events);
   }

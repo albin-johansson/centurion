@@ -42,7 +42,7 @@ namespace cen {
 class locale final
 {
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   /// Returns the current preferred locales on the system.
   [[nodiscard]] static auto get_preferred() noexcept -> locale

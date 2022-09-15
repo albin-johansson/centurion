@@ -433,7 +433,7 @@ class basic_renderer final
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-  template <std::size_t Size>
+  template <usize Size>
   auto render_geo(bounded_array_ref<const SDL_Vertex, Size> vertices) noexcept -> result
   {
     return SDL_RenderGeometry(mRenderer,
@@ -444,7 +444,7 @@ class basic_renderer final
                               0) == 0;
   }
 
-  template <std::size_t VertexCount, std::size_t IndexCount>
+  template <usize VertexCount, usize IndexCount>
   auto render_geo(bounded_array_ref<const SDL_Vertex, VertexCount> vertices,
                   bounded_array_ref<const int, IndexCount> indices) noexcept -> result
   {
@@ -457,7 +457,7 @@ class basic_renderer final
                               static_cast<int>(IndexCount)) == 0;
   }
 
-  template <typename X, std::size_t Size>
+  template <typename X, usize Size>
   auto render_geo(const basic_texture<X>& texture,
                   bounded_array_ref<const SDL_Vertex, Size> vertices) noexcept -> result
   {
@@ -469,7 +469,7 @@ class basic_renderer final
                               0) == 0;
   }
 
-  template <typename X, std::size_t VertexCount, std::size_t IndexCount>
+  template <typename X, usize VertexCount, usize IndexCount>
   auto render_geo(const basic_texture<X>& texture,
                   bounded_array_ref<const SDL_Vertex, VertexCount>& vertices,
                   bounded_array_ref<const int, IndexCount>& indices) noexcept -> result
@@ -711,7 +711,7 @@ class renderer_info final
       -> std::optional<renderer_info>;
 
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   [[nodiscard]] auto supported_flags() const noexcept -> uint32 { return mInfo.flags; }
 

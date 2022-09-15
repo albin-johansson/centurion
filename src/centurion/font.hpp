@@ -743,8 +743,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 class font_cache final
 {
  public:
-  using id_type = std::size_t;
-  using size_type = std::size_t;
+  using id_type = usize;
+  using size_type = usize;
 
   struct glyph_data final
   {
@@ -1024,8 +1024,8 @@ namespace experimental {
 class font_bundle final
 {
  public:
-  using id_type = std::size_t;
-  using size_type = std::size_t;
+  using id_type = usize;
+  using size_type = usize;
 
   /**
    * Loads a font in a specific size.

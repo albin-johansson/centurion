@@ -104,7 +104,7 @@ class basic_sensor final
 {
  public:
   using device_index = int;
-  using size_type = std::size_t;
+  using size_type = usize;
 
   template <size_type Size>
   using data_type = std::array<float, Size>;

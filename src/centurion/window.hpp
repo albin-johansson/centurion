@@ -410,13 +410,13 @@ class basic_window final
   {
     using data_type = std::unique_ptr<void, detail::sdl_deleter>;
 
-    data_type data;      ///< Pointer to the raw ICC profile data.
-    std::size_t size{};  ///< The size of the raw data, in bytes.
+    data_type data;  ///< Pointer to the raw ICC profile data.
+    usize size{};    ///< The size of the raw data, in bytes.
   };
 
   [[nodiscard]] auto icc_profile() const noexcept -> std::optional<icc_profile_data>
   {
-    std::size_t size{};
+    usize size{};
     if (auto* icc = SDL_GetWindowICCProfile(get(), &size)) {
       return icc_profile_data{icc, size};
     }

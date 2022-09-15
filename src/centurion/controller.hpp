@@ -655,7 +655,7 @@ class basic_controller final
     return SDL_GameControllerIsSensorEnabled(mController, value) == SDL_TRUE;
   }
 
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto sensor_data(const sensor_type type) const noexcept
       -> std::optional<std::array<float, Size>>
   {

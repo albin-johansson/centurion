@@ -193,7 +193,7 @@ inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostre
 class file final
 {
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   explicit file(SDL_RWops* context) noexcept : mContext{context} {}
 
@@ -424,7 +424,7 @@ class file final
     return static_cast<file_type>(mContext->type);
   }
 
-  [[nodiscard]] auto size() const noexcept -> std::optional<std::size_t>
+  [[nodiscard]] auto size() const noexcept -> std::optional<usize>
   {
     assert(mContext);
     const auto result = SDL_RWsize(data());

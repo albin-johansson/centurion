@@ -104,7 +104,7 @@ class animation final
 
   [[nodiscard]] auto width() const noexcept -> int { return mAnim->w; }
   [[nodiscard]] auto height() const noexcept -> int { return mAnim->h; }
-  [[nodiscard]] auto size() const -> iarea { return {width(), height()}; }
+  [[nodiscard]] auto size() const noexcept -> iarea { return {width(), height()}; }
 
   [[nodiscard]] auto get() const noexcept -> IMG_Animation* { return mAnim.get(); }
 

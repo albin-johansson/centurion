@@ -506,7 +506,7 @@ class basic_renderer final
     return SDL_RenderSetClipRect(get(), area.data()) == 0;
   }
 
-  [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
+  [[nodiscard]] auto clip() const noexcept -> maybe<irect>
   {
     irect rect;
     SDL_RenderGetClipRect(get(), rect.data());
@@ -514,7 +514,7 @@ class basic_renderer final
       return rect;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -707,8 +707,7 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 class renderer_info final
 {
   template <typename T>
-  friend auto get_info(const basic_renderer<T>& renderer) noexcept
-      -> std::optional<renderer_info>;
+  friend auto get_info(const basic_renderer<T>& renderer) noexcept -> maybe<renderer_info>;
 
  public:
   using size_type = usize;
@@ -789,15 +788,14 @@ inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::
 }
 
 template <typename T>
-[[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept
-    -> std::optional<renderer_info>
+[[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept -> maybe<renderer_info>
 {
   SDL_RendererInfo info{};
   if (SDL_GetRendererInfo(renderer.get(), &info) == 0) {
     return renderer_info{info};
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 

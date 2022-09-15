@@ -232,12 +232,12 @@ class message_box final
   }
 
   template <typename T>
-  auto show(const basic_window<T>& parent) -> std::optional<button_id>
+  auto show(const basic_window<T>& parent) -> maybe<button_id>
   {
     return show(parent.get());
   }
 
-  auto show() -> std::optional<button_id> { return show(nullptr); }
+  auto show() -> maybe<button_id> { return show(nullptr); }
 
   void add_button(const button_id id,
                   std::string text,
@@ -322,7 +322,7 @@ class message_box final
   std::vector<button> mButtons;
   std::string mTitle{"Message box"};
   std::string mMessage;
-  std::optional<message_box_color_scheme> mColorScheme;
+  maybe<message_box_color_scheme> mColorScheme;
   message_box_type mType{default_type()};
   message_box_button_order mButtonOrder{default_order()};
 
@@ -348,7 +348,7 @@ class message_box final
     }
   }
 
-  auto show(SDL_Window* parent) -> std::optional<button_id>
+  auto show(SDL_Window* parent) -> maybe<button_id>
   {
     SDL_MessageBoxData data{};
 
@@ -381,7 +381,7 @@ class message_box final
       return button;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 };

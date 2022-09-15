@@ -369,8 +369,7 @@ class font final
     return TTF_GlyphIsProvided(mFont.get(), glyph);
   }
 
-  [[nodiscard]] auto get_metrics(const unicode_t glyph) const noexcept
-      -> std::optional<glyph_metrics>
+  [[nodiscard]] auto get_metrics(const unicode_t glyph) const noexcept -> maybe<glyph_metrics>
   {
     glyph_metrics metrics;
     if (TTF_GlyphMetrics(mFont.get(),
@@ -383,7 +382,7 @@ class font final
       return metrics;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -401,7 +400,7 @@ class font final
   }
 
   [[nodiscard]] auto get_metrics_w(const unicode32_t glyph) const noexcept
-      -> std::optional<glyph_metrics>
+      -> maybe<glyph_metrics>
   {
     glyph_metrics metrics;
     if (TTF_GlyphMetrics32(mFont.get(),
@@ -414,7 +413,7 @@ class font final
       return metrics;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -476,7 +475,7 @@ class font final
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-  [[nodiscard]] auto calc_size(const char* str) const noexcept -> std::optional<iarea>
+  [[nodiscard]] auto calc_size(const char* str) const noexcept -> maybe<iarea>
   {
     assert(str);
 
@@ -485,11 +484,11 @@ class font final
       return size;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> std::optional<iarea>
+  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> maybe<iarea>
   {
     return calc_size(str.c_str());
   }
@@ -503,11 +502,11 @@ class font final
   };
 
   [[nodiscard]] auto measure_text(const char* str, const int width) const noexcept
-      -> std::optional<measure_result>
+      -> maybe<measure_result>
   {
     measure_result result;
     if (TTF_MeasureText(mFont.get(), str, width, &result.extent, &result.count) < 0) {
-      return std::nullopt;
+      return nothing;
     }
     else {
       return result;
@@ -515,11 +514,11 @@ class font final
   }
 
   [[nodiscard]] auto measure_utf8(const char* str, const int width) const noexcept
-      -> std::optional<measure_result>
+      -> maybe<measure_result>
   {
     measure_result result;
     if (TTF_MeasureUTF8(mFont.get(), str, width, &result.extent, &result.count) < 0) {
-      return std::nullopt;
+      return nothing;
     }
     else {
       return result;
@@ -527,12 +526,12 @@ class font final
   }
 
   [[nodiscard]] auto measure_unicode(const unicode_string& str, const int width) const noexcept
-      -> std::optional<measure_result>
+      -> maybe<measure_result>
   {
     measure_result result;
     if (TTF_MeasureUNICODE(mFont.get(), str.data(), width, &result.extent, &result.count) <
         0) {
-      return std::nullopt;
+      return nothing;
     }
     else {
       return result;
@@ -1150,7 +1149,7 @@ class font_bundle final
   std::unordered_map<id_type, font_pool> mPools;
   id_type mNextFontId{1};
 
-  [[nodiscard]] auto get_id(const std::string_view path) const -> std::optional<id_type>
+  [[nodiscard]] auto get_id(const std::string_view path) const -> maybe<id_type>
   {
     for (const auto& [id, pack] : mPools) {
       if (!pack.caches.empty()) {
@@ -1160,7 +1159,7 @@ class font_bundle final
       }
     }
 
-    return std::nullopt;
+    return nothing;
   }
 };
 

@@ -499,14 +499,14 @@ class basic_controller final
     return SDL_GameControllerPath(mController);
   }
 
-  [[nodiscard]] auto firmware_version() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto firmware_version() const noexcept -> maybe<uint16>
   {
     const auto version = SDL_GameControllerGetFirmwareVersion(mController);
     if (version != 0) {
       return version;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -657,7 +657,7 @@ class basic_controller final
 
   template <usize Size>
   [[nodiscard]] auto sensor_data(const sensor_type type) const noexcept
-      -> std::optional<std::array<float, Size>>
+      -> maybe<std::array<float, Size>>
   {
     std::array<float, Size> array{};
     if (SDL_GameControllerGetSensorData(mController,
@@ -667,7 +667,7 @@ class basic_controller final
       return array;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -687,7 +687,7 @@ class basic_controller final
   }
 
   [[nodiscard]] auto touchpad_finger_state(const int touchpad, const int finger) const noexcept
-      -> std::optional<controller_finger_state>
+      -> maybe<controller_finger_state>
   {
     controller_finger_state result;
     uint8 state{};
@@ -705,14 +705,14 @@ class basic_controller final
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   [[nodiscard]] auto binding(const controller_button button) noexcept
-      -> std::optional<SDL_GameControllerButtonBind>
+      -> maybe<SDL_GameControllerButtonBind>
   {
     const auto result =
         SDL_GameControllerGetBindForButton(mController,
@@ -721,7 +721,7 @@ class basic_controller final
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -747,7 +747,7 @@ class basic_controller final
   }
 
   [[nodiscard]] auto binding(const controller_axis axis) const
-      -> std::optional<SDL_GameControllerButtonBind>
+      -> maybe<SDL_GameControllerButtonBind>
   {
     const auto result =
         SDL_GameControllerGetBindForAxis(mController,
@@ -756,7 +756,7 @@ class basic_controller final
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -799,36 +799,36 @@ class basic_controller final
     return SDL_GameControllerName(mController);
   }
 
-  [[nodiscard]] auto vendor() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto vendor() const noexcept -> maybe<uint16>
   {
     const auto id = SDL_GameControllerGetVendor(mController);
     if (id != 0) {
       return id;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto product() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto product() const noexcept -> maybe<uint16>
   {
     const auto id = SDL_GameControllerGetProduct(mController);
     if (id != 0) {
       return id;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto product_version() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto product_version() const noexcept -> maybe<uint16>
   {
     const auto id = SDL_GameControllerGetProductVersion(mController);
     if (id != 0) {
       return id;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -855,14 +855,14 @@ class basic_controller final
     return SDL_GameControllerGetAttached(mController) == SDL_TRUE;
   }
 
-  [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
+  [[nodiscard]] auto index() const noexcept -> maybe<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(mController);
     if (result != -1) {
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -905,7 +905,7 @@ inline auto add_controller_mapping(const std::string& mapping) noexcept
   return add_controller_mapping(mapping.c_str());
 }
 
-inline auto load_controller_mappings(const char* file) noexcept -> std::optional<int>
+inline auto load_controller_mappings(const char* file) noexcept -> maybe<int>
 {
   assert(file);
   const auto result = SDL_GameControllerAddMappingsFromFile(file);
@@ -913,11 +913,11 @@ inline auto load_controller_mappings(const char* file) noexcept -> std::optional
     return result;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
-inline auto load_controller_mappings(const std::string& file) noexcept -> std::optional<int>
+inline auto load_controller_mappings(const std::string& file) noexcept -> maybe<int>
 {
   return load_controller_mappings(file.c_str());
 }

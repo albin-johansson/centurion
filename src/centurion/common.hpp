@@ -43,6 +43,7 @@
 #include <cstddef>      // size_t
 #include <exception>    // exception
 #include <memory>       // unique_ptr
+#include <optional>     // optional, nullopt
 #include <ostream>      // ostream
 #include <ratio>        // ratio, milli, micro, nano
 #include <string>       // string
@@ -144,6 +145,11 @@ using owner = T;
 
 template <typename T, enable_for_pointer_t<T> = 0>
 using maybe_owner = T;
+
+template <typename T>
+using maybe = std::optional<T>;
+
+inline constexpr auto nothing = std::nullopt;
 
 template <typename T>
 inline constexpr bool is_number =

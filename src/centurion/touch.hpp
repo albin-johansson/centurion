@@ -84,14 +84,13 @@ class finger final
  public:
   using id_type = SDL_FingerID;
 
-  [[nodiscard]] static auto find(const touch_id id, const int index) noexcept
-      -> std::optional<finger>
+  [[nodiscard]] static auto find(const touch_id id, const int index) noexcept -> maybe<finger>
   {
     if (const auto* data = SDL_GetTouchFinger(id, index)) {
       return finger{*data};
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -113,14 +112,14 @@ class finger final
   return SDL_GetNumTouchDevices();
 }
 
-[[nodiscard]] inline auto get_touch_device(const int index) noexcept -> std::optional<touch_id>
+[[nodiscard]] inline auto get_touch_device(const int index) noexcept -> maybe<touch_id>
 {
   const auto device = SDL_GetTouchDevice(index);
   if (device != 0) {
     return device;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 

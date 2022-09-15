@@ -324,14 +324,14 @@ inline auto set(const gl_attribute attr, const int value) noexcept -> result
   return SDL_GL_SetAttribute(static_cast<SDL_GLattr>(attr), value) == 0;
 }
 
-inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
+inline auto get(const gl_attribute attr) noexcept -> maybe<int>
 {
   int value{};
   if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0) {
     return value;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
@@ -367,7 +367,7 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
 }
 
 template <typename T>
-auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
+auto bind(basic_texture<T>& texture) noexcept -> maybe<farea>
 {
   float width{};
   float height{};
@@ -375,7 +375,7 @@ auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
     return farea{width, height};
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 

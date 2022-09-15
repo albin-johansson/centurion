@@ -357,8 +357,7 @@ class file final
     return SDL_ReadBE64(data());
   }
 
-  [[nodiscard]] auto seek(const int64 offset, const seek_mode mode) noexcept
-      -> std::optional<int64>
+  [[nodiscard]] auto seek(const int64 offset, const seek_mode mode) noexcept -> maybe<int64>
   {
     assert(mContext);
     const auto result = SDL_RWseek(data(), offset, to_underlying(mode));
@@ -366,7 +365,7 @@ class file final
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -424,7 +423,7 @@ class file final
     return static_cast<file_type>(mContext->type);
   }
 
-  [[nodiscard]] auto size() const noexcept -> std::optional<usize>
+  [[nodiscard]] auto size() const noexcept -> maybe<usize>
   {
     assert(mContext);
     const auto result = SDL_RWsize(data());
@@ -432,7 +431,7 @@ class file final
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 

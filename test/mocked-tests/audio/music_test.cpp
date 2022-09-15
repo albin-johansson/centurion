@@ -25,15 +25,9 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include <array>  // array
-
 #include "centurion/audio.hpp"
 #include "core_mocks.hpp"
 #include "mixer_mocks.hpp"
-
-#define CEN_PREPARE_MOCK_TEST(Fun, ...) \
-  std::array values{__VA_ARGS__};       \
-  SET_RETURN_SEQ(Fun, values.data(), cen::isize(values))
 
 using music_finished_callback = void (*)();
 using hook_music_callback = void (*)(void*, Uint8*, int);

@@ -30,6 +30,14 @@
 #include <SDL_ttf.h>
 #include <fff.h>
 
+#include <array>  // array
+
+#include "centurion/common.hpp"
+
+#define CEN_PREPARE_MOCK_TEST(Fun, ...) \
+  std::array values{__VA_ARGS__};       \
+  SET_RETURN_SEQ(Fun, values.data(), cen::isize(values))
+
 extern "C"
 {
   // Initialization

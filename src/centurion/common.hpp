@@ -69,6 +69,7 @@
 
 namespace cen {
 
+using usize = std::size_t;
 using uint = unsigned int;
 using ulonglong = unsigned long long;
 
@@ -135,7 +136,7 @@ using enable_for_convertible_t =
 template <typename T>
 using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
-template <typename T, std::size_t Size>
+template <typename T, usize Size>
 using bounded_array_ref = T (&)[Size];
 
 template <typename T, enable_for_pointer_t<T> = 0>

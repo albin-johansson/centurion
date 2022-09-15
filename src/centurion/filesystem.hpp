@@ -207,7 +207,7 @@ class file final
   auto write(const T* data, const size_type count) noexcept -> size_type
   {
     assert(mContext);
-    return SDL_RWwrite(data(), data, sizeof(T), count);
+    return SDL_RWwrite(this->data(), data, sizeof(T), count);
   }
 
   template <typename T, size_type Size>
@@ -286,7 +286,7 @@ class file final
   {
     assert(data);
     assert(mContext);
-    return SDL_RWread(data(), data, sizeof(T), maxCount);
+    return SDL_RWread(this->data(), data, sizeof(T), maxCount);
   }
 
   template <typename T, size_type Size>

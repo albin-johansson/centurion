@@ -1,23 +1,28 @@
 name: "CI: Ubuntu"
 
-on: [ push, pull_request ]
+on: [ push ]
 
 env:
-  SDL_LATEST: 2.0.22
+  SDL_LATEST: 2.24.0
   SDL_VIDEODRIVER: x11
   DISPLAY: :99.0
 
 jobs:
   ubuntu-test:
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[skip-ci]') == false
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.14, 2.0.16, 2.0.18, 2.0.20, 2.0.22 ]
+        SDL_VERSION: [ 2.0.18, 2.0.20, 2.0.22, 2.24.0 ]
         CPP_VERSION: [ 17, 20 ]
         include:
           - SDL_VERSION: 2.0.10
             CPP_VERSION: 17
           - SDL_VERSION: 2.0.12
+            CPP_VERSION: 17
+          - SDL_VERSION: 2.0.14
+            CPP_VERSION: 17
+          - SDL_VERSION: 2.0.16
             CPP_VERSION: 17
           - SDL_VERSION: 2.0.22
             CPP_VERSION: 23

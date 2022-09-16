@@ -291,13 +291,13 @@ class display_mode final
   [[nodiscard]] auto height() const noexcept -> int { return mMode.h; }
   [[nodiscard]] auto size() const noexcept -> iarea { return {mMode.w, mMode.h}; }
 
-  [[nodiscard]] auto refresh_rate() const noexcept -> std::optional<int>
+  [[nodiscard]] auto refresh_rate() const noexcept -> maybe<int>
   {
     if (mMode.refresh_rate != 0) {
       return mMode.refresh_rate;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -352,15 +352,24 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
   return SDL_IsScreenSaverEnabled();
 }
 
-[[nodiscard]] inline auto display_count() noexcept -> int { return SDL_GetNumVideoDisplays(); }
+[[nodiscard]] inline auto display_count() noexcept -> maybe<int>
+{
+  const auto count = SDL_GetNumVideoDisplays();
+  if (count >= 1) {
+    return count;
+  }
+  else {
+    return nothing;
+  }
+}
 
-[[nodiscard]] inline auto display_name(const int index = 0) -> std::optional<std::string>
+[[nodiscard]] inline auto display_name(const int index = 0) -> maybe<std::string>
 {
   if (const char* name = SDL_GetDisplayName(index)) {
     return std::string{name};
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
@@ -369,39 +378,64 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
   return static_cast<orientation>(SDL_GetDisplayOrientation(index));
 }
 
-[[nodiscard]] inline auto display_dpi(const int index = 0) noexcept -> std::optional<dpi_info>
+[[nodiscard]] inline auto display_dpi(const int index = 0) noexcept -> maybe<dpi_info>
 {
   dpi_info info;
   if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0) {
     return info;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
-[[nodiscard]] inline auto display_bounds(const int index = 0) noexcept -> std::optional<irect>
+[[nodiscard]] inline auto display_bounds(const int index = 0) noexcept -> maybe<irect>
 {
   irect result;
   if (SDL_GetDisplayBounds(index, result.data()) == 0) {
     return result;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
-[[nodiscard]] inline auto display_usable_bounds(const int index = 0) noexcept
-    -> std::optional<irect>
+[[nodiscard]] inline auto display_usable_bounds(const int index = 0) noexcept -> maybe<irect>
 {
   irect result;
   if (SDL_GetDisplayUsableBounds(index, result.data()) == 0) {
     return result;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+[[nodiscard]] inline auto display_with(const ipoint& point) noexcept -> maybe<int>
+{
+  const auto index = SDL_GetPointDisplayIndex(point.data());
+  if (index >= 0) {
+    return index;
+  }
+  else {
+    return nothing;
+  }
+}
+
+[[nodiscard]] inline auto display_with(const irect& rect) noexcept -> maybe<int>
+{
+  const auto index = SDL_GetRectDisplayIndex(rect.data());
+  if (index >= 0) {
+    return index;
+  }
+  else {
+    return nothing;
+  }
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
 }  // namespace cen
 

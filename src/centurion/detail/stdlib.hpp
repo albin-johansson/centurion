@@ -66,13 +66,13 @@ template <typename T>
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto (min)(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
+[[nodiscard]] constexpr auto(min)(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
 {
   return (a < b) ? a : b;
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto (max)(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
+[[nodiscard]] constexpr auto(max)(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
 {
   /* Purposefully use less-than operator, since it's more commonly overloaded */
   return (a < b) ? b : a;
@@ -90,7 +90,7 @@ template <typename T>
 
 template <typename T = int>
 [[nodiscard]] auto stoi(const std::string_view str, const int base = 10) noexcept(on_msvc)
-    -> std::optional<T>
+    -> maybe<T>
 {
   /* We don't check if the compiler provides <charconv> here because all major compilers we
      support provide the integral overloads of from_chars */
@@ -103,7 +103,7 @@ template <typename T = int>
     return value;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 

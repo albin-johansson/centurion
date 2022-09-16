@@ -43,6 +43,7 @@
 #include <cstddef>      // size_t
 #include <exception>    // exception
 #include <memory>       // unique_ptr
+#include <optional>     // optional, nullopt
 #include <ostream>      // ostream
 #include <ratio>        // ratio, milli, micro, nano
 #include <string>       // string
@@ -69,6 +70,7 @@
 
 namespace cen {
 
+using usize = std::size_t;
 using uint = unsigned int;
 using ulonglong = unsigned long long;
 
@@ -135,7 +137,7 @@ using enable_for_convertible_t =
 template <typename T>
 using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
-template <typename T, std::size_t Size>
+template <typename T, usize Size>
 using bounded_array_ref = T (&)[Size];
 
 template <typename T, enable_for_pointer_t<T> = 0>
@@ -143,6 +145,11 @@ using owner = T;
 
 template <typename T, enable_for_pointer_t<T> = 0>
 using maybe_owner = T;
+
+template <typename T>
+using maybe = std::optional<T>;
+
+inline constexpr auto nothing = std::nullopt;
 
 template <typename T>
 inline constexpr bool is_number =

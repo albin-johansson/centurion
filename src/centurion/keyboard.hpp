@@ -448,6 +448,12 @@ class keyboard final
  public:
   keyboard() noexcept { mState = SDL_GetKeyboardState(&mKeyCount); }
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+  static void reset() noexcept { SDL_ResetKeyboard(); }
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
   void refresh() { std::copy(mState, mState + mKeyCount, mPrevious.begin()); }
 
   /// Indicates whether a key is being pressed.

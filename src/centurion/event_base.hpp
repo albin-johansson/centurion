@@ -84,6 +84,9 @@ enum class event_type : uint32
   joy_button_up = SDL_JOYBUTTONUP,
   joy_device_added = SDL_JOYDEVICEADDED,
   joy_device_removed = SDL_JOYDEVICEREMOVED,
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  joy_battery_updated = SDL_JOYBATTERYUPDATED,
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   controller_axis_motion = SDL_CONTROLLERAXISMOTION,
   controller_button_down = SDL_CONTROLLERBUTTONDOWN,
@@ -244,6 +247,13 @@ enum class event_type : uint32
 
     case event_type::joy_device_removed:
       return "joy_device_removed";
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+    case event_type::joy_battery_updated:
+      return "joy_battery_updated";
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
     case event_type::controller_axis_motion:
       return "controller_axis_motion";

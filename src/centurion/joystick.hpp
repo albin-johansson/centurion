@@ -28,7 +28,7 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <optional>     // optional
+#include <optional>     // optional, nullopt
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
@@ -211,6 +211,66 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
   return stream << to_string(state);
 }
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+class virtual_joystick_desc final
+{
+ public:
+  using update_callback = void(SDLCALL*)(void*);
+  using set_player_index_callback = void(SDLCALL*)(void*, int);
+  using rumble_callback = int(SDLCALL*)(void*, uint16, uint16);
+  using rumble_triggers_callback = int(SDLCALL*)(void*, uint16, uint16);
+  using set_led_callback = int(SDLCALL*)(void*, uint8, uint8, uint8);
+  using send_effect_callback = int(SDLCALL*)(void*, const void*, int);
+
+  virtual_joystick_desc() noexcept { mDesc.version = SDL_VIRTUAL_JOYSTICK_DESC_VERSION; }
+
+  void set_type(const joystick_type type) noexcept { mDesc.type = static_cast<uint16>(type); }
+
+  void set_axis_count(const uint16 n) noexcept { mDesc.naxes = n; }
+  void set_button_count(const uint16 n) noexcept { mDesc.nbuttons = n; }
+  void set_hat_count(const uint16 n) noexcept { mDesc.nhats = n; }
+
+  void set_vendor_id(const uint16 id) noexcept { mDesc.vendor_id = id; }
+  void set_product_id(const uint16 id) noexcept { mDesc.product_id = id; }
+
+  void set_button_mask(const uint32 mask) noexcept { mDesc.button_mask = mask; }
+  void set_axis_mask(const uint32 mask) noexcept { mDesc.axis_mask = mask; }
+
+  void set_name(const char* name) noexcept { mDesc.name = name; }
+
+  void set_user_data(void* data) noexcept { mDesc.userdata = data; }
+
+  void on_update(update_callback callback) noexcept { mDesc.Update = callback; }
+
+  void on_set_player_index(set_player_index_callback callback) noexcept
+  {
+    mDesc.SetPlayerIndex = callback;
+  }
+
+  void on_rumble(rumble_callback callback) noexcept { mDesc.Rumble = callback; }
+
+  void on_rumble_triggers(rumble_triggers_callback callback) noexcept
+  {
+    mDesc.RumbleTriggers = callback;
+  }
+
+  void on_set_led(set_led_callback callback) noexcept { mDesc.SetLED = callback; }
+
+  void on_send_effect(send_effect_callback callback) noexcept { mDesc.SendEffect = callback; }
+
+  [[nodiscard]] auto data() noexcept -> SDL_VirtualJoystickDesc* { return &mDesc; }
+  [[nodiscard]] auto data() const noexcept -> const SDL_VirtualJoystickDesc* { return &mDesc; }
+
+  [[nodiscard]] auto get() noexcept -> SDL_VirtualJoystickDesc& { return mDesc; }
+  [[nodiscard]] auto get() const noexcept -> const SDL_VirtualJoystickDesc& { return mDesc; }
+
+ private:
+  SDL_VirtualJoystickDesc mDesc{};
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
 template <typename T>
 class basic_joystick;
 
@@ -301,70 +361,69 @@ class basic_joystick final
     return static_cast<joystick_type>(SDL_JoystickGetDeviceType(index));
   }
 
-  [[nodiscard]] auto vendor() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto vendor() const noexcept -> maybe<uint16>
   {
     const auto vendor = SDL_JoystickGetVendor(mJoystick);
     if (vendor != 0) {
       return vendor;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] static auto vendor(const device_index index) noexcept -> std::optional<uint16>
+  [[nodiscard]] static auto vendor(const device_index index) noexcept -> maybe<uint16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(index);
     if (vendor != 0) {
       return vendor;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto product() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto product() const noexcept -> maybe<uint16>
   {
     const auto product = SDL_JoystickGetProduct(mJoystick);
     if (product != 0) {
       return product;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] static auto product(const device_index index) noexcept -> std::optional<uint16>
+  [[nodiscard]] static auto product(const device_index index) noexcept -> maybe<uint16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(index);
     if (product != 0) {
       return product;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto product_version() const noexcept -> std::optional<uint16>
+  [[nodiscard]] auto product_version() const noexcept -> maybe<uint16>
   {
     const auto version = SDL_JoystickGetProductVersion(mJoystick);
     if (version != 0) {
       return version;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] static auto product_version(const device_index index) noexcept
-      -> std::optional<uint16>
+  [[nodiscard]] static auto product_version(const device_index index) noexcept -> maybe<uint16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(index);
     if (version != 0) {
       return version;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -374,6 +433,31 @@ class basic_joystick final
   {
     return SDL_JoystickGetDeviceGUID(index);
   }
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+  [[nodiscard]] auto path() const noexcept -> const char*
+  {
+    return SDL_JoystickPath(mJoystick);
+  }
+
+  [[nodiscard]] static auto path(const device_index index) noexcept -> const char*
+  {
+    return SDL_JoystickPathForIndex(index);
+  }
+
+  [[nodiscard]] auto firmware_version() const noexcept -> maybe<uint16>
+  {
+    const auto version = SDL_JoystickGetFirmwareVersion(mJoystick);
+    if (version != 0) {
+      return version;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -409,14 +493,14 @@ class basic_joystick final
     return SDL_JoystickInstanceID(mJoystick);
   }
 
-  [[nodiscard]] static auto id(const device_index index) noexcept -> std::optional<id_type>
+  [[nodiscard]] static auto id(const device_index index) noexcept -> maybe<id_type>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(index);
     if (id != -1) {
       return id;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -478,13 +562,28 @@ class basic_joystick final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+  [[nodiscard]] static auto attach_virtual(const virtual_joystick_desc& desc) noexcept
+      -> maybe<device_index>
+  {
+    const auto index = SDL_JoystickAttachVirtualEx(desc.data());
+    if (index != -1) {
+      return index;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
   [[nodiscard]] static auto attach_virtual(const joystick_type type,
                                            const int axes,
                                            const int buttons,
-                                           const int hats) noexcept
-      -> std::optional<device_index>
+                                           const int hats) noexcept -> maybe<device_index>
   {
     const auto index =
         SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type), axes, buttons, hats);
@@ -492,7 +591,7 @@ class basic_joystick final
       return index;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -538,26 +637,26 @@ class basic_joystick final
     return SDL_JoystickGetAxis(mJoystick, axis);
   }
 
-  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<int16>
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> maybe<int16>
   {
     int16 state{};
     if (SDL_JoystickGetAxisInitialState(mJoystick, axis, &state)) {
       return state;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
   [[nodiscard]] auto get_ball_axis_delta(const int ball) const noexcept
-      -> std::optional<ball_axis_delta>
+      -> maybe<ball_axis_delta>
   {
     ball_axis_delta change{};
     if (SDL_JoystickGetBall(mJoystick, ball, &change.dx, &change.dy) == 0) {
       return change;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -579,26 +678,25 @@ class basic_joystick final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
+  [[nodiscard]] auto player_index() const noexcept -> maybe<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(mJoystick);
     if (index != -1) {
       return index;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] static auto player_index(const device_index index) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto player_index(const device_index index) noexcept -> maybe<int>
   {
     const auto player = SDL_JoystickGetDevicePlayerIndex(index);
     if (player != -1) {
       return player;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -629,14 +727,14 @@ class basic_joystick final
     return SDL_JoystickEventState(SDL_QUERY);
   }
 
-  [[nodiscard]] static auto count() noexcept -> std::optional<int>
+  [[nodiscard]] static auto count() noexcept -> maybe<int>
   {
     const auto result = SDL_NumJoysticks();
     if (result >= 0) {
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 

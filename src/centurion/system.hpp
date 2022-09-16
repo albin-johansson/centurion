@@ -167,14 +167,14 @@ class shared_object final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
-[[nodiscard]] inline auto platform_name() -> std::optional<std::string>
+[[nodiscard]] inline auto platform_name() -> maybe<std::string>
 {
   std::string name{SDL_GetPlatform()};
   if (name != "Unknown") {
     return name;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 

@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019-2022 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
@@ -50,6 +74,9 @@ TEST(EventType, Values)
   ASSERT_EQ(SDL_JOYBUTTONUP, to_underlying(type::joy_button_up));
   ASSERT_EQ(SDL_JOYDEVICEADDED, to_underlying(type::joy_device_added));
   ASSERT_EQ(SDL_JOYDEVICEREMOVED, to_underlying(type::joy_device_removed));
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  ASSERT_EQ(SDL_JOYBATTERYUPDATED, to_underlying(type::joy_battery_updated));
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   ASSERT_EQ(SDL_CONTROLLERAXISMOTION, to_underlying(type::controller_axis_motion));
   ASSERT_EQ(SDL_CONTROLLERBUTTONDOWN, to_underlying(type::controller_button_down));
@@ -136,6 +163,9 @@ TEST(EventType, ToString)
   ASSERT_EQ("joy_button_up", to_string(type::joy_button_up));
   ASSERT_EQ("joy_device_added", to_string(type::joy_device_added));
   ASSERT_EQ("joy_device_removed", to_string(type::joy_device_removed));
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  ASSERT_EQ("joy_battery_updated", to_string(type::joy_battery_updated));
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
   ASSERT_EQ("controller_axis_motion", to_string(type::controller_axis_motion));
   ASSERT_EQ("controller_button_down", to_string(type::controller_button_down));

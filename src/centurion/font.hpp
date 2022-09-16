@@ -154,6 +154,39 @@ struct font_dpi final
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
+#if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+enum class wrap_alignment
+{
+  left = TTF_WRAPPED_ALIGN_LEFT,
+  center = TTF_WRAPPED_ALIGN_CENTER,
+  right = TTF_WRAPPED_ALIGN_RIGHT,
+};
+
+[[nodiscard]] inline auto to_string(const wrap_alignment align) -> std::string_view
+{
+  switch (align) {
+    case wrap_alignment::left:
+      return "left";
+
+    case wrap_alignment::center:
+      return "center";
+
+    case wrap_alignment::right:
+      return "right";
+
+    default:
+      throw exception{"Invalid alignment!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const wrap_alignment align) -> std::ostream&
+{
+  return stream << to_string(align);
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
 /**
  * Represents a TrueType font.
  *
@@ -369,8 +402,7 @@ class font final
     return TTF_GlyphIsProvided(mFont.get(), glyph);
   }
 
-  [[nodiscard]] auto get_metrics(const unicode_t glyph) const noexcept
-      -> std::optional<glyph_metrics>
+  [[nodiscard]] auto get_metrics(const unicode_t glyph) const noexcept -> maybe<glyph_metrics>
   {
     glyph_metrics metrics;
     if (TTF_GlyphMetrics(mFont.get(),
@@ -383,7 +415,7 @@ class font final
       return metrics;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -401,7 +433,7 @@ class font final
   }
 
   [[nodiscard]] auto get_metrics_w(const unicode32_t glyph) const noexcept
-      -> std::optional<glyph_metrics>
+      -> maybe<glyph_metrics>
   {
     glyph_metrics metrics;
     if (TTF_GlyphMetrics32(mFont.get(),
@@ -414,7 +446,7 @@ class font final
       return metrics;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -476,7 +508,21 @@ class font final
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-  [[nodiscard]] auto calc_size(const char* str) const noexcept -> std::optional<iarea>
+#if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+  void set_wrap_align(const wrap_alignment align) noexcept
+  {
+    TTF_SetFontWrappedAlign(get(), to_underlying(align));
+  }
+
+  [[nodiscard]] auto wrap_align() const noexcept -> wrap_alignment
+  {
+    return static_cast<wrap_alignment>(TTF_GetFontWrappedAlign(get()));
+  }
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+  [[nodiscard]] auto calc_size(const char* str) const noexcept -> maybe<iarea>
   {
     assert(str);
 
@@ -485,11 +531,11 @@ class font final
       return size;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> std::optional<iarea>
+  [[nodiscard]] auto calc_size(const std::string& str) const noexcept -> maybe<iarea>
   {
     return calc_size(str.c_str());
   }
@@ -503,11 +549,11 @@ class font final
   };
 
   [[nodiscard]] auto measure_text(const char* str, const int width) const noexcept
-      -> std::optional<measure_result>
+      -> maybe<measure_result>
   {
     measure_result result;
     if (TTF_MeasureText(mFont.get(), str, width, &result.extent, &result.count) < 0) {
-      return std::nullopt;
+      return nothing;
     }
     else {
       return result;
@@ -515,11 +561,11 @@ class font final
   }
 
   [[nodiscard]] auto measure_utf8(const char* str, const int width) const noexcept
-      -> std::optional<measure_result>
+      -> maybe<measure_result>
   {
     measure_result result;
     if (TTF_MeasureUTF8(mFont.get(), str, width, &result.extent, &result.count) < 0) {
-      return std::nullopt;
+      return nothing;
     }
     else {
       return result;
@@ -527,12 +573,12 @@ class font final
   }
 
   [[nodiscard]] auto measure_unicode(const unicode_string& str, const int width) const noexcept
-      -> std::optional<measure_result>
+      -> maybe<measure_result>
   {
     measure_result result;
     if (TTF_MeasureUNICODE(mFont.get(), str.data(), width, &result.extent, &result.count) <
         0) {
-      return std::nullopt;
+      return nothing;
     }
     else {
       return result;
@@ -743,8 +789,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 class font_cache final
 {
  public:
-  using id_type = std::size_t;
-  using size_type = std::size_t;
+  using id_type = usize;
+  using size_type = usize;
 
   struct glyph_data final
   {
@@ -1024,8 +1070,8 @@ namespace experimental {
 class font_bundle final
 {
  public:
-  using id_type = std::size_t;
-  using size_type = std::size_t;
+  using id_type = usize;
+  using size_type = usize;
 
   /**
    * Loads a font in a specific size.
@@ -1150,7 +1196,7 @@ class font_bundle final
   std::unordered_map<id_type, font_pool> mPools;
   id_type mNextFontId{1};
 
-  [[nodiscard]] auto get_id(const std::string_view path) const -> std::optional<id_type>
+  [[nodiscard]] auto get_id(const std::string_view path) const -> maybe<id_type>
   {
     for (const auto& [id, pack] : mPools) {
       if (!pack.caches.empty()) {
@@ -1160,7 +1206,7 @@ class font_bundle final
       }
     }
 
-    return std::nullopt;
+    return nothing;
   }
 };
 

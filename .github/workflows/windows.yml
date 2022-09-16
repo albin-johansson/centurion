@@ -1,38 +1,57 @@
 name: "CI: Windows"
 
-on: [ push, pull_request ]
-
-env:
-  IMG_VERSION: 2.0.5
-  MIX_VERSION: 2.0.4
+on: [ push ]
 
 jobs:
   windows-latest-test:
     runs-on: windows-latest
+    if: contains(github.event.head_commit.message, '[skip-ci]') == false
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.14, 2.0.16, 2.0.18, 2.0.20, 2.0.22 ]
+        SDL_VERSION: [ 2.0.18, 2.0.20, 2.0.22, 2.24.0 ]
         TTF_VERSION: [ 2.0.15 ]
+        IMG_VERSION: [ 2.0.5 ]
+        MIX_VERSION: [ 2.0.4 ]
         CPP_VERSION: [ 17, 20 ]
         include:
           - SDL_VERSION: 2.0.10
             TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
             CPP_VERSION: 17
 
           - SDL_VERSION: 2.0.12
             TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.14
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.16
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
             CPP_VERSION: 17
 
           - SDL_VERSION: 2.0.22
             TTF_VERSION: 2.0.18
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
             CPP_VERSION: 20
 
-          - SDL_VERSION: 2.0.22
+          - SDL_VERSION: 2.24.0
             TTF_VERSION: 2.0.18
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
             CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main
-      - uses: ilammy/msvc-dev-cmd@master
+      - uses: ilammy/msvc-dev-cmd@v1.11.0
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: lukka/get-cmake@latest
 
@@ -50,7 +69,7 @@ jobs:
       - name: Download SDL2_image
         uses: albin-johansson/download-sdl2-image@latest
         with:
-          version: ${{env.IMG_VERSION}}
+          version: ${{matrix.IMG_VERSION}}
           sources_destination: .
           binaries_destination: bin
 
@@ -64,7 +83,7 @@ jobs:
       - name: Download SDL2_mixer
         uses: albin-johansson/download-sdl2-mixer@latest
         with:
-          version: ${{env.MIX_VERSION}}
+          version: ${{matrix.MIX_VERSION}}
           sources_destination: .
           binaries_destination: bin
 
@@ -75,8 +94,8 @@ jobs:
         working-directory: ./build
         env:
           SDL2DIR: ${{github.workspace}}/SDL2-${{matrix.SDL_VERSION}}
-          SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{env.IMG_VERSION}}
-          SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
+          SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{matrix.IMG_VERSION}}
+          SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{matrix.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{matrix.TTF_VERSION}}
         run: |
           cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -GNinja

@@ -1,7 +1,29 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019-2022 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include <fff.h>
 #include <gtest/gtest.h>
-
-#include <array>  // array
 
 #include "centurion/filesystem.hpp"
 #include "core_mocks.hpp"
@@ -24,9 +46,16 @@ extern "C"
   FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
   FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
   FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
+
+#if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
+  FAKE_VALUE_FUNC(int, IMG_isAVIF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isJXL, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isQOI, SDL_RWops*)
+#endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
 }
 
-class FileTest : public testing::Test {
+class FileTest : public testing::Test
+{
  protected:
   void SetUp() override
   {
@@ -48,6 +77,12 @@ class FileTest : public testing::Test {
     RESET_FAKE(IMG_isXCF)
     RESET_FAKE(IMG_isXPM)
     RESET_FAKE(IMG_isXV)
+
+#if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
+    RESET_FAKE(IMG_isAVIF)
+    RESET_FAKE(IMG_isJXL)
+    RESET_FAKE(IMG_isQOI)
+#endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
   }
 
   cen::file file{nullptr};
@@ -55,8 +90,7 @@ class FileTest : public testing::Test {
 
 TEST_F(FileTest, IsPNG)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isPNG, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isPNG, 0, 1)
 
   ASSERT_FALSE(file.is_png());
   ASSERT_TRUE(file.is_png());
@@ -65,8 +99,7 @@ TEST_F(FileTest, IsPNG)
 
 TEST_F(FileTest, IsICO)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isICO, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isICO, 0, 1)
 
   ASSERT_FALSE(file.is_ico());
   ASSERT_TRUE(file.is_ico());
@@ -75,8 +108,7 @@ TEST_F(FileTest, IsICO)
 
 TEST_F(FileTest, IsJPG)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isJPG, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isJPG, 0, 1)
 
   ASSERT_FALSE(file.is_jpg());
   ASSERT_TRUE(file.is_jpg());
@@ -85,8 +117,7 @@ TEST_F(FileTest, IsJPG)
 
 TEST_F(FileTest, IsBMP)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isBMP, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isBMP, 0, 1)
 
   ASSERT_FALSE(file.is_bmp());
   ASSERT_TRUE(file.is_bmp());
@@ -95,8 +126,7 @@ TEST_F(FileTest, IsBMP)
 
 TEST_F(FileTest, IsGIF)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isGIF, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isGIF, 0, 1)
 
   ASSERT_FALSE(file.is_gif());
   ASSERT_TRUE(file.is_gif());
@@ -105,8 +135,7 @@ TEST_F(FileTest, IsGIF)
 
 TEST_F(FileTest, IsSVG)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isSVG, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isSVG, 0, 1)
 
   ASSERT_FALSE(file.is_svg());
   ASSERT_TRUE(file.is_svg());
@@ -115,8 +144,7 @@ TEST_F(FileTest, IsSVG)
 
 TEST_F(FileTest, IsWEBP)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isWEBP, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isWEBP, 0, 1)
 
   ASSERT_FALSE(file.is_webp());
   ASSERT_TRUE(file.is_webp());
@@ -125,8 +153,7 @@ TEST_F(FileTest, IsWEBP)
 
 TEST_F(FileTest, IsTIF)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isTIF, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isTIF, 0, 1)
 
   ASSERT_FALSE(file.is_tif());
   ASSERT_TRUE(file.is_tif());
@@ -135,8 +162,7 @@ TEST_F(FileTest, IsTIF)
 
 TEST_F(FileTest, IsPNM)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isPNM, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isPNM, 0, 1)
 
   ASSERT_FALSE(file.is_pnm());
   ASSERT_TRUE(file.is_pnm());
@@ -145,8 +171,7 @@ TEST_F(FileTest, IsPNM)
 
 TEST_F(FileTest, IsPCX)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isPCX, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isPCX, 0, 1)
 
   ASSERT_FALSE(file.is_pcx());
   ASSERT_TRUE(file.is_pcx());
@@ -155,8 +180,7 @@ TEST_F(FileTest, IsPCX)
 
 TEST_F(FileTest, IsLBM)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isLBM, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isLBM, 0, 1)
 
   ASSERT_FALSE(file.is_lbm());
   ASSERT_TRUE(file.is_lbm());
@@ -165,8 +189,7 @@ TEST_F(FileTest, IsLBM)
 
 TEST_F(FileTest, IsCUR)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isCUR, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isCUR, 0, 1)
 
   ASSERT_FALSE(file.is_cur());
   ASSERT_TRUE(file.is_cur());
@@ -175,8 +198,7 @@ TEST_F(FileTest, IsCUR)
 
 TEST_F(FileTest, IsXCF)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isXCF, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isXCF, 0, 1)
 
   ASSERT_FALSE(file.is_xcf());
   ASSERT_TRUE(file.is_xcf());
@@ -185,8 +207,7 @@ TEST_F(FileTest, IsXCF)
 
 TEST_F(FileTest, IsXPM)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isXPM, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isXPM, 0, 1)
 
   ASSERT_FALSE(file.is_xpm());
   ASSERT_TRUE(file.is_xpm());
@@ -195,10 +216,43 @@ TEST_F(FileTest, IsXPM)
 
 TEST_F(FileTest, IsXV)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(IMG_isXV, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(IMG_isXV, 0, 1)
 
   ASSERT_FALSE(file.is_xv());
   ASSERT_TRUE(file.is_xv());
   ASSERT_EQ(2u, IMG_isXV_fake.call_count);
 }
+
+#if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
+
+TEST_F(FileTest, IsAVIF)
+{
+  CEN_PREPARE_MOCK_TEST(IMG_isAVIF, 0, 1)
+
+  ASSERT_FALSE(file.is_avif());
+  ASSERT_TRUE(file.is_avif());
+
+  ASSERT_EQ(2u, IMG_isAVIF_fake.call_count);
+}
+
+TEST_F(FileTest, IsJXL)
+{
+  CEN_PREPARE_MOCK_TEST(IMG_isJXL, 0, 1)
+
+  ASSERT_FALSE(file.is_jxl());
+  ASSERT_TRUE(file.is_jxl());
+
+  ASSERT_EQ(2u, IMG_isJXL_fake.call_count);
+}
+
+TEST_F(FileTest, IsQOI)
+{
+  CEN_PREPARE_MOCK_TEST(IMG_isQOI, 0, 1)
+
+  ASSERT_FALSE(file.is_qoi());
+  ASSERT_TRUE(file.is_qoi());
+
+  ASSERT_EQ(2u, IMG_isQOI_fake.call_count);
+}
+
+#endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)

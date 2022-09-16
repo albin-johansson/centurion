@@ -226,10 +226,10 @@ class color final
    * \see `from_rgba()`
    * \see `from_argb()`
    */
-  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> maybe<color>
   {
     if (rgb.length() != 7 || rgb.at(0) != '#') {
-      return std::nullopt;
+      return nothing;
     }
 
     const auto noHash = rgb.substr(1);
@@ -246,7 +246,7 @@ class color final
       return color{*red, *green, *blue};
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -262,10 +262,10 @@ class color final
    * \see `from_rgb()`
    * \see `from_argb()`
    */
-  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> maybe<color>
   {
     if (rgba.length() != 9 || rgba.at(0) != '#') {
-      return std::nullopt;
+      return nothing;
     }
 
     const auto noHash = rgba.substr(1);
@@ -284,7 +284,7 @@ class color final
       return color{*red, *green, *blue, *alpha};
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -300,10 +300,10 @@ class color final
    * \see `from_rgb()`
    * \see `from_rgba()`
    */
-  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> maybe<color>
   {
     if (argb.length() != 9 || argb.at(0) != '#') {
-      return std::nullopt;
+      return nothing;
     }
 
     const auto noHash = argb.substr(1);
@@ -322,7 +322,7 @@ class color final
       return color{*red, *green, *blue, *alpha};
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 

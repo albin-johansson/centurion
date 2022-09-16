@@ -193,7 +193,7 @@ inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostre
 class file final
 {
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   explicit file(SDL_RWops* context) noexcept : mContext{context} {}
 
@@ -207,7 +207,7 @@ class file final
   auto write(const T* data, const size_type count) noexcept -> size_type
   {
     assert(mContext);
-    return SDL_RWwrite(mContext.get(), data, sizeof(T), count);
+    return SDL_RWwrite(this->data(), data, sizeof(T), count);
   }
 
   template <typename T, size_type Size>
@@ -242,43 +242,43 @@ class file final
   auto write_byte(const uint8 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteU8(mContext.get(), value) == 1;
+    return SDL_WriteU8(data(), value) == 1;
   }
 
   auto write_native_as_little_endian(const uint16 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteLE16(mContext.get(), value) == 1;
+    return SDL_WriteLE16(data(), value) == 1;
   }
 
   auto write_native_as_little_endian(const uint32 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteLE32(mContext.get(), value) == 1;
+    return SDL_WriteLE32(data(), value) == 1;
   }
 
   auto write_native_as_little_endian(const uint64 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteLE64(mContext.get(), value) == 1;
+    return SDL_WriteLE64(data(), value) == 1;
   }
 
   auto write_native_as_big_endian(const uint16 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteBE16(mContext.get(), value) == 1;
+    return SDL_WriteBE16(data(), value) == 1;
   }
 
   auto write_native_as_big_endian(const uint32 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteBE32(mContext.get(), value) == 1;
+    return SDL_WriteBE32(data(), value) == 1;
   }
 
   auto write_native_as_big_endian(const uint64 value) noexcept -> result
   {
     assert(mContext);
-    return SDL_WriteBE64(mContext.get(), value) == 1;
+    return SDL_WriteBE64(data(), value) == 1;
   }
 
   template <typename T>
@@ -286,7 +286,7 @@ class file final
   {
     assert(data);
     assert(mContext);
-    return SDL_RWread(mContext.get(), data, sizeof(T), maxCount);
+    return SDL_RWread(this->data(), data, sizeof(T), maxCount);
   }
 
   template <typename T, size_type Size>
@@ -318,99 +318,103 @@ class file final
   auto read_byte() noexcept -> uint8
   {
     assert(mContext);
-    return SDL_ReadU8(mContext.get());
+    return SDL_ReadU8(data());
   }
 
   auto read_little_endian_u16() noexcept -> uint16
   {
     assert(mContext);
-    return SDL_ReadLE16(mContext.get());
+    return SDL_ReadLE16(data());
   }
 
   auto read_little_endian_u32() noexcept -> uint32
   {
     assert(mContext);
-    return SDL_ReadLE32(mContext.get());
+    return SDL_ReadLE32(data());
   }
 
   auto read_little_endian_u64() noexcept -> uint64
   {
     assert(mContext);
-    return SDL_ReadLE64(mContext.get());
+    return SDL_ReadLE64(data());
   }
 
   auto read_big_endian_u16() noexcept -> uint16
   {
     assert(mContext);
-    return SDL_ReadBE16(mContext.get());
+    return SDL_ReadBE16(data());
   }
 
   auto read_big_endian_u32() noexcept -> uint32
   {
     assert(mContext);
-    return SDL_ReadBE32(mContext.get());
+    return SDL_ReadBE32(data());
   }
 
   auto read_big_endian_u64() noexcept -> uint64
   {
     assert(mContext);
-    return SDL_ReadBE64(mContext.get());
+    return SDL_ReadBE64(data());
   }
 
-  [[nodiscard]] auto seek(const int64 offset, const seek_mode mode) noexcept
-      -> std::optional<int64>
+  [[nodiscard]] auto seek(const int64 offset, const seek_mode mode) noexcept -> maybe<int64>
   {
     assert(mContext);
-    const auto result = SDL_RWseek(mContext.get(), offset, to_underlying(mode));
+    const auto result = SDL_RWseek(data(), offset, to_underlying(mode));
     if (result != -1) {
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  [[nodiscard]] auto is_png() const noexcept -> bool { return IMG_isPNG(mContext.get()) == 1; }
+  [[nodiscard]] auto is_png() const noexcept -> bool { return IMG_isPNG(data()) == 1; }
 
-  [[nodiscard]] auto is_ico() const noexcept -> bool { return IMG_isICO(mContext.get()) == 1; }
+  [[nodiscard]] auto is_ico() const noexcept -> bool { return IMG_isICO(data()) == 1; }
 
-  [[nodiscard]] auto is_jpg() const noexcept -> bool { return IMG_isJPG(mContext.get()) == 1; }
+  [[nodiscard]] auto is_jpg() const noexcept -> bool { return IMG_isJPG(data()) == 1; }
 
-  [[nodiscard]] auto is_bmp() const noexcept -> bool { return IMG_isBMP(mContext.get()) == 1; }
+  [[nodiscard]] auto is_bmp() const noexcept -> bool { return IMG_isBMP(data()) == 1; }
 
-  [[nodiscard]] auto is_gif() const noexcept -> bool { return IMG_isGIF(mContext.get()) == 1; }
+  [[nodiscard]] auto is_gif() const noexcept -> bool { return IMG_isGIF(data()) == 1; }
 
-  [[nodiscard]] auto is_svg() const noexcept -> bool { return IMG_isSVG(mContext.get()) == 1; }
+  [[nodiscard]] auto is_svg() const noexcept -> bool { return IMG_isSVG(data()) == 1; }
 
-  [[nodiscard]] auto is_webp() const noexcept -> bool
-  {
-    return IMG_isWEBP(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto is_webp() const noexcept -> bool { return IMG_isWEBP(data()) == 1; }
 
-  [[nodiscard]] auto is_tif() const noexcept -> bool { return IMG_isTIF(mContext.get()) == 1; }
+  [[nodiscard]] auto is_tif() const noexcept -> bool { return IMG_isTIF(data()) == 1; }
 
-  [[nodiscard]] auto is_pnm() const noexcept -> bool { return IMG_isPNM(mContext.get()) == 1; }
+  [[nodiscard]] auto is_pnm() const noexcept -> bool { return IMG_isPNM(data()) == 1; }
 
-  [[nodiscard]] auto is_pcx() const noexcept -> bool { return IMG_isPCX(mContext.get()) == 1; }
+  [[nodiscard]] auto is_pcx() const noexcept -> bool { return IMG_isPCX(data()) == 1; }
 
-  [[nodiscard]] auto is_lbm() const noexcept -> bool { return IMG_isLBM(mContext.get()) == 1; }
+  [[nodiscard]] auto is_lbm() const noexcept -> bool { return IMG_isLBM(data()) == 1; }
 
-  [[nodiscard]] auto is_cur() const noexcept -> bool { return IMG_isCUR(mContext.get()) == 1; }
+  [[nodiscard]] auto is_cur() const noexcept -> bool { return IMG_isCUR(data()) == 1; }
 
-  [[nodiscard]] auto is_xcf() const noexcept -> bool { return IMG_isXCF(mContext.get()) == 1; }
+  [[nodiscard]] auto is_xcf() const noexcept -> bool { return IMG_isXCF(data()) == 1; }
 
-  [[nodiscard]] auto is_xpm() const noexcept -> bool { return IMG_isXPM(mContext.get()) == 1; }
+  [[nodiscard]] auto is_xpm() const noexcept -> bool { return IMG_isXPM(data()) == 1; }
 
-  [[nodiscard]] auto is_xv() const noexcept -> bool { return IMG_isXV(mContext.get()) == 1; }
+  [[nodiscard]] auto is_xv() const noexcept -> bool { return IMG_isXV(data()) == 1; }
+
+#if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
+
+  [[nodiscard]] auto is_avif() const noexcept -> bool { return IMG_isAVIF(data()) == 1; }
+  [[nodiscard]] auto is_jxl() const noexcept -> bool { return IMG_isJXL(data()) == 1; }
+  [[nodiscard]] auto is_qoi() const noexcept -> bool { return IMG_isQOI(data()) == 1; }
+
+#endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
   [[nodiscard]] auto offset() const noexcept -> int64
   {
     assert(mContext);
-    return SDL_RWtell(mContext.get());
+    return SDL_RWtell(data());
   }
 
   [[nodiscard]] auto type() const noexcept -> file_type
@@ -419,15 +423,15 @@ class file final
     return static_cast<file_type>(mContext->type);
   }
 
-  [[nodiscard]] auto size() const noexcept -> std::optional<std::size_t>
+  [[nodiscard]] auto size() const noexcept -> maybe<usize>
   {
     assert(mContext);
-    const auto result = SDL_RWsize(mContext.get());
+    const auto result = SDL_RWsize(data());
     if (result != -1) {
       return result;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 

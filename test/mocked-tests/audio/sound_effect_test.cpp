@@ -1,7 +1,29 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019-2022 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include <fff.h>
 #include <gtest/gtest.h>
-
-#include <array>  // array
 
 #include "centurion/audio.hpp"
 #include "core_mocks.hpp"
@@ -20,6 +42,7 @@ extern "C"
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
   FAKE_VALUE_FUNC(int, Mix_PlayChannel, int, Mix_Chunk*, int)
   FAKE_VALUE_FUNC(int, Mix_FadeInChannel, int, Mix_Chunk*, int, int)
+  FAKE_VALUE_FUNC(int, Mix_MasterVolume, int)
 #endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 }
 
@@ -42,6 +65,7 @@ class SoundEffectTest : public testing::Test
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
     RESET_FAKE(Mix_PlayChannel)
     RESET_FAKE(Mix_FadeInChannel)
+    RESET_FAKE(Mix_MasterVolume)
 #endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
   }
 
@@ -52,8 +76,7 @@ class SoundEffectTest : public testing::Test
 
 TEST_F(SoundEffectTest, Play)
 {
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(Mix_PlayChannel, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(Mix_PlayChannel, -1, 0)
 
   ASSERT_FALSE(sound.play());
   ASSERT_EQ(1u, Mix_PlayChannel_fake.call_count);
@@ -72,8 +95,7 @@ TEST_F(SoundEffectTest, Play)
 
 TEST_F(SoundEffectTest, Pause)
 {
-  std::array values{0, 1};
-  SET_RETURN_SEQ(Mix_Playing, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(Mix_Playing, 0, 1)
 
   sound.stop();  // Does not invoke Mix_Playing
   ASSERT_EQ(0u, Mix_Pause_fake.call_count);
@@ -160,11 +182,11 @@ TEST_F(SoundEffectTest, GetDecoder)
 
 TEST_F(SoundEffectTest, HasDecoder)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(Mix_HasChunkDecoder, values.data(), cen::isize(values));
+  CEN_PREPARE_MOCK_TEST(Mix_HasChunkDecoder, SDL_FALSE, SDL_TRUE)
 
   ASSERT_FALSE(cen::sound_effect::has_decoder("foo"));
   ASSERT_TRUE(cen::sound_effect::has_decoder("foo"));
+
   ASSERT_EQ(2u, Mix_HasChunkDecoder_fake.call_count);
 }
 
@@ -173,3 +195,21 @@ TEST_F(SoundEffectTest, DecoderCount)
   const auto count [[maybe_unused]] = cen::sound_effect::decoder_count();
   ASSERT_EQ(1u, Mix_GetNumChunkDecoders_fake.call_count);
 }
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+TEST_F(SoundEffectTest, SetMasterVolume)
+{
+  cen::sound_effect::set_master_volume(53);
+  ASSERT_EQ(53, Mix_MasterVolume_fake.arg0_val);
+  ASSERT_EQ(1u, Mix_MasterVolume_fake.call_count);
+}
+
+TEST_F(SoundEffectTest, MasterVolume)
+{
+  const auto volume [[maybe_unused]] = cen::sound_effect::master_volume();
+  ASSERT_EQ(-1, Mix_MasterVolume_fake.arg0_val);
+  ASSERT_EQ(1u, Mix_MasterVolume_fake.call_count);
+}
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)

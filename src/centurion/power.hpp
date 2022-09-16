@@ -72,7 +72,7 @@ inline auto operator<<(std::ostream& stream, const power_state state) -> std::os
   return stream << to_string(state);
 }
 
-[[nodiscard]] inline auto battery_seconds() -> std::optional<seconds<int>>
+[[nodiscard]] inline auto battery_seconds() -> maybe<seconds<int>>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -80,21 +80,21 @@ inline auto operator<<(std::ostream& stream, const power_state state) -> std::os
     return seconds<int>{secondsLeft};
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
-[[nodiscard]] inline auto battery_minutes() -> std::optional<minutes<int>>
+[[nodiscard]] inline auto battery_minutes() -> maybe<minutes<int>>
 {
   if (const auto secondsLeft = battery_seconds()) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 
-[[nodiscard]] inline auto battery_percentage() noexcept -> std::optional<int>
+[[nodiscard]] inline auto battery_percentage() noexcept -> maybe<int>
 {
   int percentage = -1;
   SDL_GetPowerInfo(nullptr, &percentage);
@@ -102,7 +102,7 @@ inline auto operator<<(std::ostream& stream, const power_state state) -> std::os
     return percentage;
   }
   else {
-    return std::nullopt;
+    return nothing;
   }
 }
 

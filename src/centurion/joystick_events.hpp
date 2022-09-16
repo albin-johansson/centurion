@@ -33,6 +33,7 @@
 #include "common.hpp"
 #include "event_base.hpp"
 #include "input.hpp"
+#include "joystick.hpp"
 
 namespace cen {
 
@@ -239,6 +240,40 @@ inline auto as_sdl_event(const event_base<SDL_JoyHatEvent>& event) -> SDL_Event
   e.jhat = event.get();
   return e;
 }
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+class joy_battery_event final : public event_base<SDL_JoyBatteryEvent>
+{
+ public:
+  joy_battery_event() : event_base{event_type::joy_battery_updated} {}
+
+  explicit joy_battery_event(const SDL_JoyBatteryEvent& event) noexcept : event_base{event} {}
+
+  void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
+
+  void set_power_level(joystick_power level) noexcept
+  {
+    mEvent.level = static_cast<SDL_JoystickPowerLevel>(level);
+  }
+
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return mEvent.which; }
+
+  [[nodiscard]] auto power_level() const noexcept -> joystick_power
+  {
+    return static_cast<joystick_power>(mEvent.level);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const event_base<SDL_JoyBatteryEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.jbattery = event.get();
+  return e;
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
 }  // namespace cen
 

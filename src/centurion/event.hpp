@@ -122,24 +122,24 @@ class event_handler final
   }
 
   /// Returns the type of the internal event.
-  [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
+  [[nodiscard]] auto type() const noexcept -> maybe<event_type>
   {
     if (mType != event_type::last_event) {
       return mType;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
   /// Returns the raw integral value of the event type.
-  [[nodiscard]] auto raw_type() const noexcept -> std::optional<uint32>
+  [[nodiscard]] auto raw_type() const noexcept -> maybe<uint32>
   {
     if (mType != event_type::last_event) {
       return to_underlying(mType);
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -198,19 +198,19 @@ class event_handler final
   }
 
   /// Returns the current amount of events in the event queue.
-  [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
+  [[nodiscard]] static auto queue_count() noexcept -> maybe<int>
   {
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
     if (num != -1) {
       return num;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
   /// Returns the number of events of a particular type in the event queue.
-  [[nodiscard]] static auto queue_count(const event_type type) noexcept -> std::optional<int>
+  [[nodiscard]] static auto queue_count(const event_type type) noexcept -> maybe<int>
   {
     const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
@@ -218,7 +218,7 @@ class event_handler final
       return num;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -265,6 +265,10 @@ class event_handler final
 #if SDL_VERSION_ATLEAST(2, 0, 22)
                                  text_editing_ext_event,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 22)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+                                 joy_battery_event,
+#endif  // SDL_VERSION_ATLEAST(2, 24,0)
 
                                  window_event>;
 
@@ -395,6 +399,14 @@ class event_handler final
       case SDL_JOYDEVICEREMOVED:
         mData.emplace<joy_device_event>(event.jdevice);
         break;
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+      case SDL_JOYBATTERYUPDATED:
+        mData.emplace<joy_battery_event>(event.jbattery);
+        break;
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 
       case SDL_CONTROLLERAXISMOTION:
         mData.emplace<controller_axis_event>(event.caxis);
@@ -571,7 +583,7 @@ class event_dispatcher final
 
   /// Returns the index of an event type in the function tuple.
   template <typename Event>
-  [[nodiscard]] constexpr static auto index_of() -> std::size_t
+  [[nodiscard]] constexpr static auto index_of() -> usize
   {
     using sink_type = event_sink<std::decay_t<Event>>;
 
@@ -642,16 +654,13 @@ class event_dispatcher final
   void reset() noexcept { (bind<Events>().reset(), ...); }
 
   /// Returns the amount of set event handlers.
-  [[nodiscard]] auto active_count() const -> std::size_t
+  [[nodiscard]] auto active_count() const -> usize
   {
     return (0u + ... + (get_sink<Events>().function() ? 1u : 0u));
   }
 
   /// Returns the total number of subscribed events.
-  [[nodiscard]] constexpr static auto size() noexcept -> std::size_t
-  {
-    return sizeof...(Events);
-  }
+  [[nodiscard]] constexpr static auto size() noexcept -> usize { return sizeof...(Events); }
 
  private:
   cen::event_handler mEvent;

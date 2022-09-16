@@ -76,16 +76,16 @@ auto make_surface(basic_window<T>& window,
 }
 
 /// Returns the extensions required to create a Vulkan surface.
-inline auto required_extensions() -> std::optional<std::vector<const char*>>
+inline auto required_extensions() -> maybe<std::vector<const char*>>
 {
   uint count{};
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr)) {
-    return std::nullopt;
+    return nothing;
   }
 
   std::vector<const char*> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data())) {
-    return std::nullopt;
+    return nothing;
   }
 
   return names;

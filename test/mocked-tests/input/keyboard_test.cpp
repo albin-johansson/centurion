@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019-2022 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "centurion/keyboard.hpp"
 
 #include <fff.h>
@@ -9,6 +33,10 @@ extern "C"
 {
   FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  FAKE_VOID_FUNC(SDL_ResetKeyboard)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
 TEST(Keyboard, Constructor)
@@ -26,3 +54,13 @@ TEST(Keyboard, HasScreenKeyboard)
   ASSERT_TRUE(cen::has_screen_keyboard());
   ASSERT_EQ(2u, SDL_HasScreenKeyboardSupport_fake.call_count);
 }
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+TEST(Keyboard, ResetKeyboard)
+{
+  cen::keyboard::reset();
+  ASSERT_EQ(1u, SDL_ResetKeyboard_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)

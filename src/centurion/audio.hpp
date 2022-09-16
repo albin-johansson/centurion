@@ -32,7 +32,7 @@
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
-#include <optional>  // optional
+#include <optional>  // optional, nullopt
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
@@ -168,14 +168,14 @@ class music final
 
   explicit music(const std::string& file) : music{file.c_str()} {}
 
-  auto play(const int iterations = 0) noexcept -> std::optional<channel_index>
+  auto play(const int iterations = 0) noexcept -> maybe<channel_index>
   {
     const auto channel = Mix_PlayMusic(mMusic.get(), detail::max(iterations, forever));
     if (channel != -1) {
       return channel;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -277,6 +277,95 @@ class music final
   {
     return static_cast<music_type>(Mix_GetMusicType(mMusic.get()));
   }
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+  [[nodiscard]] static auto current_title() noexcept -> const char*
+  {
+    return Mix_GetMusicTitle(nullptr);
+  }
+
+  [[nodiscard]] auto title() const noexcept -> const char*
+  {
+    return Mix_GetMusicTitle(mMusic.get());
+  }
+
+  [[nodiscard]] auto title_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicTitleTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto artist_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicArtistTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto album_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicAlbumTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto copyright_tag() const noexcept -> const char*
+  {
+    return Mix_GetMusicCopyrightTag(mMusic.get());
+  }
+
+  [[nodiscard]] auto position() const noexcept -> maybe<double>
+  {
+    const auto pos = Mix_GetMusicPosition(mMusic.get());
+    if (pos != -1) {
+      return pos;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+  [[nodiscard]] auto duration() const noexcept -> maybe<double>
+  {
+    const auto duration = Mix_MusicDuration(mMusic.get());
+    if (duration != -1) {
+      return duration;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+  [[nodiscard]] auto loop_start_time() const noexcept -> maybe<double>
+  {
+    const auto start = Mix_GetMusicLoopStartTime(mMusic.get());
+    if (start != -1) {
+      return start;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+  [[nodiscard]] auto loop_end_time() const noexcept -> maybe<double>
+  {
+    const auto end = Mix_GetMusicLoopEndTime(mMusic.get());
+    if (end != -1) {
+      return end;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+  [[nodiscard]] auto loop_length() const noexcept -> maybe<double>
+  {
+    const auto length = Mix_GetMusicLoopLengthTime(mMusic.get());
+    if (length != -1) {
+      return length;
+    }
+    else {
+      return nothing;
+    }
+  }
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 
   [[nodiscard]] auto get() const noexcept -> Mix_Music* { return mMusic.get(); }
 
@@ -414,13 +503,13 @@ class basic_sound_effect final
     return is_playing() && Mix_FadingChannel(mChannel);
   }
 
-  [[nodiscard]] auto channel() const noexcept -> std::optional<channel_index>
+  [[nodiscard]] auto channel() const noexcept -> maybe<channel_index>
   {
     if (mChannel != undefined_channel) {
       return mChannel;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -452,6 +541,14 @@ class basic_sound_effect final
   }
 
   [[nodiscard]] auto get() const noexcept -> Mix_Chunk* { return mChunk.get(); }
+
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+  static void set_master_volume(const int volume) noexcept { Mix_MasterVolume(volume); }
+
+  [[nodiscard]] static auto master_volume() noexcept -> int { return Mix_MasterVolume(-1); }
+
+#endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 
  private:
   detail::pointer<T, Mix_Chunk> mChunk;

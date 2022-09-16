@@ -104,7 +104,7 @@ class basic_sensor final
 {
  public:
   using device_index = int;
-  using size_type = std::size_t;
+  using size_type = usize;
 
   template <size_type Size>
   using data_type = std::array<float, Size>;
@@ -158,60 +158,59 @@ class basic_sensor final
     return static_cast<sensor_type>(SDL_SensorGetDeviceType(index));
   }
 
-  [[nodiscard]] auto non_portable_type() const noexcept -> std::optional<int>
+  [[nodiscard]] auto non_portable_type() const noexcept -> maybe<int>
   {
     const auto type = SDL_SensorGetNonPortableType(mSensor);
     if (type != -1) {
       return type;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] static auto non_portable_type(const device_index index) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto non_portable_type(const device_index index) noexcept -> maybe<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
     if (type != -1) {
       return type;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] auto id() const noexcept -> std::optional<sensor_id>
+  [[nodiscard]] auto id() const noexcept -> maybe<sensor_id>
   {
     const auto id = SDL_SensorGetInstanceID(mSensor);
     if (id != -1) {
       return id;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
-  [[nodiscard]] static auto id(const device_index index) noexcept -> std::optional<sensor_id>
+  [[nodiscard]] static auto id(const device_index index) noexcept -> maybe<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
     if (id != -1) {
       return id;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
   template <size_type Size>
-  [[nodiscard]] auto data() const noexcept -> std::optional<data_type<Size>>
+  [[nodiscard]] auto data() const noexcept -> maybe<data_type<Size>>
   {
     data_type<Size> array{};
     if (SDL_SensorGetData(mSensor, array.data(), isize(array)) != -1) {
       return array;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 

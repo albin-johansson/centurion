@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019-2022 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "centurion/joystick.hpp"
 
 #include <fff.h>
@@ -77,11 +101,18 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumble, SDL_Joystick*)
   FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumbleTriggers, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickPath, SDL_Joystick*)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickPathForIndex, int)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetFirmwareVersion, SDL_Joystick*)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
 using namespace cen::literals;
 
-class JoystickTest : public testing::Test {
+class JoystickTest : public testing::Test
+{
  protected:
   void SetUp() override
   {
@@ -149,8 +180,15 @@ class JoystickTest : public testing::Test {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-    RESET_FAKE(SDL_JoystickHasRumble) RESET_FAKE(SDL_JoystickHasRumbleTriggers)
+    RESET_FAKE(SDL_JoystickHasRumble)
+    RESET_FAKE(SDL_JoystickHasRumbleTriggers)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+    RESET_FAKE(SDL_JoystickPath)
+    RESET_FAKE(SDL_JoystickPathForIndex)
+    RESET_FAKE(SDL_JoystickGetFirmwareVersion)
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)
   }
 
   cen::joystick_handle joystick{nullptr};
@@ -556,3 +594,30 @@ TEST_F(JoystickTest, HasRumbleTriggers)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+
+TEST_F(JoystickTest, Path)
+{
+  const char* path [[maybe_unused]] = joystick.path();
+  ASSERT_EQ(1u, SDL_JoystickPath_fake.call_count);
+}
+
+TEST_F(JoystickTest, PathForIndex)
+{
+  const char* path [[maybe_unused]] = cen::joystick::path(0);
+  ASSERT_EQ(1u, SDL_JoystickPathForIndex_fake.call_count);
+}
+
+TEST_F(JoystickTest, FirmwareVersion)
+{
+  std::array<Uint16, 2> values{0, 42};
+  SET_RETURN_SEQ(SDL_JoystickGetFirmwareVersion, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(joystick.firmware_version().has_value());
+  ASSERT_EQ(42, joystick.firmware_version());
+
+  ASSERT_EQ(2u, SDL_JoystickGetFirmwareVersion_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 24, 0)

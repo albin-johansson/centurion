@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019-2022 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "centurion/version.hpp"
 
 #include <gtest/gtest.h>
@@ -5,12 +29,12 @@
 TEST(Version, CurrentVersion)
 {
   ASSERT_EQ(7, CENTURION_VERSION_MAJOR);
-  ASSERT_EQ(1, CENTURION_VERSION_MINOR);
+  ASSERT_EQ(2, CENTURION_VERSION_MINOR);
   ASSERT_EQ(0, CENTURION_VERSION_PATCH);
 
   const auto version = cen::current_version();
   ASSERT_EQ(7, version.major);
-  ASSERT_EQ(1, version.minor);
+  ASSERT_EQ(2, version.minor);
   ASSERT_EQ(0, version.patch);
 }
 
@@ -24,6 +48,7 @@ TEST(Version, VersionAtLeast)
   ASSERT_TRUE(cen::version_at_least(CENTURION_VERSION_MAJOR,
                                     CENTURION_VERSION_MINOR,
                                     CENTURION_VERSION_PATCH));
+  ASSERT_TRUE(cen::version_at_least(7, 1, 0));
   ASSERT_TRUE(cen::version_at_least(7, 0, 0));
   ASSERT_TRUE(cen::version_at_least(6, 3, 1));
   ASSERT_TRUE(cen::version_at_least(6, 3, 0));

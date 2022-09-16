@@ -355,13 +355,13 @@ class basic_window final
     return SDL_SetWindowMouseRect(mWindow, rect.data()) == 0;
   }
 
-  [[nodiscard]] auto mouse_rect() const noexcept -> std::optional<irect>
+  [[nodiscard]] auto mouse_rect() const noexcept -> maybe<irect>
   {
     if (const auto* rect = SDL_GetWindowMouseRect(mWindow)) {
       return irect{*rect};
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -383,14 +383,14 @@ class basic_window final
 
   [[nodiscard]] auto id() const noexcept -> uint32 { return SDL_GetWindowID(mWindow); }
 
-  [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
+  [[nodiscard]] auto display_index() const noexcept -> maybe<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(mWindow);
     if (index != -1) {
       return index;
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 
@@ -410,18 +410,18 @@ class basic_window final
   {
     using data_type = std::unique_ptr<void, detail::sdl_deleter>;
 
-    data_type data;      ///< Pointer to the raw ICC profile data.
-    std::size_t size{};  ///< The size of the raw data, in bytes.
+    data_type data;  ///< Pointer to the raw ICC profile data.
+    usize size{};    ///< The size of the raw data, in bytes.
   };
 
-  [[nodiscard]] auto icc_profile() const noexcept -> std::optional<icc_profile_data>
+  [[nodiscard]] auto icc_profile() const noexcept -> maybe<icc_profile_data>
   {
-    std::size_t size{};
+    usize size{};
     if (auto* icc = SDL_GetWindowICCProfile(get(), &size)) {
       return icc_profile_data{icc, size};
     }
     else {
-      return std::nullopt;
+      return nothing;
     }
   }
 

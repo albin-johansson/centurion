@@ -149,6 +149,8 @@ class basic_surface final
 
   auto operator=(basic_surface&& other) noexcept -> basic_surface& = default;
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const char* file,
                                         const blend_mode mode,
@@ -169,6 +171,8 @@ class basic_surface final
   {
     return with_format(file.c_str(), mode, format);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const char* file) -> surface

@@ -129,11 +129,11 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -GNinja \
-                   -DCMAKE_BUILD_TYPE=Debug \
-                   -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
-                   -DBUILD_TESTS=ON \
-                   -DBUILD_EXAMPLES=ON \
+          cmake .. -GNinja `
+                   -DCMAKE_BUILD_TYPE=Debug `
+                   -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} `
+                   -DBUILD_TESTS=ON `
+                   -DBUILD_EXAMPLES=ON
 
       - name: Build
         run: ninja -C build

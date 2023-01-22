@@ -38,13 +38,14 @@ jobs:
         run: |
           sudo apt update
           sudo apt install ninja-build \
+                           xvfb \
                            libegl1-mesa-dev \
                            libgles2-mesa-dev \
                            libasound2-dev \
                            libpulse-dev \
                            libsdl2-image-dev \
                            libsdl2-mixer-dev \
-                           libsdl2-ttf-dev \
+                           libsdl2-ttf-dev
 
       - name: Restore Vcpkg
         id: restore-vcpkg-and-artifacts
@@ -79,7 +80,8 @@ jobs:
       - name: Build SDL2
         if: steps.restore-sdl2.outputs.cache-hit != 'true'
         run: |
-          curl -L https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz | tar xz
+          wget https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz
+          tar xz SDL2-2.26.0.tar.gz
           cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
           make -j $(nproc)
@@ -91,7 +93,6 @@ jobs:
 
       - name: Emulate video device
         run: |
-          sudo apt install xvfb
           /sbin/start-stop-daemon --start \
                                   --pidfile /tmp/custom_xvfb_99.pid \
                                   --make-pidfile \

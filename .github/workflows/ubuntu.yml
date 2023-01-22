@@ -105,9 +105,9 @@ jobs:
           cmake .. -GNinja \
                    -DCMAKE_BUILD_TYPE=Debug \
                    -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
-                   -DCEN_TESTS=ON \
-                   -DCEN_EXAMPLES=ON \
-                   -DCEN_AUDIO=OFF
+                   -DBUILD_TESTS=ON \
+                   -DBUILD_EXAMPLES=ON \
+                   -DINCLUDE_AUDIO_TESTS=OFF
 
       - name: Build
         run: ninja -C build

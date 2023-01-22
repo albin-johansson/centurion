@@ -29,7 +29,7 @@
 
 int main(int argc, char* argv[])
 {
-#ifdef CEN_AUDIO
+#ifdef CENTURION_INCLUDE_AUDIO_TESTS
   const cen::sdl sdl;
   const cen::mix mix;
 #else

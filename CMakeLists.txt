@@ -9,52 +9,47 @@ project(centurion
         HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
         LANGUAGES CXX)
 
-set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
-message("[centurion]: version ${CENTURION_VERSION}")
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
-if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
-  message("[centurion]: no explicit C++ version specified")
+if (${CMAKE_CXX_STANDARD} STREQUAL "")
   set(CMAKE_CXX_STANDARD 17)
 endif ()
 
-message("[centurion]: using C++ standard... ${CMAKE_CXX_STANDARD}")
-message("[centurion]: compiler is... ${CMAKE_CXX_COMPILER}")
-message("[centurion]: compiler identifier is... ${CMAKE_CXX_COMPILER_ID}")
-
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
+message("[centurion]: version ${CENTURION_VERSION}")
+
+message("[centurion]: CMAKE_CXX_STANDARD is '${CMAKE_CXX_STANDARD}'")
+message("[centurion]: CMAKE_CXX_COMPILER is '${CMAKE_CXX_COMPILER}'")
+message("[centurion]: CMAKE_CXX_COMPILER_ID is '${CMAKE_CXX_COMPILER_ID}'")
 
 include(Utilities)
 
+# Directories
 set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")
 set(CEN_RESOURCES_DIR "${PROJECT_SOURCE_DIR}/test/resources")
 set(CEN_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 set(CEN_BINARIES_DIR "${PROJECT_SOURCE_DIR}/bin")
 
+# Target names
 set(CENTURION_LIB_TARGET libcenturion)
 set(CENTURION_TEST_TARGET testcenturion)
 set(CENTURION_MOCK_TARGET mockcenturion)
 
-option(CEN_COVERAGE "Enable coverage data" OFF)
-option(CEN_TESTS "Build the Centurion tests" OFF)
-option(CEN_EXAMPLES "Build the examples" OFF)
+# Build options
+option(BUILD_TESTS "Build the test suite" OFF)
+option(BUILD_EXAMPLES "Build the examples" OFF)
+option(INCLUDE_AUDIO_TESTS "Test audio components" ON)
 
-option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
-
+# System dependencies
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-if (CEN_COVERAGE)
-  include(CodeCoverage)
-  append_coverage_compiler_flags()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
-endif ()
-
-if (CEN_TESTS)
+if (BUILD_TESTS)
+  # Vcpkg test dependencies
   find_package(GTest CONFIG REQUIRED)
   find_package(cereal CONFIG REQUIRED)
   find_package(GLEW REQUIRED)
@@ -62,6 +57,6 @@ if (CEN_TESTS)
   add_subdirectory(test)
 endif ()
 
-if (CEN_EXAMPLES)
+if (BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif ()

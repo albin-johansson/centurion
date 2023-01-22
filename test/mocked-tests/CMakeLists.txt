@@ -11,6 +11,9 @@ set(SOURCE_FILES
     thread_mocks.hpp
     thread_mocks.cpp
 
+    audio/music_test.cpp
+    audio/sound_effect_test.cpp
+
     common/initialization_test.cpp
 
     concurrency/condition_test.cpp
@@ -53,18 +56,9 @@ set(SOURCE_FILES
     video/vulkan/vk_library_test.cpp
     )
 
-if (CENTURION_MOCK_FRIENDLY_MODE)
-  list(APPEND SOURCE_FILES
-       audio/music_test.cpp
-       audio/sound_effect_test.cpp
-       )
-endif ()
-
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
 
-if (CENTURION_MOCK_FRIENDLY_MODE)
-  target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
-endif ()
+target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 
 add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
 

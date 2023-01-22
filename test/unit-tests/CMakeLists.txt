@@ -186,7 +186,7 @@ set(SOURCE_FILES
     video/window/window_handle_test.cpp
     )
 
-if (CEN_AUDIO)
+if (INCLUDE_AUDIO_TESTS)
   list(APPEND
        SOURCE_FILES
        audio/fade_status_test.cpp
@@ -231,8 +231,8 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
                          )
 endif ()
 
-if (CEN_AUDIO)
-  target_compile_definitions(${CENTURION_TEST_TARGET} PRIVATE CEN_AUDIO)
+if (INCLUDE_AUDIO_TESTS)
+  target_compile_definitions(${CENTURION_TEST_TARGET} PRIVATE CENTURION_INCLUDE_AUDIO_TESTS)
 endif ()
 
 target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE

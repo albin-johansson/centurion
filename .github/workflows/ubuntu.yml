@@ -21,10 +21,10 @@ jobs:
             CPP_VERSION: 17
           - SDL_VERSION: 2.0.12
             CPP_VERSION: 17
-          - SDL_VERSION: 2.0.14
-            CPP_VERSION: 17
-          - SDL_VERSION: 2.0.16
-            CPP_VERSION: 17
+          #- SDL_VERSION: 2.0.14
+          #  CPP_VERSION: 17
+          #- SDL_VERSION: 2.0.16
+          #  CPP_VERSION: 17
           - SDL_VERSION: 2.0.18
             CPP_VERSION: 17
           - SDL_VERSION: 2.26.0

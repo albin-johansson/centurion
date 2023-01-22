@@ -22,7 +22,7 @@ int main(int, char**)
   }
 
   if (button == yes) {
-    /* If all you need is a simple message box, you can use the static show functions. */
+    // If all you need is a simple message box, you can use the static show functions.
     cen::message_box::show("This is a simple message box",
                            "I was opened with a single line of code!",
                            cen::message_box_type::information);

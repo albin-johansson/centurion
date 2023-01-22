@@ -27,7 +27,7 @@ jobs:
             CPP_VERSION: 17
           - SDL_VERSION: 2.0.18
             CPP_VERSION: 17
-          - SDL_VERSION: 2.0.26
+          - SDL_VERSION: 2.26.0
             CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main

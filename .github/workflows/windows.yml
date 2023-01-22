@@ -48,7 +48,7 @@ jobs:
             MIX_VERSION: 2.0.4
             CPP_VERSION: 17
 
-          - SDL_VERSION: 2.0.24
+          - SDL_VERSION: 2.24.0
             TTF_VERSION: 2.0.18
             IMG_VERSION: 2.0.5
             MIX_VERSION: 2.0.4

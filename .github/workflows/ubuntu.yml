@@ -54,6 +54,7 @@ jobs:
                            libxi-dev \
                            libxss-dev \
                            libwayland-dev \
+                           libwayland-client0 \
                            libxkbcommon-dev \
                            libdrm-dev \
                            libgbm-dev \

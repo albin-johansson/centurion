@@ -72,12 +72,6 @@ target_include_directories(${CENTURION_MOCK_TARGET}
                            PRIVATE
                            ${PROJECT_SOURCE_DIR}
                            ${CEN_SOURCE_DIR}
-
-                           SYSTEM PRIVATE
-                           ${gtest_SOURCE_DIR}/include
-                           ${gtest_SOURCE_DIR}
-                           ${gmock_SOURCE_DIR}/include
-                           ${gmock_SOURCE_DIR}
                            )
 
 cen_include_sdl_headers(${CENTURION_MOCK_TARGET})
@@ -85,7 +79,7 @@ cen_link_sdl_libs(${CENTURION_MOCK_TARGET})
 
 target_link_libraries(${CENTURION_MOCK_TARGET}
                       PRIVATE
-                      gtest
+                      GTest::gtest
                       libFFF)
 
 cen_set_basic_compiler_options(${CENTURION_MOCK_TARGET})

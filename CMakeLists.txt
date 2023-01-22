@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 
+if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+endif ()
+
 project(centurion
         VERSION 7.3.0
         HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
@@ -22,7 +26,6 @@ message("[centurion]: compiler identifier is... ${CMAKE_CXX_COMPILER_ID}")
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 
-include(Dependencies)
 include(Utilities)
 
 set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")
@@ -52,6 +55,10 @@ if (CEN_COVERAGE)
 endif ()
 
 if (CEN_TESTS)
+  find_package(GTest CONFIG REQUIRED)
+  find_package(cereal CONFIG REQUIRED)
+  find_package(GLEW REQUIRED)
+
   add_subdirectory(test)
 endif ()
 

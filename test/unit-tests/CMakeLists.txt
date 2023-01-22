@@ -202,20 +202,18 @@ target_include_directories(${CENTURION_TEST_TARGET}
                            PRIVATE
                            ${PROJECT_SOURCE_DIR}
                            ${CEN_SOURCE_DIR}
-
-                           SYSTEM PRIVATE
-                           ${gtest_SOURCE_DIR}/include
-                           ${gtest_SOURCE_DIR}
-                           ${gmock_SOURCE_DIR}/include
-                           ${gmock_SOURCE_DIR}
-                           ${CEN_LIBRARY_DIR}/cereal
                            )
 
 cen_include_sdl_headers(${CENTURION_TEST_TARGET})
 
 cen_link_sdl_libs(${CENTURION_TEST_TARGET})
 
-target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE gtest)
+target_link_libraries(${CENTURION_TEST_TARGET}
+                      PRIVATE
+                      cereal::cereal
+                      GLEW::GLEW
+                      GTest::gtest
+                      )
 
 cen_set_basic_compiler_options(${CENTURION_TEST_TARGET})
 

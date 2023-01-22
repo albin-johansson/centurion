@@ -3,7 +3,8 @@ name: "CI: Ubuntu"
 on: [ push ]
 
 env:
-  SDL_LATEST: 2.24.0
+  VCPKG_ROOT: ${{github.workspace}}/vcpkg
+  VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
   SDL_VIDEODRIVER: x11
   DISPLAY: :99.0
 
@@ -13,7 +14,7 @@ jobs:
     if: contains(github.event.head_commit.message, '[skip-ci]') == false
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.18, 2.0.20, 2.0.22, 2.24.0 ]
+        SDL_VERSION: [ 2.0.20, 2.0.22, 2.24.0, 2.26.0 ]
         CPP_VERSION: [ 17, 20 ]
         include:
           - SDL_VERSION: 2.0.10
@@ -24,110 +25,97 @@ jobs:
             CPP_VERSION: 17
           - SDL_VERSION: 2.0.16
             CPP_VERSION: 17
-          - SDL_VERSION: 2.0.22
+          - SDL_VERSION: 2.0.18
+            CPP_VERSION: 17
+          - SDL_VERSION: 2.0.26
             CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: lukka/get-cmake@latest
 
-      - name: Update packages
-        shell: bash
-        run: sudo apt update
-
-      - name: Install graphics drivers
-        shell: bash
-        run: sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
-
-      - name: Install code coverage tools
-        if: ${{ matrix.SDL_VERSION == env.SDL_LATEST && matrix.CPP_VERSION == '20' }}
-        shell: bash
+      - name: Install system dependencies
         run: |
-          sudo apt-get install -y libjson-perl
+          sudo apt update
+          sudo apt install ninja-build \
+                           libegl1-mesa-dev \
+                           libgles2-mesa-dev \
+                           libasound2-dev \
+                           libpulse-dev \
+                           libsdl2-image-dev \
+                           libsdl2-mixer-dev \
+                           libsdl2-ttf-dev \
 
-          # Manually builds latest LCOV
-          git clone https://github.com/linux-test-project/lcov.git lcov
-          cd lcov
-          sudo make install
-          cd ..
+      - name: Restore Vcpkg
+        id: restore-vcpkg-and-artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{env.VCPKG_ROOT}}
+            !${{env.VCPKG_ROOT}}/buildtrees
+            !${{env.VCPKG_ROOT}}/packages
+            !${{env.VCPKG_ROOT}}/downloads
+            !${{env.VCPKG_ROOT}}/installed
+          key: centurion-ubuntu-vcpkg-${{hashFiles('vcpkg.json')}}
 
-      - name: Emulate video device
-        shell: bash
+      - name: Install Vcpkg
+        if: steps.restore-vcpkg-and-artifacts.outputs.cache-hit != 'true'
         run: |
-          sudo apt install xvfb
-          /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
-          sleep 3
+          git clone https://github.com/microsoft/vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+          sudo ./vcpkg/vcpkg integrate install
 
-      - name: Cache SDL2
-        id: cache-sdl2
+      - name: Create Vcpkg binary cache directory
+        if: steps.restore-vcpkg-and-artifacts.outputs.cache-hit != 'true'
+        run: mkdir ${{env.VCPKG_DEFAULT_BINARY_CACHE}}
+
+      - name: Restore SDL2
+        id: restore-sdl2
         uses: actions/cache@main
         with:
           path: SDL2-${{matrix.SDL_VERSION}}
           key: SDL2-${{matrix.SDL_VERSION}}
 
       - name: Build SDL2
-        shell: bash
-        if: steps.cache-sdl2.outputs.cache-hit != 'true'
+        if: steps.restore-sdl2.outputs.cache-hit != 'true'
         run: |
           curl -L https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz | tar xz
           cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
-          make -j 8
+          make -j $(nproc)
 
       - name: Install SDL2
-        shell: bash
         run: |
           cd SDL2-${{matrix.SDL_VERSION}}
           sudo make install
 
-      - name: Install SDL2_image
-        shell: bash
-        run: sudo apt install libsdl2-image-dev
-
-      - name: Install SDL2_mixer
-        shell: bash
-        run: sudo apt install libsdl2-mixer-dev
-
-      - name: Install SDL2_ttf
-        shell: bash
-        run: sudo apt install libsdl2-ttf-dev
-
-      - name: Create build directory
-        shell: bash
-        run: mkdir -p build
+      - name: Emulate video device
+        run: |
+          sudo apt install xvfb
+          /sbin/start-stop-daemon --start \
+                                  --pidfile /tmp/custom_xvfb_99.pid \
+                                  --make-pidfile \
+                                  --background \
+                                  --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
+          sleep 3
 
       - name: Generate build files
-        working-directory: ./build
-        shell: bash
         run: |
-          if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" && "${{matrix.CPP_VERSION}}" == "20" ]];
-          then
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -DCEN_EXAMPLES=ON -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -GNinja
-          else
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -DCEN_AUDIO=OFF -GNinja
-          fi
+          mkdir build && cd build
+          cmake .. -GNinja \
+                   -DCMAKE_BUILD_TYPE=Debug \
+                   -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
+                   -DCEN_TESTS=ON \
+                   -DCEN_EXAMPLES=ON \
+                   -DCEN_AUDIO=OFF
 
       - name: Build
-        working-directory: ./build
-        shell: bash
-        run: ninja
+        run: ninja -C build
 
-      - name: Run mocked test suite
+      - name: Run mocked tests
         working-directory: ./build/test/mocked-tests
-        shell: bash
         run: ./mockcenturion
 
       - name: Run unit tests
         working-directory: ./build/test/unit-tests
-        shell: bash
         run: ./testcenturion
-
-      - name: Capture code coverage
-        if: ${{matrix.SDL_VERSION == env.SDL_LATEST && matrix.CPP_VERSION == '20' }}
-        working-directory: ./build
-        shell: bash
-        run: |
-          lcov --directory . --capture --output-file coverage.info --gcov-tool gcov-9
-          lcov --remove coverage.info '*/test/*' '*/lib/*' '/usr/*' --output-file coverage.info
-          lcov --list coverage.info
-          bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

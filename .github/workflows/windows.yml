@@ -2,13 +2,17 @@ name: "CI: Windows"
 
 on: [ push ]
 
+env:
+  VCPKG_ROOT: ${{github.workspace}}/vcpkg
+  VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
+
 jobs:
   windows-latest-test:
     runs-on: windows-latest
     if: contains(github.event.head_commit.message, '[skip-ci]') == false
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.18, 2.0.20, 2.0.22, 2.24.0 ]
+        SDL_VERSION: [ 2.0.20, 2.0.22, 2.24.0, 2.26.0 ]
         TTF_VERSION: [ 2.0.15 ]
         IMG_VERSION: [ 2.0.5 ]
         MIX_VERSION: [ 2.0.4 ]
@@ -38,24 +42,53 @@ jobs:
             MIX_VERSION: 2.0.4
             CPP_VERSION: 17
 
-          - SDL_VERSION: 2.0.22
+          - SDL_VERSION: 2.0.18
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.24
             TTF_VERSION: 2.0.18
             IMG_VERSION: 2.0.5
             MIX_VERSION: 2.0.4
             CPP_VERSION: 20
 
-          - SDL_VERSION: 2.24.0
+          - SDL_VERSION: 2.26.0
             TTF_VERSION: 2.0.18
             IMG_VERSION: 2.0.5
             MIX_VERSION: 2.0.4
             CPP_VERSION: 23
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1.11.0
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: lukka/get-cmake@latest
 
-      - name: Create binaries directory
+      - name: Restore Vcpkg
+        id: restore-vcpkg-and-artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{env.VCPKG_ROOT}}
+            !${{env.VCPKG_ROOT}}\buildtrees
+            !${{env.VCPKG_ROOT}}\packages
+            !${{env.VCPKG_ROOT}}\downloads
+            !${{env.VCPKG_ROOT}}\installed
+          key: centurion-windows-vcpkg-${{hashFiles('vcpkg.json')}}
+
+      - name: Install Vcpkg
+        if: steps.restore-vcpkg-and-artifacts.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/microsoft/vcpkg
+          .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
+          .\vcpkg\vcpkg integrate install
+
+      - name: Create Vcpkg binary cache directory
+        if: steps.restore-vcpkg-and-artifacts.outputs.cache-hit != 'true'
+        run: mkdir ${{env.VCPKG_DEFAULT_BINARY_CACHE}}
+
+      - name: Create binary directory
         shell: cmd
         run: mkdir bin
 
@@ -87,19 +120,22 @@ jobs:
           sources_destination: .
           binaries_destination: bin
 
-      - name: Create build folder
-        run: cmake -E make_directory ./build
-
-      - name: Build
-        working-directory: ./build
+      - name: Generate build files
         env:
           SDL2DIR: ${{github.workspace}}/SDL2-${{matrix.SDL_VERSION}}
           SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{matrix.IMG_VERSION}}
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{matrix.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{matrix.TTF_VERSION}}
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_TESTS=ON -GNinja
-          ninja
+          mkdir build
+          cd build
+          cmake .. -GNinja \
+                   -DCMAKE_BUILD_TYPE=Debug \
+                   -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
+                   -DCEN_TESTS=ON
+
+      - name: Build
+        run: ninja -C build
 
       - name: Run mocked test suite
         shell: cmd

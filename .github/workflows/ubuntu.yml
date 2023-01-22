@@ -81,7 +81,7 @@ jobs:
         if: steps.restore-sdl2.outputs.cache-hit != 'true'
         run: |
           wget https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz
-          tar xz SDL2-${{matrix.SDL_VERSION}}.tar.gz
+          tar -xvf SDL2-${{matrix.SDL_VERSION}}.tar.gz
           cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
           make -j $(nproc)

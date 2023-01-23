@@ -15,7 +15,7 @@ endif ()
 
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
 message("[centurion]: version ${CENTURION_VERSION}")
@@ -24,7 +24,7 @@ message("[centurion]: CMAKE_CXX_STANDARD is '${CMAKE_CXX_STANDARD}'")
 message("[centurion]: CMAKE_CXX_COMPILER is '${CMAKE_CXX_COMPILER}'")
 message("[centurion]: CMAKE_CXX_COMPILER_ID is '${CMAKE_CXX_COMPILER_ID}'")
 
-include(Utilities)
+include(cmake/centurion.cmake)
 
 # Directories
 set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")

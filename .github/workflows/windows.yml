@@ -11,6 +11,7 @@ jobs:
     runs-on: windows-latest
     if: contains(github.event.head_commit.message, '[skip-ci]') == false
     strategy:
+      fail-fast: false
       matrix:
         SDL_VERSION: [ 2.0.20, 2.0.22, 2.24.0, 2.26.0 ]
         TTF_VERSION: [ 2.0.15 ]

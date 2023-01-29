@@ -50,12 +50,12 @@ TEST(Display, DisplayDPI)
     ASSERT_EQ(diagonal, dpi->diagonal);
     ASSERT_EQ(horizontal, dpi->horizontal);
     ASSERT_EQ(vertical, dpi->vertical);
-  }
 
-  {  // Explicit display index
-    const auto amount = cen::display_count().value();
-    ASSERT_TRUE(cen::display_dpi(amount - 1).has_value());
-    ASSERT_FALSE(cen::display_dpi(amount).has_value());
+    {  // Explicit display index
+      const auto amount = cen::display_count().value();
+      ASSERT_TRUE(cen::display_dpi(amount - 1).has_value());
+      ASSERT_FALSE(cen::display_dpi(amount).has_value());
+    }
   }
 }
 

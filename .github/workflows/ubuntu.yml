@@ -15,20 +15,58 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        SDL_VERSION: [ 2.0.20, 2.0.22, 2.24.0, 2.26.0 ]
+        SDL_VERSION: [ 2.24.0, 2.26.0 ]
+        TTF_VERSION: [ 2.0.15, 2.20.1 ]
+        IMG_VERSION: [ 2.0.5, 2.6.2 ]
+        MIX_VERSION: [ 2.0.4, 2.6.2 ]
         CPP_VERSION: [ 17, 20 ]
         include:
           - SDL_VERSION: 2.0.10
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
             CPP_VERSION: 17
+
           - SDL_VERSION: 2.0.12
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
             CPP_VERSION: 17
-          #- SDL_VERSION: 2.0.14
-          #  CPP_VERSION: 17
-          #- SDL_VERSION: 2.0.16
-          #  CPP_VERSION: 17
-          #- SDL_VERSION: 2.0.18
-          #  CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.14
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.16
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.18
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.20
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.22
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
           - SDL_VERSION: 2.26.0
+            TTF_VERSION: 2.20.1
+            IMG_VERSION: 2.6.2
+            MIX_VERSION: 2.6.2
             CPP_VERSION: 23
     steps:
       - uses: actions/checkout@main
@@ -67,10 +105,7 @@ jobs:
                            libudev-dev \
                            fcitx-libs-dev \
                            libpipewire-0.3-dev \
-                           libdecor-0-dev \
-                           libsdl2-image-dev \
-                           libsdl2-mixer-dev \
-                           libsdl2-ttf-dev
+                           libdecor-0-dev
 
       - name: Restore Vcpkg
         id: restore-vcpkg-and-artifacts
@@ -97,7 +132,7 @@ jobs:
 
       - name: Restore SDL2
         id: restore-sdl2
-        uses: actions/cache@main
+        uses: actions/cache@v3
         with:
           path: SDL2-${{matrix.SDL_VERSION}}
           key: SDL2-${{matrix.SDL_VERSION}}
@@ -114,6 +149,69 @@ jobs:
       - name: Install SDL2
         run: |
           cd SDL2-${{matrix.SDL_VERSION}}
+          sudo make install
+
+      - name: Restore SDL2_image
+        id: restore-sdl2-image
+        uses: actions/cache@v3
+        with:
+          path: SDL_image-release-${{ matrix.IMG_VERSION }}
+          key: SDL_image-${{ matrix.IMG_VERSION }}
+
+      - name: Build SDL2_image
+        if: steps.restore-sdl2-image.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-${{ matrix.IMG_VERSION }}.tar.gz
+          tar -xf release-${{ matrix.IMG_VERSION }}.tar.gz
+          cd SDL_image-release-${{ matrix.IMG_VERSION }}
+          ./configure
+          make -j $(nproc)
+
+      - name: Install SDL2_image
+        run: |
+          cd SDL_image-release-${{ matrix.IMG_VERSION }}
+          sudo make install
+
+      - name: Restore SDL2_mixer
+        id: restore-sdl2-mixer
+        uses: actions/cache@v3
+        with:
+          path: SDL_mixer-release-${{ matrix.MIX_VERSION }}
+          key: SDL2_mixer-${{ matrix.MIX_VERSION }}
+
+      - name: Build SDL2_mixer
+        if: steps.restore-sdl2-mixer.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-${{ matrix.MIX_VERSION }}.tar.gz
+          tar -xf release-${{ matrix.MIX_VERSION }}.tar.gz
+          cd SDL_mixer-release-${{ matrix.MIX_VERSION }}
+          ./configure
+          make -j $(nproc)
+
+      - name: Install SDL2_mixer
+        run: |
+          cd SDL_mixer-release-${{ matrix.MIX_VERSION }}
+          sudo make install
+
+      - name: Restore SDL2_ttf
+        id: restore-sdl2-ttf
+        uses: actions/cache@v3
+        with:
+          path: SDL_ttf-release-${{ matrix.TTF_VERSION }}
+          key: SDL2_ttf-${{ matrix.TTF_VERSION }}
+
+      - name: Build SDL2_ttf
+        if: steps.restore-sdl2-ttf.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/libsdl-org/SDL_ttf/archive/refs/tags/release-${{ matrix.TTF_VERSION }}.tar.gz
+          tar -xf release-${{ matrix.TTF_VERSION }}.tar.gz
+          cd SDL_ttf-release-${{ matrix.TTF_VERSION }}
+          ./configure
+          make -j $(nproc)
+
+      - name: Install SDL2_ttf
+        run: |
+          cd SDL_ttf-release-${{ matrix.TTF_VERSION }}
           sudo make install
 
       - name: Emulate video device

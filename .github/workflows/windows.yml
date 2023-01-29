@@ -13,10 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        SDL_VERSION: [ 2.0.20, 2.0.22, 2.24.0, 2.26.0 ]
-        TTF_VERSION: [ 2.0.15 ]
-        IMG_VERSION: [ 2.0.5 ]
-        MIX_VERSION: [ 2.0.4 ]
+        SDL_VERSION: [ 2.24.0, 2.26.0 ]
+        TTF_VERSION: [ 2.0.15, 2.20.1 ]
+        IMG_VERSION: [ 2.0.5, 2.6.2 ]
+        MIX_VERSION: [ 2.0.4, 2.6.2 ]
         CPP_VERSION: [ 17, 20 ]
         include:
           - SDL_VERSION: 2.0.10
@@ -49,6 +49,18 @@ jobs:
             MIX_VERSION: 2.0.4
             CPP_VERSION: 17
 
+          - SDL_VERSION: 2.0.20
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
+          - SDL_VERSION: 2.0.22
+            TTF_VERSION: 2.0.15
+            IMG_VERSION: 2.0.5
+            MIX_VERSION: 2.0.4
+            CPP_VERSION: 17
+
           - SDL_VERSION: 2.24.0
             TTF_VERSION: 2.0.18
             IMG_VERSION: 2.0.5
@@ -56,9 +68,9 @@ jobs:
             CPP_VERSION: 20
 
           - SDL_VERSION: 2.26.0
-            TTF_VERSION: 2.0.18
-            IMG_VERSION: 2.0.5
-            MIX_VERSION: 2.0.4
+            TTF_VERSION: 2.20.1
+            IMG_VERSION: 2.6.2
+            MIX_VERSION: 2.6.2
             CPP_VERSION: 23
     steps:
       - uses: actions/checkout@v3

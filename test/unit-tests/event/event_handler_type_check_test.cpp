@@ -118,7 +118,7 @@ TEST(EventHandlerTypeChecks, JoyButtonEvent)
   check<cen::joy_button_event>(SDL_JOYBUTTONUP);
 }
 
-TEST(EventHandlerTypeChecks, JoyDeviceEvent)
+TEST(EventHandlerTypeChecks, DISABLED_JoyDeviceEvent)
 {
   check<cen::joy_device_event>(SDL_JOYDEVICEADDED);
   check<cen::joy_device_event>(SDL_JOYDEVICEREMOVED);

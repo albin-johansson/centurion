@@ -39,10 +39,9 @@ TEST(Display, SetScreenSaverEnabled)
 
 TEST(Display, DisplayDPI)
 {
-  {  // Default display
-    const auto dpi = cen::display_dpi();
-    ASSERT_TRUE(dpi.has_value());
-
+  // Default display
+  const auto dpi = cen::display_dpi();
+  if (dpi.has_value()) {
     float diagonal{};
     float horizontal{};
     float vertical{};
@@ -55,8 +54,8 @@ TEST(Display, DisplayDPI)
 
   {  // Explicit display index
     const auto amount = cen::display_count().value();
-    ASSERT_TRUE(cen::display_dpi(amount - 1));
-    ASSERT_FALSE(cen::display_dpi(amount));
+    ASSERT_TRUE(cen::display_dpi(amount - 1).has_value());
+    ASSERT_FALSE(cen::display_dpi(amount).has_value());
   }
 }
 

@@ -141,7 +141,8 @@ jobs:
         if: steps.restore-sdl2.outputs.cache-hit != 'true'
         run: |
           wget https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz
-          tar -xvf SDL2-${{matrix.SDL_VERSION}}.tar.gz
+          tar -xf SDL2-${{matrix.SDL_VERSION}}.tar.gz
+          rm -rf SDL2-${{matrix.SDL_VERSION}}.tar.gz
           cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
           make -j $(nproc)
@@ -163,6 +164,7 @@ jobs:
         run: |
           wget https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-${{ matrix.IMG_VERSION }}.tar.gz
           tar -xf release-${{ matrix.IMG_VERSION }}.tar.gz
+          rm -rf release-${{ matrix.IMG_VERSION }}.tar.gz
           cd SDL_image-release-${{ matrix.IMG_VERSION }}
           ./configure
           make -j $(nproc)
@@ -184,6 +186,7 @@ jobs:
         run: |
           wget https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-${{ matrix.MIX_VERSION }}.tar.gz
           tar -xf release-${{ matrix.MIX_VERSION }}.tar.gz
+          rm -rf release-${{ matrix.MIX_VERSION }}.tar.gz
           cd SDL_mixer-release-${{ matrix.MIX_VERSION }}
           ./configure
           make -j $(nproc)
@@ -205,6 +208,7 @@ jobs:
         run: |
           wget https://github.com/libsdl-org/SDL_ttf/archive/refs/tags/release-${{ matrix.TTF_VERSION }}.tar.gz
           tar -xf release-${{ matrix.TTF_VERSION }}.tar.gz
+          rm -rf release-${{ matrix.TTF_VERSION }}.tar.gz
           cd SDL_ttf-release-${{ matrix.TTF_VERSION }}
           ./configure
           make -j $(nproc)

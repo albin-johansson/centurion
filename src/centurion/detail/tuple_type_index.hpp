@@ -42,14 +42,14 @@ class tuple_type_index<Target, std::tuple<T...>>
 {
  private:
   template <usize... Index>
-  [[nodiscard]] constexpr static auto Find([[maybe_unused]] std::index_sequence<Index...> seq)
+  [[nodiscard]] constexpr static auto find([[maybe_unused]] std::index_sequence<Index...> seq)
       -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? static_cast<int>(Index) + 1 : 0) + ...);
   }
 
  public:
-  inline constexpr static auto value = Find(std::index_sequence_for<T...>{});
+  inline constexpr static auto value = find(std::index_sequence_for<T...>{});
 };
 
 template <typename Target, typename... T>

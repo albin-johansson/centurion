@@ -28,7 +28,7 @@ jobs:
           cd doxygen-${{env.DOXYGEN_VERSION}}
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
-          make
+          make -j $(nproc)
           sudo make install
 
       - name: Generate Doxygen output

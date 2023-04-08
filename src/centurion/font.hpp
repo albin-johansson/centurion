@@ -46,6 +46,7 @@
 #include "common.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
+#include "filesystem.hpp"
 #include "math.hpp"
 #include "memory.hpp"
 #include "render.hpp"
@@ -216,6 +217,20 @@ class font final
 
   font(const std::string& file, const int size) : font{file.c_str(), size} {}
 
+  font(file& file, const int size) : mSize{size}
+  {
+    assert(file.is_ok());
+
+    if (mSize <= 0) {
+      throw exception{"Bad font size!"};
+    }
+
+    mFont.reset(TTF_OpenFontRW(file.data(), 0, mSize));
+    if (!mFont) {
+      throw ttf_error{};
+    }
+  }
+
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
   font(const char* file, const int size, const font_dpi& dpi) : mSize{size}
@@ -235,6 +250,20 @@ class font final
   font(const std::string& file, const int size, const font_dpi& dpi)
       : font{file.c_str(), size, dpi}
   {}
+
+  font(file& file, const int size, const font_dpi& dpi) : mSize{size}
+  {
+    assert(file.is_ok());
+
+    if (mSize <= 0) {
+      throw exception{"Bad font size!"};
+    }
+
+    mFont.reset(TTF_OpenFontDPIRW(file.data(), 0, mSize, dpi.horizontal, dpi.vertical));
+    if (!mFont) {
+      throw ttf_error{};
+    }
+  }
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
@@ -807,6 +836,8 @@ class font_cache final
   font_cache(const char* file, const int size) : mFont{file, size} {}
 
   font_cache(const std::string& file, const int size) : mFont{file, size} {}
+
+  font_cache(file& file, const int size) : mFont{file, size} {}
 
   explicit font_cache(font&& font) noexcept : mFont{std::move(font)} {}
 

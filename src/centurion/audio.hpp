@@ -40,6 +40,7 @@
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
+#include "filesystem.hpp"
 #include "memory.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -167,6 +168,13 @@ class music final
   }
 
   explicit music(const std::string& file) : music{file.c_str()} {}
+
+  explicit music(file& file) : mMusic{Mix_LoadMUS_RW(file.data(), 0)}
+  {
+    if (!mMusic) {
+      throw mix_error{};
+    }
+  }
 
   auto play(const int iterations = 0) noexcept -> maybe<channel_index>
   {
@@ -452,6 +460,14 @@ class basic_sound_effect final
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_sound_effect(const std::string& file) : basic_sound_effect{file.c_str()}
   {}
+
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  explicit basic_sound_effect(file& file) : mChunk{Mix_LoadWAV_RW(file.data(), 0)}
+  {
+    if (!mChunk) {
+      throw mix_error{};
+    }
+  }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit basic_sound_effect(const sound_effect& owner) noexcept : mChunk{owner.get()}

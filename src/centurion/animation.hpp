@@ -44,6 +44,7 @@
 
 #include "common.hpp"
 #include "detail/stdlib.hpp"
+#include "filesystem.hpp"
 #include "math.hpp"
 #include "surface.hpp"
 
@@ -76,6 +77,17 @@ class animation final
   [[nodiscard]] static auto load(const std::string& file) -> animation
   {
     return load(file.c_str());
+  }
+
+  [[nodiscard]] static auto load(file& file) -> animation
+  {
+    assert(file.is_ok());
+    if (auto* ptr = IMG_LoadAnimation_RW(file.data(), 0)) {
+      return animation{ptr};
+    }
+    else {
+      throw img_error{};
+    }
   }
 
   [[nodiscard]] auto at(const usize index) -> surface_handle

@@ -41,6 +41,7 @@
 #include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
+#include "filesystem.hpp"
 #include "input.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
@@ -925,6 +926,18 @@ inline auto load_controller_mappings(const std::string& file) noexcept -> maybe<
 [[nodiscard]] inline auto controller_mapping_count() noexcept -> int
 {
   return SDL_GameControllerNumMappings();
+}
+
+inline auto load_controller_mappings(file& file) noexcept -> maybe<int>
+{
+  assert(file.is_ok());
+  const auto result = SDL_GameControllerAddMappingsFromRW(file.data(), 0);
+  if (result != -1) {
+    return result;
+  }
+  else {
+    return nothing;
+  }
 }
 
 template <typename T>

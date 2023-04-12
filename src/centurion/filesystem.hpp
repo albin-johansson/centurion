@@ -439,6 +439,15 @@ class file final
 
   [[nodiscard]] auto is_ok() const noexcept -> bool { return mContext != nullptr; }
 
+  /**
+    * Obtain ownership of the underlying SDL_RWops handle.
+    *
+    * This makes object unusable and caller must take care to close handle.
+    * Main use case of this function is when third-party library takes ownership
+    * of a file handle, i.e. promises to close it once done.
+    */
+  [[nodiscard]] auto release() noexcept -> SDL_RWops* { return mContext.release(); }
+
   /// Indicates whether the file handle is valid.
   explicit operator bool() const noexcept { return is_ok(); }
 

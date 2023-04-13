@@ -46,6 +46,7 @@
 #include "detail/owner_handle_api.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
+#include "filesystem.hpp"
 #include "math.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
@@ -165,10 +166,10 @@ class basic_renderer final
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  [[nodiscard]] auto make_texture(const char* path) const -> texture
+  [[nodiscard]] auto make_texture(const char* file) const -> texture
   {
-    assert(path);
-    if (auto* ptr = IMG_LoadTexture(get(), path)) {
+    assert(file);
+    if (auto* ptr = IMG_LoadTexture(get(), file)) {
       return texture{ptr};
     }
     else {
@@ -176,9 +177,31 @@ class basic_renderer final
     }
   }
 
-  [[nodiscard]] auto make_texture(const std::string& path) const -> texture
+  [[nodiscard]] auto make_texture(const std::string& file) const -> texture
   {
-    return make_texture(path.c_str());
+    return make_texture(file.c_str());
+  }
+
+  [[nodiscard]] auto make_texture(file& file) const -> texture
+  {
+    assert(file.is_ok());
+    if (auto* ptr = IMG_LoadTexture_RW(get(), file.data(), 0)) {
+      return texture{ptr};
+    }
+    else {
+      throw img_error{};
+    }
+  }
+
+  [[nodiscard]] auto make_texture(file&& file) const -> texture
+  {
+    assert(file.is_ok());
+    if (auto* ptr = IMG_LoadTexture_RW(get(), file.release(), 1)) {
+      return texture{ptr};
+    }
+    else {
+      throw img_error{};
+    }
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE

@@ -442,11 +442,26 @@ class file final
   /**
     * Obtain ownership of the underlying SDL_RWops handle.
     *
-    * This makes object unusable and caller must take care to close handle.
+    * This invalidates object and caller must take care to close handle.
     * Main use case of this function is when third-party library takes ownership
     * of a file handle, i.e. promises to close it once done.
     */
-  [[nodiscard]] auto release() noexcept -> SDL_RWops* { return mContext.release(); }
+  [[nodiscard]] auto release() noexcept -> SDL_RWops*
+  {
+    assert(mContext);
+    return mContext.release();
+  }
+
+  /**
+   * Close the file and invalidate object.
+   *
+   * Unlike destructor, this allows you to check that flushing was successful.
+   */
+  auto close() noexcept -> result
+  {
+    assert(mContext);
+    return SDL_RWclose(release()) == 0;
+  }
 
   /// Indicates whether the file handle is valid.
   explicit operator bool() const noexcept { return is_ok(); }

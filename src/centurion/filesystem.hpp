@@ -445,12 +445,11 @@ class file final
     * This invalidates object and caller must take care to close handle.
     * Main use case of this function is when third-party library takes ownership
     * of a file handle, i.e. promises to close it once done.
+    *
+    * It is allowed to call this on objects which do not manage a handle, which
+    * will simply return `nullptr`.
     */
-  [[nodiscard]] auto release() noexcept -> SDL_RWops*
-  {
-    assert(mContext);
-    return mContext.release();
-  }
+  [[nodiscard]] auto release() noexcept -> SDL_RWops* { return mContext.release(); }
 
   /**
    * Close the file and invalidate object.

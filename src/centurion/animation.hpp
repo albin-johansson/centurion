@@ -90,6 +90,17 @@ class animation final
     }
   }
 
+  [[nodiscard]] static auto load(file&& file) -> animation
+  {
+    assert(file.is_ok());
+    if (auto* ptr = IMG_LoadAnimation_RW(file.release(), 1)) {
+      return animation{ptr};
+    }
+    else {
+      throw img_error{};
+    }
+  }
+
   [[nodiscard]] auto at(const usize index) -> surface_handle
   {
     if (index < count()) {

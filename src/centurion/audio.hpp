@@ -176,6 +176,13 @@ class music final
     }
   }
 
+  explicit music(file&& file) : mMusic{Mix_LoadMUS_RW(file.release(), 1)}
+  {
+    if (!mMusic) {
+      throw mix_error{};
+    }
+  }
+
   auto play(const int iterations = 0) noexcept -> maybe<channel_index>
   {
     const auto channel = Mix_PlayMusic(mMusic.get(), detail::max(iterations, forever));
@@ -463,6 +470,14 @@ class basic_sound_effect final
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_sound_effect(file& file) : mChunk{Mix_LoadWAV_RW(file.data(), 0)}
+  {
+    if (!mChunk) {
+      throw mix_error{};
+    }
+  }
+
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  explicit basic_sound_effect(file&& file) : mChunk{Mix_LoadWAV_RW(file.release(), 1)}
   {
     if (!mChunk) {
       throw mix_error{};

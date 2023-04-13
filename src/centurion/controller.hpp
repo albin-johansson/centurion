@@ -940,6 +940,18 @@ inline auto load_controller_mappings(file& file) noexcept -> maybe<int>
   }
 }
 
+inline auto load_controller_mappings(file&& file) noexcept -> maybe<int>
+{
+  assert(file.is_ok());
+  const auto result = SDL_GameControllerAddMappingsFromRW(file.release(), 1);
+  if (result != -1) {
+    return result;
+  }
+  else {
+    return nothing;
+  }
+}
+
 template <typename T>
 [[nodiscard]] auto to_string(const basic_controller<T>& controller) -> std::string
 {

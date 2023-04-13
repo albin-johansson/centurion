@@ -231,6 +231,20 @@ class font final
     }
   }
 
+  font(file&& file, const int size) : mSize{size}
+  {
+    assert(file.is_ok());
+
+    if (mSize <= 0) {
+      throw exception{"Bad font size!"};
+    }
+
+    mFont.reset(TTF_OpenFontRW(file.release(), 1, mSize));
+    if (!mFont) {
+      throw ttf_error{};
+    }
+  }
+
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
   font(const char* file, const int size, const font_dpi& dpi) : mSize{size}
@@ -260,6 +274,20 @@ class font final
     }
 
     mFont.reset(TTF_OpenFontDPIRW(file.data(), 0, mSize, dpi.horizontal, dpi.vertical));
+    if (!mFont) {
+      throw ttf_error{};
+    }
+  }
+
+  font(file&& file, const int size, const font_dpi& dpi) : mSize{size}
+  {
+    assert(file.is_ok());
+
+    if (mSize <= 0) {
+      throw exception{"Bad font size!"};
+    }
+
+    mFont.reset(TTF_OpenFontDPIRW(file.release(), 1, mSize, dpi.horizontal, dpi.vertical));
     if (!mFont) {
       throw ttf_error{};
     }
@@ -838,6 +866,8 @@ class font_cache final
   font_cache(const std::string& file, const int size) : mFont{file, size} {}
 
   font_cache(file& file, const int size) : mFont{file, size} {}
+
+  font_cache(file&& file, const int size) : mFont{std::move(file), size} {}
 
   explicit font_cache(font&& font) noexcept : mFont{std::move(font)} {}
 

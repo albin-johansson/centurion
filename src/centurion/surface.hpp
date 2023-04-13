@@ -45,6 +45,7 @@
 #include <optional>  // optional, nullopt
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+#include <utility>   // move
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -109,6 +110,14 @@ class basic_surface final
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_surface(file& file) : mSurface{IMG_Load_RW(file.data(), 0)}
+  {
+    if (!mSurface) {
+      throw img_error{};
+    }
+  }
+
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  explicit basic_surface(file&& file) : mSurface{IMG_Load_RW(file.release(), 1)}
   {
     if (!mSurface) {
       throw img_error{};
@@ -194,6 +203,19 @@ class basic_surface final
     return source.convert_to(format);
   }
 
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  [[nodiscard]] static auto with_format(file&& file,
+                                        const blend_mode mode,
+                                        const pixel_format format) -> surface
+  {
+    assert(file.is_ok());
+
+    surface source{std::move(file)};
+    source.set_blend_mode(mode);
+
+    return source.convert_to(format);
+  }
+
 #endif  // CENTURION_NO_SDL_IMAGE
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
@@ -216,6 +238,13 @@ class basic_surface final
     return surface{SDL_LoadBMP_RW(file.data(), 0)};
   }
 
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  [[nodiscard]] static auto from_bmp(file&& file) -> surface
+  {
+    assert(file.is_ok());
+    return surface{SDL_LoadBMP_RW(file.release(), 1)};
+  }
+
   auto save_as_bmp(const char* file) const noexcept -> result
   {
     assert(file);
@@ -231,6 +260,12 @@ class basic_surface final
   {
     assert(file.is_ok());
     return SDL_SaveBMP_RW(get(), file.data(), 0) != -1;
+  }
+
+  auto save_as_bmp(file&& file) const noexcept -> result
+  {
+    assert(file.is_ok());
+    return SDL_SaveBMP_RW(get(), file.release(), 1) != -1;
   }
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -252,6 +287,12 @@ class basic_surface final
     return IMG_SavePNG_RW(get(), file.data(), 0) != -1;
   }
 
+  auto save_as_png(file&& file) const noexcept -> result
+  {
+    assert(file.is_ok());
+    return IMG_SavePNG_RW(get(), file.release(), 1) != -1;
+  }
+
   auto save_as_jpg(const char* file, const int quality) const noexcept -> result
   {
     assert(file);
@@ -267,6 +308,12 @@ class basic_surface final
   {
     assert(file.is_ok());
     return IMG_SaveJPG_RW(get(), file.data(), 0, quality) != -1;
+  }
+
+  auto save_as_jpg(file&& file, const int quality) const noexcept -> result
+  {
+    assert(file.is_ok());
+    return IMG_SaveJPG_RW(get(), file.release(), 1, quality) != -1;
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE

@@ -39,7 +39,9 @@
 #include <SDL_ttf.h>
 #endif  // CENTURION_NO_SDL_TTF
 
+#include <array>        // array
 #include <chrono>       // duration
+#include <cstring>      // strncpy
 #include <cstddef>      // size_t
 #include <exception>    // exception
 #include <memory>       // unique_ptr
@@ -168,12 +170,16 @@ class exception : public std::exception
  public:
   exception() noexcept = default;
 
-  explicit exception(const char* what) noexcept : mWhat{what ? what : "?"} {}
+  explicit exception(const char* what) noexcept
+  {
+    if (what)
+      std::strncpy(mWhat.data(), what, mWhat.size() - 1);
+  }
 
-  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat; }
+  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat.data(); }
 
  private:
-  const char* mWhat{"?"};
+  std::array<char, 128> mWhat{'?'};
 };
 
 class sdl_error final : public exception

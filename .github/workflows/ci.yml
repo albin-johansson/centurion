@@ -1,15 +1,66 @@
-name: "CI: Ubuntu"
+name: "CI"
 
 on: [ push ]
 
-env:
-  VCPKG_ROOT: ${{github.workspace}}/vcpkg
-  VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
-  SDL_VIDEODRIVER: x11
-  DISPLAY: :99.0
-
 jobs:
-  ubuntu-test:
+  macos:
+    runs-on: macos-latest
+    if: contains(github.event.head_commit.message, '[skip-ci]') == false
+    strategy:
+      fail-fast: false
+      matrix:
+        CPP_VERSION: [ 17, 20, 23 ]
+    env:
+      VCPKG_ROOT: ${{github.workspace}}/vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install system dependencies
+        run: |
+          brew update
+          brew install cmake
+          brew install ninja
+          brew install glfw
+          brew install sdl2
+          brew install sdl2_image
+          brew install sdl2_mixer
+          brew install sdl2_ttf
+      - name: Restore Vcpkg artifacts
+        id: restore-vcpkg-artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{env.VCPKG_ROOT}}
+            !${{env.VCPKG_ROOT}}/buildtrees
+            !${{env.VCPKG_ROOT}}/packages
+            !${{env.VCPKG_ROOT}}/downloads
+            !${{env.VCPKG_ROOT}}/installed
+          key: centurion-macos-vcpkg-${{hashFiles('vcpkg.json')}}
+      - name: Install Vcpkg
+        if: steps.restore-vcpkg-artifacts.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/microsoft/vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+          sudo ./vcpkg/vcpkg integrate install
+          mkdir ${{env.VCPKG_DEFAULT_BINARY_CACHE}}
+      - name: Generate build files
+        run: |
+          mkdir build && cd build
+          cmake .. -GNinja \
+                   -DCMAKE_BUILD_TYPE=Debug \
+                   -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
+                   -DBUILD_TESTS=ON \
+                   -DBUILD_EXAMPLES=ON
+      - name: Compile
+        run: ninja -C build
+      - name: Run unit tests
+        working-directory: ./build/test/unit-tests
+        run: ./testcenturion
+      - name: Run mock tests
+        working-directory: ./build/test/mocked-tests
+        run: ./mockcenturion
+
+  ubuntu:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, '[skip-ci]') == false
     strategy:
@@ -29,11 +80,15 @@ jobs:
           - { SDL_VERSION: 2.0.20, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
           - { SDL_VERSION: 2.0.22, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
           - { SDL_VERSION: 2.26.0, TTF_VERSION: 2.20.1, IMG_VERSION: 2.6.2, MIX_VERSION: 2.6.2, CPP_VERSION: 23 }
+    env:
+      VCPKG_ROOT: ${{github.workspace}}/vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
+      SDL_VIDEODRIVER: x11
+      DISPLAY: :99.0
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v3
       - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: lukka/get-cmake@latest
-
       - name: Install system dependencies
         run: |
           sudo apt update
@@ -67,9 +122,8 @@ jobs:
                            libpipewire-0.3-dev \
                            libdecor-0-dev \
                            libfreetype-dev
-
       - name: Restore Vcpkg
-        id: restore-vcpkg-and-artifacts
+        id: restore-vcpkg-artifacts
         uses: actions/cache@v3
         with:
           path: |
@@ -79,25 +133,19 @@ jobs:
             !${{env.VCPKG_ROOT}}/downloads
             !${{env.VCPKG_ROOT}}/installed
           key: centurion-ubuntu-vcpkg-${{hashFiles('vcpkg.json')}}
-
       - name: Install Vcpkg
-        if: steps.restore-vcpkg-and-artifacts.outputs.cache-hit != 'true'
+        if: steps.restore-vcpkg-artifacts.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/microsoft/vcpkg
           ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
           sudo ./vcpkg/vcpkg integrate install
-
-      - name: Create Vcpkg binary cache directory
-        if: steps.restore-vcpkg-and-artifacts.outputs.cache-hit != 'true'
-        run: mkdir ${{env.VCPKG_DEFAULT_BINARY_CACHE}}
-
+          mkdir ${{env.VCPKG_DEFAULT_BINARY_CACHE}}
       - name: Restore SDL2
         id: restore-sdl2
         uses: actions/cache@v3
         with:
           path: SDL2-${{matrix.SDL_VERSION}}
           key: SDL2-${{matrix.SDL_VERSION}}
-
       - name: Build SDL2
         if: steps.restore-sdl2.outputs.cache-hit != 'true'
         run: |
@@ -107,19 +155,16 @@ jobs:
           cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
           make -j $(nproc)
-
       - name: Install SDL2
         run: |
           cd SDL2-${{matrix.SDL_VERSION}}
           sudo make install
-
       - name: Restore SDL2_image
         id: restore-sdl2-image
         uses: actions/cache@v3
         with:
           path: SDL_image-release-${{ matrix.IMG_VERSION }}
           key: SDL_image-${{ matrix.IMG_VERSION }}
-
       - name: Build SDL2_image
         if: steps.restore-sdl2-image.outputs.cache-hit != 'true'
         run: |
@@ -129,19 +174,16 @@ jobs:
           cd SDL_image-release-${{ matrix.IMG_VERSION }}
           ./configure
           make -j $(nproc)
-
       - name: Install SDL2_image
         run: |
           cd SDL_image-release-${{ matrix.IMG_VERSION }}
           sudo make install
-
       - name: Restore SDL2_mixer
         id: restore-sdl2-mixer
         uses: actions/cache@v3
         with:
           path: SDL_mixer-release-${{ matrix.MIX_VERSION }}
           key: SDL2_mixer-${{ matrix.MIX_VERSION }}
-
       - name: Build SDL2_mixer
         if: steps.restore-sdl2-mixer.outputs.cache-hit != 'true'
         run: |
@@ -151,19 +193,16 @@ jobs:
           cd SDL_mixer-release-${{ matrix.MIX_VERSION }}
           ./configure
           make -j $(nproc)
-
       - name: Install SDL2_mixer
         run: |
           cd SDL_mixer-release-${{ matrix.MIX_VERSION }}
           sudo make install
-
       - name: Restore SDL2_ttf
         id: restore-sdl2-ttf
         uses: actions/cache@v3
         with:
           path: SDL_ttf-release-${{ matrix.TTF_VERSION }}
           key: SDL2_ttf-${{ matrix.TTF_VERSION }}
-
       - name: Build SDL2_ttf
         if: steps.restore-sdl2-ttf.outputs.cache-hit != 'true'
         run: |
@@ -173,12 +212,10 @@ jobs:
           cd SDL_ttf-release-${{ matrix.TTF_VERSION }}
           ./configure
           make -j $(nproc)
-
       - name: Install SDL2_ttf
         run: |
           cd SDL_ttf-release-${{ matrix.TTF_VERSION }}
           sudo make install
-
       - name: Emulate video device
         run: |
           /sbin/start-stop-daemon --start \
@@ -187,7 +224,6 @@ jobs:
                                   --background \
                                   --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
           sleep 3
-
       - name: Generate build files
         run: |
           mkdir build && cd build
@@ -197,14 +233,106 @@ jobs:
                    -DBUILD_TESTS=ON \
                    -DBUILD_EXAMPLES=ON \
                    -DINCLUDE_AUDIO_TESTS=OFF
-
-      - name: Build
+      - name: Compile
         run: ninja -C build
-
       - name: Run mocked tests
         working-directory: ./build/test/mocked-tests
         run: ./mockcenturion
-
       - name: Run unit tests
         working-directory: ./build/test/unit-tests
         run: ./testcenturion
+
+  windows:
+    runs-on: windows-latest
+    if: contains(github.event.head_commit.message, '[skip-ci]') == false
+    strategy:
+      fail-fast: false
+      matrix:
+        SDL_VERSION: [ 2.24.0, 2.26.0 ]
+        TTF_VERSION: [ 2.0.15, 2.20.1 ]
+        IMG_VERSION: [ 2.0.5, 2.6.2 ]
+        MIX_VERSION: [ 2.0.4, 2.6.2 ]
+        CPP_VERSION: [ 20 ]
+        include:
+          - { SDL_VERSION: 2.0.10, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.12, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.14, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.16, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.18, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.20, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.22, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.24.0, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.0.4, CPP_VERSION: 20 }
+          - { SDL_VERSION: 2.26.0, TTF_VERSION: 2.20.1, IMG_VERSION: 2.6.2, MIX_VERSION: 2.6.2, CPP_VERSION: 23 }
+    env:
+      VCPKG_ROOT: ${{github.workspace}}/vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1.11.0
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      - uses: lukka/get-cmake@latest
+      - name: Restore Vcpkg
+        id: restore-vcpkg-artifacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{env.VCPKG_ROOT}}
+            !${{env.VCPKG_ROOT}}\buildtrees
+            !${{env.VCPKG_ROOT}}\packages
+            !${{env.VCPKG_ROOT}}\downloads
+            !${{env.VCPKG_ROOT}}\installed
+          key: centurion-windows-vcpkg-${{hashFiles('vcpkg.json')}}
+      - name: Install Vcpkg
+        if: steps.restore-vcpkg-artifacts.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/microsoft/vcpkg
+          .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
+          .\vcpkg\vcpkg integrate install
+          mkdir ${{env.VCPKG_DEFAULT_BINARY_CACHE}}
+      - name: Create directory for binaries
+        shell: cmd
+        run: mkdir bin
+      - name: Download SDL2
+        uses: albin-johansson/download-sdl2@latest
+        with:
+          version: ${{matrix.SDL_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
+      - name: Download SDL2_image
+        uses: albin-johansson/download-sdl2-image@latest
+        with:
+          version: ${{matrix.IMG_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
+      - name: Download SDL2_ttf
+        uses: albin-johansson/download-sdl2-ttf@latest
+        with:
+          version: ${{matrix.TTF_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
+      - name: Download SDL2_mixer
+        uses: albin-johansson/download-sdl2-mixer@latest
+        with:
+          version: ${{matrix.MIX_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
+      - name: Generate build files
+        env:
+          SDL2DIR: ${{github.workspace}}/SDL2-${{matrix.SDL_VERSION}}
+          SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{matrix.IMG_VERSION}}
+          SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{matrix.MIX_VERSION}}
+          SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{matrix.TTF_VERSION}}
+        run: |
+          mkdir build
+          cd build
+          cmake .. -GNinja `
+                   -DCMAKE_BUILD_TYPE=Debug `
+                   -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} `
+                   -DBUILD_TESTS=ON `
+                   -DBUILD_EXAMPLES=ON
+      - name: Compile
+        run: ninja -C build
+      - name: Run mocked tests
+        shell: cmd
+        working-directory: ./build/test/mocked-tests
+        run: mockcenturion

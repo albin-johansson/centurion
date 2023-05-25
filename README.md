@@ -97,6 +97,34 @@ The library is distributed as a header-only library, which can be found in the `
 headers include them in your project, and the library it's ready to be used. You will of course also need to install
 SDL2.
 
+The following example `CMakeLists.txt` should work with most available [examples](https://albin-johansson.github.io/centurion/page-examples.html), assuming you added the header files to `libs/centurion` in your root project folder:
+
+```cmake
+cmake_minimum_required(VERSION 3.25)
+
+project(centest)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+
+add_executable(centest)
+
+target_sources(centest PRIVATE main.cpp)
+
+target_include_directories(centest PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/centurion
+)
+
+target_link_libraries(centest
+    SDL2::SDL2
+    SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf
+)
+```
+
 ## Documentation
 
 For additional documentation, see the [wiki](https://github.com/albin-johansson/centurion/wiki), hosted on GitHub.

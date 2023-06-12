@@ -29,9 +29,10 @@
 
 #include <SDL_ttf.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
-#include <utility>  // move
+#include <ostream>        // ostream
+#include <string>         // string
+#include <unordered_map>  // unordered_map
+#include <utility>        // move
 
 #include "../common.hpp"
 #include "../features.hpp"

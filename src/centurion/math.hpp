@@ -48,11 +48,11 @@ namespace cen {
 template <typename T>
 struct basic_vector3;
 
-using ivec3 = basic_vector3<int>;
-using fvec3 = basic_vector3<float>;
+using ivec3 [[deprecated]] = basic_vector3<int>;
+using fvec3 [[deprecated]] = basic_vector3<float>;
 
 template <typename T>
-struct basic_vector3 final
+struct [[deprecated]] basic_vector3 final
 {
   static_assert(is_number<T>);
 
@@ -73,27 +73,27 @@ struct basic_vector3 final
 };
 
 template <typename Archive, typename T>
-void serialize(Archive& archive, basic_vector3<T>& vector)
+[[deprecated]] void serialize(Archive& archive, basic_vector3<T>& vector)
 {
   archive(vector.x, vector.y, vector.z);
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto operator==(const basic_vector3<T>& a,
-                                        const basic_vector3<T>& b) noexcept -> bool
+[[nodiscard, deprecated]] constexpr auto operator==(const basic_vector3<T>& a,
+                                                    const basic_vector3<T>& b) noexcept -> bool
 {
   return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
 template <typename T>
-[[nodiscard]] constexpr auto operator!=(const basic_vector3<T>& a,
-                                        const basic_vector3<T>& b) noexcept -> bool
+[[nodiscard, deprecated]] constexpr auto operator!=(const basic_vector3<T>& a,
+                                                    const basic_vector3<T>& b) noexcept -> bool
 {
   return !(a == b);
 }
 
 template <typename T>
-[[nodiscard]] auto to_string(const basic_vector3<T>& vector) -> std::string
+[[nodiscard, deprecated]] auto to_string(const basic_vector3<T>& vector) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("(x: {}, y: {}, z: {})", vector.x, vector.y, vector.z);
@@ -104,7 +104,8 @@ template <typename T>
 }
 
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_vector3<T>& vector) -> std::ostream&
+[[deprecated]] auto operator<<(std::ostream& stream, const basic_vector3<T>& vector)
+    -> std::ostream&
 {
   return stream << to_string(vector);
 }

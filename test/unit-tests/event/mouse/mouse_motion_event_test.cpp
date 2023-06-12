@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/mouse_events.hpp"
+#include "centurion/events/mouse_events.hpp"
 
 TEST(MouseMotionEvent, Defaults)
 {

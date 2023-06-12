@@ -22,12 +22,15 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_WINDOW_EVENTS_HPP_
-#define CENTURION_WINDOW_EVENTS_HPP_
+#ifndef CENTURION_EVENTS_WINDOW_EVENTS_HPP_
+#define CENTURION_EVENTS_WINDOW_EVENTS_HPP_
 
 #include <SDL.h>
 
-#include "common.hpp"
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+#include "../common.hpp"
 #include "event_base.hpp"
 
 namespace cen {
@@ -169,4 +172,4 @@ inline auto as_sdl_event(const event_base<SDL_WindowEvent>& event) -> SDL_Event
 
 }  // namespace cen
 
-#endif  // CENTURION_WINDOW_EVENTS_HPP_
+#endif  // CENTURION_EVENTS_WINDOW_EVENTS_HPP_

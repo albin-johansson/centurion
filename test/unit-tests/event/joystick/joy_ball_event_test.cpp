@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/joystick_events.hpp"
+#include "centurion/events/joystick_events.hpp"
 
 TEST(JoyBallEvent, Defaults)
 {

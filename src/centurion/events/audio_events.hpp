@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_AUDIO_EVENTS_HPP_
-#define CENTURION_AUDIO_EVENTS_HPP_
+#ifndef CENTURION_EVENTS_AUDIO_EVENTS_HPP_
+#define CENTURION_EVENTS_AUDIO_EVENTS_HPP_
 
 #include <SDL.h>
 
-#include "common.hpp"
+#include "../common.hpp"
 #include "event_base.hpp"
 
 namespace cen {
@@ -61,4 +61,4 @@ inline auto as_sdl_event(const event_base<SDL_AudioDeviceEvent>& event) -> SDL_E
 
 }  // namespace cen
 
-#endif  // CENTURION_AUDIO_EVENTS_HPP_
+#endif  // CENTURION_EVENTS_AUDIO_EVENTS_HPP_

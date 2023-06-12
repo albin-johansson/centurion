@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/mouse_events.hpp"
+#include "centurion/events/mouse_events.hpp"
 
 using direction = cen::mouse_wheel_direction;
 

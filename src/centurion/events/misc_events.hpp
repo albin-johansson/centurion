@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_MISC_EVENTS_HPP_
-#define CENTURION_MISC_EVENTS_HPP_
+#ifndef CENTURION_EVENTS_MISC_EVENTS_HPP_
+#define CENTURION_EVENTS_MISC_EVENTS_HPP_
 
 #include <SDL.h>
 
@@ -32,15 +32,15 @@
 #include <string_view>  // string_view
 #include <utility>      // move
 
-#include "common.hpp"
-#include "controller.hpp"
-#include "detail/array_utils.hpp"
-#include "detail/stdlib.hpp"
+#include "../common.hpp"
+#include "../controller.hpp"
+#include "../detail/array_utils.hpp"
+#include "../detail/stdlib.hpp"
+#include "../input.hpp"
+#include "../keyboard.hpp"
+#include "../mouse.hpp"
+#include "../sensor.hpp"
 #include "event_base.hpp"
-#include "input.hpp"
-#include "keyboard.hpp"
-#include "mouse.hpp"
-#include "sensor.hpp"
 
 namespace cen {
 
@@ -366,6 +366,8 @@ class sensor_event final : public event_base<SDL_SensorEvent>
   [[nodiscard]] auto which() const noexcept -> int32 { return mEvent.which; }
 
   [[nodiscard]] auto data() const -> data_type { return detail::to_array(mEvent.data); }
+
+  // SDL_SensorEvent, SDL_ControllerSensorEvent
 };
 
 template <>
@@ -580,4 +582,4 @@ inline auto as_sdl_event(const event_base<SDL_UserEvent>& event) -> SDL_Event
 
 }  // namespace cen
 
-#endif  // CENTURION_MISC_EVENTS_HPP_
+#endif  // CENTURION_EVENTS_MISC_EVENTS_HPP_

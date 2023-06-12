@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_EVENT_BASE_HPP_
-#define CENTURION_EVENT_BASE_HPP_
+#ifndef CENTURION_EVENTS_EVENT_TYPE_HPP_
+#define CENTURION_EVENTS_EVENT_TYPE_HPP_
 
 #include <SDL.h>
 
@@ -31,7 +31,7 @@
 #include <string_view>  // string_view
 #include <utility>      // move
 
-#include "common.hpp"
+#include "../common.hpp"
 
 namespace cen {
 
@@ -348,44 +348,6 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
   return stream << to_string(type);
 }
 
-/// The base class of all events.
-template <typename T>
-class event_base
-{
- public:
-  explicit event_base(const event_type type)
-  {
-    set_timestamp(u32ms{SDL_GetTicks()});
-    set_type(type);
-  }
-
-  explicit event_base(const T& event) noexcept : mEvent{event} {}
-
-  explicit event_base(T&& event) noexcept : mEvent{std::move(event)} {}
-
-  void set_timestamp(const u32ms timestamp) noexcept(on_msvc)
-  {
-    mEvent.timestamp = timestamp.count();
-  }
-
-  void set_type(const event_type type) noexcept { mEvent.type = to_underlying(type); }
-
-  [[nodiscard]] auto timestamp() const -> u32ms { return u32ms{mEvent.timestamp}; }
-
-  [[nodiscard]] auto type() const noexcept -> event_type { return event_type{mEvent.type}; }
-
-  [[nodiscard]] auto get() const noexcept -> const T& { return mEvent; }
-
- protected:
-  T mEvent{};
-};
-
-/// Extracts the underlying SDL event from a Centurion event.
-template <typename T>
-[[nodiscard]] auto as_sdl_event(const event_base<T>& event) -> SDL_Event;
-
-/// \} End of group event
-
 }  // namespace cen
 
-#endif  // CENTURION_EVENT_BASE_HPP_
+#endif

@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/joystick_events.hpp"
+#include "centurion/events/joystick_events.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
 

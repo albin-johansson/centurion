@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_JOYSTICK_EVENTS_HPP_
-#define CENTURION_JOYSTICK_EVENTS_HPP_
+#ifndef CENTURION_EVENTS_JOYSTICK_EVENTS_HPP_
+#define CENTURION_EVENTS_JOYSTICK_EVENTS_HPP_
 
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "common.hpp"
+#include "../common.hpp"
+#include "../input.hpp"
+#include "../joystick.hpp"
 #include "event_base.hpp"
-#include "input.hpp"
-#include "joystick.hpp"
 
 namespace cen {
 
@@ -277,4 +277,4 @@ inline auto as_sdl_event(const event_base<SDL_JoyBatteryEvent>& event) -> SDL_Ev
 
 }  // namespace cen
 
-#endif  // CENTURION_JOYSTICK_EVENTS_HPP_
+#endif  // CENTURION_EVENTS_JOYSTICK_EVENTS_HPP_

@@ -260,12 +260,6 @@ TEST_F(MusicTest, GetDecoder)
   ASSERT_EQ(1u, Mix_GetMusicDecoder_fake.call_count);
 }
 
-TEST_F(MusicTest, HasDecoder)
-{
-  const auto has [[maybe_unused]] = cen::music::has_decoder("foo");
-  ASSERT_EQ(1u, Mix_HasMusicDecoder_fake.call_count);
-}
-
 TEST_F(MusicTest, DecoderCount)
 {
   const auto count [[maybe_unused]] = cen::music::decoder_count();
@@ -273,6 +267,12 @@ TEST_F(MusicTest, DecoderCount)
 }
 
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+
+TEST_F(MusicTest, HasDecoder)
+{
+  const auto has [[maybe_unused]] = cen::music::has_decoder("foo");
+  ASSERT_EQ(1u, Mix_HasMusicDecoder_fake.call_count);
+}
 
 TEST_F(MusicTest, CurrentTitle)
 {

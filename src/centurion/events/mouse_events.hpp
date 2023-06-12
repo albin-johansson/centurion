@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_MOUSE_EVENTS_HPP_
-#define CENTURION_MOUSE_EVENTS_HPP_
+#ifndef CENTURION_EVENTS_MOUSE_EVENTS_HPP_
+#define CENTURION_EVENTS_MOUSE_EVENTS_HPP_
 
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "common.hpp"
+#include "../common.hpp"
+#include "../input.hpp"
+#include "../mouse.hpp"
 #include "event_base.hpp"
-#include "input.hpp"
-#include "mouse.hpp"
 
 namespace cen {
 
@@ -212,6 +212,16 @@ class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent>
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
+#if SDL_VERSION_ATLEAST(2, 26, 0)
+
+  void set_mouse_x(const int32 x) noexcept { mEvent.mouseX = x; }
+  void set_mouse_y(const int32 y) noexcept { mEvent.mouseY = y; }
+
+  [[nodiscard]] auto mouse_x() const noexcept -> int32 { return mEvent.mouseX; }
+  [[nodiscard]] auto mouse_y() const noexcept -> int32 { return mEvent.mouseY; }
+
+#endif  // SDL_VERSION_ATLEAST(2, 26, 0)
+
   [[nodiscard]] auto direction() const noexcept -> mouse_wheel_direction
   {
     return static_cast<mouse_wheel_direction>(mEvent.direction);
@@ -228,4 +238,4 @@ inline auto as_sdl_event(const event_base<SDL_MouseWheelEvent>& event) -> SDL_Ev
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_EVENTS_HPP_
+#endif  // CENTURION_EVENTS_MOUSE_EVENTS_HPP_

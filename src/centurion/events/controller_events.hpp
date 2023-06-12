@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_CONTROLLER_EVENTS_HPP_
-#define CENTURION_CONTROLLER_EVENTS_HPP_
+#ifndef CENTURION_EVENTS_CONTROLLER_EVENTS_HPP_
+#define CENTURION_EVENTS_CONTROLLER_EVENTS_HPP_
 
 #include <SDL.h>
 
 #include <array>  // array
 
-#include "common.hpp"
-#include "controller.hpp"
-#include "detail/array_utils.hpp"
-#include "detail/stdlib.hpp"
+#include "../common.hpp"
+#include "../controller.hpp"
+#include "../detail/array_utils.hpp"
+#include "../detail/stdlib.hpp"
+#include "../sensor.hpp"
 #include "event_base.hpp"
-#include "sensor.hpp"
 
 namespace cen {
 
@@ -232,4 +232,4 @@ inline auto as_sdl_event(const event_base<SDL_ControllerTouchpadEvent>& event) -
 
 }  // namespace cen
 
-#endif  // CENTURION_CONTROLLER_EVENTS_HPP_
+#endif  // CENTURION_EVENTS_CONTROLLER_EVENTS_HPP_

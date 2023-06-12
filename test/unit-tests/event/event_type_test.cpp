@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/event_base.hpp"
+#include "centurion/events/event_base.hpp"
 
 using type = cen::event_type;
 

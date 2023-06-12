@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/misc_events.hpp"
+#include "centurion/events/misc_events.hpp"
 
 TEST(QuitEvent, Defaults)
 {

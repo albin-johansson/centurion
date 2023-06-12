@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/window_events.hpp"
+#include "centurion/events/window_events.hpp"
 
 TEST(window_event, Defaults)
 {

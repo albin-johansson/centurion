@@ -306,9 +306,9 @@ class basic_window final
 
   [[nodiscard]] auto size() const noexcept -> iarea
   {
-    iarea size{};
-    SDL_GetWindowSize(mWindow, &size.width, &size.height);
-    return size;
+    iarea res{};
+    SDL_GetWindowSize(mWindow, &res.width, &res.height);
+    return res;
   }
 
   [[nodiscard]] auto width() const noexcept -> int { return size().width; }

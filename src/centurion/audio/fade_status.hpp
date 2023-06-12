@@ -22,7 +22,50 @@
  * SOFTWARE.
  */
 
-#include "audio/fade_status.hpp"
-#include "audio/music.hpp"
-#include "audio/music_type.hpp"
-#include "audio/sound_effect.hpp"
+#ifndef CENTURION_AUDIO_FADE_STATUS_HPP_
+#define CENTURION_AUDIO_FADE_STATUS_HPP_
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+#include <SDL_mixer.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+#include "../common.hpp"
+
+namespace cen {
+
+enum class fade_status
+{
+  none = MIX_NO_FADING,
+  in = MIX_FADING_IN,
+  out = MIX_FADING_OUT
+};
+
+[[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
+{
+  switch (status) {
+    case fade_status::none:
+      return "none";
+
+    case fade_status::in:
+      return "in";
+
+    case fade_status::out:
+      return "out";
+
+    default:
+      throw exception{"Did not recognize fade status!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const fade_status status) -> std::ostream&
+{
+  return stream << to_string(status);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_NO_SDL_MIXER
+#endif  // CENTURION_AUDIO_FADE_STATUS_HPP_

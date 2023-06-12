@@ -22,8 +22,54 @@
  * SOFTWARE.
  */
 
-#include "fonts/font.hpp"
-#include "fonts/font_cache.hpp"
-#include "fonts/font_direction.hpp"
-#include "fonts/font_hint.hpp"
-#include "fonts/wrap_alignment.hpp"
+#ifndef CENTURION_FONTS_WRAP_ALIGNMENT_HPP_
+#define CENTURION_FONTS_WRAP_ALIGNMENT_HPP_
+
+#ifndef CENTURION_NO_SDL_TTF
+
+#include <SDL_ttf.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+#include "../common.hpp"
+
+namespace cen {
+
+#if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+enum class wrap_alignment
+{
+  left = TTF_WRAPPED_ALIGN_LEFT,
+  center = TTF_WRAPPED_ALIGN_CENTER,
+  right = TTF_WRAPPED_ALIGN_RIGHT,
+};
+
+[[nodiscard]] inline auto to_string(const wrap_alignment align) -> std::string_view
+{
+  switch (align) {
+    case wrap_alignment::left:
+      return "left";
+
+    case wrap_alignment::center:
+      return "center";
+
+    case wrap_alignment::right:
+      return "right";
+
+    default:
+      throw exception{"Invalid alignment!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const wrap_alignment align) -> std::ostream&
+{
+  return stream << to_string(align);
+}
+
+#endif  // SDL_TTF_VERSION_ATLEAST(2, 20, 0)
+
+}  // namespace cen
+
+#endif  // CENTURION_NO_SDL_TTF
+#endif  // CENTURION_FONTS_WRAP_ALIGNMENT_HPP_

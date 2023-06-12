@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/fonts/experimental/font_bundle.hpp"
 
-#include "centurion/font.hpp"
+#include <gtest/gtest.h>
 
 TEST(FontBundle, Usage)
 {

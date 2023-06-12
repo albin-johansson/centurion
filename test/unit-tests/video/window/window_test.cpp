@@ -40,14 +40,14 @@ class WindowTest : public testing::Test {
 
 TEST_F(WindowTest, Defaults)
 {
-  const cen::window window;
+  const cen::window w;
 
-  ASSERT_EQ("Centurion", window.title());
+  ASSERT_EQ("Centurion", w.title());
 
-  ASSERT_EQ(cen::window::default_size(), window.size());
-  ASSERT_TRUE(window.check_flag(cen::window::default_flags()));
+  ASSERT_EQ(cen::window::default_size(), w.size());
+  ASSERT_TRUE(w.check_flag(cen::window::default_flags()));
 
-  ASSERT_FALSE(window.is_visible());
+  ASSERT_FALSE(w.is_visible());
 }
 
 TEST_F(WindowTest, ConstructFromPointer)
@@ -76,12 +76,12 @@ TEST_F(WindowTest, ContructorFromStringAndArea)
   const auto width = 123;
   const auto height = 321;
   const auto title = "foobar"s;
-  const cen::window window{title, {width, height}};
+  const cen::window w{title, {width, height}};
 
-  ASSERT_EQ(title, window.title());
-  ASSERT_EQ(width, window.width());
-  ASSERT_EQ(height, window.height());
-  ASSERT_FALSE(window.is_visible());
+  ASSERT_EQ(title, w.title());
+  ASSERT_EQ(width, w.width());
+  ASSERT_EQ(height, w.height());
+  ASSERT_FALSE(w.is_visible());
 }
 
 TEST_F(WindowTest, Get)

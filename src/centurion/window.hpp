@@ -311,6 +311,17 @@ class basic_window final
     return res;
   }
 
+#if SDL_VERSION_ATLEAST(2, 26, 0)
+
+  [[nodiscard]] auto size_in_pixels() const noexcept -> iarea
+  {
+    iarea res{};
+    SDL_GetWindowSizeInPixels(mWindow, &res.width, &res.height);
+    return res;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 26, 0)
+
   [[nodiscard]] auto width() const noexcept -> int { return size().width; }
   [[nodiscard]] auto height() const noexcept -> int { return size().height; }
 

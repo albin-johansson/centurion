@@ -183,8 +183,8 @@ class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent>
 
   void set_which(const uint32 which) noexcept { mEvent.which = which; }
 
-  void set_x(const int32 xScroll) noexcept { mEvent.x = xScroll; }
-  void set_y(const int32 yScroll) noexcept { mEvent.y = yScroll; }
+  void set_x(const int32 x) noexcept { mEvent.x = x; }
+  void set_y(const int32 y) noexcept { mEvent.y = y; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 

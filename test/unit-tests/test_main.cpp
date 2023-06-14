@@ -24,8 +24,8 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/logging.hpp"
 #include "centurion/initialization.hpp"
+#include "centurion/logging.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 #else
   cen::sdl_cfg cfg;
   cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-  const cen::sdl sdl{cfg};
+  const cen::sdl sdl {cfg};
 #endif
 
   const cen::img img;

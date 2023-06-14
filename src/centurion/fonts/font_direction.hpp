@@ -38,8 +38,7 @@ namespace cen {
 
 #if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
 
-enum class font_direction
-{
+enum class font_direction {
   ltr = TTF_DIRECTION_LTR,  ///< Left to right.
   rtl = TTF_DIRECTION_RTL,  ///< Right to left.
   ttb = TTF_DIRECTION_TTB,  ///< Top to bottom.
@@ -62,7 +61,7 @@ enum class font_direction
       return "btt";
 
     default:
-      throw exception{"Invalid font direction!"};
+      throw exception {"Invalid font direction!"};
   }
 }
 

@@ -37,8 +37,7 @@
 
 namespace cen {
 
-enum class joy_hat_position : uint8
-{
+enum class joy_hat_position : uint8 {
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
   left_down = SDL_HAT_LEFTDOWN,
@@ -81,7 +80,7 @@ enum class joy_hat_position : uint8
       return "right_down";
 
     default:
-      throw exception{"Did not recognize joystick hat position!"};
+      throw exception {"Did not recognize joystick hat position!"};
   }
 }
 
@@ -90,12 +89,11 @@ inline auto operator<<(std::ostream& stream, const joy_hat_position position) ->
   return stream << to_string(position);
 }
 
-class joy_axis_event final : public event_base<SDL_JoyAxisEvent>
-{
+class joy_axis_event final : public event_base<SDL_JoyAxisEvent> {
  public:
-  joy_axis_event() : event_base{event_type::joy_axis_motion} {}
+  joy_axis_event() : event_base {event_type::joy_axis_motion} {}
 
-  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : event_base{event} {}
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : event_base {event} {}
 
   void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
@@ -118,12 +116,11 @@ inline auto as_sdl_event(const event_base<SDL_JoyAxisEvent>& event) -> SDL_Event
   return e;
 }
 
-class joy_ball_event final : public event_base<SDL_JoyBallEvent>
-{
+class joy_ball_event final : public event_base<SDL_JoyBallEvent> {
  public:
-  joy_ball_event() : event_base{event_type::joy_ball_motion} {}
+  joy_ball_event() : event_base {event_type::joy_ball_motion} {}
 
-  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : event_base{event} {}
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : event_base {event} {}
 
   void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
@@ -150,12 +147,11 @@ inline auto as_sdl_event(const event_base<SDL_JoyBallEvent>& event) -> SDL_Event
   return e;
 }
 
-class joy_button_event final : public event_base<SDL_JoyButtonEvent>
-{
+class joy_button_event final : public event_base<SDL_JoyButtonEvent> {
  public:
-  joy_button_event() : event_base{event_type::joy_button_down} {}
+  joy_button_event() : event_base {event_type::joy_button_down} {}
 
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : event_base{event} {}
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : event_base {event} {}
 
   void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
@@ -191,12 +187,11 @@ inline auto as_sdl_event(const event_base<SDL_JoyButtonEvent>& event) -> SDL_Eve
   return e;
 }
 
-class joy_device_event final : public event_base<SDL_JoyDeviceEvent>
-{
+class joy_device_event final : public event_base<SDL_JoyDeviceEvent> {
  public:
-  joy_device_event() : event_base{event_type::joy_device_added} {}
+  joy_device_event() : event_base {event_type::joy_device_added} {}
 
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : event_base{event} {}
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : event_base {event} {}
 
   void set_which(const int32 which) noexcept { mEvent.which = which; }
 
@@ -211,12 +206,11 @@ inline auto as_sdl_event(const event_base<SDL_JoyDeviceEvent>& event) -> SDL_Eve
   return e;
 }
 
-class joy_hat_event final : public event_base<SDL_JoyHatEvent>
-{
+class joy_hat_event final : public event_base<SDL_JoyHatEvent> {
  public:
-  joy_hat_event() : event_base{event_type::joy_hat_motion} {}
+  joy_hat_event() : event_base {event_type::joy_hat_motion} {}
 
-  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : event_base{event} {}
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : event_base {event} {}
 
   void set_hat(const uint8 hat) noexcept { mEvent.hat = hat; }
 
@@ -243,12 +237,11 @@ inline auto as_sdl_event(const event_base<SDL_JoyHatEvent>& event) -> SDL_Event
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
 
-class joy_battery_event final : public event_base<SDL_JoyBatteryEvent>
-{
+class joy_battery_event final : public event_base<SDL_JoyBatteryEvent> {
  public:
-  joy_battery_event() : event_base{event_type::joy_battery_updated} {}
+  joy_battery_event() : event_base {event_type::joy_battery_updated} {}
 
-  explicit joy_battery_event(const SDL_JoyBatteryEvent& event) noexcept : event_base{event} {}
+  explicit joy_battery_event(const SDL_JoyBatteryEvent& event) noexcept : event_base {event} {}
 
   void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 

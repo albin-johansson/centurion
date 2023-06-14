@@ -28,16 +28,15 @@
 #include "centurion/video.hpp"
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(SDL_BlendMode,
-                  SDL_ComposeCustomBlendMode,
-                  SDL_BlendFactor,
-                  SDL_BlendFactor,
-                  SDL_BlendOperation,
-                  SDL_BlendFactor,
-                  SDL_BlendFactor,
-                  SDL_BlendOperation);
+extern "C" {
+FAKE_VALUE_FUNC(SDL_BlendMode,
+                SDL_ComposeCustomBlendMode,
+                SDL_BlendFactor,
+                SDL_BlendFactor,
+                SDL_BlendOperation,
+                SDL_BlendFactor,
+                SDL_BlendFactor,
+                SDL_BlendOperation);
 }
 
 class BlendModeTest : public testing::Test {

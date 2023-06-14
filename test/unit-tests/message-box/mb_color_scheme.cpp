@@ -33,11 +33,11 @@ TEST(MessageBoxColorScheme, Defaults)
   const auto* data = scheme.data();
   const auto color = cen::colors::white;
 
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_TEXT]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_TEXT]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]});
 }
 
 TEST(MessageBoxColorScheme, Custom)
@@ -46,7 +46,7 @@ TEST(MessageBoxColorScheme, Custom)
 
   const auto check = [&](const cen::message_box_color_type type, const cen::color& color) {
     scheme.set_color(type, color);
-    ASSERT_EQ(color, cen::color{scheme.data()->colors[cen::to_underlying(type)]});
+    ASSERT_EQ(color, cen::color {scheme.data()->colors[cen::to_underlying(type)]});
   };
 
   check(cen::message_box_color_type::text, cen::colors::salmon);

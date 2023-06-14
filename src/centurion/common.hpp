@@ -163,59 +163,54 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 /// The base class of all exceptions explicitly thrown by the library.
-class exception : public std::exception
-{
+class exception : public std::exception {
  public:
   exception() noexcept = default;
 
-  explicit exception(const char* what) noexcept : mWhat{what ? what : "?"} {}
+  explicit exception(const char* what) noexcept : mWhat {what ? what : "?"} {}
 
   [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat; }
 
  private:
-  const char* mWhat{"?"};
+  const char* mWhat {"?"};
 };
 
-class sdl_error final : public exception
-{
+class sdl_error final : public exception {
  public:
-  sdl_error() noexcept : exception{SDL_GetError()} {}
+  sdl_error() noexcept : exception {SDL_GetError()} {}
 
-  explicit sdl_error(const char* what) noexcept : exception{what} {}
+  explicit sdl_error(const char* what) noexcept : exception {what} {}
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-class img_error final : public exception
-{
+class img_error final : public exception {
  public:
-  img_error() noexcept : exception{IMG_GetError()} {}
+  img_error() noexcept : exception {IMG_GetError()} {}
 
-  explicit img_error(const char* what) noexcept : exception{what} {}
+  explicit img_error(const char* what) noexcept : exception {what} {}
 };
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_TTF
 
-class ttf_error final : public exception
-{
+class ttf_error final : public exception {
  public:
-  ttf_error() noexcept : exception{TTF_GetError()} {}
+  ttf_error() noexcept : exception {TTF_GetError()} {}
 
-  explicit ttf_error(const char* what) noexcept : exception{what} {}
+  explicit ttf_error(const char* what) noexcept : exception {what} {}
 };
 
 #endif  // CENTURION_NO_SDL_TTF
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-class mix_error final : public exception
-{
+class mix_error final : public exception {
  public:
-  mix_error() noexcept : exception{Mix_GetError()} {}
+  mix_error() noexcept : exception {Mix_GetError()} {}
 
-  explicit mix_error(const char* what) noexcept : exception{what} {}
+  explicit mix_error(const char* what) noexcept : exception {what} {}
 };
 
 #endif  // CENTURION_NO_SDL_MIXER
@@ -253,22 +248,22 @@ class mix_error final : public exception
  * \see success
  * \see failure
  */
-class result final
-{
+class result final {
  public:
   constexpr result(const bool success) noexcept  // NOLINT implicit
-      : mSuccess{success}
-  {}
+      : mSuccess {success}
+  {
+  }
 
   /// Indicates whether the result was a success.
   [[nodiscard]] constexpr explicit operator bool() const noexcept { return mSuccess; }
 
  private:
-  bool mSuccess{};
+  bool mSuccess {};
 };
 
-inline constexpr result success{true};   ///< A successful result.
-inline constexpr result failure{false};  ///< A failure.
+inline constexpr result success {true};   ///< A successful result.
+inline constexpr result failure {false};  ///< A failure.
 
 [[nodiscard]] inline auto to_string(const result result) -> std::string
 {
@@ -300,10 +295,9 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
  * Note, instances of `sdl_string` may hold null strings. Use the overloaded `operator bool()`
  * in order to determine whether the associated string is null.
  */
-class sdl_string final
-{
+class sdl_string final {
  public:
-  explicit sdl_string(owner<char*> str) noexcept : mStr{str} {}
+  explicit sdl_string(owner<char*> str) noexcept : mStr {str} {}
 
   /// Returns a potentially null pointer to the internal string.
   [[nodiscard]] auto get() const noexcept -> const char* { return mStr.get(); }
@@ -318,10 +312,10 @@ class sdl_string final
   [[nodiscard]] auto copy() const -> std::string
   {
     if (mStr) {
-      return std::string{get()};
+      return std::string {get()};
     }
     else {
-      return std::string{};
+      return std::string {};
     }
   }
 
@@ -381,14 +375,14 @@ inline namespace time_literals {
 
 [[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> u64ms
 {
-  return u64ms{static_cast<uint64>(ms)};
+  return u64ms {static_cast<uint64>(ms)};
 }
 
 #else
 
 [[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> u32ms
 {
-  return u32ms{static_cast<uint32>(ms)};
+  return u32ms {static_cast<uint32>(ms)};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

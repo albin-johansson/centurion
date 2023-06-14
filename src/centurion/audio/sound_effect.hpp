@@ -72,8 +72,7 @@ using sound_effect_handle = basic_sound_effect<detail::handle_tag>;
  * \see get_sound
  */
 template <typename T>
-class basic_sound_effect final
-{
+class basic_sound_effect final {
  public:
   using channel_index = int;
   using ms_type = millis<int>;
@@ -82,30 +81,32 @@ class basic_sound_effect final
   inline constexpr static int forever = -1;  ///< Used to play sounds indefinitely.
 
   explicit basic_sound_effect(maybe_owner<Mix_Chunk*> sound) noexcept(detail::is_handle<T>)
-      : mChunk{sound}
+      : mChunk {sound}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mChunk) {
-        throw mix_error{};
+        throw mix_error {};
       }
     }
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_sound_effect(const char* file) : mChunk{Mix_LoadWAV(file)}
+  explicit basic_sound_effect(const char* file) : mChunk {Mix_LoadWAV(file)}
   {
     if (!mChunk) {
-      throw mix_error{};
+      throw mix_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_sound_effect(const std::string& file) : basic_sound_effect{file.c_str()}
-  {}
+  explicit basic_sound_effect(const std::string& file) : basic_sound_effect {file.c_str()}
+  {
+  }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_sound_effect(const sound_effect& owner) noexcept : mChunk{owner.get()}
-  {}
+  explicit basic_sound_effect(const sound_effect& owner) noexcept : mChunk {owner.get()}
+  {
+  }
 
   auto play(const int iterations = 0) noexcept -> result
   {
@@ -202,7 +203,7 @@ class basic_sound_effect final
 
  private:
   detail::pointer<T, Mix_Chunk> mChunk;
-  channel_index mChannel{undefined_channel};
+  channel_index mChannel {undefined_channel};
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
@@ -234,7 +235,7 @@ auto operator<<(std::ostream& stream, const basic_sound_effect<T>& sound) -> std
 /// Returns a potentially empty handle to the sound associated with a channel.
 [[nodiscard]] inline auto get_sound(const int channel) noexcept -> sound_effect_handle
 {
-  return sound_effect_handle{Mix_GetChunk(channel)};
+  return sound_effect_handle {Mix_GetChunk(channel)};
 }
 
 }  // namespace cen

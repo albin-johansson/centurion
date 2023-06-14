@@ -79,7 +79,7 @@ TEST(KeyMod, IsActive)
 
 TEST(KeyMod, BitwiseNot)
 {
-  ASSERT_EQ(Uint16(~Uint16{KMOD_SHIFT}), to_underlying(~cen::key_mod::shift));
+  ASSERT_EQ(Uint16(~Uint16 {KMOD_SHIFT}), to_underlying(~cen::key_mod::shift));
 }
 
 TEST(KeyMod, BitwiseOR)

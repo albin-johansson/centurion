@@ -69,4 +69,4 @@ TEST(TextEditingExtEvent, AsSDLEvent)
   ASSERT_EQ(sdl.edit.timestamp, event.timestamp().count());
 }
 
-#endif // SDL_VERSION_ATLEAST(2, 0, 22)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)

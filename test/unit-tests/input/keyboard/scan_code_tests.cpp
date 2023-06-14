@@ -38,13 +38,13 @@ TEST(ScanCode, DefaultValue)
 
 TEST(ScanCode, ScancodeConstructor)
 {
-  const cen::scan_code code{SDL_SCANCODE_W};
+  const cen::scan_code code {SDL_SCANCODE_W};
   ASSERT_EQ(SDL_SCANCODE_W, code.get());
 }
 
 TEST(ScanCode, KeycodeConstructor)
 {
-  const cen::scan_code code{SDLK_LSHIFT};
+  const cen::scan_code code {SDLK_LSHIFT};
   ASSERT_EQ(SDL_GetScancodeFromKey(SDLK_LSHIFT), code.get());
 }
 
@@ -54,7 +54,7 @@ TEST(ScanCode, StringConstructor)
 
   {  // Good name
     const auto name = "Escape"s;
-    const cen::scan_code code{name};
+    const cen::scan_code code {name};
 
     ASSERT_EQ(cen::scancodes::escape, code);
     ASSERT_EQ(SDL_SCANCODE_ESCAPE, code.get());
@@ -62,7 +62,7 @@ TEST(ScanCode, StringConstructor)
   }
 
   {  // Bad name
-    const cen::scan_code code{"foobar"};
+    const cen::scan_code code {"foobar"};
     ASSERT_EQ(cen::scancodes::unknown, code);
     ASSERT_EQ(SDL_SCANCODE_UNKNOWN, code.get());
     ASSERT_TRUE(code.name().empty());
@@ -157,15 +157,15 @@ TEST(ScanCode, EqualityOperator)
   }
 
   {
-    const cen::scan_code fst{SDL_SCANCODE_W};
-    const cen::scan_code snd{fst};
+    const cen::scan_code fst {SDL_SCANCODE_W};
+    const cen::scan_code snd {fst};
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {
-    const cen::scan_code fst{SDL_SCANCODE_P};
-    const cen::scan_code snd{SDL_SCANCODE_X};
+    const cen::scan_code fst {SDL_SCANCODE_P};
+    const cen::scan_code snd {SDL_SCANCODE_X};
     ASSERT_FALSE(fst == snd);
     ASSERT_FALSE(snd == fst);
   }
@@ -179,15 +179,15 @@ TEST(ScanCode, InequalityOperator)
   }
 
   {
-    const cen::scan_code fst{SDL_SCANCODE_W};
-    const cen::scan_code snd{fst};
+    const cen::scan_code fst {SDL_SCANCODE_W};
+    const cen::scan_code snd {fst};
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {
-    const cen::scan_code fst{SDL_SCANCODE_P};
-    const cen::scan_code snd{SDL_SCANCODE_X};
+    const cen::scan_code fst {SDL_SCANCODE_P};
+    const cen::scan_code snd {SDL_SCANCODE_X};
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }

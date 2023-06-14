@@ -178,14 +178,14 @@ TEST(KeyboardEvent, IsOnlyAnyOfActive)
 
 TEST(KeyboardEvent, IsActiveModifier)
 {
-  SDL_KeyboardEvent sdl{};
+  SDL_KeyboardEvent sdl {};
 
-  SDL_Keysym keysym{};
+  SDL_Keysym keysym {};
   keysym.mod = KMOD_LALT | KMOD_CAPS;
 
   sdl.keysym = keysym;
 
-  const cen::keyboard_event event{sdl};
+  const cen::keyboard_event event {sdl};
 
   // Check that multiple key modifiers can be active at the same time
   ASSERT_TRUE(event.is_active(cen::key_mod::lalt));

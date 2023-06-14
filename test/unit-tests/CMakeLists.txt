@@ -254,8 +254,8 @@ target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
 cen_copy_directory_post_build(${CENTURION_TEST_TARGET}
-                          ${CEN_RESOURCES_DIR}
-                          ${CMAKE_CURRENT_BINARY_DIR}/resources)
+                              ${CEN_RESOURCES_DIR}
+                              ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
   cen_copy_directory_post_build(${CENTURION_TEST_TARGET} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})

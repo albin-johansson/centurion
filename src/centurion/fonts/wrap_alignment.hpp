@@ -38,8 +38,7 @@ namespace cen {
 
 #if SDL_TTF_VERSION_ATLEAST(2, 20, 0)
 
-enum class wrap_alignment
-{
+enum class wrap_alignment {
   left = TTF_WRAPPED_ALIGN_LEFT,
   center = TTF_WRAPPED_ALIGN_CENTER,
   right = TTF_WRAPPED_ALIGN_RIGHT,
@@ -58,7 +57,7 @@ enum class wrap_alignment
       return "right";
 
     default:
-      throw exception{"Invalid alignment!"};
+      throw exception {"Invalid alignment!"};
   }
 }
 

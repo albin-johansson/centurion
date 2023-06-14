@@ -45,8 +45,7 @@
 
 namespace cen {
 
-enum class gl_attribute
-{
+enum class gl_attribute {
   red_size = SDL_GL_RED_SIZE,
   green_size = SDL_GL_GREEN_SIZE,
   blue_size = SDL_GL_BLUE_SIZE,
@@ -176,7 +175,7 @@ enum class gl_attribute
       return "context_no_error";
 
     default:
-      throw exception{"Did not recognize OpenGL attribute!"};
+      throw exception {"Did not recognize OpenGL attribute!"};
   }
 }
 
@@ -185,8 +184,7 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
   return stream << to_string(attr);
 }
 
-enum class gl_swap_interval
-{
+enum class gl_swap_interval {
   late_immediate = -1,
   immediate = 0,
   synchronized = 1,
@@ -205,7 +203,7 @@ enum class gl_swap_interval
       return "late_immediate";
 
     default:
-      throw exception{"Did not recognize swap interval!"};
+      throw exception {"Did not recognize swap interval!"};
   }
 }
 
@@ -217,8 +215,7 @@ inline auto operator<<(std::ostream& stream, const gl_swap_interval interval) ->
 /**
  * \brief Manages the initialization and de-initialization of an OpenGL library.
  */
-class gl_library final
-{
+class gl_library final {
  public:
   CENTURION_DISABLE_COPY(gl_library)
   CENTURION_DISABLE_MOVE(gl_library)
@@ -226,7 +223,7 @@ class gl_library final
   CENTURION_NODISCARD_CTOR explicit gl_library(const char* path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -254,26 +251,25 @@ using gl_context_handle = basic_gl_context<detail::handle_tag>;
  * \see gl_context_handle
  */
 template <typename T>
-class basic_gl_context final
-{
+class basic_gl_context final {
  public:
   explicit basic_gl_context(maybe_owner<SDL_GLContext> context) noexcept(detail::is_handle<T>)
-      : mContext{context}
+      : mContext {context}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mContext) {
-        throw exception{"Can't create OpenGL context from null pointer!"};
+        throw exception {"Can't create OpenGL context from null pointer!"};
       }
     }
   }
 
   template <typename U>
   explicit basic_gl_context(basic_window<U>& window) noexcept(detail::is_handle<T>)
-      : mContext{SDL_GL_CreateContext(window.get())}
+      : mContext {SDL_GL_CreateContext(window.get())}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mContext) {
-        throw sdl_error{};
+        throw sdl_error {};
       }
     }
   }
@@ -288,8 +284,7 @@ class basic_gl_context final
   [[nodiscard]] auto get() const noexcept -> SDL_GLContext { return mContext.get(); }
 
  private:
-  struct Deleter final
-  {
+  struct Deleter final {
     void operator()(SDL_GLContext context) noexcept { SDL_GL_DeleteContext(context); }
   };
 
@@ -310,14 +305,17 @@ template <typename T>
 {
   assert(window.is_opengl());
 
-  int width{};
-  int height{};
+  int width {};
+  int height {};
   SDL_GL_GetDrawableSize(window.get(), &width, &height);
 
   return {width, height};
 }
 
-inline void reset_attributes() noexcept { SDL_GL_ResetAttributes(); }
+inline void reset_attributes() noexcept
+{
+  SDL_GL_ResetAttributes();
+}
 
 inline auto set(const gl_attribute attr, const int value) noexcept -> result
 {
@@ -326,7 +324,7 @@ inline auto set(const gl_attribute attr, const int value) noexcept -> result
 
 inline auto get(const gl_attribute attr) noexcept -> maybe<int>
 {
-  int value{};
+  int value {};
   if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0) {
     return value;
   }
@@ -342,17 +340,17 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
 
 [[nodiscard]] inline auto swap_interval() noexcept -> gl_swap_interval
 {
-  return gl_swap_interval{SDL_GL_GetSwapInterval()};
+  return gl_swap_interval {SDL_GL_GetSwapInterval()};
 }
 
 [[nodiscard]] inline auto get_window() noexcept -> window_handle
 {
-  return window_handle{SDL_GL_GetCurrentWindow()};
+  return window_handle {SDL_GL_GetCurrentWindow()};
 }
 
 [[nodiscard]] inline auto get_context() noexcept -> gl_context_handle
 {
-  return gl_context_handle{SDL_GL_GetCurrentContext()};
+  return gl_context_handle {SDL_GL_GetCurrentContext()};
 }
 
 [[nodiscard]] inline auto is_extension_supported(const char* extension) noexcept -> bool
@@ -369,10 +367,10 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
 template <typename T>
 auto bind(basic_texture<T>& texture) noexcept -> maybe<farea>
 {
-  float width{};
-  float height{};
+  float width {};
+  float height {};
   if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0) {
-    return farea{width, height};
+    return farea {width, height};
   }
   else {
     return nothing;

@@ -44,22 +44,22 @@ class PixelFormatInfoTest : public testing::Test {
 
 TEST_F(PixelFormatInfoTest, PointerConstructor)
 {
-  static_assert(!noexcept(cen::pixel_format_info{nullptr}));
-  static_assert(noexcept(cen::pixel_format_info_handle{nullptr}));
+  static_assert(!noexcept(cen::pixel_format_info {nullptr}));
+  static_assert(noexcept(cen::pixel_format_info_handle {nullptr}));
 
-  ASSERT_THROW(cen::pixel_format_info{nullptr}, cen::exception);
-  ASSERT_NO_THROW(cen::pixel_format_info_handle{nullptr});
+  ASSERT_THROW(cen::pixel_format_info {nullptr}, cen::exception);
+  ASSERT_NO_THROW(cen::pixel_format_info_handle {nullptr});
 }
 
 TEST_F(PixelFormatInfoTest, FormatConstructor)
 {
   const auto invalid = static_cast<cen::pixel_format>(0xFFFFFFFF);
-  ASSERT_THROW(cen::pixel_format_info{invalid}, cen::sdl_error);
+  ASSERT_THROW(cen::pixel_format_info {invalid}, cen::sdl_error);
 }
 
 TEST_F(PixelFormatInfoTest, HandleFromOwner)
 {
-  const cen::pixel_format_info_handle handle{*info};
+  const cen::pixel_format_info_handle handle {*info};
   ASSERT_TRUE(handle);
 }
 

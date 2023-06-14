@@ -33,12 +33,12 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
+#include "../color.hpp"
 #include "../common.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
 #include "../surface.hpp"
 #include "../unicode.hpp"
-#include "../color.hpp"
 #include "../version.hpp"
 #include "font_direction.hpp"
 #include "font_hint.hpp"
@@ -52,21 +52,19 @@
 
 namespace cen {
 
-struct glyph_metrics final
-{
-  int min_x{};    ///< The minimum X-offset.
-  int min_y{};    ///< The minimum Y-offset.
-  int max_x{};    ///< The maximum X-offset.
-  int max_y{};    ///< The maximum Y-offset.
-  int advance{};  ///< The advance offset.
+struct glyph_metrics final {
+  int min_x {};    ///< The minimum X-offset.
+  int min_y {};    ///< The minimum Y-offset.
+  int max_x {};    ///< The maximum X-offset.
+  int max_y {};    ///< The maximum Y-offset.
+  int advance {};  ///< The advance offset.
 };
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-struct font_dpi final
-{
-  uint horizontal{};
-  uint vertical{};
+struct font_dpi final {
+  uint horizontal {};
+  uint vertical {};
 };
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
@@ -81,44 +79,44 @@ struct font_dpi final
  * \see font_cache
  * \see font_bundle
  */
-class font final
-{
+class font final {
  public:
-  font(const char* file, const int size) : mSize{size}
+  font(const char* file, const int size) : mSize {size}
   {
     assert(file);
 
     if (mSize <= 0) {
-      throw exception{"Bad font size!"};
+      throw exception {"Bad font size!"};
     }
 
     mFont.reset(TTF_OpenFont(file, mSize));
     if (!mFont) {
-      throw ttf_error{};
+      throw ttf_error {};
     }
   }
 
-  font(const std::string& file, const int size) : font{file.c_str(), size} {}
+  font(const std::string& file, const int size) : font {file.c_str(), size} {}
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-  font(const char* file, const int size, const font_dpi& dpi) : mSize{size}
+  font(const char* file, const int size, const font_dpi& dpi) : mSize {size}
   {
     assert(file);
 
     if (mSize <= 0) {
-      throw exception{"Bad font size!"};
+      throw exception {"Bad font size!"};
     }
 
     mFont.reset(TTF_OpenFontDPI(file, mSize, dpi.horizontal, dpi.vertical));
     if (!mFont) {
-      throw ttf_error{};
+      throw ttf_error {};
     }
   }
 
   font(const std::string& file, const int size, const font_dpi& dpi)
-      : font{file.c_str(), size, dpi}
-  {}
+      : font {file.c_str(), size, dpi}
+  {
+  }
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
@@ -355,20 +353,20 @@ class font final
   [[nodiscard]] auto render_solid_glyph(const unicode_t glyph, const color& fg) const
       -> surface
   {
-    return surface{TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
+    return surface {TTF_RenderGlyph_Solid(get(), glyph, fg.get())};
   }
 
   [[nodiscard]] auto render_shaded_glyph(const unicode_t glyph,
                                          const color& fg,
                                          const color& bg) const -> surface
   {
-    return surface{TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
+    return surface {TTF_RenderGlyph_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_blended_glyph(const unicode_t glyph, const color& fg) const
       -> surface
   {
-    return surface{TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
+    return surface {TTF_RenderGlyph_Blended(get(), glyph, fg.get())};
   }
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
@@ -376,20 +374,20 @@ class font final
   [[nodiscard]] auto render_solid_glyph_w(const unicode32_t glyph, const color& fg) const
       -> surface
   {
-    return surface{TTF_RenderGlyph32_Solid(get(), glyph, fg.get())};
+    return surface {TTF_RenderGlyph32_Solid(get(), glyph, fg.get())};
   }
 
   [[nodiscard]] auto render_shaded_glyph_w(const unicode32_t glyph,
                                            const color& fg,
                                            const color& bg) const -> surface
   {
-    return surface{TTF_RenderGlyph32_Shaded(get(), glyph, fg.get(), bg.get())};
+    return surface {TTF_RenderGlyph32_Shaded(get(), glyph, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_blended_glyph_w(const unicode32_t glyph, const color& fg) const
       -> surface
   {
-    return surface{TTF_RenderGlyph32_Blended(get(), glyph, fg.get())};
+    return surface {TTF_RenderGlyph32_Blended(get(), glyph, fg.get())};
   }
 
 #endif  // SDL_TTF_VERSION_ATLEAST(2, 0, 18)
@@ -412,7 +410,7 @@ class font final
   {
     assert(str);
 
-    iarea size{};
+    iarea size {};
     if (TTF_SizeText(get(), str, &size.width, &size.height) != -1) {
       return size;
     }
@@ -428,10 +426,9 @@ class font final
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 
-  struct measure_result final
-  {
-    int count{};   ///< The amount of characters that can be rendered
-    int extent{};  ///< The width of the characters that can be rendered
+  struct measure_result final {
+    int count {};   ///< The amount of characters that can be rendered
+    int extent {};  ///< The width of the characters that can be rendered
   };
 
   [[nodiscard]] auto measure_text(const char* str, const int width) const noexcept
@@ -475,44 +472,44 @@ class font final
   [[nodiscard]] auto render_blended(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Blended(get(), str, fg.get())};
+    return surface {TTF_RenderText_Blended(get(), str, fg.get())};
   }
 
   [[nodiscard]] auto render_blended_utf8(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Blended(get(), str, fg.get())};
+    return surface {TTF_RenderUTF8_Blended(get(), str, fg.get())};
   }
 
   [[nodiscard]] auto render_blended_uni(const unicode_string& str, const color& fg) const
       -> surface
   {
-    return surface{TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
+    return surface {TTF_RenderUNICODE_Blended(get(), str.data(), fg.get())};
   }
 
   [[nodiscard]] auto render_solid(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Solid(get(), str, fg.get())};
+    return surface {TTF_RenderText_Solid(get(), str, fg.get())};
   }
 
   [[nodiscard]] auto render_solid_utf8(const char* str, const color& fg) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Solid(get(), str, fg.get())};
+    return surface {TTF_RenderUTF8_Solid(get(), str, fg.get())};
   }
 
   [[nodiscard]] auto render_solid_uni(const unicode_string& str, const color& fg) const
       -> surface
   {
-    return surface{TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
+    return surface {TTF_RenderUNICODE_Solid(get(), str.data(), fg.get())};
   }
 
   [[nodiscard]] auto render_shaded(const char* str, const color& fg, const color& bg) const
       -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
+    return surface {TTF_RenderText_Shaded(get(), str, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_shaded_utf8(const char* str,
@@ -520,14 +517,14 @@ class font final
                                         const color& bg) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
+    return surface {TTF_RenderUTF8_Shaded(get(), str, fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_shaded_uni(const unicode_string& str,
                                        const color& fg,
                                        const color& bg) const -> surface
   {
-    return surface{TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
+    return surface {TTF_RenderUNICODE_Shaded(get(), str.data(), fg.get(), bg.get())};
   }
 
   [[nodiscard]] auto render_blended_wrapped(const char* str,
@@ -535,7 +532,7 @@ class font final
                                             const uint32 wrap) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
+    return surface {TTF_RenderText_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_blended_wrapped_utf8(const char* str,
@@ -543,14 +540,14 @@ class font final
                                                  const uint32 wrap) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
+    return surface {TTF_RenderUTF8_Blended_Wrapped(get(), str, fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_blended_wrapped_uni(const unicode_string& str,
                                                 const color& fg,
                                                 const uint32 wrap) const -> surface
   {
-    return surface{TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
+    return surface {TTF_RenderUNICODE_Blended_Wrapped(get(), str.data(), fg.get(), wrap)};
   }
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
@@ -560,7 +557,7 @@ class font final
                                           const uint32 wrap) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Solid_Wrapped(get(), str, fg.get(), wrap)};
+    return surface {TTF_RenderText_Solid_Wrapped(get(), str, fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_solid_wrapped_utf8(const char* str,
@@ -568,14 +565,14 @@ class font final
                                                const uint32 wrap) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Solid_Wrapped(get(), str, fg.get(), wrap)};
+    return surface {TTF_RenderUTF8_Solid_Wrapped(get(), str, fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_solid_wrapped_uni(const unicode_string& str,
                                               const color& fg,
                                               const uint32 wrap) const -> surface
   {
-    return surface{TTF_RenderUNICODE_Solid_Wrapped(get(), str.data(), fg.get(), wrap)};
+    return surface {TTF_RenderUNICODE_Solid_Wrapped(get(), str.data(), fg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_shaded_wrapped(const char* str,
@@ -584,7 +581,7 @@ class font final
                                            const uint32 wrap) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderText_Shaded_Wrapped(get(), str, fg.get(), bg.get(), wrap)};
+    return surface {TTF_RenderText_Shaded_Wrapped(get(), str, fg.get(), bg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_shaded_wrapped_utf8(const char* str,
@@ -593,7 +590,7 @@ class font final
                                                 const uint32 wrap) const -> surface
   {
     assert(str);
-    return surface{TTF_RenderUTF8_Shaded_Wrapped(get(), str, fg.get(), bg.get(), wrap)};
+    return surface {TTF_RenderUTF8_Shaded_Wrapped(get(), str, fg.get(), bg.get(), wrap)};
   }
 
   [[nodiscard]] auto render_shaded_wrapped_uni(const unicode_string& str,
@@ -601,7 +598,7 @@ class font final
                                                const color& bg,
                                                const uint32 wrap) const -> surface
   {
-    return surface{
+    return surface {
         TTF_RenderUNICODE_Shaded_Wrapped(get(), str.data(), fg.get(), bg.get(), wrap)};
   }
 
@@ -611,7 +608,7 @@ class font final
 
  private:
   managed_ptr<TTF_Font> mFont;
-  int mSize{};
+  int mSize {};
 
   void add_style(const int mask) noexcept
   {

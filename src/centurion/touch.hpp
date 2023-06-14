@@ -38,15 +38,17 @@ namespace cen {
 
 using touch_id = SDL_TouchID;
 
-[[nodiscard]] constexpr auto touch_mouse_id() noexcept -> uint32 { return SDL_TOUCH_MOUSEID; }
+[[nodiscard]] constexpr auto touch_mouse_id() noexcept -> uint32
+{
+  return SDL_TOUCH_MOUSEID;
+}
 
 [[nodiscard]] constexpr auto mouse_touch_id() noexcept -> touch_id
 {
   return SDL_MOUSE_TOUCHID;
 }
 
-enum class touch_device_type
-{
+enum class touch_device_type {
   invalid = SDL_TOUCH_DEVICE_INVALID,
   direct = SDL_TOUCH_DEVICE_DIRECT,
   indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
@@ -69,7 +71,7 @@ enum class touch_device_type
       return "indirect_relative";
 
     default:
-      throw exception{"Did not recognize touch device type!"};
+      throw exception {"Did not recognize touch device type!"};
   }
 }
 
@@ -79,15 +81,14 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
 }
 
 /// Provides a view into the state of a touch finger.
-class finger final
-{
+class finger final {
  public:
   using id_type = SDL_FingerID;
 
   [[nodiscard]] static auto find(const touch_id id, const int index) noexcept -> maybe<finger>
   {
     if (const auto* data = SDL_GetTouchFinger(id, index)) {
-      return finger{*data};
+      return finger {*data};
     }
     else {
       return nothing;
@@ -102,9 +103,9 @@ class finger final
   [[nodiscard]] auto get() const noexcept -> const SDL_Finger& { return mFinger; }
 
  private:
-  SDL_Finger mFinger{};
+  SDL_Finger mFinger {};
 
-  explicit finger(const SDL_Finger& other) noexcept : mFinger{other} {}
+  explicit finger(const SDL_Finger& other) noexcept : mFinger {other} {}
 };
 
 [[nodiscard]] inline auto touch_device_count() noexcept -> int

@@ -29,13 +29,12 @@
 
 #include <array>  // array
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
+extern "C" {
+FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
-  FAKE_VOID_FUNC(SDL_ResetKeyboard)
+FAKE_VOID_FUNC(SDL_ResetKeyboard)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
@@ -47,7 +46,7 @@ TEST(Keyboard, Constructor)
 
 TEST(Keyboard, HasScreenKeyboard)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasScreenKeyboardSupport, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::has_screen_keyboard());

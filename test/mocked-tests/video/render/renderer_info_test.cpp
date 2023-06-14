@@ -31,9 +31,8 @@
 #include "centurion/render.hpp"
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
+extern "C" {
+FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
 }
 
 namespace {
@@ -79,10 +78,10 @@ class RendererInfoTest : public testing::Test {
 
 TEST_F(RendererInfoTest, Test)
 {
-  std::array functions{get_renderer_info};
+  std::array functions {get_renderer_info};
   SET_CUSTOM_FAKE_SEQ(SDL_GetRendererInfo, functions.data(), cen::isize(functions));
 
-  cen::renderer_handle handle{nullptr};
+  cen::renderer_handle handle {nullptr};
 
   const auto info = cen::get_info(handle);
   ASSERT_TRUE(info);

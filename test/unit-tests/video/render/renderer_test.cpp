@@ -70,8 +70,8 @@ TEST_F(RendererTest, RendererFlagsEnum)
 
 TEST_F(RendererTest, PointerConstructor)
 {
-  SDL_Renderer* renderer{};
-  ASSERT_THROW(cen::renderer{renderer}, cen::exception);
+  SDL_Renderer* renderer {};
+  ASSERT_THROW(cen::renderer {renderer}, cen::exception);
 }
 
 TEST_F(RendererTest, FlagsConstructor)
@@ -88,7 +88,7 @@ TEST_F(RendererTest, SetColor)
 
 TEST_F(RendererTest, SetClip)
 {
-  constexpr cen::irect clip{{12, 34}, {56, 78}};
+  constexpr cen::irect clip {{12, 34}, {56, 78}};
 
   renderer->set_clip(clip);
   ASSERT_TRUE(renderer->clip().has_value());
@@ -100,7 +100,7 @@ TEST_F(RendererTest, SetClip)
 
 TEST_F(RendererTest, SetViewport)
 {
-  constexpr cen::irect viewport{{12, 34}, {56, 78}};
+  constexpr cen::irect viewport {{12, 34}, {56, 78}};
 
   renderer->set_viewport(viewport);
   ASSERT_EQ(viewport, renderer->viewport());
@@ -128,7 +128,7 @@ TEST_F(RendererTest, SetScale)
 TEST_F(RendererTest, SetLogicalSize)
 {
   const auto old = renderer->logical_size();
-  constexpr cen::iarea size{12, 34};
+  constexpr cen::iarea size {12, 34};
 
   renderer->set_logical_size(size);
   ASSERT_EQ(size.width, renderer->logical_size().width);
@@ -175,13 +175,13 @@ TEST_F(RendererTest, Capture)
   renderer->clear_with(cen::colors::pink);
 
   renderer->set_color(cen::colors::green);
-  renderer->fill_rect(cen::irect{20, 20, 150, 100});
+  renderer->fill_rect(cen::irect {20, 20, 150, 100});
 
   renderer->set_color(cen::colors::black);
-  renderer->draw_circle(cen::fpoint{300.0, 200.0}, 30);
+  renderer->draw_circle(cen::fpoint {300.0, 200.0}, 30);
 
   renderer->set_color(cen::colors::maroon);
-  renderer->fill_circle(cen::fpoint{400, 300}, 35);
+  renderer->fill_circle(cen::fpoint {400, 300}, 35);
 
   renderer->present();
 
@@ -209,7 +209,7 @@ TEST_F(RendererTest, ToLogical)
 {
   renderer->set_logical_size({400, 300});
 
-  const cen::ipoint real{42, 85};
+  const cen::ipoint real {42, 85};
 
   const auto logical = renderer->to_logical(real);
   ASSERT_NE(logical, cen::cast<cen::fpoint>(real));

@@ -50,8 +50,7 @@
 namespace cen {
 
 /// The main API for dealing with events.
-class event_handler final
-{
+class event_handler final {
  public:
   static void update() noexcept { SDL_PumpEvents(); }
 
@@ -73,7 +72,7 @@ class event_handler final
   /// Polls the next available event, if there is one.
   auto poll() noexcept -> bool
   {
-    SDL_Event event{};
+    SDL_Event event {};
     if (SDL_PollEvent(&event)) {
       store(event);
       return true;
@@ -264,9 +263,9 @@ class event_handler final
 
                                  window_event>;
 
-  SDL_Event mEvent{};  // Only needed to support the data member function
-  event_type mType{event_type::last_event};
-  data_type mData{};
+  SDL_Event mEvent {};  // Only needed to support the data member function
+  event_type mType {event_type::last_event};
+  data_type mData {};
 
   void reset_state()
   {

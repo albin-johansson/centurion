@@ -46,8 +46,7 @@ using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
 
 namespace cen {
 
-enum class log_priority
-{
+enum class log_priority {
   verbose = SDL_LOG_PRIORITY_VERBOSE,
   debug = SDL_LOG_PRIORITY_DEBUG,
   info = SDL_LOG_PRIORITY_INFO,
@@ -78,7 +77,7 @@ enum class log_priority
       return "critical";
 
     default:
-      throw exception{"Did not recognize log priority!"};
+      throw exception {"Did not recognize log priority!"};
   }
 }
 
@@ -87,8 +86,7 @@ inline auto operator<<(std::ostream& stream, const log_priority priority) -> std
   return stream << to_string(priority);
 }
 
-enum class log_category
-{
+enum class log_category {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
   assert = SDL_LOG_CATEGORY_ASSERT,
@@ -144,7 +142,7 @@ enum class log_category
       return "custom";
 
     default:
-      throw exception{"Did not recognize log category!"};
+      throw exception {"Did not recognize log category!"};
   }
 }
 
@@ -153,7 +151,10 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
   return stream << to_string(category);
 }
 
-inline void reset_log_priorities() noexcept { SDL_LogResetPriorities(); }
+inline void reset_log_priorities() noexcept
+{
+  SDL_LogResetPriorities();
+}
 
 inline void set_priority(const log_priority priority) noexcept
 {

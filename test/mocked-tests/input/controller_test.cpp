@@ -35,137 +35,132 @@
 
 using namespace cen::literals;
 
-extern "C"
-{
-  FAKE_VOID_FUNC(SDL_GameControllerUpdate)
-  FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
+extern "C" {
+FAKE_VOID_FUNC(SDL_GameControllerUpdate)
+FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
 
-  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
-  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
-  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
-  FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
+FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
+FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
+FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
 
-  FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
-  FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
-  FAKE_VALUE_FUNC(int,
-                  SDL_GameControllerRumbleTriggers,
-                  SDL_GameController*,
-                  Uint16,
-                  Uint16,
-                  Uint32)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
+FAKE_VALUE_FUNC(int,
+                SDL_GameControllerRumbleTriggers,
+                SDL_GameController*,
+                Uint16,
+                Uint16,
+                Uint32)
 
-  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 
-  FAKE_VALUE_FUNC(Uint8,
-                  SDL_GameControllerGetButton,
-                  SDL_GameController*,
-                  SDL_GameControllerButton)
-  FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
+FAKE_VALUE_FUNC(Uint8,
+                SDL_GameControllerGetButton,
+                SDL_GameController*,
+                SDL_GameControllerButton)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
-  FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
-  FAKE_VALUE_FUNC(Sint16,
-                  SDL_GameControllerGetAxis,
-                  SDL_GameController*,
-                  SDL_GameControllerAxis)
-  FAKE_VALUE_FUNC(SDL_bool,
-                  SDL_GameControllerHasAxis,
-                  SDL_GameController*,
-                  SDL_GameControllerAxis)
-  FAKE_VALUE_FUNC(SDL_bool,
-                  SDL_GameControllerHasButton,
-                  SDL_GameController*,
-                  SDL_GameControllerButton)
+FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
+FAKE_VALUE_FUNC(Sint16, SDL_GameControllerGetAxis, SDL_GameController*, SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_bool,
+                SDL_GameControllerHasAxis,
+                SDL_GameController*,
+                SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_bool,
+                SDL_GameControllerHasButton,
+                SDL_GameController*,
+                SDL_GameControllerButton)
 
-  FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
+FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
 
-  FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
-  FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameControllerButton)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameControllerButton)
 
-  FAKE_VALUE_FUNC(SDL_GameControllerButtonBind,
-                  SDL_GameControllerGetBindForAxis,
-                  SDL_GameController*,
-                  SDL_GameControllerAxis)
-  FAKE_VALUE_FUNC(SDL_GameControllerButtonBind,
-                  SDL_GameControllerGetBindForButton,
-                  SDL_GameController*,
-                  SDL_GameControllerButton)
+FAKE_VALUE_FUNC(SDL_GameControllerButtonBind,
+                SDL_GameControllerGetBindForAxis,
+                SDL_GameController*,
+                SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_GameControllerButtonBind,
+                SDL_GameControllerGetBindForButton,
+                SDL_GameController*,
+                SDL_GameControllerButton)
 
-  FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
-  FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpads, SDL_GameController*)
-  FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpadFingers, SDL_GameController*, int)
-  FAKE_VALUE_FUNC(int,
-                  SDL_GameControllerGetTouchpadFinger,
-                  SDL_GameController*,
-                  int,
-                  int,
-                  Uint8*,
-                  float*,
-                  float*,
-                  float*)
+FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpads, SDL_GameController*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpadFingers, SDL_GameController*, int)
+FAKE_VALUE_FUNC(int,
+                SDL_GameControllerGetTouchpadFinger,
+                SDL_GameController*,
+                int,
+                int,
+                Uint8*,
+                float*,
+                float*,
+                float*)
 
-  FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
-  FAKE_VALUE_FUNC(int, SDL_GameControllerAddMappingsFromRW, SDL_RWops*, int)
+FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerAddMappingsFromRW, SDL_RWops*, int)
 
-  FAKE_VALUE_FUNC(char*, SDL_GameControllerMapping, SDL_GameController*)
-  FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForDeviceIndex, int)
-  FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
-  FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMapping, SDL_GameController*)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForDeviceIndex, int)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
 
-  FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
-  FAKE_VALUE_FUNC(int,
-                  SDL_GameControllerSetSensorEnabled,
-                  SDL_GameController*,
-                  SDL_SensorType,
-                  SDL_bool)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasSensor, SDL_GameController*, SDL_SensorType)
-  FAKE_VALUE_FUNC(SDL_bool,
-                  SDL_GameControllerIsSensorEnabled,
-                  SDL_GameController*,
-                  SDL_SensorType)
-  FAKE_VALUE_FUNC(int,
-                  SDL_GameControllerGetSensorData,
-                  SDL_GameController*,
-                  SDL_SensorType,
-                  float*,
-                  int)
-  FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
+FAKE_VALUE_FUNC(int,
+                SDL_GameControllerSetSensorEnabled,
+                SDL_GameController*,
+                SDL_SensorType,
+                SDL_bool)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasSensor, SDL_GameController*, SDL_SensorType)
+FAKE_VALUE_FUNC(SDL_bool,
+                SDL_GameControllerIsSensorEnabled,
+                SDL_GameController*,
+                SDL_SensorType)
+FAKE_VALUE_FUNC(int,
+                SDL_GameControllerGetSensorData,
+                SDL_GameController*,
+                SDL_SensorType,
+                float*,
+                int)
+FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
-  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
+FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
+FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-  FAKE_VALUE_FUNC(float,
-                  SDL_GameControllerGetSensorDataRate,
-                  SDL_GameController*,
-                  SDL_SensorType)
-  FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
+FAKE_VALUE_FUNC(float,
+                SDL_GameControllerGetSensorDataRate,
+                SDL_GameController*,
+                SDL_SensorType)
+FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumble, SDL_GameController*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumbleTriggers, SDL_GameController*)
-  FAKE_VALUE_FUNC(const char*,
-                  SDL_GameControllerGetAppleSFSymbolsNameForButton,
-                  SDL_GameController*,
-                  SDL_GameControllerButton)
-  FAKE_VALUE_FUNC(const char*,
-                  SDL_GameControllerGetAppleSFSymbolsNameForAxis,
-                  SDL_GameController*,
-                  SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumble, SDL_GameController*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasRumbleTriggers, SDL_GameController*)
+FAKE_VALUE_FUNC(const char*,
+                SDL_GameControllerGetAppleSFSymbolsNameForButton,
+                SDL_GameController*,
+                SDL_GameControllerButton)
+FAKE_VALUE_FUNC(const char*,
+                SDL_GameControllerGetAppleSFSymbolsNameForAxis,
+                SDL_GameController*,
+                SDL_GameControllerAxis)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
-  FAKE_VALUE_FUNC(const char*, SDL_GameControllerPath, SDL_GameController*)
-  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetFirmwareVersion, SDL_GameController*)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerPath, SDL_GameController*)
+FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetFirmwareVersion, SDL_GameController*)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
-class ControllerTest : public testing::Test
-{
+class ControllerTest : public testing::Test {
  protected:
   void SetUp() override
   {
@@ -239,7 +234,7 @@ class ControllerTest : public testing::Test
    * null, this doesn't matter that much since they share implementations of all
    * relevant functions.
    */
-  cen::controller_handle controller{nullptr};
+  cen::controller_handle controller {nullptr};
 };
 
 using namespace cen::literals;
@@ -260,7 +255,7 @@ TEST_F(ControllerTest, StopRumble)
 
 TEST_F(ControllerTest, Product)
 {
-  std::array<Uint16, 2> values{0, 3};
+  std::array<Uint16, 2> values {0, 3};
   SET_RETURN_SEQ(SDL_GameControllerGetProduct, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.product().has_value());
@@ -269,7 +264,7 @@ TEST_F(ControllerTest, Product)
 
 TEST_F(ControllerTest, Vendor)
 {
-  std::array<Uint16, 2> values{0, 7};
+  std::array<Uint16, 2> values {0, 7};
   SET_RETURN_SEQ(SDL_GameControllerGetVendor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.vendor().has_value());
@@ -278,7 +273,7 @@ TEST_F(ControllerTest, Vendor)
 
 TEST_F(ControllerTest, ProductVersion)
 {
-  std::array<Uint16, 2> values{0, 4};
+  std::array<Uint16, 2> values {0, 4};
   SET_RETURN_SEQ(SDL_GameControllerGetProductVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.product_version().has_value());
@@ -287,7 +282,7 @@ TEST_F(ControllerTest, ProductVersion)
 
 TEST_F(ControllerTest, Index)
 {
-  std::array values{-1, 6};
+  std::array values {-1, 6};
   SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.index().has_value());
@@ -296,7 +291,7 @@ TEST_F(ControllerTest, Index)
 
 TEST_F(ControllerTest, Connected)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerGetAttached, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.connected());
@@ -305,7 +300,7 @@ TEST_F(ControllerTest, Connected)
 
 TEST_F(ControllerTest, Name)
 {
-  std::array<const char*, 2> values{nullptr, "foobar"};
+  std::array<const char*, 2> values {nullptr, "foobar"};
   SET_RETURN_SEQ(SDL_GameControllerName, values.data(), cen::isize(values));
 
   ASSERT_EQ(nullptr, controller.name());
@@ -314,7 +309,7 @@ TEST_F(ControllerTest, Name)
 
 TEST_F(ControllerTest, State)
 {
-  std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
+  std::array<Uint8, 2> values {SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::button_state::released, controller.state(cen::controller_button::a));
@@ -323,7 +318,7 @@ TEST_F(ControllerTest, State)
 
 TEST_F(ControllerTest, Pressed)
 {
-  std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
+  std::array<Uint8, 2> values {SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.pressed(cen::controller_button::a));
@@ -332,7 +327,7 @@ TEST_F(ControllerTest, Pressed)
 
 TEST_F(ControllerTest, Released)
 {
-  std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
+  std::array<Uint8, 2> values {SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
   ASSERT_TRUE(controller.released(cen::controller_button::a));
@@ -341,7 +336,7 @@ TEST_F(ControllerTest, Released)
 
 TEST_F(ControllerTest, AxisFromString)
 {
-  std::array values{SDL_CONTROLLER_AXIS_INVALID, SDL_CONTROLLER_AXIS_RIGHTX};
+  std::array values {SDL_CONTROLLER_AXIS_INVALID, SDL_CONTROLLER_AXIS_RIGHTX};
   SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::controller_axis::invalid, cen::controller::axis(""));
@@ -353,7 +348,7 @@ TEST_F(ControllerTest, AxisFromString)
 
 TEST_F(ControllerTest, Axis)
 {
-  std::array<Sint16, 2> values{123, 321};
+  std::array<Sint16, 2> values {123, 321};
   SET_RETURN_SEQ(SDL_GameControllerGetAxis, values.data(), cen::isize(values));
 
   ASSERT_EQ(123, controller.axis(cen::controller_axis::left_x));
@@ -367,7 +362,7 @@ TEST_F(ControllerTest, GetJoystick)
 
 TEST_F(ControllerTest, AddControllerMapping)
 {
-  std::array values{1, 0, -1};
+  std::array values {1, 0, -1};
   SET_RETURN_SEQ(SDL_GameControllerAddMapping, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::controller_mapping_result::added, cen::add_controller_mapping("foo"));
@@ -382,7 +377,7 @@ TEST_F(ControllerTest, AddControllerMapping)
 
 TEST_F(ControllerTest, LoadControllerMappings)
 {
-  std::array values{-1, 7};
+  std::array values {-1, 7};
   SET_RETURN_SEQ(SDL_GameControllerAddMappingsFromRW, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::load_controller_mappings("foo").has_value());
@@ -392,7 +387,10 @@ TEST_F(ControllerTest, LoadControllerMappings)
   ASSERT_EQ(7, cen::load_controller_mappings("foo"s));
 }
 
-TEST_F(ControllerTest, Mapping) { ASSERT_EQ(nullptr, controller.mapping().get()); }
+TEST_F(ControllerTest, Mapping)
+{
+  ASSERT_EQ(nullptr, controller.mapping().get());
+}
 
 TEST_F(ControllerTest, MappingJoystickIndex)
 {
@@ -401,7 +399,7 @@ TEST_F(ControllerTest, MappingJoystickIndex)
 
 TEST_F(ControllerTest, MappingJoystickGUID)
 {
-  SDL_JoystickGUID id{};
+  SDL_JoystickGUID id {};
   ASSERT_EQ(nullptr, controller.mapping(id).get());
 }
 
@@ -412,7 +410,7 @@ TEST_F(ControllerTest, MappingByIndex)
 
 TEST_F(ControllerTest, Button)
 {
-  std::array values{SDL_CONTROLLER_BUTTON_INVALID, SDL_CONTROLLER_BUTTON_B};
+  std::array values {SDL_CONTROLLER_BUTTON_INVALID, SDL_CONTROLLER_BUTTON_B};
   SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::controller_button::invalid, cen::controller::button(""));
@@ -424,7 +422,7 @@ TEST_F(ControllerTest, Button)
 
 TEST_F(ControllerTest, StringifyWithAxis)
 {
-  std::array<const char*, 2> values{nullptr, "foo"};
+  std::array<const char*, 2> values {nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetStringForAxis, values.data(), cen::isize(values));
 
   ASSERT_EQ(nullptr, cen::controller::stringify(cen::controller_axis::left_y));
@@ -433,7 +431,7 @@ TEST_F(ControllerTest, StringifyWithAxis)
 
 TEST_F(ControllerTest, StringifyWithButton)
 {
-  std::array<const char*, 2> values{nullptr, "foo"};
+  std::array<const char*, 2> values {nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetStringForButton, values.data(), cen::isize(values));
 
   ASSERT_EQ(nullptr, cen::controller::stringify(cen::controller_button::x));
@@ -442,13 +440,13 @@ TEST_F(ControllerTest, StringifyWithButton)
 
 TEST_F(ControllerTest, BindingWithAxis)
 {
-  SDL_GameControllerButtonBind first{};
+  SDL_GameControllerButtonBind first {};
   first.bindType = SDL_CONTROLLER_BINDTYPE_NONE;
 
-  SDL_GameControllerButtonBind second{};
+  SDL_GameControllerButtonBind second {};
   second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
 
-  std::array values{first, second};
+  std::array values {first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.binding(cen::controller_axis::right_x).has_value());
@@ -457,13 +455,13 @@ TEST_F(ControllerTest, BindingWithAxis)
 
 TEST_F(ControllerTest, BindingWithButton)
 {
-  SDL_GameControllerButtonBind first{};
+  SDL_GameControllerButtonBind first {};
   first.bindType = SDL_CONTROLLER_BINDTYPE_NONE;
 
-  SDL_GameControllerButtonBind second{};
+  SDL_GameControllerButtonBind second {};
   second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
 
-  std::array values{first, second};
+  std::array values {first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForButton, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.binding(cen::controller_button::x).has_value());
@@ -495,7 +493,7 @@ TEST_F(ControllerTest, SetPolling)
 
 TEST_F(ControllerTest, Polling)
 {
-  std::array<int, 2> values{SDL_FALSE, SDL_TRUE};
+  std::array<int, 2> values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerEventState, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::controller::polling());
@@ -521,9 +519,9 @@ TEST_F(ControllerTest, SetPlayerIndex)
 
 TEST_F(ControllerTest, Type)
 {
-  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN,
-                    SDL_CONTROLLER_TYPE_XBOX360,
-                    SDL_CONTROLLER_TYPE_PS4};
+  std::array values {SDL_CONTROLLER_TYPE_UNKNOWN,
+                     SDL_CONTROLLER_TYPE_XBOX360,
+                     SDL_CONTROLLER_TYPE_PS4};
   SET_RETURN_SEQ(SDL_GameControllerGetType, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::controller_type::unknown, controller.type());
@@ -533,7 +531,7 @@ TEST_F(ControllerTest, Type)
 
 TEST_F(ControllerTest, TypeWithIndex)
 {
-  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
+  std::array values {SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
   SET_RETURN_SEQ(SDL_GameControllerTypeForIndex, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::controller_type::unknown, cen::controller::type(0));
@@ -558,7 +556,7 @@ TEST_F(ControllerTest, Serial)
 
 TEST_F(ControllerTest, HasAxis)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasAxis, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.has_axis(cen::controller_axis::left_x));
@@ -568,7 +566,7 @@ TEST_F(ControllerTest, HasAxis)
 
 TEST_F(ControllerTest, HasButton)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasButton, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.has_button(cen::controller_button::x));
@@ -590,7 +588,7 @@ TEST_F(ControllerTest, TouchpadFingerCapacity)
 
 TEST_F(ControllerTest, TouchpadFingerState)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.touchpad_finger_state(0, 0));
@@ -600,7 +598,7 @@ TEST_F(ControllerTest, TouchpadFingerState)
 
 TEST_F(ControllerTest, SetSensor)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled, values.data(), cen::isize(values));
 
   const auto type = cen::sensor_type::gyroscope;
@@ -611,7 +609,7 @@ TEST_F(ControllerTest, SetSensor)
 
 TEST_F(ControllerTest, HasSensor)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasSensor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.has_sensor(cen::sensor_type::gyroscope));
@@ -621,7 +619,7 @@ TEST_F(ControllerTest, HasSensor)
 
 TEST_F(ControllerTest, IsSensorEnabled)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.is_sensor_enabled(cen::sensor_type::gyroscope));
@@ -631,7 +629,7 @@ TEST_F(ControllerTest, IsSensorEnabled)
 
 TEST_F(ControllerTest, SensorData)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerGetSensorData, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.sensor_data<3>(cen::sensor_type::gyroscope));
@@ -641,7 +639,7 @@ TEST_F(ControllerTest, SensorData)
 
 TEST_F(ControllerTest, SetLED)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerSetLED, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.set_led(cen::colors::red));
@@ -651,7 +649,7 @@ TEST_F(ControllerTest, SetLED)
 
 TEST_F(ControllerTest, HasLED)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasLED, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.has_led());
@@ -665,7 +663,7 @@ TEST_F(ControllerTest, HasLED)
 
 TEST_F(ControllerTest, SensorDataRate)
 {
-  std::array values{0.0f, 45.3f};
+  std::array values {0.0f, 45.3f};
   SET_RETURN_SEQ(SDL_GameControllerGetSensorDataRate, values.data(), cen::isize(values));
 
   ASSERT_EQ(0.0f, controller.sensor_data_rate(cen::sensor_type::gyroscope));
@@ -677,7 +675,7 @@ TEST_F(ControllerTest, SensorDataRate)
 
 TEST_F(ControllerTest, SendEffect)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerSendEffect, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.send_effect(nullptr, 12));
@@ -695,7 +693,7 @@ TEST_F(ControllerTest, SendEffect)
 
 TEST_F(ControllerTest, HasRumble)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasRumble, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.has_rumble());
@@ -706,7 +704,7 @@ TEST_F(ControllerTest, HasRumble)
 
 TEST_F(ControllerTest, HasRumbleTriggers)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerHasRumbleTriggers, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.has_rumble_triggers());
@@ -717,7 +715,7 @@ TEST_F(ControllerTest, HasRumbleTriggers)
 
 TEST_F(ControllerTest, AppleSFSymbolsNameForButton)
 {
-  std::array<const char*, 2> values{nullptr, "foo"};
+  std::array<const char*, 2> values {nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetAppleSFSymbolsNameForButton,
                  values.data(),
                  cen::isize(values));
@@ -730,7 +728,7 @@ TEST_F(ControllerTest, AppleSFSymbolsNameForButton)
 
 TEST_F(ControllerTest, AppleSFSymbolsNameForAxis)
 {
-  std::array<const char*, 2> values{nullptr, "bar"};
+  std::array<const char*, 2> values {nullptr, "bar"};
   SET_RETURN_SEQ(SDL_GameControllerGetAppleSFSymbolsNameForAxis,
                  values.data(),
                  cen::isize(values));
@@ -753,7 +751,7 @@ TEST_F(ControllerTest, Path)
 
 TEST_F(ControllerTest, FirmwareVersion)
 {
-  std::array<Uint16, 2> values{0, 42};
+  std::array<Uint16, 2> values {0, 42};
   SET_RETURN_SEQ(SDL_GameControllerGetFirmwareVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(controller.firmware_version().has_value());

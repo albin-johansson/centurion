@@ -49,62 +49,52 @@ template <typename T>
 struct deleter;  // Intentionally no base definition
 
 template <>
-struct deleter<SDL_Window> final
-{
+struct deleter<SDL_Window> final {
   void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
 };
 
 template <>
-struct deleter<SDL_Renderer> final
-{
+struct deleter<SDL_Renderer> final {
   void operator()(SDL_Renderer* renderer) noexcept { SDL_DestroyRenderer(renderer); }
 };
 
 template <>
-struct deleter<SDL_RWops> final
-{
+struct deleter<SDL_RWops> final {
   void operator()(SDL_RWops* ops) noexcept { SDL_RWclose(ops); }
 };
 
 template <>
-struct deleter<SDL_Surface> final
-{
+struct deleter<SDL_Surface> final {
   void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
 };
 
 template <>
-struct deleter<SDL_Texture> final
-{
+struct deleter<SDL_Texture> final {
   void operator()(SDL_Texture* texture) noexcept { SDL_DestroyTexture(texture); }
 };
 
 template <>
-struct deleter<SDL_PixelFormat> final
-{
+struct deleter<SDL_PixelFormat> final {
   void operator()(SDL_PixelFormat* format) noexcept { SDL_FreeFormat(format); }
 };
 
 template <>
-struct deleter<SDL_Palette> final
-{
+struct deleter<SDL_Palette> final {
   void operator()(SDL_Palette* palette) noexcept { SDL_FreePalette(palette); }
 };
 
 template <>
-struct deleter<SDL_Cursor> final
-{
+struct deleter<SDL_Cursor> final {
   void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
 };
 
 template <>
-struct deleter<SDL_Joystick> final
-{
+struct deleter<SDL_Joystick> final {
   void operator()(SDL_Joystick* joystick) noexcept { SDL_JoystickClose(joystick); }
 };
 
 template <>
-struct deleter<SDL_GameController> final
-{
+struct deleter<SDL_GameController> final {
   void operator()(SDL_GameController* controller) noexcept
   {
     SDL_GameControllerClose(controller);
@@ -112,32 +102,27 @@ struct deleter<SDL_GameController> final
 };
 
 template <>
-struct deleter<SDL_Haptic> final
-{
+struct deleter<SDL_Haptic> final {
   void operator()(SDL_Haptic* haptic) noexcept { SDL_HapticClose(haptic); }
 };
 
 template <>
-struct deleter<SDL_Sensor> final
-{
+struct deleter<SDL_Sensor> final {
   void operator()(SDL_Sensor* sensor) noexcept { SDL_SensorClose(sensor); }
 };
 
 template <>
-struct deleter<SDL_mutex> final
-{
+struct deleter<SDL_mutex> final {
   void operator()(SDL_mutex* mutex) noexcept { SDL_DestroyMutex(mutex); }
 };
 
 template <>
-struct deleter<SDL_sem> final
-{
+struct deleter<SDL_sem> final {
   void operator()(SDL_sem* semaphore) noexcept { SDL_DestroySemaphore(semaphore); }
 };
 
 template <>
-struct deleter<SDL_cond> final
-{
+struct deleter<SDL_cond> final {
   void operator()(SDL_cond* cond) noexcept { SDL_DestroyCond(cond); }
 };
 
@@ -146,8 +131,7 @@ struct deleter<SDL_cond> final
 #if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
 
 template <>
-struct deleter<IMG_Animation> final
-{
+struct deleter<IMG_Animation> final {
   void operator()(IMG_Animation* anim) noexcept { IMG_FreeAnimation(anim); }
 };
 
@@ -158,14 +142,12 @@ struct deleter<IMG_Animation> final
 #ifndef CENTURION_NO_SDL_MIXER
 
 template <>
-struct deleter<Mix_Music> final
-{
+struct deleter<Mix_Music> final {
   void operator()(Mix_Music* music) noexcept { Mix_FreeMusic(music); }
 };
 
 template <>
-struct deleter<Mix_Chunk> final
-{
+struct deleter<Mix_Chunk> final {
   void operator()(Mix_Chunk* chunk) noexcept { Mix_FreeChunk(chunk); }
 };
 
@@ -174,8 +156,7 @@ struct deleter<Mix_Chunk> final
 #ifndef CENTURION_NO_SDL_TTF
 
 template <>
-struct deleter<TTF_Font> final
-{
+struct deleter<TTF_Font> final {
   void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
 };
 
@@ -184,12 +165,11 @@ struct deleter<TTF_Font> final
 template <typename T>
 using managed_ptr = std::unique_ptr<T, deleter<T>>;
 
-class simd_block final
-{
+class simd_block final {
  public:
   using size_type = std::size_t;
 
-  explicit simd_block(const size_type size) noexcept : mData{SDL_SIMDAlloc(size)} {}
+  explicit simd_block(const size_type size) noexcept : mData {SDL_SIMDAlloc(size)} {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -211,8 +191,7 @@ class simd_block final
   explicit operator bool() const noexcept { return mData != nullptr; }
 
  private:
-  struct simd_deleter final
-  {
+  struct simd_deleter final {
     void operator()(void* ptr) noexcept { SDL_SIMDFree(ptr); }
   };
   std::unique_ptr<void, simd_deleter> mData;

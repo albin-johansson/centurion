@@ -60,8 +60,7 @@
 
 namespace cen {
 
-enum class renderer_flip
-{
+enum class renderer_flip {
   none = SDL_FLIP_NONE,
   horizontal = SDL_FLIP_HORIZONTAL,
   vertical = SDL_FLIP_VERTICAL
@@ -80,7 +79,7 @@ enum class renderer_flip
       return "vertical";
 
     default:
-      throw exception{"Did not recognize renderer flip value!"};
+      throw exception {"Did not recognize renderer flip value!"};
   }
 }
 
@@ -89,10 +88,9 @@ inline auto operator<<(std::ostream& stream, const renderer_flip flip) -> std::o
   return stream << to_string(flip);
 }
 
-struct renderer_scale final
-{
-  float x{};
-  float y{};
+struct renderer_scale final {
+  float x {};
+  float y {};
 };
 
 template <typename T>
@@ -111,11 +109,9 @@ using renderer_handle = basic_renderer<detail::handle_tag>;
  * \see renderer_info
  */
 template <typename T>
-class basic_renderer final
-{
+class basic_renderer final {
  public:
-  enum renderer_flags : uint32
-  {
+  enum renderer_flags : uint32 {
     software = SDL_RENDERER_SOFTWARE,              ///< Software renderer.
     accelerated = SDL_RENDERER_ACCELERATED,        ///< Hardware-accelerated.
     target_textures = SDL_RENDERER_TARGETTEXTURE,  ///< Supports target textures.
@@ -123,27 +119,28 @@ class basic_renderer final
   };
 
   explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(detail::is_handle<T>)
-      : mRenderer{renderer}
+      : mRenderer {renderer}
   {
     if constexpr (detail::is_owner<T>) {
       if (!get()) {
-        throw exception{"Cannot create renderer from null pointer!"};
+        throw exception {"Cannot create renderer from null pointer!"};
       }
     }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_renderer(const renderer& owner) noexcept : mRenderer{owner.get()}
-  {}
+  explicit basic_renderer(const renderer& owner) noexcept : mRenderer {owner.get()}
+  {
+  }
 
   template <typename X>
   [[nodiscard]] auto make_texture(const basic_surface<X>& surface) const -> texture
   {
     if (auto* ptr = SDL_CreateTextureFromSurface(get(), surface.get())) {
-      return texture{ptr};
+      return texture {ptr};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -156,10 +153,10 @@ class basic_renderer final
                                       to_underlying(access),
                                       size.width,
                                       size.height)) {
-      return texture{ptr};
+      return texture {ptr};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -169,10 +166,10 @@ class basic_renderer final
   {
     assert(path);
     if (auto* ptr = IMG_LoadTexture(get(), path)) {
-      return texture{ptr};
+      return texture {ptr};
     }
     else {
-      throw img_error{};
+      throw img_error {};
     }
   }
 
@@ -339,11 +336,11 @@ class basic_renderer final
   {
     if constexpr (basic_point<Y>::floating) {
       const auto size = texture.size().as_f();
-      const SDL_FRect dst{pos.x(), pos.y(), size.width, size.height};
+      const SDL_FRect dst {pos.x(), pos.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else {
-      const SDL_Rect dst{pos.x(), pos.y(), texture.width(), texture.height()};
+      const SDL_Rect dst {pos.x(), pos.y(), texture.width(), texture.height()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
   }
@@ -496,7 +493,7 @@ class basic_renderer final
 
   [[nodiscard]] auto get_target() noexcept -> texture_handle
   {
-    return texture_handle{SDL_GetRenderTarget(get())};
+    return texture_handle {SDL_GetRenderTarget(get())};
   }
 
   auto reset_clip() noexcept -> result { return SDL_RenderSetClipRect(get(), nullptr) == 0; }
@@ -537,7 +534,7 @@ class basic_renderer final
 
   [[nodiscard]] auto logical_size() const noexcept -> iarea
   {
-    iarea size{};
+    iarea size {};
     SDL_RenderGetLogicalSize(get(), &size.width, &size.height);
     return size;
   }
@@ -551,8 +548,8 @@ class basic_renderer final
 
   [[nodiscard]] auto to_logical(const int realX, const int realY) const noexcept -> fpoint
   {
-    float logicalX{};
-    float logicalY{};
+    float logicalX {};
+    float logicalY {};
     SDL_RenderWindowToLogical(get(), realX, realY, &logicalX, &logicalY);
     return {logicalX, logicalY};
   }
@@ -565,8 +562,8 @@ class basic_renderer final
   [[nodiscard]] auto from_logical(const float logicalX, const float logicalY) const noexcept
       -> ipoint
   {
-    int realX{};
-    int realY{};
+    int realX {};
+    int realY {};
     SDL_RenderLogicalToWindow(get(), logicalX, logicalY, &realX, &realY);
     return {realX, realY};
   }
@@ -615,24 +612,24 @@ class basic_renderer final
 
   [[nodiscard]] auto get_color() const noexcept -> color
   {
-    uint8 red{};
-    uint8 green{};
-    uint8 blue{};
-    uint8 alpha{};
+    uint8 red {};
+    uint8 green {};
+    uint8 blue {};
+    uint8 alpha {};
     SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
     return {red, green, blue, alpha};
   }
 
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
-    SDL_BlendMode mode{};
+    SDL_BlendMode mode {};
     SDL_GetRenderDrawBlendMode(get(), &mode);
     return static_cast<blend_mode>(mode);
   }
 
   [[nodiscard]] auto viewport() const noexcept -> irect
   {
-    irect viewport{};
+    irect viewport {};
     SDL_RenderGetViewport(get(), viewport.data());
     return viewport;
   }
@@ -646,16 +643,16 @@ class basic_renderer final
 
   [[nodiscard]] auto capture(const pixel_format format) const -> surface
   {
-    surface image{output_size(), format};
+    surface image {output_size(), format};
 
     if (!image.lock()) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
 
     if (const auto res =
             SDL_RenderReadPixels(get(), nullptr, 0, image.pixel_data(), image.pitch());
         res == -1) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
 
     image.unlock();
@@ -664,7 +661,7 @@ class basic_renderer final
 
   [[nodiscard]] auto output_size() const noexcept -> iarea
   {
-    iarea size{};
+    iarea size {};
     SDL_GetRendererOutputSize(get(), &size.width, &size.height);
     return size;
   }
@@ -704,8 +701,7 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 }
 
 /// Provides information about a renderer.
-class renderer_info final
-{
+class renderer_info final {
   template <typename T>
   friend auto get_info(const basic_renderer<T>& renderer) noexcept -> maybe<renderer_info>;
 
@@ -745,7 +741,7 @@ class renderer_info final
       return static_cast<pixel_format>(mInfo.texture_formats[index]);
     }
     else {
-      throw exception{"Invalid pixel format index!"};
+      throw exception {"Invalid pixel format index!"};
     }
   }
 
@@ -769,7 +765,7 @@ class renderer_info final
  private:
   SDL_RendererInfo mInfo;
 
-  explicit renderer_info(const SDL_RendererInfo info) noexcept : mInfo{info} {}
+  explicit renderer_info(const SDL_RendererInfo info) noexcept : mInfo {info} {}
 };
 
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
@@ -790,9 +786,9 @@ inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::
 template <typename T>
 [[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept -> maybe<renderer_info>
 {
-  SDL_RendererInfo info{};
+  SDL_RendererInfo info {};
   if (SDL_GetRendererInfo(renderer.get(), &info) == 0) {
-    return renderer_info{info};
+    return renderer_info {info};
   }
   else {
     return nothing;

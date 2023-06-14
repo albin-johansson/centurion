@@ -72,8 +72,7 @@ using surface_handle = basic_surface<detail::handle_tag>;
  * \see surface_handle
  */
 template <typename T>
-class basic_surface final
-{
+class basic_surface final {
  public:
   /**
    * Creates a surface from an SDL surface.
@@ -83,11 +82,11 @@ class basic_surface final
    * \param surface a pointer to the associated surface.
    */
   explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(detail::is_handle<T>)
-      : mSurface{surface}
+      : mSurface {surface}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mSurface) {
-        throw exception{"Cannot create owning surface from null pointer!"};
+        throw exception {"Cannot create owning surface from null pointer!"};
       }
     }
   }
@@ -95,29 +94,30 @@ class basic_surface final
 #ifndef CENTURION_NO_SDL_IMAGE
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_surface(const char* file) : mSurface{IMG_Load(file)}
+  explicit basic_surface(const char* file) : mSurface {IMG_Load(file)}
   {
     if (!mSurface) {
-      throw img_error{};
+      throw img_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
-  {}
+  explicit basic_surface(const std::string& file) : basic_surface {file.c_str()}
+  {
+  }
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   basic_surface(const iarea& size, const pixel_format format)
-      : mSurface{SDL_CreateRGBSurfaceWithFormat(0,
-                                                size.width,
-                                                size.height,
-                                                0,
-                                                to_underlying(format))}
+      : mSurface {SDL_CreateRGBSurfaceWithFormat(0,
+                                                 size.width,
+                                                 size.height,
+                                                 0,
+                                                 to_underlying(format))}
   {
     if (!mSurface) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -158,7 +158,7 @@ class basic_surface final
   {
     assert(file);
 
-    surface source{file};
+    surface source {file};
     source.set_blend_mode(mode);
 
     return source.convert_to(format);
@@ -178,7 +178,7 @@ class basic_surface final
   [[nodiscard]] static auto from_bmp(const char* file) -> surface
   {
     assert(file);
-    return surface{SDL_LoadBMP(file)};
+    return surface {SDL_LoadBMP(file)};
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
@@ -227,12 +227,12 @@ class basic_surface final
   [[nodiscard]] auto convert_to(const pixel_format format) const -> surface
   {
     if (auto* converted = SDL_ConvertSurfaceFormat(mSurface, to_underlying(format), 0)) {
-      surface result{converted};
+      surface result {converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -278,16 +278,16 @@ class basic_surface final
 
   [[nodiscard]] auto alpha() const noexcept -> uint8
   {
-    uint8 alpha{0xFF};
+    uint8 alpha {0xFF};
     SDL_GetSurfaceAlphaMod(mSurface, &alpha);
     return alpha;
   }
 
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
-    uint8 red{};
-    uint8 green{};
-    uint8 blue{};
+    uint8 red {};
+    uint8 green {};
+    uint8 blue {};
     if (SDL_GetSurfaceColorMod(mSurface, &red, &green, &blue) == 0) {
       return {red, green, blue};
     }
@@ -298,7 +298,7 @@ class basic_surface final
 
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
-    SDL_BlendMode mode{};
+    SDL_BlendMode mode {};
     SDL_GetSurfaceBlendMode(mSurface, &mode);
     return static_cast<blend_mode>(mode);
   }
@@ -314,10 +314,10 @@ class basic_surface final
 
   [[nodiscard]] auto format_info() const noexcept -> pixel_format_info_handle
   {
-    return pixel_format_info_handle{mSurface->format};
+    return pixel_format_info_handle {mSurface->format};
   }
 
-  [[nodiscard]] auto clip() const noexcept -> irect { return irect{mSurface->clip_rect}; }
+  [[nodiscard]] auto clip() const noexcept -> irect { return irect {mSurface->clip_rect}; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -348,7 +348,7 @@ class basic_surface final
       return copy;
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 

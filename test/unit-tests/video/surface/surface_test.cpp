@@ -63,21 +63,21 @@ TEST_F(SurfaceTest, PathConstructor)
 {
   ASSERT_THROW(cen::surface(""), cen::exception);
   ASSERT_THROW(cen::surface(""s), cen::exception);
-  ASSERT_NO_THROW(cen::surface{path});
+  ASSERT_NO_THROW(cen::surface {path});
 }
 
 TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
 {
   ASSERT_NO_THROW(cen::surface(IMG_Load(path)));
 
-  SDL_Surface* ptr{};
-  ASSERT_THROW(cen::surface{ptr}, cen::exception);
+  SDL_Surface* ptr {};
+  ASSERT_THROW(cen::surface {ptr}, cen::exception);
 }
 
 TEST_F(SurfaceTest, SizePixelFormatConstructor)
 {
   cen::window window;
-  cen::surface image{{10, 10}, window.format()};
+  cen::surface image {{10, 10}, window.format()};
   ASSERT_EQ(10, image.width());
   ASSERT_EQ(10, image.height());
   ASSERT_EQ(window.format(), image.format_info().format());
@@ -85,7 +85,7 @@ TEST_F(SurfaceTest, SizePixelFormatConstructor)
 
 TEST_F(SurfaceTest, CopyConstructor)
 {
-  const cen::surface copy{*surface};
+  const cen::surface copy {*surface};
 
   ASSERT_NE(surface->get(), copy.get());
   ASSERT_TRUE(surface->get());
@@ -94,8 +94,8 @@ TEST_F(SurfaceTest, CopyConstructor)
 
 TEST_F(SurfaceTest, MoveConstructor)
 {
-  cen::surface copy{*surface};
-  const cen::surface moved{std::move(copy)};
+  cen::surface copy {*surface};
+  const cen::surface moved {std::move(copy)};
 
   ASSERT_FALSE(copy.get());
   ASSERT_TRUE(moved.get());
@@ -118,7 +118,7 @@ TEST_F(SurfaceTest, MoveSelfAssignment)
 
 TEST_F(SurfaceTest, MoveAssignment)
 {
-  cen::surface source{*surface};
+  cen::surface source {*surface};
   cen::surface destination = std::move(source);
 
   ASSERT_FALSE(source.get());
@@ -201,7 +201,7 @@ TEST_F(SurfaceTest, Pitch)
 
 TEST_F(SurfaceTest, Clip)
 {
-  constexpr cen::irect rect{{48, 29}, {34, 89}};
+  constexpr cen::irect rect {{48, 29}, {34, 89}};
 
   surface->get()->clip_rect = rect.get();
   ASSERT_EQ(rect, surface->clip());
@@ -217,7 +217,7 @@ TEST_F(SurfaceTest, GetPixelData)
 
 TEST_F(SurfaceTest, ConvertTo)
 {
-  cen::surface source{path};
+  cen::surface source {path};
   source.set_blend_mode(cen::blend_mode::blend);
   source.set_alpha_mod(0xAE);
   source.set_color_mod(cen::colors::red);

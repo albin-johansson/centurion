@@ -41,8 +41,7 @@
 
 namespace cen {
 
-enum class message_box_type : uint32
-{
+enum class message_box_type : uint32 {
   error = SDL_MESSAGEBOX_ERROR,
   warning = SDL_MESSAGEBOX_WARNING,
   information = SDL_MESSAGEBOX_INFORMATION
@@ -61,7 +60,7 @@ enum class message_box_type : uint32
       return "information";
 
     default:
-      throw exception{"Did not recognize message box type!"};
+      throw exception {"Did not recognize message box type!"};
   }
 }
 
@@ -70,8 +69,7 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
   return stream << to_string(type);
 }
 
-enum class message_box_button_order : uint32
-{
+enum class message_box_button_order : uint32 {
 #if SDL_VERSION_ATLEAST(2, 0, 12)
   left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
   right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
@@ -92,7 +90,7 @@ enum class message_box_button_order : uint32
       return "right_to_left";
 
     default:
-      throw exception{"Did not recognize message box button order!"};
+      throw exception {"Did not recognize message box button order!"};
   }
 }
 
@@ -102,8 +100,7 @@ inline auto operator<<(std::ostream& stream, const message_box_button_order orde
   return stream << to_string(order);
 }
 
-enum class message_box_color_type : int
-{
+enum class message_box_color_type : int {
   background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
   text = SDL_MESSAGEBOX_COLOR_TEXT,
   button_border = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
@@ -130,7 +127,7 @@ enum class message_box_color_type : int
       return "button_selected";
 
     default:
-      throw exception{"Did not recognize message box color type!"};
+      throw exception {"Did not recognize message box color type!"};
   }
 }
 
@@ -140,8 +137,7 @@ inline auto operator<<(std::ostream& stream, const message_box_color_type type)
   return stream << to_string(type);
 }
 
-class message_box_color_scheme final
-{
+class message_box_color_scheme final {
  public:
   message_box_color_scheme() noexcept
   {
@@ -173,17 +169,15 @@ class message_box_color_scheme final
   }
 
  private:
-  SDL_MessageBoxColorScheme mScheme{};
+  SDL_MessageBoxColorScheme mScheme {};
 };
 
 /// Represents a modal message box that can be used display information, warnings and errors.
-class message_box final
-{
+class message_box final {
  public:
   using button_id = int;
 
-  enum button_flags : uint32
-  {
+  enum button_flags : uint32 {
     return_key_default = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key_default = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
   };
@@ -191,9 +185,10 @@ class message_box final
   message_box() = default;
 
   message_box(std::string title, std::string message)
-      : mTitle{std::move(title)}
-      , mMessage{std::move(message)}
-  {}
+      : mTitle {std::move(title)}
+      , mMessage {std::move(message)}
+  {
+  }
 
   template <typename T>
   static void show(const basic_window<T>& parent,
@@ -247,7 +242,7 @@ class message_box final
       mButtons.emplace_back(id, std::move(text), button);
     }
     else {
-      throw exception{"Duplicate message box button ID!"};
+      throw exception {"Duplicate message box button ID!"};
     }
   }
 
@@ -295,21 +290,21 @@ class message_box final
   }
 
  private:
-  struct button final
-  {
+  struct button final {
     button_id id;
     button_flags flags;
     std::string text;
 
     button(const button_id id, std::string text, const button_flags flags)
-        : id{id}
-        , flags{flags}
-        , text{std::move(text)}
-    {}
+        : id {id}
+        , flags {flags}
+        , text {std::move(text)}
+    {
+    }
 
     [[nodiscard]] auto convert() const noexcept -> SDL_MessageBoxButtonData
     {
-      SDL_MessageBoxButtonData result{};
+      SDL_MessageBoxButtonData result {};
 
       result.flags = to_underlying(flags);
       result.buttonid = id;
@@ -320,11 +315,11 @@ class message_box final
   };
 
   std::vector<button> mButtons;
-  std::string mTitle{"Message box"};
+  std::string mTitle {"Message box"};
   std::string mMessage;
   maybe<message_box_color_scheme> mColorScheme;
-  message_box_type mType{default_type()};
-  message_box_button_order mButtonOrder{default_order()};
+  message_box_type mType {default_type()};
+  message_box_button_order mButtonOrder {default_order()};
 
   [[nodiscard]] constexpr static auto to_flags(const message_box_type type,
                                                const message_box_button_order order) noexcept
@@ -344,13 +339,13 @@ class message_box final
 
     const auto res = SDL_ShowSimpleMessageBox(to_flags(type, order), title, message, parent);
     if (res == -1) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   auto show(SDL_Window* parent) -> maybe<button_id>
   {
-    SDL_MessageBoxData data{};
+    SDL_MessageBoxData data {};
 
     data.window = parent;
     data.title = mTitle.c_str();
@@ -372,9 +367,9 @@ class message_box final
     data.buttons = buttonData.data();
     data.numbuttons = isize(buttonData);
 
-    button_id button{-1};
+    button_id button {-1};
     if (SDL_ShowMessageBox(&data, &button) == -1) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
 
     if (button != -1) {

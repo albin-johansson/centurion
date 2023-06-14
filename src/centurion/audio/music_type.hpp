@@ -36,8 +36,7 @@
 
 namespace cen {
 
-enum class music_type
-{
+enum class music_type {
   none = MUS_NONE,
   mp3 = MUS_MP3,
   wav = MUS_WAV,
@@ -80,7 +79,7 @@ enum class music_type
       return "opus";
 
     default:
-      throw exception{"Did not recognize music type!"};
+      throw exception {"Did not recognize music type!"};
   }
 }
 

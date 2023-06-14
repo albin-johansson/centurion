@@ -60,11 +60,10 @@
 
 namespace cen {
 
-struct version final
-{
-  int major{};
-  int minor{};
-  int patch{};
+struct version final {
+  int major {};
+  int minor {};
+  int patch {};
 };
 
 /// Returns the current Centurion version.
@@ -90,7 +89,7 @@ struct version final
 /// Returns the version of SDL2 that the program was linked against.
 [[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
-  SDL_version version{};
+  SDL_version version {};
   SDL_GetVersion(&version);
   return version;
 }

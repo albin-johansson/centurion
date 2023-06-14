@@ -28,12 +28,12 @@
 
 TEST(Joystick, PointerConstructor)
 {
-  ASSERT_THROW(cen::joystick{nullptr}, cen::exception);
+  ASSERT_THROW(cen::joystick {nullptr}, cen::exception);
 }
 
 TEST(Joystick, IndexConstructor)
 {
-  ASSERT_THROW(cen::joystick{0}, cen::sdl_error);
+  ASSERT_THROW(cen::joystick {0}, cen::sdl_error);
 }
 
 TEST(Joystick, GetAxisMax)
@@ -59,7 +59,7 @@ TEST(Joystick, VirtualAPI)
   ASSERT_TRUE(index);
   ASSERT_TRUE(cen::joystick::is_virtual(*index));
 
-  cen::joystick joystick{*index};
+  cen::joystick joystick {*index};
   ASSERT_EQ(type, joystick.type());
   ASSERT_EQ(nAxes, joystick.axis_count());
   ASSERT_EQ(nButtons, joystick.button_count());

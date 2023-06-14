@@ -34,8 +34,7 @@
 
 namespace cen {
 
-enum class button_state : uint8
-{
+enum class button_state : uint8 {
   released = SDL_RELEASED,
   pressed = SDL_PRESSED
 };
@@ -50,7 +49,7 @@ enum class button_state : uint8
       return "pressed";
 
     default:
-      throw exception{"Did not recognize button state!"};
+      throw exception {"Did not recognize button state!"};
   }
 }
 

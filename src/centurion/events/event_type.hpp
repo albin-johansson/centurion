@@ -35,8 +35,7 @@
 
 namespace cen {
 
-enum class event_type : uint32
-{
+enum class event_type : uint32 {
   first_event = SDL_FIRSTEVENT,
   last_event = SDL_LASTEVENT,
 
@@ -339,7 +338,7 @@ enum class event_type : uint32
       return "user";
 
     default:
-      throw exception{"Did not recognize event type!"};
+      throw exception {"Did not recognize event type!"};
   }
 }
 

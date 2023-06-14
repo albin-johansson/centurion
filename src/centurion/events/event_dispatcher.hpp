@@ -69,8 +69,7 @@ namespace cen {
  * \tparam Events the list of events to "subscribe" to, all other events are ignored.
  */
 template <typename... Events>
-class event_dispatcher final
-{
+class event_dispatcher final {
   static_assert((!std::is_const_v<Events> && ...));
   static_assert((!std::is_volatile_v<Events> && ...));
   static_assert((!std::is_reference_v<Events> && ...));

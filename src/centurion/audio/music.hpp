@@ -65,8 +65,7 @@ namespace cen {
  *
  * \see sound_effect
  */
-class music final
-{
+class music final {
  public:
   using channel_index = int;
   using ms_type = millis<int>;
@@ -74,14 +73,14 @@ class music final
 
   inline constexpr static int forever = -1;  ///< Used to loop music indefinitely.
 
-  explicit music(const char* file) : mMusic{Mix_LoadMUS(file)}
+  explicit music(const char* file) : mMusic {Mix_LoadMUS(file)}
   {
     if (!mMusic) {
-      throw mix_error{};
+      throw mix_error {};
     }
   }
 
-  explicit music(const std::string& file) : music{file.c_str()} {}
+  explicit music(const std::string& file) : music {file.c_str()} {}
 
   auto play(const int iterations = 0) noexcept -> maybe<channel_index>
   {

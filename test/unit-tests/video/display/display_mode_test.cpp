@@ -30,14 +30,14 @@ namespace {
 
 [[nodiscard]] auto get_sdl_desktop_display_mode(const int index) -> SDL_DisplayMode
 {
-  SDL_DisplayMode mode{};
+  SDL_DisplayMode mode {};
   SDL_GetDesktopDisplayMode(index, &mode);
   return mode;
 }
 
 [[nodiscard]] auto get_sdl_current_display_mode(const int index) -> SDL_DisplayMode
 {
-  SDL_DisplayMode mode{};
+  SDL_DisplayMode mode {};
   SDL_GetCurrentDisplayMode(index, &mode);
   return mode;
 }

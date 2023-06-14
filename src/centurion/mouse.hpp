@@ -48,8 +48,7 @@
 
 namespace cen {
 
-enum class system_cursor
-{
+enum class system_cursor {
   arrow = SDL_SYSTEM_CURSOR_ARROW,
   ibeam = SDL_SYSTEM_CURSOR_IBEAM,
   wait = SDL_SYSTEM_CURSOR_WAIT,
@@ -109,7 +108,7 @@ enum class system_cursor
       return "hand";
 
     default:
-      throw exception{"Did not recognize system cursor!"};
+      throw exception {"Did not recognize system cursor!"};
   }
 }
 
@@ -118,8 +117,7 @@ inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std:
   return stream << to_string(cursor);
 }
 
-enum class mouse_button : uint8
-{
+enum class mouse_button : uint8 {
   left = SDL_BUTTON_LEFT,
   middle = SDL_BUTTON_MIDDLE,
   right = SDL_BUTTON_RIGHT,
@@ -146,7 +144,7 @@ enum class mouse_button : uint8
       return "x2";
 
     default:
-      throw exception{"Did not recognize mouse button!"};
+      throw exception {"Did not recognize mouse button!"};
   }
 }
 
@@ -156,8 +154,7 @@ inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::
 }
 
 /// Provides a view into the mouse state.
-class mouse final
-{
+class mouse final {
  public:
   mouse() noexcept = default;
 
@@ -192,8 +189,8 @@ class mouse final
     mPreviousMask = mCurrentMask;
     mPreviousPosition = mCurrentPosition;
 
-    int mx{};
-    int my{};
+    int mx {};
+    int my {};
     mCurrentMask = SDL_GetMouseState(&mx, &my);
 
     mCurrentPosition.set_x(mx);
@@ -208,8 +205,8 @@ class mouse final
     mPreviousMask = mCurrentMask;
     mPreviousPosition = mCurrentPosition;
 
-    int mx{};
-    int my{};
+    int mx {};
+    int my {};
     mCurrentMask = SDL_GetMouseState(&mx, &my);
 
     const auto logicalSize = renderer.logical_size();
@@ -268,24 +265,24 @@ class mouse final
 
   [[nodiscard]] static auto position_relative_window() noexcept -> ipoint
   {
-    int x{};
-    int y{};
+    int x {};
+    int y {};
     SDL_GetMouseState(&x, &y);
     return {x, y};
   }
 
   [[nodiscard]] static auto position_relative_desktop() noexcept -> ipoint
   {
-    int x{};
-    int y{};
+    int x {};
+    int y {};
     SDL_GetGlobalMouseState(&x, &y);
     return {x, y};
   }
 
   [[nodiscard]] static auto delta() noexcept -> ipoint
   {
-    int x{};
-    int y{};
+    int x {};
+    int y {};
     SDL_GetRelativeMouseState(&x, &y);
     return {x, y};
   }
@@ -298,8 +295,8 @@ class mouse final
  private:
   ipoint mCurrentPosition;
   ipoint mPreviousPosition;
-  uint32 mCurrentMask{};
-  uint32 mPreviousMask{};
+  uint32 mCurrentMask {};
+  uint32 mPreviousMask {};
 
   [[nodiscard]] auto is_pressed(const uint32 mask) const noexcept -> bool
   {
@@ -339,24 +336,23 @@ using cursor_handle = basic_cursor<detail::handle_tag>;
  * \see cursor_handle
  */
 template <typename T>
-class basic_cursor final
-{
+class basic_cursor final {
  public:
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_cursor(const system_cursor cursor)
-      : mCursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
+      : mCursor {SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
     if (!mCursor) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   basic_cursor(const surface& surface, const ipoint& hotspot)
-      : mCursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
+      : mCursor {SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
     if (!mCursor) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -370,12 +366,14 @@ class basic_cursor final
    * \param cursor the associated cursor.
    */
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_cursor(SDL_Cursor* cursor) noexcept : mCursor{cursor}
-  {}
+  explicit basic_cursor(SDL_Cursor* cursor) noexcept : mCursor {cursor}
+  {
+  }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_cursor(const cursor& owner) noexcept : mCursor{owner.get()}
-  {}
+  explicit basic_cursor(const cursor& owner) noexcept : mCursor {owner.get()}
+  {
+  }
 
   void enable() noexcept { SDL_SetCursor(mCursor); }
 
@@ -406,12 +404,12 @@ class basic_cursor final
 
   [[nodiscard]] static auto get_default() noexcept -> cursor_handle
   {
-    return cursor_handle{SDL_GetDefaultCursor()};
+    return cursor_handle {SDL_GetDefaultCursor()};
   }
 
   [[nodiscard]] static auto get_current() noexcept -> cursor_handle
   {
-    return cursor_handle{SDL_GetCursor()};
+    return cursor_handle {SDL_GetCursor()};
   }
 
   [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return mCursor.get(); }

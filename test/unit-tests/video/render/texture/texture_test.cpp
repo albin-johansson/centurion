@@ -68,9 +68,9 @@ class TextureTest : public testing::Test {
 
 TEST_F(TextureTest, PointerConstructor)
 {
-  ASSERT_THROW(cen::texture{nullptr}, cen::exception);
+  ASSERT_THROW(cen::texture {nullptr}, cen::exception);
 
-  cen::texture texture{IMG_LoadTexture(renderer->get(), path)};
+  cen::texture texture {IMG_LoadTexture(renderer->get(), path)};
   ASSERT_TRUE(texture.get());
 }
 
@@ -85,7 +85,7 @@ TEST_F(TextureTest, PathConstructor)
 
 TEST_F(TextureTest, SurfaceConstructor)
 {
-  const cen::surface surface{path};
+  const cen::surface surface {path};
   ASSERT_NO_THROW(renderer->make_texture(surface));
 }
 
@@ -95,7 +95,7 @@ TEST_F(TextureTest, CustomizationConstructor)
   constexpr auto access = cen::texture_access::non_lockable;
   constexpr auto width = 145;
   constexpr auto height = 85;
-  constexpr cen::iarea size{width, height};
+  constexpr cen::iarea size {width, height};
 
   const auto texture = renderer->make_texture(size, format, access);
 
@@ -171,7 +171,7 @@ TEST_F(TextureTest, IsTarget)
 
 TEST_F(TextureTest, GetFormat)
 {
-  Uint32 format{};
+  Uint32 format {};
   SDL_QueryTexture(texture->get(), &format, nullptr, nullptr, nullptr);
 
   const auto actual = static_cast<cen::pixel_format>(format);
@@ -180,7 +180,7 @@ TEST_F(TextureTest, GetFormat)
 
 TEST_F(TextureTest, GetAccess)
 {
-  int access{};
+  int access {};
   SDL_QueryTexture(texture->get(), nullptr, &access, nullptr, nullptr);
 
   const auto actual = static_cast<cen::texture_access>(access);

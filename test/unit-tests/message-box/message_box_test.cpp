@@ -49,7 +49,7 @@ TEST(MessageBox, Defaults)
 
 TEST(MessageBox, TitleMessageConstructor)
 {
-  const cen::message_box mb{"foo", "bar"};
+  const cen::message_box mb {"foo", "bar"};
   ASSERT_EQ("foo", mb.title());
   ASSERT_EQ("bar", mb.message());
 }
@@ -58,7 +58,7 @@ TEST(MessageBox, AddButton)
 {
   cen::message_box mb;
 
-  constexpr auto id{3};
+  constexpr auto id {3};
   mb.add_button(id, "Foo");
 
   ASSERT_TRUE(mb.has_button(id));

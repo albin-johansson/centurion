@@ -55,18 +55,18 @@ static_assert(std::is_nothrow_copy_constructible_v<Handle>);
 static_assert(std::is_nothrow_move_constructible_v<Owner>);
 static_assert(std::is_nothrow_move_constructible_v<Handle>);
 
-static_assert(noexcept(Owner{nullptr}));
-static_assert(noexcept(Handle{nullptr}));
+static_assert(noexcept(Owner {nullptr}));
+static_assert(noexcept(Handle {nullptr}));
 
 TEST(OwnerHandleAPI, Constructor)
 {
-  ASSERT_NO_THROW(Owner{nullptr});
-  ASSERT_NO_THROW(Handle{nullptr});
+  ASSERT_NO_THROW(Owner {nullptr});
+  ASSERT_NO_THROW(Handle {nullptr});
 
   {
     int i = 42;
 
-    Handle handle{&i};
+    Handle handle {&i};
     const auto& cHandle = handle;
 
     ASSERT_TRUE(handle);
@@ -80,7 +80,7 @@ TEST(OwnerHandleAPI, Constructor)
   }
 
   {
-    Handle handle{nullptr};
+    Handle handle {nullptr};
     const auto& cHandle = handle;
 
     ASSERT_FALSE(handle);
@@ -94,10 +94,10 @@ TEST(OwnerHandleAPI, Constructor)
 
 TEST(OwnerHandleAPI, DeleteCorrectness)
 {
-  Owner{new int{7}};
+  Owner {new int {7}};
 
   int i = 7;
-  Handle{&i};
+  Handle {&i};
 
   ASSERT_EQ(1, delete_count);
 }
@@ -105,6 +105,6 @@ TEST(OwnerHandleAPI, DeleteCorrectness)
 TEST(OwnerHandleAPI, Get)
 {
   int i = 7;
-  Handle handle{&i};
+  Handle handle {&i};
   ASSERT_EQ(&i, handle.get());
 }

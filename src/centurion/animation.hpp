@@ -51,14 +51,13 @@ namespace cen {
 
 #if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
 
-class animation final
-{
+class animation final {
  public:
   /// Creates an animation from an existing handle, claiming ownership in the process
-  explicit animation(owner<IMG_Animation*> ptr) : mAnim{ptr}
+  explicit animation(owner<IMG_Animation*> ptr) : mAnim {ptr}
   {
     if (!mAnim) {
-      throw exception{"Invalid null animation!"};
+      throw exception {"Invalid null animation!"};
     }
   }
 
@@ -66,10 +65,10 @@ class animation final
   {
     assert(file);
     if (auto* ptr = IMG_LoadAnimation(file)) {
-      return animation{ptr};
+      return animation {ptr};
     }
     else {
-      throw img_error{};
+      throw img_error {};
     }
   }
 
@@ -81,10 +80,10 @@ class animation final
   [[nodiscard]] auto at(const usize index) -> surface_handle
   {
     if (index < count()) {
-      return surface_handle{mAnim->frames[index]};
+      return surface_handle {mAnim->frames[index]};
     }
     else {
-      throw exception{"Invalid animation frame index!"};
+      throw exception {"Invalid animation frame index!"};
     }
   }
 
@@ -96,7 +95,7 @@ class animation final
       return mAnim->delays[index];
     }
     else {
-      throw exception{"Invalid animation frame index!"};
+      throw exception {"Invalid animation frame index!"};
     }
   }
 

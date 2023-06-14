@@ -39,15 +39,14 @@ namespace cen {
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
 /// Represents a set of locale entries.
-class locale final
-{
+class locale final {
  public:
   using size_type = usize;
 
   /// Returns the current preferred locales on the system.
   [[nodiscard]] static auto get_preferred() noexcept -> locale
   {
-    return locale{SDL_GetPreferredLocales()};
+    return locale {SDL_GetPreferredLocales()};
   }
 
   /// Indicates whether a language (and optionally a country) is part of the locale.
@@ -79,7 +78,7 @@ class locale final
   /// Returns the amount of entries in the locale.
   [[nodiscard]] auto size() const noexcept -> size_type
   {
-    size_type result{0};
+    size_type result {0};
 
     if (const auto* array = mLocales.get()) {
       for (auto index = 0u; array[index].language; ++index) {
@@ -96,7 +95,7 @@ class locale final
  private:
   std::unique_ptr<SDL_Locale, detail::sdl_deleter> mLocales;
 
-  explicit locale(SDL_Locale* locales) noexcept : mLocales{locales} {}
+  explicit locale(SDL_Locale* locales) noexcept : mLocales {locales} {}
 };
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

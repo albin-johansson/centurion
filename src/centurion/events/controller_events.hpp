@@ -38,14 +38,14 @@
 
 namespace cen {
 
-class controller_axis_event final : public event_base<SDL_ControllerAxisEvent>
-{
+class controller_axis_event final : public event_base<SDL_ControllerAxisEvent> {
  public:
-  controller_axis_event() : event_base{event_type::controller_axis_motion} {}
+  controller_axis_event() : event_base {event_type::controller_axis_motion} {}
 
   explicit controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_which(const SDL_JoystickID which) noexcept { mEvent.which = which; }
 
@@ -74,14 +74,14 @@ inline auto as_sdl_event(const event_base<SDL_ControllerAxisEvent>& event) -> SD
   return e;
 }
 
-class controller_button_event final : public event_base<SDL_ControllerButtonEvent>
-{
+class controller_button_event final : public event_base<SDL_ControllerButtonEvent> {
  public:
-  controller_button_event() : event_base{event_type::controller_button_down} {}
+  controller_button_event() : event_base {event_type::controller_button_down} {}
 
   explicit controller_button_event(const SDL_ControllerButtonEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
@@ -123,14 +123,14 @@ inline auto as_sdl_event(const event_base<SDL_ControllerButtonEvent>& event) -> 
   return e;
 }
 
-class controller_device_event final : public event_base<SDL_ControllerDeviceEvent>
-{
+class controller_device_event final : public event_base<SDL_ControllerDeviceEvent> {
  public:
-  controller_device_event() : event_base{event_type::controller_device_added} {}
+  controller_device_event() : event_base {event_type::controller_device_added} {}
 
   explicit controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_which(const int32 which) noexcept { mEvent.which = which; }
 
@@ -147,14 +147,14 @@ inline auto as_sdl_event(const event_base<SDL_ControllerDeviceEvent>& event) -> 
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-class controller_sensor_event final : public event_base<SDL_ControllerSensorEvent>
-{
+class controller_sensor_event final : public event_base<SDL_ControllerSensorEvent> {
  public:
-  controller_sensor_event() : event_base{event_type::controller_sensor_update} {}
+  controller_sensor_event() : event_base {event_type::controller_sensor_update} {}
 
   explicit controller_sensor_event(const SDL_ControllerSensorEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 
@@ -166,7 +166,7 @@ class controller_sensor_event final : public event_base<SDL_ControllerSensorEven
 
   [[nodiscard]] auto sensor() const noexcept -> sensor_type
   {
-    return sensor_type{mEvent.sensor};
+    return sensor_type {mEvent.sensor};
   }
 
   [[nodiscard]] auto data() const -> std::array<float, 3>
@@ -183,14 +183,14 @@ inline auto as_sdl_event(const event_base<SDL_ControllerSensorEvent>& event) -> 
   return e;
 }
 
-class controller_touchpad_event final : public event_base<SDL_ControllerTouchpadEvent>
-{
+class controller_touchpad_event final : public event_base<SDL_ControllerTouchpadEvent> {
  public:
-  controller_touchpad_event() : event_base{event_type::controller_touchpad_down} {}
+  controller_touchpad_event() : event_base {event_type::controller_touchpad_down} {}
 
   explicit controller_touchpad_event(const SDL_ControllerTouchpadEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_which(const SDL_JoystickID id) noexcept { mEvent.which = id; }
 

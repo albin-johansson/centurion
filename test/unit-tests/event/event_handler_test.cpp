@@ -111,7 +111,7 @@ TEST(Event, FlushAll)
 
 TEST(Event, Poll)
 {
-  SDL_Event sdl{};
+  SDL_Event sdl {};
   sdl.type = SDL_MOUSEMOTION;
   sdl.motion.x = 839;
   sdl.motion.y = 351;
@@ -163,7 +163,7 @@ TEST(Event, InQueue)
 
 TEST(Event, Type)
 {
-  SDL_Event sdl{};
+  SDL_Event sdl {};
   sdl.type = SDL_FINGERMOTION;
 
   cen::event_handler::flush_all();

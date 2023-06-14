@@ -53,7 +53,7 @@ TEST(Font, Constructor)
   ASSERT_THROW(cen::font(daniel, 0), cen::exception);
 
   ASSERT_THROW(cen::font(""s, 1), cen::ttf_error);
-  ASSERT_THROW(cen::font(std::string{daniel}, 0), cen::exception);
+  ASSERT_THROW(cen::font(std::string {daniel}, 0), cen::exception);
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
   cen::font_dpi dpi;
@@ -65,7 +65,7 @@ TEST(Font, Constructor)
 TEST(Font, ResetStyle)
 {
   // We use the std::string constructor here to make sure it works
-  cen::font font{std::string{type_writer}, 12};
+  cen::font font {std::string {type_writer}, 12};
 
   font.set_bold(true);
   font.set_italic(true);
@@ -81,7 +81,7 @@ TEST(Font, ResetStyle)
 
 TEST(Font, SetBold)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   ASSERT_FALSE(font.is_bold());
 
@@ -94,7 +94,7 @@ TEST(Font, SetBold)
 
 TEST(Font, SetItalic)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   ASSERT_FALSE(font.is_italic());
 
@@ -107,7 +107,7 @@ TEST(Font, SetItalic)
 
 TEST(Font, SetUnderlined)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   ASSERT_FALSE(font.is_underlined());
 
@@ -120,7 +120,7 @@ TEST(Font, SetUnderlined)
 
 TEST(Font, SetStrikethrough)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   ASSERT_FALSE(font.is_strikethrough());
 
@@ -133,7 +133,7 @@ TEST(Font, SetStrikethrough)
 
 TEST(Font, SetOutline)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   ASSERT_FALSE(font.is_outlined());
 
@@ -148,7 +148,7 @@ TEST(Font, SetOutline)
 
 TEST(Font, SetHinting)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   font.set_hinting(cen::font_hint::mono);
   ASSERT_EQ(font.hinting(), cen::font_hint::mono);
@@ -165,7 +165,7 @@ TEST(Font, SetHinting)
 
 TEST(Font, SetKerning)
 {
-  cen::font font{daniel, 12};
+  cen::font font {daniel, 12};
 
   font.set_kerning(true);
   ASSERT_TRUE(font.has_kerning());
@@ -178,7 +178,7 @@ TEST(Font, SetKerning)
 
 TEST(Font, SetSize)
 {
-  cen::font font{daniel, 12};
+  cen::font font {daniel, 12};
   ASSERT_EQ(12, font.size());
 
   ASSERT_EQ(cen::success, font.set_size(16));
@@ -190,7 +190,7 @@ TEST(Font, SetSize)
 TEST(Font, Size)
 {
   constexpr auto size = 12;
-  const cen::font font{type_writer, size};
+  const cen::font font {type_writer, size};
 
   ASSERT_EQ(font.size(), size);
 }
@@ -198,7 +198,7 @@ TEST(Font, Size)
 TEST(Font, Height)
 {
   constexpr auto size = 16;
-  const cen::font font{type_writer, size};
+  const cen::font font {type_writer, size};
 
   // doesn't have to be equal, but should be close
   ASSERT_EQ(font.height(), size);
@@ -206,16 +206,16 @@ TEST(Font, Height)
 
 TEST(Font, IsFixedWidth)
 {
-  const cen::font fixed{fira_code, 12};
+  const cen::font fixed {fira_code, 12};
   ASSERT_TRUE(fixed.is_fixed_width());
 
-  const cen::font proportional{daniel, 12};
+  const cen::font proportional {daniel, 12};
   ASSERT_FALSE(proportional.is_fixed_width());
 }
 
 TEST(Font, GetKerning)
 {
-  cen::font font{daniel, 36};
+  cen::font font {daniel, 36};
   font.set_kerning(true);
 
   const auto amount = font.get_kerning('A', 'A');
@@ -226,7 +226,7 @@ TEST(Font, GetKerning)
 
 TEST(Font, GetMetrics)
 {
-  const cen::font font{daniel, 12};
+  const cen::font font {daniel, 12};
 
   const auto metrics = font.get_metrics('A');
   ASSERT_TRUE(metrics.has_value());
@@ -234,7 +234,7 @@ TEST(Font, GetMetrics)
 
 TEST(Font, IsGlyphAvailable)
 {
-  const cen::font font{fira_code, 12};
+  const cen::font font {fira_code, 12};
 
   ASSERT_TRUE(font.is_glyph_provided('A'));
   ASSERT_TRUE(font.is_glyph_provided(0x003D));  // U+003D is an equal sign
@@ -242,19 +242,19 @@ TEST(Font, IsGlyphAvailable)
 
 TEST(Font, FamilyName)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_STREQ(font.family_name(), "Type Writer");
 }
 
 TEST(Font, StyleName)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_STREQ(font.style_name(), "Regular");
 }
 
 TEST(Font, CalcSize)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   const auto size = font.calc_size("foo"s).value();
   ASSERT_GT(size.width, 0);
   ASSERT_GT(size.height, 0);
@@ -262,49 +262,49 @@ TEST(Font, CalcSize)
 
 TEST(Font, FaceCount)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_GE(font.face_count(), 1);
 }
 
 TEST(Font, Hinting)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_EQ(font.hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, HasKerning)
 {
-  const cen::font font{daniel, 12};
+  const cen::font font {daniel, 12};
   ASSERT_TRUE(font.has_kerning());
 }
 
 TEST(Font, LineSkip)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_GT(font.line_skip(), 0);
 }
 
 TEST(Font, Ascent)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_GT(font.ascent(), 0);
 }
 
 TEST(Font, Descent)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_LT(font.descent(), 0);
 }
 
 TEST(Font, Get)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   ASSERT_TRUE(font.get());
 }
 
 TEST(Font, StreamOperator)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
   std::cout << font << '\n';
 }
 
@@ -312,9 +312,9 @@ TEST(Font, StreamOperator)
 
 TEST(Font, TTFHarfBuzzVersion)
 {
-  int major{};
-  int minor{};
-  int patch{};
+  int major {};
+  int minor {};
+  int patch {};
   TTF_GetHarfBuzzVersion(&major, &minor, &patch);
 
   const auto ver = cen::ttf_harf_buzz_version();
@@ -325,9 +325,9 @@ TEST(Font, TTFHarfBuzzVersion)
 
 TEST(Font, TTFFreeTypeVersion)
 {
-  int major{};
-  int minor{};
-  int patch{};
+  int major {};
+  int minor {};
+  int patch {};
   TTF_GetFreeTypeVersion(&major, &minor, &patch);
 
   const auto ver = cen::ttf_free_type_version();
@@ -338,7 +338,7 @@ TEST(Font, TTFFreeTypeVersion)
 
 TEST(Font, MeasureText)
 {
-  const cen::font font{type_writer, 12};
+  const cen::font font {type_writer, 12};
 
   const auto measurement = font.measure_text("foobar", 1000);
   ASSERT_TRUE(measurement.has_value());
@@ -356,7 +356,7 @@ TEST(Font, MeasureText)
 
 TEST(Font, SetWrapAlign)
 {
-  cen::font font{type_writer, 12};
+  cen::font font {type_writer, 12};
 
   font.set_wrap_align(cen::wrap_alignment::left);
   ASSERT_EQ(cen::wrap_alignment::left, font.wrap_align());

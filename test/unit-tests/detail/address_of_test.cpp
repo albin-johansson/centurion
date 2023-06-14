@@ -44,7 +44,7 @@ TEST(AddressOf, Correctness)
   }
 
   {  // Null pointer
-    int* i{};
+    int* i {};
     ASSERT_NO_THROW(cen::detail::address_of(i));
 
     const auto str = cen::detail::address_of(i);

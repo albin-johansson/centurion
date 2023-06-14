@@ -51,13 +51,13 @@ class RendererHandleTest : public testing::Test {
 TEST_F(RendererHandleTest, RawPointerConstructor)
 {
   {  // Null pointer
-    cen::renderer_handle handle{nullptr};
+    cen::renderer_handle handle {nullptr};
     ASSERT_FALSE(handle);
     ASSERT_FALSE(handle.get());
   }
 
   {  // Valid pointer
-    const cen::renderer_handle handle{renderer->get()};
+    const cen::renderer_handle handle {renderer->get()};
 
     ASSERT_TRUE(handle);
     ASSERT_TRUE(handle.get());
@@ -66,7 +66,7 @@ TEST_F(RendererHandleTest, RawPointerConstructor)
 
 TEST_F(RendererHandleTest, FromOwningRenderer)
 {
-  const cen::renderer_handle handle{*renderer};
+  const cen::renderer_handle handle {*renderer};
 
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
@@ -74,6 +74,6 @@ TEST_F(RendererHandleTest, FromOwningRenderer)
 
 TEST_F(RendererHandleTest, StreamOperator)
 {
-  const cen::renderer_handle handle{*renderer};
+  const cen::renderer_handle handle {*renderer};
   std::cout << handle << '\n';
 }

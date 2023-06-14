@@ -74,7 +74,7 @@ TEST(Version, Defaults)
 
 TEST(Version, SDLLinkedVersion)
 {
-  SDL_version expected{};
+  SDL_version expected {};
   SDL_GetVersion(&expected);
 
   const auto version = cen::sdl_linked_version();

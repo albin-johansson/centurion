@@ -37,7 +37,7 @@ TEST(GLSwapInterval, Values)
 
 TEST(GLSwapInterval, ToString)
 {
-  ASSERT_THROW(to_string(cen::gl_swap_interval{1'000}), cen::exception);
+  ASSERT_THROW(to_string(cen::gl_swap_interval {1'000}), cen::exception);
 
   ASSERT_EQ("immediate", to_string(cen::gl_swap_interval::immediate));
   ASSERT_EQ("synchronized", to_string(cen::gl_swap_interval::synchronized));

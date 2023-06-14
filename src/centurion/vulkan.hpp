@@ -42,8 +42,7 @@
 namespace cen {
 
 /// Responsible for loading and unloading a Vulkan library.
-class vk_library final
-{
+class vk_library final {
  public:
   CENTURION_DISABLE_COPY(vk_library)
   CENTURION_DISABLE_MOVE(vk_library)
@@ -51,7 +50,7 @@ class vk_library final
   CENTURION_NODISCARD_CTOR explicit vk_library(const char* path = nullptr)
   {
     if (SDL_Vulkan_LoadLibrary(path) == -1) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -78,7 +77,7 @@ auto make_surface(basic_window<T>& window,
 /// Returns the extensions required to create a Vulkan surface.
 inline auto required_extensions() -> maybe<std::vector<const char*>>
 {
-  uint count{};
+  uint count {};
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr)) {
     return nothing;
   }
@@ -96,8 +95,8 @@ template <typename T>
 {
   assert(window.is_vulkan());
 
-  int width{};
-  int height{};
+  int width {};
+  int height {};
   SDL_Vulkan_GetDrawableSize(window.get(), &width, &height);
 
   return {width, height};

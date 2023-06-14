@@ -71,11 +71,9 @@ using window_handle = basic_window<detail::handle_tag>;
  * \see get_renderer()
  */
 template <typename T>
-class basic_window final
-{
+class basic_window final {
  public:
-  enum window_flags : uint32
-  {
+  enum window_flags : uint32 {
     fullscreen = SDL_WINDOW_FULLSCREEN,
     fullscreen_desktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
 
@@ -117,11 +115,11 @@ class basic_window final
    * \param window a pointer to the associated SDL window.
    */
   explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(detail::is_handle<T>)
-      : mWindow{window}
+      : mWindow {window}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mWindow) {
-        throw exception{"Cannot create window from null pointer!"};
+        throw exception {"Cannot create window from null pointer!"};
       }
     }
   }
@@ -134,10 +132,10 @@ class basic_window final
     assert(title);
 
     if (size.width < 1) {
-      throw exception{"Bad window width!"};
+      throw exception {"Bad window width!"};
     }
     else if (size.height < 1) {
-      throw exception{"Bad window height!"};
+      throw exception {"Bad window height!"};
     }
 
     mWindow.reset(SDL_CreateWindow(title,
@@ -147,7 +145,7 @@ class basic_window final
                                    size.height,
                                    flags));
     if (!mWindow) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -155,30 +153,33 @@ class basic_window final
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const uint32 flags = default_flags())
-      : basic_window{title.c_str(), size, flags}
-  {}
+      : basic_window {title.c_str(), size, flags}
+  {
+  }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  basic_window() : basic_window{"Centurion"}
-  {}
+  basic_window() : basic_window {"Centurion"}
+  {
+  }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_window(const window& owner) noexcept : mWindow{owner.get()}
-  {}
+  explicit basic_window(const window& owner) noexcept : mWindow {owner.get()}
+  {
+  }
 
   [[nodiscard]] auto make_renderer(const uint32 flags = renderer::default_flags()) -> renderer
   {
     if (auto* ptr = SDL_CreateRenderer(get(), -1, flags)) {
-      return renderer{ptr};
+      return renderer {ptr};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   [[nodiscard]] auto get_renderer() noexcept -> renderer_handle
   {
-    return renderer_handle{SDL_GetRenderer(mWindow)};
+    return renderer_handle {SDL_GetRenderer(mWindow)};
   }
 
   void show() noexcept { SDL_ShowWindow(mWindow); }
@@ -270,8 +271,8 @@ class basic_window final
 
   [[nodiscard]] auto position() const noexcept -> ipoint
   {
-    int x{};
-    int y{};
+    int x {};
+    int y {};
     SDL_GetWindowPosition(mWindow, &x, &y);
     return {x, y};
   }
@@ -306,7 +307,7 @@ class basic_window final
 
   [[nodiscard]] auto size() const noexcept -> iarea
   {
-    iarea res{};
+    iarea res {};
     SDL_GetWindowSize(mWindow, &res.width, &res.height);
     return res;
   }
@@ -315,7 +316,7 @@ class basic_window final
 
   [[nodiscard]] auto size_in_pixels() const noexcept -> iarea
   {
-    iarea res{};
+    iarea res {};
     SDL_GetWindowSizeInPixels(mWindow, &res.width, &res.height);
     return res;
   }
@@ -327,14 +328,14 @@ class basic_window final
 
   [[nodiscard]] auto min_size() const noexcept -> iarea
   {
-    iarea size{};
+    iarea size {};
     SDL_GetWindowMinimumSize(mWindow, &size.width, &size.height);
     return size;
   }
 
   [[nodiscard]] auto max_size() const noexcept -> iarea
   {
-    iarea size{};
+    iarea size {};
     SDL_GetWindowMaximumSize(mWindow, &size.width, &size.height);
     return size;
   }
@@ -369,7 +370,7 @@ class basic_window final
   [[nodiscard]] auto mouse_rect() const noexcept -> maybe<irect>
   {
     if (const auto* rect = SDL_GetWindowMouseRect(mWindow)) {
-      return irect{*rect};
+      return irect {*rect};
     }
     else {
       return nothing;
@@ -387,7 +388,7 @@ class basic_window final
 
   [[nodiscard]] auto opacity() const noexcept -> float
   {
-    float opacity{1};
+    float opacity {1};
     SDL_GetWindowOpacity(mWindow, &opacity);
     return opacity;
   }
@@ -417,19 +418,18 @@ class basic_window final
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
-  struct icc_profile_data final
-  {
+  struct icc_profile_data final {
     using data_type = std::unique_ptr<void, detail::sdl_deleter>;
 
     data_type data;  ///< Pointer to the raw ICC profile data.
-    usize size{};    ///< The size of the raw data, in bytes.
+    usize size {};   ///< The size of the raw data, in bytes.
   };
 
   [[nodiscard]] auto icc_profile() const noexcept -> maybe<icc_profile_data>
   {
-    usize size{};
+    usize size {};
     if (auto* icc = SDL_GetWindowICCProfile(get(), &size)) {
-      return icc_profile_data{icc, size};
+      return icc_profile_data {icc, size};
     }
     else {
       return nothing;
@@ -521,7 +521,7 @@ class basic_window final
 
   [[nodiscard]] auto get_surface() noexcept -> surface_handle
   {
-    return surface_handle{SDL_GetWindowSurface(mWindow)};
+    return surface_handle {SDL_GetWindowSurface(mWindow)};
   }
 
   [[nodiscard]] auto get() const noexcept -> SDL_Window* { return mWindow.get(); }
@@ -572,29 +572,29 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
 
 [[nodiscard]] inline auto get_grabbed_window() noexcept -> window_handle
 {
-  return window_handle{SDL_GetGrabbedWindow()};
+  return window_handle {SDL_GetGrabbedWindow()};
 }
 
 [[nodiscard]] inline auto get_mouse_focus_window() noexcept -> window_handle
 {
-  return window_handle{SDL_GetMouseFocus()};
+  return window_handle {SDL_GetMouseFocus()};
 }
 
 [[nodiscard]] inline auto get_keyboard_focus_window() noexcept -> window_handle
 {
-  return window_handle{SDL_GetKeyboardFocus()};
+  return window_handle {SDL_GetKeyboardFocus()};
 }
 
 [[nodiscard]] inline auto get_window(const uint32 id) noexcept -> window_handle
 {
-  return window_handle{SDL_GetWindowFromID(id)};
+  return window_handle {SDL_GetWindowFromID(id)};
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 22)
 
 [[nodiscard]] inline auto get_window(const renderer_handle renderer) noexcept -> window_handle
 {
-  return window_handle{SDL_RenderGetWindow(renderer.get())};
+  return window_handle {SDL_RenderGetWindow(renderer.get())};
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 22)

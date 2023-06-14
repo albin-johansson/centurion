@@ -71,5 +71,5 @@ TEST(Platform, IsTablet)
 
 TEST(Platform, PlatformName)
 {
-  ASSERT_EQ(std::string{SDL_GetPlatform()}, cen::platform_name().value());
+  ASSERT_EQ(std::string {SDL_GetPlatform()}, cen::platform_name().value());
 }

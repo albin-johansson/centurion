@@ -32,7 +32,7 @@
 
 class FontCacheTest : public testing::Test {
  protected:
-  FontCacheTest() : testing::Test{}, cache{"resources/jetbrains_mono.ttf", 12} {}
+  FontCacheTest() : testing::Test {}, cache {"resources/jetbrains_mono.ttf", 12} {}
 
   static void SetUpTestSuite()
   {
@@ -48,7 +48,7 @@ class FontCacheTest : public testing::Test {
 
   const char* utf8_string = "UTF-8_<!?+=";
   const char* latin1_string = "latin1_<!?+=";
-  const cen::unicode_string unicode_string{'b', 'a', 'r'};
+  const cen::unicode_string unicode_string {'b', 'a', 'r'};
 
   inline static std::unique_ptr<cen::window> window;
   inline static std::unique_ptr<cen::renderer> renderer;

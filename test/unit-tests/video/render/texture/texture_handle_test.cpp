@@ -53,18 +53,18 @@ class TextureHandleTest : public testing::Test {
 
 TEST_F(TextureHandleTest, FromTexture)
 {
-  cen::texture_handle handle{*texture};
+  cen::texture_handle handle {*texture};
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
 }
 
 TEST_F(TextureHandleTest, FromRawPointer)
 {
-  cen::texture_handle bad{nullptr};
+  cen::texture_handle bad {nullptr};
   ASSERT_FALSE(bad);
   ASSERT_FALSE(bad.get());
 
-  cen::texture_handle good{texture->get()};
+  cen::texture_handle good {texture->get()};
   ASSERT_TRUE(good);
   ASSERT_TRUE(good.get());
 }

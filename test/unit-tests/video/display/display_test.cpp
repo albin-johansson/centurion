@@ -42,9 +42,9 @@ TEST(Display, DisplayDPI)
   // Default display
   const auto dpi = cen::display_dpi();
   if (dpi.has_value()) {
-    float diagonal{};
-    float horizontal{};
-    float vertical{};
+    float diagonal {};
+    float horizontal {};
+    float vertical {};
     SDL_GetDisplayDPI(0, &diagonal, &horizontal, &vertical);
 
     ASSERT_EQ(diagonal, dpi->diagonal);
@@ -64,7 +64,7 @@ TEST(Display, DisplayBounds)
   const auto bounds = cen::display_bounds();
   ASSERT_TRUE(bounds.has_value());
 
-  SDL_Rect rect{};
+  SDL_Rect rect {};
   ASSERT_EQ(0, SDL_GetDisplayBounds(0, &rect));
 
   ASSERT_EQ(rect.x, bounds->x());
@@ -80,7 +80,7 @@ TEST(Display, DisplayUsableBounds)
   const auto bounds = cen::display_usable_bounds();
   ASSERT_TRUE(bounds.has_value());
 
-  SDL_Rect rect{};
+  SDL_Rect rect {};
   ASSERT_EQ(0, SDL_GetDisplayUsableBounds(0, &rect));
 
   ASSERT_EQ(rect.x, bounds->x());
@@ -98,7 +98,10 @@ TEST(Display, DisplayOrientation)
             static_cast<SDL_DisplayOrientation>(cen::display_orientation()));
 }
 
-TEST(Display, DisplayCount) { ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count()); }
+TEST(Display, DisplayCount)
+{
+  ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count());
+}
 
 TEST(Display, DisplayName)
 {

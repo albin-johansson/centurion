@@ -29,8 +29,7 @@
 
 namespace cen::detail {
 
-struct sdl_deleter final
-{
+struct sdl_deleter final {
   void operator()(void* ptr) noexcept { SDL_free(ptr); }
 };
 

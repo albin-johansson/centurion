@@ -36,8 +36,7 @@
 namespace cen {
 
 /// Represents a null-terminated string of Unicode characters.
-class unicode_string final
-{
+class unicode_string final {
  public:
   using value_type = std::vector<unicode_t>::value_type;
 
@@ -100,7 +99,7 @@ class unicode_string final
       return mData[index];
     }
     else {
-      throw exception{"Invalid unicode string index!"};
+      throw exception {"Invalid unicode string index!"};
     }
   }
 
@@ -110,7 +109,7 @@ class unicode_string final
       return mData[index];
     }
     else {
-      throw exception{"Invalid unicode string index!"};
+      throw exception {"Invalid unicode string index!"};
     }
   }
 

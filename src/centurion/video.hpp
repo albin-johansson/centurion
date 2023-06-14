@@ -40,8 +40,7 @@ namespace cen {
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-enum class flash_op
-{
+enum class flash_op {
   cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
   briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
   until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
@@ -60,7 +59,7 @@ enum class flash_op
       return "until_focused";
 
     default:
-      throw exception{"Did not recognize window flash operation!"};
+      throw exception {"Did not recognize window flash operation!"};
   }
 }
 
@@ -71,8 +70,7 @@ inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
-enum class blend_mode
-{
+enum class blend_mode {
   none = SDL_BLENDMODE_NONE,    ///< No blending.
   blend = SDL_BLENDMODE_BLEND,  ///< Alpha blending.
   add = SDL_BLENDMODE_ADD,      ///< Additive blending.
@@ -113,7 +111,7 @@ enum class blend_mode
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw exception{"Did not recognize blend mode!"};
+      throw exception {"Did not recognize blend mode!"};
   }
 }
 
@@ -122,8 +120,7 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
   return stream << to_string(mode);
 }
 
-enum class blend_factor
-{
+enum class blend_factor {
   zero = SDL_BLENDFACTOR_ZERO,
   one = SDL_BLENDFACTOR_ONE,
 
@@ -174,7 +171,7 @@ enum class blend_factor
       return "one_minus_dst_alpha";
 
     default:
-      throw exception{"Did not recognize blend factor!"};
+      throw exception {"Did not recognize blend factor!"};
   }
 }
 
@@ -183,8 +180,7 @@ inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::
   return stream << to_string(factor);
 }
 
-enum class blend_op
-{
+enum class blend_op {
   add = SDL_BLENDOPERATION_ADD,
   sub = SDL_BLENDOPERATION_SUBTRACT,
   reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
@@ -211,7 +207,7 @@ enum class blend_op
       return "max";
 
     default:
-      throw exception{"Did not recognize blend operation!"};
+      throw exception {"Did not recognize blend operation!"};
   }
 }
 
@@ -220,8 +216,7 @@ inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
   return stream << to_string(op);
 }
 
-enum class orientation
-{
+enum class orientation {
   unknown = SDL_ORIENTATION_UNKNOWN,
   landscape = SDL_ORIENTATION_LANDSCAPE,
   landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
@@ -248,7 +243,7 @@ enum class orientation
       return "portrait_flipped";
 
     default:
-      throw exception{"Did not recognize display orientation!"};
+      throw exception {"Did not recognize display orientation!"};
   }
 }
 
@@ -257,28 +252,27 @@ inline auto operator<<(std::ostream& stream, const orientation o) -> std::ostrea
   return stream << to_string(o);
 }
 
-class display_mode final
-{
+class display_mode final {
  public:
   [[nodiscard]] static auto current(const int index = 0) -> display_mode
   {
-    SDL_DisplayMode mode{};
+    SDL_DisplayMode mode {};
     if (SDL_GetCurrentDisplayMode(index, &mode) == 0) {
-      return display_mode{mode};
+      return display_mode {mode};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   [[nodiscard]] static auto desktop(const int index = 0) -> display_mode
   {
-    SDL_DisplayMode mode{};
+    SDL_DisplayMode mode {};
     if (SDL_GetDesktopDisplayMode(index, &mode) == 0) {
-      return display_mode{mode};
+      return display_mode {mode};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -305,24 +299,22 @@ class display_mode final
   [[nodiscard]] auto driver_data() const noexcept -> const void* { return mMode.driverdata; }
 
  private:
-  SDL_DisplayMode mMode{};
+  SDL_DisplayMode mMode {};
 
-  explicit display_mode(const SDL_DisplayMode mode) : mMode{mode} {}
+  explicit display_mode(const SDL_DisplayMode mode) : mMode {mode} {}
 };
 
 /// Describes how a blend mode factors should be combined.
-struct blend_task final
-{
+struct blend_task final {
   blend_factor src;  ///< The blend factor applied to the source pixels.
   blend_factor dst;  ///< The blend factor applied to the destination pixels.
   blend_op op;       ///< The operation used to combine the source and destination pixels.
 };
 
-struct dpi_info final
-{
-  float diagonal{};
-  float horizontal{};
-  float vertical{};
+struct dpi_info final {
+  float diagonal {};
+  float horizontal {};
+  float vertical {};
 };
 
 [[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
@@ -366,7 +358,7 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
 [[nodiscard]] inline auto display_name(const int index = 0) -> maybe<std::string>
 {
   if (const char* name = SDL_GetDisplayName(index)) {
-    return std::string{name};
+    return std::string {name};
   }
   else {
     return nothing;

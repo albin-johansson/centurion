@@ -45,18 +45,18 @@ TEST(Condition, Wait)
 
   ASSERT_TRUE(mutex.lock());
 
-  cen::thread thread{[](void* data) {
-                       auto* cond = reinterpret_cast<cen::condition*>(data);
+  cen::thread thread {[](void* data) {
+                        auto* cond = reinterpret_cast<cen::condition*>(data);
 
-                       using namespace cen::literals::time_literals;
-                       cen::thread::sleep(50_ms);
+                        using namespace cen::literals::time_literals;
+                        cen::thread::sleep(50_ms);
 
-                       cond->signal();
+                        cond->signal();
 
-                       return 0;
-                     },
-                     "thread",
-                     &cond};
+                        return 0;
+                      },
+                      "thread",
+                      &cond};
 
   ASSERT_TRUE(cond.wait(mutex));
   ASSERT_TRUE(mutex.unlock());

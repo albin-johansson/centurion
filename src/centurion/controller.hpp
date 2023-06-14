@@ -53,8 +53,7 @@
 
 namespace cen {
 
-enum class controller_button
-{
+enum class controller_button {
   invalid = SDL_CONTROLLER_BUTTON_INVALID,
 
   a = SDL_CONTROLLER_BUTTON_A,
@@ -168,7 +167,7 @@ enum class controller_button
       return "max";
 
     default:
-      throw exception{"Did not recognize controller button!"};
+      throw exception {"Did not recognize controller button!"};
   }
 }
 
@@ -177,8 +176,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button) -> 
   return stream << to_string(button);
 }
 
-enum class controller_axis
-{
+enum class controller_axis {
   invalid = SDL_CONTROLLER_AXIS_INVALID,
 
   left_x = SDL_CONTROLLER_AXIS_LEFTX,
@@ -220,7 +218,7 @@ enum class controller_axis
       return "max";
 
     default:
-      throw exception{"Did not recognize controller axis!"};
+      throw exception {"Did not recognize controller axis!"};
   }
 }
 
@@ -229,8 +227,7 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
   return stream << to_string(axis);
 }
 
-enum class controller_bind_type
-{
+enum class controller_bind_type {
   none = SDL_CONTROLLER_BINDTYPE_NONE,
   button = SDL_CONTROLLER_BINDTYPE_BUTTON,
   axis = SDL_CONTROLLER_BINDTYPE_AXIS,
@@ -253,7 +250,7 @@ enum class controller_bind_type
       return "hat";
 
     default:
-      throw exception{"Did not recognize controller bind type!"};
+      throw exception {"Did not recognize controller bind type!"};
   }
 }
 
@@ -264,8 +261,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type) ->
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class controller_type
-{
+enum class controller_type {
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,
 
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,
@@ -331,7 +327,7 @@ enum class controller_type
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
-      throw exception{"Did not recognize controller type!"};
+      throw exception {"Did not recognize controller type!"};
   }
 }
 
@@ -342,8 +338,7 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class controller_mapping_result
-{
+enum class controller_mapping_result {
   error,    ///< An error occurred.
   updated,  ///< Updated a previous mapping.
   added     ///< Added a new mapping.
@@ -362,7 +357,7 @@ enum class controller_mapping_result
       return "added";
 
     default:
-      throw exception{"Did not recognize controller mapping result!"};
+      throw exception {"Did not recognize controller mapping result!"};
   }
 }
 
@@ -372,12 +367,11 @@ inline auto operator<<(std::ostream& stream, const controller_mapping_result res
   return stream << to_string(result);
 }
 
-struct controller_finger_state final
-{
-  button_state state{};  ///< Whether the finger is pressed or release.
-  float x{};             ///< The current x-coordinate.
-  float y{};             ///< The current y-coordinate.
-  float pressure{};      ///< The currently applied pressure.
+struct controller_finger_state final {
+  button_state state {};  ///< Whether the finger is pressed or release.
+  float x {};             ///< The current x-coordinate.
+  float y {};             ///< The current y-coordinate.
+  float pressure {};      ///< The currently applied pressure.
 };
 
 template <typename T>
@@ -403,8 +397,7 @@ using controller_handle = basic_controller<detail::handle_tag>;  ///< A non-owni
  * \see load_controller_mappings
  */
 template <typename T>
-class basic_controller final
-{
+class basic_controller final {
  public:
   using mapping_index = int;
   using joystick_index = int;
@@ -438,26 +431,27 @@ class basic_controller final
    */
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_controller(const joystick_index index = 0)
-      : mController{SDL_GameControllerOpen(index)}
+      : mController {SDL_GameControllerOpen(index)}
   {
     if (!mController) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_controller(const controller& owner) noexcept : mController{owner.get()}
-  {}
+  explicit basic_controller(const controller& owner) noexcept : mController {owner.get()}
+  {
+  }
 
   /// Creates a controller instance based on an existing joystick.
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
-      return basic_controller{ptr};
+      return basic_controller {ptr};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -468,10 +462,10 @@ class basic_controller final
   [[nodiscard]] static auto from_index(const player_index index) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
-      return basic_controller{ptr};
+      return basic_controller {ptr};
     }
     else {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -659,7 +653,7 @@ class basic_controller final
   [[nodiscard]] auto sensor_data(const sensor_type type) const noexcept
       -> maybe<std::array<float, Size>>
   {
-    std::array<float, Size> array{};
+    std::array<float, Size> array {};
     if (SDL_GameControllerGetSensorData(mController,
                                         static_cast<SDL_SensorType>(type),
                                         array.data(),
@@ -690,7 +684,7 @@ class basic_controller final
       -> maybe<controller_finger_state>
   {
     controller_finger_state result;
-    uint8 state{};
+    uint8 state {};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(mController,
                                                          touchpad,
@@ -776,22 +770,22 @@ class basic_controller final
 
   [[nodiscard]] auto mapping() const noexcept -> sdl_string
   {
-    return sdl_string{SDL_GameControllerMapping(mController)};
+    return sdl_string {SDL_GameControllerMapping(mController)};
   }
 
   [[nodiscard]] static auto mapping(const joystick_index index) noexcept -> sdl_string
   {
-    return sdl_string{SDL_GameControllerMappingForDeviceIndex(index)};
+    return sdl_string {SDL_GameControllerMappingForDeviceIndex(index)};
   }
 
   [[nodiscard]] static auto mapping(const SDL_JoystickGUID guid) noexcept -> sdl_string
   {
-    return sdl_string{SDL_GameControllerMappingForGUID(guid)};
+    return sdl_string {SDL_GameControllerMappingForGUID(guid)};
   }
 
   [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept -> sdl_string
   {
-    return sdl_string{SDL_GameControllerMappingForIndex(index)};
+    return sdl_string {SDL_GameControllerMappingForIndex(index)};
   }
 
   [[nodiscard]] auto name() const noexcept -> const char*
@@ -868,7 +862,7 @@ class basic_controller final
 
   [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
   {
-    return joystick_handle{SDL_GameControllerGetJoystick(mController)};
+    return joystick_handle {SDL_GameControllerGetJoystick(mController)};
   }
 
   [[nodiscard]] auto get() const noexcept -> SDL_GameController* { return mController.get(); }
@@ -932,7 +926,7 @@ template <typename T>
 {
   const auto* name = controller.name();
 
-  const char* serial{};
+  const char* serial {};
   if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = controller.serial();
   }

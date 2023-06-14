@@ -37,8 +37,7 @@
 
 namespace cen {
 
-enum class mouse_wheel_direction : uint32
-{
+enum class mouse_wheel_direction : uint32 {
   normal = SDL_MOUSEWHEEL_NORMAL,
   flipped = SDL_MOUSEWHEEL_FLIPPED
 };
@@ -53,7 +52,7 @@ enum class mouse_wheel_direction : uint32
       return "flipped";
 
     default:
-      throw exception{"Did not recognize mouse wheel direction!"};
+      throw exception {"Did not recognize mouse wheel direction!"};
   }
 }
 
@@ -62,13 +61,13 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) ->
   return stream << to_string(dir);
 }
 
-class mouse_button_event final : public event_base<SDL_MouseButtonEvent>
-{
+class mouse_button_event final : public event_base<SDL_MouseButtonEvent> {
  public:
-  mouse_button_event() : event_base{event_type::mouse_button_down} {}
+  mouse_button_event() : event_base {event_type::mouse_button_down} {}
 
-  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : event_base{event}
-  {}
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : event_base {event}
+  {
+  }
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
@@ -126,13 +125,13 @@ inline auto as_sdl_event(const event_base<SDL_MouseButtonEvent>& event) -> SDL_E
   return e;
 }
 
-class mouse_motion_event final : public event_base<SDL_MouseMotionEvent>
-{
+class mouse_motion_event final : public event_base<SDL_MouseMotionEvent> {
  public:
-  mouse_motion_event() : event_base{event_type::mouse_motion} {}
+  mouse_motion_event() : event_base {event_type::mouse_motion} {}
 
-  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept : event_base{event}
-  {}
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept : event_base {event}
+  {
+  }
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
@@ -172,12 +171,11 @@ inline auto as_sdl_event(const event_base<SDL_MouseMotionEvent>& event) -> SDL_E
   return e;
 }
 
-class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent>
-{
+class mouse_wheel_event final : public event_base<SDL_MouseWheelEvent> {
  public:
-  mouse_wheel_event() : event_base{event_type::mouse_wheel} {}
+  mouse_wheel_event() : event_base {event_type::mouse_wheel} {}
 
-  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : event_base{event} {}
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : event_base {event} {}
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 

@@ -43,8 +43,7 @@ namespace cen {
  * \see event_dispatcher
  */
 template <typename E>
-class event_sink final
-{
+class event_sink final {
  public:
   using event_type = std::decay_t<E>;              ///< Associated event type.
   using signature_type = void(const event_type&);  ///< Signature of handler.
@@ -60,7 +59,7 @@ class event_sink final
     static_assert(std::is_invocable_v<T, const event_type&>,
                   "Callable must be invocable with subscribed event!");
 
-    mFunction = function_type{callable};
+    mFunction = function_type {callable};
   }
 
   /// Connects to a member function.

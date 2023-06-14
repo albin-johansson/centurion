@@ -103,7 +103,7 @@ TEST_F(SoundEffect, FadeIn)
   ASSERT_FALSE(sound->is_fading());
   ASSERT_FALSE(sound->is_playing());
 
-  sound->fade_in(cen::sound_effect::ms_type{100});
+  sound->fade_in(cen::sound_effect::ms_type {100});
   ASSERT_TRUE(sound->is_fading());
   ASSERT_TRUE(sound->is_playing());
 
@@ -115,7 +115,7 @@ TEST_F(SoundEffect, FadeOut)
   ASSERT_FALSE(sound->is_playing());
 
   sound->play();
-  sound->fade_out(cen::sound_effect::ms_type{5});
+  sound->fade_out(cen::sound_effect::ms_type {5});
   ASSERT_TRUE(sound->is_fading());
   ASSERT_TRUE(sound->is_playing());
 

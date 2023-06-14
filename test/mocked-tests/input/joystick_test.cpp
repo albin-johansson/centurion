@@ -34,85 +34,83 @@
 
 using namespace cen::literals;
 
-extern "C"
-{
-  FAKE_VOID_FUNC(SDL_JoystickUpdate)
-  FAKE_VOID_FUNC(SDL_LockJoysticks)
-  FAKE_VOID_FUNC(SDL_UnlockJoysticks)
+extern "C" {
+FAKE_VOID_FUNC(SDL_JoystickUpdate)
+FAKE_VOID_FUNC(SDL_LockJoysticks)
+FAKE_VOID_FUNC(SDL_UnlockJoysticks)
 
-  FAKE_VALUE_FUNC(int, SDL_JoystickRumble, SDL_Joystick*, Uint16, Uint16, Uint32)
+FAKE_VALUE_FUNC(int, SDL_JoystickRumble, SDL_Joystick*, Uint16, Uint16, Uint32)
 
-  FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromInstanceID, SDL_JoystickID)
-  FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromPlayerIndex, int)
+FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromInstanceID, SDL_JoystickID)
+FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromPlayerIndex, int)
 
-  FAKE_VALUE_FUNC(int, SDL_JoystickGetPlayerIndex, SDL_Joystick*)
-  FAKE_VALUE_FUNC(int, SDL_JoystickGetDevicePlayerIndex, int)
+FAKE_VALUE_FUNC(int, SDL_JoystickGetPlayerIndex, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_JoystickGetDevicePlayerIndex, int)
 
-  FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetType, SDL_Joystick*)
-  FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetDeviceType, int)
+FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetType, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetDeviceType, int)
 
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetVendor, SDL_Joystick*)
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceVendor, int)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetVendor, SDL_Joystick*)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceVendor, int)
 
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProduct, SDL_Joystick*)
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProduct, int)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProduct, SDL_Joystick*)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProduct, int)
 
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProductVersion, SDL_Joystick*)
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProductVersion, int)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProductVersion, SDL_Joystick*)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProductVersion, int)
 
-  FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickInstanceID, SDL_Joystick*)
-  FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickGetDeviceInstanceID, int)
+FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickInstanceID, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickGetDeviceInstanceID, int)
 
-  FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUID, SDL_Joystick*)
-  FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetDeviceGUID, int)
+FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUID, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetDeviceGUID, int)
 
-  FAKE_VALUE_FUNC(int, SDL_NumJoysticks)
-  FAKE_VALUE_FUNC(int, SDL_JoystickGetBall, SDL_Joystick*, int, int*, int*)
-  FAKE_VALUE_FUNC(int, SDL_JoystickSetLED, SDL_Joystick*, Uint8, Uint8, Uint8)
-  FAKE_VALUE_FUNC(int, SDL_JoystickNumHats, SDL_Joystick*)
-  FAKE_VALUE_FUNC(int, SDL_JoystickNumAxes, SDL_Joystick*)
-  FAKE_VALUE_FUNC(int, SDL_JoystickNumBalls, SDL_Joystick*)
-  FAKE_VALUE_FUNC(int, SDL_JoystickNumButtons, SDL_Joystick*)
-  FAKE_VALUE_FUNC(Sint16, SDL_JoystickGetAxis, SDL_Joystick*, int)
-  FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetButton, SDL_Joystick*, int)
-  FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetHat, SDL_Joystick*, int)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAxisInitialState, SDL_Joystick*, int, Sint16*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAttached, SDL_Joystick*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasLED, SDL_Joystick*)
-  FAKE_VALUE_FUNC(SDL_JoystickPowerLevel, SDL_JoystickCurrentPowerLevel, SDL_Joystick*)
-  FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
-  FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
-  FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
+FAKE_VALUE_FUNC(int, SDL_NumJoysticks)
+FAKE_VALUE_FUNC(int, SDL_JoystickGetBall, SDL_Joystick*, int, int*, int*)
+FAKE_VALUE_FUNC(int, SDL_JoystickSetLED, SDL_Joystick*, Uint8, Uint8, Uint8)
+FAKE_VALUE_FUNC(int, SDL_JoystickNumHats, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_JoystickNumAxes, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_JoystickNumBalls, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_JoystickNumButtons, SDL_Joystick*)
+FAKE_VALUE_FUNC(Sint16, SDL_JoystickGetAxis, SDL_Joystick*, int)
+FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetButton, SDL_Joystick*, int)
+FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetHat, SDL_Joystick*, int)
+FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAxisInitialState, SDL_Joystick*, int, Sint16*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAttached, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasLED, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_JoystickPowerLevel, SDL_JoystickCurrentPowerLevel, SDL_Joystick*)
+FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
+FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-  FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
+FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
-  FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
+FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-  FAKE_VALUE_FUNC(int, SDL_JoystickSendEffect, SDL_Joystick*, const void*, int)
+FAKE_VALUE_FUNC(int, SDL_JoystickSendEffect, SDL_Joystick*, const void*, int)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumble, SDL_Joystick*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumbleTriggers, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumble, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasRumbleTriggers, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
-  FAKE_VALUE_FUNC(const char*, SDL_JoystickPath, SDL_Joystick*)
-  FAKE_VALUE_FUNC(const char*, SDL_JoystickPathForIndex, int)
-  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetFirmwareVersion, SDL_Joystick*)
+FAKE_VALUE_FUNC(const char*, SDL_JoystickPath, SDL_Joystick*)
+FAKE_VALUE_FUNC(const char*, SDL_JoystickPathForIndex, int)
+FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetFirmwareVersion, SDL_Joystick*)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
 using namespace cen::literals;
 
-class JoystickTest : public testing::Test
-{
+class JoystickTest : public testing::Test {
  protected:
   void SetUp() override
   {
@@ -191,7 +189,7 @@ class JoystickTest : public testing::Test
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
   }
 
-  cen::joystick_handle joystick{nullptr};
+  cen::joystick_handle joystick {nullptr};
 };
 
 TEST_F(JoystickTest, FromID)
@@ -212,7 +210,7 @@ TEST_F(JoystickTest, Rumble)
 
 TEST_F(JoystickTest, PlayerIndex)
 {
-  std::array values{-1, 7};
+  std::array values {-1, 7};
   SET_RETURN_SEQ(SDL_JoystickGetPlayerIndex, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.player_index().has_value());
@@ -223,7 +221,7 @@ TEST_F(JoystickTest, PlayerIndex)
 
 TEST_F(JoystickTest, PlayerIndexStatic)
 {
-  std::array values{-1, 42};
+  std::array values {-1, 42};
   SET_RETURN_SEQ(SDL_JoystickGetDevicePlayerIndex, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::joystick::player_index(0).has_value());
@@ -246,7 +244,7 @@ TEST_F(JoystickTest, TypeStatic)
 
 TEST_F(JoystickTest, Vendor)
 {
-  std::array<Uint16, 2> values{0, 4};
+  std::array<Uint16, 2> values {0, 4};
   SET_RETURN_SEQ(SDL_JoystickGetVendor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.vendor().has_value());
@@ -257,7 +255,7 @@ TEST_F(JoystickTest, Vendor)
 
 TEST_F(JoystickTest, VendorStatic)
 {
-  std::array<Uint16, 2> values{0, 4};
+  std::array<Uint16, 2> values {0, 4};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::joystick::vendor(0).has_value());
@@ -268,7 +266,7 @@ TEST_F(JoystickTest, VendorStatic)
 
 TEST_F(JoystickTest, Product)
 {
-  std::array<Uint16, 2> values{0, 6};
+  std::array<Uint16, 2> values {0, 6};
   SET_RETURN_SEQ(SDL_JoystickGetProduct, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.product().has_value());
@@ -279,7 +277,7 @@ TEST_F(JoystickTest, Product)
 
 TEST_F(JoystickTest, ProductStatic)
 {
-  std::array<Uint16, 2> values{0, 8};
+  std::array<Uint16, 2> values {0, 8};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::joystick::product(0).has_value());
@@ -290,7 +288,7 @@ TEST_F(JoystickTest, ProductStatic)
 
 TEST_F(JoystickTest, ProductVersion)
 {
-  std::array<Uint16, 2> values{0, 54};
+  std::array<Uint16, 2> values {0, 54};
   SET_RETURN_SEQ(SDL_JoystickGetProductVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.product_version().has_value());
@@ -301,7 +299,7 @@ TEST_F(JoystickTest, ProductVersion)
 
 TEST_F(JoystickTest, ProductVersionStatic)
 {
-  std::array<Uint16, 2> values{0, 12};
+  std::array<Uint16, 2> values {0, 12};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::joystick::product_version(0).has_value());
@@ -312,7 +310,7 @@ TEST_F(JoystickTest, ProductVersionStatic)
 
 TEST_F(JoystickTest, BallAxisDelta)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_JoystickGetBall, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.get_ball_axis_delta(0).has_value());
@@ -323,7 +321,7 @@ TEST_F(JoystickTest, BallAxisDelta)
 
 TEST_F(JoystickTest, QueryAxis)
 {
-  std::array<Sint16, 2> values{0, 123};
+  std::array<Sint16, 2> values {0, 123};
   SET_RETURN_SEQ(SDL_JoystickGetAxis, values.data(), cen::isize(values));
 
   ASSERT_EQ(0, joystick.query_axis(0));
@@ -333,7 +331,7 @@ TEST_F(JoystickTest, QueryAxis)
 
 TEST_F(JoystickTest, AxisInitialState)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_JoystickGetAxisInitialState, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.axis_initial_state(0).has_value());
@@ -380,7 +378,7 @@ TEST_F(JoystickTest, ID)
 
 TEST_F(JoystickTest, IDStatic)
 {
-  std::array values{-1, 3};
+  std::array values {-1, 3};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceInstanceID, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::joystick::id(0).has_value());
@@ -464,7 +462,7 @@ TEST_F(JoystickTest, Polling)
 
 TEST_F(JoystickTest, Count)
 {
-  std::array values{-1, 7};
+  std::array values {-1, 7};
   SET_RETURN_SEQ(SDL_NumJoysticks, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::joystick::count().has_value());
@@ -509,7 +507,7 @@ TEST_F(JoystickTest, SetPlayerIndex)
 
 TEST_F(JoystickTest, RumbleTriggers)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_JoystickRumbleTriggers, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.rumble_triggers(12, 34, 56_ms));
@@ -524,7 +522,7 @@ TEST_F(JoystickTest, RumbleTriggers)
 
 TEST_F(JoystickTest, SetLED)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_JoystickSetLED, values.data(), cen::isize(values));
 
   const auto color = cen::colors::magenta;
@@ -535,7 +533,7 @@ TEST_F(JoystickTest, SetLED)
 
 TEST_F(JoystickTest, HasLED)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_JoystickHasLED, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.has_led());
@@ -555,7 +553,7 @@ TEST_F(JoystickTest, Serial)
 
 TEST_F(JoystickTest, SendEffect)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_JoystickSendEffect, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.send_effect(nullptr, 24));
@@ -573,7 +571,7 @@ TEST_F(JoystickTest, SendEffect)
 
 TEST_F(JoystickTest, HasRumble)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_JoystickHasRumble, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.has_rumble());
@@ -584,7 +582,7 @@ TEST_F(JoystickTest, HasRumble)
 
 TEST_F(JoystickTest, HasRumbleTriggers)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_JoystickHasRumbleTriggers, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.has_rumble_triggers());
@@ -611,7 +609,7 @@ TEST_F(JoystickTest, PathForIndex)
 
 TEST_F(JoystickTest, FirmwareVersion)
 {
-  std::array<Uint16, 2> values{0, 42};
+  std::array<Uint16, 2> values {0, 42};
   SET_RETURN_SEQ(SDL_JoystickGetFirmwareVersion, values.data(), cen::isize(values));
 
   ASSERT_FALSE(joystick.firmware_version().has_value());

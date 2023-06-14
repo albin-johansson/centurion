@@ -39,6 +39,6 @@ class MutexTest : public testing::Test {
 
 TEST_F(MutexTest, Constructor)
 {
-  ASSERT_THROW(cen::mutex{}, cen::sdl_error);
+  ASSERT_THROW(cen::mutex {}, cen::sdl_error);
   ASSERT_EQ(1u, SDL_CreateMutex_fake.call_count);
 }

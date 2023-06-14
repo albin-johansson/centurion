@@ -44,12 +44,11 @@
 
 namespace cen {
 
-class quit_event final : public event_base<SDL_QuitEvent>
-{
+class quit_event final : public event_base<SDL_QuitEvent> {
  public:
-  quit_event() : event_base{event_type::quit} {}
+  quit_event() : event_base {event_type::quit} {}
 
-  explicit quit_event(const SDL_QuitEvent& event) noexcept : event_base{event} {}
+  explicit quit_event(const SDL_QuitEvent& event) noexcept : event_base {event} {}
 };
 
 template <>
@@ -62,8 +61,7 @@ inline auto as_sdl_event(const event_base<SDL_QuitEvent>& event) -> SDL_Event
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-enum class display_event_id
-{
+enum class display_event_id {
   none = SDL_DISPLAYEVENT_NONE,
   orientation = SDL_DISPLAYEVENT_ORIENTATION,
   connected = SDL_DISPLAYEVENT_CONNECTED,
@@ -89,7 +87,7 @@ enum class display_event_id
       return "disconnected";
 
     default:
-      throw exception{"Did not recognize display event ID!"};
+      throw exception {"Did not recognize display event ID!"};
   }
 }
 
@@ -100,12 +98,11 @@ inline auto operator<<(std::ostream& stream, const display_event_id id) -> std::
 
 /// \} End of display event ID functions
 
-class display_event final : public event_base<SDL_DisplayEvent>
-{
+class display_event final : public event_base<SDL_DisplayEvent> {
  public:
-  display_event() : event_base{event_type::display} {}
+  display_event() : event_base {event_type::display} {}
 
-  explicit display_event(const SDL_DisplayEvent& event) noexcept : event_base{event} {}
+  explicit display_event(const SDL_DisplayEvent& event) noexcept : event_base {event} {}
 
   void set_event_id(const display_event_id id) noexcept
   {
@@ -136,14 +133,14 @@ inline auto as_sdl_event(const event_base<SDL_DisplayEvent>& event) -> SDL_Event
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-class dollar_gesture_event final : public event_base<SDL_DollarGestureEvent>
-{
+class dollar_gesture_event final : public event_base<SDL_DollarGestureEvent> {
  public:
-  dollar_gesture_event() : event_base{event_type::dollar_gesture} {}
+  dollar_gesture_event() : event_base {event_type::dollar_gesture} {}
 
   explicit dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_touch_id(const SDL_TouchID id) noexcept { mEvent.touchId = id; }
 
@@ -178,12 +175,11 @@ inline auto as_sdl_event(const event_base<SDL_DollarGestureEvent>& event) -> SDL
   return e;
 }
 
-class drop_event final : public event_base<SDL_DropEvent>
-{
+class drop_event final : public event_base<SDL_DropEvent> {
  public:
-  drop_event() : event_base{event_type::drop_file} {}
+  drop_event() : event_base {event_type::drop_file} {}
 
-  explicit drop_event(const SDL_DropEvent& event) noexcept : event_base{event} {}
+  explicit drop_event(const SDL_DropEvent& event) noexcept : event_base {event} {}
 
   ~drop_event() noexcept { maybe_destroy_file(); }
 
@@ -204,7 +200,7 @@ class drop_event final : public event_base<SDL_DropEvent>
   [[nodiscard]] auto window_id() const noexcept -> uint32 { return mEvent.windowID; }
 
  private:
-  bool mFreeFile{false};
+  bool mFreeFile {false};
 
   void maybe_destroy_file() noexcept
   {
@@ -222,12 +218,11 @@ inline auto as_sdl_event(const event_base<SDL_DropEvent>& event) -> SDL_Event
   return e;
 }
 
-class keyboard_event final : public event_base<SDL_KeyboardEvent>
-{
+class keyboard_event final : public event_base<SDL_KeyboardEvent> {
  public:
-  keyboard_event() : event_base{event_type::key_down} {}
+  keyboard_event() : event_base {event_type::key_down} {}
 
-  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : event_base{event} {}
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : event_base {event} {}
 
   void set_scan(const scan_code code) noexcept { mEvent.keysym.scancode = code.get(); }
 
@@ -309,13 +304,14 @@ inline auto as_sdl_event(const event_base<SDL_KeyboardEvent>& event) -> SDL_Even
   return e;
 }
 
-class multi_gesture_event final : public event_base<SDL_MultiGestureEvent>
-{
+class multi_gesture_event final : public event_base<SDL_MultiGestureEvent> {
  public:
-  multi_gesture_event() : event_base{event_type::multi_gesture} {}
+  multi_gesture_event() : event_base {event_type::multi_gesture} {}
 
-  explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept : event_base{event}
-  {}
+  explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept
+      : event_base {event}
+  {
+  }
 
   void set_touch_id(const SDL_TouchID id) noexcept { mEvent.touchId = id; }
 
@@ -350,14 +346,13 @@ inline auto as_sdl_event(const event_base<SDL_MultiGestureEvent>& event) -> SDL_
   return e;
 }
 
-class sensor_event final : public event_base<SDL_SensorEvent>
-{
+class sensor_event final : public event_base<SDL_SensorEvent> {
  public:
   using data_type = std::array<float, 6>;
 
-  sensor_event() : event_base{event_type::sensor_update} {}
+  sensor_event() : event_base {event_type::sensor_update} {}
 
-  explicit sensor_event(const SDL_SensorEvent& event) noexcept : event_base{event} {}
+  explicit sensor_event(const SDL_SensorEvent& event) noexcept : event_base {event} {}
 
   void set_which(const int32 id) noexcept { mEvent.which = id; }
 
@@ -378,12 +373,11 @@ inline auto as_sdl_event(const event_base<SDL_SensorEvent>& event) -> SDL_Event
   return e;
 }
 
-class text_editing_event final : public event_base<SDL_TextEditingEvent>
-{
+class text_editing_event final : public event_base<SDL_TextEditingEvent> {
  public:
-  text_editing_event() : event_base{event_type::text_editing} { check_length(); }
+  text_editing_event() : event_base {event_type::text_editing} { check_length(); }
 
-  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : event_base{event}
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : event_base {event}
   {
     check_length();
   }
@@ -401,7 +395,7 @@ class text_editing_event final : public event_base<SDL_TextEditingEvent>
 
   [[nodiscard]] auto text() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<const char*>(mEvent.text)};
+    return std::string_view {static_cast<const char*>(mEvent.text)};
   }
 
   [[nodiscard]] auto start() const noexcept -> int32 { return mEvent.start; }
@@ -425,14 +419,14 @@ inline auto as_sdl_event(const event_base<SDL_TextEditingEvent>& event) -> SDL_E
 
 #if SDL_VERSION_ATLEAST(2, 0, 22)
 
-class text_editing_ext_event final : public event_base<SDL_TextEditingExtEvent>
-{
+class text_editing_ext_event final : public event_base<SDL_TextEditingExtEvent> {
  public:
-  text_editing_ext_event() : event_base{event_type::text_editing_ext} {}
+  text_editing_ext_event() : event_base {event_type::text_editing_ext} {}
 
   explicit text_editing_ext_event(const SDL_TextEditingExtEvent& event) noexcept
-      : event_base{event}
-  {}
+      : event_base {event}
+  {
+  }
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
@@ -459,12 +453,11 @@ inline auto as_sdl_event(const event_base<SDL_TextEditingExtEvent>& event) -> SD
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 22)
 
-class text_input_event final : public event_base<SDL_TextInputEvent>
-{
+class text_input_event final : public event_base<SDL_TextInputEvent> {
  public:
-  text_input_event() : event_base{event_type::text_input} {}
+  text_input_event() : event_base {event_type::text_input} {}
 
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : event_base{event} {}
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : event_base {event} {}
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 
@@ -472,7 +465,7 @@ class text_input_event final : public event_base<SDL_TextInputEvent>
 
   [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<const char*>(mEvent.text)};
+    return std::string_view {static_cast<const char*>(mEvent.text)};
   }
 };
 
@@ -484,13 +477,13 @@ inline auto as_sdl_event(const event_base<SDL_TextInputEvent>& event) -> SDL_Eve
   return e;
 }
 
-class touch_finger_event final : public event_base<SDL_TouchFingerEvent>
-{
+class touch_finger_event final : public event_base<SDL_TouchFingerEvent> {
  public:
-  touch_finger_event() : event_base{event_type::finger_down} {}
+  touch_finger_event() : event_base {event_type::finger_down} {}
 
-  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : event_base{event}
-  {}
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : event_base {event}
+  {
+  }
 
   void set_touch_id(const SDL_TouchID id) noexcept { mEvent.touchId = id; }
 
@@ -544,12 +537,11 @@ inline auto as_sdl_event(const event_base<SDL_TouchFingerEvent>& event) -> SDL_E
   return e;
 }
 
-class user_event final : public event_base<SDL_UserEvent>
-{
+class user_event final : public event_base<SDL_UserEvent> {
  public:
-  user_event() : event_base{event_type::user} {}
+  user_event() : event_base {event_type::user} {}
 
-  explicit user_event(const SDL_UserEvent& event) noexcept : event_base{event} {}
+  explicit user_event(const SDL_UserEvent& event) noexcept : event_base {event} {}
 
   void set_window_id(const uint32 id) noexcept { mEvent.windowID = id; }
 

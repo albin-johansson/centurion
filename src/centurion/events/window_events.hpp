@@ -35,8 +35,7 @@
 
 namespace cen {
 
-enum class window_event_id
-{
+enum class window_event_id {
   none = SDL_WINDOWEVENT_NONE,
   shown = SDL_WINDOWEVENT_SHOWN,
   hidden = SDL_WINDOWEVENT_HIDDEN,
@@ -127,7 +126,7 @@ enum class window_event_id
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
     default:
-      throw exception{"Did not recognize window event ID!"};
+      throw exception {"Did not recognize window event ID!"};
   }
 }
 
@@ -136,12 +135,11 @@ inline auto operator<<(std::ostream& stream, const window_event_id id) -> std::o
   return stream << to_string(id);
 }
 
-class window_event final : public event_base<SDL_WindowEvent>
-{
+class window_event final : public event_base<SDL_WindowEvent> {
  public:
-  window_event() : event_base{event_type::window} {}
+  window_event() : event_base {event_type::window} {}
 
-  explicit window_event(const SDL_WindowEvent& event) noexcept : event_base{event} {}
+  explicit window_event(const SDL_WindowEvent& event) noexcept : event_base {event} {}
 
   void set_event_id(const window_event_id id) noexcept
   {

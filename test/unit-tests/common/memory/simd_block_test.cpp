@@ -28,7 +28,7 @@
 
 TEST(SIMDBlock, Usage)
 {
-  cen::simd_block block{100};
+  cen::simd_block block {100};
   ASSERT_TRUE(block);
   ASSERT_TRUE(block.data());
 

@@ -54,8 +54,7 @@ namespace cen {
 
 using thread_id = SDL_threadID;
 
-enum class thread_priority
-{
+enum class thread_priority {
   low = SDL_THREAD_PRIORITY_LOW,
   normal = SDL_THREAD_PRIORITY_NORMAL,
   high = SDL_THREAD_PRIORITY_HIGH,
@@ -78,7 +77,7 @@ enum class thread_priority
       return "critical";
 
     default:
-      throw exception{"Did not recognize thread priority!"};
+      throw exception {"Did not recognize thread priority!"};
   }
 }
 
@@ -87,8 +86,7 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority) -> 
   return stream << to_string(priority);
 }
 
-enum class lock_status
-{
+enum class lock_status {
   success = 0,
   timed_out = SDL_MUTEX_TIMEDOUT,
   error = -1
@@ -107,7 +105,7 @@ enum class lock_status
       return "error";
 
     default:
-      throw exception{"Did not recognize lock status!"};
+      throw exception {"Did not recognize lock status!"};
   }
 }
 
@@ -122,14 +120,13 @@ inline auto operator<<(std::ostream& stream, const lock_status status) -> std::o
  * \see scoped_lock
  * \see try_lock
  */
-class mutex final
-{
+class mutex final {
  public:
   /// Creates an unlocked mutex.
-  mutex() : mMutex{SDL_CreateMutex()}
+  mutex() : mMutex {SDL_CreateMutex()}
   {
     if (!mMutex) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -154,20 +151,19 @@ class mutex final
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
  public:
-  explicit mutex(int /*dummy*/){};
+  explicit mutex(int /*dummy*/) {};
 
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /// An RAII style blocking lock that unlocks the associated mutex upon destruction.
-class scoped_lock final
-{
+class scoped_lock final {
  public:
   /// Attempts to lock a mutex.
-  CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : mMutex{&mutex}
+  CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : mMutex {&mutex}
   {
     if (!mutex.lock()) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -177,18 +173,18 @@ class scoped_lock final
   ~scoped_lock() noexcept { mMutex->unlock(); }
 
  private:
-  mutex* mMutex{};
+  mutex* mMutex {};
 };
 
 /// An RAII style non-blocking lock that unlocks the associated mutex upon destruction.
-class try_lock final
-{
+class try_lock final {
  public:
   /// Attempts to lock a mutex.
   CENTURION_NODISCARD_CTOR explicit try_lock(mutex& mutex) noexcept
-      : mMutex{&mutex}
-      , mStatus{mutex.try_lock()}
-  {}
+      : mMutex {&mutex}
+      , mStatus {mutex.try_lock()}
+  {
+  }
 
   CENTURION_DISABLE_COPY(try_lock)
 
@@ -217,18 +213,17 @@ class try_lock final
   [[nodiscard]] explicit operator bool() const noexcept { return locked(); }
 
  private:
-  mutex* mMutex{};
-  lock_status mStatus{};
+  mutex* mMutex {};
+  lock_status mStatus {};
 };
 
 /// Represents a condition variable.
-class condition final
-{
+class condition final {
  public:
-  condition() : mCond{SDL_CreateCond()}
+  condition() : mCond {SDL_CreateCond()}
   {
     if (!mCond) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -255,14 +250,13 @@ class condition final
 };
 
 /// Represents a semaphore with a set of "tokens" (or "permits").
-class semaphore final
-{
+class semaphore final {
  public:
   /// Creates a semaphore with an initial amount of tokens.
-  explicit semaphore(const uint32 tokens) : mSemaphore{SDL_CreateSemaphore(tokens)}
+  explicit semaphore(const uint32 tokens) : mSemaphore {SDL_CreateSemaphore(tokens)}
   {
     if (!mSemaphore) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -298,17 +292,16 @@ class semaphore final
  * Unlike std::thread, this class will automatically join itself upon destruction (given that
  * it wasn't already detached or joined).
  */
-class thread final
-{
+class thread final {
  public:
   /// Creates a thread and starts executing it.
   CENTURION_NODISCARD_CTOR explicit thread(SDL_ThreadFunction task,
                                            const char* name = "thread",
                                            void* data = nullptr)
-      : mThread{SDL_CreateThread(task, name, data)}
+      : mThread {SDL_CreateThread(task, name, data)}
   {
     if (!mThread) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -342,7 +335,7 @@ class thread final
   {
     assert(name);
 
-    constexpr bool nothrow = noexcept(Callable{}());
+    constexpr bool nothrow = noexcept(Callable {}());
 
     const auto wrapper = [](void* /*data*/) noexcept(nothrow) -> int {
       Callable callable;
@@ -355,7 +348,7 @@ class thread final
       }
     };
 
-    return thread{wrapper, name};
+    return thread {wrapper, name};
   }
 
   template <typename T = void, is_stateless_callable<T*> Callable>
@@ -365,7 +358,7 @@ class thread final
   {
     assert(name);
 
-    constexpr bool nothrow = noexcept(Callable{}(std::declval<T*>()));
+    constexpr bool nothrow = noexcept(Callable {}(std::declval<T*>()));
 
     const auto wrapper = [](void* erased) noexcept(nothrow) -> int {
       auto* ptr = static_cast<T*>(erased);
@@ -380,7 +373,7 @@ class thread final
       }
     };
 
-    return thread{wrapper, name, userData};
+    return thread {wrapper, name, userData};
   }
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
@@ -402,7 +395,7 @@ class thread final
       return 0;
     }
 
-    int status{};
+    int status {};
     SDL_WaitThread(mThread, &status);
 
     mJoined = true;
@@ -441,9 +434,9 @@ class thread final
   [[nodiscard]] auto data() const noexcept -> const SDL_Thread* { return mThread; }
 
  private:
-  SDL_Thread* mThread{};
-  bool mJoined{false};
-  bool mDetached{false};
+  SDL_Thread* mThread {};
+  bool mJoined {false};
+  bool mDetached {false};
 };
 
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string

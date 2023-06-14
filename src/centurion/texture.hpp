@@ -50,8 +50,7 @@
 
 namespace cen {
 
-enum class texture_access
-{
+enum class texture_access {
   non_lockable = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely and isn't lockable.
   streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.
   target = SDL_TEXTUREACCESS_TARGET         ///< Texture can be used as a render target.
@@ -70,7 +69,7 @@ enum class texture_access
       return "target";
 
     default:
-      throw exception{"Did not recognize texture access!"};
+      throw exception {"Did not recognize texture access!"};
   }
 }
 
@@ -81,8 +80,7 @@ inline auto operator<<(std::ostream& stream, const texture_access access) -> std
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
-enum class scale_mode
-{
+enum class scale_mode {
   nearest = SDL_ScaleModeNearest,  ///< Nearest pixel sampling.
   linear = SDL_ScaleModeLinear,    ///< Linear filtering.
   best = SDL_ScaleModeBest         ///< Anisotropic filtering.
@@ -101,7 +99,7 @@ enum class scale_mode
       return "best";
 
     default:
-      throw exception{"Did not recognize scale mode!"};
+      throw exception {"Did not recognize scale mode!"};
   }
 }
 
@@ -125,8 +123,7 @@ using texture_handle = basic_texture<detail::handle_tag>;
  * \see texture_handle
  */
 template <typename T>
-class basic_texture final
-{
+class basic_texture final {
  public:
   /**
    * Creates a texture based on an existing SDL texture.
@@ -136,18 +133,19 @@ class basic_texture final
    * \param source the source texture.
    */
   explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(detail::is_handle<T>)
-      : mTexture{source}
+      : mTexture {source}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mTexture) {
-        throw exception{"Cannot create texture from null pointer!"};
+        throw exception {"Cannot create texture from null pointer!"};
       }
     }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_texture(texture& owner) noexcept : mTexture{owner.get()}
-  {}
+  explicit basic_texture(texture& owner) noexcept : mTexture {owner.get()}
+  {
+  }
 
   void set_alpha_mod(const uint8 alpha) noexcept { SDL_SetTextureAlphaMod(mTexture, alpha); }
 
@@ -181,8 +179,8 @@ class basic_texture final
 
   [[nodiscard]] auto size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
+    int width {};
+    int height {};
     SDL_QueryTexture(mTexture, nullptr, nullptr, &width, &height);
     return {width, height};
   }
@@ -201,14 +199,14 @@ class basic_texture final
 
   [[nodiscard]] auto format() const noexcept -> pixel_format
   {
-    uint32 format{};
+    uint32 format {};
     SDL_QueryTexture(mTexture, &format, nullptr, nullptr, nullptr);
     return static_cast<pixel_format>(format);
   }
 
   [[nodiscard]] auto access() const noexcept -> texture_access
   {
-    int access{};
+    int access {};
     SDL_QueryTexture(mTexture, nullptr, &access, nullptr, nullptr);
     return static_cast<texture_access>(access);
   }
@@ -230,23 +228,23 @@ class basic_texture final
 
   [[nodiscard]] auto alpha_mod() const noexcept -> uint8
   {
-    uint8 alpha{};
+    uint8 alpha {};
     SDL_GetTextureAlphaMod(mTexture, &alpha);
     return alpha;
   }
 
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
-    uint8 red{};
-    uint8 green{};
-    uint8 blue{};
+    uint8 red {};
+    uint8 green {};
+    uint8 blue {};
     SDL_GetTextureColorMod(mTexture, &red, &green, &blue);
     return {red, green, blue};
   }
 
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
-    SDL_BlendMode mode{};
+    SDL_BlendMode mode {};
     SDL_GetTextureBlendMode(mTexture, &mode);
     return static_cast<blend_mode>(mode);
   }
@@ -255,7 +253,7 @@ class basic_texture final
 
   [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
   {
-    SDL_ScaleMode mode{};
+    SDL_ScaleMode mode {};
     SDL_GetTextureScaleMode(mTexture, &mode);
     return static_cast<scale_mode>(mode);
   }

@@ -36,8 +36,7 @@
 
 namespace cen {
 
-enum class fade_status
-{
+enum class fade_status {
   none = MIX_NO_FADING,
   in = MIX_FADING_IN,
   out = MIX_FADING_OUT
@@ -56,7 +55,7 @@ enum class fade_status
       return "out";
 
     default:
-      throw exception{"Did not recognize fade status!"};
+      throw exception {"Did not recognize fade status!"};
   }
 }
 

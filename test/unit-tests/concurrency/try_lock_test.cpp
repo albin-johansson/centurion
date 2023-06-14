@@ -34,7 +34,7 @@ static_assert(!std::is_copy_assignable_v<cen::try_lock>);
 TEST(TryLock, BasicUsage)
 {
   cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::try_lock lock {mutex};
 
   ASSERT_TRUE(lock.locked());
 }
@@ -42,7 +42,7 @@ TEST(TryLock, BasicUsage)
 TEST(TryLock, GetStatus)
 {
   cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::try_lock lock {mutex};
 
   ASSERT_EQ(cen::lock_status::success, lock.status());
 
@@ -54,7 +54,7 @@ TEST(TryLock, GetStatus)
 TEST(TryLock, BoolConversion)
 {
   cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::try_lock lock {mutex};
 
   ASSERT_TRUE(lock);
 }

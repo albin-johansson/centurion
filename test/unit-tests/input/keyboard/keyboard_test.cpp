@@ -53,9 +53,9 @@ TEST(Keyboard, IsPressed)
   ASSERT_FALSE(keyboard.is_pressed(SDL_SCANCODE_A));
   ASSERT_FALSE(keyboard.is_pressed(SDLK_a));
 
-  ASSERT_FALSE(keyboard.is_pressed(cen::scan_code{-1}));
+  ASSERT_FALSE(keyboard.is_pressed(cen::scan_code {-1}));
   ASSERT_FALSE(keyboard.is_pressed(SDL_NUM_SCANCODES));
-  ASSERT_FALSE(keyboard.is_pressed(cen::scan_code{SDL_NUM_SCANCODES + 1}));
+  ASSERT_FALSE(keyboard.is_pressed(cen::scan_code {SDL_NUM_SCANCODES + 1}));
 }
 
 TEST(Keyboard, IsHeld)
@@ -65,9 +65,9 @@ TEST(Keyboard, IsHeld)
   ASSERT_FALSE(keyboard.is_held(SDL_SCANCODE_X));
   ASSERT_FALSE(keyboard.is_held(SDLK_x));
 
-  ASSERT_FALSE(keyboard.is_held(cen::scan_code{-1}));
+  ASSERT_FALSE(keyboard.is_held(cen::scan_code {-1}));
   ASSERT_FALSE(keyboard.is_held(SDL_NUM_SCANCODES));
-  ASSERT_FALSE(keyboard.is_held(cen::scan_code{SDL_NUM_SCANCODES + 1}));
+  ASSERT_FALSE(keyboard.is_held(cen::scan_code {SDL_NUM_SCANCODES + 1}));
 }
 
 TEST(Keyboard, JustPressed)
@@ -78,8 +78,8 @@ TEST(Keyboard, JustPressed)
   ASSERT_FALSE(keyboard.just_pressed(SDLK_v));
 
   ASSERT_FALSE(keyboard.just_pressed(SDL_NUM_SCANCODES));
-  ASSERT_FALSE(keyboard.just_pressed(cen::scan_code{-1}));
-  ASSERT_FALSE(keyboard.just_pressed(cen::scan_code{SDL_NUM_SCANCODES + 1}));
+  ASSERT_FALSE(keyboard.just_pressed(cen::scan_code {-1}));
+  ASSERT_FALSE(keyboard.just_pressed(cen::scan_code {SDL_NUM_SCANCODES + 1}));
 }
 
 TEST(Keyboard, JustReleased)
@@ -89,9 +89,9 @@ TEST(Keyboard, JustReleased)
   ASSERT_FALSE(keyboard.just_released(SDL_SCANCODE_U));
   ASSERT_FALSE(keyboard.just_released(SDLK_u));
 
-  ASSERT_FALSE(keyboard.just_released(cen::scan_code{-1}));
-  ASSERT_FALSE(keyboard.just_released(cen::scan_code{SDL_NUM_SCANCODES}));
-  ASSERT_FALSE(keyboard.just_released(cen::scan_code{SDL_NUM_SCANCODES + 1}));
+  ASSERT_FALSE(keyboard.just_released(cen::scan_code {-1}));
+  ASSERT_FALSE(keyboard.just_released(cen::scan_code {SDL_NUM_SCANCODES}));
+  ASSERT_FALSE(keyboard.just_released(cen::scan_code {SDL_NUM_SCANCODES + 1}));
 }
 
 TEST(Keyboard, Size)

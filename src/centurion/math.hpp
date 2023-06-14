@@ -52,23 +52,22 @@ using ivec3 [[deprecated]] = basic_vector3<int>;
 using fvec3 [[deprecated]] = basic_vector3<float>;
 
 template <typename T>
-struct [[deprecated]] basic_vector3 final
-{
+struct [[deprecated]] basic_vector3 final {
   static_assert(is_number<T>);
 
   using value_type = T;
 
-  value_type x{};
-  value_type y{};
-  value_type z{};
+  value_type x {};
+  value_type y {};
+  value_type z {};
 
   template <typename U>
   [[nodiscard]] explicit operator basic_vector3<U>() const noexcept
   {
     using target_value_type = typename basic_vector3<U>::value_type;
-    return basic_vector3<U>{static_cast<target_value_type>(x),
-                            static_cast<target_value_type>(y),
-                            static_cast<target_value_type>(z)};
+    return basic_vector3<U> {static_cast<target_value_type>(x),
+                             static_cast<target_value_type>(y),
+                             static_cast<target_value_type>(z)};
   }
 };
 
@@ -123,14 +122,13 @@ using farea = basic_area<float>;
  * \see farea
  */
 template <typename T>
-struct basic_area final
-{
+struct basic_area final {
   static_assert(is_number<T>);
 
   using value_type = T;
 
-  value_type width{};
-  value_type height{};
+  value_type width {};
+  value_type height {};
 
   template <typename TT = T, std::enable_if_t<std::is_integral_v<TT>, int> = 0>
   [[nodiscard]] constexpr auto as_f() const noexcept -> farea
@@ -201,8 +199,7 @@ template <typename T>
 }
 
 template <typename T, enable_for_convertible_t<T, int, float> = 0>
-class point_traits final
-{
+class point_traits final {
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;
   inline constexpr static bool floating = std::is_floating_point_v<T>;
@@ -228,8 +225,7 @@ using fpoint = basic_point<float>;
  * \see fpoint
  */
 template <typename T>
-class basic_point final
-{
+class basic_point final {
  public:
   inline constexpr static bool integral = point_traits<T>::integral;
   inline constexpr static bool floating = point_traits<T>::floating;
@@ -239,9 +235,9 @@ class basic_point final
 
   constexpr basic_point() noexcept = default;
 
-  constexpr basic_point(const value_type x, const value_type y) noexcept : mPoint{x, y} {}
+  constexpr basic_point(const value_type x, const value_type y) noexcept : mPoint {x, y} {}
 
-  constexpr explicit basic_point(const point_type point) noexcept : mPoint{point} {}
+  constexpr explicit basic_point(const point_type point) noexcept : mPoint {point} {}
 
   constexpr void set_x(const value_type x) noexcept { mPoint.x = x; }
   constexpr void set_y(const value_type y) noexcept { mPoint.y = y; }
@@ -277,7 +273,7 @@ class basic_point final
   [[nodiscard]] auto data() const noexcept -> const point_type* { return &mPoint; }
 
  private:
-  point_type mPoint{};
+  point_type mPoint {};
 };
 
 template <typename T>
@@ -285,7 +281,7 @@ template <typename T>
     typename basic_point<T>::value_type
 {
   const auto distance =
-      std::sqrt(std::pow(from.x() - to.x(), T{2}) + std::pow(from.y() - to.y(), T{2}));
+      std::sqrt(std::pow(from.x() - to.x(), T {2}) + std::pow(from.y() - to.y(), T {2}));
   if constexpr (basic_point<T>::integral) {
     return static_cast<int>(std::round(distance));
   }
@@ -299,7 +295,7 @@ template <>
 {
   const auto x = static_cast<int>(from.x());
   const auto y = static_cast<int>(from.y());
-  return ipoint{x, y};
+  return ipoint {x, y};
 }
 
 template <>
@@ -307,7 +303,7 @@ template <>
 {
   const auto x = static_cast<float>(from.x());
   const auto y = static_cast<float>(from.y());
-  return fpoint{x, y};
+  return fpoint {x, y};
 }
 
 template <>
@@ -315,7 +311,7 @@ template <>
 {
   const auto x = static_cast<int>(from.x);
   const auto y = static_cast<int>(from.y);
-  return SDL_Point{x, y};
+  return SDL_Point {x, y};
 }
 
 template <>
@@ -323,7 +319,7 @@ template <>
 {
   const auto x = static_cast<float>(from.x);
   const auto y = static_cast<float>(from.y);
-  return SDL_FPoint{x, y};
+  return SDL_FPoint {x, y};
 }
 
 template <typename T>
@@ -371,8 +367,7 @@ template <typename T>
 }
 
 template <typename T, enable_for_convertible_t<T, int, float> = 0>
-class rect_traits final
-{
+class rect_traits final {
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;
   inline constexpr static bool floating = std::is_floating_point_v<T>;
@@ -398,8 +393,7 @@ using frect = basic_rect<float>;
  * \see frect
  */
 template <typename T>
-class basic_rect final
-{
+class basic_rect final {
  public:
   inline constexpr static bool integral = rect_traits<T>::integral;
   inline constexpr static bool floating = rect_traits<T>::floating;
@@ -415,14 +409,16 @@ class basic_rect final
                        const value_type y,
                        const value_type width,
                        const value_type height) noexcept
-      : mRect{x, y, width, height}
-  {}
+      : mRect {x, y, width, height}
+  {
+  }
 
   constexpr basic_rect(const point_type& position, const area_type& size) noexcept
-      : mRect{position.x(), position.y(), size.width, size.height}
-  {}
+      : mRect {position.x(), position.y(), size.width, size.height}
+  {
+  }
 
-  constexpr explicit basic_rect(const rect_type& rect) noexcept : mRect{rect} {}
+  constexpr explicit basic_rect(const rect_type& rect) noexcept : mRect {rect} {}
 
   constexpr void set_x(const value_type x) noexcept { mRect.x = x; }
   constexpr void set_y(const value_type y) noexcept { mRect.y = y; }
@@ -492,12 +488,12 @@ class basic_rect final
 
   [[nodiscard]] constexpr auto center_x() const noexcept -> value_type
   {
-    return x() + (width() / value_type{2});
+    return x() + (width() / value_type {2});
   }
 
   [[nodiscard]] constexpr auto center_y() const noexcept -> value_type
   {
-    return y() + (height() / value_type{2});
+    return y() + (height() / value_type {2});
   }
 
   [[nodiscard]] constexpr auto center() const noexcept -> point_type
@@ -547,7 +543,7 @@ class basic_rect final
   [[nodiscard]] constexpr auto get() const noexcept -> const rect_type& { return mRect; }
 
  private:
-  rect_type mRect{0, 0, 0, 0};
+  rect_type mRect {0, 0, 0, 0};
 };
 
 /**
@@ -628,18 +624,19 @@ template <typename T>
 template <>
 [[nodiscard]] constexpr auto cast(const irect& from) noexcept -> frect
 {
-  const frect::point_type pos{static_cast<float>(from.x()), static_cast<float>(from.y())};
-  const frect::area_type size{static_cast<float>(from.width()),
-                              static_cast<float>(from.height())};
-  return frect{pos, size};
+  const frect::point_type pos {static_cast<float>(from.x()), static_cast<float>(from.y())};
+  const frect::area_type size {static_cast<float>(from.width()),
+                               static_cast<float>(from.height())};
+  return frect {pos, size};
 }
 
 template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
-  const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()), static_cast<int>(from.height())};
-  return irect{pos, size};
+  const irect::point_type pos {static_cast<int>(from.x()), static_cast<int>(from.y())};
+  const irect::area_type size {static_cast<int>(from.width()),
+                               static_cast<int>(from.height())};
+  return irect {pos, size};
 }
 
 template <typename T>

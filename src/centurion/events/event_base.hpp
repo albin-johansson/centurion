@@ -38,18 +38,17 @@ namespace cen {
 
 /// The base class of all events.
 template <typename T>
-class event_base
-{
+class event_base {
  public:
   explicit event_base(const event_type type)
   {
-    set_timestamp(u32ms{SDL_GetTicks()});
+    set_timestamp(u32ms {SDL_GetTicks()});
     set_type(type);
   }
 
-  explicit event_base(const T& event) noexcept : mEvent{event} {}
+  explicit event_base(const T& event) noexcept : mEvent {event} {}
 
-  explicit event_base(T&& event) noexcept : mEvent{std::move(event)} {}
+  explicit event_base(T&& event) noexcept : mEvent {std::move(event)} {}
 
   void set_timestamp(const u32ms timestamp) noexcept(on_msvc)
   {
@@ -58,14 +57,14 @@ class event_base
 
   void set_type(const event_type type) noexcept { mEvent.type = to_underlying(type); }
 
-  [[nodiscard]] auto timestamp() const -> u32ms { return u32ms{mEvent.timestamp}; }
+  [[nodiscard]] auto timestamp() const -> u32ms { return u32ms {mEvent.timestamp}; }
 
-  [[nodiscard]] auto type() const noexcept -> event_type { return event_type{mEvent.type}; }
+  [[nodiscard]] auto type() const noexcept -> event_type { return event_type {mEvent.type}; }
 
   [[nodiscard]] auto get() const noexcept -> const T& { return mEvent; }
 
  protected:
-  T mEvent{};
+  T mEvent {};
 };
 
 /// Extracts the underlying SDL event from a Centurion event.

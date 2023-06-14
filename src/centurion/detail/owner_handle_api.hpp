@@ -50,8 +50,7 @@ template <typename T>
 using enable_for_handle = std::enable_if_t<is_handle<T>, int>;
 
 template <typename B, typename Type>
-class pointer final
-{
+class pointer final {
  public:
   using smart_ptr = managed_ptr<Type>;
   using raw_ptr = Type*;
@@ -59,7 +58,7 @@ class pointer final
 
   pointer() noexcept = default;
 
-  explicit pointer(Type* ptr) noexcept : mPtr{ptr} {}
+  explicit pointer(Type* ptr) noexcept : mPtr {ptr} {}
 
   template <typename BB = B, enable_for_owner<BB> = 0>
   void reset(Type* ptr) noexcept
@@ -104,7 +103,7 @@ class pointer final
   }
 
  private:
-  pointer_type mPtr{};
+  pointer_type mPtr {};
 };
 
 }  // namespace cen::detail

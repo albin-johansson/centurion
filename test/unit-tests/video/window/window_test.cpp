@@ -53,15 +53,15 @@ TEST_F(WindowTest, Defaults)
 TEST_F(WindowTest, ConstructFromPointer)
 {
   {
-    ASSERT_NO_THROW(cen::window{SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
+    ASSERT_NO_THROW(cen::window {SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
 
-    SDL_Window* ptr{};
-    ASSERT_THROW(cen::window{ptr}, cen::exception);
+    SDL_Window* ptr {};
+    ASSERT_THROW(cen::window {ptr}, cen::exception);
   }
 
   {
-    ASSERT_NO_THROW(cen::window_handle{nullptr});
-    cen::window_handle handle{window->get()};
+    ASSERT_NO_THROW(cen::window_handle {nullptr});
+    cen::window_handle handle {window->get()};
     ASSERT_EQ(handle.get(), window->get());
   }
 }
@@ -76,7 +76,7 @@ TEST_F(WindowTest, ContructorFromStringAndArea)
   const auto width = 123;
   const auto height = 321;
   const auto title = "foobar"s;
-  const cen::window w{title, {width, height}};
+  const cen::window w {title, {width, height}};
 
   ASSERT_EQ(title, w.title());
   ASSERT_EQ(width, w.width());
@@ -91,7 +91,7 @@ TEST_F(WindowTest, Get)
 
 TEST_F(WindowTest, BoolConversion)
 {
-  cen::window_handle handle{*window};
+  cen::window_handle handle {*window};
   ASSERT_TRUE(handle);
 }
 

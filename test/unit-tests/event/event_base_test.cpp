@@ -60,7 +60,7 @@ TEST(EventBase, Timestamp)
   sdl_event sdl;
   sdl.timestamp = time.count();
 
-  const common_event event{sdl};
+  const common_event event {sdl};
   ASSERT_EQ(time, event.timestamp());
 }
 
@@ -69,7 +69,7 @@ TEST(EventBase, Type)
   sdl_event sdl;
   sdl.type = SDL_MOUSEMOTION;
 
-  const common_event event{sdl};
+  const common_event event {sdl};
   ASSERT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
@@ -78,7 +78,7 @@ TEST(EventBase, Get)
   sdl_event sdl;
   sdl.type = SDL_MOUSEMOTION;
 
-  const common_event event{sdl};
+  const common_event event {sdl};
   const auto& internal = event.get();
 
   ASSERT_EQ(sdl.type, internal.type);

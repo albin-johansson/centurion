@@ -32,45 +32,43 @@
 using music_finished_callback = void (*)();
 using hook_music_callback = void (*)(void*, Uint8*, int);
 
-extern "C"
-{
-  FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
-  FAKE_VOID_FUNC(Mix_ResumeMusic)
-  FAKE_VOID_FUNC(Mix_PauseMusic)
-  FAKE_VOID_FUNC(Mix_RewindMusic)
-  FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
-  FAKE_VOID_FUNC(Mix_HookMusic, hook_music_callback, void*)
-  FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
-  FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
-  FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
-  FAKE_VALUE_FUNC(int, Mix_VolumeMusic, int)
-  FAKE_VALUE_FUNC(int, Mix_HaltMusic)
-  FAKE_VALUE_FUNC(int, Mix_PlayingMusic)
-  FAKE_VALUE_FUNC(int, Mix_PausedMusic)
-  FAKE_VALUE_FUNC(void*, Mix_GetMusicHookData)
-  FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
-  FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
-  FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
-  FAKE_VALUE_FUNC(int, Mix_SetMusicPosition, double)
-  FAKE_VALUE_FUNC(Mix_Fading, Mix_FadingMusic)
-  FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
+extern "C" {
+FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
+FAKE_VOID_FUNC(Mix_ResumeMusic)
+FAKE_VOID_FUNC(Mix_PauseMusic)
+FAKE_VOID_FUNC(Mix_RewindMusic)
+FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
+FAKE_VOID_FUNC(Mix_HookMusic, hook_music_callback, void*)
+FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
+FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
+FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
+FAKE_VALUE_FUNC(int, Mix_VolumeMusic, int)
+FAKE_VALUE_FUNC(int, Mix_HaltMusic)
+FAKE_VALUE_FUNC(int, Mix_PlayingMusic)
+FAKE_VALUE_FUNC(int, Mix_PausedMusic)
+FAKE_VALUE_FUNC(void*, Mix_GetMusicHookData)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
+FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
+FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
+FAKE_VALUE_FUNC(int, Mix_SetMusicPosition, double)
+FAKE_VALUE_FUNC(Mix_Fading, Mix_FadingMusic)
+FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
 
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
-  FAKE_VALUE_FUNC(const char*, Mix_GetMusicTitle, const Mix_Music*)
-  FAKE_VALUE_FUNC(const char*, Mix_GetMusicTitleTag, const Mix_Music*)
-  FAKE_VALUE_FUNC(const char*, Mix_GetMusicArtistTag, const Mix_Music*)
-  FAKE_VALUE_FUNC(const char*, Mix_GetMusicAlbumTag, const Mix_Music*)
-  FAKE_VALUE_FUNC(const char*, Mix_GetMusicCopyrightTag, const Mix_Music*)
-  FAKE_VALUE_FUNC(double, Mix_GetMusicPosition, Mix_Music*)
-  FAKE_VALUE_FUNC(double, Mix_MusicDuration, Mix_Music*)
-  FAKE_VALUE_FUNC(double, Mix_GetMusicLoopStartTime, Mix_Music*)
-  FAKE_VALUE_FUNC(double, Mix_GetMusicLoopEndTime, Mix_Music*)
-  FAKE_VALUE_FUNC(double, Mix_GetMusicLoopLengthTime, Mix_Music*)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicTitle, const Mix_Music*)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicTitleTag, const Mix_Music*)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicArtistTag, const Mix_Music*)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicAlbumTag, const Mix_Music*)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicCopyrightTag, const Mix_Music*)
+FAKE_VALUE_FUNC(double, Mix_GetMusicPosition, Mix_Music*)
+FAKE_VALUE_FUNC(double, Mix_MusicDuration, Mix_Music*)
+FAKE_VALUE_FUNC(double, Mix_GetMusicLoopStartTime, Mix_Music*)
+FAKE_VALUE_FUNC(double, Mix_GetMusicLoopEndTime, Mix_Music*)
+FAKE_VALUE_FUNC(double, Mix_GetMusicLoopLengthTime, Mix_Music*)
 #endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
 }
 
-class MusicTest : public testing::Test
-{
+class MusicTest : public testing::Test {
  protected:
   void SetUp() override
   {
@@ -150,11 +148,11 @@ TEST_F(MusicTest, FadeIn)
 
   cen::music music;
 
-  ASSERT_FALSE(music.fade_in(cen::music::ms_type{5}));
+  ASSERT_FALSE(music.fade_in(cen::music::ms_type {5}));
   ASSERT_EQ(1u, Mix_FadeInMusic_fake.call_count);
   ASSERT_EQ(0, Mix_FadeInMusic_fake.arg1_val);
 
-  ASSERT_TRUE(music.fade_in(cen::music::ms_type{5}, 4));
+  ASSERT_TRUE(music.fade_in(cen::music::ms_type {5}, 4));
   ASSERT_EQ(2u, Mix_FadeInMusic_fake.call_count);
   ASSERT_EQ(4, Mix_FadeInMusic_fake.arg1_val);
 }
@@ -163,15 +161,15 @@ TEST_F(MusicTest, FadeOut)
 {
   CEN_PREPARE_MOCK_TEST(Mix_FadeOutMusic, 0, 1)
 
-  ASSERT_FALSE(cen::music::fade_out(cen::music::ms_type{5}));
+  ASSERT_FALSE(cen::music::fade_out(cen::music::ms_type {5}));
   ASSERT_EQ(1u, Mix_FadeOutMusic_fake.call_count);
 
-  ASSERT_TRUE(cen::music::fade_out(cen::music::ms_type{3}));
+  ASSERT_TRUE(cen::music::fade_out(cen::music::ms_type {3}));
   ASSERT_EQ(2u, Mix_FadeOutMusic_fake.call_count);
 
   // Should have no effect if already fading music
   Mix_FadingMusic_fake.return_val = MIX_FADING_IN;
-  ASSERT_FALSE(cen::music::fade_out(cen::music::ms_type{3}));
+  ASSERT_FALSE(cen::music::fade_out(cen::music::ms_type {3}));
   ASSERT_EQ(2u, Mix_FadeOutMusic_fake.call_count);
 }
 

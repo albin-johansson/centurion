@@ -48,8 +48,7 @@
 
 namespace cen {
 
-enum class pixel_format : uint32
-{
+enum class pixel_format : uint32 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
   index1_lsb = SDL_PIXELFORMAT_INDEX1LSB,
@@ -256,7 +255,7 @@ enum class pixel_format : uint32
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw exception{"Did not recognize pixel format!"};
+      throw exception {"Did not recognize pixel format!"};
   }
 }
 
@@ -266,16 +265,15 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 }
 
 /// Represents a palette of colors.
-class palette final
-{
+class palette final {
  public:
   using iterator = SDL_Color*;
   using const_iterator = const SDL_Color*;
 
-  explicit palette(const int count) : mPalette{SDL_AllocPalette(count)}
+  explicit palette(const int count) : mPalette {SDL_AllocPalette(count)}
   {
     if (!mPalette) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
@@ -289,10 +287,10 @@ class palette final
   [[nodiscard]] auto at(const int index) const -> color
   {
     if (index >= 0 && index < size()) {
-      return color{mPalette->colors[index]};
+      return color {mPalette->colors[index]};
     }
     else {
-      throw exception{"Palette index out of bounds!"};
+      throw exception {"Palette index out of bounds!"};
     }
   }
 
@@ -350,8 +348,7 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_tag>;
  * \see pixel_format_info_handle
  */
 template <typename T>
-class basic_pixel_format_info final
-{
+class basic_pixel_format_info final {
  public:
   // clang-format off
 
@@ -376,33 +373,34 @@ class basic_pixel_format_info final
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : mFormat{SDL_AllocFormat(to_underlying(format))}
+      : mFormat {SDL_AllocFormat(to_underlying(format))}
   {
     if (!mFormat) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& owner) noexcept
-      : mFormat{owner.get()}
-  {}
+      : mFormat {owner.get()}
+  {
+  }
 
   [[nodiscard]] auto pixel_to_rgb(const uint32 pixel) const noexcept -> color
   {
-    uint8 red{};
-    uint8 green{};
-    uint8 blue{};
+    uint8 red {};
+    uint8 green {};
+    uint8 blue {};
     SDL_GetRGB(pixel, mFormat, &red, &green, &blue);
     return {red, green, blue};
   }
 
   [[nodiscard]] auto pixel_to_rgba(const uint32 pixel) const noexcept -> color
   {
-    uint8 red{};
-    uint8 green{};
-    uint8 blue{};
-    uint8 alpha{};
+    uint8 red {};
+    uint8 green {};
+    uint8 blue {};
+    uint8 alpha {};
     SDL_GetRGBA(pixel, mFormat, &red, &green, &blue, &alpha);
     return {red, green, blue, alpha};
   }

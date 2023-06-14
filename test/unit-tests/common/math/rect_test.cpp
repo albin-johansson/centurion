@@ -50,7 +50,7 @@ static_assert(std::is_nothrow_destructible_v<cen::irect>);
 
 TEST(Rect, ConstexprConstruction)
 {
-  constexpr cen::frect rect{1, 2, 3, 4};
+  constexpr cen::frect rect {1, 2, 3, 4};
   static_assert(rect.x() == 1);
   static_assert(rect.y() == 2);
   static_assert(rect.width() == 3);
@@ -70,8 +70,8 @@ TEST(Rect, DefaultConstructor)
 
 TEST(Rect, SDLRectConstructor)
 {
-  const SDL_FRect source{12.0f, 34.0f, 56.0f, 78.0f};
-  const cen::frect rect{source};
+  const SDL_FRect source {12.0f, 34.0f, 56.0f, 78.0f};
+  const cen::frect rect {source};
 
   ASSERT_EQ(source.x, rect.x());
   ASSERT_EQ(source.y, rect.y());
@@ -82,9 +82,9 @@ TEST(Rect, SDLRectConstructor)
 
 TEST(Rect, PositionAndSizeConstructor)
 {
-  const cen::fpoint pos{123.5f, 81.4f};
-  const cen::farea size{921.8f, 512.6f};
-  const cen::frect rect{pos, size};
+  const cen::fpoint pos {123.5f, 81.4f};
+  const cen::farea size {921.8f, 512.6f};
+  const cen::frect rect {pos, size};
 
   ASSERT_EQ(rect.x(), pos.x());
   ASSERT_EQ(rect.y(), pos.y());
@@ -101,7 +101,7 @@ TEST(Rect, ValueConstructor)
   const auto y = 711.3f;
   const auto width = 231.9f;
   const auto height = 365.1f;
-  const cen::frect rect{x, y, width, height};
+  const cen::frect rect {x, y, width, height};
 
   ASSERT_EQ(x, rect.x());
   ASSERT_EQ(y, rect.y());
@@ -131,7 +131,7 @@ TEST(Rect, SetY)
 
 TEST(Rect, SetMaxX)
 {
-  cen::frect rect{{12, 92}, {241, 393}};
+  cen::frect rect {{12, 92}, {241, 393}};
 
   const auto mx = 74.3f;
   rect.set_max_x(mx);
@@ -142,7 +142,7 @@ TEST(Rect, SetMaxX)
 
 TEST(Rect, SetMaxY)
 {
-  cen::frect rect{{12, 92}, {241, 393}};
+  cen::frect rect {{12, 92}, {241, 393}};
 
   const auto my = 34.3f;
   rect.set_max_y(my);
@@ -155,7 +155,7 @@ TEST(Rect, SetPosition)
 {
   cen::frect rect;
 
-  const cen::fpoint pos{742.3f, 377.2f};
+  const cen::fpoint pos {742.3f, 377.2f};
   rect.set_position(pos);
 
   ASSERT_EQ(rect.position(), pos);
@@ -185,7 +185,7 @@ TEST(Rect, SetSize)
 {
   cen::frect rect;
 
-  const cen::farea size{345.8f, 289.7f};
+  const cen::farea size {345.8f, 289.7f};
   rect.set_size(size);
 
   ASSERT_EQ(rect.size(), size);
@@ -200,7 +200,7 @@ TEST(Rect, OffsetX)
 
   const auto offset = 84;
 
-  cen::irect rect{x, y, width, height};
+  cen::irect rect {x, y, width, height};
   rect.offset_x(offset);
 
   ASSERT_EQ(x + offset, rect.x());
@@ -218,7 +218,7 @@ TEST(Rect, OffsetY)
 
   const auto offset = -45;
 
-  cen::irect rect{x, y, width, height};
+  cen::irect rect {x, y, width, height};
   rect.offset_y(offset);
 
   ASSERT_EQ(x, rect.x());
@@ -236,7 +236,7 @@ TEST(Rect, OffsetWidth)
 
   const auto offset = 221;
 
-  cen::irect rect{x, y, width, height};
+  cen::irect rect {x, y, width, height};
   rect.offset_width(offset);
 
   ASSERT_EQ(x, rect.x());
@@ -254,7 +254,7 @@ TEST(Rect, OffsetHeight)
 
   const auto offset = 812;
 
-  cen::irect rect{x, y, width, height};
+  cen::irect rect {x, y, width, height};
   rect.offset_height(offset);
 
   ASSERT_EQ(x, rect.x());
@@ -265,7 +265,7 @@ TEST(Rect, OffsetHeight)
 
 TEST(Rect, AsI)
 {
-  const cen::frect source{-32.5f, 74.7f, 325.8f, 145.3f};
+  const cen::frect source {-32.5f, 74.7f, 325.8f, 145.3f};
   const auto result = source.as_i();
 
   ASSERT_EQ(result.x(), static_cast<int>(source.x()));
@@ -276,7 +276,7 @@ TEST(Rect, AsI)
 
 TEST(Rect, AsF)
 {
-  const cen::irect source{85, -32, 434, 275};
+  const cen::irect source {85, -32, 434, 275};
   const auto result = source.as_f();
 
   ASSERT_EQ(result.x(), static_cast<float>(source.x()));
@@ -287,7 +287,7 @@ TEST(Rect, AsF)
 
 TEST(Rect, Contains)
 {
-  const cen::frect rect{{277.5f, 189.2f}, {79.2f, 58.2f}};
+  const cen::frect rect {{277.5f, 189.2f}, {79.2f, 58.2f}};
 
   {  // Top-left corner
     ASSERT_TRUE(rect.contains({rect.x(), rect.y()}));
@@ -322,22 +322,22 @@ TEST(Rect, HasArea)
   }
 
   {  // No width
-    const cen::frect rect{{0, 0}, {0, 1}};
+    const cen::frect rect {{0, 0}, {0, 1}};
     ASSERT_FALSE(rect.has_area());
   }
 
   {  // No height
-    const cen::frect rect{{0, 0}, {1, 0}};
+    const cen::frect rect {{0, 0}, {1, 0}};
     ASSERT_FALSE(rect.has_area());
   }
 
   {  // Negative dimensions
-    const cen::frect rect{{0, 0}, {-1, -1}};
+    const cen::frect rect {{0, 0}, {-1, -1}};
     ASSERT_FALSE(rect.has_area());
   }
 
   {  // Valid dimensions
-    const cen::frect rect{{0, 0}, {1, 1}};
+    const cen::frect rect {{0, 0}, {1, 1}};
     ASSERT_TRUE(rect.has_area());
   }
 }
@@ -371,7 +371,7 @@ TEST(Rect, GetMaxX)
   const auto x = 289.2f;
   const auto width = 591.0f;
 
-  const cen::frect rect{{x, 0}, {width, 0}};
+  const cen::frect rect {{x, 0}, {width, 0}};
 
   ASSERT_EQ(rect.max_x(), x + width);
 }
@@ -381,7 +381,7 @@ TEST(Rect, GetMaxY)
   const auto y = 1029.3f;
   const auto height = 6961.9f;
 
-  const cen::frect rect{{0, y}, {0, height}};
+  const cen::frect rect {{0, y}, {0, height}};
 
   ASSERT_EQ(rect.max_y(), y + height);
 }
@@ -391,7 +391,7 @@ TEST(Rect, GetCenterX)
   const auto x = 125.3f;
   const auto width = 3912.8f;
 
-  const cen::frect rect{{x, 0}, {width, 0}};
+  const cen::frect rect {{x, 0}, {width, 0}};
 
   ASSERT_EQ(rect.center_x(), x + (width / 2.0f));
 }
@@ -401,7 +401,7 @@ TEST(Rect, GetCenterY)
   const auto y = 7128.2f;
   const auto height = 1240.2f;
 
-  const cen::frect rect{{0, y}, {0, height}};
+  const cen::frect rect {{0, y}, {0, height}};
 
   ASSERT_EQ(rect.center_y(), y + (height / 2.0f));
 }
@@ -411,7 +411,7 @@ TEST(Rect, GetArea)
   const auto width = 184.3f;
   const auto height = 728.9f;
 
-  const cen::frect rect{{}, {width, height}};
+  const cen::frect rect {{}, {width, height}};
 
   ASSERT_EQ(rect.area(), width * height);
 }
@@ -423,7 +423,7 @@ TEST(Rect, Center)
   const auto w = 128;
   const auto h = 256;
 
-  const cen::irect rect{{x, y}, {w, h}};
+  const cen::irect rect {{x, y}, {w, h}};
   const auto center = rect.center();
 
   ASSERT_EQ(center.x(), x + (w / 2));
@@ -432,7 +432,7 @@ TEST(Rect, Center)
 
 TEST(Rect, Data)
 {
-  const cen::irect rect{{12, 34}, {56, 78}};
+  const cen::irect rect {{12, 34}, {56, 78}};
   ASSERT_TRUE(rect.data());
   ASSERT_EQ(12, rect.data()->x);
   ASSERT_EQ(34, rect.data()->y);
@@ -442,7 +442,7 @@ TEST(Rect, Data)
 
 TEST(Rect, Intersects)
 {
-  const cen::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
+  const cen::frect rect {{100.0f, 100.0f}, {100.0f, 100.0f}};
   ASSERT_TRUE(cen::intersects(rect, rect));
 
   {  // Empty rectangle
@@ -453,10 +453,11 @@ TEST(Rect, Intersects)
   }
 
   {  // Obviously no intersection
-    const cen::frect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
-    const cen::frect top{{rect.x(), rect.y() - rect.height()}, {10, 10}};
-    const cen::frect right{{rect.x() + rect.width(), rect.y()}, {rect.width(), rect.height()}};
-    const cen::frect bottom{{rect.x(), rect.y() + rect.height()}, {10, 10}};
+    const cen::frect left {{rect.x() - rect.width(), rect.y()}, {10, 10}};
+    const cen::frect top {{rect.x(), rect.y() - rect.height()}, {10, 10}};
+    const cen::frect right {{rect.x() + rect.width(), rect.y()},
+                            {rect.width(), rect.height()}};
+    const cen::frect bottom {{rect.x(), rect.y() + rect.height()}, {10, 10}};
 
     ASSERT_FALSE(cen::intersects(left, rect));
     ASSERT_FALSE(cen::intersects(rect, left));
@@ -472,37 +473,37 @@ TEST(Rect, Intersects)
   }
 
   {  // Edge cases
-    const cen::frect left{{90, 100}, {10, 10}};
+    const cen::frect left {{90, 100}, {10, 10}};
     ASSERT_FALSE(cen::intersects(left, rect));
     ASSERT_FALSE(cen::intersects(rect, left));
 
-    const cen::frect top{{100, 90}, {10, 10}};
+    const cen::frect top {{100, 90}, {10, 10}};
     ASSERT_FALSE(cen::intersects(top, rect));
     ASSERT_FALSE(cen::intersects(rect, top));
 
-    const cen::frect right{{200, 100}, {10, 10}};
+    const cen::frect right {{200, 100}, {10, 10}};
     ASSERT_FALSE(cen::intersects(right, rect));
     ASSERT_FALSE(cen::intersects(rect, right));
 
-    const cen::frect bottom{{100, 200}, {10, 10}};
+    const cen::frect bottom {{100, 200}, {10, 10}};
     ASSERT_FALSE(cen::intersects(bottom, rect));
     ASSERT_FALSE(cen::intersects(rect, bottom));
   }
 
   {  // Obvious intersections
-    const cen::frect left{{90, 150}, {50, 1}};
+    const cen::frect left {{90, 150}, {50, 1}};
     ASSERT_TRUE(cen::intersects(left, rect));
     ASSERT_TRUE(cen::intersects(rect, left));
 
-    const cen::frect top{{150, 90}, {1, 50}};
+    const cen::frect top {{150, 90}, {1, 50}};
     ASSERT_TRUE(cen::intersects(top, rect));
     ASSERT_TRUE(cen::intersects(rect, top));
 
-    const cen::frect bottom{{150, 150}, {10, 50}};
+    const cen::frect bottom {{150, 150}, {10, 50}};
     ASSERT_TRUE(cen::intersects(bottom, rect));
     ASSERT_TRUE(cen::intersects(rect, bottom));
 
-    const cen::frect right{{150, 150}, {50, 10}};
+    const cen::frect right {{150, 150}, {50, 10}};
     ASSERT_TRUE(cen::intersects(right, rect));
     ASSERT_TRUE(cen::intersects(rect, right));
   }
@@ -510,15 +511,15 @@ TEST(Rect, Intersects)
 
 TEST(Rect, Collides)
 {
-  const cen::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
+  const cen::frect rect {{100.0f, 100.0f}, {100.0f, 100.0f}};
   ASSERT_TRUE(cen::overlaps(rect, rect));
 
   {  // Obviously no collisions
-    const cen::frect left{{rect.x() - rect.width() - 1, rect.y()}, {10, 10}};
-    const cen::frect top{{rect.x(), rect.y() - rect.height() - 1}, {10, 10}};
-    const cen::frect right{{rect.x() + rect.width() + 1, rect.y()},
-                           {rect.width(), rect.height()}};
-    const cen::frect bottom{{rect.x(), rect.y() + rect.height() + 1}, {10, 10}};
+    const cen::frect left {{rect.x() - rect.width() - 1, rect.y()}, {10, 10}};
+    const cen::frect top {{rect.x(), rect.y() - rect.height() - 1}, {10, 10}};
+    const cen::frect right {{rect.x() + rect.width() + 1, rect.y()},
+                            {rect.width(), rect.height()}};
+    const cen::frect bottom {{rect.x(), rect.y() + rect.height() + 1}, {10, 10}};
 
     ASSERT_FALSE(cen::overlaps(left, rect));
     ASSERT_FALSE(cen::overlaps(rect, left));
@@ -534,37 +535,37 @@ TEST(Rect, Collides)
   }
 
   {  // Edge cases
-    const cen::frect left{{89, 100}, {10, 10}};
+    const cen::frect left {{89, 100}, {10, 10}};
     ASSERT_FALSE(cen::overlaps(left, rect));
     ASSERT_FALSE(cen::overlaps(rect, left));
 
-    const cen::frect top{{100, 89}, {10, 10}};
+    const cen::frect top {{100, 89}, {10, 10}};
     ASSERT_FALSE(cen::overlaps(top, rect));
     ASSERT_FALSE(cen::overlaps(rect, top));
 
-    const cen::frect right{{201, 100}, {10, 10}};
+    const cen::frect right {{201, 100}, {10, 10}};
     ASSERT_FALSE(cen::overlaps(right, rect));
     ASSERT_FALSE(cen::overlaps(rect, right));
 
-    const cen::frect bottom{{100, 201}, {10, 10}};
+    const cen::frect bottom {{100, 201}, {10, 10}};
     ASSERT_FALSE(cen::overlaps(bottom, rect));
     ASSERT_FALSE(cen::overlaps(rect, bottom));
   }
 
   {  // Obvious collisions
-    const cen::frect left{{90, 150}, {50, 1}};
+    const cen::frect left {{90, 150}, {50, 1}};
     ASSERT_TRUE(cen::overlaps(left, rect));
     ASSERT_TRUE(cen::overlaps(rect, left));
 
-    const cen::frect top{{150, 90}, {1, 50}};
+    const cen::frect top {{150, 90}, {1, 50}};
     ASSERT_TRUE(cen::overlaps(top, rect));
     ASSERT_TRUE(cen::overlaps(rect, top));
 
-    const cen::frect bottom{{150, 150}, {10, 50}};
+    const cen::frect bottom {{150, 150}, {10, 50}};
     ASSERT_TRUE(cen::overlaps(bottom, rect));
     ASSERT_TRUE(cen::overlaps(rect, bottom));
 
-    const cen::frect right{{150, 150}, {50, 10}};
+    const cen::frect right {{150, 150}, {50, 10}};
     ASSERT_TRUE(cen::overlaps(right, rect));
     ASSERT_TRUE(cen::overlaps(rect, right));
   }
@@ -572,14 +573,14 @@ TEST(Rect, Collides)
 
 TEST(Rect, StreamOperator)
 {
-  std::cout << cen::irect{12, 34, 56, 78} << '\n';
-  std::cout << cen::frect{14.3f, 34.2f, 182.8f, 120.9f} << '\n';
+  std::cout << cen::irect {12, 34, 56, 78} << '\n';
+  std::cout << cen::frect {14.3f, 34.2f, 182.8f, 120.9f} << '\n';
 }
 
 TEST(Rect, GetUnion)
 {
-  const cen::frect a{{10.0f, 10.0f}, {50.0f, 50.0f}};
-  const cen::frect b{{40.0f, 40.0f}, {50.0f, 50.0f}};
+  const cen::frect a {{10.0f, 10.0f}, {50.0f, 50.0f}};
+  const cen::frect b {{40.0f, 40.0f}, {50.0f, 50.0f}};
 
   {  // With empty rectangle
     const cen::frect empty;
@@ -605,7 +606,7 @@ TEST(Rect, GetUnion)
 
 TEST(Rect, IRectToFRect)
 {
-  const cen::irect source{{78, 12}, {283, 313}};
+  const cen::irect source {{78, 12}, {283, 313}};
   const auto result = cen::cast<cen::frect>(source);
 
   ASSERT_EQ(result.x(), static_cast<float>(source.x()));
@@ -616,7 +617,7 @@ TEST(Rect, IRectToFRect)
 
 TEST(Rect, FRectToIRect)
 {
-  const cen::frect source{{831.3f, 899.1f}, {67.2f, 91.7f}};
+  const cen::frect source {{831.3f, 899.1f}, {67.2f, 91.7f}};
   const auto result = cen::cast<cen::irect>(source);
 
   ASSERT_EQ(result.x(), static_cast<int>(source.x()));
@@ -627,44 +628,44 @@ TEST(Rect, FRectToIRect)
 
 TEST(Rect, EqualityOperatorReflexivity)
 {
-  const cen::frect rect{{93.3f, 67.2f}, {54.2f, 777.8f}};
+  const cen::frect rect {{93.3f, 67.2f}, {54.2f, 777.8f}};
   ASSERT_EQ(rect, rect);
 }
 
 TEST(Rect, EqualityOperatorComparison)
 {
-  const cen::frect fst{{78.2f, 21.2f}, {9.2f, 162.3f}};
-  const cen::frect snd{fst};
+  const cen::frect fst {{78.2f, 21.2f}, {9.2f, 162.3f}};
+  const cen::frect snd {fst};
   ASSERT_EQ(fst, snd);
   ASSERT_EQ(snd, fst);
 }
 
 TEST(Rect, EqualityOperatorComparisonDifferent)
 {
-  const cen::frect fst{{8.2f, 123.3f}, {63.1f, 672.3f}};
-  const cen::frect snd{{89.13f, 781.3f}, {781.2f, 331.3f}};
+  const cen::frect fst {{8.2f, 123.3f}, {63.1f, 672.3f}};
+  const cen::frect snd {{89.13f, 781.3f}, {781.2f, 331.3f}};
   ASSERT_FALSE(fst == snd);
   ASSERT_FALSE(snd == fst);
 }
 
 TEST(Rect, InequalityOperatorSelf)
 {
-  const cen::frect rect{{21.7f, 32.2f}, {442.2f, 383.8f}};
+  const cen::frect rect {{21.7f, 32.2f}, {442.2f, 383.8f}};
   ASSERT_FALSE(rect != rect);
 }
 
 TEST(Rect, InequalityOperatorComparisonEqual)
 {
-  const cen::frect fst{{712.3f, 34.3f}, {65.8f, 348.2f}};
-  const cen::frect snd{fst};
+  const cen::frect fst {{712.3f, 34.3f}, {65.8f, 348.2f}};
+  const cen::frect snd {fst};
   ASSERT_FALSE(fst != snd);
   ASSERT_FALSE(snd != fst);
 }
 
 TEST(Rect, InequalityOperatorComparisonDifferent)
 {
-  const cen::frect fst{{-45.37f, 12.3f}, {89.13f, 371.3f}};
-  const cen::frect snd{{738.3f, 8.24f}, {67.3f, 89.23f}};
+  const cen::frect fst {{-45.37f, 12.3f}, {89.13f, 371.3f}};
+  const cen::frect snd {{738.3f, 8.24f}, {67.3f, 89.23f}};
   ASSERT_NE(fst, snd);
   ASSERT_NE(snd, fst);
 }
@@ -675,7 +676,7 @@ TEST(Rect, Serialization)
   const auto y = 3348;
   const auto width = 412;
   const auto height = 7421;
-  serialize_save("rect.binary", cen::irect{x, y, width, height});
+  serialize_save("rect.binary", cen::irect {x, y, width, height});
 
   const auto rect = serialize_create<cen::irect>("rect.binary");
   ASSERT_EQ(x, rect.x());

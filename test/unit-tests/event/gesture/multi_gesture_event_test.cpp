@@ -85,7 +85,7 @@ TEST(MultiGestureEvent, TouchId)
   SDL_MultiGestureEvent sdl;
   sdl.touchId = 54;
 
-  const cen::multi_gesture_event event{sdl};
+  const cen::multi_gesture_event event {sdl};
   ASSERT_EQ(sdl.touchId, event.touch_id());
 }
 
@@ -94,7 +94,7 @@ TEST(MultiGestureEvent, DeltaTheta)
   SDL_MultiGestureEvent sdl;
   sdl.dTheta = 98;
 
-  const cen::multi_gesture_event event{sdl};
+  const cen::multi_gesture_event event {sdl};
   ASSERT_EQ(sdl.dTheta, event.delta_theta());
 }
 
@@ -103,7 +103,7 @@ TEST(MultiGestureEvent, DeltaDistance)
   SDL_MultiGestureEvent sdl;
   sdl.dDist = -87;
 
-  const cen::multi_gesture_event event{sdl};
+  const cen::multi_gesture_event event {sdl};
   ASSERT_EQ(sdl.dDist, event.delta_distance());
 }
 
@@ -112,7 +112,7 @@ TEST(MultiGestureEvent, CenterX)
   SDL_MultiGestureEvent sdl;
   sdl.x = 564;
 
-  const cen::multi_gesture_event event{sdl};
+  const cen::multi_gesture_event event {sdl};
   ASSERT_EQ(sdl.x, event.center_x());
 }
 
@@ -121,7 +121,7 @@ TEST(MultiGestureEvent, CenterY)
   SDL_MultiGestureEvent sdl;
   sdl.y = 913;
 
-  const cen::multi_gesture_event event{sdl};
+  const cen::multi_gesture_event event {sdl};
   ASSERT_EQ(sdl.y, event.center_y());
 }
 
@@ -130,7 +130,7 @@ TEST(MultiGestureEvent, FingerCount)
   SDL_MultiGestureEvent sdl;
   sdl.numFingers = 2;
 
-  const cen::multi_gesture_event event{sdl};
+  const cen::multi_gesture_event event {sdl};
   ASSERT_EQ(sdl.numFingers, event.finger_count());
 }
 

@@ -70,45 +70,45 @@ TEST(TextEditingEvent, SetLength)
 
 TEST(TextEditingEvent, WindowId)
 {
-  SDL_TextEditingEvent sdl{};
+  SDL_TextEditingEvent sdl {};
   sdl.windowID = 7;
 
-  const cen::text_editing_event event{sdl};
+  const cen::text_editing_event event {sdl};
   ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(TextEditingEvent, Start)
 {
-  SDL_TextEditingEvent sdl{};
+  SDL_TextEditingEvent sdl {};
   sdl.start = 4;
 
-  const cen::text_editing_event event{sdl};
+  const cen::text_editing_event event {sdl};
   ASSERT_EQ(sdl.start, event.start());
 }
 
 TEST(TextEditingEvent, Length)
 {
   {  // Good length
-    SDL_TextEditingEvent sdl{};
+    SDL_TextEditingEvent sdl {};
     sdl.length = 4;
 
-    const cen::text_editing_event event{sdl};
+    const cen::text_editing_event event {sdl};
     ASSERT_EQ(sdl.length, event.length());
   }
 
   {  // Underflow length
-    SDL_TextEditingEvent sdl{};
+    SDL_TextEditingEvent sdl {};
     sdl.length = -1;
 
-    const cen::text_editing_event event{sdl};
+    const cen::text_editing_event event {sdl};
     ASSERT_EQ(0, event.length());
   }
 
   {  // Overflow length
-    SDL_TextEditingEvent sdl{};
+    SDL_TextEditingEvent sdl {};
     sdl.length = 33;
 
-    const cen::text_editing_event event{sdl};
+    const cen::text_editing_event event {sdl};
     ASSERT_EQ(32, event.length());
   }
 }

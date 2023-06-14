@@ -31,7 +31,7 @@ namespace {
 template <typename Event>
 void check(const SDL_EventType type)
 {
-  SDL_Event event{};
+  SDL_Event event {};
   event.type = type;
 
   cen::event_handler::flush_all();

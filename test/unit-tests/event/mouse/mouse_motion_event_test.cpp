@@ -57,7 +57,7 @@ TEST(MouseMotionEvent, SetState)
   cen::mouse_motion_event event;
 
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
-  ASSERT_EQ(Uint32{SDL_BUTTON_LMASK | SDL_BUTTON_MMASK}, event.state());
+  ASSERT_EQ(Uint32 {SDL_BUTTON_LMASK | SDL_BUTTON_MMASK}, event.state());
 
   ASSERT_TRUE(event.pressed(cen::mouse_button::left));
   ASSERT_TRUE(event.pressed(cen::mouse_button::middle));

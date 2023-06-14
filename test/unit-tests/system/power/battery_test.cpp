@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include "centurion/system/power.hpp"
-
 #include <gtest/gtest.h>
+
+#include "centurion/system/power.hpp"
 
 TEST(Battery, BatteryPercentage)
 {

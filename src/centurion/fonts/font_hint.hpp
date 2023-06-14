@@ -36,8 +36,7 @@
 
 namespace cen {
 
-enum class font_hint
-{
+enum class font_hint {
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
 
@@ -72,7 +71,7 @@ enum class font_hint
       return "none";
 
     default:
-      throw exception{"Did not recognize font hint!"};
+      throw exception {"Did not recognize font hint!"};
   }
 }
 

@@ -46,8 +46,7 @@
 
 namespace cen {
 
-enum class key_mod : uint16
-{
+enum class key_mod : uint16 {
   none = KMOD_NONE,
 
   lshift = KMOD_LSHIFT,
@@ -238,8 +237,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  * \see scan_code
  * \see cen::keycodes
  */
-class key_code final
-{
+class key_code final {
  public:
   constexpr key_code() noexcept = default;
 
@@ -247,17 +245,19 @@ class key_code final
 
   constexpr key_code(key_code&&) noexcept = default;
 
-  constexpr /*implicit*/ key_code(const SDL_KeyCode key) noexcept : mKey{key} {}
+  constexpr /*implicit*/ key_code(const SDL_KeyCode key) noexcept : mKey {key} {}
 
   explicit key_code(const SDL_Scancode scancode) noexcept
-      : mKey{static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode))}
-  {}
+      : mKey {static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode))}
+  {
+  }
 
   explicit key_code(const char* name) noexcept
-      : mKey{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
-  {}
+      : mKey {static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
+  {
+  }
 
-  explicit key_code(const std::string& name) noexcept : key_code{name.c_str()} {}
+  explicit key_code(const std::string& name) noexcept : key_code {name.c_str()} {}
 
   constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
@@ -308,7 +308,7 @@ class key_code final
   [[nodiscard]] constexpr auto get() const noexcept -> SDL_KeyCode { return mKey; }
 
  private:
-  SDL_KeyCode mKey{SDLK_UNKNOWN};
+  SDL_KeyCode mKey {SDLK_UNKNOWN};
 };
 
 [[nodiscard]] constexpr auto operator==(const key_code& a, const key_code& b) noexcept -> bool
@@ -341,8 +341,7 @@ inline auto operator<<(std::ostream& stream, const key_code& code) -> std::ostre
  * \see key_code
  * \see cen::scancodes
  */
-class scan_code final
-{
+class scan_code final {
  public:
   constexpr scan_code() noexcept = default;
 
@@ -350,13 +349,13 @@ class scan_code final
 
   constexpr scan_code(scan_code&&) noexcept = default;
 
-  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : mCode{scancode} {}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : mCode {scancode} {}
 
-  explicit scan_code(const SDL_Keycode key) noexcept : mCode{SDL_GetScancodeFromKey(key)} {}
+  explicit scan_code(const SDL_Keycode key) noexcept : mCode {SDL_GetScancodeFromKey(key)} {}
 
-  explicit scan_code(const char* name) noexcept : mCode{SDL_GetScancodeFromName(name)} {}
+  explicit scan_code(const char* name) noexcept : mCode {SDL_GetScancodeFromName(name)} {}
 
-  explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()} {}
+  explicit scan_code(const std::string& name) noexcept : scan_code {name.c_str()} {}
 
   constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
@@ -409,7 +408,7 @@ class scan_code final
   }
 
  private:
-  SDL_Scancode mCode{SDL_SCANCODE_UNKNOWN};
+  SDL_Scancode mCode {SDL_SCANCODE_UNKNOWN};
 };
 
 [[nodiscard]] constexpr auto operator==(const scan_code& a, const scan_code& b) noexcept
@@ -443,8 +442,7 @@ inline auto operator<<(std::ostream& stream, const scan_code& code) -> std::ostr
  *
  * \see mouse
  */
-class keyboard final
-{
+class keyboard final {
  public:
   keyboard() noexcept { mState = SDL_GetKeyboardState(&mKeyCount); }
 
@@ -509,9 +507,9 @@ class keyboard final
   [[nodiscard]] auto size() const noexcept -> int { return mKeyCount; }
 
  private:
-  const uint8* mState{};
-  std::array<uint8, cen::scan_code::count()> mPrevious{};
-  int mKeyCount{};
+  const uint8* mState {};
+  std::array<uint8, cen::scan_code::count()> mPrevious {};
+  int mKeyCount {};
 
   template <typename Predicate>
   auto check(const cen::scan_code& code, Predicate&& predicate) const
@@ -550,77 +548,77 @@ namespace keycodes {
 
 inline constexpr key_code unknown;
 
-inline constexpr key_code a{SDLK_a};
-inline constexpr key_code b{SDLK_b};
-inline constexpr key_code c{SDLK_c};
-inline constexpr key_code d{SDLK_d};
-inline constexpr key_code e{SDLK_e};
-inline constexpr key_code f{SDLK_f};
-inline constexpr key_code g{SDLK_g};
-inline constexpr key_code h{SDLK_h};
-inline constexpr key_code i{SDLK_i};
-inline constexpr key_code j{SDLK_j};
-inline constexpr key_code k{SDLK_k};
-inline constexpr key_code l{SDLK_l};
-inline constexpr key_code m{SDLK_m};
-inline constexpr key_code n{SDLK_n};
-inline constexpr key_code o{SDLK_o};
-inline constexpr key_code p{SDLK_p};
-inline constexpr key_code q{SDLK_q};
-inline constexpr key_code r{SDLK_r};
-inline constexpr key_code s{SDLK_s};
-inline constexpr key_code t{SDLK_t};
-inline constexpr key_code u{SDLK_u};
-inline constexpr key_code v{SDLK_v};
-inline constexpr key_code w{SDLK_w};
-inline constexpr key_code x{SDLK_x};
-inline constexpr key_code y{SDLK_y};
-inline constexpr key_code z{SDLK_z};
+inline constexpr key_code a {SDLK_a};
+inline constexpr key_code b {SDLK_b};
+inline constexpr key_code c {SDLK_c};
+inline constexpr key_code d {SDLK_d};
+inline constexpr key_code e {SDLK_e};
+inline constexpr key_code f {SDLK_f};
+inline constexpr key_code g {SDLK_g};
+inline constexpr key_code h {SDLK_h};
+inline constexpr key_code i {SDLK_i};
+inline constexpr key_code j {SDLK_j};
+inline constexpr key_code k {SDLK_k};
+inline constexpr key_code l {SDLK_l};
+inline constexpr key_code m {SDLK_m};
+inline constexpr key_code n {SDLK_n};
+inline constexpr key_code o {SDLK_o};
+inline constexpr key_code p {SDLK_p};
+inline constexpr key_code q {SDLK_q};
+inline constexpr key_code r {SDLK_r};
+inline constexpr key_code s {SDLK_s};
+inline constexpr key_code t {SDLK_t};
+inline constexpr key_code u {SDLK_u};
+inline constexpr key_code v {SDLK_v};
+inline constexpr key_code w {SDLK_w};
+inline constexpr key_code x {SDLK_x};
+inline constexpr key_code y {SDLK_y};
+inline constexpr key_code z {SDLK_z};
 
-inline constexpr key_code one{SDLK_1};
-inline constexpr key_code two{SDLK_2};
-inline constexpr key_code three{SDLK_3};
-inline constexpr key_code four{SDLK_4};
-inline constexpr key_code five{SDLK_5};
-inline constexpr key_code six{SDLK_6};
-inline constexpr key_code seven{SDLK_7};
-inline constexpr key_code eight{SDLK_8};
-inline constexpr key_code nine{SDLK_9};
-inline constexpr key_code zero{SDLK_0};
+inline constexpr key_code one {SDLK_1};
+inline constexpr key_code two {SDLK_2};
+inline constexpr key_code three {SDLK_3};
+inline constexpr key_code four {SDLK_4};
+inline constexpr key_code five {SDLK_5};
+inline constexpr key_code six {SDLK_6};
+inline constexpr key_code seven {SDLK_7};
+inline constexpr key_code eight {SDLK_8};
+inline constexpr key_code nine {SDLK_9};
+inline constexpr key_code zero {SDLK_0};
 
-inline constexpr key_code f1{SDLK_F1};
-inline constexpr key_code f2{SDLK_F2};
-inline constexpr key_code f3{SDLK_F3};
-inline constexpr key_code f4{SDLK_F4};
-inline constexpr key_code f5{SDLK_F5};
-inline constexpr key_code f6{SDLK_F6};
-inline constexpr key_code f7{SDLK_F7};
-inline constexpr key_code f8{SDLK_F8};
-inline constexpr key_code f9{SDLK_F9};
-inline constexpr key_code f10{SDLK_F10};
-inline constexpr key_code f11{SDLK_F11};
-inline constexpr key_code f12{SDLK_F12};
+inline constexpr key_code f1 {SDLK_F1};
+inline constexpr key_code f2 {SDLK_F2};
+inline constexpr key_code f3 {SDLK_F3};
+inline constexpr key_code f4 {SDLK_F4};
+inline constexpr key_code f5 {SDLK_F5};
+inline constexpr key_code f6 {SDLK_F6};
+inline constexpr key_code f7 {SDLK_F7};
+inline constexpr key_code f8 {SDLK_F8};
+inline constexpr key_code f9 {SDLK_F9};
+inline constexpr key_code f10 {SDLK_F10};
+inline constexpr key_code f11 {SDLK_F11};
+inline constexpr key_code f12 {SDLK_F12};
 
-inline constexpr key_code left{SDLK_LEFT};
-inline constexpr key_code right{SDLK_RIGHT};
-inline constexpr key_code up{SDLK_UP};
-inline constexpr key_code down{SDLK_DOWN};
+inline constexpr key_code left {SDLK_LEFT};
+inline constexpr key_code right {SDLK_RIGHT};
+inline constexpr key_code up {SDLK_UP};
+inline constexpr key_code down {SDLK_DOWN};
 
-inline constexpr key_code space{SDLK_SPACE};
-inline constexpr key_code enter{SDLK_RETURN};
-inline constexpr key_code escape{SDLK_ESCAPE};
-inline constexpr key_code backspace{SDLK_BACKSPACE};
-inline constexpr key_code tab{SDLK_TAB};
+inline constexpr key_code space {SDLK_SPACE};
+inline constexpr key_code enter {SDLK_RETURN};
+inline constexpr key_code escape {SDLK_ESCAPE};
+inline constexpr key_code backspace {SDLK_BACKSPACE};
+inline constexpr key_code tab {SDLK_TAB};
 
-inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
-inline constexpr key_code left_shift{SDLK_LSHIFT};
-inline constexpr key_code right_shift{SDLK_RSHIFT};
-inline constexpr key_code left_ctrl{SDLK_LCTRL};
-inline constexpr key_code right_ctrl{SDLK_RCTRL};
-inline constexpr key_code left_alt{SDLK_LALT};
-inline constexpr key_code right_alt{SDLK_RALT};
-inline constexpr key_code left_gui{SDLK_LGUI};
-inline constexpr key_code right_gui{SDLK_RGUI};
+inline constexpr key_code caps_lock {SDLK_CAPSLOCK};
+inline constexpr key_code left_shift {SDLK_LSHIFT};
+inline constexpr key_code right_shift {SDLK_RSHIFT};
+inline constexpr key_code left_ctrl {SDLK_LCTRL};
+inline constexpr key_code right_ctrl {SDLK_RCTRL};
+inline constexpr key_code left_alt {SDLK_LALT};
+inline constexpr key_code right_alt {SDLK_RALT};
+inline constexpr key_code left_gui {SDLK_LGUI};
+inline constexpr key_code right_gui {SDLK_RGUI};
 
 }  // namespace keycodes
 
@@ -628,77 +626,77 @@ namespace scancodes {
 
 inline constexpr scan_code unknown;
 
-inline constexpr scan_code a{SDL_SCANCODE_A};
-inline constexpr scan_code b{SDL_SCANCODE_B};
-inline constexpr scan_code c{SDL_SCANCODE_C};
-inline constexpr scan_code d{SDL_SCANCODE_D};
-inline constexpr scan_code e{SDL_SCANCODE_E};
-inline constexpr scan_code f{SDL_SCANCODE_F};
-inline constexpr scan_code g{SDL_SCANCODE_G};
-inline constexpr scan_code h{SDL_SCANCODE_H};
-inline constexpr scan_code i{SDL_SCANCODE_I};
-inline constexpr scan_code j{SDL_SCANCODE_J};
-inline constexpr scan_code k{SDL_SCANCODE_K};
-inline constexpr scan_code l{SDL_SCANCODE_L};
-inline constexpr scan_code m{SDL_SCANCODE_M};
-inline constexpr scan_code n{SDL_SCANCODE_N};
-inline constexpr scan_code o{SDL_SCANCODE_O};
-inline constexpr scan_code p{SDL_SCANCODE_P};
-inline constexpr scan_code q{SDL_SCANCODE_Q};
-inline constexpr scan_code r{SDL_SCANCODE_R};
-inline constexpr scan_code s{SDL_SCANCODE_S};
-inline constexpr scan_code t{SDL_SCANCODE_T};
-inline constexpr scan_code u{SDL_SCANCODE_U};
-inline constexpr scan_code v{SDL_SCANCODE_V};
-inline constexpr scan_code w{SDL_SCANCODE_W};
-inline constexpr scan_code x{SDL_SCANCODE_X};
-inline constexpr scan_code y{SDL_SCANCODE_Y};
-inline constexpr scan_code z{SDL_SCANCODE_Z};
+inline constexpr scan_code a {SDL_SCANCODE_A};
+inline constexpr scan_code b {SDL_SCANCODE_B};
+inline constexpr scan_code c {SDL_SCANCODE_C};
+inline constexpr scan_code d {SDL_SCANCODE_D};
+inline constexpr scan_code e {SDL_SCANCODE_E};
+inline constexpr scan_code f {SDL_SCANCODE_F};
+inline constexpr scan_code g {SDL_SCANCODE_G};
+inline constexpr scan_code h {SDL_SCANCODE_H};
+inline constexpr scan_code i {SDL_SCANCODE_I};
+inline constexpr scan_code j {SDL_SCANCODE_J};
+inline constexpr scan_code k {SDL_SCANCODE_K};
+inline constexpr scan_code l {SDL_SCANCODE_L};
+inline constexpr scan_code m {SDL_SCANCODE_M};
+inline constexpr scan_code n {SDL_SCANCODE_N};
+inline constexpr scan_code o {SDL_SCANCODE_O};
+inline constexpr scan_code p {SDL_SCANCODE_P};
+inline constexpr scan_code q {SDL_SCANCODE_Q};
+inline constexpr scan_code r {SDL_SCANCODE_R};
+inline constexpr scan_code s {SDL_SCANCODE_S};
+inline constexpr scan_code t {SDL_SCANCODE_T};
+inline constexpr scan_code u {SDL_SCANCODE_U};
+inline constexpr scan_code v {SDL_SCANCODE_V};
+inline constexpr scan_code w {SDL_SCANCODE_W};
+inline constexpr scan_code x {SDL_SCANCODE_X};
+inline constexpr scan_code y {SDL_SCANCODE_Y};
+inline constexpr scan_code z {SDL_SCANCODE_Z};
 
-inline constexpr scan_code one{SDL_SCANCODE_1};
-inline constexpr scan_code two{SDL_SCANCODE_2};
-inline constexpr scan_code three{SDL_SCANCODE_3};
-inline constexpr scan_code four{SDL_SCANCODE_4};
-inline constexpr scan_code five{SDL_SCANCODE_5};
-inline constexpr scan_code six{SDL_SCANCODE_6};
-inline constexpr scan_code seven{SDL_SCANCODE_7};
-inline constexpr scan_code eight{SDL_SCANCODE_8};
-inline constexpr scan_code nine{SDL_SCANCODE_9};
-inline constexpr scan_code zero{SDL_SCANCODE_0};
+inline constexpr scan_code one {SDL_SCANCODE_1};
+inline constexpr scan_code two {SDL_SCANCODE_2};
+inline constexpr scan_code three {SDL_SCANCODE_3};
+inline constexpr scan_code four {SDL_SCANCODE_4};
+inline constexpr scan_code five {SDL_SCANCODE_5};
+inline constexpr scan_code six {SDL_SCANCODE_6};
+inline constexpr scan_code seven {SDL_SCANCODE_7};
+inline constexpr scan_code eight {SDL_SCANCODE_8};
+inline constexpr scan_code nine {SDL_SCANCODE_9};
+inline constexpr scan_code zero {SDL_SCANCODE_0};
 
-inline constexpr scan_code f1{SDL_SCANCODE_F1};
-inline constexpr scan_code f2{SDL_SCANCODE_F2};
-inline constexpr scan_code f3{SDL_SCANCODE_F3};
-inline constexpr scan_code f4{SDL_SCANCODE_F4};
-inline constexpr scan_code f5{SDL_SCANCODE_F5};
-inline constexpr scan_code f6{SDL_SCANCODE_F6};
-inline constexpr scan_code f7{SDL_SCANCODE_F7};
-inline constexpr scan_code f8{SDL_SCANCODE_F8};
-inline constexpr scan_code f9{SDL_SCANCODE_F9};
-inline constexpr scan_code f10{SDL_SCANCODE_F10};
-inline constexpr scan_code f11{SDL_SCANCODE_F11};
-inline constexpr scan_code f12{SDL_SCANCODE_F12};
+inline constexpr scan_code f1 {SDL_SCANCODE_F1};
+inline constexpr scan_code f2 {SDL_SCANCODE_F2};
+inline constexpr scan_code f3 {SDL_SCANCODE_F3};
+inline constexpr scan_code f4 {SDL_SCANCODE_F4};
+inline constexpr scan_code f5 {SDL_SCANCODE_F5};
+inline constexpr scan_code f6 {SDL_SCANCODE_F6};
+inline constexpr scan_code f7 {SDL_SCANCODE_F7};
+inline constexpr scan_code f8 {SDL_SCANCODE_F8};
+inline constexpr scan_code f9 {SDL_SCANCODE_F9};
+inline constexpr scan_code f10 {SDL_SCANCODE_F10};
+inline constexpr scan_code f11 {SDL_SCANCODE_F11};
+inline constexpr scan_code f12 {SDL_SCANCODE_F12};
 
-inline constexpr scan_code left{SDL_SCANCODE_LEFT};
-inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
-inline constexpr scan_code up{SDL_SCANCODE_UP};
-inline constexpr scan_code down{SDL_SCANCODE_DOWN};
+inline constexpr scan_code left {SDL_SCANCODE_LEFT};
+inline constexpr scan_code right {SDL_SCANCODE_RIGHT};
+inline constexpr scan_code up {SDL_SCANCODE_UP};
+inline constexpr scan_code down {SDL_SCANCODE_DOWN};
 
-inline constexpr scan_code space{SDL_SCANCODE_SPACE};
-inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
-inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
-inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
-inline constexpr scan_code tab{SDL_SCANCODE_TAB};
+inline constexpr scan_code space {SDL_SCANCODE_SPACE};
+inline constexpr scan_code enter {SDL_SCANCODE_RETURN};
+inline constexpr scan_code escape {SDL_SCANCODE_ESCAPE};
+inline constexpr scan_code backspace {SDL_SCANCODE_BACKSPACE};
+inline constexpr scan_code tab {SDL_SCANCODE_TAB};
 
-inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
-inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
-inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
-inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
-inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
-inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
-inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
-inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
-inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
+inline constexpr scan_code caps_lock {SDL_SCANCODE_CAPSLOCK};
+inline constexpr scan_code left_shift {SDL_SCANCODE_LSHIFT};
+inline constexpr scan_code right_shift {SDL_SCANCODE_RSHIFT};
+inline constexpr scan_code left_ctrl {SDL_SCANCODE_LCTRL};
+inline constexpr scan_code right_ctrl {SDL_SCANCODE_RCTRL};
+inline constexpr scan_code left_alt {SDL_SCANCODE_LALT};
+inline constexpr scan_code right_alt {SDL_SCANCODE_RALT};
+inline constexpr scan_code left_gui {SDL_SCANCODE_LGUI};
+inline constexpr scan_code right_gui {SDL_SCANCODE_RGUI};
 
 }  // namespace scancodes
 

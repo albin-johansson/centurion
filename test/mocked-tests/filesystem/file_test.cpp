@@ -28,34 +28,32 @@
 #include "centurion/filesystem.hpp"
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(int, SDL_RWclose, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isPNG, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isICO, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isJPG, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isBMP, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isGIF, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isSVG, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isWEBP, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isTIF, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isPNM, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isPCX, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isLBM, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isCUR, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
+extern "C" {
+FAKE_VALUE_FUNC(int, SDL_RWclose, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isPNG, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isICO, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isJPG, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isBMP, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isGIF, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isSVG, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isWEBP, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isTIF, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isPNM, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isPCX, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isLBM, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isCUR, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
 
 #if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
-  FAKE_VALUE_FUNC(int, IMG_isAVIF, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isJXL, SDL_RWops*)
-  FAKE_VALUE_FUNC(int, IMG_isQOI, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isAVIF, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isJXL, SDL_RWops*)
+FAKE_VALUE_FUNC(int, IMG_isQOI, SDL_RWops*)
 #endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
 }
 
-class FileTest : public testing::Test
-{
+class FileTest : public testing::Test {
  protected:
   void SetUp() override
   {
@@ -85,7 +83,7 @@ class FileTest : public testing::Test
 #endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
   }
 
-  cen::file file{nullptr};
+  cen::file file {nullptr};
 };
 
 TEST_F(FileTest, IsPNG)

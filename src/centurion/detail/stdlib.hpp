@@ -95,11 +95,11 @@ template <typename T = int>
   /* We don't check if the compiler provides <charconv> here because all major compilers we
      support provide the integral overloads of from_chars */
 
-  T value{};
+  T value {};
   const auto* begin = str.data();
   const auto* end = begin + str.size();
   const auto [ptr, err] = std::from_chars(begin, end, value, base);
-  if (ptr == end && err == std::errc{}) {
+  if (ptr == end && err == std::errc {}) {
     return value;
   }
   else {
@@ -121,7 +121,7 @@ template <typename T = int>
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return ptr ? std::format("{}", ptr) : std::string{};
+  return ptr ? std::format("{}", ptr) : std::string {};
 #else
   if (ptr) {
     std::stringstream stream;
@@ -134,7 +134,7 @@ template <typename T = int>
     return stream.str();
   }
   else {
-    return std::string{};
+    return std::string {};
   }
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }

@@ -64,8 +64,7 @@ namespace cen::experimental {
  * \see font
  * \see font_cache
  */
-class font_bundle final
-{
+class font_bundle final {
  public:
   using id_type = usize;
   using size_type = usize;
@@ -86,7 +85,7 @@ class font_bundle final
   {
     assert(path);
     if (const auto id = get_id(path)) {
-      mPools[*id].caches.try_emplace(size, font{path, size});
+      mPools[*id].caches.try_emplace(size, font {path, size});
       return *id;
     }
     else {
@@ -94,7 +93,7 @@ class font_bundle final
 
       auto& pack = mPools[newId];
       pack.path = path;
-      pack.caches.try_emplace(size, font{path, size});
+      pack.caches.try_emplace(size, font {path, size});
 
       ++mNextFontId;
 
@@ -134,11 +133,11 @@ class font_bundle final
         return cache->second;
       }
       else {
-        throw exception{"No loaded font of the requested size!"};
+        throw exception {"No loaded font of the requested size!"};
       }
     }
     else {
-      throw exception{"Invalid font pool identifier!"};
+      throw exception {"Invalid font pool identifier!"};
     }
   }
 
@@ -184,14 +183,13 @@ class font_bundle final
   [[nodiscard]] auto pool_count() const -> size_type { return mPools.size(); }
 
  private:
-  struct font_pool final
-  {
+  struct font_pool final {
     std::string path;
     std::unordered_map<int, font_cache> caches;  ///< Size -> Cache
   };
 
   std::unordered_map<id_type, font_pool> mPools;
-  id_type mNextFontId{1};
+  id_type mNextFontId {1};
 
   [[nodiscard]] auto get_id(const std::string_view path) const -> maybe<id_type>
   {

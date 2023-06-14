@@ -38,8 +38,7 @@ template <typename Target, typename Tuple>
 class tuple_type_index;
 
 template <typename Target, typename... T>
-class tuple_type_index<Target, std::tuple<T...>>
-{
+class tuple_type_index<Target, std::tuple<T...>> {
  private:
   template <usize... Index>
   [[nodiscard]] constexpr static auto find([[maybe_unused]] std::index_sequence<Index...> seq)
@@ -49,7 +48,7 @@ class tuple_type_index<Target, std::tuple<T...>>
   }
 
  public:
-  inline constexpr static auto value = find(std::index_sequence_for<T...>{});
+  inline constexpr static auto value = find(std::index_sequence_for<T...> {});
 };
 
 template <typename Target, typename... T>

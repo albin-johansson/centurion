@@ -33,7 +33,7 @@ using EventDispatcher =
 
 namespace {
 
-inline bool gVisitedFreeFunction{};
+inline bool gVisitedFreeFunction {};
 
 void OnQuit(const cen::quit_event&)
 {
@@ -43,7 +43,7 @@ void OnQuit(const cen::quit_event&)
 struct ButtonHandler final {
   void OnEvent(const cen::controller_button_event&) { visited = true; }
 
-  bool visited{};
+  bool visited {};
 };
 
 }  // namespace
@@ -61,7 +61,7 @@ TEST(EventDispatcher, Bind)
   dispatcher.bind<cen::quit_event>().to<&OnQuit>();
   dispatcher.bind<cen::controller_button_event>().to<&ButtonHandler::OnEvent>(&handler);
 
-  bool visitedLambda{};
+  bool visitedLambda {};
   dispatcher.bind<cen::window_event>().to(
       [&](const cen::window_event&) { visitedLambda = true; });
 

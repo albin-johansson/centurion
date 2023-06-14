@@ -68,14 +68,12 @@ namespace cen {
  * \see font
  * \see font_bundle
  */
-class font_cache final
-{
+class font_cache final {
  public:
   using id_type = usize;
   using size_type = usize;
 
-  struct glyph_data final
-  {
+  struct glyph_data final {
     texture glyph;          ///< The cached texture of the glyph.
     glyph_metrics metrics;  ///< The metrics associate with the glyph.
   };
@@ -86,11 +84,11 @@ class font_cache final
    * \param file the file path of the font.
    * \param size the size of the font.
    */
-  font_cache(const char* file, const int size) : mFont{file, size} {}
+  font_cache(const char* file, const int size) : mFont {file, size} {}
 
-  font_cache(const std::string& file, const int size) : mFont{file, size} {}
+  font_cache(const std::string& file, const int size) : mFont {file, size} {}
 
-  explicit font_cache(font&& font) noexcept : mFont{std::move(font)} {}
+  explicit font_cache(font&& font) noexcept : mFont {std::move(font)} {}
 
   /// Renders a glyph, returning the x-coordinate for the next glyph.
   template <typename T>
@@ -105,7 +103,7 @@ class font_cache final
       const auto x = position.x() + metrics.min_x - outline;
       const auto y = position.y() - outline;
 
-      renderer.render(texture, ipoint{x, y});
+      renderer.render(texture, ipoint {x, y});
 
       return x + metrics.advance;
     }
@@ -196,7 +194,7 @@ class font_cache final
       return *ptr;
     }
     else {
-      throw exception{"Invalid font cache string identifier!"};
+      throw exception {"Invalid font cache string identifier!"};
     }
   }
 
@@ -216,7 +214,7 @@ class font_cache final
       return;
     }
 
-    glyph_data data{make_glyph_texture(renderer, glyph), mFont.get_metrics(glyph).value()};
+    glyph_data data {make_glyph_texture(renderer, glyph), mFont.get_metrics(glyph).value()};
     mGlyphs.try_emplace(glyph, std::move(data));
   }
 
@@ -287,7 +285,7 @@ class font_cache final
       return *ptr;
     }
     else {
-      throw exception{"Invalid font cache glyph!"};
+      throw exception {"Invalid font cache glyph!"};
     }
   }
 
@@ -299,7 +297,7 @@ class font_cache final
   font mFont;
   std::unordered_map<unicode_t, glyph_data> mGlyphs;
   std::unordered_map<id_type, texture> mStrings;
-  id_type mNextStringId{1};
+  id_type mNextStringId {1};
 
   template <typename T>
   [[nodiscard]] auto make_glyph_texture(basic_renderer<T>& renderer, const unicode_t glyph)

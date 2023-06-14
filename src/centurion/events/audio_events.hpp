@@ -32,13 +32,13 @@
 
 namespace cen {
 
-class audio_device_event final : public event_base<SDL_AudioDeviceEvent>
-{
+class audio_device_event final : public event_base<SDL_AudioDeviceEvent> {
  public:
-  audio_device_event() : event_base{event_type::audio_device_added} {}
+  audio_device_event() : event_base {event_type::audio_device_added} {}
 
-  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept : event_base{event}
-  {}
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept : event_base {event}
+  {
+  }
 
   void set_which(const uint32 which) noexcept { mEvent.which = which; }
 

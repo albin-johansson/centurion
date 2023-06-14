@@ -63,7 +63,7 @@ TEST(Color, ValueConstruction)
   constexpr auto blue = 0x29;
   constexpr auto alpha = 0xCC;
 
-  constexpr cen::color color{red, green, blue, alpha};
+  constexpr cen::color color {red, green, blue, alpha};
 
   ASSERT_EQ(color.red(), red);
   ASSERT_EQ(color.green(), green);
@@ -77,7 +77,7 @@ TEST(Color, ValueConstructionDefaultedAlpha)
   constexpr auto green = 0xE2;
   constexpr auto blue = 0x08;
 
-  constexpr cen::color color{red, green, blue};
+  constexpr cen::color color {red, green, blue};
 
   ASSERT_EQ(red, color.red());
   ASSERT_EQ(green, color.green());
@@ -87,8 +87,8 @@ TEST(Color, ValueConstructionDefaultedAlpha)
 
 TEST(Color, FromSDLColor)
 {
-  constexpr SDL_Color sdlColor{0x3F, 0x9A, 0xCC, 0x17};
-  constexpr cen::color color{sdlColor};
+  constexpr SDL_Color sdlColor {0x3F, 0x9A, 0xCC, 0x17};
+  constexpr cen::color color {sdlColor};
 
   ASSERT_EQ(color.red(), sdlColor.r);
   ASSERT_EQ(color.green(), sdlColor.g);
@@ -98,8 +98,8 @@ TEST(Color, FromSDLColor)
 
 TEST(Color, FromSDLMessageBoxColor)
 {
-  constexpr SDL_MessageBoxColor msgColor{0xDA, 0x5E, 0x81};
-  constexpr cen::color color{msgColor};
+  constexpr SDL_MessageBoxColor msgColor {0xDA, 0x5E, 0x81};
+  constexpr cen::color color {msgColor};
 
   ASSERT_EQ(color.red(), msgColor.r);
   ASSERT_EQ(color.green(), msgColor.g);
@@ -249,15 +249,15 @@ TEST(Color, FromNorm)
 
 TEST(Color, EqualityOperatorReflexivity)
 {
-  const cen::color color{10, 20, 30, 40};
+  const cen::color color {10, 20, 30, 40};
   ASSERT_EQ(color, color);
   ASSERT_FALSE(color != color);
 }
 
 TEST(Color, EqualityOperatorComparisonWithDifferentColors)
 {
-  const cen::color a{0x34, 0xD2, 0xCA, 0xDE};
-  const cen::color b{0x84, 0x45, 0x11, 0xFA};
+  const cen::color a {0x34, 0xD2, 0xCA, 0xDE};
+  const cen::color b {0x84, 0x45, 0x11, 0xFA};
   ASSERT_NE(a, b);
   ASSERT_NE(b, a);
 }
@@ -309,7 +309,7 @@ TEST(Color, NormalizedColorGetters)
   const auto blue = 232;
   const auto alpha = 34;
 
-  const cen::color color{red, green, blue, alpha};
+  const cen::color color {red, green, blue, alpha};
 
   ASSERT_EQ(red / 255.0f, color.norm_red());
   ASSERT_EQ(green / 255.0f, color.norm_green());
@@ -358,7 +358,7 @@ TEST(Color, AsRGB)
   ASSERT_EQ("#00FF00", cen::colors::lime.as_rgb());
   ASSERT_EQ("#0000FF", cen::colors::blue.as_rgb());
 
-  const cen::color color{0x5B, 0xE1, 0x84};
+  const cen::color color {0x5B, 0xE1, 0x84};
   ASSERT_EQ("#5BE184", color.as_rgb());
 }
 
@@ -369,7 +369,7 @@ TEST(Color, AsRGBA)
   ASSERT_EQ("#00FF00FF", cen::colors::lime.as_rgba());
   ASSERT_EQ("#0000FFFF", cen::colors::blue.as_rgba());
 
-  const cen::color color{0x36, 0xCA, 0x9F, 0xDA};
+  const cen::color color {0x36, 0xCA, 0x9F, 0xDA};
   ASSERT_EQ("#36CA9FDA", color.as_rgba());
 }
 
@@ -380,13 +380,13 @@ TEST(Color, AsARGB)
   ASSERT_EQ("#FF00FF00", cen::colors::lime.as_argb());
   ASSERT_EQ("#FF0000FF", cen::colors::blue.as_argb());
 
-  const cen::color color{0xF1, 0x85, 0xB3, 0xCE};
+  const cen::color color {0xF1, 0x85, 0xB3, 0xCE};
   ASSERT_EQ("#CEF185B3", color.as_argb());
 }
 
 TEST(Color, StreamOperator)
 {
-  std::cout << cen::color{0xAA, 0xBB, 0xCC, 0xDD} << '\n';
+  std::cout << cen::color {0xAA, 0xBB, 0xCC, 0xDD} << '\n';
 }
 
 TEST(Color, Serialization)
@@ -395,7 +395,7 @@ TEST(Color, Serialization)
   const auto green = 0xDE;
   const auto blue = 0xC3;
   const auto alpha = 0x8F;
-  serialize_save("color.binary", cen::color{red, green, blue, alpha});
+  serialize_save("color.binary", cen::color {red, green, blue, alpha});
 
   const auto color = serialize_create<cen::color>("color.binary");
   ASSERT_EQ(red, color.red());

@@ -28,12 +28,12 @@
 
 TEST(Controller, PointerConstructor)
 {
-  ASSERT_THROW(cen::controller{nullptr}, cen::exception);
+  ASSERT_THROW(cen::controller {nullptr}, cen::exception);
 }
 
 TEST(Controller, IndexConstructor)
 {
-  ASSERT_THROW(cen::controller{}, cen::sdl_error);
+  ASSERT_THROW(cen::controller {}, cen::sdl_error);
 }
 
 TEST(Controller, FromJoystick)

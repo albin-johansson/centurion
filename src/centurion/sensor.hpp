@@ -54,8 +54,7 @@ using sensor_id = SDL_SensorID;
   return SDL_STANDARD_GRAVITY;
 }
 
-enum class sensor_type
-{
+enum class sensor_type {
   invalid = SDL_SENSOR_INVALID,      ///< Invalid sensor.
   unknown = SDL_SENSOR_UNKNOWN,      ///< Unknown sensor.
   accelerometer = SDL_SENSOR_ACCEL,  ///< Accelerometer.
@@ -78,7 +77,7 @@ enum class sensor_type
       return "gyroscope";
 
     default:
-      throw exception{"Did not recognize sensor type!"};
+      throw exception {"Did not recognize sensor type!"};
   }
 }
 
@@ -100,8 +99,7 @@ using sensor_handle = basic_sensor<detail::handle_tag>;
  * \see sensor_handle
  */
 template <typename T>
-class basic_sensor final
-{
+class basic_sensor final {
  public:
   using device_index = int;
   using size_type = usize;
@@ -117,26 +115,27 @@ class basic_sensor final
    * \param sensor a pointer to the SDL sensor data.
    */
   explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(detail::is_handle<T>)
-      : mSensor{sensor}
+      : mSensor {sensor}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mSensor) {
-        throw exception{"Null sensor pointer!"};
+        throw exception {"Null sensor pointer!"};
       }
     }
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_sensor(const device_index index = 0) : mSensor{SDL_SensorOpen(index)}
+  explicit basic_sensor(const device_index index = 0) : mSensor {SDL_SensorOpen(index)}
   {
     if (!mSensor) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_sensor(const sensor& owner) noexcept : mSensor{owner.get()}
-  {}
+  explicit basic_sensor(const sensor& owner) noexcept : mSensor {owner.get()}
+  {
+  }
 
   [[nodiscard]] auto name() const noexcept -> const char*
   {
@@ -205,7 +204,7 @@ class basic_sensor final
   template <size_type Size>
   [[nodiscard]] auto data() const noexcept -> maybe<data_type<Size>>
   {
-    data_type<Size> array{};
+    data_type<Size> array {};
     if (SDL_SensorGetData(mSensor, array.data(), isize(array)) != -1) {
       return array;
     }

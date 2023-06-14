@@ -130,7 +130,9 @@ jobs:
                            fcitx-libs-dev \
                            libpipewire-0.3-dev \
                            libdecor-0-dev \
-                           libfreetype-dev
+                           libfreetype-dev \
+                           fonts-dejavu-core \
+                           libharfbuzz-dev
 
       - name: Restore Vcpkg
         id: restore-vcpkg-artifacts
@@ -234,7 +236,7 @@ jobs:
           cd SDL_ttf-release-${{ matrix.TTF_VERSION }}
           ./autogen.sh
           ./external/download.sh
-          ./configure
+          ./configure --disable-harfbuzz-builtin --disable-freetype-builtin --without-x
           make -j $(nproc)
 
       - name: Install SDL2_ttf
@@ -303,10 +305,9 @@ jobs:
 
       - uses: ilammy/msvc-dev-cmd@v1.11.0
 
-      - name: Install system dependencies
-        run: |
-          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-          choco install ninja
+      - uses: ashutoshvarma/setup-ninja@master
+        with:
+          version: 1.11.1
 
       - name: Print dependency versions
         run: |

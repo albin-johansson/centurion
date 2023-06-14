@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/joystick.hpp"
+#include "centurion/input/joystick.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

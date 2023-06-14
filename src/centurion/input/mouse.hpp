@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_MOUSE_HPP_
-#define CENTURION_MOUSE_HPP_
+#ifndef CENTURION_INPUT_MOUSE_HPP_
+#define CENTURION_INPUT_MOUSE_HPP_
 
 #include <SDL.h>
 
@@ -31,14 +31,14 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "math.hpp"
-#include "video/renderer.hpp"
-#include "video/surface.hpp"
-#include "video/window.hpp"
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "../video/renderer.hpp"
+#include "../video/surface.hpp"
+#include "../video/window.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -427,4 +427,4 @@ class basic_cursor final {
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_HPP_
+#endif  // CENTURION_INPUT_MOUSE_HPP_

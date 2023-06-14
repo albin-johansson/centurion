@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/controller.hpp"
+#include "centurion/input/controller.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 

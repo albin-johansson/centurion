@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/controller.hpp"
+#include "centurion/input/controller.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

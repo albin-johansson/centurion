@@ -22,49 +22,42 @@
  * SOFTWARE.
  */
 
-#include "centurion/input/mouse.hpp"
+#ifndef CENTURION_INPUT_BUTTON_STATE_HPP_
+#define CENTURION_INPUT_BUTTON_STATE_HPP_
 
-#include <gtest/gtest.h>
+#include <SDL.h>
 
-#include <iostream>     // cout
-#include <type_traits>  // ...
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
-static_assert(std::is_final_v<cen::mouse>);
+#include "../common.hpp"
 
-static_assert(std::is_nothrow_move_constructible_v<cen::mouse>);
-static_assert(std::is_nothrow_move_assignable_v<cen::mouse>);
+namespace cen {
 
-static_assert(std::is_nothrow_copy_constructible_v<cen::mouse>);
-static_assert(std::is_nothrow_copy_assignable_v<cen::mouse>);
+enum class button_state : uint8 {
+  released = SDL_RELEASED,
+  pressed = SDL_PRESSED
+};
 
-TEST(Mouse, Defaults)
+[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
-  const cen::mouse mouse;
+  switch (state) {
+    case button_state::released:
+      return "released";
 
-  ASSERT_EQ(0, mouse.x());
-  ASSERT_EQ(0, mouse.y());
+    case button_state::pressed:
+      return "pressed";
 
-  ASSERT_FALSE(mouse.is_left_pressed());
-  ASSERT_FALSE(mouse.is_middle_pressed());
-  ASSERT_FALSE(mouse.is_right_pressed());
-
-  ASSERT_FALSE(mouse.was_left_released());
-  ASSERT_FALSE(mouse.was_middle_released());
-  ASSERT_FALSE(mouse.was_right_released());
-
-  ASSERT_FALSE(mouse.was_moved());
+    default:
+      throw exception {"Did not recognize button state!"};
+  }
 }
 
-TEST(Mouse, Update)
+inline auto operator<<(std::ostream& stream, const button_state state) -> std::ostream&
 {
-  cen::mouse mouse;
-  ASSERT_NO_THROW(mouse.update());
+  return stream << to_string(state);
 }
 
-TEST(Mouse, ToString)
-{
-  const cen::mouse mouse;
-  ASSERT_EQ("mouse(x: 0, y: 0)", cen::to_string(mouse));
+}  // namespace cen
 
-  std::cout << mouse << '\n';
-}
+#endif  // CENTURION_INPUT_BUTTON_STATE_HPP_

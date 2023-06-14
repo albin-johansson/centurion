@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_JOYSTICK_HPP_
-#define CENTURION_JOYSTICK_HPP_
+#ifndef CENTURION_INPUT_JOYSTICK_HPP_
+#define CENTURION_INPUT_JOYSTICK_HPP_
 
 #include <SDL.h>
 
@@ -33,13 +33,13 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/sdl_version_at_least.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "input.hpp"
-#include "video/color.hpp"
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/sdl_version_at_least.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../video/color.hpp"
+#include "button_state.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -803,4 +803,4 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 }  // namespace cen
 
-#endif  // CENTURION_JOYSTICK_HPP_
+#endif  // CENTURION_INPUT_JOYSTICK_HPP_

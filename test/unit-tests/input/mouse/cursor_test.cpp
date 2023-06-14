@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/mouse.hpp"
+#include "centurion/input/mouse.hpp"
 
 static_assert(std::is_move_constructible_v<cen::cursor>);
 static_assert(std::is_move_assignable_v<cen::cursor>);

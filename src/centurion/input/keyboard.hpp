@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_KEYBOARD_HPP_
-#define CENTURION_KEYBOARD_HPP_
+#ifndef CENTURION_INPUT_KEYBOARD_HPP_
+#define CENTURION_INPUT_KEYBOARD_HPP_
 
 #include <SDL.h>
 
@@ -34,9 +34,9 @@
 #include <sstream>    // stringstream
 #include <string>     // string, to_string
 
-#include "common.hpp"
-#include "features.hpp"
-#include "version.hpp"
+#include "../common.hpp"
+#include "../features.hpp"
+#include "../version.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -702,4 +702,4 @@ inline constexpr scan_code right_gui {SDL_SCANCODE_RGUI};
 
 }  // namespace cen
 
-#endif  // CENTURION_KEYBOARD_HPP_
+#endif  // CENTURION_INPUT_KEYBOARD_HPP_

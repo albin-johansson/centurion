@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/keyboard.hpp"
+#include "centurion/input/keyboard.hpp"
 #include "serialization_utils.hpp"
 
 TEST(ScanCode, DefaultValue)

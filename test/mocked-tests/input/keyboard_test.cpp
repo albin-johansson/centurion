@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/keyboard.hpp"
+#include "centurion/input/keyboard.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

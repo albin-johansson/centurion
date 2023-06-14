@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/mouse.hpp"
+#include "centurion/input/mouse.hpp"
 
 TEST(MouseButton, Values)
 {

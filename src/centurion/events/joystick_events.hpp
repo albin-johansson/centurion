@@ -31,8 +31,8 @@
 #include <string_view>  // string_view
 
 #include "../common.hpp"
-#include "../input.hpp"
-#include "../joystick.hpp"
+#include "../input/button_state.hpp"
+#include "../input/joystick.hpp"
 #include "event_base.hpp"
 
 namespace cen {

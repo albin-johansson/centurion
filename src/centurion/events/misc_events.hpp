@@ -33,12 +33,12 @@
 #include <utility>      // move
 
 #include "../common.hpp"
-#include "../controller.hpp"
 #include "../detail/array_utils.hpp"
 #include "../detail/stdlib.hpp"
 #include "../input.hpp"
-#include "../keyboard.hpp"
-#include "../mouse.hpp"
+#include "../input/controller.hpp"
+#include "../input/keyboard.hpp"
+#include "../input/mouse.hpp"
 #include "../sensor.hpp"
 #include "event_base.hpp"
 

@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/controller.hpp"
+#include "centurion/input/controller.hpp"
 
 using axis = cen::controller_axis;
 

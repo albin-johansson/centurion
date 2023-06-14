@@ -30,9 +30,9 @@
 #include <array>  // array
 
 #include "../common.hpp"
-#include "../controller.hpp"
 #include "../detail/array_utils.hpp"
 #include "../detail/stdlib.hpp"
+#include "../input/controller.hpp"
 #include "../sensor.hpp"
 #include "event_base.hpp"
 

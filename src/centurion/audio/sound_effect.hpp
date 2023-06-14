@@ -40,6 +40,7 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../io/file.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -103,6 +104,14 @@ class basic_sound_effect final {
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_sound_effect(const std::string& file) : basic_sound_effect {file.c_str()}
   {
+  }
+
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  explicit basic_sound_effect(file& file) : mChunk {Mix_LoadWAV_RW(file.data(), SDL_FALSE)}
+  {
+    if (!mChunk) {
+      throw mix_error {};
+    }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>

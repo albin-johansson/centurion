@@ -27,17 +27,6 @@
 
 #include <SDL.h>
 
-#include "../common/errors.hpp"
-#include "../common/math.hpp"
-#include "../common/primitives.hpp"
-#include "../common/result.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "../detail/stdlib.hpp"
-#include "../features.hpp"
-#include "blend.hpp"
-#include "color.hpp"
-#include "pixels.hpp"
-
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
 #endif  // CENTURION_NO_SDL_IMAGE
@@ -46,6 +35,18 @@
 #include <optional>  // optional, nullopt
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#include "../common/errors.hpp"
+#include "../common/math.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../io/file.hpp"
+#include "blend.hpp"
+#include "color.hpp"
+#include "pixels.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -106,6 +107,14 @@ class basic_surface final {
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface {file.c_str()}
   {
+  }
+
+  template <typename TT = T, detail::enable_for_owner<TT> = 0>
+  explicit basic_surface(file& file) : mSurface {IMG_Load_RW(file.data(), SDL_FALSE)}
+  {
+    if (!mSurface) {
+      throw img_error {};
+    }
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE

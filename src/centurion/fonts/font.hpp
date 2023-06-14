@@ -39,6 +39,7 @@
 #include "../common/version.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../io/file.hpp"
 #include "../video/color.hpp"
 #include "../video/surface.hpp"
 #include "../video/unicode_string.hpp"
@@ -98,6 +99,18 @@ class font final {
   }
 
   font(const std::string& file, const int size) : font {file.c_str(), size} {}
+
+  font(file& file, const int size) : mSize {size}
+  {
+    if (mSize <= 0) {
+      throw exception {"Bad font size!"};
+    }
+
+    mFont.reset(TTF_OpenFontRW(file.data(), SDL_FALSE, mSize));
+    if (!mFont) {
+      throw ttf_error {};
+    }
+  }
 
 #if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
 

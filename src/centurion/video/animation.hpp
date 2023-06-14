@@ -39,6 +39,7 @@
 #include "../common/primitives.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../io/file.hpp"
 #include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -75,6 +76,16 @@ class animation final {
   [[nodiscard]] static auto load(const std::string& file) -> animation
   {
     return load(file.c_str());
+  }
+
+  [[nodiscard]] static auto load(file& file) -> animation
+  {
+    if (auto* result = IMG_LoadAnimation_RW(file.data(), SDL_FALSE)) {
+      return animation {result};
+    }
+    else {
+      throw img_error {};
+    }
   }
 
   [[nodiscard]] auto at(const usize index) -> surface_handle

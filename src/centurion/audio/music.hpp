@@ -39,6 +39,7 @@
 #include "../common/result.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../io/file.hpp"
 #include "fade_status.hpp"
 #include "music_type.hpp"
 
@@ -84,6 +85,13 @@ class music final {
   }
 
   explicit music(const std::string& file) : music {file.c_str()} {}
+
+  explicit music(file& file) : mMusic {Mix_LoadMUS_RW(file.data(), SDL_FALSE)}
+  {
+    if (!mMusic) {
+      throw mix_error {};
+    }
+  }
 
   auto play(const int iterations = 0) noexcept -> maybe<channel_index>
   {

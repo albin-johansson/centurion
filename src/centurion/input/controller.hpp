@@ -44,6 +44,7 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../io/file.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "joystick.hpp"
@@ -387,13 +388,14 @@ using controller_handle = basic_controller<detail::handle_tag>;  ///< A non-owni
 /**
  * Represents a game controller, such as Xbox and Playstation controllers.
  *
- * You may need to load appropriate game controller mappings before you can begin using the
- * game controller API with certain controllers. This can be accomplished using the
- * load_controller_mappings and add_controller_mapping functions.
+ * \details You may need to load appropriate game controller mappings before you can begin
+ *          using the game controller API with certain controllers. This can be accomplished
+ *          using the `load_controller_mappings` and `add_controller_mapping` functions.
  *
- * For a community managed database file of game controller mappings, see
- * `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn't work for some
- * reason, you should be able to find a copy in the Centurion test resources folder).
+ * \details For a community managed database file of game controller mappings, see
+ *          `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn't work for
+ *          some reason, you should be able to find a copy in the Centurion test resources
+ *          folder).
  *
  * \see controller
  * \see controller_handle
@@ -901,6 +903,17 @@ inline auto add_controller_mapping(const std::string& mapping) noexcept
     -> controller_mapping_result
 {
   return add_controller_mapping(mapping.c_str());
+}
+
+inline auto load_controller_mappings(file& file) noexcept -> maybe<int>
+{
+  const auto result = SDL_GameControllerAddMappingsFromRW(file.data(), SDL_FALSE);
+  if (result != -1) {
+    return result;
+  }
+  else {
+    return nothing;
+  }
 }
 
 inline auto load_controller_mappings(const char* file) noexcept -> maybe<int>

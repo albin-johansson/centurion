@@ -48,6 +48,7 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../io/file.hpp"
 #include "color.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
@@ -177,6 +178,16 @@ class basic_renderer final {
   [[nodiscard]] auto make_texture(const std::string& path) const -> texture
   {
     return make_texture(path.c_str());
+  }
+
+  [[nodiscard]] auto make_texture(file& file) const -> texture
+  {
+    if (auto* ptr = IMG_LoadTextureRW(get(), file.data(), SDL_FALSE)) {
+      return texture {ptr};
+    }
+    else {
+      throw img_error {};
+    }
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE

@@ -43,7 +43,7 @@ class MusicTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    music = std::make_unique<cen::music>("resources/hiddenPond.mp3");
+    music = std::make_unique<cen::music>("resources/hidden_pond.mp3");
   }
 
   static void TearDownTestSuite() { music.reset(); }

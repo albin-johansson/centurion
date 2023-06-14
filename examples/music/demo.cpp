@@ -25,7 +25,7 @@ class music_example final {
                  cen::window::hidden | cen::window::allow_high_dpi}
       , mRenderer {mWindow.make_renderer()}
       , mFont {RESOURCE_DIR "fira_code.ttf", 16}
-      , mSong {RESOURCE_DIR "hiddenPond.mp3"}
+      , mSong {RESOURCE_DIR "hidden_pond.mp3"}
       , mClick {RESOURCE_DIR "click.wav"}
   {
     mRenderer.set_logical_size(window_size);

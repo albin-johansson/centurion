@@ -1,7 +1,7 @@
 ** THIS FILE CONTAINS THE CREDITS FOR FILES THAT ARE USED ONLY FOR TESTING PURPOSES OF THE CENTURION LIBRARY **
 
 ---
-FILE: hiddenPond.mp3
+FILE: hidden_pond.mp3
 AUTHOR: Eric Matyas
 WEBSITE: www.soundimage.org
 ---

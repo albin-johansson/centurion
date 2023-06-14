@@ -30,6 +30,7 @@
 #include <array>        // array
 #include <ostream>      // ostream
 #include <string_view>  // string_view
+#include <type_traits>  // underlying_type_t
 #include <utility>      // move
 
 #include "../common/errors.hpp"
@@ -233,11 +234,13 @@ class keyboard_event final : public event_base<SDL_KeyboardEvent> {
 
   void set_modifier(const key_mod mod, const bool active) noexcept
   {
+    const auto mod_value = to_underlying(mod);
     if (active) {
-      mEvent.keysym.mod |= to_underlying(mod);
+      mEvent.keysym.mod |= mod_value;
     }
     else {
-      mEvent.keysym.mod &= ~to_underlying(mod);
+      using key_mod_rep_t = std::underlying_type_t<key_mod>;
+      mEvent.keysym.mod &= static_cast<key_mod_rep_t>(~mod_value);
     }
   }
 
@@ -316,13 +319,13 @@ class multi_gesture_event final : public event_base<SDL_MultiGestureEvent> {
 
   void set_touch_id(const SDL_TouchID id) noexcept { mEvent.touchId = id; }
 
-  void set_delta_theta(const float dTheta) noexcept { mEvent.dTheta = dTheta; }
+  void set_delta_theta(const float dt_theta) noexcept { mEvent.dTheta = dt_theta; }
 
-  void set_delta_distance(const float dDistance) noexcept { mEvent.dDist = dDistance; }
+  void set_delta_distance(const float dt_distance) noexcept { mEvent.dDist = dt_distance; }
 
-  void set_center_x(const float centerX) noexcept { mEvent.x = centerX; }
+  void set_center_x(const float center_x) noexcept { mEvent.x = center_x; }
 
-  void set_center_y(const float centerY) noexcept { mEvent.y = centerY; }
+  void set_center_y(const float center_y) noexcept { mEvent.y = center_y; }
 
   void set_finger_count(const uint16 count) noexcept { mEvent.numFingers = count; }
 

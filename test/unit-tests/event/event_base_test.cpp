@@ -59,7 +59,7 @@ TEST(EventBase, Timestamp)
   const auto time = 8'321_ms;
 
   sdl_event sdl;
-  sdl.timestamp = time.count();
+  sdl.timestamp = static_cast<Uint32>(time.count());
 
   const common_event event {sdl};
   ASSERT_EQ(time, event.timestamp());

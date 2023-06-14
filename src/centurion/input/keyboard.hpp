@@ -73,47 +73,47 @@ enum class key_mod : uint16 {
 
 namespace detail {
 
-[[nodiscard]] inline auto is_active(const key_mod modifiers, const uint16 currentMask) noexcept
-    -> bool
+[[nodiscard]] inline auto is_active(const key_mod modifiers,
+                                    const uint16 current_mask) noexcept -> bool
 {
   if (modifiers == key_mod::none) {
-    return !currentMask;
+    return !current_mask;
   }
   else {
-    return currentMask & to_underlying(modifiers);
+    return current_mask & to_underlying(modifiers);
   }
 }
 
 [[nodiscard]] inline auto is_only_active(const key_mod modifiers,
-                                         const uint16 currentMask) noexcept -> bool
+                                         const uint16 current_mask) noexcept -> bool
 {
   if (modifiers == key_mod::none) {
-    return !currentMask;
+    return !current_mask;
   }
 
   const auto mask = to_underlying(modifiers);
-  const auto hits = currentMask & mask;
+  const auto hits = current_mask & mask;
 
   if (hits != mask) {
     return false;  // The specified modifiers were a combo that wasn't fully active
   }
   else {
-    const auto others = currentMask & ~hits;
+    const auto others = current_mask & ~hits;
     return hits && !others;
   }
 }
 
 [[nodiscard]] inline auto is_only_subset_active(const key_mod modifiers,
-                                                const uint16 currentMask) noexcept -> bool
+                                                const uint16 current_mask) noexcept -> bool
 {
   if (modifiers == key_mod::none) {
-    return !currentMask;
+    return !current_mask;
   }
 
   const auto mask = to_underlying(modifiers);
 
-  const auto hits = currentMask & mask;
-  const auto others = currentMask & ~hits;
+  const auto hits = current_mask & mask;
+  const auto others = current_mask & ~hits;
 
   return hits && !others;
 }
@@ -198,10 +198,10 @@ inline void set_modifiers(const key_mod mods) noexcept
 /**
  * Indicates whether the specified modifiers are solely active.
  *
- * This function differs from `is_active(key_mod)` in that this function will return `false` if
- * modifiers other than those specified are active. For example, if the `shift` and `alt`
- * modifiers are being pressed, then `is_only_active(cen::key_mod::shift)` would evaluate to
- * `false`.
+ * \details This function differs from `is_active(key_mod)` in that this function will return
+ *          `false` if modifiers other than those specified are active. For example, if the
+ *          `shift` and `alt` modifiers are being pressed, then
+ *          `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
  *
  * \param mods the modifiers to check for.
  *
@@ -215,12 +215,12 @@ inline void set_modifiers(const key_mod mods) noexcept
 /**
  * Indicates whether only a subset the specified modifiers are active.
  *
- * This function is very similar to `is_only_active()`, but differs in that not all of the
- * specified modifiers need to be active for this function to return `true`. For example, if
- * you supply `shift` to this function, and only the left shift key is being pressed, then
- * `is_only_subset_active(cen::key_mod::shift)` would evaluate to `true`. However, if some
- * other modifiers were also being pressed other than the left shift key, the same function
- * call would instead evaluate to `false`.
+ * \details This function is very similar to `is_only_active()`, but differs in that not all
+ *          of the specified modifiers need to be active for this function to return `true`.
+ *          For example, if you supply `shift` to this function, and only the left shift key
+ *          is being pressed, then `is_only_subset_active(cen::key_mod::shift)` would evaluate
+ *          to `true`. However, if some other modifiers were also being pressed other than the
+ *          left shift key, the same function call would instead evaluate to `false`.
  *
  * \param mods the modifiers to check for.
  *

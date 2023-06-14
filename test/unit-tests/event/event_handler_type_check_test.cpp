@@ -42,7 +42,7 @@ void check(const SDL_EventType type)
 
   const auto strong = static_cast<cen::event_type>(type);
 
-  ASSERT_EQ(type, handler.raw_type());
+  ASSERT_EQ(static_cast<Uint32>(type), handler.raw_type());
   ASSERT_EQ(strong, handler.type());
 
   ASSERT_TRUE(handler.is(strong));

@@ -90,7 +90,7 @@ class animation final {
 
   [[nodiscard]] auto at(const usize index) -> surface_handle
   {
-    if (index < count()) {
+    if (index < static_cast<usize>(count())) {
       return surface_handle {mAnim->frames[index]};
     }
     else {
@@ -102,7 +102,7 @@ class animation final {
 
   [[nodiscard]] auto delay(const usize index) const -> int
   {
-    if (index < count()) {
+    if (index < static_cast<usize>(count())) {
       return mAnim->delays[index];
     }
     else {

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/font.hpp"
+#include "centurion/fonts/font.hpp"
 
 #include <gtest/gtest.h>
 

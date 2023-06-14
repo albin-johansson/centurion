@@ -38,7 +38,7 @@
 #include "centurion/endian.hpp"
 #include "centurion/event.hpp"
 #include "centurion/features.hpp"
-#include "centurion/font.hpp"
+#include "centurion/fonts.hpp"
 #include "centurion/initialization.hpp"
 #include "centurion/input.hpp"
 #include "centurion/io/file.hpp"

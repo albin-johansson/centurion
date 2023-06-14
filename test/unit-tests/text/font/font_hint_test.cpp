@@ -26,7 +26,7 @@
 
 #include <iostream>  // clog
 
-#include "centurion/font.hpp"
+#include "centurion/fonts/font.hpp"
 
 TEST(FontHint, Values)
 {

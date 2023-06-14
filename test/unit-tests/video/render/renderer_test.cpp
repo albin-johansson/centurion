@@ -28,7 +28,7 @@
 #include <memory>    // unique_ptr
 
 #include "centurion/color.hpp"
-#include "centurion/font.hpp"
+#include "centurion/fonts/font.hpp"
 #include "centurion/math.hpp"
 #include "centurion/render.hpp"
 #include "centurion/video/window.hpp"

@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
+#include "centurion/fonts/font_cache.hpp"
+
 #include <gtest/gtest.h>
 
 #include <memory>  // unique_ptr
 
-#include "centurion/font.hpp"
 #include "centurion/render.hpp"
 #include "centurion/video/window.hpp"
 

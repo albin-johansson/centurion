@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_MEMORY_HPP_
-#define CENTURION_MEMORY_HPP_
+#ifndef CENTURION_COMMON_MEMORY_HPP_
+#define CENTURION_COMMON_MEMORY_HPP_
 
 #include <SDL.h>
 
@@ -199,4 +199,4 @@ class simd_block final {
 
 }  // namespace cen
 
-#endif  // CENTURION_MEMORY_HPP_
+#endif  // CENTURION_COMMON_MEMORY_HPP_

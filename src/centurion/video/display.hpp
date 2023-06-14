@@ -30,8 +30,8 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
+#include "../common/math.hpp"
 #include "../common/primitives.hpp"
-#include "../math.hpp"
 #include "pixels.hpp"
 
 namespace cen {

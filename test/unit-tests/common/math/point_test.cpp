@@ -28,7 +28,7 @@
 #include <iostream>     // cout
 #include <type_traits>  // ...
 
-#include "centurion/math.hpp"
+#include "centurion/common/math.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);

@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/math.hpp"
+#include "centurion/common/math.hpp"
 #include "serialization_utils.hpp"
 
 TEST(Area, DefaultConstruction)

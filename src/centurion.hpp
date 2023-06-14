@@ -39,8 +39,6 @@
 #include "centurion/initialization.hpp"
 #include "centurion/input.hpp"
 #include "centurion/io.hpp"
-#include "centurion/math.hpp"
-#include "centurion/memory.hpp"
 #include "centurion/sensor.hpp"
 #include "centurion/system.hpp"
 #include "centurion/touch.hpp"

@@ -25,6 +25,8 @@
 #include "common/errors.hpp"
 #include "common/literals.hpp"
 #include "common/logging.hpp"
+#include "common/math.hpp"
+#include "common/memory.hpp"
 #include "common/primitives.hpp"
 #include "common/result.hpp"
 #include "common/sdl_string.hpp"

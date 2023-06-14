@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/memory.hpp"
+#include "centurion/common/memory.hpp"
 
 TEST(SIMDBlock, Usage)
 {

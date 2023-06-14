@@ -28,12 +28,12 @@
 #include <SDL.h>
 
 #include "../common/errors.hpp"
+#include "../common/math.hpp"
 #include "../common/primitives.hpp"
 #include "../common/result.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
-#include "../math.hpp"
 #include "blend.hpp"
 #include "color.hpp"
 #include "pixels.hpp"

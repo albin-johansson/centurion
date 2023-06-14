@@ -29,8 +29,8 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
+#include "centurion/common/math.hpp"
 #include "centurion/fonts/font.hpp"
-#include "centurion/math.hpp"
 #include "centurion/video/color.hpp"
 #include "centurion/video/window.hpp"
 

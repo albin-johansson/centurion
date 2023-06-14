@@ -32,11 +32,11 @@
 #include <string_view>  // string_view
 
 #include "../common/errors.hpp"
+#include "../common/math.hpp"
 #include "../common/primitives.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
-#include "../math.hpp"
 #include "../video/renderer.hpp"
 #include "../video/surface.hpp"
 #include "../video/window.hpp"

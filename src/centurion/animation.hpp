@@ -42,10 +42,10 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "common/primitives.hpp"
 #include "common/errors.hpp"
+#include "common/math.hpp"
+#include "common/primitives.hpp"
 #include "detail/stdlib.hpp"
-#include "math.hpp"
 #include "video/surface.hpp"
 
 namespace cen {

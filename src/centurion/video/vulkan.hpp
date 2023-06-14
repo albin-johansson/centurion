@@ -34,10 +34,10 @@
 #include <optional>  // optional, nullopt
 #include <vector>    // vector
 
+#include "../common/math.hpp"
 #include "../common/primitives.hpp"
 #include "../common/result.hpp"
 #include "../features.hpp"
-#include "../math.hpp"
 #include "window.hpp"
 
 namespace cen {

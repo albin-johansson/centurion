@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/memory.hpp"
+#include "centurion/common/memory.hpp"
 
 inline int delete_count = 0;
 

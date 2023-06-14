@@ -34,13 +34,13 @@
 #include <string_view>  // string_view
 
 #include "../common/errors.hpp"
+#include "../common/memory.hpp"
 #include "../common/primitives.hpp"
 #include "../common/result.hpp"
 #include "../common/utils.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
-#include "../memory.hpp"
 #include "color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

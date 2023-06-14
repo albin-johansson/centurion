@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_MATH_HPP_
-#define CENTURION_MATH_HPP_
+#ifndef CENTURION_COMMON_MATH_HPP_
+#define CENTURION_COMMON_MATH_HPP_
 
 #include <SDL.h>
 
@@ -32,11 +32,11 @@
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#include "common/primitives.hpp"
-#include "common/utils.hpp"
-#include "detail/sdl_version_at_least.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
+#include "../detail/sdl_version_at_least.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "primitives.hpp"
+#include "utils.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -679,4 +679,4 @@ template <typename T>
 
 }  // namespace cen
 
-#endif  // CENTURION_MATH_HPP_
+#endif  // CENTURION_COMMON_MATH_HPP_

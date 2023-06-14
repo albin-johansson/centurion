@@ -29,8 +29,8 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
+#include "../common/memory.hpp"
 #include "../common/primitives.hpp"
-#include "../memory.hpp"
 
 namespace cen::detail {
 

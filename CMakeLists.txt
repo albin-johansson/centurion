@@ -9,7 +9,7 @@ project(centurion
         HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
         LANGUAGES CXX)
 
-if (${CMAKE_CXX_STANDARD} STREQUAL "")
+if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
   set(CMAKE_CXX_STANDARD 17)
 endif ()
 

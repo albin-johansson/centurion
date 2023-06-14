@@ -25,6 +25,9 @@
 #ifndef CENTURION_COMMON_SDL_STRING_HPP_
 #define CENTURION_COMMON_SDL_STRING_HPP_
 
+#include <memory>  // unique_ptr
+#include <string>  // string
+
 #include "../detail/sdl_deleter.hpp"
 #include "primitives.hpp"
 

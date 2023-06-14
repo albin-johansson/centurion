@@ -227,7 +227,6 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
   target_compile_options(${CENTURION_TEST_TARGET}
                          PRIVATE
                          -Wno-unused-result
-                         -Wno-gnu-zero-variadic-macro-arguments
                          )
 endif ()
 

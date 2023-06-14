@@ -448,7 +448,7 @@ class basic_joystick final {
     return info;
   }
 
-#endif  // SDL_VERSION_ATLEAST(2, 26 ,0)
+#endif  // SDL_VERSION_ATLEAST(2, 26, 0)
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
 

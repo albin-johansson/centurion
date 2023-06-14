@@ -67,6 +67,18 @@ class file final {
 
   file(const std::string& path, const file_mode mode) noexcept : file {path.c_str(), mode} {}
 
+  /// Manually closes the file.
+  /// \note You don't have to call this function, but it's provided for completeness.
+  auto close() noexcept -> result
+  {
+    if (SDL_RWclose(mContext.get()) == 0) {
+      mContext.reset();
+      return success;
+    }
+
+    return failure;
+  }
+
   template <typename T>
   auto write(const T* data, const size_type count) noexcept -> size_type
   {
@@ -304,6 +316,9 @@ class file final {
   [[nodiscard]] auto data() const noexcept -> SDL_RWops* { return mContext.get(); }
 
   [[nodiscard]] auto is_ok() const noexcept -> bool { return mContext != nullptr; }
+
+  /// Releases ownership of the underlying file handle.
+  [[nodiscard]] auto release() noexcept -> SDL_RWops* { return mContext.release(); }
 
   /// Indicates whether the file handle is valid.
   explicit operator bool() const noexcept { return is_ok(); }

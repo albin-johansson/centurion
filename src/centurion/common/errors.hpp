@@ -39,6 +39,8 @@
 #include <SDL_ttf.h>
 #endif  // CENTURION_NO_SDL_TTF
 
+#include <array>      // array
+#include <cstring>    // strncpy
 #include <exception>  // exception
 
 namespace cen {
@@ -46,14 +48,16 @@ namespace cen {
 /// The base class of all exceptions explicitly thrown by the library.
 class exception : public std::exception {
  public:
-  exception() noexcept = default;
+  explicit exception(const char* what = nullptr) noexcept
+  {
+    std::strncpy(mWhat.data(), what ? what : "?", mWhat.size() - 1);
+  }
 
-  explicit exception(const char* what) noexcept : mWhat {what ? what : "?"} {}
-
-  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat; }
+  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat.data(); }
 
  private:
-  const char* mWhat {"?"};
+  // We use an array here instead of a string to avoid a dynamic allocation
+  std::array<char, 128> mWhat {};
 };
 
 class sdl_error final : public exception {

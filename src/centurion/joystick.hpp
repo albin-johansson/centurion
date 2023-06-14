@@ -49,14 +49,12 @@
 
 namespace cen {
 
-struct ball_axis_delta final
-{
-  int dx{};  ///< Difference in x-axis position since last poll.
-  int dy{};  ///< Difference in y-axis position since last poll.
+struct ball_axis_delta final {
+  int dx {};  ///< Difference in x-axis position since last poll.
+  int dy {};  ///< Difference in y-axis position since last poll.
 };
 
-enum class joystick_type
-{
+enum class joystick_type {
   unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
   game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
   wheel = SDL_JOYSTICK_TYPE_WHEEL,
@@ -103,7 +101,7 @@ enum class joystick_type
       return "throttle";
 
     default:
-      throw exception{"Did not recognize joystick type!"};
+      throw exception {"Did not recognize joystick type!"};
   }
 }
 
@@ -112,8 +110,7 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
   return stream << to_string(type);
 }
 
-enum class joystick_power
-{
+enum class joystick_power {
   unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
   empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
   low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
@@ -149,7 +146,7 @@ enum class joystick_power
       return "max";
 
     default:
-      throw exception{"Did not recognize joystick power!"};
+      throw exception {"Did not recognize joystick power!"};
   }
 }
 
@@ -158,8 +155,7 @@ inline auto operator<<(std::ostream& stream, const joystick_power power) -> std:
   return stream << to_string(power);
 }
 
-enum class hat_state : uint8
-{
+enum class hat_state : uint8 {
   centered = SDL_HAT_CENTERED,
   up = SDL_HAT_UP,
   right = SDL_HAT_RIGHT,
@@ -202,7 +198,7 @@ enum class hat_state : uint8
       return "left_down";
 
     default:
-      throw exception{"Did not recognize hat state!"};
+      throw exception {"Did not recognize hat state!"};
   }
 }
 
@@ -213,8 +209,7 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
 
-class virtual_joystick_desc final
-{
+class virtual_joystick_desc final {
  public:
   using update_callback = void(SDLCALL*)(void*);
   using set_player_index_callback = void(SDLCALL*)(void*, int);
@@ -266,7 +261,7 @@ class virtual_joystick_desc final
   [[nodiscard]] auto get() const noexcept -> const SDL_VirtualJoystickDesc& { return mDesc; }
 
  private:
-  SDL_VirtualJoystickDesc mDesc{};
+  SDL_VirtualJoystickDesc mDesc {};
 };
 
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
@@ -289,8 +284,7 @@ using joystick_handle = basic_joystick<detail::handle_tag>;  ///< A non-owning j
  * \see basic_controller
  */
 template <typename T>
-class basic_joystick final
-{
+class basic_joystick final {
  public:
   using device_index = int;
   using id_type = SDL_JoystickID;
@@ -304,31 +298,32 @@ class basic_joystick final
    * \param joystick a pointer to an SDL joystick.
    */
   explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(detail::is_handle<T>)
-      : mJoystick{joystick}
+      : mJoystick {joystick}
   {
     if constexpr (detail::is_owner<T>) {
       if (!mJoystick) {
-        throw exception{"Cannot create joystick from null pointer!"};
+        throw exception {"Cannot create joystick from null pointer!"};
       }
     }
   }
 
   template <typename TT = T, detail::enable_for_owner<TT> = 0>
-  explicit basic_joystick(const device_index index = 0) : mJoystick{SDL_JoystickOpen(index)}
+  explicit basic_joystick(const device_index index = 0) : mJoystick {SDL_JoystickOpen(index)}
   {
     if (!mJoystick) {
-      throw sdl_error{};
+      throw sdl_error {};
     }
   }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
-  explicit basic_joystick(const joystick& owner) noexcept : mJoystick{owner.get()}
-  {}
+  explicit basic_joystick(const joystick& owner) noexcept : mJoystick {owner.get()}
+  {
+  }
 
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   [[nodiscard]] static auto from_id(const id_type id) noexcept -> joystick_handle
   {
-    return joystick_handle{SDL_JoystickFromInstanceID(id)};
+    return joystick_handle {SDL_JoystickFromInstanceID(id)};
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -336,7 +331,7 @@ class basic_joystick final
   template <typename TT = T, detail::enable_for_handle<TT> = 0>
   [[nodiscard]] static auto from_player_index(const int index) noexcept -> joystick_handle
   {
-    return joystick_handle{SDL_JoystickFromPlayerIndex(index)};
+    return joystick_handle {SDL_JoystickFromPlayerIndex(index)};
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -433,6 +428,24 @@ class basic_joystick final
   {
     return SDL_JoystickGetDeviceGUID(index);
   }
+
+#if SDL_VERSION_ATLEAST(2, 26, 0)
+
+  struct guid_info final {
+    Uint16 vendor {};
+    Uint16 product {};
+    Uint16 version {};
+    Uint16 crc16 {};
+  };
+
+  [[nodiscard]] static auto get_guid_info(const guid_type guid) noexcept -> guid_info
+  {
+    guid_info info;
+    SDL_GetJoystickGUIDInfo(guid, &info.vendor, &info.product, &info.version, &info.crc16);
+    return info;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 26 ,0)
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
 
@@ -639,7 +652,7 @@ class basic_joystick final
 
   [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> maybe<int16>
   {
-    int16 state{};
+    int16 state {};
     if (SDL_JoystickGetAxisInitialState(mJoystick, axis, &state)) {
       return state;
     }
@@ -651,7 +664,7 @@ class basic_joystick final
   [[nodiscard]] auto get_ball_axis_delta(const int ball) const noexcept
       -> maybe<ball_axis_delta>
   {
-    ball_axis_delta change{};
+    ball_axis_delta change {};
     if (SDL_JoystickGetBall(mJoystick, ball, &change.dx, &change.dy) == 0) {
       return change;
     }
@@ -764,7 +777,7 @@ class basic_joystick final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
-  const char* serial{};
+  const char* serial {};
   if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = joystick.serial();
   }

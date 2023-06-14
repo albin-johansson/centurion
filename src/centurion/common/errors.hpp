@@ -40,7 +40,7 @@
 #endif  // CENTURION_NO_SDL_TTF
 
 #include <array>      // array
-#include <cstring>    // strncpy
+#include <cstring>    // strncpy, strncpy_s
 #include <exception>  // exception
 
 namespace cen {
@@ -50,7 +50,11 @@ class exception : public std::exception {
  public:
   explicit exception(const char* what = nullptr) noexcept
   {
+#ifdef _MSC_VER
+    strncpy_s(mWhat.data(), mWhat.size(), what ? what : "?", _TRUNCATE);
+#else
     std::strncpy(mWhat.data(), what ? what : "?", mWhat.size() - 1);
+#endif  // _MSC_VER
   }
 
   [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat.data(); }

@@ -41,22 +41,24 @@ TEST(Exception, NoArgsConstructor)
 
 TEST(Exception, StringConstructor)
 {
+  const char* normal_msg = "Hello, world!";
+
   // Limit is 128 characters, with last character reserved for null-terminator.
   const char* max_msg =
-      "................................"  // 32
-      "................................"  // 64
+      ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"  // 32
+      "--------------------------------"  // 64
       "................................"  // 96
-      "...............................";  // 127
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";  // 127
 
   const char* overflow_msg =
-      "................................"   // 32
-      "................................"   // 64
+      ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"   // 32
+      "--------------------------------"   // 64
       "................................"   // 96
-      "...............................X";  // 128
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!X";  // 128
 
   {
-    const cen::exception exception {"Foo"};
-    ASSERT_STREQ("Foo", exception.what());
+    const cen::exception exception {normal_msg};
+    ASSERT_STREQ(normal_msg, exception.what());
   }
 
   {

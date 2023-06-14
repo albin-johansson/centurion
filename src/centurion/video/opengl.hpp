@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_OPENGL_HPP_
-#define CENTURION_OPENGL_HPP_
+#ifndef CENTURION_VIDEO_OPENGL_HPP_
+#define CENTURION_VIDEO_OPENGL_HPP_
 
 #ifndef CENTURION_NO_OPENGL
 
@@ -36,11 +36,11 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "features.hpp"
-#include "math.hpp"
-#include "texture.hpp"
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "../texture.hpp"
 #include "window.hpp"
 
 namespace cen {
@@ -387,4 +387,4 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 }  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
-#endif  // CENTURION_OPENGL_HPP_
+#endif  // CENTURION_VIDEO_OPENGL_HPP_

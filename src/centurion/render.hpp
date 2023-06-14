@@ -50,7 +50,6 @@
 #include "surface.hpp"
 #include "texture.hpp"
 #include "unicode.hpp"
-#include "video.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

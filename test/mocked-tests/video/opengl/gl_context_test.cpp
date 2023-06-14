@@ -27,7 +27,7 @@
 
 #include <array>  // array
 
-#include "centurion/opengl.hpp"
+#include "centurion/video/opengl.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

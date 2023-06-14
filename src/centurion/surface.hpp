@@ -34,7 +34,7 @@
 #include "features.hpp"
 #include "math.hpp"
 #include "pixels.hpp"
-#include "video.hpp"
+#include "video/blend.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>

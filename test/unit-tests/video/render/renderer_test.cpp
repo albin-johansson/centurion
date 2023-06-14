@@ -31,7 +31,7 @@
 #include "centurion/font.hpp"
 #include "centurion/math.hpp"
 #include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 using namespace std::string_literals;
 

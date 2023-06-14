@@ -31,7 +31,7 @@
 
 #include "centurion/color.hpp"
 #include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 static_assert(std::is_final_v<cen::texture>);
 

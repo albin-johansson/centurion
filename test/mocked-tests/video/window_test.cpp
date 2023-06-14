@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

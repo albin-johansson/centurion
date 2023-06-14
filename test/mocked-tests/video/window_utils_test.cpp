@@ -25,7 +25,7 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

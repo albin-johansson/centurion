@@ -28,7 +28,7 @@
 #include <array>   // array
 #include <string>  // string
 
-#include "centurion/opengl.hpp"
+#include "centurion/video/opengl.hpp"
 #include "core_mocks.hpp"
 
 using namespace std::string_literals;

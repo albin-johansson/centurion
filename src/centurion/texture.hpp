@@ -40,7 +40,7 @@
 #include "features.hpp"
 #include "math.hpp"
 #include "surface.hpp"
-#include "video.hpp"
+#include "video/blend.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

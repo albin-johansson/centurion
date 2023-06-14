@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/opengl.hpp"
+#include "centurion/video/opengl.hpp"
 
 using attr = cen::gl_attribute;
 

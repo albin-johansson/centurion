@@ -28,7 +28,7 @@
 
 #include "centurion/font.hpp"
 #include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 class FontCacheTest : public testing::Test {
  protected:

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/power.hpp"
+#include "centurion/system/power.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

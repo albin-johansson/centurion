@@ -27,7 +27,7 @@
 #include <memory>  // unique_ptr
 
 #include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 class TextureHandleTest : public testing::Test {
  protected:

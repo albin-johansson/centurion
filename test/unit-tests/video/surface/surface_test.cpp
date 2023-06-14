@@ -33,7 +33,7 @@
 #include <utility>      // move
 
 #include "centurion/color.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);
 static_assert(std::is_copy_assignable_v<cen::surface>);

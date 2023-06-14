@@ -27,7 +27,7 @@
 
 #include <array>  // array
 
-#include "centurion/vulkan.hpp"
+#include "centurion/video/vulkan.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

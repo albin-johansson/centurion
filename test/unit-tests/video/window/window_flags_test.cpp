@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 TEST(WindowFlags, Values)
 {

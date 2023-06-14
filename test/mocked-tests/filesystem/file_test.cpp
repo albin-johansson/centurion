@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/io/file.hpp"
+
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include "centurion/filesystem.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

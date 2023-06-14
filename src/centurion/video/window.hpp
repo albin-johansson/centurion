@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_WINDOW_HPP_
-#define CENTURION_WINDOW_HPP_
+#ifndef CENTURION_VIDEO_WINDOW_HPP_
+#define CENTURION_VIDEO_WINDOW_HPP_
 
 #include <SDL.h>
 
@@ -35,14 +35,14 @@
 #include <string>    // string, to_string
 #include <utility>   // pair, make_pair, move
 
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "math.hpp"
-#include "render.hpp"
-#include "surface.hpp"
-#include "video.hpp"
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "../render.hpp"
+#include "../surface.hpp"
+#include "flash_op.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -601,4 +601,4 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
 
 }  // namespace cen
 
-#endif  // CENTURION_WINDOW_HPP_
+#endif  // CENTURION_VIDEO_WINDOW_HPP_

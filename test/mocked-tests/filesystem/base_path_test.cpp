@@ -25,7 +25,7 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include "centurion/filesystem.hpp"
+#include "centurion/io/paths.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

@@ -28,7 +28,7 @@
 #include <memory>    // unique_ptr
 
 #include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 class RendererHandleTest : public testing::Test {
  protected:

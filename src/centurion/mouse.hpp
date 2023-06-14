@@ -38,7 +38,7 @@
 #include "math.hpp"
 #include "render.hpp"
 #include "surface.hpp"
-#include "window.hpp"
+#include "video/window.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

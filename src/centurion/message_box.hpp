@@ -37,7 +37,7 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "window.hpp"
+#include "video/window.hpp"
 
 namespace cen {
 

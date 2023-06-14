@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/system/clipboard.hpp"
 
-#include "centurion/system.hpp"
+#include <gtest/gtest.h>
 
 TEST(Clipboard, HasClipboard)
 {

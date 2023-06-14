@@ -22,16 +22,40 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#ifndef CENTURION_SYSTEM_CLIPBOARD_HPP_
+#define CENTURION_SYSTEM_CLIPBOARD_HPP_
 
-#include "centurion/system/memory.hpp"
+#include <SDL.h>
 
-TEST(RAM, MB)
+#include <cassert>  // assert
+#include <string>   // string
+
+#include "../common.hpp"
+
+namespace cen {
+
+inline auto set_clipboard(const char* text) noexcept -> result
 {
-  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram_mb());
+  assert(text);
+  return SDL_SetClipboardText(text) == 0;
 }
 
-TEST(RAM, GB)
+inline auto set_clipboard(const std::string& text) noexcept -> result
 {
-  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram_gb());
+  return set_clipboard(text.c_str());
 }
+
+[[nodiscard]] inline auto has_clipboard() noexcept -> bool
+{
+  return SDL_HasClipboardText();
+}
+
+[[nodiscard]] inline auto get_clipboard() -> std::string
+{
+  const sdl_string text {SDL_GetClipboardText()};
+  return text.copy();
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_SYSTEM_CLIPBOARD_HPP_

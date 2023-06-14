@@ -22,16 +22,23 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#ifndef CENTURION_SYSTEM_MEMORY_HPP_
+#define CENTURION_SYSTEM_MEMORY_HPP_
 
-#include "centurion/system/memory.hpp"
+#include <SDL.h>
 
-TEST(RAM, MB)
+namespace cen {
+
+[[nodiscard]] inline auto ram_mb() noexcept -> int
 {
-  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram_mb());
+  return SDL_GetSystemRAM();
 }
 
-TEST(RAM, GB)
+[[nodiscard]] inline auto ram_gb() noexcept -> int
 {
-  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram_gb());
+  return ram_mb() / 1'000;
 }
+
+}  // namespace cen
+
+#endif  // CENTURION_SYSTEM_MEMORY_HPP_

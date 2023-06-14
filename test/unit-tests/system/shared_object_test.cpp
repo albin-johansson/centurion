@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/system/shared_object.hpp"
 
-#include "centurion/system.hpp"
+#include <gtest/gtest.h>
 
 TEST(SharedObject, Constructor)
 {
-  ASSERT_THROW(cen::shared_object{"foo"}, cen::sdl_error);
+  ASSERT_THROW(cen::shared_object {"foo"}, cen::sdl_error);
 }

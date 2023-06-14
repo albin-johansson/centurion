@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_POWER_HPP_
-#define CENTURION_POWER_HPP_
+#ifndef CENTURION_SYSTEM_POWER_HPP_
+#define CENTURION_SYSTEM_POWER_HPP_
 
 #include <SDL.h>
 
@@ -31,12 +31,11 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "common.hpp"
+#include "../common.hpp"
 
 namespace cen {
 
-enum class power_state
-{
+enum class power_state {
   unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
   on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
   no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.
@@ -44,57 +43,29 @@ enum class power_state
   charged = SDL_POWERSTATE_CHARGED         ///< Plugged in and charged.
 };
 
-[[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
-{
-  switch (state) {
-    case power_state::unknown:
-      return "unknown";
-
-    case power_state::on_battery:
-      return "on_battery";
-
-    case power_state::no_battery:
-      return "no_battery";
-
-    case power_state::charging:
-      return "charging";
-
-    case power_state::charged:
-      return "charged";
-
-    default:
-      throw exception{"Did not recognize power state!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const power_state state) -> std::ostream&
-{
-  return stream << to_string(state);
-}
-
-[[nodiscard]] inline auto battery_seconds() -> maybe<seconds<int>>
+[[nodiscard]] inline auto battery_seconds() -> std::optional<seconds<int>>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft != -1) {
-    return seconds<int>{secondsLeft};
+    return seconds<int> {secondsLeft};
   }
   else {
-    return nothing;
+    return std::nullopt;
   }
 }
 
-[[nodiscard]] inline auto battery_minutes() -> maybe<minutes<int>>
+[[nodiscard]] inline auto battery_minutes() -> std::optional<minutes<int>>
 {
   if (const auto secondsLeft = battery_seconds()) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   }
   else {
-    return nothing;
+    return std::nullopt;
   }
 }
 
-[[nodiscard]] inline auto battery_percentage() noexcept -> maybe<int>
+[[nodiscard]] inline auto battery_percentage() noexcept -> std::optional<int>
 {
   int percentage = -1;
   SDL_GetPowerInfo(nullptr, &percentage);
@@ -102,7 +73,7 @@ inline auto operator<<(std::ostream& stream, const power_state state) -> std::os
     return percentage;
   }
   else {
-    return nothing;
+    return std::nullopt;
   }
 }
 
@@ -127,6 +98,34 @@ inline auto operator<<(std::ostream& stream, const power_state state) -> std::os
   return query_battery() == power_state::charged;
 }
 
+[[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
+{
+  switch (state) {
+    case power_state::unknown:
+      return "unknown";
+
+    case power_state::on_battery:
+      return "on_battery";
+
+    case power_state::no_battery:
+      return "no_battery";
+
+    case power_state::charging:
+      return "charging";
+
+    case power_state::charged:
+      return "charged";
+
+    default:
+      throw exception {"Did not recognize power state!"};
+  }
+}
+
+inline auto operator<<(std::ostream& stream, const power_state state) -> std::ostream&
+{
+  return stream << to_string(state);
+}
+
 }  // namespace cen
 
-#endif  // CENTURION_POWER_HPP_
+#endif  // CENTURION_SYSTEM_POWER_HPP_

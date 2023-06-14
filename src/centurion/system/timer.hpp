@@ -22,16 +22,48 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#ifndef CENTURION_SYSTEM_TIMER_HPP_
+#define CENTURION_SYSTEM_TIMER_HPP_
 
-#include "centurion/system/memory.hpp"
+#include <SDL.h>
 
-TEST(RAM, MB)
+#include "../common.hpp"
+
+namespace cen {
+
+/// Returns the frequency of the system high-performance counter.
+[[nodiscard]] inline auto frequency() noexcept -> uint64
 {
-  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram_mb());
+  return SDL_GetPerformanceFrequency();
 }
 
-TEST(RAM, GB)
+/// Returns the current value of the high-performance counter.
+[[nodiscard]] inline auto now() noexcept -> uint64
 {
-  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram_gb());
+  return SDL_GetPerformanceCounter();
 }
+
+/// Returns the value of the system high-performance counter in seconds.
+[[nodiscard]] inline auto now_in_seconds() noexcept(noexcept(seconds<double> {}))
+    -> seconds<double>
+{
+  return seconds<double> {static_cast<double>(now()) / static_cast<double>(frequency())};
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+[[nodiscard]] inline auto ticks64() noexcept(noexcept(u64ms {uint64 {}})) -> u64ms
+{
+  return u64ms {SDL_GetTicks64()};
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+[[nodiscard, deprecated]] inline auto ticks32() noexcept(noexcept(u32ms {uint32 {}})) -> u32ms
+{
+  return u32ms {SDL_GetTicks()};
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_SYSTEM_TIMER_HPP_

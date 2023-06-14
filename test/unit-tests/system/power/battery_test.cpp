@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/system/power.hpp"
 
-#include "centurion/power.hpp"
+#include <gtest/gtest.h>
 
 TEST(Battery, BatteryPercentage)
 {
@@ -49,7 +49,7 @@ TEST(Battery, BatterySeconds)
   SDL_GetPowerInfo(&actual, nullptr);
 
   if (const auto secs = cen::battery_seconds()) {
-    ASSERT_EQ(cen::seconds<int>{actual}, secs.value());
+    ASSERT_EQ(cen::seconds<int> {actual}, secs.value());
   }
 }
 
@@ -61,7 +61,7 @@ TEST(Battery, BatteryMinutes)
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 
-    const cen::seconds<int> s{actual};
+    const cen::seconds<int> s {actual};
     ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(s), minutes.value());
   }
 }

@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/system.hpp"
+#include "centurion/system/timer.hpp"
 
 TEST(Counter, Frequency)
 {

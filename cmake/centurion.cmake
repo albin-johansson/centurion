@@ -63,6 +63,7 @@ function(cen_set_basic_compiler_options target)
                            -Wno-deprecated
                            -Wno-deprecated-declarations
                            -Wno-format-security
+                           -Wno-gnu-zero-variadic-macro-arguments
                            )
 
     if (TREAT_WARNINGS_AS_ERRORS MATCHES ON)

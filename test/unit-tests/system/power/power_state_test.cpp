@@ -26,6 +26,7 @@
 
 #include <iostream>  // cout
 
+#include "centurion/common/utils.hpp"
 #include "centurion/system/power.hpp"
 
 TEST(PowerState, Values)

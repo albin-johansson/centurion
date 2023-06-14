@@ -25,7 +25,6 @@
 #include <gtest/gtest.h>
 
 #include "centurion/initialization.hpp"
-#include "centurion/logging.hpp"
 
 int main(int argc, char* argv[])
 {

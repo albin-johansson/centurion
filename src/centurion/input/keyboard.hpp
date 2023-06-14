@@ -34,9 +34,10 @@
 #include <sstream>    // stringstream
 #include <string>     // string, to_string
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
+#include "../common/utils.hpp"
+#include "../common/version.hpp"
 #include "../features.hpp"
-#include "../version.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/common/sdl_string.hpp"
 
-#include "centurion/common.hpp"
+#include <gtest/gtest.h>
 
 TEST(SDLString, Constructor)
 {

@@ -26,6 +26,7 @@
 
 #include <gtest/gtest.h>
 
+#include "centurion/common/literals.hpp"
 #include "centurion/events/misc_events.hpp"
 
 using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing

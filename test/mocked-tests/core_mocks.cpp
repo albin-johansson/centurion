@@ -26,8 +26,6 @@
 
 #include <array>  // array
 
-#include "centurion/common.hpp"
-
 extern "C" {
 DEFINE_FAKE_VALUE_FUNC(int, SDL_Init, Uint32)
 DEFINE_FAKE_VALUE_FUNC(int, TTF_Init)

@@ -22,51 +22,43 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_VIDEO_FLASH_OP_HPP_
-#define CENTURION_VIDEO_FLASH_OP_HPP_
+#ifndef CENTURION_COMMON_TRAITS_HPP_
+#define CENTURION_COMMON_TRAITS_HPP_
 
-#include <SDL.h>
+#include <type_traits>  // enable_if_t, is_pointer_v, is_convertible_v, is_enum_v, is_same_v, is_integral_v, is_floating_point_v
 
-#include <ostream>      // ostream
-#include <string_view>  // string_view
+#include "../features.hpp"
 
-#include "../common/errors.hpp"
-#include "../common/primitives.hpp"
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+#include <concepts>  // default_initializable, invocable
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 namespace cen {
 
-#if SDL_VERSION_ATLEAST(2, 0, 16)
+template <typename T>
+using enable_for_pointer_t = std::enable_if_t<std::is_pointer_v<T>, int>;
 
-enum class flash_op {
-  cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
-  briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
-  until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
-};
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_for_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
-[[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
-{
-  switch (op) {
-    case flash_op::cancel:
-      return "cancel";
+template <typename T>
+using enable_for_enum_t = std::enable_if_t<std::is_enum_v<T>, int>;
 
-    case flash_op::briefly:
-      return "briefly";
+template <typename T>
+inline constexpr bool is_number =
+    !std::is_same_v<T, bool> && (std::is_integral_v<T> || std::is_floating_point_v<T>);
 
-    case flash_op::until_focused:
-      return "until_focused";
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
-    default:
-      throw exception {"Did not recognize window flash operation!"};
-  }
-}
+template <typename T, typename... Args>
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
 
-inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
-{
-  return stream << to_string(op);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_FLASH_OP_HPP_
+#endif  // CENTURION_COMMON_TRAITS_HPP_

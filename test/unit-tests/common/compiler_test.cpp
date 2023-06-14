@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/common.hpp"
+#include "centurion/common/primitives.hpp"
 
 TEST(Compiler, IsDebugBuild)
 {

@@ -33,9 +33,12 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
+#include "../memory.hpp"
 #include "fade_status.hpp"
 #include "music_type.hpp"
 

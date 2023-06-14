@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/locale.hpp"
+#include "centurion/system/locale.hpp"
 
 #include <gtest/gtest.h>
 

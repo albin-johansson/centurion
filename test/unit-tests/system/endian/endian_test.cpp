@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/endian.hpp"
+#include "centurion/system/endian.hpp"
 
 #include <gtest/gtest.h>
 

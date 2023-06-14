@@ -42,7 +42,8 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "common.hpp"
+#include "common/primitives.hpp"
+#include "common/errors.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
 #include "video/surface.hpp"

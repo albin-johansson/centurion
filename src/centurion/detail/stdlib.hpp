@@ -36,7 +36,7 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_integral_v
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

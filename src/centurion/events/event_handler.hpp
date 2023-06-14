@@ -31,7 +31,7 @@
 #include <string>   // string, to_string
 #include <variant>  // variant, monostate, get, get_if, holds_alternative
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../features.hpp"
 #include "audio_events.hpp"
 #include "controller_events.hpp"

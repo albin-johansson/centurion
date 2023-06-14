@@ -29,7 +29,7 @@
 #include <type_traits>  // ...
 
 #include "centurion/audio.hpp"
-#include "centurion/logging.hpp"
+#include "centurion/common/logging.hpp"
 
 static_assert(std::is_final_v<cen::music>);
 

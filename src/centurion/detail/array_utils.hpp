@@ -28,7 +28,7 @@
 #include <array>    // array, to_array
 #include <cstddef>  // size_t
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../features.hpp"
 
 namespace cen::detail {

@@ -37,7 +37,7 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
 

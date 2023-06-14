@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/common.hpp"
+#include "centurion/common/errors.hpp"
 
 static_assert(std::has_virtual_destructor_v<cen::exception>);
 static_assert(std::is_default_constructible_v<cen::exception>);

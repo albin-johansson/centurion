@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/common/result.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
-
-#include "centurion/common.hpp"
 
 TEST(Result, Values)
 {

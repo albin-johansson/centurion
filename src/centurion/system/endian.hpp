@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_ENDIAN_HPP_
-#define CENTURION_ENDIAN_HPP_
+#ifndef CENTURION_SYSTEM_ENDIAN_HPP_
+#define CENTURION_SYSTEM_ENDIAN_HPP_
 
 #include <SDL.h>
 
-#include "common.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen {
 
@@ -103,4 +103,4 @@ namespace cen {
 
 }  // namespace cen
 
-#endif  // CENTURION_ENDIAN_HPP_
+#endif  // CENTURION_SYSTEM_ENDIAN_HPP_

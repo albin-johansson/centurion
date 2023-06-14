@@ -24,6 +24,7 @@
 
 #include <gtest/gtest.h>
 
+#include "centurion/common/literals.hpp"
 #include "centurion/concurrency.hpp"
 
 TEST(Semaphore, Acquire)

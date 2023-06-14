@@ -22,22 +22,33 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_SDL_VERSION_AT_LEAST_HPP_
-#define CENTURION_DETAIL_SDL_VERSION_AT_LEAST_HPP_
+#ifndef CENTURION_COMMON_LITERALS_HPP_
+#define CENTURION_COMMON_LITERALS_HPP_
 
 #include <SDL.h>
 
-#include "../common/version.hpp"
+#include "primitives.hpp"
 
-namespace cen::detail {
+namespace cen::literals {
+inline namespace time_literals {
 
-[[nodiscard]] constexpr auto sdl_version_at_least(const int major,
-                                                  const int minor,
-                                                  const int patch) noexcept -> bool
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> u64ms
 {
-  return SDL_COMPILEDVERSION >= SDL_VERSIONNUM(major, minor, patch);
+  return u64ms {static_cast<uint64>(ms)};
 }
 
-}  // namespace cen::detail
+#else
 
-#endif  // CENTURION_DETAIL_SDL_VERSION_AT_LEAST_HPP_
+[[nodiscard]] constexpr auto operator""_ms(const ulonglong ms) -> u32ms
+{
+  return u32ms {static_cast<uint32>(ms)};
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
+
+}  // namespace time_literals
+}  // namespace cen::literals
+
+#endif  // CENTURION_COMMON_LITERALS_HPP_

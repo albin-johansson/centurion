@@ -26,7 +26,8 @@
 
 #include <iostream>  // cout
 
-#include "centurion/logging.hpp"
+#include "centurion/common/logging.hpp"
+#include "centurion/common/utils.hpp"
 
 TEST(LogPriority, Values)
 {

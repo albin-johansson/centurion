@@ -33,7 +33,10 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
+#include "../common/utils.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"

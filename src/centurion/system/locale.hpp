@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_LOCALE_HPP_
-#define CENTURION_LOCALE_HPP_
+#ifndef CENTURION_SYSTEM_LOCALE_HPP_
+#define CENTURION_SYSTEM_LOCALE_HPP_
 
 #include <SDL.h>
 
@@ -31,8 +31,8 @@
 #include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
-#include "detail/sdl_deleter.hpp"
-#include "detail/stdlib.hpp"
+#include "../detail/sdl_deleter.hpp"
+#include "../detail/stdlib.hpp"
 
 namespace cen {
 
@@ -102,4 +102,4 @@ class locale final {
 
 }  // namespace cen
 
-#endif  // CENTURION_LOCALE_HPP_
+#endif  // CENTURION_SYSTEM_LOCALE_HPP_

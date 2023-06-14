@@ -32,7 +32,8 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen {
 

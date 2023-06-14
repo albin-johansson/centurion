@@ -31,7 +31,7 @@
 #include <string_view>  // string_view
 #include <utility>      // move
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "event_type.hpp"
 
 namespace cen {

@@ -30,7 +30,8 @@
 #include <cassert>   // assert
 #include <optional>  // optional
 
-#include "common.hpp"
+#include "common/primitives.hpp"
+#include "common/errors.hpp"
 #include "features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE

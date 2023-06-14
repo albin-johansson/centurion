@@ -28,6 +28,8 @@
 
 #include <iostream>  // cout
 
+#include "centurion/common/utils.hpp"
+
 TEST(SeekMode, Values)
 {
   ASSERT_EQ(RW_SEEK_SET, to_underlying(cen::seek_mode::from_beginning));

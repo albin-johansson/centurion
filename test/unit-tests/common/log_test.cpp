@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/logging.hpp"
+#include "centurion/common/logging.hpp"
 
 TEST(Log, SetPriorityAllCategories)
 {

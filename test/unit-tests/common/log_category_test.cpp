@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/logging.hpp"
+#include "centurion/common/logging.hpp"
 
 TEST(LogCategory, Values)
 {

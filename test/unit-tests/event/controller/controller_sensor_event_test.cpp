@@ -26,6 +26,7 @@
 
 #include <array>  // array
 
+#include "centurion/common/literals.hpp"
 #include "centurion/events/controller_events.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)

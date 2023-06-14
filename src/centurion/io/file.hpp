@@ -37,7 +37,10 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
+#include "../common/utils.hpp"
+#include "../memory.hpp"
 #include "file_mode.hpp"
 #include "file_type.hpp"
 #include "seek_mode.hpp"

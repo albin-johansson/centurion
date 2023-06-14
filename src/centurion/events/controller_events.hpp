@@ -29,7 +29,7 @@
 
 #include <array>  // array
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../detail/array_utils.hpp"
 #include "../detail/stdlib.hpp"
 #include "../input/controller.hpp"

@@ -34,7 +34,7 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../features.hpp"
 #include "../video/renderer.hpp"
 #include "../video/texture.hpp"

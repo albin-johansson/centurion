@@ -36,7 +36,8 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../features.hpp"
 #include "../math.hpp"

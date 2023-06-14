@@ -32,7 +32,8 @@
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#include "common.hpp"
+#include "common/primitives.hpp"
+#include "common/utils.hpp"
 #include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"

@@ -31,7 +31,8 @@
 #include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
-#include "common.hpp"
+#include "common/errors.hpp"
+#include "common/primitives.hpp"
 
 namespace cen {
 

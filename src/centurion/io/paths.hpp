@@ -30,7 +30,7 @@
 #include <cassert>  // assert
 #include <string>   // string
 
-#include "../common.hpp"
+#include "../common/sdl_string.hpp"
 
 namespace cen {
 

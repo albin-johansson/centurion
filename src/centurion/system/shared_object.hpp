@@ -30,7 +30,8 @@
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen {
 

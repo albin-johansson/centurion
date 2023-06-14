@@ -27,7 +27,9 @@
 
 #include <SDL.h>
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"

@@ -27,8 +27,9 @@
 #include <iostream>
 #include <type_traits>
 
+#include "centurion/common/literals.hpp"
+#include "centurion/common/logging.hpp"
 #include "centurion/concurrency.hpp"
-#include "centurion/logging.hpp"
 
 namespace {
 

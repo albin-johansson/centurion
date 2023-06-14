@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen {
 

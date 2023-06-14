@@ -30,7 +30,8 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 #include "event_base.hpp"
 
 namespace cen {

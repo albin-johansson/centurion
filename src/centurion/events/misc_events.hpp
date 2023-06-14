@@ -32,7 +32,8 @@
 #include <string_view>  // string_view
 #include <utility>      // move
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 #include "../detail/array_utils.hpp"
 #include "../detail/stdlib.hpp"
 #include "../input.hpp"

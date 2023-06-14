@@ -24,7 +24,8 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/common.hpp"
+#include "centurion/common/primitives.hpp"
+#include "centurion/common/utils.hpp"
 
 using foo_type = cen::ulonglong;
 using bar_type = char;

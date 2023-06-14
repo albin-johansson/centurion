@@ -23,8 +23,10 @@
  */
 
 #include "system/clipboard.hpp"
+#include "system/endian.hpp"
 #include "system/memory.hpp"
 #include "system/platform.hpp"
+#include "system/locale.hpp"
 #include "system/power.hpp"
 #include "system/shared_object.hpp"
 #include "system/timer.hpp"

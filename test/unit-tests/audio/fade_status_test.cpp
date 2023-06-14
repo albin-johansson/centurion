@@ -27,6 +27,7 @@
 #include <iostream>  // cout
 
 #include "centurion/audio.hpp"
+#include "centurion/common/utils.hpp"
 
 TEST(FadeStatus, Values)
 {

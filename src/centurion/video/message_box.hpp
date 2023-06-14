@@ -35,7 +35,8 @@
 #include <utility>      // move
 #include <vector>       // vector
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 #include "color.hpp"
 #include "window.hpp"
 

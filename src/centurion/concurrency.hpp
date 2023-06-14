@@ -33,7 +33,10 @@
 #include <string_view>  // string_view
 #include <type_traits>  // invoke_result_t, declval
 
-#include "common.hpp"
+#include "common/errors.hpp"
+#include "common/primitives.hpp"
+#include "common/result.hpp"
+#include "common/utils.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
 #include "memory.hpp"

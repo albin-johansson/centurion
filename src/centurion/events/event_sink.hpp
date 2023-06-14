@@ -28,8 +28,6 @@
 #include <functional>   // function, bind, placeholders
 #include <type_traits>  // decay_t, is_invocable_v, is_member_function_pointer_v
 
-#include "../common.hpp"
-
 namespace cen {
 
 /**

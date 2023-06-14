@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "event_base.hpp"
 
 namespace cen {

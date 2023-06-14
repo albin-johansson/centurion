@@ -32,7 +32,7 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
 
 namespace cen {
 

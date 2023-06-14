@@ -33,11 +33,13 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#include "../common.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
+#include "../common/version.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
 #include "../unicode.hpp"
-#include "../version.hpp"
 #include "../video/color.hpp"
 #include "../video/surface.hpp"
 #include "font_direction.hpp"

@@ -35,8 +35,9 @@
 #include <string>    // string, to_string
 #include <utility>   // pair, make_pair, move
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../detail/owner_handle_api.hpp"
+#include "../detail/sdl_deleter.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
 #include "../math.hpp"

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/version.hpp"
+#include "centurion/common/version.hpp"
 
 #include <gtest/gtest.h>
 

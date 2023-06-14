@@ -29,6 +29,7 @@
 
 #include <array>  // array
 
+#include "centurion/common/literals.hpp"
 #include "centurion/video/color.hpp"
 #include "core_mocks.hpp"
 

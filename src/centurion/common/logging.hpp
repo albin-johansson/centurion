@@ -33,8 +33,9 @@
 #include <string_view>  // string_view
 #include <utility>      // forward
 
-#include "common.hpp"
-#include "features.hpp"
+#include "../features.hpp"
+#include "errors.hpp"
+#include "utils.hpp"
 #include "version.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)

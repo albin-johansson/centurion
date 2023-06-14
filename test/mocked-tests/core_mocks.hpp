@@ -32,7 +32,7 @@
 
 #include <array>  // array
 
-#include "centurion/common.hpp"
+#include "centurion/common/utils.hpp"
 
 #define CEN_PREPARE_MOCK_TEST(Fun, ...) \
   std::array values {__VA_ARGS__};      \

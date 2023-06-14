@@ -28,6 +28,8 @@
 
 #include <iostream>  // cout
 
+#include "centurion/common/utils.hpp"
+
 TEST(FileType, Values)
 {
   ASSERT_EQ(SDL_RWOPS_UNKNOWN, to_underlying(cen::file_type::unknown));

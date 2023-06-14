@@ -50,6 +50,9 @@ function(cen_set_basic_compiler_options target)
                            /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
                            )
 
+    if (TREAT_WARNINGS_AS_ERRORS MATCHES ON)
+      target_compile_options(${target} PRIVATE /WX)
+    endif ()
   elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
     target_compile_options(${target} PRIVATE
                            -Wall
@@ -57,5 +60,9 @@ function(cen_set_basic_compiler_options target)
                            -Wpedantic
                            -Wconversion
                            )
+
+    if (TREAT_WARNINGS_AS_ERRORS MATCHES ON)
+      target_compile_options(${target} PRIVATE -Werror)
+    endif ()
   endif ()
 endfunction()

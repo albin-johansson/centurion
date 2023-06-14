@@ -17,12 +17,11 @@ set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
-message("[centurion]: version ${CENTURION_VERSION}")
-
-message("[centurion]: CMAKE_CXX_STANDARD is '${CMAKE_CXX_STANDARD}'")
-message("[centurion]: CMAKE_CXX_COMPILER is '${CMAKE_CXX_COMPILER}'")
-message("[centurion]: CMAKE_CXX_COMPILER_ID is '${CMAKE_CXX_COMPILER_ID}'")
+# Build options
+option(BUILD_TESTS "Build the test suite" OFF)
+option(BUILD_EXAMPLES "Build the examples" OFF)
+option(INCLUDE_AUDIO_TESTS "Test audio components" ON)
+option(TREAT_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
 include(cmake/centurion.cmake)
 
@@ -35,13 +34,8 @@ set(CEN_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external")
 
 # Target names
 set(CENTURION_LIB_TARGET libcenturion)
-set(CENTURION_TEST_TARGET testcenturion)
-set(CENTURION_MOCK_TARGET mockcenturion)
-
-# Build options
-option(BUILD_TESTS "Build the test suite" OFF)
-option(BUILD_EXAMPLES "Build the examples" OFF)
-option(INCLUDE_AUDIO_TESTS "Test audio components" ON)
+set(CENTURION_TEST_TARGET centurion-tests)
+set(CENTURION_MOCK_TARGET centurion-mocks)
 
 # System dependencies
 find_package(SDL2 REQUIRED)

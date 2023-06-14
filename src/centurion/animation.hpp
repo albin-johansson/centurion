@@ -45,7 +45,7 @@
 #include "common.hpp"
 #include "detail/stdlib.hpp"
 #include "math.hpp"
-#include "surface.hpp"
+#include "video/surface.hpp"
 
 namespace cen {
 

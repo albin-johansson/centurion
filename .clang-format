@@ -9,7 +9,7 @@ IndentWidth: 2
 DerivePointerAlignment: false
 PointerAlignment: Left
 
-IndentRequires: true
+IndentRequiresClause: true
 
 NamespaceIndentation: None
 FixNamespaceComments: true
@@ -23,7 +23,7 @@ AllowAllConstructorInitializersOnNextLine: false
 BinPackParameters: false
 BinPackArguments: false
 
-AllowShortFunctionsOnASingleLine: All
+AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortBlocksOnASingleLine: Empty
 AllowShortLambdasOnASingleLine: All
@@ -34,20 +34,9 @@ BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: true
 BreakBeforeConceptDeclarations: true
 
-BreakBeforeBraces: Custom
-BraceWrapping:
-  AfterClass: true
-  AfterStruct: true
-  AfterUnion: false
-  AfterEnum: true
-  AfterFunction: true
-  AfterExternBlock: true
-  AfterCaseLabel: false
-  BeforeElse: true
-  BeforeCatch: true
-  SplitEmptyNamespace: false
-  SplitEmptyRecord: false
-  SplitEmptyFunction: false
+BreakBeforeBraces: Stroustrup
 
 BreakInheritanceList: BeforeComma
 BreakConstructorInitializers: BeforeComma
+
+SpaceBeforeCpp11BracedList: true

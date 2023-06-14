@@ -46,6 +46,7 @@ function(cen_set_basic_compiler_options target)
                            /EHsc
                            /MP
                            /W4
+                           /wd4996          # Disable deprecation warnings
                            /Zc:preprocessor # Enable conforming preprocessor
                            /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
                            )

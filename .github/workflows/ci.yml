@@ -75,18 +75,18 @@ jobs:
       fail-fast: false
       matrix:
         SDL_VERSION: [ 2.24.0, 2.26.0 ]
-        TTF_VERSION: [ 2.0.15, 2.20.1 ]
+        TTF_VERSION: [ 2.0.18, 2.20.1 ]
         IMG_VERSION: [ 2.0.5, 2.6.2 ]
         MIX_VERSION: [ 2.6.2 ]
         CPP_VERSION: [ 20 ]
         include:
-          - { SDL_VERSION: 2.0.10, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.12, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.14, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.16, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.18, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.20, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.22, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.10, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.12, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.14, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.16, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.18, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.20, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.22, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
           - { SDL_VERSION: 2.26.0, TTF_VERSION: 2.20.1, IMG_VERSION: 2.6.2, MIX_VERSION: 2.6.2, CPP_VERSION: 23 }
     env:
       VCPKG_ROOT: ${{github.workspace}}/vcpkg
@@ -277,18 +277,18 @@ jobs:
       fail-fast: false
       matrix:
         SDL_VERSION: [ 2.24.0, 2.26.0 ]
-        TTF_VERSION: [ 2.0.15, 2.20.1 ]
+        TTF_VERSION: [ 2.0.18, 2.20.1 ]
         IMG_VERSION: [ 2.0.5, 2.6.2 ]
         MIX_VERSION: [ 2.6.2 ]
         CPP_VERSION: [ 20 ]
         include:
-          - { SDL_VERSION: 2.0.10, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.12, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.14, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.16, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.18, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.20, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
-          - { SDL_VERSION: 2.0.22, TTF_VERSION: 2.0.15, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.10, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.12, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.14, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.16, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.18, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.20, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
+          - { SDL_VERSION: 2.0.22, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 17 }
           - { SDL_VERSION: 2.24.0, TTF_VERSION: 2.0.18, IMG_VERSION: 2.0.5, MIX_VERSION: 2.6.2, CPP_VERSION: 20 }
           - { SDL_VERSION: 2.26.0, TTF_VERSION: 2.20.1, IMG_VERSION: 2.6.2, MIX_VERSION: 2.6.2, CPP_VERSION: 23 }
     env:
@@ -303,8 +303,13 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          choco install cmake
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
           choco install ninja
+
+      - name: Print dependency versions
+        run: |
+          cmake --version
+          ninja --version
 
       - name: Restore Vcpkg
         id: restore-vcpkg-artifacts

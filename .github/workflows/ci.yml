@@ -303,8 +303,8 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          winget install CMake
-          winget install ninja
+          choco install cmake
+          choco install ninja
 
       - name: Restore Vcpkg
         id: restore-vcpkg-artifacts

@@ -44,10 +44,10 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
-#include "../sensor.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "joystick.hpp"
+#include "sensor.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/touch.hpp"
+#include "centurion/input/touch.hpp"
 
 #include <gtest/gtest.h>
 

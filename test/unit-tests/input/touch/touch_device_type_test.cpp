@@ -26,7 +26,8 @@
 
 #include <iostream>  // cout
 
-#include "centurion/touch.hpp"
+#include "centurion/common/utils.hpp"
+#include "centurion/input/touch.hpp"
 
 using device_type = cen::touch_device_type;
 

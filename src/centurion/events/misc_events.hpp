@@ -40,7 +40,7 @@
 #include "../input/controller.hpp"
 #include "../input/keyboard.hpp"
 #include "../input/mouse.hpp"
-#include "../sensor.hpp"
+#include "../input/sensor.hpp"
 #include "event_base.hpp"
 
 namespace cen {

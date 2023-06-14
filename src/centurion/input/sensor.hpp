@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_SENSOR_HPP_
-#define CENTURION_SENSOR_HPP_
+#ifndef CENTURION_INPUT_SENSOR_HPP_
+#define CENTURION_INPUT_SENSOR_HPP_
 
 #include <SDL.h>
 
@@ -34,13 +34,13 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "common/errors.hpp"
-#include "common/primitives.hpp"
-#include "common/result.hpp"
-#include "common/utils.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
+#include "../common/result.hpp"
+#include "../common/utils.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -264,4 +264,4 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
 
 }  // namespace cen
 
-#endif  // CENTURION_SENSOR_HPP_
+#endif  // CENTURION_INPUT_SENSOR_HPP_

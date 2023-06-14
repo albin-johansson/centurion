@@ -27,3 +27,5 @@
 #include "input/joystick.hpp"
 #include "input/keyboard.hpp"
 #include "input/mouse.hpp"
+#include "input/sensor.hpp"
+#include "input/touch.hpp"

@@ -33,7 +33,7 @@
 #include "../detail/array_utils.hpp"
 #include "../detail/stdlib.hpp"
 #include "../input/controller.hpp"
-#include "../sensor.hpp"
+#include "../input/sensor.hpp"
 #include "event_base.hpp"
 
 namespace cen {

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/sensor.hpp"
+#include "centurion/input/sensor.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

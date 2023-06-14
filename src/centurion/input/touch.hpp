@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_TOUCH_HPP_
-#define CENTURION_TOUCH_HPP_
+#ifndef CENTURION_INPUT_TOUCH_HPP_
+#define CENTURION_INPUT_TOUCH_HPP_
 
 #include <SDL.h>
 
@@ -31,9 +31,8 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
-#include "common/errors.hpp"
-#include "common/primitives.hpp"
-#include "input.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen {
 
@@ -137,4 +136,4 @@ class finger final {
 
 }  // namespace cen
 
-#endif  // CENTURION_TOUCH_HPP_
+#endif  // CENTURION_INPUT_TOUCH_HPP_

@@ -60,7 +60,9 @@ add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
 
 target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 
-cen_add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
+set(CEN_FFF_DIR "${CEN_EXTERNAL_DIR}/fff")
+
+cen_add_header_only_lib(libFFF ${CEN_FFF_DIR} ${CEN_FFF_DIR}/fff.h)
 
 target_include_directories(${CENTURION_MOCK_TARGET}
                            PRIVATE

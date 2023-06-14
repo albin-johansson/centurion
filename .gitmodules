@@ -1,0 +1,3 @@
+[submodule "external/fff"]
+	path = external/fff
+	url = https://github.com/meekrosoft/fff

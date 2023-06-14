@@ -15,6 +15,9 @@ jobs:
       VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
       - name: Install system dependencies
         run: |
           brew install cmake
@@ -92,6 +95,9 @@ jobs:
       DISPLAY: :99.0
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
       - name: Install system dependencies
         run: |
           sudo apt install cmake \
@@ -290,7 +296,11 @@ jobs:
       VCPKG_DEFAULT_BINARY_CACHE: ${{github.workspace}}/vcpkg/bincache
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
       - uses: ilammy/msvc-dev-cmd@v1.11.0
+
       - name: Install system dependencies
         run: |
           winget install CMake

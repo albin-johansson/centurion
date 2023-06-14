@@ -51,6 +51,7 @@
 .vs
 .vscode
 
+bin/*.dll
 build
 cmake-build-*
 doxygen-out

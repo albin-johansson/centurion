@@ -325,10 +325,6 @@ jobs:
           .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
           .\vcpkg\vcpkg integrate install
 
-      - name: Create directory for binaries
-        shell: cmd
-        run: mkdir bin
-
       - name: Download SDL2
         uses: albin-johansson/download-sdl2@latest
         with:

@@ -69,15 +69,7 @@ class file final {
 
   /// Manually closes the file.
   /// \note You don't have to call this function, but it's provided for completeness.
-  auto close() noexcept -> result
-  {
-    if (SDL_RWclose(mContext.get()) == 0) {
-      mContext.reset();
-      return success;
-    }
-
-    return failure;
-  }
+  auto close() noexcept -> result { return SDL_RWclose(release()) == 0; }
 
   template <typename T>
   auto write(const T* data, const size_type count) noexcept -> size_type

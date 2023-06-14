@@ -50,6 +50,11 @@ DEFINE_FAKE_VALUE_FUNC(Uint32, SDL_GetWindowFlags, SDL_Window*)
 }
 
 namespace mocks {
+namespace {
+
+inline std::array dummy_error_msg {"oops"};
+
+}  // namespace
 
 void reset_core()
 {
@@ -73,8 +78,7 @@ void reset_core()
 
   RESET_FAKE(SDL_GetWindowFlags)
 
-  std::array values {"dummy"};
-  SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values))
+  SET_RETURN_SEQ(SDL_GetError, dummy_error_msg.data(), cen::isize(dummy_error_msg))
 }
 
 }  // namespace mocks

@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/event.hpp"
+#include "centurion/events/joystick_events.hpp"
 
 using position = cen::joy_hat_position;
 

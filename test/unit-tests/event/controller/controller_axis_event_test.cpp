@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/controller_events.hpp"
 
 TEST(ControllerAxisEvent, Defaults)
 {

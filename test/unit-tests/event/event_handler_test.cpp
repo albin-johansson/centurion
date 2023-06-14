@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/event.hpp"
+#include "centurion/events/event_handler.hpp"
 
 namespace {
 

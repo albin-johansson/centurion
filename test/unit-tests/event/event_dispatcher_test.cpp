@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/events/event_dispatcher.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
-
-#include "centurion/event.hpp"
 
 using EventDispatcher =
     cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;

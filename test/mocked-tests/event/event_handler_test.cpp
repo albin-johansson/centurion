@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/events/event_handler.hpp"
+
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

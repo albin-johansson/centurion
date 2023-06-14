@@ -34,7 +34,7 @@
 #include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
 #include "centurion/endian.hpp"
-#include "centurion/event.hpp"
+#include "centurion/events.hpp"
 #include "centurion/features.hpp"
 #include "centurion/fonts.hpp"
 #include "centurion/initialization.hpp"

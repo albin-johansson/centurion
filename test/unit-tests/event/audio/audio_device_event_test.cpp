@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/audio_events.hpp"
 
 TEST(AudioDeviceEvent, Defaults)
 {

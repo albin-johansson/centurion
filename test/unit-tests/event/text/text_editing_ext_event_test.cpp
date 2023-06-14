@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/misc_events.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 22)
 

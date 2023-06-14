@@ -48,10 +48,10 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
-#include "../unicode.hpp"
 #include "color.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
+#include "unicode_string.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

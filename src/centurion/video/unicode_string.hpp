@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_UNICODE_HPP_
-#define CENTURION_UNICODE_HPP_
+#ifndef CENTURION_VIDEO_UNICODE_STRING_HPP_
+#define CENTURION_VIDEO_UNICODE_STRING_HPP_
 
 #include <cassert>           // assert
 #include <initializer_list>  // initializer_list
@@ -31,8 +31,8 @@
 #include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
-#include "common/errors.hpp"
-#include "common/primitives.hpp"
+#include "../common/errors.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen {
 
@@ -191,4 +191,4 @@ class unicode_string final {
 
 }  // namespace cen
 
-#endif  // CENTURION_UNICODE_HPP_
+#endif  // CENTURION_VIDEO_UNICODE_STRING_HPP_

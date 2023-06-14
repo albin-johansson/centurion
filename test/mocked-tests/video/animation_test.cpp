@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/animation.hpp"
+#include "centurion/video/animation.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

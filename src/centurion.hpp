@@ -29,7 +29,6 @@
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
-#include "centurion/animation.hpp"
 #include "centurion/audio.hpp"
 #include "centurion/common.hpp"
 #include "centurion/concurrency.hpp"
@@ -42,7 +41,6 @@
 #include "centurion/sensor.hpp"
 #include "centurion/system.hpp"
 #include "centurion/touch.hpp"
-#include "centurion/unicode.hpp"
 #include "centurion/video.hpp"
 
 #endif  // CENTURION_HPP_

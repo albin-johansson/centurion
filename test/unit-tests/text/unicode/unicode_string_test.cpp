@@ -22,9 +22,10 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/unicode_string.hpp"
+
 #include <gtest/gtest.h>
 
-#include "centurion/unicode.hpp"
 #include "cereal/types/vector.hpp"
 #include "serialization_utils.hpp"
 

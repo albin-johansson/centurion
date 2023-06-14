@@ -22,31 +22,30 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_ANIMATION_HPP_
-#define CENTURION_ANIMATION_HPP_
+#ifndef CENTURION_VIDEO_ANIMATION_HPP_
+#define CENTURION_VIDEO_ANIMATION_HPP_
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "features.hpp"
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../common/errors.hpp"
+#include "../common/math.hpp"
+#include "../common/primitives.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
-
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string
-
-#include "common/errors.hpp"
-#include "common/math.hpp"
-#include "common/primitives.hpp"
-#include "detail/stdlib.hpp"
-#include "video/surface.hpp"
 
 namespace cen {
 
@@ -131,4 +130,4 @@ inline auto operator<<(std::ostream& stream, const animation& anim) -> std::ostr
 }  // namespace cen
 
 #endif  // CENTURION_NO_SDL_IMAGE
-#endif  // CENTURION_ANIMATION_HPP_
+#endif  // CENTURION_VIDEO_ANIMATION_HPP_

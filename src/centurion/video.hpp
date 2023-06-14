@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+#include "video/animation.hpp"
 #include "video/blend.hpp"
 #include "video/color.hpp"
 #include "video/display.hpp"
@@ -33,5 +34,6 @@
 #include "video/renderer_info.hpp"
 #include "video/surface.hpp"
 #include "video/texture.hpp"
+#include "video/unicode_string.hpp"
 #include "video/vulkan.hpp"
 #include "video/window.hpp"

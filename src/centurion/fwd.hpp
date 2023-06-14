@@ -22,7 +22,8 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_FWD_HPP_
+#define CENTURION_FWD_HPP_
 
 namespace cen {
 
@@ -166,3 +167,5 @@ template <typename T>
 struct deleter;
 
 }  // namespace cen
+
+#endif  // CENTURION_FWD_HPP_

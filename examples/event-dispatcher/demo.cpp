@@ -48,7 +48,7 @@ class aaa_game final {
  private:
   cen::window m_window;
   event_dispatcher m_dispatcher;
-  bool m_running{true};
+  bool m_running {true};
 
   // Invoked for each quit event
   void on_quit_event(const cen::quit_event&)

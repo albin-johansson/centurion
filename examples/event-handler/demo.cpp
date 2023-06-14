@@ -1,6 +1,5 @@
+#include <array>  // array
 #include <centurion.hpp>
-
-#include <array>     // array
 #include <cstddef>   // size_t
 #include <optional>  // optional
 
@@ -16,7 +15,7 @@ int main(int, char**)
 {
   const cen::sdl sdl;
 
-  cen::window window{"event_handler demo"};
+  cen::window window {"event_handler demo"};
   cen::renderer renderer = window.make_renderer();
 
   window.show();
@@ -54,7 +53,7 @@ int main(int, char**)
     if (mousePos) {
       renderer.set_color(colors.at((colorIndex + 1u) % colors.size()));
 
-      cen::irect rect{*mousePos, {6, 6}};
+      cen::irect rect {*mousePos, {6, 6}};
       rect.offset_x(-3);
       rect.offset_y(-3);
 

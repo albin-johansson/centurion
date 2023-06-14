@@ -8,7 +8,7 @@ int main(int, char**)
   const cen::sdl sdl;
   const cen::ttf ttf;
 
-  cen::font font{RESOURCE_DIR "daniel.ttf", 12};
+  cen::font font {RESOURCE_DIR "daniel.ttf", 12};
 
   cen::log_info("The font size is %i", font.size());
 

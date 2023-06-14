@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
+#include "centurion/concurrency/condition.hpp"
+
 #include <gtest/gtest.h>
 
 #include "centurion/common/literals.hpp"
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/thread.hpp"
 
 TEST(Condition, Signal)
 {

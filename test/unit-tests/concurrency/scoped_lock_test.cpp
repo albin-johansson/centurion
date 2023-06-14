@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/locks.hpp"
 
 static_assert(!std::is_copy_constructible_v<cen::scoped_lock>);
 static_assert(!std::is_copy_assignable_v<cen::scoped_lock>);

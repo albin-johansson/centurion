@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/concurrency/mutex.hpp"
 
-#include "centurion/concurrency.hpp"
+#include <gtest/gtest.h>
 
 TEST(Mutex, LockAndUnlock)
 {

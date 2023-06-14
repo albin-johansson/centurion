@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+#include "centurion/concurrency/thread.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>
@@ -29,7 +31,6 @@
 
 #include "centurion/common/literals.hpp"
 #include "centurion/common/logging.hpp"
-#include "centurion/concurrency.hpp"
 
 namespace {
 

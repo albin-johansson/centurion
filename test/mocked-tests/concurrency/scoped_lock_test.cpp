@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/locks.hpp"
 #include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 

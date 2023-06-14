@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/thread.hpp"
 
 TEST(ThreadPriority, Values)
 {

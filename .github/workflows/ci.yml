@@ -55,7 +55,8 @@ jobs:
                    -DCMAKE_BUILD_TYPE=Debug \
                    -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
                    -DBUILD_TESTS=ON \
-                   -DBUILD_EXAMPLES=ON
+                   -DBUILD_EXAMPLES=ON \
+                   -DTREAT_WARNINGS_AS_ERRORS=ON
 
       - name: Compile
         run: ninja -C build
@@ -254,7 +255,8 @@ jobs:
                    -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} \
                    -DBUILD_TESTS=ON \
                    -DBUILD_EXAMPLES=ON \
-                   -DINCLUDE_AUDIO_TESTS=OFF
+                   -DINCLUDE_AUDIO_TESTS=OFF \
+                   -DTREAT_WARNINGS_AS_ERRORS=ON
 
       - name: Compile
         run: ninja -C build
@@ -366,7 +368,8 @@ jobs:
                    -DCMAKE_BUILD_TYPE=Debug `
                    -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} `
                    -DBUILD_TESTS=ON `
-                   -DBUILD_EXAMPLES=ON
+                   -DBUILD_EXAMPLES=ON `
+                   -DTREAT_WARNINGS_AS_ERRORS=ON
 
       - name: Compile
         run: ninja -C build

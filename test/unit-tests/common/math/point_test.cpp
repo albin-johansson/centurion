@@ -75,8 +75,8 @@ TEST(Point, DistanceInt)
   const cen::ipoint b {357, 752};
   const auto expected = 780;
 
-  ASSERT_FLOAT_EQ(cen::distance(a, b), expected);
-  ASSERT_FLOAT_EQ(cen::distance(b, a), expected);
+  ASSERT_EQ(cen::distance(a, b), expected);
+  ASSERT_EQ(cen::distance(b, a), expected);
 }
 
 TEST(Point, DistanceFloat)

@@ -10,7 +10,7 @@ using event_dispatcher = cen::event_dispatcher<cen::quit_event,
 
 void on_mouse_button_event(const cen::mouse_button_event& event)
 {
-  cen::log_info("mouse_button_event");
+  cen::log_info("mouse_button_event (x: %i, y: %i)", event.x(), event.y());
 }
 
 // Our AAA game class
@@ -58,7 +58,7 @@ class aaa_game final {
   }
 
   // Invoked for each window event
-  void on_window_event(const cen::window_event&) { cen::log_info("window_event"); }
+  void on_window_event(const cen::window_event&) {}
 };
 
 }  // namespace

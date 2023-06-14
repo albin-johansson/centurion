@@ -37,6 +37,7 @@
 
 #include "../common/math.hpp"
 #include "../common/primitives.hpp"
+#include "../common/utils.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_deleter.hpp"
 #include "../detail/stdlib.hpp"
@@ -208,12 +209,14 @@ class basic_window final {
 
   auto set_fullscreen(const bool enabled) noexcept -> result
   {
-    return SDL_SetWindowFullscreen(mWindow, enabled ? fullscreen : 0) == 0;
+    const auto flag_value = to_underlying(fullscreen);
+    return SDL_SetWindowFullscreen(mWindow, enabled ? flag_value : 0) == 0;
   }
 
   auto set_fullscreen_desktop(const bool enabled) noexcept -> result
   {
-    return SDL_SetWindowFullscreen(mWindow, enabled ? fullscreen_desktop : 0) == 0;
+    const auto flag_value = to_underlying(fullscreen_desktop);
+    return SDL_SetWindowFullscreen(mWindow, enabled ? flag_value : 0) == 0;
   }
 
   void set_decorated(const bool decorated) noexcept

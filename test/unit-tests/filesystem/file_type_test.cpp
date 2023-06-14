@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/io/file_type.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
-
-#include "centurion/filesystem.hpp"
 
 TEST(FileType, Values)
 {

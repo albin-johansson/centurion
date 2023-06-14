@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/io/seek_mode.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
-
-#include "centurion/filesystem.hpp"
 
 TEST(SeekMode, Values)
 {

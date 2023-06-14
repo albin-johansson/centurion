@@ -22,186 +22,47 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_FILESYSTEM_HPP_
-#define CENTURION_FILESYSTEM_HPP_
+#ifndef CENTURION_IO_FILE_HPP_
+#define CENTURION_IO_FILE_HPP_
 
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
+
 #include <SDL_image.h>
+
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <optional>     // optional
 #include <ostream>      // ostream
-#include <string>       // string
 #include <string_view>  // string_view
 
-#include "common.hpp"
-#include "memory.hpp"
+#include "../common.hpp"
+#include "file_mode.hpp"
+#include "file_type.hpp"
+#include "seek_mode.hpp"
 
 namespace cen {
-
-enum class file_type : unsigned
-{
-  unknown = SDL_RWOPS_UNKNOWN,
-  win = SDL_RWOPS_WINFILE,
-  std = SDL_RWOPS_STDFILE,
-  jni = SDL_RWOPS_JNIFILE,
-  memory = SDL_RWOPS_MEMORY,
-  memory_ro = SDL_RWOPS_MEMORY_RO
-};
-
-[[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
-{
-  switch (type) {
-    case file_type::unknown:
-      return "unknown";
-
-    case file_type::win:
-      return "win";
-
-    case file_type::std:
-      return "std";
-
-    case file_type::jni:
-      return "jni";
-
-    case file_type::memory:
-      return "memory";
-
-    case file_type::memory_ro:
-      return "memory_ro";
-
-    default:
-      throw exception{"Did not recognize file type!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostream&
-{
-  return stream << to_string(type);
-}
-
-enum class file_mode
-{
-  r,   ///< Read existing ("r").
-  rb,  ///< Read existing binary ("rb").
-
-  w,   ///< Write ("w").
-  wb,  ///< Write binary ("wb").
-
-  a,   ///< Append/create ("a").
-  ab,  ///< Append/create binary ("ab").
-
-  rx,   ///< Read/write existing ("r+").
-  rbx,  ///< Read/write existing binary ("rb+").
-
-  wx,   ///< Read/write replace ("w+").
-  wbx,  ///< Read/write replace binary ("wb+").
-
-  ax,   ///< Read/append ("a+").
-  abx,  ///< Read/append binary ("ab+").
-};
-
-[[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
-{
-  switch (mode) {
-    case file_mode::r:
-      return "r";
-
-    case file_mode::rb:
-      return "rb";
-
-    case file_mode::w:
-      return "w";
-
-    case file_mode::wb:
-      return "wb";
-
-    case file_mode::a:
-      return "a";
-
-    case file_mode::ab:
-      return "ab";
-
-    case file_mode::rx:
-      return "rx";
-
-    case file_mode::rbx:
-      return "rbx";
-
-    case file_mode::wx:
-      return "wx";
-
-    case file_mode::wbx:
-      return "wbx";
-
-    case file_mode::ax:
-      return "ax";
-
-    case file_mode::abx:
-      return "abx";
-
-    default:
-      throw exception{"Did not recognize file mode!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostream&
-{
-  return stream << to_string(mode);
-}
-
-enum class seek_mode
-{
-  from_beginning = RW_SEEK_SET,       ///< From the beginning.
-  relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
-  relative_to_end = RW_SEEK_END       ///< Relative to the end.
-};
-
-[[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
-{
-  switch (mode) {
-    case seek_mode::from_beginning:
-      return "from_beginning";
-
-    case seek_mode::relative_to_current:
-      return "relative_to_current";
-
-    case seek_mode::relative_to_end:
-      return "relative_to_end";
-
-    default:
-      throw exception{"Did not recognize seek mode!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostream&
-{
-  return stream << to_string(mode);
-}
 
 /**
  * Represents a file context or handle.
  *
- * This class differs slightly from other library classes in that it is owning, but it
- * does not throw if the internal pointer can't be created, etc. This is because file
- * operations are error-prone, and we don't want to use exceptions for control flow.
+ * \details This class differs slightly from other library classes in that it is owning, but it
+ *          does not throw if the internal pointer can't be created, etc. This is because file
+ *          operations are error-prone, and we don't want to use exceptions for control flow.
  */
-class file final
-{
+class file final {
  public:
   using size_type = usize;
 
-  explicit file(SDL_RWops* context) noexcept : mContext{context} {}
+  explicit file(SDL_RWops* context) noexcept : mContext {context} {}
 
   file(const char* path, const file_mode mode) noexcept
-      : mContext{SDL_RWFromFile(path, stringify(mode))}
-  {}
+      : mContext {SDL_RWFromFile(path, stringify(mode))}
+  {
+  }
 
-  file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode} {}
+  file(const std::string& path, const file_mode mode) noexcept : file {path.c_str(), mode} {}
 
   template <typename T>
   auto write(const T* data, const size_type count) noexcept -> size_type
@@ -308,9 +169,9 @@ class file final
   // clang-format on
 
   template <typename T>
-  auto read() noexcept(noexcept(T{})) -> T
+  auto read() noexcept(noexcept(T {})) -> T
   {
-    T value{};
+    T value {};
     read_to(&value, 1);
     return value;
   }
@@ -404,7 +265,9 @@ class file final
 #if SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
 
   [[nodiscard]] auto is_avif() const noexcept -> bool { return IMG_isAVIF(data()) == 1; }
+
   [[nodiscard]] auto is_jxl() const noexcept -> bool { return IMG_isJXL(data()) == 1; }
+
   [[nodiscard]] auto is_qoi() const noexcept -> bool { return IMG_isQOI(data()) == 1; }
 
 #endif  // SDL_IMAGE_VERSION_ATLEAST(2, 6, 0)
@@ -490,27 +353,6 @@ class file final
   }
 };
 
-/// Returns the directory from which the application launched from.
-[[nodiscard]] inline auto base_path() -> sdl_string { return sdl_string{SDL_GetBasePath()}; }
-
-/// Returns the preferred path for storing application related files.
-[[nodiscard]] inline auto preferred_path(const char* org, const char* app) -> sdl_string
-{
-  /* Looking at the SDL source code, it actually seems fine to supply a null
-     string for the organization name. However, I haven't been able to find any
-     documentation providing this guarantee, so we simply disallow null
-     organization names. */
-  assert(org);
-  assert(app);
-  return sdl_string{SDL_GetPrefPath(org, app)};
-}
-
-[[nodiscard]] inline auto preferred_path(const std::string& org, const std::string& app)
-    -> sdl_string
-{
-  return preferred_path(org.c_str(), app.c_str());
-}
-
 }  // namespace cen
 
-#endif  // CENTURION_FILESYSTEM_HPP_
+#endif  // CENTURION_IO_FILE_HPP_

@@ -22,31 +22,58 @@
  * SOFTWARE.
  */
 
-#include "centurion/io/file_mode.hpp"
+#ifndef CENTURION_IO_FILE_TYPE_HPP_
+#define CENTURION_IO_FILE_TYPE_HPP_
 
-#include <gtest/gtest.h>
+#include <SDL.h>
 
-#include <iostream>  // cout
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
-TEST(FileMode, ToString)
+#include "../common.hpp"
+
+namespace cen {
+
+enum class file_type : unsigned {
+  unknown = SDL_RWOPS_UNKNOWN,
+  win = SDL_RWOPS_WINFILE,
+  std = SDL_RWOPS_STDFILE,
+  jni = SDL_RWOPS_JNIFILE,
+  memory = SDL_RWOPS_MEMORY,
+  memory_ro = SDL_RWOPS_MEMORY_RO
+};
+
+[[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
-  ASSERT_EQ("r", to_string(cen::file_mode::r));
-  ASSERT_EQ("rb", to_string(cen::file_mode::rb));
+  switch (type) {
+    case file_type::unknown:
+      return "unknown";
 
-  ASSERT_EQ("w", to_string(cen::file_mode::w));
-  ASSERT_EQ("wb", to_string(cen::file_mode::wb));
+    case file_type::win:
+      return "win";
 
-  ASSERT_EQ("a", to_string(cen::file_mode::a));
-  ASSERT_EQ("ab", to_string(cen::file_mode::ab));
+    case file_type::std:
+      return "std";
 
-  ASSERT_EQ("rx", to_string(cen::file_mode::rx));
-  ASSERT_EQ("rbx", to_string(cen::file_mode::rbx));
+    case file_type::jni:
+      return "jni";
 
-  ASSERT_EQ("wx", to_string(cen::file_mode::wx));
-  ASSERT_EQ("wbx", to_string(cen::file_mode::wbx));
+    case file_type::memory:
+      return "memory";
 
-  ASSERT_EQ("ax", to_string(cen::file_mode::ax));
-  ASSERT_EQ("abx", to_string(cen::file_mode::abx));
+    case file_type::memory_ro:
+      return "memory_ro";
 
-  std::cout << "file_mode::rb == " << cen::file_mode::rb << '\n';
+    default:
+      throw exception {"Did not recognize file type!"};
+  }
 }
+
+inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_IO_FILE_TYPE_HPP_

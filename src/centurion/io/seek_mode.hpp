@@ -22,31 +22,46 @@
  * SOFTWARE.
  */
 
-#include "centurion/io/file_mode.hpp"
+#ifndef CENTURION_IO_SEEK_MODE_HPP_
+#define CENTURION_IO_SEEK_MODE_HPP_
 
-#include <gtest/gtest.h>
+#include <SDL.h>
 
-#include <iostream>  // cout
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
-TEST(FileMode, ToString)
+#include "../common.hpp"
+
+namespace cen {
+
+enum class seek_mode {
+  from_beginning = RW_SEEK_SET,       ///< From the beginning.
+  relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
+  relative_to_end = RW_SEEK_END       ///< Relative to the end.
+};
+
+[[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
 {
-  ASSERT_EQ("r", to_string(cen::file_mode::r));
-  ASSERT_EQ("rb", to_string(cen::file_mode::rb));
+  switch (mode) {
+    case seek_mode::from_beginning:
+      return "from_beginning";
 
-  ASSERT_EQ("w", to_string(cen::file_mode::w));
-  ASSERT_EQ("wb", to_string(cen::file_mode::wb));
+    case seek_mode::relative_to_current:
+      return "relative_to_current";
 
-  ASSERT_EQ("a", to_string(cen::file_mode::a));
-  ASSERT_EQ("ab", to_string(cen::file_mode::ab));
+    case seek_mode::relative_to_end:
+      return "relative_to_end";
 
-  ASSERT_EQ("rx", to_string(cen::file_mode::rx));
-  ASSERT_EQ("rbx", to_string(cen::file_mode::rbx));
-
-  ASSERT_EQ("wx", to_string(cen::file_mode::wx));
-  ASSERT_EQ("wbx", to_string(cen::file_mode::wbx));
-
-  ASSERT_EQ("ax", to_string(cen::file_mode::ax));
-  ASSERT_EQ("abx", to_string(cen::file_mode::abx));
-
-  std::cout << "file_mode::rb == " << cen::file_mode::rb << '\n';
+    default:
+      throw exception {"Did not recognize seek mode!"};
+  }
 }
+
+inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostream&
+{
+  return stream << to_string(mode);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_IO_SEEK_MODE_HPP_

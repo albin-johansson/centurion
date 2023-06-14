@@ -22,31 +22,42 @@
  * SOFTWARE.
  */
 
-#include "centurion/io/file_mode.hpp"
+#ifndef CENTURION_IO_PATHS_HPP_
+#define CENTURION_IO_PATHS_HPP_
 
-#include <gtest/gtest.h>
+#include <SDL.h>
 
-#include <iostream>  // cout
+#include <cassert>  // assert
+#include <string>   // string
 
-TEST(FileMode, ToString)
+#include "../common.hpp"
+
+namespace cen {
+
+/// Returns the directory from which the application launched from.
+[[nodiscard]] inline auto base_path() -> sdl_string
 {
-  ASSERT_EQ("r", to_string(cen::file_mode::r));
-  ASSERT_EQ("rb", to_string(cen::file_mode::rb));
-
-  ASSERT_EQ("w", to_string(cen::file_mode::w));
-  ASSERT_EQ("wb", to_string(cen::file_mode::wb));
-
-  ASSERT_EQ("a", to_string(cen::file_mode::a));
-  ASSERT_EQ("ab", to_string(cen::file_mode::ab));
-
-  ASSERT_EQ("rx", to_string(cen::file_mode::rx));
-  ASSERT_EQ("rbx", to_string(cen::file_mode::rbx));
-
-  ASSERT_EQ("wx", to_string(cen::file_mode::wx));
-  ASSERT_EQ("wbx", to_string(cen::file_mode::wbx));
-
-  ASSERT_EQ("ax", to_string(cen::file_mode::ax));
-  ASSERT_EQ("abx", to_string(cen::file_mode::abx));
-
-  std::cout << "file_mode::rb == " << cen::file_mode::rb << '\n';
+  return sdl_string {SDL_GetBasePath()};
 }
+
+/// Returns the preferred path for storing application related files.
+[[nodiscard]] inline auto preferred_path(const char* org, const char* app) -> sdl_string
+{
+  /* Looking at the SDL source code, it actually seems fine to supply a null
+     string for the organization name. However, I haven't been able to find any
+     documentation providing this guarantee, so we simply disallow null
+     organization names. */
+  assert(org);
+  assert(app);
+  return sdl_string {SDL_GetPrefPath(org, app)};
+}
+
+[[nodiscard]] inline auto preferred_path(const std::string& org, const std::string& app)
+    -> sdl_string
+{
+  return preferred_path(org.c_str(), app.c_str());
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_IO_PATHS_HPP_

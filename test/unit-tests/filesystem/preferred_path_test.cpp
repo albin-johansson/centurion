@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/filesystem.hpp"
+#include "centurion/io/paths.hpp"
 
 TEST(PreferredPath, NoExceptions)
 {

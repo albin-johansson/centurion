@@ -62,6 +62,7 @@ function(cen_set_basic_compiler_options target)
                            -Wconversion
                            -Wno-deprecated
                            -Wno-deprecated-declarations
+                           -Wno-format-security
                            )
 
     if (TREAT_WARNINGS_AS_ERRORS MATCHES ON)

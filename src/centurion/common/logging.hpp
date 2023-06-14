@@ -179,11 +179,6 @@ inline void set_priority(const log_category category, const log_priority priorit
   return SDL_MAX_LOG_MESSAGE;
 }
 
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-security"
-#endif  // defined(__GNUC__) && !defined(__clang__)
-
 template <typename... Args>
 void log(const log_priority priority,
          const log_category category,
@@ -196,10 +191,6 @@ void log(const log_priority priority,
                  fmt,
                  std::forward<Args>(args)...);
 }
-
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic pop
-#endif  // defined(__GNUC__) && !defined(__clang__)
 
 template <typename... Args>
 void log_verbose(const log_category category, const char* fmt, Args&&... args) noexcept

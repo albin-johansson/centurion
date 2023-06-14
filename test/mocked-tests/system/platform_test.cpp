@@ -37,8 +37,6 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
 
 class PlatformTest : public testing::Test {
  public:
-
- protected:
   void SetUp() override
   {
     mocks::reset_core();

@@ -73,30 +73,30 @@ class SensorTest : public testing::Test {
     RESET_FAKE(SDL_SensorGetDeviceName)
   }
 
-  cen::sensor_handle m_sensor {nullptr};
+  cen::sensor_handle mSensor {nullptr};
 };
 
 TEST_F(SensorTest, ID)
 {
-  const auto id [[maybe_unused]] = m_sensor.id();
+  const auto id [[maybe_unused]] = mSensor.id();
   ASSERT_EQ(1u, SDL_SensorGetInstanceID_fake.call_count);
 }
 
 TEST_F(SensorTest, Name)
 {
-  const auto name [[maybe_unused]] = m_sensor.name();
+  const auto name [[maybe_unused]] = mSensor.name();
   ASSERT_EQ(1u, SDL_SensorGetName_fake.call_count);
 }
 
 TEST_F(SensorTest, Type)
 {
-  const auto type [[maybe_unused]] = m_sensor.type();
+  const auto type [[maybe_unused]] = mSensor.type();
   ASSERT_EQ(1u, SDL_SensorGetType_fake.call_count);
 }
 
 TEST_F(SensorTest, NonPortableType)
 {
-  const auto type [[maybe_unused]] = m_sensor.non_portable_type();
+  const auto type [[maybe_unused]] = mSensor.non_portable_type();
   ASSERT_EQ(1u, SDL_SensorGetNonPortableType_fake.call_count);
 }
 
@@ -105,8 +105,8 @@ TEST_F(SensorTest, Data)
   std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_SensorGetData, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_sensor.data<3>());
-  ASSERT_TRUE(m_sensor.data<3>());
+  ASSERT_FALSE(mSensor.data<3>());
+  ASSERT_TRUE(mSensor.data<3>());
   ASSERT_EQ(2u, SDL_SensorGetData_fake.call_count);
 }
 
@@ -156,7 +156,7 @@ TEST_F(SensorTest, Count)
 
 TEST_F(SensorTest, StreamOperator)
 {
-  std::cout << m_sensor << '\n';
+  std::cout << mSensor << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)

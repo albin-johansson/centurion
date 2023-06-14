@@ -43,7 +43,7 @@ class SharedObjectTest : public testing::Test {
     RESET_FAKE(SDL_LoadFunction)
   }
 
-  cen::shared_object object;
+  cen::shared_object mObject;
 };
 
 TEST_F(SharedObjectTest, LoadFunction)
@@ -51,7 +51,7 @@ TEST_F(SharedObjectTest, LoadFunction)
   using namespace std::string_literals;
   const auto name = "foo"s;
 
-  auto* ptr [[maybe_unused]] = object.load_function<void(int, float)>(name);
+  auto* ptr [[maybe_unused]] = mObject.load_function<void(int, float)>(name);
 
   ASSERT_EQ(1u, SDL_LoadFunction_fake.call_count);
   ASSERT_EQ(name, SDL_LoadFunction_fake.arg1_val);

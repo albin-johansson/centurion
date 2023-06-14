@@ -32,7 +32,7 @@
 
 #include "../common.hpp"
 #include "../math.hpp"
-#include "../pixels.hpp"
+#include "pixels.hpp"
 
 namespace cen {
 

@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/renderer.hpp"
+
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -29,7 +31,6 @@
 #include <tuple>        // tuple, make_tuple
 #include <type_traits>  // is_same_v
 
-#include "centurion/render.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

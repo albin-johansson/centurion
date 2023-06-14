@@ -26,8 +26,8 @@
 
 #include <iostream>  // cout
 
-#include "centurion/color.hpp"
-#include "centurion/pixels.hpp"
+#include "centurion/video/color.hpp"
+#include "centurion/video/pixels.hpp"
 
 TEST(Palette, Constructor)
 {

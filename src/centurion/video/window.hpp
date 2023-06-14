@@ -40,9 +40,9 @@
 #include "../detail/stdlib.hpp"
 #include "../features.hpp"
 #include "../math.hpp"
-#include "../render.hpp"
-#include "../surface.hpp"
 #include "flash_op.hpp"
+#include "renderer.hpp"
+#include "surface.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

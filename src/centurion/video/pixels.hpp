@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_PIXELS_HPP_
-#define CENTURION_PIXELS_HPP_
+#ifndef CENTURION_VIDEO_PIXELS_HPP_
+#define CENTURION_VIDEO_PIXELS_HPP_
 
 #include <SDL.h>
 
@@ -33,12 +33,12 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../memory.hpp"
 #include "color.hpp"
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "memory.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -459,4 +459,4 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) ->
 
 }  // namespace cen
 
-#endif  // CENTURION_PIXELS_HPP_
+#endif  // CENTURION_VIDEO_PIXELS_HPP_

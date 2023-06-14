@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/renderer_info.hpp"
+
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>     // array
 #include <iostream>  // cout
 
-#include "centurion/render.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

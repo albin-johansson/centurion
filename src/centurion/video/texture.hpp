@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_TEXTURE_HPP_
-#define CENTURION_TEXTURE_HPP_
+#ifndef CENTURION_VIDEO_TEXTURE_HPP_
+#define CENTURION_VIDEO_TEXTURE_HPP_
 
 #include <SDL.h>
 
@@ -33,14 +33,14 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "blend.hpp"
 #include "color.hpp"
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "math.hpp"
 #include "surface.hpp"
-#include "video/blend.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -309,4 +309,4 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_TEXTURE_HPP_
+#endif  // CENTURION_VIDEO_TEXTURE_HPP_

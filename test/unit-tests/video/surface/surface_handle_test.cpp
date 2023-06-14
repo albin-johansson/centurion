@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/surface.hpp"
+#include "centurion/video/surface.hpp"
 
 namespace {
 inline constexpr auto path = "resources/panda.png";

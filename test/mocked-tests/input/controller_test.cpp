@@ -30,7 +30,7 @@
 #include <array>     // array
 #include <iostream>  // cout
 
-#include "centurion/color.hpp"
+#include "centurion/video/color.hpp"
 #include "core_mocks.hpp"
 
 using namespace cen::literals;

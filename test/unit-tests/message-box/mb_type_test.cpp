@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/message_box.hpp"
+#include "centurion/video/message_box.hpp"
 
 TEST(MessageBoxType, Values)
 {

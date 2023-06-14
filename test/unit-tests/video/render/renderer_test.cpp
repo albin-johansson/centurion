@@ -22,15 +22,16 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/renderer.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "centurion/color.hpp"
 #include "centurion/fonts/font.hpp"
 #include "centurion/math.hpp"
-#include "centurion/render.hpp"
+#include "centurion/video/color.hpp"
 #include "centurion/video/window.hpp"
 
 using namespace std::string_literals;

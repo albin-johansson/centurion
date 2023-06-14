@@ -36,8 +36,8 @@
 
 #include "../common.hpp"
 #include "../features.hpp"
-#include "../render.hpp"
-#include "../texture.hpp"
+#include "../video/renderer.hpp"
+#include "../video/texture.hpp"
 #include "font.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT

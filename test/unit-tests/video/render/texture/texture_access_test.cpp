@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/render.hpp"
+#include "centurion/video/texture.hpp"
 
 TEST(TextureAccess, Values)
 {

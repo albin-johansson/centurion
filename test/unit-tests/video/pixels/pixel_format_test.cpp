@@ -26,8 +26,8 @@
 
 #include <iostream>  // clog
 
-#include "centurion/pixels.hpp"
 #include "centurion/system.hpp"
+#include "centurion/video/pixels.hpp"
 
 using format = cen::pixel_format;
 

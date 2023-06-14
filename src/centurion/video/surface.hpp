@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_SURFACE_HPP_
-#define CENTURION_SURFACE_HPP_
+#ifndef CENTURION_VIDEO_SURFACE_HPP_
+#define CENTURION_VIDEO_SURFACE_HPP_
 
 #include <SDL.h>
 
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "blend.hpp"
 #include "color.hpp"
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "math.hpp"
 #include "pixels.hpp"
-#include "video/blend.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -383,4 +383,4 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_SURFACE_HPP_
+#endif  // CENTURION_VIDEO_SURFACE_HPP_

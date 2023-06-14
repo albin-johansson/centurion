@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/surface.hpp"
+#include "centurion/video/surface.hpp"
 
 #include <SDL_image.h>
 #include <gtest/gtest.h>
@@ -32,7 +32,7 @@
 #include <type_traits>  // ...
 #include <utility>      // move
 
-#include "centurion/color.hpp"
+#include "centurion/video/color.hpp"
 #include "centurion/video/window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);

@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/texture.hpp"
+
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
@@ -29,8 +31,7 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // ...
 
-#include "centurion/color.hpp"
-#include "centurion/render.hpp"
+#include "centurion/video/color.hpp"
 #include "centurion/video/window.hpp"
 
 static_assert(std::is_final_v<cen::texture>);

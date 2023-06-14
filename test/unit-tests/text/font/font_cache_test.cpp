@@ -28,7 +28,7 @@
 
 #include <memory>  // unique_ptr
 
-#include "centurion/render.hpp"
+#include "centurion/video/renderer.hpp"
 #include "centurion/video/window.hpp"
 
 class FontCacheTest : public testing::Test {

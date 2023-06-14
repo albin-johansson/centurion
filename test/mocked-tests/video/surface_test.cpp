@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/surface.hpp"
+#include "centurion/video/surface.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

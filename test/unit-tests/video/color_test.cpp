@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/color.hpp"
+#include "centurion/video/color.hpp"
 
 #include <gtest/gtest.h>
 

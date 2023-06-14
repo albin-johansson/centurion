@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/message_box.hpp"
+#include "centurion/video/message_box.hpp"
 
 TEST(MessageBoxColorScheme, Defaults)
 {

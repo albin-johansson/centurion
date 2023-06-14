@@ -27,8 +27,8 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "centurion/color.hpp"
-#include "centurion/pixels.hpp"
+#include "centurion/video/color.hpp"
+#include "centurion/video/pixels.hpp"
 
 class PixelFormatInfoTest : public testing::Test {
  protected:

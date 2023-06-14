@@ -23,8 +23,15 @@
  */
 
 #include "video/blend.hpp"
+#include "video/color.hpp"
 #include "video/display.hpp"
 #include "video/flash_op.hpp"
+#include "video/message_box.hpp"
 #include "video/opengl.hpp"
+#include "video/pixels.hpp"
+#include "video/renderer.hpp"
+#include "video/renderer_info.hpp"
+#include "video/surface.hpp"
+#include "video/texture.hpp"
 #include "video/vulkan.hpp"
 #include "video/window.hpp"

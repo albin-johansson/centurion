@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_MESSAGE_BOX_HPP_
-#define CENTURION_MESSAGE_BOX_HPP_
+#ifndef CENTURION_VIDEO_MESSAGE_BOX_HPP_
+#define CENTURION_VIDEO_MESSAGE_BOX_HPP_
 
 #include <SDL.h>
 
@@ -35,9 +35,9 @@
 #include <utility>      // move
 #include <vector>       // vector
 
+#include "../common.hpp"
 #include "color.hpp"
-#include "common.hpp"
-#include "video/window.hpp"
+#include "window.hpp"
 
 namespace cen {
 
@@ -383,4 +383,4 @@ class message_box final {
 
 }  // namespace cen
 
-#endif  // CENTURION_MESSAGE_BOX_HPP_
+#endif  // CENTURION_VIDEO_MESSAGE_BOX_HPP_

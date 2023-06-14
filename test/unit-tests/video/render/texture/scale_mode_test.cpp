@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/texture.hpp"
+#include "centurion/video/texture.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 

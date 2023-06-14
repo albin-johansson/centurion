@@ -29,7 +29,7 @@
 
 #include <array>  // array
 
-#include "centurion/color.hpp"
+#include "centurion/video/color.hpp"
 #include "core_mocks.hpp"
 
 using namespace cen::literals;

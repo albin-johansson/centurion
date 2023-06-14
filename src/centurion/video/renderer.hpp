@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_RENDER_HPP_
-#define CENTURION_RENDER_HPP_
+#ifndef CENTURION_VIDEO_RENDERER_HPP_
+#define CENTURION_VIDEO_RENDERER_HPP_
 
 #include <SDL.h>
 
@@ -41,15 +41,15 @@
 #include <string_view>  // string_view
 #include <utility>      // pair
 
+#include "../common.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
+#include "../features.hpp"
+#include "../math.hpp"
+#include "../unicode.hpp"
 #include "color.hpp"
-#include "common.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/stdlib.hpp"
-#include "features.hpp"
-#include "math.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
-#include "unicode.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -699,111 +699,6 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
   return stream << to_string(renderer);
 }
 
-/// Provides information about a renderer.
-class renderer_info final {
-  template <typename T>
-  friend auto get_info(const basic_renderer<T>& renderer) noexcept -> maybe<renderer_info>;
-
- public:
-  using size_type = usize;
-
-  [[nodiscard]] auto supported_flags() const noexcept -> uint32 { return mInfo.flags; }
-
-  [[nodiscard]] auto has_vsync() const noexcept -> bool
-  {
-    return supported_flags() & SDL_RENDERER_PRESENTVSYNC;
-  }
-
-  [[nodiscard]] auto has_target_textures() const noexcept -> bool
-  {
-    return supported_flags() & SDL_RENDERER_TARGETTEXTURE;
-  }
-
-  [[nodiscard]] auto is_accelerated() const noexcept -> bool
-  {
-    return supported_flags() & SDL_RENDERER_ACCELERATED;
-  }
-
-  [[nodiscard]] auto is_software() const noexcept -> bool
-  {
-    return supported_flags() & SDL_RENDERER_SOFTWARE;
-  }
-
-  [[nodiscard]] auto format_count() const noexcept -> size_type
-  {
-    return static_cast<size_type>(mInfo.num_texture_formats);
-  }
-
-  [[nodiscard]] auto get_format(const size_type index) const -> pixel_format
-  {
-    if (index < format_count()) {
-      return static_cast<pixel_format>(mInfo.texture_formats[index]);
-    }
-    else {
-      throw exception {"Invalid pixel format index!"};
-    }
-  }
-
-  [[nodiscard]] auto max_texture_size() const noexcept -> iarea
-  {
-    return {mInfo.max_texture_width, mInfo.max_texture_height};
-  }
-
-  [[nodiscard]] auto max_texture_width() const noexcept -> int
-  {
-    return mInfo.max_texture_width;
-  }
-
-  [[nodiscard]] auto max_texture_height() const noexcept -> int
-  {
-    return mInfo.max_texture_height;
-  }
-
-  [[nodiscard]] auto name() const noexcept -> const char* { return mInfo.name; }
-
- private:
-  SDL_RendererInfo mInfo;
-
-  explicit renderer_info(const SDL_RendererInfo info) noexcept : mInfo {info} {}
-};
-
-[[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
-{
-#if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("renderer_info(name: '{}')", str_or_na(info.name()));
-#else
-  using namespace std::string_literals;
-  return "renderer_info(name: '"s + str_or_na(info.name()) + "')";
-#endif  // CENTURION_HAS_FEATURE_FORMAT
-}
-
-inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::ostream&
-{
-  return stream << to_string(info);
-}
-
-template <typename T>
-[[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept -> maybe<renderer_info>
-{
-  SDL_RendererInfo info {};
-  if (SDL_GetRendererInfo(renderer.get(), &info) == 0) {
-    return renderer_info {info};
-  }
-  else {
-    return nothing;
-  }
-}
-
-[[nodiscard]] inline auto render_driver_count() noexcept -> int
-{
-  return SDL_GetNumRenderDrivers();
-}
-
-[[nodiscard]] inline auto video_driver_count() noexcept -> int
-{
-  return SDL_GetNumVideoDrivers();
-}
-
 }  // namespace cen
 
-#endif  // CENTURION_RENDER_HPP_
+#endif  // CENTURION_VIDEO_RENDERER_HPP_

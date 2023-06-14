@@ -33,13 +33,13 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "color.hpp"
 #include "common.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/sdl_version_at_least.hpp"
 #include "detail/stdlib.hpp"
 #include "features.hpp"
 #include "input.hpp"
+#include "video/color.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

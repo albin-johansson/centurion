@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/render.hpp"
+#include "centurion/video/renderer_info.hpp"
 
 TEST(GraphicsDrivers, RenderDriverCount)
 {

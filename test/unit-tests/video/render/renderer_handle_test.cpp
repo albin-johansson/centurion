@@ -27,7 +27,7 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "centurion/render.hpp"
+#include "centurion/video/renderer.hpp"
 #include "centurion/video/window.hpp"
 
 class RendererHandleTest : public testing::Test {

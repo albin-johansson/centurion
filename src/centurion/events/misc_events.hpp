@@ -70,9 +70,6 @@ enum class display_event_id {
   disconnected = SDL_DISPLAYEVENT_DISCONNECTED,
 };
 
-/// \name Display event ID functions
-/// \{
-
 [[nodiscard]] constexpr auto to_string(const display_event_id id) -> std::string_view
 {
   switch (id) {
@@ -97,8 +94,6 @@ inline auto operator<<(std::ostream& stream, const display_event_id id) -> std::
 {
   return stream << to_string(id);
 }
-
-/// \} End of display event ID functions
 
 class display_event final : public event_base<SDL_DisplayEvent> {
  public:

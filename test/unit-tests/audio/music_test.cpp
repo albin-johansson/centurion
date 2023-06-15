@@ -43,12 +43,12 @@ class MusicTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    music = std::make_unique<cen::music>("resources/hidden_pond.mp3");
+    mMusic = std::make_unique<cen::music>("resources/hidden_pond.mp3");
   }
 
-  static void TearDownTestSuite() { music.reset(); }
+  static void TearDownTestSuite() { mMusic.reset(); }
 
-  inline static std::unique_ptr<cen::music> music;
+  inline static std::unique_ptr<cen::music> mMusic;
 };
 
 TEST_F(MusicTest, Forever)
@@ -64,7 +64,7 @@ TEST_F(MusicTest, Constructor)
 
 TEST_F(MusicTest, Play)
 {
-  music->play();
+  mMusic->play();
   ASSERT_TRUE(cen::music::is_playing());
   ASSERT_FALSE(cen::music::is_fading());
   ASSERT_FALSE(cen::music::is_paused());
@@ -72,13 +72,13 @@ TEST_F(MusicTest, Play)
 
   cen::music::halt();
 
-  music->play(cen::music::forever);
+  mMusic->play(cen::music::forever);
   ASSERT_TRUE(cen::music::is_playing());
   ASSERT_FALSE(cen::music::is_fading());
   ASSERT_FALSE(cen::music::is_paused());
   ASSERT_EQ(cen::fade_status::none, cen::music::get_fade_status());
 
-  music->pause();
+  mMusic->pause();
   cen::music::halt();
 }
 
@@ -86,7 +86,7 @@ TEST_F(MusicTest, Resume)
 {
   ASSERT_NO_THROW(cen::music::resume());
 
-  music->play();
+  mMusic->play();
   ASSERT_NO_THROW(cen::music::resume());
 
   cen::music::pause();
@@ -103,12 +103,12 @@ TEST_F(MusicTest, Pause)
 {
   ASSERT_NO_THROW(cen::music::pause());
 
-  music->play();
+  mMusic->play();
 
   cen::music::pause();
   ASSERT_TRUE(cen::music::is_paused());
 
-  music->fade_in(cen::music::ms_type {100});
+  mMusic->fade_in(cen::music::ms_type {100});
 
   cen::music::pause();
   ASSERT_TRUE(cen::music::is_paused());
@@ -118,13 +118,13 @@ TEST_F(MusicTest, Halt)
 {
   ASSERT_NO_THROW(cen::music::halt());
 
-  music->play();
+  mMusic->play();
   cen::music::halt();
 
   ASSERT_FALSE(cen::music::is_playing());
   ASSERT_FALSE(cen::music::is_fading());
 
-  music->fade_in(cen::music::ms_type {100});
+  mMusic->fade_in(cen::music::ms_type {100});
   cen::music::halt();
 
   ASSERT_FALSE(cen::music::is_playing());
@@ -137,7 +137,7 @@ TEST_F(MusicTest, FadeIn)
 
   cen::music::halt();
 
-  music->fade_in(cen::music::ms_type {100});
+  mMusic->fade_in(cen::music::ms_type {100});
   ASSERT_TRUE(cen::music::is_fading());
 
   cen::music::halt();
@@ -149,7 +149,7 @@ TEST_F(MusicTest, FadeOut)
 
   ASSERT_NO_THROW(cen::music::fade_out(cen::music::ms_type {100}));
 
-  music->fade_in(cen::music::ms_type {100});
+  mMusic->fade_in(cen::music::ms_type {100});
   ASSERT_TRUE(cen::music::is_fading());
 
   cen::music::halt();
@@ -184,12 +184,12 @@ TEST_F(MusicTest, IsPlaying)
 {
   ASSERT_FALSE(cen::music::is_playing());
 
-  music->play();
+  mMusic->play();
   ASSERT_TRUE(cen::music::is_playing());
 
   cen::music::halt();
 
-  music->fade_in(cen::music::ms_type {100});
+  mMusic->fade_in(cen::music::ms_type {100});
   ASSERT_TRUE(cen::music::is_playing());
 
   cen::music::halt();
@@ -197,7 +197,7 @@ TEST_F(MusicTest, IsPlaying)
 
 TEST_F(MusicTest, IsPaused)
 {
-  music->play();
+  mMusic->play();
   ASSERT_FALSE(cen::music::is_paused());
 
   cen::music::pause();
@@ -210,14 +210,14 @@ TEST_F(MusicTest, IsFading)
   ASSERT_FALSE(cen::music::is_fading_in());
   ASSERT_FALSE(cen::music::is_fading_out());
 
-  music->play();
+  mMusic->play();
   ASSERT_FALSE(cen::music::is_fading());
   ASSERT_FALSE(cen::music::is_fading_in());
   ASSERT_FALSE(cen::music::is_fading_out());
 
   cen::music::halt();
 
-  music->fade_in(cen::music::ms_type {200});
+  mMusic->fade_in(cen::music::ms_type {200});
   ASSERT_TRUE(cen::music::is_fading());
   ASSERT_TRUE(cen::music::is_fading_in());
   ASSERT_FALSE(cen::music::is_fading_out());
@@ -230,7 +230,7 @@ TEST_F(MusicTest, IsFading)
 
   cen::music::halt();
 
-  music->play();
+  mMusic->play();
   cen::music::fade_out(cen::music::ms_type {50});
   ASSERT_TRUE(cen::music::is_fading());
   ASSERT_FALSE(cen::music::is_fading_in());
@@ -254,7 +254,7 @@ TEST_F(MusicTest, FadeStatus)
   ASSERT_EQ(cen::fade_status::none, cen::music::get_fade_status());
   ASSERT_FALSE(cen::music::is_fading());
 
-  music->fade_in(cen::music::ms_type {100});
+  mMusic->fade_in(cen::music::ms_type {100});
   ASSERT_EQ(cen::fade_status::in, cen::music::get_fade_status());
   ASSERT_TRUE(cen::music::is_fading());
   ASSERT_TRUE(cen::music::is_playing());
@@ -262,7 +262,7 @@ TEST_F(MusicTest, FadeStatus)
 
   cen::music::halt();
 
-  music->play();
+  mMusic->play();
   cen::music::fade_out(cen::music::ms_type {100});
   ASSERT_EQ(cen::fade_status::out, cen::music::get_fade_status());
   ASSERT_TRUE(cen::music::is_fading());
@@ -275,10 +275,10 @@ TEST_F(MusicTest, FadeStatus)
 
 TEST_F(MusicTest, Type)
 {
-  ASSERT_EQ(cen::music_type::mp3, music->type());
+  ASSERT_EQ(cen::music_type::mp3, mMusic->type());
 }
 
 TEST_F(MusicTest, StreamOperator)
 {
-  std::cout << "music == " << *music << '\n';
+  std::cout << "music == " << *mMusic << '\n';
 }

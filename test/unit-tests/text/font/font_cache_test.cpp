@@ -33,27 +33,27 @@
 
 class FontCacheTest : public testing::Test {
  protected:
-  FontCacheTest() : testing::Test {}, cache {"resources/jetbrains_mono.ttf", 12} {}
+  FontCacheTest() : mCache {"resources/jetbrains_mono.ttf", 12} {}
 
   static void SetUpTestSuite()
   {
-    window = std::make_unique<cen::window>();
-    renderer = std::make_unique<cen::renderer>(window->make_renderer());
+    mWindow = std::make_unique<cen::window>();
+    mRenderer = std::make_unique<cen::renderer>(mWindow->make_renderer());
   }
 
   static void TearDownTestSuite()
   {
-    renderer.reset();
-    window.reset();
+    mRenderer.reset();
+    mWindow.reset();
   }
 
-  const char* utf8_string = "UTF-8_<!?+=";
-  const char* latin1_string = "latin1_<!?+=";
-  const cen::unicode_string unicode_string {'b', 'a', 'r'};
+  const char* kUTF8String = "UTF-8_<!?+=";
+  const char* kLatin1String = "latin1_<!?+=";
+  const cen::unicode_string kUnicodeString {'b', 'a', 'r'};
 
-  inline static std::unique_ptr<cen::window> window;
-  inline static std::unique_ptr<cen::renderer> renderer;
-  cen::font_cache cache;
+  inline static std::unique_ptr<cen::window> mWindow;
+  inline static std::unique_ptr<cen::renderer> mRenderer;
+  cen::font_cache mCache;
 };
 
 TEST_F(FontCacheTest, Constructors)
@@ -65,173 +65,175 @@ TEST_F(FontCacheTest, Constructors)
 
 TEST_F(FontCacheTest, HasGlyph)
 {
-  cache.store_latin1_glyphs(*renderer);
+  mCache.store_latin1_glyphs(*mRenderer);
 
   /* Basic latin range */
-  ASSERT_TRUE(cache.has_glyph(0x20));
-  ASSERT_FALSE(cache.has_glyph(0x1F));
+  ASSERT_TRUE(mCache.has_glyph(0x20));
+  ASSERT_FALSE(mCache.has_glyph(0x1F));
 
-  ASSERT_TRUE(cache.has_glyph(0x7E));
-  ASSERT_FALSE(cache.has_glyph(0x7F));
+  ASSERT_TRUE(mCache.has_glyph(0x7E));
+  ASSERT_FALSE(mCache.has_glyph(0x7F));
 
   /* Latin-1 supplement range */
-  ASSERT_TRUE(cache.has_glyph(0xA0));
-  ASSERT_FALSE(cache.has_glyph(0x9F));
+  ASSERT_TRUE(mCache.has_glyph(0xA0));
+  ASSERT_FALSE(mCache.has_glyph(0x9F));
 
-  ASSERT_TRUE(cache.has_glyph(0xFF));
-  ASSERT_FALSE(cache.has_glyph(0x100));
+  ASSERT_TRUE(mCache.has_glyph(0xFF));
+  ASSERT_FALSE(mCache.has_glyph(0x100));
 
   /* Lowercase latin alphabet */
-  ASSERT_TRUE(cache.has_glyph('a'));
-  ASSERT_TRUE(cache.has_glyph('b'));
-  ASSERT_TRUE(cache.has_glyph('c'));
-  ASSERT_TRUE(cache.has_glyph('d'));
-  ASSERT_TRUE(cache.has_glyph('e'));
-  ASSERT_TRUE(cache.has_glyph('f'));
-  ASSERT_TRUE(cache.has_glyph('g'));
-  ASSERT_TRUE(cache.has_glyph('h'));
-  ASSERT_TRUE(cache.has_glyph('i'));
-  ASSERT_TRUE(cache.has_glyph('j'));
-  ASSERT_TRUE(cache.has_glyph('k'));
-  ASSERT_TRUE(cache.has_glyph('l'));
-  ASSERT_TRUE(cache.has_glyph('m'));
-  ASSERT_TRUE(cache.has_glyph('n'));
-  ASSERT_TRUE(cache.has_glyph('o'));
-  ASSERT_TRUE(cache.has_glyph('p'));
-  ASSERT_TRUE(cache.has_glyph('q'));
-  ASSERT_TRUE(cache.has_glyph('r'));
-  ASSERT_TRUE(cache.has_glyph('s'));
-  ASSERT_TRUE(cache.has_glyph('t'));
-  ASSERT_TRUE(cache.has_glyph('u'));
-  ASSERT_TRUE(cache.has_glyph('v'));
-  ASSERT_TRUE(cache.has_glyph('x'));
-  ASSERT_TRUE(cache.has_glyph('y'));
-  ASSERT_TRUE(cache.has_glyph('z'));
+  ASSERT_TRUE(mCache.has_glyph('a'));
+  ASSERT_TRUE(mCache.has_glyph('b'));
+  ASSERT_TRUE(mCache.has_glyph('c'));
+  ASSERT_TRUE(mCache.has_glyph('d'));
+  ASSERT_TRUE(mCache.has_glyph('e'));
+  ASSERT_TRUE(mCache.has_glyph('f'));
+  ASSERT_TRUE(mCache.has_glyph('g'));
+  ASSERT_TRUE(mCache.has_glyph('h'));
+  ASSERT_TRUE(mCache.has_glyph('i'));
+  ASSERT_TRUE(mCache.has_glyph('j'));
+  ASSERT_TRUE(mCache.has_glyph('k'));
+  ASSERT_TRUE(mCache.has_glyph('l'));
+  ASSERT_TRUE(mCache.has_glyph('m'));
+  ASSERT_TRUE(mCache.has_glyph('n'));
+  ASSERT_TRUE(mCache.has_glyph('o'));
+  ASSERT_TRUE(mCache.has_glyph('p'));
+  ASSERT_TRUE(mCache.has_glyph('q'));
+  ASSERT_TRUE(mCache.has_glyph('r'));
+  ASSERT_TRUE(mCache.has_glyph('s'));
+  ASSERT_TRUE(mCache.has_glyph('t'));
+  ASSERT_TRUE(mCache.has_glyph('u'));
+  ASSERT_TRUE(mCache.has_glyph('v'));
+  ASSERT_TRUE(mCache.has_glyph('x'));
+  ASSERT_TRUE(mCache.has_glyph('y'));
+  ASSERT_TRUE(mCache.has_glyph('z'));
 
   /* Uppercase latin alphabet */
-  ASSERT_TRUE(cache.has_glyph('A'));
-  ASSERT_TRUE(cache.has_glyph('B'));
-  ASSERT_TRUE(cache.has_glyph('C'));
-  ASSERT_TRUE(cache.has_glyph('D'));
-  ASSERT_TRUE(cache.has_glyph('E'));
-  ASSERT_TRUE(cache.has_glyph('F'));
-  ASSERT_TRUE(cache.has_glyph('G'));
-  ASSERT_TRUE(cache.has_glyph('H'));
-  ASSERT_TRUE(cache.has_glyph('I'));
-  ASSERT_TRUE(cache.has_glyph('J'));
-  ASSERT_TRUE(cache.has_glyph('K'));
-  ASSERT_TRUE(cache.has_glyph('L'));
-  ASSERT_TRUE(cache.has_glyph('M'));
-  ASSERT_TRUE(cache.has_glyph('N'));
-  ASSERT_TRUE(cache.has_glyph('O'));
-  ASSERT_TRUE(cache.has_glyph('P'));
-  ASSERT_TRUE(cache.has_glyph('Q'));
-  ASSERT_TRUE(cache.has_glyph('R'));
-  ASSERT_TRUE(cache.has_glyph('S'));
-  ASSERT_TRUE(cache.has_glyph('T'));
-  ASSERT_TRUE(cache.has_glyph('U'));
-  ASSERT_TRUE(cache.has_glyph('V'));
-  ASSERT_TRUE(cache.has_glyph('X'));
-  ASSERT_TRUE(cache.has_glyph('Y'));
-  ASSERT_TRUE(cache.has_glyph('Z'));
+  ASSERT_TRUE(mCache.has_glyph('A'));
+  ASSERT_TRUE(mCache.has_glyph('B'));
+  ASSERT_TRUE(mCache.has_glyph('C'));
+  ASSERT_TRUE(mCache.has_glyph('D'));
+  ASSERT_TRUE(mCache.has_glyph('E'));
+  ASSERT_TRUE(mCache.has_glyph('F'));
+  ASSERT_TRUE(mCache.has_glyph('G'));
+  ASSERT_TRUE(mCache.has_glyph('H'));
+  ASSERT_TRUE(mCache.has_glyph('I'));
+  ASSERT_TRUE(mCache.has_glyph('J'));
+  ASSERT_TRUE(mCache.has_glyph('K'));
+  ASSERT_TRUE(mCache.has_glyph('L'));
+  ASSERT_TRUE(mCache.has_glyph('M'));
+  ASSERT_TRUE(mCache.has_glyph('N'));
+  ASSERT_TRUE(mCache.has_glyph('O'));
+  ASSERT_TRUE(mCache.has_glyph('P'));
+  ASSERT_TRUE(mCache.has_glyph('Q'));
+  ASSERT_TRUE(mCache.has_glyph('R'));
+  ASSERT_TRUE(mCache.has_glyph('S'));
+  ASSERT_TRUE(mCache.has_glyph('T'));
+  ASSERT_TRUE(mCache.has_glyph('U'));
+  ASSERT_TRUE(mCache.has_glyph('V'));
+  ASSERT_TRUE(mCache.has_glyph('X'));
+  ASSERT_TRUE(mCache.has_glyph('Y'));
+  ASSERT_TRUE(mCache.has_glyph('Z'));
 
   /* ASCII digits */
-  ASSERT_TRUE(cache.has_glyph('0'));
-  ASSERT_TRUE(cache.has_glyph('1'));
-  ASSERT_TRUE(cache.has_glyph('2'));
-  ASSERT_TRUE(cache.has_glyph('3'));
-  ASSERT_TRUE(cache.has_glyph('4'));
-  ASSERT_TRUE(cache.has_glyph('5'));
-  ASSERT_TRUE(cache.has_glyph('6'));
-  ASSERT_TRUE(cache.has_glyph('7'));
-  ASSERT_TRUE(cache.has_glyph('8'));
-  ASSERT_TRUE(cache.has_glyph('9'));
+  ASSERT_TRUE(mCache.has_glyph('0'));
+  ASSERT_TRUE(mCache.has_glyph('1'));
+  ASSERT_TRUE(mCache.has_glyph('2'));
+  ASSERT_TRUE(mCache.has_glyph('3'));
+  ASSERT_TRUE(mCache.has_glyph('4'));
+  ASSERT_TRUE(mCache.has_glyph('5'));
+  ASSERT_TRUE(mCache.has_glyph('6'));
+  ASSERT_TRUE(mCache.has_glyph('7'));
+  ASSERT_TRUE(mCache.has_glyph('8'));
+  ASSERT_TRUE(mCache.has_glyph('9'));
 
   /* ASCII punctuation and symbols */
-  ASSERT_TRUE(cache.has_glyph(' '));
-  ASSERT_TRUE(cache.has_glyph('!'));
-  ASSERT_TRUE(cache.has_glyph('"'));
-  ASSERT_TRUE(cache.has_glyph('#'));
-  ASSERT_TRUE(cache.has_glyph('$'));
-  ASSERT_TRUE(cache.has_glyph('%'));
-  ASSERT_TRUE(cache.has_glyph('&'));
-  ASSERT_TRUE(cache.has_glyph('\''));
-  ASSERT_TRUE(cache.has_glyph('('));
-  ASSERT_TRUE(cache.has_glyph(')'));
-  ASSERT_TRUE(cache.has_glyph('*'));
-  ASSERT_TRUE(cache.has_glyph('+'));
-  ASSERT_TRUE(cache.has_glyph(','));
-  ASSERT_TRUE(cache.has_glyph('-'));
-  ASSERT_TRUE(cache.has_glyph('.'));
-  ASSERT_TRUE(cache.has_glyph('/'));
-  ASSERT_TRUE(cache.has_glyph(':'));
-  ASSERT_TRUE(cache.has_glyph(';'));
-  ASSERT_TRUE(cache.has_glyph('<'));
-  ASSERT_TRUE(cache.has_glyph('='));
-  ASSERT_TRUE(cache.has_glyph('>'));
-  ASSERT_TRUE(cache.has_glyph('?'));
-  ASSERT_TRUE(cache.has_glyph('@'));
-  ASSERT_TRUE(cache.has_glyph('['));
-  ASSERT_TRUE(cache.has_glyph('\\'));
-  ASSERT_TRUE(cache.has_glyph(']'));
-  ASSERT_TRUE(cache.has_glyph('^'));
-  ASSERT_TRUE(cache.has_glyph('_'));
-  ASSERT_TRUE(cache.has_glyph('`'));
-  ASSERT_TRUE(cache.has_glyph('{'));
-  ASSERT_TRUE(cache.has_glyph('|'));
-  ASSERT_TRUE(cache.has_glyph('}'));
-  ASSERT_TRUE(cache.has_glyph('~'));
+  ASSERT_TRUE(mCache.has_glyph(' '));
+  ASSERT_TRUE(mCache.has_glyph('!'));
+  ASSERT_TRUE(mCache.has_glyph('"'));
+  ASSERT_TRUE(mCache.has_glyph('#'));
+  ASSERT_TRUE(mCache.has_glyph('$'));
+  ASSERT_TRUE(mCache.has_glyph('%'));
+  ASSERT_TRUE(mCache.has_glyph('&'));
+  ASSERT_TRUE(mCache.has_glyph('\''));
+  ASSERT_TRUE(mCache.has_glyph('('));
+  ASSERT_TRUE(mCache.has_glyph(')'));
+  ASSERT_TRUE(mCache.has_glyph('*'));
+  ASSERT_TRUE(mCache.has_glyph('+'));
+  ASSERT_TRUE(mCache.has_glyph(','));
+  ASSERT_TRUE(mCache.has_glyph('-'));
+  ASSERT_TRUE(mCache.has_glyph('.'));
+  ASSERT_TRUE(mCache.has_glyph('/'));
+  ASSERT_TRUE(mCache.has_glyph(':'));
+  ASSERT_TRUE(mCache.has_glyph(';'));
+  ASSERT_TRUE(mCache.has_glyph('<'));
+  ASSERT_TRUE(mCache.has_glyph('='));
+  ASSERT_TRUE(mCache.has_glyph('>'));
+  ASSERT_TRUE(mCache.has_glyph('?'));
+  ASSERT_TRUE(mCache.has_glyph('@'));
+  ASSERT_TRUE(mCache.has_glyph('['));
+  ASSERT_TRUE(mCache.has_glyph('\\'));
+  ASSERT_TRUE(mCache.has_glyph(']'));
+  ASSERT_TRUE(mCache.has_glyph('^'));
+  ASSERT_TRUE(mCache.has_glyph('_'));
+  ASSERT_TRUE(mCache.has_glyph('`'));
+  ASSERT_TRUE(mCache.has_glyph('{'));
+  ASSERT_TRUE(mCache.has_glyph('|'));
+  ASSERT_TRUE(mCache.has_glyph('}'));
+  ASSERT_TRUE(mCache.has_glyph('~'));
 }
 
 TEST_F(FontCacheTest, GetGlyph)
 {
-  cache.store_basic_latin_glyphs(*renderer);
+  mCache.store_basic_latin_glyphs(*mRenderer);
 
-  const auto& [texture, metrics] = cache.get_glyph('a');
+  const auto& [texture, metrics] = mCache.get_glyph('a');
   ASSERT_TRUE(texture.get());
 
-  ASSERT_THROW(cache.get_glyph(256), cen::exception);
+  ASSERT_THROW(mCache.get_glyph(256), cen::exception);
 }
 
 TEST_F(FontCacheTest, FindGlyph)
 {
-  cache.store_basic_latin_glyphs(*renderer);
-  ASSERT_TRUE(cache.find_glyph('a'));
-  ASSERT_TRUE(cache.find_glyph(0x20));
-  ASSERT_TRUE(cache.find_glyph(0x7E));
-  ASSERT_FALSE(cache.find_glyph(0x7F));
+  mCache.store_basic_latin_glyphs(*mRenderer);
+  ASSERT_TRUE(mCache.find_glyph('a'));
+  ASSERT_TRUE(mCache.find_glyph(0x20));
+  ASSERT_TRUE(mCache.find_glyph(0x7E));
+  ASSERT_FALSE(mCache.find_glyph(0x7F));
 }
 
 TEST_F(FontCacheTest, GetString)
 {
-  cache.store_latin1_glyphs(*renderer);
+  mCache.store_latin1_glyphs(*mRenderer);
 
-  const auto& font = cache.get_font();
-  const auto id = cache.store(*renderer, font.render_blended("bar!?<,.", cen::colors::white));
-  ASSERT_TRUE(cache.has_string(id));
+  const auto& font = mCache.get_font();
+  const auto id =
+      mCache.store(*mRenderer, font.render_blended("bar!?<,.", cen::colors::white));
+  ASSERT_TRUE(mCache.has_string(id));
 
-  ASSERT_TRUE(cache.get_string(id).get());
-  ASSERT_THROW(cache.get_string(id + 1), cen::exception);
+  ASSERT_TRUE(mCache.get_string(id).get());
+  ASSERT_THROW(mCache.get_string(id + 1), cen::exception);
 }
 
 TEST_F(FontCacheTest, FindString)
 {
-  cache.store_basic_latin_glyphs(*renderer);
+  mCache.store_basic_latin_glyphs(*mRenderer);
 
-  const auto& font = cache.get_font();
-  const auto id = cache.store(*renderer, font.render_blended("bar!?<,.", cen::colors::white));
+  const auto& font = mCache.get_font();
+  const auto id =
+      mCache.store(*mRenderer, font.render_blended("bar!?<,.", cen::colors::white));
 
-  ASSERT_NE(cache.find_string(id), nullptr);
-  ASSERT_EQ(cache.find_string(id + 1), nullptr);
+  ASSERT_NE(mCache.find_string(id), nullptr);
+  ASSERT_EQ(mCache.find_string(id + 1), nullptr);
 }
 
 TEST_F(FontCacheTest, GetFont)
 {
-  const auto& font = cache.get_font();
+  const auto& font = mCache.get_font();
   ASSERT_STREQ("JetBrains Mono", font.family_name());
 }
 
 TEST_F(FontCacheTest, ToString)
 {
-  ASSERT_EQ("font_cache(font: 'JetBrains Mono', size: 12)", cen::to_string(cache));
+  ASSERT_EQ("font_cache(font: 'JetBrains Mono', size: 12)", cen::to_string(mCache));
 }

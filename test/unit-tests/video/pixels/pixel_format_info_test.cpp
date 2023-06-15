@@ -34,12 +34,12 @@ class PixelFormatInfoTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    info = std::make_unique<cen::pixel_format_info>(cen::pixel_format::rgba8888);
+    mInfo = std::make_unique<cen::pixel_format_info>(cen::pixel_format::rgba8888);
   }
 
-  static void TearDownTestSuite() { info.reset(); }
+  static void TearDownTestSuite() { mInfo.reset(); }
 
-  inline static std::unique_ptr<cen::pixel_format_info> info;
+  inline static std::unique_ptr<cen::pixel_format_info> mInfo;
 };
 
 TEST_F(PixelFormatInfoTest, PointerConstructor)
@@ -59,32 +59,32 @@ TEST_F(PixelFormatInfoTest, FormatConstructor)
 
 TEST_F(PixelFormatInfoTest, HandleFromOwner)
 {
-  const cen::pixel_format_info_handle handle {*info};
+  const cen::pixel_format_info_handle handle {*mInfo};
   ASSERT_TRUE(handle);
 }
 
 TEST_F(PixelFormatInfoTest, GetFormat)
 {
-  ASSERT_EQ(cen::pixel_format::rgba8888, info->format());
+  ASSERT_EQ(cen::pixel_format::rgba8888, mInfo->format());
 }
 
 TEST_F(PixelFormatInfoTest, GetName)
 {
-  ASSERT_STREQ(SDL_GetPixelFormatName(info->get()->format), info->name());
+  ASSERT_STREQ(SDL_GetPixelFormatName(mInfo->get()->format), mInfo->name());
 }
 
 TEST_F(PixelFormatInfoTest, RGBToPixel)
 {
   const auto color = cen::colors::hot_pink;
-  ASSERT_EQ(SDL_MapRGB(info->get(), color.red(), color.green(), color.blue()),
-            info->rgb_to_pixel(color));
+  ASSERT_EQ(SDL_MapRGB(mInfo->get(), color.red(), color.green(), color.blue()),
+            mInfo->rgb_to_pixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, RGBAToPixel)
 {
   const auto color = cen::colors::honey_dew;
-  ASSERT_EQ(SDL_MapRGBA(info->get(), color.red(), color.green(), color.blue(), color.alpha()),
-            info->rgba_to_pixel(color));
+  ASSERT_EQ(SDL_MapRGBA(mInfo->get(), color.red(), color.green(), color.blue(), color.alpha()),
+            mInfo->rgba_to_pixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGB)
@@ -92,7 +92,7 @@ TEST_F(PixelFormatInfoTest, PixelToRGB)
   const auto color = cen::colors::hot_pink;
   const auto pixel = static_cast<Uint32>((color.red() << 24u) | (color.green() << 16u) |
                                          (color.blue() << 8u));
-  ASSERT_EQ(color, info->pixel_to_rgb(pixel));
+  ASSERT_EQ(color, mInfo->pixel_to_rgb(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGBA)
@@ -100,10 +100,10 @@ TEST_F(PixelFormatInfoTest, PixelToRGBA)
   const auto color = cen::colors::aquamarine;
   const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u) |
                        (color.alpha() << 0u);
-  ASSERT_EQ(color, info->pixel_to_rgba(pixel));
+  ASSERT_EQ(color, mInfo->pixel_to_rgba(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, ToString)
 {
-  std::cout << *info << '\n';
+  std::cout << *mInfo << '\n';
 }

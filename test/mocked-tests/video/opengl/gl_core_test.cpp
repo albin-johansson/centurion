@@ -70,7 +70,7 @@ class OpenGLTest : public testing::Test {
     RESET_FAKE(SDL_GL_UnbindTexture)
   }
 
-  cen::window_handle m_window {nullptr};
+  cen::window_handle mWindow {nullptr};
 };
 
 TEST_F(OpenGLTest, Swap)
@@ -78,7 +78,7 @@ TEST_F(OpenGLTest, Swap)
   std::array flags {Uint32 {SDL_WINDOW_OPENGL}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  ASSERT_NO_FATAL_FAILURE(cen::gl::swap(m_window));
+  ASSERT_NO_FATAL_FAILURE(cen::gl::swap(mWindow));
   ASSERT_EQ(1u, SDL_GL_SwapWindow_fake.call_count);
 }
 
@@ -87,7 +87,7 @@ TEST_F(OpenGLTest, DrawableSize)
   std::array flags {Uint32 {SDL_WINDOW_OPENGL}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  ASSERT_NO_FATAL_FAILURE(cen::gl::drawable_size(m_window));
+  ASSERT_NO_FATAL_FAILURE(cen::gl::drawable_size(mWindow));
   ASSERT_EQ(1u, SDL_GL_GetDrawableSize_fake.call_count);
 }
 

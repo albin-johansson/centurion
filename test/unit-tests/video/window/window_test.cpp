@@ -31,23 +31,23 @@
 
 class WindowTest : public testing::Test {
  protected:
-  [[maybe_unused]] static void SetUpTestSuite() { window = std::make_unique<cen::window>(); }
+  [[maybe_unused]] static void SetUpTestSuite() { mWindow = std::make_unique<cen::window>(); }
 
-  [[maybe_unused]] static void TearDownTestSuite() { window.reset(); }
+  [[maybe_unused]] static void TearDownTestSuite() { mWindow.reset(); }
 
-  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::window> mWindow;
 };
 
 TEST_F(WindowTest, Defaults)
 {
-  const cen::window w;
+  const cen::window window;
 
-  ASSERT_EQ("Centurion", w.title());
+  ASSERT_EQ("Centurion", window.title());
 
-  ASSERT_EQ(cen::window::default_size(), w.size());
-  ASSERT_TRUE(w.check_flag(cen::window::default_flags()));
+  ASSERT_EQ(cen::window::default_size(), window.size());
+  ASSERT_TRUE(window.check_flag(cen::window::default_flags()));
 
-  ASSERT_FALSE(w.is_visible());
+  ASSERT_FALSE(window.is_visible());
 }
 
 TEST_F(WindowTest, ConstructFromPointer)
@@ -61,8 +61,8 @@ TEST_F(WindowTest, ConstructFromPointer)
 
   {
     ASSERT_NO_THROW(cen::window_handle {nullptr});
-    cen::window_handle handle {window->get()};
-    ASSERT_EQ(handle.get(), window->get());
+    cen::window_handle handle {mWindow->get()};
+    ASSERT_EQ(handle.get(), mWindow->get());
   }
 }
 
@@ -86,12 +86,12 @@ TEST_F(WindowTest, ContructorFromStringAndArea)
 
 TEST_F(WindowTest, Get)
 {
-  ASSERT_TRUE(window->get());
+  ASSERT_TRUE(mWindow->get());
 }
 
 TEST_F(WindowTest, BoolConversion)
 {
-  cen::window_handle handle {*window};
+  cen::window_handle handle {*mWindow};
   ASSERT_TRUE(handle);
 }
 
@@ -104,5 +104,5 @@ TEST_F(WindowTest, DefaultSize)
 
 TEST_F(WindowTest, StreamOperator)
 {
-  std::cout << *window << '\n';
+  std::cout << *mWindow << '\n';
 }

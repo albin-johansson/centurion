@@ -43,7 +43,7 @@ class OpenGLContextTest : public testing::Test {
     RESET_FAKE(SDL_GL_MakeCurrent)
   }
 
-  cen::gl_context_handle m_context {nullptr};
+  cen::gl_context_handle mContext {nullptr};
 };
 
 TEST_F(OpenGLContextTest, Construction)
@@ -61,7 +61,7 @@ TEST_F(OpenGLContextTest, MakeCurrent)
   SET_RETURN_SEQ(SDL_GL_MakeCurrent, values.data(), cen::isize(values));
 
   cen::window_handle window {nullptr};
-  ASSERT_EQ(cen::failure, m_context.make_current(window));
-  ASSERT_EQ(cen::success, m_context.make_current(window));
+  ASSERT_EQ(cen::failure, mContext.make_current(window));
+  ASSERT_EQ(cen::success, mContext.make_current(window));
   ASSERT_EQ(2u, SDL_GL_MakeCurrent_fake.call_count);
 }

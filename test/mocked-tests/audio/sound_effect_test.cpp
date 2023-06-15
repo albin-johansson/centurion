@@ -67,7 +67,7 @@ class SoundEffectTest : public testing::Test {
 #endif  // SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
   }
 
-  cen::sound_effect_handle sound {nullptr};
+  cen::sound_effect_handle mSound {nullptr};
 };
 
 #if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
@@ -76,15 +76,15 @@ TEST_F(SoundEffectTest, Play)
 {
   CEN_PREPARE_MOCK_TEST(Mix_PlayChannel, -1, 0)
 
-  ASSERT_FALSE(sound.play());
+  ASSERT_FALSE(mSound.play());
   ASSERT_EQ(1u, Mix_PlayChannel_fake.call_count);
   ASSERT_EQ(0, Mix_PlayChannel_fake.arg2_val);
 
-  ASSERT_TRUE(sound.play(-2));
+  ASSERT_TRUE(mSound.play(-2));
   ASSERT_EQ(2u, Mix_PlayChannel_fake.call_count);
   ASSERT_EQ(-1, Mix_PlayChannel_fake.arg2_val);
 
-  ASSERT_TRUE(sound.play(7));
+  ASSERT_TRUE(mSound.play(7));
   ASSERT_EQ(3u, Mix_PlayChannel_fake.call_count);
   ASSERT_EQ(7, Mix_PlayChannel_fake.arg2_val);
 }
@@ -95,15 +95,15 @@ TEST_F(SoundEffectTest, Pause)
 {
   CEN_PREPARE_MOCK_TEST(Mix_Playing, 0, 1)
 
-  sound.stop();  // Does not invoke Mix_Playing
+  mSound.stop();  // Does not invoke Mix_Playing
   ASSERT_EQ(0u, Mix_Pause_fake.call_count);
 
-  sound.set_channel(23);
+  mSound.set_channel(23);
 
-  sound.stop();
+  mSound.stop();
   ASSERT_EQ(0u, Mix_Pause_fake.call_count);
 
-  sound.stop();
+  mSound.stop();
   ASSERT_EQ(1u, Mix_Pause_fake.call_count);
 }
 
@@ -112,17 +112,17 @@ TEST_F(SoundEffectTest, Pause)
 TEST_F(SoundEffectTest, FadeIn)
 {
   // Not playing
-  sound.fade_in(cen::sound_effect::ms_type {5});
+  mSound.fade_in(cen::sound_effect::ms_type {5});
   ASSERT_EQ(1u, Mix_FadeInChannel_fake.call_count);
 
   // Not playing but with an associated channel
-  sound.set_channel(1);
-  sound.fade_in(cen::sound_effect::ms_type {5});
+  mSound.set_channel(1);
+  mSound.fade_in(cen::sound_effect::ms_type {5});
   ASSERT_EQ(2u, Mix_FadeInChannel_fake.call_count);
 
   // Already playing
   Mix_Playing_fake.return_val = 1;
-  sound.fade_in(cen::sound_effect::ms_type {5});
+  mSound.fade_in(cen::sound_effect::ms_type {5});
   ASSERT_EQ(2u, Mix_FadeInChannel_fake.call_count);
 }
 
@@ -131,29 +131,29 @@ TEST_F(SoundEffectTest, FadeIn)
 TEST_F(SoundEffectTest, FadeOut)
 {
   // Not playing
-  sound.fade_out(cen::sound_effect::ms_type {5});
+  mSound.fade_out(cen::sound_effect::ms_type {5});
   ASSERT_EQ(0u, Mix_FadeOutChannel_fake.call_count);
 
   // Not playing but with an associated channel
-  sound.set_channel(7);
-  sound.fade_out(cen::sound_effect::ms_type {5});
+  mSound.set_channel(7);
+  mSound.fade_out(cen::sound_effect::ms_type {5});
   ASSERT_EQ(0u, Mix_FadeOutChannel_fake.call_count);
 
   // Playing
   Mix_Playing_fake.return_val = 1;
-  sound.fade_out(cen::sound_effect::ms_type {5});
+  mSound.fade_out(cen::sound_effect::ms_type {5});
   ASSERT_EQ(1u, Mix_FadeOutChannel_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, SetVolume)
 {
-  sound.set_volume(-1);
+  mSound.set_volume(-1);
   ASSERT_EQ(0, Mix_VolumeChunk_fake.arg1_val);
 
-  sound.set_volume(cen::sound_effect::max_volume() + 1);
+  mSound.set_volume(cen::sound_effect::max_volume() + 1);
   ASSERT_EQ(cen::sound_effect::max_volume(), Mix_VolumeChunk_fake.arg1_val);
 
-  sound.set_volume(27);
+  mSound.set_volume(27);
   ASSERT_EQ(27, Mix_VolumeChunk_fake.arg1_val);
 }
 
@@ -166,10 +166,10 @@ TEST_F(SoundEffectTest, IsAnyPlaying)
 
 TEST_F(SoundEffectTest, Channel)
 {
-  ASSERT_FALSE(sound.channel().has_value());
+  ASSERT_FALSE(mSound.channel().has_value());
 
-  sound.set_channel(7);
-  ASSERT_EQ(7, sound.channel());
+  mSound.set_channel(7);
+  ASSERT_EQ(7, mSound.channel());
 }
 
 TEST_F(SoundEffectTest, GetDecoder)

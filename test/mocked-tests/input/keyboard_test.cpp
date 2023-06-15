@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,19 @@
  * SOFTWARE.
  */
 
-#include "centurion/keyboard.hpp"
+#include "centurion/input/keyboard.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
+extern "C" {
+FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
 
 #if SDL_VERSION_ATLEAST(2, 24, 0)
-  FAKE_VOID_FUNC(SDL_ResetKeyboard)
+FAKE_VOID_FUNC(SDL_ResetKeyboard)
 #endif  // SDL_VERSION_ATLEAST(2, 24, 0)
 }
 
@@ -47,7 +46,7 @@ TEST(Keyboard, Constructor)
 
 TEST(Keyboard, HasScreenKeyboard)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasScreenKeyboardSupport, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::has_screen_keyboard());

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_INPUT_HPP_
-#define CENTURION_INPUT_HPP_
-
-#include <SDL.h>
-
-#include <ostream>      // ostream
-#include <string_view>  // string_view
-
-#include "common.hpp"
-
-namespace cen {
-
-enum class button_state : uint8
-{
-  released = SDL_RELEASED,
-  pressed = SDL_PRESSED
-};
-
-[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
-{
-  switch (state) {
-    case button_state::released:
-      return "released";
-
-    case button_state::pressed:
-      return "pressed";
-
-    default:
-      throw exception{"Did not recognize button state!"};
-  }
-}
-
-inline auto operator<<(std::ostream& stream, const button_state state) -> std::ostream&
-{
-  return stream << to_string(state);
-}
-
-}  // namespace cen
-
-#endif  // CENTURION_INPUT_HPP_
+#include "input/button_state.hpp"
+#include "input/controller.hpp"
+#include "input/joystick.hpp"
+#include "input/keyboard.hpp"
+#include "input/mouse.hpp"
+#include "input/sensor.hpp"
+#include "input/touch.hpp"

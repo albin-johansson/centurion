@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen::detail {
 
@@ -38,18 +38,17 @@ template <typename Target, typename Tuple>
 class tuple_type_index;
 
 template <typename Target, typename... T>
-class tuple_type_index<Target, std::tuple<T...>>
-{
+class tuple_type_index<Target, std::tuple<T...>> {
  private:
   template <usize... Index>
-  [[nodiscard]] constexpr static auto Find([[maybe_unused]] std::index_sequence<Index...> seq)
+  [[nodiscard]] constexpr static auto find([[maybe_unused]] std::index_sequence<Index...> seq)
       -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? static_cast<int>(Index) + 1 : 0) + ...);
   }
 
  public:
-  inline constexpr static auto value = Find(std::index_sequence_for<T...>{});
+  inline constexpr static auto value = find(std::index_sequence_for<T...> {});
 };
 
 template <typename Target, typename... T>

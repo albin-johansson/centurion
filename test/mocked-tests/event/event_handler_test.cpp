@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
+#include "centurion/events/event_handler.hpp"
+
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VOID_FUNC(SDL_PumpEvents)
-  FAKE_VOID_FUNC(SDL_FlushEvents, Uint32, Uint32)
-  FAKE_VALUE_FUNC(int, SDL_PushEvent, SDL_Event*)
-  FAKE_VALUE_FUNC(int, SDL_PollEvent, SDL_Event*)
-  FAKE_VALUE_FUNC(int, SDL_PeepEvents, SDL_Event*, int, SDL_eventaction, Uint32, Uint32)
+extern "C" {
+FAKE_VOID_FUNC(SDL_PumpEvents)
+FAKE_VOID_FUNC(SDL_FlushEvents, Uint32, Uint32)
+FAKE_VALUE_FUNC(int, SDL_PushEvent, SDL_Event*)
+FAKE_VALUE_FUNC(int, SDL_PollEvent, SDL_Event*)
+FAKE_VALUE_FUNC(int, SDL_PeepEvents, SDL_Event*, int, SDL_eventaction, Uint32, Uint32)
 }
 
 class EventTest : public testing::Test {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,8 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
+extern "C" {
+FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
 }
 
 class OpenURLTest : public testing::Test {
@@ -49,7 +48,7 @@ class OpenURLTest : public testing::Test {
 
 TEST_F(OpenURLTest, OpenURL)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
 
   using namespace std::string_literals;

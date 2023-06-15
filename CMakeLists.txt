@@ -1,60 +1,57 @@
 cmake_minimum_required(VERSION 3.15)
 
+if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+endif ()
+
 project(centurion
-        VERSION 7.2.0
+        VERSION 7.3.0
         HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
         LANGUAGES CXX)
 
-set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
-message("[centurion]: version ${CENTURION_VERSION}")
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
 if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
-  message("[centurion]: no explicit C++ version specified")
   set(CMAKE_CXX_STANDARD 17)
 endif ()
 
-message("[centurion]: using C++ standard... ${CMAKE_CXX_STANDARD}")
-message("[centurion]: compiler is... ${CMAKE_CXX_COMPILER}")
-message("[centurion]: compiler identifier is... ${CMAKE_CXX_COMPILER_ID}")
-
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-include(Dependencies)
-include(Utilities)
+# Build options
+option(BUILD_TESTS "Build the test suite" OFF)
+option(BUILD_EXAMPLES "Build the examples" OFF)
+option(INCLUDE_AUDIO_TESTS "Test audio components" ON)
+option(TREAT_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
+include(cmake/centurion.cmake)
+
+# Directories
 set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")
 set(CEN_RESOURCES_DIR "${PROJECT_SOURCE_DIR}/test/resources")
 set(CEN_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 set(CEN_BINARIES_DIR "${PROJECT_SOURCE_DIR}/bin")
+set(CEN_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external")
 
+# Target names
 set(CENTURION_LIB_TARGET libcenturion)
-set(CENTURION_TEST_TARGET testcenturion)
-set(CENTURION_MOCK_TARGET mockcenturion)
+set(CENTURION_TEST_TARGET centurion-tests)
+set(CENTURION_MOCK_TARGET centurion-mocks)
 
-option(CEN_COVERAGE "Enable coverage data" OFF)
-option(CEN_TESTS "Build the Centurion tests" OFF)
-option(CEN_EXAMPLES "Build the examples" OFF)
-
-option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
-
+# System dependencies
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-if (CEN_COVERAGE)
-  include(CodeCoverage)
-  append_coverage_compiler_flags()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
-endif ()
+if (BUILD_TESTS)
+  # Vcpkg test dependencies
+  find_package(GTest CONFIG REQUIRED)
+  find_package(cereal CONFIG REQUIRED)
+  find_package(GLEW REQUIRED)
 
-if (CEN_TESTS)
   add_subdirectory(test)
 endif ()
 
-if (CEN_EXAMPLES)
+if (BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif ()

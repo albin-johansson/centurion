@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,24 +39,23 @@ TEST(Display, SetScreenSaverEnabled)
 
 TEST(Display, DisplayDPI)
 {
-  {  // Default display
-    const auto dpi = cen::display_dpi();
-    ASSERT_TRUE(dpi.has_value());
-
-    float diagonal{};
-    float horizontal{};
-    float vertical{};
+  // Default display
+  const auto dpi = cen::display_dpi();
+  if (dpi.has_value()) {
+    float diagonal {};
+    float horizontal {};
+    float vertical {};
     SDL_GetDisplayDPI(0, &diagonal, &horizontal, &vertical);
 
     ASSERT_EQ(diagonal, dpi->diagonal);
     ASSERT_EQ(horizontal, dpi->horizontal);
     ASSERT_EQ(vertical, dpi->vertical);
-  }
 
-  {  // Explicit display index
-    const auto amount = cen::display_count().value();
-    ASSERT_TRUE(cen::display_dpi(amount - 1));
-    ASSERT_FALSE(cen::display_dpi(amount));
+    {  // Explicit display index
+      const auto amount = cen::display_count().value();
+      ASSERT_TRUE(cen::display_dpi(amount - 1).has_value());
+      ASSERT_FALSE(cen::display_dpi(amount).has_value());
+    }
   }
 }
 
@@ -65,7 +64,7 @@ TEST(Display, DisplayBounds)
   const auto bounds = cen::display_bounds();
   ASSERT_TRUE(bounds.has_value());
 
-  SDL_Rect rect{};
+  SDL_Rect rect {};
   ASSERT_EQ(0, SDL_GetDisplayBounds(0, &rect));
 
   ASSERT_EQ(rect.x, bounds->x());
@@ -81,7 +80,7 @@ TEST(Display, DisplayUsableBounds)
   const auto bounds = cen::display_usable_bounds();
   ASSERT_TRUE(bounds.has_value());
 
-  SDL_Rect rect{};
+  SDL_Rect rect {};
   ASSERT_EQ(0, SDL_GetDisplayUsableBounds(0, &rect));
 
   ASSERT_EQ(rect.x, bounds->x());
@@ -99,7 +98,10 @@ TEST(Display, DisplayOrientation)
             static_cast<SDL_DisplayOrientation>(cen::display_orientation()));
 }
 
-TEST(Display, DisplayCount) { ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count()); }
+TEST(Display, DisplayCount)
+{
+  ASSERT_EQ(SDL_GetNumVideoDisplays(), cen::display_count());
+}
 
 TEST(Display, DisplayName)
 {

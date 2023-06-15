@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/renderer_info.hpp"
+
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>     // array
 #include <iostream>  // cout
 
-#include "centurion/render.hpp"
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
+extern "C" {
+FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
 }
 
 namespace {
@@ -79,10 +79,10 @@ class RendererInfoTest : public testing::Test {
 
 TEST_F(RendererInfoTest, Test)
 {
-  std::array functions{get_renderer_info};
+  std::array functions {get_renderer_info};
   SET_CUSTOM_FAKE_SEQ(SDL_GetRendererInfo, functions.data(), cen::isize(functions));
 
-  cen::renderer_handle handle{nullptr};
+  cen::renderer_handle handle {nullptr};
 
   const auto info = cen::get_info(handle);
   ASSERT_TRUE(info);

@@ -51,9 +51,7 @@
 .vs
 .vscode
 
-.DS_Store
-
+bin/*.dll
 build
 cmake-build-*
 doxygen-out
-docs/book

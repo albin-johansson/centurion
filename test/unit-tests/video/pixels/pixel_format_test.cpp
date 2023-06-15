@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,8 @@
 
 #include <iostream>  // clog
 
-#include "centurion/pixels.hpp"
 #include "centurion/system.hpp"
+#include "centurion/video/pixels.hpp"
 
 using format = cen::pixel_format;
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
+#include "centurion/events/event_dispatcher.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
-
-#include "centurion/event.hpp"
 
 using EventDispatcher =
     cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
 
 namespace {
 
-inline bool gVisitedFreeFunction{};
+inline bool gVisitedFreeFunction {};
 
 void OnQuit(const cen::quit_event&)
 {
@@ -43,7 +43,7 @@ void OnQuit(const cen::quit_event&)
 struct ButtonHandler final {
   void OnEvent(const cen::controller_button_event&) { visited = true; }
 
-  bool visited{};
+  bool visited {};
 };
 
 }  // namespace
@@ -61,7 +61,7 @@ TEST(EventDispatcher, Bind)
   dispatcher.bind<cen::quit_event>().to<&OnQuit>();
   dispatcher.bind<cen::controller_button_event>().to<&ButtonHandler::OnEvent>(&handler);
 
-  bool visitedLambda{};
+  bool visitedLambda {};
   dispatcher.bind<cen::window_event>().to(
       [&](const cen::window_event&) { visitedLambda = true; });
 

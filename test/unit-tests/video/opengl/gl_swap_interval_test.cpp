@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/opengl.hpp"
+#include "centurion/video/opengl.hpp"
 
 TEST(GLSwapInterval, Values)
 {
@@ -37,7 +37,7 @@ TEST(GLSwapInterval, Values)
 
 TEST(GLSwapInterval, ToString)
 {
-  ASSERT_THROW(to_string(cen::gl_swap_interval{1'000}), cen::exception);
+  ASSERT_THROW(to_string(cen::gl_swap_interval {1'000}), cen::exception);
 
   ASSERT_EQ("immediate", to_string(cen::gl_swap_interval::immediate));
   ASSERT_EQ("synchronized", to_string(cen::gl_swap_interval::synchronized));

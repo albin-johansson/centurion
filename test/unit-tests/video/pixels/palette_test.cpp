@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,19 @@
 
 #include <iostream>  // cout
 
-#include "centurion/color.hpp"
-#include "centurion/pixels.hpp"
+#include "centurion/video/color.hpp"
+#include "centurion/video/pixels.hpp"
 
 TEST(Palette, Constructor)
 {
-  ASSERT_THROW(cen::palette{0}, cen::exception);
-  ASSERT_THROW(cen::palette{-1}, cen::exception);
-  ASSERT_NO_THROW(cen::palette{1});
+  ASSERT_THROW(cen::palette {0}, cen::exception);
+  ASSERT_THROW(cen::palette {-1}, cen::exception);
+  ASSERT_NO_THROW(cen::palette {1});
 }
 
 TEST(Palette, SetColor)
 {
-  cen::palette palette{4};
+  cen::palette palette {4};
 
   ASSERT_TRUE(palette.set_color(0, cen::colors::coral));
   ASSERT_EQ(cen::colors::coral, palette.at(0));
@@ -56,14 +56,14 @@ TEST(Palette, SetColor)
 TEST(Palette, Iteration)
 {
   {
-    cen::palette single{1};
+    cen::palette single {1};
     const auto count = single.end() - single.begin();
 
     ASSERT_EQ(1, count);
   }
 
   {
-    cen::palette palette{4};
+    cen::palette palette {4};
     const auto count = palette.end() - palette.begin();
 
     ASSERT_EQ(4, count);
@@ -72,7 +72,7 @@ TEST(Palette, Iteration)
 
 TEST(Palette, GetColor)
 {
-  cen::palette palette{4};
+  cen::palette palette {4};
   ASSERT_NO_THROW(palette.at(0));
   ASSERT_NO_THROW(palette.at(3));
   ASSERT_THROW(palette.at(-1), cen::exception);
@@ -81,12 +81,12 @@ TEST(Palette, GetColor)
 
 TEST(Palette, GetSize)
 {
-  const cen::palette palette{7};
+  const cen::palette palette {7};
   ASSERT_EQ(7, palette.size());
 }
 
 TEST(Palette, StreamOperator)
 {
-  const cen::palette palette{7};
+  const cen::palette palette {7};
   std::cout << palette << '\n';
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/surface.hpp"
+#include "centurion/video/surface.hpp"
 
 namespace {
 inline constexpr auto path = "resources/panda.png";
@@ -32,10 +32,10 @@ inline constexpr auto path = "resources/panda.png";
 
 TEST(SurfaceHandle, Constructor)
 {
-  ASSERT_FALSE(cen::surface_handle{nullptr});
+  ASSERT_FALSE(cen::surface_handle {nullptr});
 
-  const cen::surface surface{path};
-  cen::surface_handle handle{surface.get()};
+  const cen::surface surface {path};
+  cen::surface_handle handle {surface.get()};
 
   ASSERT_TRUE(handle);
 }

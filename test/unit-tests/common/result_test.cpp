@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
+#include "centurion/common/result.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
 
-#include "centurion/common.hpp"
-
 TEST(Result, Values)
 {
-  ASSERT_EQ(cen::result{true}, cen::success);
-  ASSERT_EQ(cen::result{false}, cen::failure);
+  ASSERT_EQ(cen::result {true}, cen::success);
+  ASSERT_EQ(cen::result {false}, cen::failure);
 
-  ASSERT_NE(cen::result{false}, cen::success);
-  ASSERT_NE(cen::result{true}, cen::failure);
+  ASSERT_NE(cen::result {false}, cen::success);
+  ASSERT_NE(cen::result {true}, cen::failure);
 
   ASSERT_NE(cen::success, cen::failure);
 

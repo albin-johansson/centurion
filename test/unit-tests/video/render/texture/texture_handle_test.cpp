@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,45 +26,45 @@
 
 #include <memory>  // unique_ptr
 
-#include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/video/texture.hpp"
+#include "centurion/video/window.hpp"
 
 class TextureHandleTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
     constexpr auto path = "resources/panda.png";
-    window = std::make_unique<cen::window>();
-    renderer = std::make_unique<cen::renderer>(window->make_renderer());
-    texture = std::make_unique<cen::texture>(renderer->make_texture(path));
+    mWindow = std::make_unique<cen::window>();
+    mRenderer = std::make_unique<cen::renderer>(mWindow->make_renderer());
+    mTexture = std::make_unique<cen::texture>(mRenderer->make_texture(path));
   }
 
   static void TearDownTestSuite()
   {
-    texture.reset();
-    renderer.reset();
-    window.reset();
+    mTexture.reset();
+    mRenderer.reset();
+    mWindow.reset();
   }
 
-  inline static std::unique_ptr<cen::window> window;
-  inline static std::unique_ptr<cen::renderer> renderer;
-  inline static std::unique_ptr<cen::texture> texture;
+  inline static std::unique_ptr<cen::window> mWindow;
+  inline static std::unique_ptr<cen::renderer> mRenderer;
+  inline static std::unique_ptr<cen::texture> mTexture;
 };
 
 TEST_F(TextureHandleTest, FromTexture)
 {
-  cen::texture_handle handle{*texture};
+  cen::texture_handle handle {*mTexture};
   ASSERT_TRUE(handle);
   ASSERT_TRUE(handle.get());
 }
 
 TEST_F(TextureHandleTest, FromRawPointer)
 {
-  cen::texture_handle bad{nullptr};
+  cen::texture_handle bad {nullptr};
   ASSERT_FALSE(bad);
   ASSERT_FALSE(bad.get());
 
-  cen::texture_handle good{texture->get()};
+  cen::texture_handle good {mTexture->get()};
   ASSERT_TRUE(good);
   ASSERT_TRUE(good.get());
 }

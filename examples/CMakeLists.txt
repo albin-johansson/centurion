@@ -14,7 +14,7 @@ function(cen_add_example target)
   cen_set_basic_compiler_options(${target})
 
   if (WIN32)
-    copy_directory_post_build(${target} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+    cen_copy_directory_post_build(${target} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
   endif ()
 endfunction()
 

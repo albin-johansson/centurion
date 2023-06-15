@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/locks.hpp"
 #include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 
@@ -39,8 +39,8 @@ class ScopedLockTest : public testing::Test {
 
 TEST_F(ScopedLockTest, ConstructorFailsToLockMutex)
 {
-  cen::mutex mutex{0};  // Dummy parameter for mock-friendly constructor
+  cen::mutex mutex {0};  // Dummy parameter for mock-friendly constructor
 
   SDL_LockMutex_fake.return_val = -1;
-  ASSERT_THROW(cen::scoped_lock{mutex}, cen::sdl_error);
+  ASSERT_THROW(cen::scoped_lock {mutex}, cen::sdl_error);
 }

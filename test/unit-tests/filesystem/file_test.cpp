@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,15 @@
  * SOFTWARE.
  */
 
+#include "centurion/io/file.hpp"
+
 #include <gtest/gtest.h>
 
 #include <array>    // array
 #include <cstddef>  // size_t
 #include <vector>   // vector
 
-#include "centurion/filesystem.hpp"
+#include "centurion/io/paths.hpp"
 
 class FileTest : public testing::Test {
  public:
@@ -38,14 +40,14 @@ class FileTest : public testing::Test {
 
 TEST_F(FileTest, PointerConstructor)
 {
-  ASSERT_NO_THROW(cen::file{nullptr});
+  ASSERT_NO_THROW(cen::file {nullptr});
 }
 
 TEST_F(FileTest, WriteAndRead)
 {
   {
     // Create a file which we will write some data to
-    cen::file file{path, cen::file_mode::wbx};
+    cen::file file {path, cen::file_mode::wbx};
     ASSERT_TRUE(file);
 
     ASSERT_EQ(4, file.write("abc"));
@@ -54,25 +56,25 @@ TEST_F(FileTest, WriteAndRead)
     ASSERT_EQ(3, file.write(buffer));  // Implicit capture of buffer size
     ASSERT_EQ(1, file.write(buffer, 1));
 
-    std::array array{4, 5, 6};
+    std::array array {4, 5, 6};
     ASSERT_EQ(3, file.write(array));
 
-    std::vector vector{7, 8, 9};
+    std::vector vector {7, 8, 9};
     ASSERT_EQ(3, file.write(vector));
 
     ASSERT_TRUE(file.write_byte(42u));
 
-    ASSERT_TRUE(file.write_native_as_big_endian(Uint16{12}));
-    ASSERT_TRUE(file.write_native_as_big_endian(Uint32{34}));
-    ASSERT_TRUE(file.write_native_as_big_endian(Uint64{56}));
+    ASSERT_TRUE(file.write_native_as_big_endian(Uint16 {12}));
+    ASSERT_TRUE(file.write_native_as_big_endian(Uint32 {34}));
+    ASSERT_TRUE(file.write_native_as_big_endian(Uint64 {56}));
 
-    ASSERT_TRUE(file.write_native_as_little_endian(Uint16{78}));
-    ASSERT_TRUE(file.write_native_as_little_endian(Uint32{90}));
-    ASSERT_TRUE(file.write_native_as_little_endian(Uint64{27}));
+    ASSERT_TRUE(file.write_native_as_little_endian(Uint16 {78}));
+    ASSERT_TRUE(file.write_native_as_little_endian(Uint32 {90}));
+    ASSERT_TRUE(file.write_native_as_little_endian(Uint64 {27}));
   }
 
   {
-    cen::file file{path, cen::file_mode::rb};
+    cen::file file {path, cen::file_mode::rb};
     ASSERT_TRUE(file);
 
     char str[] = "___";
@@ -83,10 +85,10 @@ TEST_F(FileTest, WriteAndRead)
 
     const auto i = file.read<int>();
 
-    std::array array{0, 0, 0};
+    std::array array {0, 0, 0};
     ASSERT_EQ(3, file.read_to(array));
 
-    std::vector vector{0, 0, 0};
+    std::vector vector {0, 0, 0};
     ASSERT_EQ(3, file.read_to(vector));
 
     ASSERT_STREQ("abc", str);
@@ -119,7 +121,7 @@ TEST_F(FileTest, WriteAndRead)
 
 TEST_F(FileTest, Queries)
 {
-  const cen::file file{path, cen::file_mode::rb};
+  const cen::file file {path, cen::file_mode::rb};
   ASSERT_EQ(SDL_RWtell(file.data()), file.offset());
   ASSERT_EQ(static_cast<std::size_t>(SDL_RWsize(file.data())), file.size());
   ASSERT_EQ(file.data()->type, cen::to_underlying(file.type()));
@@ -127,7 +129,7 @@ TEST_F(FileTest, Queries)
 
 TEST_F(FileTest, IsPNG)
 {
-  cen::file file{"resources/panda.png", cen::file_mode::r};
+  cen::file file {"resources/panda.png", cen::file_mode::r};
   ASSERT_TRUE(file);
 
   ASSERT_TRUE(file.is_png());

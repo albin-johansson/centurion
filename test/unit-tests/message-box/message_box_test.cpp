@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-#include "centurion/message_box.hpp"
+#include "centurion/video/message_box.hpp"
 
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
-#include "centurion/color.hpp"
+#include "centurion/video/color.hpp"
 
 static_assert(std::is_final_v<cen::message_box>);
 static_assert(std::is_default_constructible_v<cen::message_box>);
@@ -49,7 +49,7 @@ TEST(MessageBox, Defaults)
 
 TEST(MessageBox, TitleMessageConstructor)
 {
-  const cen::message_box mb{"foo", "bar"};
+  const cen::message_box mb {"foo", "bar"};
   ASSERT_EQ("foo", mb.title());
   ASSERT_EQ("bar", mb.message());
 }
@@ -58,7 +58,7 @@ TEST(MessageBox, AddButton)
 {
   cen::message_box mb;
 
-  constexpr auto id{3};
+  constexpr auto id {3};
   mb.add_button(id, "Foo");
 
   ASSERT_TRUE(mb.has_button(id));

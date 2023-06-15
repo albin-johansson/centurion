@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/event.hpp"
+#include "centurion/events/event_handler.hpp"
 
 namespace {
 
@@ -111,7 +111,7 @@ TEST(Event, FlushAll)
 
 TEST(Event, Poll)
 {
-  SDL_Event sdl{};
+  SDL_Event sdl {};
   sdl.type = SDL_MOUSEMOTION;
   sdl.motion.x = 839;
   sdl.motion.y = 351;
@@ -163,7 +163,7 @@ TEST(Event, InQueue)
 
 TEST(Event, Type)
 {
-  SDL_Event sdl{};
+  SDL_Event sdl {};
   sdl.type = SDL_FINGERMOTION;
 
   cen::event_handler::flush_all();

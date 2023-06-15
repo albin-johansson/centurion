@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,17 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/logging.hpp"
 #include "centurion/initialization.hpp"
 
 int main(int argc, char* argv[])
 {
-#ifdef CEN_AUDIO
+#ifdef CENTURION_INCLUDE_AUDIO_TESTS
   const cen::sdl sdl;
   const cen::mix mix;
 #else
   cen::sdl_cfg cfg;
   cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-  const cen::sdl sdl{cfg};
+  const cen::sdl sdl {cfg};
 #endif
 
   const cen::img img;

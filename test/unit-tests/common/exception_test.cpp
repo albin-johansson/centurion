@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,15 +26,48 @@
 
 #include <type_traits>
 
-#include "centurion/common.hpp"
+#include "centurion/common/errors.hpp"
 
 static_assert(std::has_virtual_destructor_v<cen::exception>);
 static_assert(std::is_default_constructible_v<cen::exception>);
 static_assert(std::is_nothrow_move_constructible_v<cen::exception>);
 static_assert(std::is_nothrow_destructible_v<cen::exception>);
 
-TEST(Exception, CStringConstructor)
+TEST(Exception, NoArgsConstructor)
 {
-  const cen::exception exception{"Foo"};
-  ASSERT_STREQ("Foo", exception.what());
+  const cen::exception exception;
+  ASSERT_STREQ("?", exception.what());
+}
+
+TEST(Exception, StringConstructor)
+{
+  const char* normal_msg = "Hello, world!";
+
+  // Limit is 128 characters, with last character reserved for null-terminator.
+  const char* max_msg =
+      ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"  // 32
+      "--------------------------------"  // 64
+      "................................"  // 96
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";  // 127
+
+  const char* overflow_msg =
+      ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"   // 32
+      "--------------------------------"   // 64
+      "................................"   // 96
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!X";  // 128
+
+  {
+    const cen::exception exception {normal_msg};
+    ASSERT_STREQ(normal_msg, exception.what());
+  }
+
+  {
+    const cen::exception exception {max_msg};
+    ASSERT_STREQ(max_msg, exception.what());
+  }
+
+  {
+    const cen::exception exception {overflow_msg};
+    ASSERT_STREQ(max_msg, exception.what());
+  }
 }

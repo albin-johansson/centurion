@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/misc_events.hpp"
 
 TEST(TextInputEvent, Defaults)
 {
@@ -44,18 +44,18 @@ TEST(TextInputEvent, SetWindowId)
 
 TEST(TextInputEvent, WindowId)
 {
-  SDL_TextInputEvent sdl{};
+  SDL_TextInputEvent sdl {};
   sdl.type = SDL_TEXTINPUT;
   sdl.windowID = 8;
 
-  const cen::text_input_event event{sdl};
+  const cen::text_input_event event {sdl};
   ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(TextInputEvent, TextUtf8)
 {
-  const SDL_TextInputEvent sdl{SDL_TEXTINPUT, 1, 1, "hello"};
-  const cen::text_input_event event{sdl};
+  const SDL_TextInputEvent sdl {SDL_TEXTINPUT, 1, 1, "hello"};
+  const cen::text_input_event event {sdl};
   ASSERT_EQ("hello", event.text_utf8());
 }
 

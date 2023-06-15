@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/misc_events.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 22)
 
@@ -69,4 +69,4 @@ TEST(TextEditingExtEvent, AsSDLEvent)
   ASSERT_EQ(sdl.edit.timestamp, event.timestamp().count());
 }
 
-#endif // SDL_VERSION_ATLEAST(2, 0, 22)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 22)

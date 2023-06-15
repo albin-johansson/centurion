@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/surface.hpp"
+#include "centurion/video/surface.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -31,14 +31,13 @@
 
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(SDL_Surface*, SDL_ConvertSurfaceFormat, SDL_Surface*, Uint32, Uint32)
-  FAKE_VALUE_FUNC(int, SDL_GetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode*)
-  FAKE_VALUE_FUNC(int, SDL_SetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode)
-  FAKE_VALUE_FUNC(int, SDL_SetSurfaceRLE, SDL_Surface*, int)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_HasSurfaceRLE, SDL_Surface*)
-  FAKE_VALUE_FUNC(SDL_Surface*, SDL_DuplicateSurface, SDL_Surface*)
+extern "C" {
+FAKE_VALUE_FUNC(SDL_Surface*, SDL_ConvertSurfaceFormat, SDL_Surface*, Uint32, Uint32)
+FAKE_VALUE_FUNC(int, SDL_GetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode*)
+FAKE_VALUE_FUNC(int, SDL_SetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode)
+FAKE_VALUE_FUNC(int, SDL_SetSurfaceRLE, SDL_Surface*, int)
+FAKE_VALUE_FUNC(SDL_bool, SDL_HasSurfaceRLE, SDL_Surface*)
+FAKE_VALUE_FUNC(SDL_Surface*, SDL_DuplicateSurface, SDL_Surface*)
 }
 
 class SurfaceTest : public testing::Test {
@@ -55,13 +54,13 @@ class SurfaceTest : public testing::Test {
     RESET_FAKE(SDL_DuplicateSurface)
   }
 
-  cen::surface m_surface;
+  cen::surface mSurface;
 };
 
 TEST_F(SurfaceTest, ConvertTo)
 {
   ASSERT_THROW(
-      { const auto s [[maybe_unused]] = m_surface.convert_to(cen::pixel_format::rgba8888); },
+      { const auto s [[maybe_unused]] = mSurface.convert_to(cen::pixel_format::rgba8888); },
       cen::sdl_error);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
@@ -69,17 +68,17 @@ TEST_F(SurfaceTest, ConvertTo)
 TEST_F(SurfaceTest, Copy)
 {
   cen::surface dst;
-  ASSERT_THROW(dst = m_surface, cen::sdl_error);
+  ASSERT_THROW(dst = mSurface, cen::sdl_error);
   ASSERT_EQ(1u, SDL_DuplicateSurface_fake.call_count);
 }
 
 TEST_F(SurfaceTest, SetRLEHint)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_SetSurfaceRLE, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_surface.set_rle(true));
-  ASSERT_TRUE(m_surface.set_rle(true));
+  ASSERT_FALSE(mSurface.set_rle(true));
+  ASSERT_TRUE(mSurface.set_rle(true));
 
   ASSERT_EQ(2u, SDL_SetSurfaceRLE_fake.call_count);
 }
@@ -88,11 +87,11 @@ TEST_F(SurfaceTest, SetRLEHint)
 
 TEST_F(SurfaceTest, IsRLEEnabled)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasSurfaceRLE, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_surface.has_rle());
-  ASSERT_TRUE(m_surface.has_rle());
+  ASSERT_FALSE(mSurface.has_rle());
+  ASSERT_TRUE(mSurface.has_rle());
 
   ASSERT_EQ(2u, SDL_HasSurfaceRLE_fake.call_count);
 }

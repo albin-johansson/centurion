@@ -186,7 +186,7 @@ set(SOURCE_FILES
     video/window/window_handle_test.cpp
     )
 
-if (CEN_AUDIO)
+if (INCLUDE_AUDIO_TESTS)
   list(APPEND
        SOURCE_FILES
        audio/fade_status_test.cpp
@@ -202,20 +202,18 @@ target_include_directories(${CENTURION_TEST_TARGET}
                            PRIVATE
                            ${PROJECT_SOURCE_DIR}
                            ${CEN_SOURCE_DIR}
-
-                           SYSTEM PRIVATE
-                           ${gtest_SOURCE_DIR}/include
-                           ${gtest_SOURCE_DIR}
-                           ${gmock_SOURCE_DIR}/include
-                           ${gmock_SOURCE_DIR}
-                           ${CEN_LIBRARY_DIR}/cereal
                            )
 
 cen_include_sdl_headers(${CENTURION_TEST_TARGET})
 
 cen_link_sdl_libs(${CENTURION_TEST_TARGET})
 
-target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE gtest)
+target_link_libraries(${CENTURION_TEST_TARGET}
+                      PRIVATE
+                      cereal::cereal
+                      GLEW::GLEW
+                      GTest::gtest
+                      )
 
 cen_set_basic_compiler_options(${CENTURION_TEST_TARGET})
 
@@ -229,12 +227,11 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
   target_compile_options(${CENTURION_TEST_TARGET}
                          PRIVATE
                          -Wno-unused-result
-                         -Wno-gnu-zero-variadic-macro-arguments
                          )
 endif ()
 
-if (CEN_AUDIO)
-  target_compile_definitions(${CENTURION_TEST_TARGET} PRIVATE CEN_AUDIO)
+if (INCLUDE_AUDIO_TESTS)
+  target_compile_definitions(${CENTURION_TEST_TARGET} PRIVATE CENTURION_INCLUDE_AUDIO_TESTS)
 endif ()
 
 target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
@@ -255,10 +252,10 @@ target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
-copy_directory_post_build(${CENTURION_TEST_TARGET}
-                          ${CEN_RESOURCES_DIR}
-                          ${CMAKE_CURRENT_BINARY_DIR}/resources)
+cen_copy_directory_post_build(${CENTURION_TEST_TARGET}
+                              ${CEN_RESOURCES_DIR}
+                              ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
-  copy_directory_post_build(${CENTURION_TEST_TARGET} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+  cen_copy_directory_post_build(${CENTURION_TEST_TARGET} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

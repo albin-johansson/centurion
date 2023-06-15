@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,19 +27,18 @@
 
 #include <array>  // array
 
-#include "centurion/vulkan.hpp"
+#include "centurion/video/vulkan.hpp"
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(void*, SDL_Vulkan_GetVkGetInstanceProcAddr)
-  FAKE_VALUE_FUNC(SDL_bool, SDL_Vulkan_CreateSurface, SDL_Window*, VkInstance, VkSurfaceKHR*)
-  FAKE_VOID_FUNC(SDL_Vulkan_GetDrawableSize, SDL_Window*, int*, int*)
-  FAKE_VALUE_FUNC(SDL_bool,
-                  SDL_Vulkan_GetInstanceExtensions,
-                  SDL_Window*,
-                  unsigned*,
-                  const char**)
+extern "C" {
+FAKE_VALUE_FUNC(void*, SDL_Vulkan_GetVkGetInstanceProcAddr)
+FAKE_VALUE_FUNC(SDL_bool, SDL_Vulkan_CreateSurface, SDL_Window*, VkInstance, VkSurfaceKHR*)
+FAKE_VOID_FUNC(SDL_Vulkan_GetDrawableSize, SDL_Window*, int*, int*)
+FAKE_VALUE_FUNC(SDL_bool,
+                SDL_Vulkan_GetInstanceExtensions,
+                SDL_Window*,
+                unsigned*,
+                const char**)
 }
 
 class VulkanCoreTest : public testing::Test {
@@ -63,14 +62,14 @@ TEST_F(VulkanCoreTest, GetInstanceProcAddr)
 
 TEST_F(VulkanCoreTest, CreateSurface)
 {
-  std::array flags{Uint32{cen::window::vulkan}};
+  std::array flags {Uint32 {cen::window::vulkan}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_Vulkan_CreateSurface, values.data(), cen::isize(values));
 
-  VkInstance instance{};
-  cen::window_handle window{nullptr};
+  VkInstance instance {};
+  cen::window_handle window {nullptr};
   VkSurfaceKHR surface;
 
   ASSERT_EQ(cen::failure, cen::vk::make_surface(window, instance, &surface));
@@ -80,7 +79,7 @@ TEST_F(VulkanCoreTest, CreateSurface)
 
 TEST_F(VulkanCoreTest, RequiredExtensions)
 {
-  std::array values{SDL_FALSE, SDL_TRUE};
+  std::array values {SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_Vulkan_GetInstanceExtensions, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::vk::required_extensions());
@@ -89,10 +88,10 @@ TEST_F(VulkanCoreTest, RequiredExtensions)
 
 TEST_F(VulkanCoreTest, DrawableSize)
 {
-  std::array flags{Uint32{cen::window::vulkan}};
+  std::array flags {Uint32 {cen::window::vulkan}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, flags.data(), cen::isize(flags));
 
-  cen::window_handle window{nullptr};
+  cen::window_handle window {nullptr};
   const auto size [[maybe_unused]] = cen::vk::drawable_size(window);
   ASSERT_EQ(1u, SDL_Vulkan_GetDrawableSize_fake.call_count);
 }

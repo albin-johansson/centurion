@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_integral_v
 
-#include "../common.hpp"
+#include "../common/primitives.hpp"
 #include "../features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
@@ -95,11 +95,11 @@ template <typename T = int>
   /* We don't check if the compiler provides <charconv> here because all major compilers we
      support provide the integral overloads of from_chars */
 
-  T value{};
+  T value {};
   const auto* begin = str.data();
   const auto* end = begin + str.size();
   const auto [ptr, err] = std::from_chars(begin, end, value, base);
-  if (ptr == end && err == std::errc{}) {
+  if (ptr == end && err == std::errc {}) {
     return value;
   }
   else {
@@ -121,7 +121,7 @@ template <typename T = int>
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
 #if CENTURION_HAS_FEATURE_FORMAT
-  return ptr ? std::format("{}", ptr) : std::string{};
+  return ptr ? std::format("{}", ptr) : std::string {};
 #else
   if (ptr) {
     std::stringstream stream;
@@ -134,7 +134,7 @@ template <typename T = int>
     return stream.str();
   }
   else {
-    return std::string{};
+    return std::string {};
   }
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,15 @@
  * SOFTWARE.
  */
 
+#include "centurion/concurrency/semaphore.hpp"
+
 #include <gtest/gtest.h>
 
-#include "centurion/concurrency.hpp"
+#include "centurion/common/literals.hpp"
 
 TEST(Semaphore, Acquire)
 {
-  cen::semaphore semaphore{1};
+  cen::semaphore semaphore {1};
 
   ASSERT_TRUE(semaphore.acquire());
   ASSERT_EQ(semaphore.count(), 0u);
@@ -41,7 +43,7 @@ TEST(Semaphore, AcquireMilliseconds)
 {
   using namespace cen::literals::time_literals;
 
-  cen::semaphore semaphore{0u};
+  cen::semaphore semaphore {0u};
 
   ASSERT_EQ(semaphore.acquire(1_ms), cen::lock_status::timed_out);
   ASSERT_TRUE(semaphore.release());
@@ -51,7 +53,7 @@ TEST(Semaphore, AcquireMilliseconds)
 
 TEST(Semaphore, TryAcquire)
 {
-  cen::semaphore semaphore{0u};
+  cen::semaphore semaphore {0u};
 
   ASSERT_EQ(semaphore.try_acquire(), cen::lock_status::timed_out);
   ASSERT_TRUE(semaphore.release());
@@ -61,7 +63,7 @@ TEST(Semaphore, TryAcquire)
 
 TEST(Semaphore, Release)
 {
-  cen::semaphore semaphore{0u};
+  cen::semaphore semaphore {0u};
   ASSERT_EQ(semaphore.count(), 0u);
 
   ASSERT_TRUE(semaphore.release());
@@ -72,6 +74,6 @@ TEST(Semaphore, Count)
 {
   constexpr Uint32 tokens = 32;
 
-  cen::semaphore semaphore{tokens};
+  cen::semaphore semaphore {tokens};
   ASSERT_EQ(semaphore.count(), tokens);
 }

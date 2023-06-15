@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,15 @@
  * SOFTWARE.
  */
 
+#include "centurion/concurrency/thread.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>
 #include <type_traits>
 
-#include "centurion/concurrency.hpp"
-#include "centurion/logging.hpp"
+#include "centurion/common/literals.hpp"
+#include "centurion/common/logging.hpp"
 
 namespace {
 
@@ -47,7 +49,7 @@ static_assert(!std::is_copy_assignable_v<cen::thread>);
 
 TEST(Thread, Detach)
 {
-  cen::thread thread{dummy};
+  cen::thread thread {dummy};
   thread.detach();
 
   ASSERT_FALSE(thread.joinable());
@@ -59,7 +61,7 @@ TEST(Thread, Detach)
 
 TEST(Thread, Join)
 {
-  cen::thread thread{dummy};
+  cen::thread thread {dummy};
   thread.join();
 
   ASSERT_FALSE(thread.joinable());
@@ -72,7 +74,7 @@ TEST(Thread, Join)
 TEST(Thread, Joinable)
 {
   {  // Shouldn't be joinable after join
-    cen::thread thread{dummy};
+    cen::thread thread {dummy};
     ASSERT_TRUE(thread.joinable());
 
     thread.join();
@@ -80,7 +82,7 @@ TEST(Thread, Joinable)
   }
 
   {  // Shouldn't be joinable after detach
-    cen::thread thread{dummy};
+    cen::thread thread {dummy};
     ASSERT_TRUE(thread.joinable());
 
     thread.detach();
@@ -90,7 +92,7 @@ TEST(Thread, Joinable)
 
 TEST(Thread, Joined)
 {
-  cen::thread thread{dummy};
+  cen::thread thread {dummy};
   ASSERT_FALSE(thread.joined());
 
   thread.join();
@@ -99,7 +101,7 @@ TEST(Thread, Joined)
 
 TEST(Thread, Detached)
 {
-  cen::thread thread{dummy};
+  cen::thread thread {dummy};
   ASSERT_FALSE(thread.detached());
 
   thread.detach();
@@ -108,26 +110,26 @@ TEST(Thread, Detached)
 
 TEST(Thread, ID)
 {
-  cen::thread thread{dummy};
+  cen::thread thread {dummy};
   ASSERT_EQ(thread.id(), SDL_GetThreadID(thread.data()));
 }
 
 TEST(Thread, Name)
 {
   {  // Custom name
-    const cen::thread thread{dummy, "foobar"};
+    const cen::thread thread {dummy, "foobar"};
     ASSERT_EQ(thread.name(), "foobar");
   }
 
   {  // Default name
-    const cen::thread thread{dummy};
+    const cen::thread thread {dummy};
     ASSERT_EQ(thread.name(), "thread");
   }
 }
 
 TEST(Thread, Data)
 {
-  cen::thread thread{dummy};
+  cen::thread thread {dummy};
   ASSERT_TRUE(thread.data());
 
   const auto& ref = thread;
@@ -153,7 +155,7 @@ TEST(Thread, CurrentId)
 
 TEST(Thread, StreamOperator)
 {
-  cen::thread thread{dummy, "cen-thread"};
+  cen::thread thread {dummy, "cen-thread"};
   std::cout << thread << '\n';
 }
 

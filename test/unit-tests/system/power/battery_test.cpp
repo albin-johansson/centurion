@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/power.hpp"
+#include "centurion/system/power.hpp"
 
 TEST(Battery, BatteryPercentage)
 {
@@ -49,7 +49,7 @@ TEST(Battery, BatterySeconds)
   SDL_GetPowerInfo(&actual, nullptr);
 
   if (const auto secs = cen::battery_seconds()) {
-    ASSERT_EQ(cen::seconds<int>{actual}, secs.value());
+    ASSERT_EQ(cen::seconds<int> {actual}, secs.value());
   }
 }
 
@@ -61,7 +61,7 @@ TEST(Battery, BatteryMinutes)
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 
-    const cen::seconds<int> s{actual};
+    const cen::seconds<int> s {actual};
     ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(s), minutes.value());
   }
 }

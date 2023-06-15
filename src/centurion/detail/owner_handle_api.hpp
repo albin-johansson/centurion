@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
-#include "../common.hpp"
-#include "../memory.hpp"
+#include "../common/memory.hpp"
+#include "../common/primitives.hpp"
 
 namespace cen::detail {
 
@@ -50,8 +50,7 @@ template <typename T>
 using enable_for_handle = std::enable_if_t<is_handle<T>, int>;
 
 template <typename B, typename Type>
-class pointer final
-{
+class pointer final {
  public:
   using smart_ptr = managed_ptr<Type>;
   using raw_ptr = Type*;
@@ -59,7 +58,7 @@ class pointer final
 
   pointer() noexcept = default;
 
-  explicit pointer(Type* ptr) noexcept : mPtr{ptr} {}
+  explicit pointer(Type* ptr) noexcept : mPtr {ptr} {}
 
   template <typename BB = B, enable_for_owner<BB> = 0>
   void reset(Type* ptr) noexcept
@@ -104,7 +103,7 @@ class pointer final
   }
 
  private:
-  pointer_type mPtr{};
+  pointer_type mPtr {};
 };
 
 }  // namespace cen::detail

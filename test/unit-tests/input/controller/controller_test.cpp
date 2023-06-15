@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-#include "centurion/controller.hpp"
+#include "centurion/input/controller.hpp"
 
 #include <gtest/gtest.h>
 
 TEST(Controller, PointerConstructor)
 {
-  ASSERT_THROW(cen::controller{nullptr}, cen::exception);
+  ASSERT_THROW(cen::controller {nullptr}, cen::exception);
 }
 
 TEST(Controller, IndexConstructor)
 {
-  ASSERT_THROW(cen::controller{}, cen::sdl_error);
+  ASSERT_THROW(cen::controller {}, cen::sdl_error);
 }
 
 TEST(Controller, FromJoystick)

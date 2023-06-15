@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,9 @@ class InitializationTest : public testing::Test {
     mocks::reset_core();
 
     /* Sets up expected return values for OK initialization */
-    SDL_Init_fake.return_val = cen::sdl_cfg{}.flags;
-    IMG_Init_fake.return_val = cen::img_cfg{}.flags;
-    Mix_Init_fake.return_val = cen::mix_cfg{}.flags;
+    SDL_Init_fake.return_val = cen::sdl_cfg {}.flags;
+    IMG_Init_fake.return_val = cen::img_cfg {}.flags;
+    Mix_Init_fake.return_val = cen::mix_cfg {}.flags;
     TTF_Init_fake.return_val = 0;
 
     Mix_OpenAudio_fake.return_val = 0;
@@ -103,29 +103,29 @@ TEST_F(InitializationTest, TTFDefaultConfiguration)
 TEST_F(InitializationTest, SDLCoreInitFailure)
 {
   SDL_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::sdl{}, cen::sdl_error);
+  ASSERT_THROW(cen::sdl {}, cen::sdl_error);
 }
 
 TEST_F(InitializationTest, SDLTTFInitFailure)
 {
   TTF_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::ttf{}, cen::ttf_error);
+  ASSERT_THROW(cen::ttf {}, cen::ttf_error);
 }
 
 TEST_F(InitializationTest, SDLImageInitFailure)
 {
   IMG_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::img{}, cen::img_error);
+  ASSERT_THROW(cen::img {}, cen::img_error);
 }
 
 TEST_F(InitializationTest, SDLMixInitFailure)
 {
   Mix_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::mix{}, cen::mix_error);
+  ASSERT_THROW(cen::mix {}, cen::mix_error);
 }
 
 TEST_F(InitializationTest, SDLMixOpenFailure)
 {
   Mix_OpenAudio_fake.return_val = -1;
-  ASSERT_THROW(cen::mix{}, cen::mix_error);
+  ASSERT_THROW(cen::mix {}, cen::mix_error);
 }

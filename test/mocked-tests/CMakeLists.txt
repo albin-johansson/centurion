@@ -11,6 +11,9 @@ set(SOURCE_FILES
     thread_mocks.hpp
     thread_mocks.cpp
 
+    audio/music_test.cpp
+    audio/sound_effect_test.cpp
+
     common/initialization_test.cpp
 
     concurrency/condition_test.cpp
@@ -53,31 +56,18 @@ set(SOURCE_FILES
     video/vulkan/vk_library_test.cpp
     )
 
-if (CENTURION_MOCK_FRIENDLY_MODE)
-  list(APPEND SOURCE_FILES
-       audio/music_test.cpp
-       audio/sound_effect_test.cpp
-       )
-endif ()
-
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
 
-if (CENTURION_MOCK_FRIENDLY_MODE)
-  target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
-endif ()
+target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 
-add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
+set(CEN_FFF_DIR "${CEN_EXTERNAL_DIR}/fff")
+
+cen_add_header_only_lib(libFFF ${CEN_FFF_DIR} ${CEN_FFF_DIR}/fff.h)
 
 target_include_directories(${CENTURION_MOCK_TARGET}
                            PRIVATE
                            ${PROJECT_SOURCE_DIR}
                            ${CEN_SOURCE_DIR}
-
-                           SYSTEM PRIVATE
-                           ${gtest_SOURCE_DIR}/include
-                           ${gtest_SOURCE_DIR}
-                           ${gmock_SOURCE_DIR}/include
-                           ${gmock_SOURCE_DIR}
                            )
 
 cen_include_sdl_headers(${CENTURION_MOCK_TARGET})
@@ -85,7 +75,7 @@ cen_link_sdl_libs(${CENTURION_MOCK_TARGET})
 
 target_link_libraries(${CENTURION_MOCK_TARGET}
                       PRIVATE
-                      gtest
+                      GTest::gtest
                       libFFF)
 
 cen_set_basic_compiler_options(${CENTURION_MOCK_TARGET})
@@ -101,7 +91,6 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|AppleClang")
   target_compile_options(${CENTURION_MOCK_TARGET}
                          PRIVATE
                          -Wno-unused-result
-                         -Wno-gnu-zero-variadic-macro-arguments
                          )
 endif ()
 

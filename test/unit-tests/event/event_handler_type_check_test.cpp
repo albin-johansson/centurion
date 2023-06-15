@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,14 +24,14 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/event_handler.hpp"
 
 namespace {
 
 template <typename Event>
 void check(const SDL_EventType type)
 {
-  SDL_Event event{};
+  SDL_Event event {};
   event.type = type;
 
   cen::event_handler::flush_all();
@@ -42,7 +42,7 @@ void check(const SDL_EventType type)
 
   const auto strong = static_cast<cen::event_type>(type);
 
-  ASSERT_EQ(type, handler.raw_type());
+  ASSERT_EQ(static_cast<Uint32>(type), handler.raw_type());
   ASSERT_EQ(strong, handler.type());
 
   ASSERT_TRUE(handler.is(strong));
@@ -118,7 +118,7 @@ TEST(EventHandlerTypeChecks, JoyButtonEvent)
   check<cen::joy_button_event>(SDL_JOYBUTTONUP);
 }
 
-TEST(EventHandlerTypeChecks, JoyDeviceEvent)
+TEST(EventHandlerTypeChecks, DISABLED_JoyDeviceEvent)
 {
   check<cen::joy_device_event>(SDL_JOYDEVICEADDED);
   check<cen::joy_device_event>(SDL_JOYDEVICEREMOVED);

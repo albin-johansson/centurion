@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/message_box.hpp"
+#include "centurion/video/message_box.hpp"
 
 TEST(MessageBoxColorScheme, Defaults)
 {
@@ -33,11 +33,11 @@ TEST(MessageBoxColorScheme, Defaults)
   const auto* data = scheme.data();
   const auto color = cen::colors::white;
 
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_TEXT]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]});
-  ASSERT_EQ(color, cen::color{data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_TEXT]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]});
+  ASSERT_EQ(color, cen::color {data->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]});
 }
 
 TEST(MessageBoxColorScheme, Custom)
@@ -46,7 +46,7 @@ TEST(MessageBoxColorScheme, Custom)
 
   const auto check = [&](const cen::message_box_color_type type, const cen::color& color) {
     scheme.set_color(type, color);
-    ASSERT_EQ(color, cen::color{scheme.data()->colors[cen::to_underlying(type)]});
+    ASSERT_EQ(color, cen::color {scheme.data()->colors[cen::to_underlying(type)]});
   };
 
   check(cen::message_box_color_type::text, cen::colors::salmon);

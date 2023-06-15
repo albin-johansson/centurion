@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/sensor.hpp"
+#include "centurion/input/sensor.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -32,25 +32,24 @@
 
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VOID_FUNC(SDL_SensorUpdate)
-  FAKE_VOID_FUNC(SDL_LockSensors)
-  FAKE_VOID_FUNC(SDL_UnlockSensors)
-  FAKE_VALUE_FUNC(int, SDL_NumSensors)
-  FAKE_VALUE_FUNC(int, SDL_SensorGetData, SDL_Sensor*, float*, int)
+extern "C" {
+FAKE_VOID_FUNC(SDL_SensorUpdate)
+FAKE_VOID_FUNC(SDL_LockSensors)
+FAKE_VOID_FUNC(SDL_UnlockSensors)
+FAKE_VALUE_FUNC(int, SDL_NumSensors)
+FAKE_VALUE_FUNC(int, SDL_SensorGetData, SDL_Sensor*, float*, int)
 
-  FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetInstanceID, SDL_Sensor*)
-  FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetDeviceInstanceID, int)
+FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetInstanceID, SDL_Sensor*)
+FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetDeviceInstanceID, int)
 
-  FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetType, SDL_Sensor*)
-  FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetDeviceType, int)
+FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetType, SDL_Sensor*)
+FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetDeviceType, int)
 
-  FAKE_VALUE_FUNC(int, SDL_SensorGetNonPortableType, SDL_Sensor*)
-  FAKE_VALUE_FUNC(int, SDL_SensorGetDeviceNonPortableType, int)
+FAKE_VALUE_FUNC(int, SDL_SensorGetNonPortableType, SDL_Sensor*)
+FAKE_VALUE_FUNC(int, SDL_SensorGetDeviceNonPortableType, int)
 
-  FAKE_VALUE_FUNC(const char*, SDL_SensorGetName, SDL_Sensor*)
-  FAKE_VALUE_FUNC(const char*, SDL_SensorGetDeviceName, int)
+FAKE_VALUE_FUNC(const char*, SDL_SensorGetName, SDL_Sensor*)
+FAKE_VALUE_FUNC(const char*, SDL_SensorGetDeviceName, int)
 }
 
 class SensorTest : public testing::Test {
@@ -74,46 +73,46 @@ class SensorTest : public testing::Test {
     RESET_FAKE(SDL_SensorGetDeviceName)
   }
 
-  cen::sensor_handle m_sensor{nullptr};
+  cen::sensor_handle mSensor {nullptr};
 };
 
 TEST_F(SensorTest, ID)
 {
-  const auto id [[maybe_unused]] = m_sensor.id();
+  const auto id [[maybe_unused]] = mSensor.id();
   ASSERT_EQ(1u, SDL_SensorGetInstanceID_fake.call_count);
 }
 
 TEST_F(SensorTest, Name)
 {
-  const auto name [[maybe_unused]] = m_sensor.name();
+  const auto name [[maybe_unused]] = mSensor.name();
   ASSERT_EQ(1u, SDL_SensorGetName_fake.call_count);
 }
 
 TEST_F(SensorTest, Type)
 {
-  const auto type [[maybe_unused]] = m_sensor.type();
+  const auto type [[maybe_unused]] = mSensor.type();
   ASSERT_EQ(1u, SDL_SensorGetType_fake.call_count);
 }
 
 TEST_F(SensorTest, NonPortableType)
 {
-  const auto type [[maybe_unused]] = m_sensor.non_portable_type();
+  const auto type [[maybe_unused]] = mSensor.non_portable_type();
   ASSERT_EQ(1u, SDL_SensorGetNonPortableType_fake.call_count);
 }
 
 TEST_F(SensorTest, Data)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_SensorGetData, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(m_sensor.data<3>());
-  ASSERT_TRUE(m_sensor.data<3>());
+  ASSERT_FALSE(mSensor.data<3>());
+  ASSERT_TRUE(mSensor.data<3>());
   ASSERT_EQ(2u, SDL_SensorGetData_fake.call_count);
 }
 
 TEST_F(SensorTest, IDFromIndex)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_SensorGetDeviceInstanceID, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::sensor::id(0));
@@ -135,7 +134,7 @@ TEST_F(SensorTest, TypeFromIndex)
 
 TEST_F(SensorTest, NonPortableTypeFromIndex)
 {
-  std::array values{-1, 0};
+  std::array values {-1, 0};
   SET_RETURN_SEQ(SDL_SensorGetDeviceNonPortableType, values.data(), cen::isize(values));
 
   ASSERT_FALSE(cen::sensor::non_portable_type(0));
@@ -157,7 +156,7 @@ TEST_F(SensorTest, Count)
 
 TEST_F(SensorTest, StreamOperator)
 {
-  std::cout << m_sensor << '\n';
+  std::cout << mSensor << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)

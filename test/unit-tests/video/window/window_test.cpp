@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/window.hpp"
+#include "centurion/video/window.hpp"
 
 #include <gtest/gtest.h>
 
@@ -31,11 +31,11 @@
 
 class WindowTest : public testing::Test {
  protected:
-  [[maybe_unused]] static void SetUpTestSuite() { window = std::make_unique<cen::window>(); }
+  [[maybe_unused]] static void SetUpTestSuite() { mWindow = std::make_unique<cen::window>(); }
 
-  [[maybe_unused]] static void TearDownTestSuite() { window.reset(); }
+  [[maybe_unused]] static void TearDownTestSuite() { mWindow.reset(); }
 
-  inline static std::unique_ptr<cen::window> window;
+  inline static std::unique_ptr<cen::window> mWindow;
 };
 
 TEST_F(WindowTest, Defaults)
@@ -53,16 +53,16 @@ TEST_F(WindowTest, Defaults)
 TEST_F(WindowTest, ConstructFromPointer)
 {
   {
-    ASSERT_NO_THROW(cen::window{SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
+    ASSERT_NO_THROW(cen::window {SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
 
-    SDL_Window* ptr{};
-    ASSERT_THROW(cen::window{ptr}, cen::exception);
+    SDL_Window* ptr {};
+    ASSERT_THROW(cen::window {ptr}, cen::exception);
   }
 
   {
-    ASSERT_NO_THROW(cen::window_handle{nullptr});
-    cen::window_handle handle{window->get()};
-    ASSERT_EQ(handle.get(), window->get());
+    ASSERT_NO_THROW(cen::window_handle {nullptr});
+    cen::window_handle handle {mWindow->get()};
+    ASSERT_EQ(handle.get(), mWindow->get());
   }
 }
 
@@ -76,22 +76,22 @@ TEST_F(WindowTest, ContructorFromStringAndArea)
   const auto width = 123;
   const auto height = 321;
   const auto title = "foobar"s;
-  const cen::window window{title, {width, height}};
+  const cen::window w {title, {width, height}};
 
-  ASSERT_EQ(title, window.title());
-  ASSERT_EQ(width, window.width());
-  ASSERT_EQ(height, window.height());
-  ASSERT_FALSE(window.is_visible());
+  ASSERT_EQ(title, w.title());
+  ASSERT_EQ(width, w.width());
+  ASSERT_EQ(height, w.height());
+  ASSERT_FALSE(w.is_visible());
 }
 
 TEST_F(WindowTest, Get)
 {
-  ASSERT_TRUE(window->get());
+  ASSERT_TRUE(mWindow->get());
 }
 
 TEST_F(WindowTest, BoolConversion)
 {
-  cen::window_handle handle{*window};
+  cen::window_handle handle {*mWindow};
   ASSERT_TRUE(handle);
 }
 
@@ -104,5 +104,5 @@ TEST_F(WindowTest, DefaultSize)
 
 TEST_F(WindowTest, StreamOperator)
 {
-  std::cout << *window << '\n';
+  std::cout << *mWindow << '\n';
 }

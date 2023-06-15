@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/unicode_string.hpp"
+
 #include <gtest/gtest.h>
 
 #include "cereal/types/vector.hpp"
-
-#include "centurion/unicode.hpp"
 #include "serialization_utils.hpp"
 
 TEST(UnicodeString, Defaults)
@@ -249,24 +249,24 @@ TEST(UnicodeString, EqualityOperator)
   }
 
   {  // Two equal strings
-    const cen::unicode_string fst{'A', 'B', 'C'};
-    const cen::unicode_string snd{fst};  // NOLINT
+    const cen::unicode_string fst {'A', 'B', 'C'};
+    const cen::unicode_string snd {fst};  // NOLINT
 
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {  // Two different strings
-    const cen::unicode_string fst{'F', 'O', 'O'};
-    const cen::unicode_string snd{'B', 'A', 'R'};
+    const cen::unicode_string fst {'F', 'O', 'O'};
+    const cen::unicode_string snd {'B', 'A', 'R'};
 
     ASSERT_FALSE(fst == snd);
     ASSERT_FALSE(snd == fst);
   }
 
   {  // Different size strings
-    const cen::unicode_string fst{'A', 'B'};
-    const cen::unicode_string snd{'A', 'B', 'C'};
+    const cen::unicode_string fst {'A', 'B'};
+    const cen::unicode_string snd {'A', 'B', 'C'};
 
     ASSERT_FALSE(fst == snd);
     ASSERT_FALSE(snd == fst);
@@ -288,24 +288,24 @@ TEST(UnicodeString, InequalityOperator)
   }
 
   {  // Two equal strings
-    const cen::unicode_string fst{'A', 'B', 'C'};
-    const cen::unicode_string snd{fst};  // NOLINT
+    const cen::unicode_string fst {'A', 'B', 'C'};
+    const cen::unicode_string snd {fst};  // NOLINT
 
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {  // Two different strings
-    const cen::unicode_string fst{'F', 'O', 'O'};
-    const cen::unicode_string snd{'B', 'A', 'R'};
+    const cen::unicode_string fst {'F', 'O', 'O'};
+    const cen::unicode_string snd {'B', 'A', 'R'};
 
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }
 
   {  // Different size strings
-    const cen::unicode_string fst{'A', 'B'};
-    const cen::unicode_string snd{'A', 'B', 'C'};
+    const cen::unicode_string fst {'A', 'B'};
+    const cen::unicode_string snd {'A', 'B', 'C'};
 
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
@@ -314,7 +314,7 @@ TEST(UnicodeString, InequalityOperator)
 
 TEST(UnicodeString, Serialize)
 {
-  cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
+  cen::unicode_string string {'f', 'o', 'o', 'b', 'a', 'r'};
   serialize_save("unicode_string.binary", string);
 
   const auto other = serialize_create<cen::unicode_string>("unicode_string.binary");

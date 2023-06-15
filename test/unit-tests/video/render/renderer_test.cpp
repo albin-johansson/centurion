@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,17 @@
  * SOFTWARE.
  */
 
+#include "centurion/video/renderer.hpp"
+
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "centurion/color.hpp"
-#include "centurion/font.hpp"
-#include "centurion/math.hpp"
-#include "centurion/render.hpp"
-#include "centurion/window.hpp"
+#include "centurion/common/math.hpp"
+#include "centurion/fonts/font.hpp"
+#include "centurion/video/color.hpp"
+#include "centurion/video/window.hpp"
 
 using namespace std::string_literals;
 
@@ -39,25 +40,24 @@ class RendererTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
-    font = std::make_unique<cen::font>("resources/daniel.ttf", 12);
-    window = std::make_unique<cen::window>();
-
-    renderer = std::make_unique<cen::renderer>(window->make_renderer());
-    texture = std::make_unique<cen::texture>(renderer->make_texture("resources/panda.png"));
+    mFont = std::make_unique<cen::font>("resources/daniel.ttf", 12);
+    mWindow = std::make_unique<cen::window>();
+    mRenderer = std::make_unique<cen::renderer>(mWindow->make_renderer());
+    mTexture = std::make_unique<cen::texture>(mRenderer->make_texture("resources/panda.png"));
   }
 
   static void TearDownTestSuite()
   {
-    texture.reset();
-    renderer.reset();
-    window.reset();
-    font.reset();
+    mTexture.reset();
+    mRenderer.reset();
+    mWindow.reset();
+    mFont.reset();
   }
 
-  inline static std::unique_ptr<cen::font> font;
-  inline static std::unique_ptr<cen::window> window;
-  inline static std::unique_ptr<cen::renderer> renderer;
-  inline static std::unique_ptr<cen::texture> texture;
+  inline static std::unique_ptr<cen::font> mFont;
+  inline static std::unique_ptr<cen::window> mWindow;
+  inline static std::unique_ptr<cen::renderer> mRenderer;
+  inline static std::unique_ptr<cen::texture> mTexture;
 };
 
 TEST_F(RendererTest, RendererFlagsEnum)
@@ -70,151 +70,151 @@ TEST_F(RendererTest, RendererFlagsEnum)
 
 TEST_F(RendererTest, PointerConstructor)
 {
-  SDL_Renderer* renderer{};
-  ASSERT_THROW(cen::renderer{renderer}, cen::exception);
+  SDL_Renderer* renderer {};
+  ASSERT_THROW(cen::renderer {renderer}, cen::exception);
 }
 
 TEST_F(RendererTest, FlagsConstructor)
 {
   // This throws because there is already a renderer associated with the window
-  ASSERT_THROW(window->make_renderer(), cen::sdl_error);
+  ASSERT_THROW(mWindow->make_renderer(), cen::sdl_error);
 }
 
 TEST_F(RendererTest, SetColor)
 {
-  renderer->set_color(cen::colors::magenta);
-  ASSERT_EQ(cen::colors::magenta, renderer->get_color());
+  mRenderer->set_color(cen::colors::magenta);
+  ASSERT_EQ(cen::colors::magenta, mRenderer->get_color());
 }
 
 TEST_F(RendererTest, SetClip)
 {
-  constexpr cen::irect clip{{12, 34}, {56, 78}};
+  constexpr cen::irect clip {{12, 34}, {56, 78}};
 
-  renderer->set_clip(clip);
-  ASSERT_TRUE(renderer->clip().has_value());
-  ASSERT_EQ(clip, renderer->clip().value());
+  mRenderer->set_clip(clip);
+  ASSERT_TRUE(mRenderer->clip().has_value());
+  ASSERT_EQ(clip, mRenderer->clip().value());
 
-  renderer->reset_clip();
-  ASSERT_FALSE(renderer->clip().has_value());
+  mRenderer->reset_clip();
+  ASSERT_FALSE(mRenderer->clip().has_value());
 }
 
 TEST_F(RendererTest, SetViewport)
 {
-  constexpr cen::irect viewport{{12, 34}, {56, 78}};
+  constexpr cen::irect viewport {{12, 34}, {56, 78}};
 
-  renderer->set_viewport(viewport);
-  ASSERT_EQ(viewport, renderer->viewport());
+  mRenderer->set_viewport(viewport);
+  ASSERT_EQ(viewport, mRenderer->viewport());
 }
 
 TEST_F(RendererTest, SetBlendMode)
 {
-  renderer->set_blend_mode(cen::blend_mode::blend);
-  ASSERT_EQ(cen::blend_mode::blend, renderer->get_blend_mode());
+  mRenderer->set_blend_mode(cen::blend_mode::blend);
+  ASSERT_EQ(cen::blend_mode::blend, mRenderer->get_blend_mode());
 }
 
 TEST_F(RendererTest, SetScale)
 {
   const auto xScale = 0.8f;
   const auto yScale = 0.6f;
-  renderer->set_scale({xScale, yScale});
+  mRenderer->set_scale({xScale, yScale});
 
-  const auto scale = renderer->scale();
+  const auto scale = mRenderer->scale();
   ASSERT_EQ(xScale, scale.x);
   ASSERT_EQ(yScale, scale.y);
 
-  renderer->set_scale({1, 1});
+  mRenderer->set_scale({1, 1});
 }
 
 TEST_F(RendererTest, SetLogicalSize)
 {
-  const auto old = renderer->logical_size();
-  constexpr cen::iarea size{12, 34};
+  const auto old = mRenderer->logical_size();
+  constexpr cen::iarea size {12, 34};
 
-  renderer->set_logical_size(size);
-  ASSERT_EQ(size.width, renderer->logical_size().width);
-  ASSERT_EQ(size.height, renderer->logical_size().height);
+  mRenderer->set_logical_size(size);
+  ASSERT_EQ(size.width, mRenderer->logical_size().width);
+  ASSERT_EQ(size.height, mRenderer->logical_size().height);
 
-  renderer->set_logical_size(old);
+  mRenderer->set_logical_size(old);
 }
 
 TEST_F(RendererTest, SetLogicalIntegerScaling)
 {
-  renderer->set_logical_integer_scaling(true);
-  ASSERT_TRUE(renderer->using_integer_logical_scaling());
+  mRenderer->set_logical_integer_scaling(true);
+  ASSERT_TRUE(mRenderer->using_integer_logical_scaling());
 
-  renderer->set_logical_integer_scaling(false);
-  ASSERT_FALSE(renderer->using_integer_logical_scaling());
+  mRenderer->set_logical_integer_scaling(false);
+  ASSERT_FALSE(mRenderer->using_integer_logical_scaling());
 }
 
 TEST_F(RendererTest, GetTarget)
 {
-  ASSERT_EQ(nullptr, renderer->get_target().get());
+  ASSERT_EQ(nullptr, mRenderer->get_target().get());
 }
 
 TEST_F(RendererTest, LogicalSize)
 {
-  ASSERT_EQ(0, renderer->logical_size().width);
-  ASSERT_EQ(0, renderer->logical_size().height);
+  ASSERT_EQ(0, mRenderer->logical_size().width);
+  ASSERT_EQ(0, mRenderer->logical_size().height);
 }
 
 TEST_F(RendererTest, Scale)
 {
-  ASSERT_EQ(1, renderer->scale().x);
-  ASSERT_EQ(1, renderer->scale().y);
+  ASSERT_EQ(1, mRenderer->scale().x);
+  ASSERT_EQ(1, mRenderer->scale().y);
 }
 
 TEST_F(RendererTest, Clip)
 {
-  ASSERT_FALSE(renderer->clip().has_value());
+  ASSERT_FALSE(mRenderer->clip().has_value());
 }
 
 TEST_F(RendererTest, Capture)
 {
-  window->show();
+  mWindow->show();
 
-  renderer->clear_with(cen::colors::pink);
+  mRenderer->clear_with(cen::colors::pink);
 
-  renderer->set_color(cen::colors::green);
-  renderer->fill_rect(cen::irect{20, 20, 150, 100});
+  mRenderer->set_color(cen::colors::green);
+  mRenderer->fill_rect(cen::irect {20, 20, 150, 100});
 
-  renderer->set_color(cen::colors::black);
-  renderer->draw_circle(cen::fpoint{300.0, 200.0}, 30);
+  mRenderer->set_color(cen::colors::black);
+  mRenderer->draw_circle(cen::fpoint {300.0, 200.0}, 30);
 
-  renderer->set_color(cen::colors::maroon);
-  renderer->fill_circle(cen::fpoint{400, 300}, 35);
+  mRenderer->set_color(cen::colors::maroon);
+  mRenderer->fill_circle(cen::fpoint {400, 300}, 35);
 
-  renderer->present();
+  mRenderer->present();
 
-  const auto snapshot = renderer->capture(window->format());
+  const auto snapshot = mRenderer->capture(mWindow->format());
   ASSERT_TRUE(snapshot.save_as_bmp("snapshot.bmp"));
 
   {  // We take the opportunity to do some surface tests as well
     ASSERT_NO_THROW(cen::surface::from_bmp("snapshot.bmp"s));
     ASSERT_NO_THROW(cen::surface::with_format("resources/panda.png"s,
-                                              renderer->get_blend_mode(),
-                                              window->format()));
+                                              mRenderer->get_blend_mode(),
+                                              mWindow->format()));
   }
 
-  window->hide();
+  mWindow->hide();
 }
 
 TEST_F(RendererTest, StreamOperator)
 {
-  std::cout << *renderer << '\n';
+  std::cout << *mRenderer << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
 
 TEST_F(RendererTest, ToLogical)
 {
-  renderer->set_logical_size({400, 300});
+  mRenderer->set_logical_size({400, 300});
 
-  const cen::ipoint real{42, 85};
+  const cen::ipoint real {42, 85};
 
-  const auto logical = renderer->to_logical(real);
+  const auto logical = mRenderer->to_logical(real);
   ASSERT_NE(logical, cen::cast<cen::fpoint>(real));
 
-  ASSERT_EQ(real, renderer->from_logical(logical));
+  ASSERT_EQ(real, mRenderer->from_logical(logical));
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

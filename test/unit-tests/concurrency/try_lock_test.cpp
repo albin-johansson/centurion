@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/locks.hpp"
 
 static_assert(!std::is_copy_constructible_v<cen::try_lock>);
 static_assert(!std::is_copy_assignable_v<cen::try_lock>);
@@ -34,7 +34,7 @@ static_assert(!std::is_copy_assignable_v<cen::try_lock>);
 TEST(TryLock, BasicUsage)
 {
   cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::try_lock lock {mutex};
 
   ASSERT_TRUE(lock.locked());
 }
@@ -42,7 +42,7 @@ TEST(TryLock, BasicUsage)
 TEST(TryLock, GetStatus)
 {
   cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::try_lock lock {mutex};
 
   ASSERT_EQ(cen::lock_status::success, lock.status());
 
@@ -54,7 +54,7 @@ TEST(TryLock, GetStatus)
 TEST(TryLock, BoolConversion)
 {
   cen::mutex mutex;
-  cen::try_lock lock{mutex};
+  cen::try_lock lock {mutex};
 
   ASSERT_TRUE(lock);
 }

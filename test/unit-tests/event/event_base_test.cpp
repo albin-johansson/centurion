@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-#include "centurion/event_base.hpp"
+#include "centurion/events/event_base.hpp"
 
 #include <gtest/gtest.h>
 
-#include "centurion/misc_events.hpp"
+#include "centurion/common/literals.hpp"
+#include "centurion/events/misc_events.hpp"
 
 using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing
 using common_event = cen::quit_event;
@@ -58,9 +59,9 @@ TEST(EventBase, Timestamp)
   const auto time = 8'321_ms;
 
   sdl_event sdl;
-  sdl.timestamp = time.count();
+  sdl.timestamp = static_cast<Uint32>(time.count());
 
-  const common_event event{sdl};
+  const common_event event {sdl};
   ASSERT_EQ(time, event.timestamp());
 }
 
@@ -69,7 +70,7 @@ TEST(EventBase, Type)
   sdl_event sdl;
   sdl.type = SDL_MOUSEMOTION;
 
-  const common_event event{sdl};
+  const common_event event {sdl};
   ASSERT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
@@ -78,7 +79,7 @@ TEST(EventBase, Get)
   sdl_event sdl;
   sdl.type = SDL_MOUSEMOTION;
 
-  const common_event event{sdl};
+  const common_event event {sdl};
   const auto& internal = event.get();
 
   ASSERT_EQ(sdl.type, internal.type);

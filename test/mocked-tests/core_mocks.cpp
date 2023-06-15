@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,40 +26,35 @@
 
 #include <array>  // array
 
-#include "centurion/common.hpp"
+extern "C" {
+DEFINE_FAKE_VALUE_FUNC(int, SDL_Init, Uint32)
+DEFINE_FAKE_VALUE_FUNC(int, TTF_Init)
+DEFINE_FAKE_VALUE_FUNC(int, IMG_Init, int)
+DEFINE_FAKE_VALUE_FUNC(int, Mix_Init, int)
+DEFINE_FAKE_VALUE_FUNC(int, Mix_OpenAudio, int, Uint16, int, int)
+DEFINE_FAKE_VALUE_FUNC(SDL_Window*, SDL_CreateWindow, const char*, int, int, int, int, Uint32)
 
-extern "C"
-{
-  DEFINE_FAKE_VALUE_FUNC(int, SDL_Init, Uint32)
-  DEFINE_FAKE_VALUE_FUNC(int, TTF_Init)
-  DEFINE_FAKE_VALUE_FUNC(int, IMG_Init, int)
-  DEFINE_FAKE_VALUE_FUNC(int, Mix_Init, int)
-  DEFINE_FAKE_VALUE_FUNC(int, Mix_OpenAudio, int, Uint16, int, int)
-  DEFINE_FAKE_VALUE_FUNC(SDL_Window*,
-                         SDL_CreateWindow,
-                         const char*,
-                         int,
-                         int,
-                         int,
-                         int,
-                         Uint32)
+DEFINE_FAKE_VOID_FUNC(SDL_Quit)
+DEFINE_FAKE_VOID_FUNC(TTF_Quit)
+DEFINE_FAKE_VOID_FUNC(IMG_Quit)
+DEFINE_FAKE_VOID_FUNC(Mix_Quit)
+DEFINE_FAKE_VOID_FUNC(Mix_CloseAudio)
+DEFINE_FAKE_VOID_FUNC(SDL_free, void*);
+DEFINE_FAKE_VOID_FUNC(SDL_DestroyWindow, SDL_Window*)
+DEFINE_FAKE_VOID_FUNC(SDL_FreeSurface, SDL_Surface*)
 
-  DEFINE_FAKE_VOID_FUNC(SDL_Quit)
-  DEFINE_FAKE_VOID_FUNC(TTF_Quit)
-  DEFINE_FAKE_VOID_FUNC(IMG_Quit)
-  DEFINE_FAKE_VOID_FUNC(Mix_Quit)
-  DEFINE_FAKE_VOID_FUNC(Mix_CloseAudio)
-  DEFINE_FAKE_VOID_FUNC(SDL_free, void*);
-  DEFINE_FAKE_VOID_FUNC(SDL_DestroyWindow, SDL_Window*)
-  DEFINE_FAKE_VOID_FUNC(SDL_FreeSurface, SDL_Surface*)
+DEFINE_FAKE_VALUE_FUNC(const char*, SDL_GetError);
+DEFINE_FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
 
-  DEFINE_FAKE_VALUE_FUNC(const char*, SDL_GetError);
-  DEFINE_FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
-
-  DEFINE_FAKE_VALUE_FUNC(Uint32, SDL_GetWindowFlags, SDL_Window*)
+DEFINE_FAKE_VALUE_FUNC(Uint32, SDL_GetWindowFlags, SDL_Window*)
 }
 
 namespace mocks {
+namespace {
+
+inline std::array dummy_error_msg {"oops"};
+
+}  // namespace
 
 void reset_core()
 {
@@ -83,8 +78,7 @@ void reset_core()
 
   RESET_FAKE(SDL_GetWindowFlags)
 
-  std::array values{"dummy"};
-  SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values))
+  SET_RETURN_SEQ(SDL_GetError, dummy_error_msg.data(), cen::isize(dummy_error_msg))
 }
 
 }  // namespace mocks

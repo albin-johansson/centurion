@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,8 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_FWD_HPP_
+#define CENTURION_FWD_HPP_
 
 namespace cen {
 
@@ -166,3 +167,5 @@ template <typename T>
 struct deleter;
 
 }  // namespace cen
+
+#endif  // CENTURION_FWD_HPP_

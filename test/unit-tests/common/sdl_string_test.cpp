@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
+#include "centurion/common/sdl_string.hpp"
 
-#include "centurion/common.hpp"
+#include <gtest/gtest.h>
 
 TEST(SDLString, Constructor)
 {
-  ASSERT_NO_THROW(cen::sdl_string{nullptr});
+  ASSERT_NO_THROW(cen::sdl_string {nullptr});
 
-  const cen::sdl_string str{nullptr};
+  const cen::sdl_string str {nullptr};
   ASSERT_FALSE(str);
 }
 
 TEST(SDLString, Get)
 {
   SDL_SetClipboardText("foo");
-  const cen::sdl_string str{SDL_GetClipboardText()};
+  const cen::sdl_string str {SDL_GetClipboardText()};
   ASSERT_STREQ(str.get(), "foo");
 }
 
@@ -45,19 +45,19 @@ TEST(SDLString, Copy)
 {
   {  // Valid string
     SDL_SetClipboardText("bar");
-    const cen::sdl_string str{SDL_GetClipboardText()};
+    const cen::sdl_string str {SDL_GetClipboardText()};
     const auto copy = str.copy();
     ASSERT_EQ("bar", copy);
   }
 
   {  // Empty string
     SDL_SetClipboardText(nullptr);
-    const cen::sdl_string empty{SDL_GetClipboardText()};
+    const cen::sdl_string empty {SDL_GetClipboardText()};
     ASSERT_TRUE(empty.copy().empty());
   }
 
   {  // Null string
-    const cen::sdl_string str{nullptr};
+    const cen::sdl_string str {nullptr};
     ASSERT_EQ("", str.copy());
   }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "centurion/power.hpp"
+#include "centurion/system/power.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -31,16 +31,15 @@
 
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(SDL_PowerState, SDL_GetPowerInfo, int*, int*)
+extern "C" {
+FAKE_VALUE_FUNC(SDL_PowerState, SDL_GetPowerInfo, int*, int*)
 }
 
 namespace {
 
 using signature_t = SDL_PowerState (*)(int*, int*);
 
-inline constexpr cen::seconds<int> seconds{1'337};
+inline constexpr cen::seconds<int> seconds {1'337};
 inline constexpr auto percentage = 27;
 
 auto PowerDelegate(int* outSeconds, int* outPercentage) -> SDL_PowerState

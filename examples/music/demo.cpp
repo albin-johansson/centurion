@@ -1,5 +1,4 @@
 #include <centurion.hpp>
-
 #include <optional>  // optional
 
 namespace {
@@ -21,13 +20,13 @@ constexpr auto msg_no_music = "No music is playing";
 class music_example final {
  public:
   music_example()
-      : mWindow{"Music example",
-                window_size,
-                cen::window::hidden | cen::window::allow_high_dpi}
-      , mRenderer{mWindow.make_renderer()}
-      , mFont{RESOURCE_DIR "fira_code.ttf", 16}
-      , mSong{RESOURCE_DIR "hiddenPond.mp3"}
-      , mClick{RESOURCE_DIR "click.wav"}
+      : mWindow {"Music example",
+                 window_size,
+                 cen::window::hidden | cen::window::allow_high_dpi}
+      , mRenderer {mWindow.make_renderer()}
+      , mFont {RESOURCE_DIR "fira_code.ttf", 16}
+      , mSong {RESOURCE_DIR "hidden_pond.mp3"}
+      , mClick {RESOURCE_DIR "click.wav"}
   {
     mRenderer.set_logical_size(window_size);
 
@@ -57,7 +56,7 @@ class music_example final {
   event_dispatcher mDispatcher;
   cen::music mSong;
   cen::music mClick;
-  bool m_running{true};
+  bool m_running {true};
 
   std::vector<cen::texture> mInstructions;
   std::optional<cen::texture> mTexPlayingMusic;
@@ -100,7 +99,7 @@ class music_example final {
         mClick.play(cen::music::forever);
       }
       else if (event.is_active(cen::scancodes::f)) {
-        mSong.fade_in(cen::music::ms_type{5'000});
+        mSong.fade_in(cen::music::ms_type {5'000});
       }
       else if (event.is_active(cen::scancodes::escape)) {
         cen::music::halt();
@@ -115,7 +114,7 @@ class music_example final {
       const auto oldY = y;
 
       y += 25;
-      return cen::ipoint{x, oldY};
+      return cen::ipoint {x, oldY};
     };
 
     mRenderer.clear_with(cen::colors::steel_blue);
@@ -124,7 +123,7 @@ class music_example final {
       mRenderer.render(texture, position_of(texture));
     }
 
-    constexpr cen::ipoint offset{0, 25};
+    constexpr cen::ipoint offset {0, 25};
     if (cen::music::is_playing() && !cen::music::is_fading()) {
       mRenderer.render(*mTexPlayingMusic, position_of(*mTexPlayingMusic) + offset);
     }

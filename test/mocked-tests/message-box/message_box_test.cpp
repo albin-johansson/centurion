@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,16 @@
  * SOFTWARE.
  */
 
-#include "centurion/message_box.hpp"
+#include "centurion/video/message_box.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(int, SDL_ShowSimpleMessageBox, Uint32, const char*, const char*, SDL_Window*)
-  FAKE_VALUE_FUNC(int, SDL_ShowMessageBox, const SDL_MessageBoxData*, int*)
+extern "C" {
+FAKE_VALUE_FUNC(int, SDL_ShowSimpleMessageBox, Uint32, const char*, const char*, SDL_Window*)
+FAKE_VALUE_FUNC(int, SDL_ShowMessageBox, const SDL_MessageBoxData*, int*)
 }
 
 class MessageBoxTest : public testing::Test {
@@ -50,8 +49,8 @@ class MessageBoxTest : public testing::Test {
 
 TEST_F(MessageBoxTest, ShowStatic)
 {
-  const std::string title{"foo"};
-  const std::string message{"bar"};
+  const std::string title {"foo"};
+  const std::string message {"bar"};
 
   {  // With defaults
     cen::message_box::show(title, message);
@@ -106,7 +105,7 @@ TEST_F(MessageBoxTest, Show)
   mb.show();
   ASSERT_EQ(1u, SDL_ShowMessageBox_fake.call_count);
 
-  cen::window_handle window{nullptr};
+  cen::window_handle window {nullptr};
   mb.show(window);
   ASSERT_EQ(2u, SDL_ShowMessageBox_fake.call_count);
 }

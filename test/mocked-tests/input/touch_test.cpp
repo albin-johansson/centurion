@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,19 @@
  * SOFTWARE.
  */
 
-#include "centurion/touch.hpp"
+#include "centurion/input/touch.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
 
-extern "C"
-{
-  FAKE_VALUE_FUNC(int, SDL_GetNumTouchDevices)
-  FAKE_VALUE_FUNC(SDL_TouchID, SDL_GetTouchDevice, int)
-  FAKE_VALUE_FUNC(SDL_TouchDeviceType, SDL_GetTouchDeviceType, SDL_TouchID)
-  FAKE_VALUE_FUNC(int, SDL_GetNumTouchFingers, SDL_TouchID)
-  FAKE_VALUE_FUNC(SDL_Finger*, SDL_GetTouchFinger, SDL_TouchID, int)
+extern "C" {
+FAKE_VALUE_FUNC(int, SDL_GetNumTouchDevices)
+FAKE_VALUE_FUNC(SDL_TouchID, SDL_GetTouchDevice, int)
+FAKE_VALUE_FUNC(SDL_TouchDeviceType, SDL_GetTouchDeviceType, SDL_TouchID)
+FAKE_VALUE_FUNC(int, SDL_GetNumTouchFingers, SDL_TouchID)
+FAKE_VALUE_FUNC(SDL_Finger*, SDL_GetTouchFinger, SDL_TouchID, int)
 }
 
 class TouchTest : public testing::Test {

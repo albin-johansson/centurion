@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-#include "centurion/concurrency.hpp"
+#include "centurion/concurrency/locks.hpp"
 
 static_assert(!std::is_copy_constructible_v<cen::scoped_lock>);
 static_assert(!std::is_copy_assignable_v<cen::scoped_lock>);
@@ -34,5 +34,5 @@ static_assert(!std::is_copy_assignable_v<cen::scoped_lock>);
 TEST(ScopedLock, Construction)
 {
   cen::mutex mutex;
-  ASSERT_NO_THROW(cen::scoped_lock{mutex});
+  ASSERT_NO_THROW(cen::scoped_lock {mutex});
 }

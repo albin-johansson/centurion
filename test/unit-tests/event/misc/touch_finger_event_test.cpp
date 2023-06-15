@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-#include "centurion/event.hpp"
+#include "centurion/events/misc_events.hpp"
 
 TEST(TouchFingerEvent, Defaults)
 {
@@ -66,10 +66,10 @@ TEST(TouchFingerEvent, SetWindowId)
 
 TEST(TouchFingerEvent, WindowId)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.windowID = 7;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
@@ -187,64 +187,64 @@ TEST(TouchFingerEvent, SetPressure)
 
 TEST(TouchFingerEvent, TouchId)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.touchId = 4;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.touchId, event.touch_id());
 }
 
 TEST(TouchFingerEvent, FingerId)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.fingerId = 18;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.fingerId, event.finger_id());
 }
 
 TEST(TouchFingerEvent, X)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.x = 0.4f;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.x, event.x());
 }
 
 TEST(TouchFingerEvent, Y)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.y = 0.8f;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.y, event.y());
 }
 
 TEST(TouchFingerEvent, Dx)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.dx = -0.9f;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.dx, event.dx());
 }
 
 TEST(TouchFingerEvent, Dy)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.dy = 0.2f;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.dy, event.dy());
 }
 
 TEST(TouchFingerEvent, Pressure)
 {
-  SDL_TouchFingerEvent sdl{};
+  SDL_TouchFingerEvent sdl {};
   sdl.pressure = 0.6f;
 
-  const cen::touch_finger_event event{sdl};
+  const cen::touch_finger_event event {sdl};
   ASSERT_EQ(sdl.pressure, event.pressure());
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2022 Albin Johansson
+ * Copyright (c) 2019-2023 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 #include <iostream>  // cout
 
-#include "centurion/keyboard.hpp"
+#include "centurion/input/keyboard.hpp"
 #include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)
@@ -38,28 +38,28 @@ TEST(KeyCode, DefaultValue)
 TEST(KeyCode, SDLKeycodeContructor)
 {
   const auto key = SDLK_x;
-  const cen::key_code code{key};
+  const cen::key_code code {key};
   ASSERT_EQ(key, code.get());
 }
 
 TEST(KeyCode, SDLScancodeContructor)
 {
   const auto scan = SDL_SCANCODE_Y;
-  const cen::key_code code{scan};
+  const cen::key_code code {scan};
   ASSERT_EQ(scan, code.to_scancode());
 }
 
 TEST(KeyCode, CStringConstructor)
 {
   {  // Good name
-    const cen::key_code code{"5"};
+    const cen::key_code code {"5"};
     ASSERT_EQ(SDLK_5, code.get());
     ASSERT_EQ(cen::keycodes::five, code);
     ASSERT_EQ("5", code.name());
   }
 
   {  // Bad name
-    const cen::key_code code{"foobar"};
+    const cen::key_code code {"foobar"};
     ASSERT_EQ(SDLK_UNKNOWN, code.get());
     ASSERT_EQ(cen::keycodes::unknown, code);
     ASSERT_TRUE(code.name().empty());
@@ -72,14 +72,14 @@ TEST(KeyCode, StdStringConstructor)
   using namespace std::string_literals;
 
   {  // Good name
-    const cen::key_code code{"5"s};
+    const cen::key_code code {"5"s};
     ASSERT_EQ(SDLK_5, code.get());
     ASSERT_EQ(cen::keycodes::five, code);
     ASSERT_EQ("5", code.name());
   }
 
   {  // Bad name
-    const cen::key_code code{"foobar"s};
+    const cen::key_code code {"foobar"s};
     ASSERT_EQ(SDLK_UNKNOWN, code.get());
     ASSERT_EQ(cen::keycodes::unknown, code);
     ASSERT_TRUE(code.name().empty());
@@ -190,15 +190,15 @@ TEST(KeyCode, EqualityOperator)
   }
 
   {
-    const cen::key_code fst{SDLK_i};
-    const cen::key_code snd{fst};
+    const cen::key_code fst {SDLK_i};
+    const cen::key_code snd {fst};
     ASSERT_EQ(fst, snd);
     ASSERT_EQ(snd, fst);
   }
 
   {
-    const cen::key_code fst{SDLK_e};
-    const cen::key_code snd{SDLK_y};
+    const cen::key_code fst {SDLK_e};
+    const cen::key_code snd {SDLK_y};
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }
@@ -212,15 +212,15 @@ TEST(KeyCode, InequalityOperator)
   }
 
   {
-    const cen::key_code fst{SDLK_w};
-    const cen::key_code snd{fst};
+    const cen::key_code fst {SDLK_w};
+    const cen::key_code snd {fst};
     ASSERT_FALSE(fst != snd);
     ASSERT_FALSE(snd != fst);
   }
 
   {
-    const cen::key_code fst{SDLK_a};
-    const cen::key_code snd{SDLK_5};
+    const cen::key_code fst {SDLK_a};
+    const cen::key_code snd {SDLK_5};
     ASSERT_NE(fst, snd);
     ASSERT_NE(snd, fst);
   }

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "centurion",
+  "description": "A modern C++ wrapper library for SDL2",
+  "license": "MIT",
+  "version-semver": "7.3.0",
+  "maintainers": [
+    "albin-johansson"
+  ],
+  "builtin-baseline": "638b1588be3a265a9c7ad5b212cef72a1cad336a",
+  "dependencies": [
+    "gtest",
+    "glew",
+    "cereal"
+  ]
+}

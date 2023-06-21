@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.23)
 
 if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+  file(TO_CMAKE_PATH $ENV{VCPKG_ROOT} VCPKG_ROOT)
+  set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 endif ()
 
 project(centurion
@@ -38,10 +39,33 @@ set(CENTURION_TEST_TARGET centurion-tests)
 set(CENTURION_MOCK_TARGET centurion-mocks)
 
 # System dependencies
-find_package(SDL2 CONFIG)
-find_package(SDL2_image CONFIG)
-find_package(SDL2_mixer CONFIG)
-find_package(SDL2_ttf CONFIG)
+if (DEFINED ENV{SDL2DIR})
+  file(TO_CMAKE_PATH $ENV{SDL2DIR} SDL2DIR)
+  find_package(SDL2 CONFIG PATHS ${SDL2DIR})
+else ()
+  find_package(SDL2 CONFIG)
+endif ()
+
+if (DEFINED ENV{SDL2IMAGEDIR})
+  file(TO_CMAKE_PATH $ENV{SDL2IMAGEDIR} SDL2IMAGEDIR)
+  find_package(SDL2_image CONFIG PATHS ${SDL2IMAGEDIR})
+else ()
+  find_package(SDL2_image CONFIG)
+endif ()
+
+if (DEFINED ENV{SDL2MIXERDIR})
+  file(TO_CMAKE_PATH $ENV{SDL2MIXERDIR} SDL2MIXERDIR)
+  find_package(SDL2_mixer CONFIG PATHS ${SDL2MIXERDIR})
+else ()
+  find_package(SDL2_mixer CONFIG)
+endif ()
+
+if (DEFINED ENV{SDL2TTFDIR})
+  file(TO_CMAKE_PATH $ENV{SDL2TTFDIR} SDL2TTFDIR)
+  find_package(SDL2_ttf CONFIG PATHS ${SDL2TTFDIR})
+else ()
+  find_package(SDL2_ttf CONFIG)
+endif ()
 
 # CMake Targets
 add_library(centurion-headers-only INTERFACE)

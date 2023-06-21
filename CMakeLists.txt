@@ -57,6 +57,7 @@ if (SDL_SHARED OR SDL_STATIC)
   list(APPEND CEN_TARGETS centurion)
   target_link_libraries(centurion INTERFACE
     centurion-headers-only
+    $<$<TARGET_EXISTS:SDL2::SDL2main>:SDL2::SDL2main>
     $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
     $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
     $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
@@ -70,6 +71,7 @@ if (SDL_STATIC)
   list(APPEND CEN_TARGETS centurion-static)
   target_link_libraries(centurion-static INTERFACE
     centurion-headers-only
+    $<$<TARGET_EXISTS:SDL2::SDL2main>:SDL2::SDL2main>
     SDL2::SDL2-static
     SDL2_image::SDL2_image-static
     SDL2_mixer::SDL2_mixer-static

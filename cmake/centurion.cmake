@@ -53,3 +53,37 @@ function(cen_set_basic_compiler_options target)
     endif ()
   endif ()
 endfunction()
+
+# Checks if targets exists and stores the result in a variable.
+#   var: the name of the result variable
+#   ARGN: list of targets to check the existence of
+function(cen_has_targets var)
+  set(${var} FALSE PARENT_SCOPE)
+  foreach(target IN LISTS ARGN)
+    if (NOT TARGET ${target})
+      return()
+    endif ()
+  endforeach ()
+  set(${var} TRUE PARENT_SCOPE)
+endfunction()
+
+# Checks if the relevant SDL targets exist and stores the result in the
+# corresponding variable
+#   shared: the name of the shared libraries variable
+#   static: the name of the static libraries variable
+function(cen_has_SDL shared static)
+  cen_has_targets(_shared
+    SDL2::SDL2
+    SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf
+  )
+  set(${shared} ${_shared} PARENT_SCOPE)
+  cen_has_targets(_static 
+    SDL2::SDL2-static
+    SDL2_image::SDL2_image-static
+    SDL2_mixer::SDL2_mixer-static
+    SDL2_ttf::SDL2_ttf-static
+  )
+  set(${static} ${_static} PARENT_SCOPE)
+endfunction()

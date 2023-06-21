@@ -38,29 +38,36 @@ set(CENTURION_TEST_TARGET centurion-tests)
 set(CENTURION_MOCK_TARGET centurion-mocks)
 
 # System dependencies
-find_package(SDL2 CONFIG REQUIRED)
-find_package(SDL2_image CONFIG REQUIRED)
-find_package(SDL2_mixer CONFIG REQUIRED)
-find_package(SDL2_ttf CONFIG REQUIRED)
+find_package(SDL2 CONFIG)
+find_package(SDL2_image CONFIG)
+find_package(SDL2_mixer CONFIG)
+find_package(SDL2_ttf CONFIG)
 
 # CMake Targets
 add_library(centurion-headers-only INTERFACE)
 add_library(centurion::centurion-headers-only ALIAS centurion-headers-only)
+set(CEN_TARGETS centurion-headers-only)
 add_subdirectory("${CEN_SOURCE_DIR}")
 
-add_library(centurion INTERFACE)
-add_library(centurion::centurion ALIAS centurion)
-target_link_libraries(centurion INTERFACE
-  centurion-headers-only
-  $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
-  $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
-  $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
-  $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
-)
+cen_has_SDL(SDL_SHARED SDL_STATIC)
 
-if (TARGET SDL2::SDL2-static)
+if (SDL_SHARED OR SDL_STATIC)
+  add_library(centurion INTERFACE)
+  add_library(centurion::centurion ALIAS centurion)
+  list(APPEND CEN_TARGETS centurion)
+  target_link_libraries(centurion INTERFACE
+    centurion-headers-only
+    $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+    $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+    $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
+    $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
+  )
+endif ()
+
+if (SDL_STATIC)
   add_library(centurion-static INTERFACE)
   add_library(centurion::centurion-static ALIAS centurion-static)
+  list(APPEND CEN_TARGETS centurion-static)
   target_link_libraries(centurion-static INTERFACE
     centurion-headers-only
     SDL2::SDL2-static
@@ -68,6 +75,12 @@ if (TARGET SDL2::SDL2-static)
     SDL2_mixer::SDL2_mixer-static
     SDL2_ttf::SDL2_ttf-static
   )
+endif ()
+
+if (BUILD_TESTS OR BUILD_EXAMPLES)
+  if (NOT TARGET centurion::centurion)
+    message(FATAL_ERROR "Unable to find required SDL libraries")
+  endif()
 endif ()
 
 if (BUILD_TESTS)
@@ -111,14 +124,10 @@ install(FILES
 )
 
 install(
-  TARGETS centurion-headers-only centurion
+  TARGETS ${CEN_TARGETS}
   EXPORT centurionTargets
   FILE_SET HEADERS
 )
-
-if(TARGET centurion-static)
-  install(TARGETS centurion-static EXPORT centurionTargets)
-endif()
 
 install(
   EXPORT centurionTargets

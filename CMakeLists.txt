@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.23)
 
 if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
@@ -43,6 +43,11 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
+# CMake Target
+add_library(centurion INTERFACE)
+add_subdirectory("${CEN_SOURCE_DIR}")
+add_library(centurion::centurion ALIAS centurion)
+
 if (BUILD_TESTS)
   # Vcpkg test dependencies
   find_package(GTest CONFIG REQUIRED)
@@ -55,3 +60,42 @@ endif ()
 if (BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif ()
+
+# Installer
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+configure_file(
+  "${CMAKE_MODULE_PATH}/centurion.pc.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/centurion.pc"
+  @ONLY
+)
+
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/centurion.pc"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
+)
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/centurion-config-version.cmake"
+  COMPATIBILITY AnyNewerVersion
+  ARCH_INDEPENDENT
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/centurion-config-version.cmake"
+  "${CMAKE_MODULE_PATH}/centurion-config.cmake"
+  DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/centurion"
+)
+
+install(
+  TARGETS centurion
+  EXPORT centurionTargets
+  FILE_SET HEADERS
+)
+
+install(
+  EXPORT centurionTargets
+  NAMESPACE centurion::
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/centurion"
+)

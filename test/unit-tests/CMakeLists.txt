@@ -201,7 +201,6 @@ add_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
 target_include_directories(${CENTURION_TEST_TARGET}
                            PRIVATE
                            ${PROJECT_SOURCE_DIR}
-                           ${CEN_SOURCE_DIR}
                            )
 
 cen_include_sdl_headers(${CENTURION_TEST_TARGET})
@@ -213,6 +212,7 @@ target_link_libraries(${CENTURION_TEST_TARGET}
                       cereal::cereal
                       GLEW::GLEW
                       GTest::gtest
+                      centurion::centurion
                       )
 
 cen_set_basic_compiler_options(${CENTURION_TEST_TARGET})

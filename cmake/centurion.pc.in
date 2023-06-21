@@ -1,0 +1,7 @@
+prefix=${pcfiledir}/../..
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: @PROJECT_NAME@
+Description: A modern C++ wrapper library for SDL2
+Version: @PROJECT_VERSION@
+Cflags: -I${includedir}

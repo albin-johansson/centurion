@@ -1,4 +1,4 @@
-target_sources(centurion PUBLIC
+target_sources(centurion-headers-only PUBLIC
   FILE_SET HEADERS
   FILES
     clipboard.hpp

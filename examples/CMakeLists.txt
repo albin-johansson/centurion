@@ -8,9 +8,6 @@ add_compile_definitions(RESOURCE_DIR="${CEN_RESOURCES_DIR}/")
 function(cen_add_example target)
   target_link_libraries(${target} PRIVATE centurion::centurion)
 
-  cen_include_sdl_headers(${target})
-  cen_link_sdl_libs(${target})
-
   cen_set_basic_compiler_options(${target})
 
   if (WIN32)

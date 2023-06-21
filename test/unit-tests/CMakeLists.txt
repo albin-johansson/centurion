@@ -203,10 +203,6 @@ target_include_directories(${CENTURION_TEST_TARGET}
                            ${PROJECT_SOURCE_DIR}
                            )
 
-cen_include_sdl_headers(${CENTURION_TEST_TARGET})
-
-cen_link_sdl_libs(${CENTURION_TEST_TARGET})
-
 target_link_libraries(${CENTURION_TEST_TARGET}
                       PRIVATE
                       cereal::cereal

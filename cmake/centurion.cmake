@@ -22,24 +22,6 @@ function(cen_copy_directory_post_build target from to)
       ${to})
 endfunction()
 
-function(cen_include_sdl_headers target)
-  target_include_directories(${target}
-                             SYSTEM PRIVATE
-                             ${SDL2_INCLUDE_DIR}
-                             ${SDL2_IMAGE_INCLUDE_DIRS}
-                             ${SDL2_TTF_INCLUDE_DIRS}
-                             ${SDL2_MIXER_INCLUDE_DIRS})
-endfunction()
-
-function(cen_link_sdl_libs target)
-  target_link_libraries(${target}
-                        PRIVATE
-                        ${SDL2_LIBRARY}
-                        ${SDL2_IMAGE_LIBRARIES}
-                        ${SDL2_TTF_LIBRARIES}
-                        ${SDL2_MIXER_LIBRARIES})
-endfunction()
-
 function(cen_set_basic_compiler_options target)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${target} PRIVATE
@@ -69,5 +51,51 @@ function(cen_set_basic_compiler_options target)
     if (TREAT_WARNINGS_AS_ERRORS MATCHES ON)
       target_compile_options(${target} PRIVATE -Werror)
     endif ()
+  endif ()
+endfunction()
+
+# Checks if targets exists and stores the result in a variable.
+#   var: the name of the result variable
+#   ARGN: list of targets to check the existence of
+function(cen_has_targets var)
+  set(${var} FALSE PARENT_SCOPE)
+  foreach(target IN LISTS ARGN)
+    if (NOT TARGET ${target})
+      return()
+    endif ()
+  endforeach ()
+  set(${var} TRUE PARENT_SCOPE)
+endfunction()
+
+# Checks if the relevant SDL targets exist and stores the result in the
+# corresponding variable
+#   shared: the name of the shared libraries variable
+#   static: the name of the static libraries variable
+function(cen_has_SDL shared static)
+  cen_has_targets(_shared
+    SDL2::SDL2
+    SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf
+  )
+  set(${shared} ${_shared} PARENT_SCOPE)
+  cen_has_targets(_static 
+    SDL2::SDL2-static
+    SDL2_image::SDL2_image-static
+    SDL2_mixer::SDL2_mixer-static
+    SDL2_ttf::SDL2_ttf-static
+  )
+  set(${static} ${_static} PARENT_SCOPE)
+endfunction()
+
+# Finds a package using an environment variable path hint
+#   pkg: package to find
+#   hint: environment variable name
+function(cen_find_env_package pkg hint)
+  if (DEFINED ENV{${hint}})
+    file(TO_CMAKE_PATH $ENV{${hint}} hint_path)
+    find_package(${pkg} PATHS ${hint_path})
+  else ()
+    find_package(${pkg} CONFIG)
   endif ()
 endfunction()

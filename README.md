@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
   cen::window window {"Centurion"};
   cen::renderer renderer = window.make_renderer();
-  
+
   window.show();
 
   bool running = true;
@@ -91,9 +91,12 @@ mandatory. The extension libraries can be disabled at compile-time, by defining 
 
 ## Installation
 
-The library is distributed as a header-only library, which can be found in the `src` directory. Just download the
+**Header Only**: The library is distributed as a header-only library, which can be found in the `src` directory. Just download the
 headers include them in your project, and the library it's ready to be used. You will of course also need to install
 SDL2.
+
+**CMake Subproject**: The library can be included as a subproject in your project. After integrating the code you can use
+`add_subdirectory(path/to/centurion)` and then `target_link_libraries(program PRIVATE centurion::centurion)`
 
 ## Documentation
 

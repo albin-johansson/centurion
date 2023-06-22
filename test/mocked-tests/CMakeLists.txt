@@ -67,14 +67,11 @@ cen_add_header_only_lib(libFFF ${CEN_FFF_DIR} ${CEN_FFF_DIR}/fff.h)
 target_include_directories(${CENTURION_MOCK_TARGET}
                            PRIVATE
                            ${PROJECT_SOURCE_DIR}
-                           ${CEN_SOURCE_DIR}
                            )
-
-cen_include_sdl_headers(${CENTURION_MOCK_TARGET})
-cen_link_sdl_libs(${CENTURION_MOCK_TARGET})
 
 target_link_libraries(${CENTURION_MOCK_TARGET}
                       PRIVATE
+                      centurion::centurion
                       GTest::gtest
                       libFFF)
 

@@ -39,33 +39,10 @@ set(CENTURION_TEST_TARGET centurion-tests)
 set(CENTURION_MOCK_TARGET centurion-mocks)
 
 # System dependencies
-if (DEFINED ENV{SDL2DIR})
-  file(TO_CMAKE_PATH $ENV{SDL2DIR} SDL2DIR)
-  find_package(SDL2 CONFIG PATHS ${SDL2DIR})
-else ()
-  find_package(SDL2 CONFIG)
-endif ()
-
-if (DEFINED ENV{SDL2IMAGEDIR})
-  file(TO_CMAKE_PATH $ENV{SDL2IMAGEDIR} SDL2IMAGEDIR)
-  find_package(SDL2_image CONFIG PATHS ${SDL2IMAGEDIR})
-else ()
-  find_package(SDL2_image CONFIG)
-endif ()
-
-if (DEFINED ENV{SDL2MIXERDIR})
-  file(TO_CMAKE_PATH $ENV{SDL2MIXERDIR} SDL2MIXERDIR)
-  find_package(SDL2_mixer CONFIG PATHS ${SDL2MIXERDIR})
-else ()
-  find_package(SDL2_mixer CONFIG)
-endif ()
-
-if (DEFINED ENV{SDL2TTFDIR})
-  file(TO_CMAKE_PATH $ENV{SDL2TTFDIR} SDL2TTFDIR)
-  find_package(SDL2_ttf CONFIG PATHS ${SDL2TTFDIR})
-else ()
-  find_package(SDL2_ttf CONFIG)
-endif ()
+cen_find_env_package(SDL2 SDL2DIR)
+cen_find_env_package(SDL2_image SDL2IMAGEDIR)
+cen_find_env_package(SDL2_mixer SDL2MIXERDIR)
+cen_find_env_package(SDL2_ttf SDL2TTFDIR)
 
 # CMake Targets
 add_library(centurion-headers-only INTERFACE)

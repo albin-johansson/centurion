@@ -87,3 +87,15 @@ function(cen_has_SDL shared static)
   )
   set(${static} ${_static} PARENT_SCOPE)
 endfunction()
+
+# Finds a package using an environment variable path hint
+#   pkg: package to find
+#   hint: environment variable name
+function(cen_find_env_package pkg hint)
+  if (DEFINED ENV{${hint}})
+    file(TO_CMAKE_PATH $ENV{${hint}} hint_path)
+    find_package(${pkg} PATHS ${hint_path})
+  else ()
+    find_package(${pkg} CONFIG)
+  endif ()
+endfunction()

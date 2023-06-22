@@ -69,6 +69,32 @@ class event_handler final {
     SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
   }
 
+  // Waits until an event is available
+  void wait()
+  {
+    SDL_Event event {};
+    if (SDL_WaitEvent(&event)) {
+      store(event);
+    }
+    else {
+      throw sdl_error {};
+    }
+  }
+
+  // Waits until an event is available or timeout
+  auto wait(int timeout) noexcept -> bool
+  {
+    SDL_Event event {};
+    if (SDL_WaitEventTimeout(&event, timeout)) {
+      store(event);
+      return true;
+    }
+    else {
+      reset_state();
+      return false;
+    }
+  }
+
   /// Polls the next available event, if there is one.
   auto poll() noexcept -> bool
   {

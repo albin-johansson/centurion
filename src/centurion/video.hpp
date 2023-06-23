@@ -26,6 +26,7 @@
 #include "video/blend.hpp"
 #include "video/color.hpp"
 #include "video/display.hpp"
+#include "video/driver.hpp"
 #include "video/flash_op.hpp"
 #include "video/message_box.hpp"
 #include "video/opengl.hpp"

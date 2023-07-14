@@ -22,10 +22,35 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#ifndef CENTURION_INITIALIZATION_SDL_TTF_HPP_
+#define CENTURION_INITIALIZATION_SDL_TTF_HPP_
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
+#if CEN_USE_SDL_TTF
 
-#endif  // CENTURION_HPP_
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_ttf.h>
+
+#include <centurion/common/errors.hpp>
+#include <centurion/common/macros.hpp>
+
+namespace cen {
+
+class SDLTTF final {
+ public:
+  CEN_CANNOT_COPY(SDLTTF);
+  CEN_CANNOT_MOVE(SDLTTF);
+
+  [[nodiscard]] SDLTTF()
+  {
+    if (TTF_Init() != 0) {
+      throw SDLTTFError {};
+    }
+  }
+
+  ~SDLTTF() noexcept { TTF_Quit(); }
+};
+
+}  // namespace cen
+
+#endif  // CEN_USE_SDL_TTF
+#endif  // CENTURION_INITIALIZATION_SDL_TTF_HPP_

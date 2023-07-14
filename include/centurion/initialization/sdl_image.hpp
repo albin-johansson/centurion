@@ -22,10 +22,38 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#ifndef CENTURION_INITIALIZATION_SDL_IMAGE_HPP_
+#define CENTURION_INITIALIZATION_SDL_IMAGE_HPP_
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
+#if CEN_USE_SDL_IMAGE
 
-#endif  // CENTURION_HPP_
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_image.h>
+
+#include <centurion/common/errors.hpp>
+#include <centurion/common/macros.hpp>
+#include <centurion/common/primitives.hpp>
+
+namespace cen {
+
+class SDLImage final {
+ public:
+  CEN_CANNOT_COPY(SDLImage);
+  CEN_CANNOT_MOVE(SDLImage);
+
+  [[nodiscard]] explicit SDLImage(const int flags = IMG_INIT_JPG | IMG_INIT_PNG |
+                                                    IMG_INIT_TIF | IMG_INIT_WEBP |
+                                                    IMG_INIT_JXL | IMG_INIT_AVIF)
+  {
+    if (IMG_Init(flags) == 0) {
+      throw SDLImageError {};
+    }
+  }
+
+  ~SDLImage() noexcept { IMG_Quit(); }
+};
+
+}  // namespace cen
+
+#endif  // CEN_USE_SDL_IMAGE
+#endif  // CENTURION_INITIALIZATION_SDL_IMAGE_HPP_

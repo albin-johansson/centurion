@@ -22,10 +22,32 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#ifndef CENTURION_INITIALIZATION_SDL_HPP_
+#define CENTURION_INITIALIZATION_SDL_HPP_
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
+#include <SDL3/SDL.h>
 
-#endif  // CENTURION_HPP_
+#include <centurion/common/errors.hpp>
+#include <centurion/common/macros.hpp>
+#include <centurion/common/primitives.hpp>
+
+namespace cen {
+
+class SDL final {
+ public:
+  CEN_CANNOT_COPY(SDL);
+  CEN_CANNOT_MOVE(SDL);
+
+  [[nodiscard]] explicit SDL(const uint32 flags = SDL_INIT_EVERYTHING)
+  {
+    if (SDL_Init(flags) < 0) {
+      throw SDLError {};
+    }
+  }
+
+  ~SDL() noexcept { SDL_Quit(); }
+};
+
+}  // namespace cen
+
+#endif  // CENTURION_INITIALIZATION_SDL_HPP_

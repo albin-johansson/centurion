@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#ifndef CENTURION_INITIALIZATION_HPP_
+#define CENTURION_INITIALIZATION_HPP_
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
+#include <centurion/initialization/sdl.hpp>
+#include <centurion/initialization/sdl_image.hpp>
+#include <centurion/initialization/sdl_mixer.hpp>
+#include <centurion/initialization/sdl_ttf.hpp>
 
-#endif  // CENTURION_HPP_
+#endif  // CENTURION_INITIALIZATION_HPP_

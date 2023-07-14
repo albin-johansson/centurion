@@ -21,58 +21,8 @@ option(CEN_TREAT_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
 # Directories
 set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")
-set(CEN_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/src")
+set(CEN_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set(CEN_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external")
-
-function(cen_prepare_target target)
-  set_target_properties(${target}
-                        PROPERTIES
-                        CXX_STANDARD_REQUIRED ON
-                        CXX_EXTENSIONS OFF
-                        )
-
-  if (CEN_USE_SDL_IMAGE MATCHES OFF)
-    target_compile_definitions(${target} PRIVATE CENTURION_NO_SDL_IMAGE)
-  endif ()
-
-  if (CEN_USE_SDL_MIXER MATCHES OFF)
-    target_compile_definitions(${target} PRIVATE CENTURION_NO_SDL_MIXER)
-  endif ()
-
-  if (CEN_USE_SDL_TTF MATCHES OFF)
-    target_compile_definitions(${target} PRIVATE CENTURION_NO_SDL_TTF)
-  endif ()
-
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${target}
-                           PRIVATE
-                           /EHsc
-                           /MP
-                           /W4
-                           /Zc:preprocessor # Enable conforming preprocessor
-                           /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
-                           /wd4996          # Disable deprecation warnings
-                           )
-
-    if (CEN_TREAT_WARNINGS_AS_ERRORS MATCHES ON)
-      target_compile_options(${target} PRIVATE /WX)
-    endif ()
-  else ()
-    target_compile_options(${target} PRIVATE
-                           -Wall
-                           -Wextra
-                           -Wpedantic
-                           -Wconversion
-                           -Wno-deprecated
-                           -Wno-deprecated-declarations
-                           -Wno-format-security
-                           )
-
-    if (CEN_TREAT_WARNINGS_AS_ERRORS MATCHES ON)
-      target_compile_options(${target} PRIVATE -Werror)
-    endif ()
-  endif ()
-endfunction()
 
 if (CEN_USE_SYSTEM_DEPS MATCHES ON)
   # TODO
@@ -80,11 +30,37 @@ else ()
   add_subdirectory(external/SDL)
 endif ()
 
+add_library(centurion INTERFACE)
+
+set_target_properties(centurion
+                      PROPERTIES
+                      CXX_STANDARD_REQUIRED ON
+                      CXX_EXTENSIONS OFF
+                      )
+
+target_include_directories(centurion INTERFACE ${CEN_INCLUDE_DIR})
+
+target_link_libraries(centurion INTERFACE SDL3::SDL3)
+
+if (CEN_USE_SDL_IMAGE MATCHES OFF)
+  target_compile_definitions(centurion INTERFACE CENTURION_NO_SDL_IMAGE)
+endif ()
+
+if (CEN_USE_SDL_MIXER MATCHES OFF)
+  target_compile_definitions(centurion INTERFACE CENTURION_NO_SDL_MIXER)
+endif ()
+
+if (CEN_USE_SDL_TTF MATCHES OFF)
+  target_compile_definitions(centurion INTERFACE CENTURION_NO_SDL_TTF)
+endif ()
+
+add_library(cen::centurion ALIAS centurion)
+
 if (CEN_BUILD_TESTS MATCHES ON)
   find_package(GTest CONFIG REQUIRED)
   find_package(cereal CONFIG REQUIRED)
   find_package(GLEW REQUIRED)
-  # add_subdirectory(test)
+  add_subdirectory(tests)
 endif ()
 
 if (CEN_BUILD_EXAMPLES MATCHES ON)

@@ -1,3 +1,6 @@
 [submodule "external/fff"]
 	path = external/fff
 	url = https://github.com/meekrosoft/fff
+[submodule "external/SDL"]
+	path = external/SDL
+	url = https://github.com/libsdl-org/SDL

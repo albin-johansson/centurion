@@ -22,12 +22,17 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_COMMON_HPP_
-#define CENTURION_COMMON_HPP_
+#include <gtest/gtest.h>
 
-#include <centurion/common/errors.hpp>
-#include <centurion/common/macros.hpp>
-#include <centurion/common/primitives.hpp>
-#include <centurion/common/version.hpp>
+#include <centurion/centurion.hpp>
 
-#endif  // CENTURION_COMMON_HPP_
+auto main(int argc, char* argv[]) -> int
+{
+  const cen::SDL sdl;
+  const cen::SDLImage sdl_image;
+  const cen::SDLMixer sdl_mixer;
+  const cen::SDLTTF sdl_ttf;
+
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#ifndef CENTURION_COMMON_HPP_
+#define CENTURION_COMMON_HPP_
 
-#include <centurion/common.hpp>
+#include <centurion/common/errors.hpp>
 
-#endif  // CENTURION_HPP_
+#endif  // CENTURION_COMMON_HPP_

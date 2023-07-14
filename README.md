@@ -11,25 +11,24 @@ ease-of-use. The general aim of Centurion is to serve as an easy-to-use and intu
 providing the same features while being safer and easier to use.
 
 ```C++
-#include <centurion.hpp>
+#include <centurion/centurion.hpp>
 
 int main(int argc, char* argv[])
 {
-  const cen::sdl sdl;  // Init SDL
-  const cen::img img;  // Init SDL_image
-  const cen::mix mix;  // Init SDL_mixer
-  const cen::ttf ttf;  // Init SDL_ttf
+  const cen::SDL sdl;
+  const cen::SDLImage sdl_image;
+  const cen::SDLMixer sdl_mixer;
+  const cen::SDLTTF sdl_ttf;
 
-  cen::window window {"Centurion"};
-  cen::renderer renderer = window.make_renderer();
-  
+  cen::Window window {"Centurion"};
+  cen::Renderer renderer = window.make_renderer();
   window.show();
 
   bool running = true;
   while (running) {
-    cen::event_handler event;
+    cen::EventHandler event;
     while (event.poll()) {
-      if (event.is(cen::event_type::quit)) {
+      if (event.is(cen::EventType::quit)) {
         running = false;
       }
     }
@@ -46,8 +45,8 @@ int main(int argc, char* argv[])
 ## Dependencies
 
 The following table shows the supported versions of SDL3 and its extension libraries. Only the core SDL library is
-mandatory. The extension libraries can be disabled at compile-time, by defining any of `CENTURION_NO_SDL_IMAGE`
-, `CENTURION_NO_SDL_MIXER` or `CENTURION_NO_SDL_TTF`, respectively.
+mandatory. The extension libraries can be disabled at compile-time, by defining any of `CEN_USE_SDL_IMAGE`
+, `CEN_USE_SDL_MIXER` or `CEN_USE_SDL_TTF` as `0`, respectively.
 
 | Dependency            | Source                                                                              | Supported versions |
 |-----------------------|-------------------------------------------------------------------------------------|--------------------|

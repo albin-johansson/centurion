@@ -22,11 +22,15 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_COMMON_HPP_
-#define CENTURION_COMMON_HPP_
+#ifndef CENTURION_COMMON_MACROS_HPP_
+#define CENTURION_COMMON_MACROS_HPP_
 
-#include <centurion/common/errors.hpp>
-#include <centurion/common/macros.hpp>
-#include <centurion/common/primitives.hpp>
+#define CEN_CANNOT_COPY(Class)        \
+  Class(const Class& other) = delete; \
+  auto operator=(const Class& other) -> Class& = delete
 
-#endif  // CENTURION_COMMON_HPP_
+#define CEN_CANNOT_MOVE(Class)            \
+  Class(Class&& other) noexcept = delete; \
+  auto operator=(Class&& other) noexcept -> Class& = delete
+
+#endif  // CENTURION_COMMON_MACROS_HPP_

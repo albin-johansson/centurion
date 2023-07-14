@@ -22,11 +22,29 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_COMMON_HPP_
-#define CENTURION_COMMON_HPP_
+#ifndef CENTURION_COMMON_PRIMITIVES_HPP_
+#define CENTURION_COMMON_PRIMITIVES_HPP_
 
-#include <centurion/common/errors.hpp>
-#include <centurion/common/macros.hpp>
-#include <centurion/common/primitives.hpp>
+#include <SDL3/SDL.h>
 
-#endif  // CENTURION_COMMON_HPP_
+#include <cstddef>  // size_t
+
+namespace cen {
+
+using usize = std::size_t;
+
+// Signed integers
+using int8 = Sint8;
+using int16 = Sint16;
+using int32 = Sint32;
+using int64 = Sint64;
+
+// Unsigned integers
+using uint8 = Uint8;
+using uint16 = Uint16;
+using uint32 = Uint32;
+using uint64 = Uint64;
+
+}  // namespace cen
+
+#endif  // CENTURION_COMMON_PRIMITIVES_HPP_

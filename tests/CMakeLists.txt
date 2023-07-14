@@ -53,3 +53,4 @@ function(cen_prepare_target target)
   endif ()
 endfunction()
 
+add_subdirectory(unit-tests)

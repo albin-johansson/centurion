@@ -22,13 +22,45 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_COMMON_HPP_
-#define CENTURION_COMMON_HPP_
+#ifndef CENTURION_COMMON_RESULT_HPP_
+#define CENTURION_COMMON_RESULT_HPP_
 
-#include <centurion/common/errors.hpp>
-#include <centurion/common/macros.hpp>
-#include <centurion/common/primitives.hpp>
-#include <centurion/common/result.hpp>
-#include <centurion/common/version.hpp>
+namespace cen {
 
-#endif  // CENTURION_COMMON_HPP_
+class Result final {
+ public:
+  constexpr Result(const bool success) noexcept
+      : mSuccess {success}
+  {
+  }
+
+  [[nodiscard]] constexpr auto succeeded() const noexcept -> bool
+  {
+    return mSuccess;
+  }
+
+  [[nodiscard]] constexpr auto failed() const noexcept -> bool
+  {
+    return !mSuccess;
+  }
+
+ private:
+  bool mSuccess {};
+};
+
+[[nodiscard]] constexpr auto operator==(const Result a, const Result b) noexcept -> bool
+{
+  return a.succeeded() == b.succeeded();
+}
+
+[[nodiscard]] constexpr auto operator!=(const Result a, const Result b) noexcept -> bool
+{
+  return !(a == b);
+}
+
+inline constexpr Result success {true};
+inline constexpr Result failure {false};
+
+}  // namespace cen
+
+#endif  // CENTURION_COMMON_RESULT_HPP_

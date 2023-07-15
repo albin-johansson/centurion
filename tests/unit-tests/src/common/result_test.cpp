@@ -22,13 +22,25 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_COMMON_HPP_
-#define CENTURION_COMMON_HPP_
-
-#include <centurion/common/errors.hpp>
-#include <centurion/common/macros.hpp>
-#include <centurion/common/primitives.hpp>
 #include <centurion/common/result.hpp>
-#include <centurion/common/version.hpp>
+#include <gtest/gtest.h>
 
-#endif  // CENTURION_COMMON_HPP_
+TEST(Result, Constructor)
+{
+  const cen::Result expected_success = true;
+  const cen::Result expected_failure = false;
+  EXPECT_TRUE(expected_success.succeeded());
+  EXPECT_TRUE(expected_failure.failed());
+
+  EXPECT_TRUE(cen::success.succeeded());
+  EXPECT_TRUE(cen::failure.failed());
+}
+
+TEST(Result, Comparisons)
+{
+  EXPECT_EQ(cen::success, cen::success);
+  EXPECT_EQ(cen::failure, cen::failure);
+
+  EXPECT_NE(cen::success, cen::failure);
+  EXPECT_NE(cen::failure, cen::success);
+}

@@ -1,42 +1,81 @@
 BasedOnStyle: Google
 
 Language: Cpp
-Standard: c++20
+Standard: Latest
 
-ColumnLimit: 95
+ColumnLimit: 90
 IndentWidth: 2
 
 DerivePointerAlignment: false
 PointerAlignment: Left
+QualifierAlignment: Left
 
-IndentRequiresClause: true
+AlignTrailingComments: Always
+AlignConsecutiveDeclarations: None
+AlignConsecutiveBitFields: Consecutive
+
+IndentCaseLabels: true
+
+EmptyLineBeforeAccessModifier: Always
+IndentAccessModifiers: false
+AccessModifierOffset: -1
 
 NamespaceIndentation: None
 FixNamespaceComments: true
 
-EmptyLineBeforeAccessModifier: Always
+MaxEmptyLinesToKeep: 1
 
 AllowAllArgumentsOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
-AllowAllConstructorInitializersOnNextLine: false
 
+PackConstructorInitializers: Never
 BinPackParameters: false
 BinPackArguments: false
 
-AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortBlocksOnASingleLine: Empty
-AllowShortLambdasOnASingleLine: All
+AllowShortLambdasOnASingleLine: Inline
 AllowShortEnumsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 
-BreakBeforeBinaryOperators: None
-BreakBeforeTernaryOperators: true
-BreakBeforeConceptDeclarations: true
+SpaceAfterCStyleCast: true
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeRangeBasedForLoopColon: true
 
 BreakBeforeBraces: Stroustrup
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+BreakBeforeConceptDeclarations: Always
 
-BreakInheritanceList: BeforeComma
-BreakConstructorInitializers: BeforeComma
+RequiresClausePosition: WithFollowing
+IndentRequiresClause: true
+RequiresExpressionIndentation: OuterScope
 
-SpaceBeforeCpp11BracedList: true
+BreakStringLiterals: true
+BreakInheritanceList: AfterColon
+BreakConstructorInitializers: BeforeColon
+
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Standard headers located in <> with no extension, such as <vector>.
+  - Regex: '<([A-Za-z0-9\_\-]+)>'
+    SortPriority: 1
+    Priority: 1
+
+  # SDL3 headers, such as <SDL3/SDL.h>.
+  - Regex: '<SDL3/([A-Za-z0-9.\Q/-_\E])+>'
+    SortPriority: 2
+    Priority: 2
+
+  # Headers in <> with extension and optional prefix, such as <centurion/centurion.hpp>.
+  - Regex: '<([A-Za-z0-9\_\-]+\/)*(\.\.)*([A-Za-z0-9\_\-]+)\.([A-Za-z0-9\_\-]+)>'
+    SortPriority: 3
+    Priority: 3
+
+  # Headers in "" with extension, such as "foo.hpp".
+  - Regex: '"([A-Za-z0-9.\Q/-_\E])+"'
+    SortPriority: 4
+    Priority: 4

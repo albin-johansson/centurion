@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-#include <gtest/gtest.h>
-
 #include <centurion/centurion.hpp>
+#include <gtest/gtest.h>
 
 auto main(int argc, char* argv[]) -> int
 {

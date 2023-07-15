@@ -22,14 +22,23 @@
  * SOFTWARE.
  */
 
+#include <centurion/common/version.hpp>
 #include <gtest/gtest.h>
 
-#include <centurion/common/version.hpp>
-
 static_assert(CEN_VERSION_NUMBER == SDL_VERSIONNUM(8, 0, 0));
-static_assert(CEN_VERSION_AT_LEAST(CEN_VERSION_MAJOR, CEN_VERSION_MINOR, CEN_VERSION_PATCH));
+static_assert(CEN_VERSION_AT_LEAST(CEN_VERSION_MAJOR,
+                                   CEN_VERSION_MINOR,
+                                   CEN_VERSION_PATCH));
 static_assert(cen::Version::of_centurion().as_number() == CEN_VERSION_NUMBER);
 static_assert(cen::Version::of_compiled_sdl().as_number() == SDL_COMPILEDVERSION);
+
+TEST(Version, Defaults)
+{
+  const cen::Version version;
+  EXPECT_EQ(version.major, 0);
+  EXPECT_EQ(version.minor, 0);
+  EXPECT_EQ(version.patch, 0);
+}
 
 TEST(Version, OfCenturion)
 {

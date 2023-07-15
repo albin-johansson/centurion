@@ -25,9 +25,9 @@
 #ifndef CENTURION_COMMON_PRIMITIVES_HPP_
 #define CENTURION_COMMON_PRIMITIVES_HPP_
 
-#include <SDL3/SDL.h>
-
 #include <cstddef>  // size_t
+
+#include <SDL3/SDL.h>
 
 namespace cen {
 

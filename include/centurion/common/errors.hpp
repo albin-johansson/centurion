@@ -56,7 +56,10 @@ class Error : public std::exception {
 #endif  // _MSC_VER
   }
 
-  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat.data(); }
+  [[nodiscard]] auto what() const noexcept -> const char* override
+  {
+    return mWhat.data();
+  }
 
  private:
   // We use an array here instead of a string to avoid a dynamic allocation.
@@ -67,7 +70,10 @@ class SDLError final : public Error {
  public:
   using Error::Error;
 
-  SDLError() noexcept : SDLError {SDL_GetError()} {}
+  SDLError() noexcept
+      : SDLError {SDL_GetError()}
+  {
+  }
 };
 
 #if CEN_USE_SDL_IMAGE
@@ -76,7 +82,10 @@ class SDLImageError final : public Error {
  public:
   using Error::Error;
 
-  SDLImageError() noexcept : SDLImageError {IMG_GetError()} {}
+  SDLImageError() noexcept
+      : SDLImageError {IMG_GetError()}
+  {
+  }
 };
 
 #endif  // CEN_USE_SDL_IMAGE
@@ -87,7 +96,10 @@ class SDLMixerError final : public Error {
  public:
   using Error::Error;
 
-  SDLMixerError() noexcept : SDLMixerError {Mix_GetError()} {}
+  SDLMixerError() noexcept
+      : SDLMixerError {Mix_GetError()}
+  {
+  }
 };
 
 #endif  // CEN_USE_SDL_MIXER
@@ -98,7 +110,10 @@ class SDLTTFError final : public Error {
  public:
   using Error::Error;
 
-  SDLTTFError() noexcept : SDLTTFError {TTF_GetError()} {}
+  SDLTTFError() noexcept
+      : SDLTTFError {TTF_GetError()}
+  {
+  }
 };
 
 #endif  // CEN_USE_SDL_TTF

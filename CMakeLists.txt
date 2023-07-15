@@ -80,8 +80,6 @@ add_library(cen::centurion ALIAS centurion)
 
 if (CEN_BUILD_TESTS MATCHES ON)
   find_package(GTest CONFIG REQUIRED)
-  find_package(cereal CONFIG REQUIRED)
-  find_package(GLEW REQUIRED)
   add_subdirectory(tests)
 endif ()
 

@@ -31,6 +31,7 @@
 
 namespace cen {
 
+using uint = unsigned int;
 using usize = std::size_t;
 
 // Signed integers

@@ -25,6 +25,5 @@
 #ifndef CENTURION_VIDEO_HPP_
 #define CENTURION_VIDEO_HPP_
 
-#include <centurion/video/vulkan.hpp>
 
 #endif  // CENTURION_VIDEO_HPP_

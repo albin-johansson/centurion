@@ -24,19 +24,22 @@
 
 #include "sdl_mocks.hpp"
 
-DEFINE_FAKE_VALUE_FUNC(Uint64, SDL_GetTicks)
-DEFINE_FAKE_VALUE_FUNC(Uint64, SDL_GetTicksNS)
-DEFINE_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceCounter)
-DEFINE_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceFrequency)
+CEN_MOCK_FUNCTIONS(DEFINE)
 
-namespace cen::testing {
+namespace testing {
 
 void reset_mocks()
 {
+  RESET_FAKE(SDL_GetError)
+
   RESET_FAKE(SDL_GetTicks)
   RESET_FAKE(SDL_GetTicksNS)
   RESET_FAKE(SDL_GetPerformanceCounter)
   RESET_FAKE(SDL_GetPerformanceFrequency)
+
+  RESET_FAKE(SDL_LoadObject)
+  RESET_FAKE(SDL_LoadFunction)
+  RESET_FAKE(SDL_UnloadObject)
 }
 
-}  // namespace cen::testing
+}  // namespace testing

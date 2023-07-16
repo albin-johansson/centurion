@@ -24,26 +24,46 @@
 
 #pragma once
 
+#include <cstring>  // memcpy
+
 #include <SDL3/SDL.h>
 
+#include <centurion/common/primitives.hpp>
 #include <fff/fff.h>
 
-DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetTicks)
-DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetTicksNS)
-DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceCounter)
-DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceFrequency)
+#define CEN_MOCK_FUNCTIONS(Op)                                                     \
+  Op##_FAKE_VALUE_FUNC(const char*, SDL_GetError);                                 \
+  Op##_FAKE_VALUE_FUNC(Uint64, SDL_GetTicks);                                      \
+  Op##_FAKE_VALUE_FUNC(Uint64, SDL_GetTicksNS);                                    \
+  Op##_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceCounter);                         \
+  Op##_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceFrequency);                       \
+  Op##_FAKE_VALUE_FUNC(void*, SDL_LoadObject, const char*);                        \
+  Op##_FAKE_VALUE_FUNC(SDL_FunctionPointer, SDL_LoadFunction, void*, const char*); \
+  Op##_FAKE_VOID_FUNC(SDL_UnloadObject, void*)
 
-namespace cen::testing {
+CEN_MOCK_FUNCTIONS(DECLARE)
+
+namespace testing {
 
 void reset_mocks();
 
-}  // namespace cen::testing
+template <typename Ptr>
+[[nodiscard]] auto make_ptr(const cen::usize value) noexcept -> Ptr
+{
+  static_assert(sizeof(Ptr) == sizeof(cen::usize));
+
+  Ptr ptr;
+  std::memcpy(&ptr, &value, sizeof value);
+  return ptr;
+}
+
+}  // namespace testing
 
 #define CEN_MOCK_FIXTURE(Name)        \
   class Name : public testing::Test { \
    public:                            \
-    static void TearDownTestSuite()   \
+    void TearDown() override          \
     {                                 \
-      cen::testing::reset_mocks();    \
+      testing::reset_mocks();         \
     }                                 \
   }

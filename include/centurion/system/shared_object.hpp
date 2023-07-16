@@ -22,10 +22,43 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_SYSTEM_HPP_
-#define CENTURION_SYSTEM_HPP_
+#ifndef CENTURION_SYSTEM_SHARED_OBJECT_HPP_
+#define CENTURION_SYSTEM_SHARED_OBJECT_HPP_
 
-#include <centurion/system/shared_object.hpp>
-#include <centurion/system/time.hpp>
+#include <cassert>  // assert
+#include <memory>   // unique_ptr
 
-#endif  // CENTURION_SYSTEM_HPP_
+#include <SDL3/SDL.h>
+
+#include <centurion/common/errors.hpp>
+
+namespace cen {
+
+class SharedObject final {
+ public:
+  struct SharedObjectDeleter final {
+    void operator()(void* object) noexcept { SDL_UnloadObject(object); }
+  };
+
+  explicit SharedObject(const char* object)
+      : mObject {SDL_LoadObject(object)}
+  {
+    if (!mObject) {
+      throw SDLError {};
+    }
+  }
+
+  template <typename T>
+  [[nodiscard]] auto load_function(const char* name) const noexcept -> T*
+  {
+    assert(name);
+    return reinterpret_cast<T*>(SDL_LoadFunction(mObject.get(), name));
+  }
+
+ private:
+  std::unique_ptr<void, SharedObjectDeleter> mObject;
+};
+
+}  // namespace cen
+
+#endif  // CENTURION_SYSTEM_SHARED_OBJECT_HPP_

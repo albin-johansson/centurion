@@ -22,10 +22,35 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_SYSTEM_HPP_
-#define CENTURION_SYSTEM_HPP_
-
 #include <centurion/system/shared_object.hpp>
-#include <centurion/system/time.hpp>
+#include <gtest/gtest.h>
 
-#endif  // CENTURION_SYSTEM_HPP_
+#include "sdl_mocks.hpp"
+
+CEN_MOCK_FIXTURE(SharedObjectFixture);
+
+TEST_F(SharedObjectFixture, Constructor)
+{
+  EXPECT_THROW(cen::SharedObject {"dummy.dll"}, cen::SDLError);
+  EXPECT_EQ(SDL_LoadObject_fake.call_count, 1);
+  EXPECT_STREQ(SDL_LoadObject_fake.arg0_val, "dummy.dll");
+}
+
+TEST_F(SharedObjectFixture, Usage)
+{
+  void* so_handle = testing::make_ptr<void*>(123);
+  SET_RETURN_SEQ(SDL_LoadObject, &so_handle, 1)
+
+  {
+    cen::SharedObject so {"dummy.dll"};
+    EXPECT_EQ(SDL_LoadObject_fake.call_count, 1);
+
+    auto* function [[maybe_unused]] = so.load_function<void()>("do_something");
+    EXPECT_EQ(SDL_LoadFunction_fake.call_count, 1);
+    EXPECT_EQ(SDL_LoadFunction_fake.arg0_val, so_handle);
+    EXPECT_STREQ(SDL_LoadFunction_fake.arg1_val, "do_something");
+  }
+
+  EXPECT_EQ(SDL_UnloadObject_fake.call_count, 1);
+  EXPECT_EQ(SDL_UnloadObject_fake.arg0_val, so_handle);
+}

@@ -40,7 +40,7 @@ class SDL final {
 
   [[nodiscard]] explicit SDL(const uint32 flags = SDL_INIT_EVERYTHING)
   {
-    if (SDL_Init(flags) < 0) {
+    if (SDL_Init(flags) != 0) {
       throw SDLError {};
     }
   }

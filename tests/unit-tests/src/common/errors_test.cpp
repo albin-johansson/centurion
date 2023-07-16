@@ -22,53 +22,74 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_INITIALIZATION_SDL_MIXER_HPP_
-#define CENTURION_INITIALIZATION_SDL_MIXER_HPP_
+#include <centurion/common/errors.hpp>
+#include <gtest/gtest.h>
+
+TEST(Errors, ErrorWithNoReason)
+{
+  const cen::Error error;
+  EXPECT_STREQ(error.what(), "?");
+}
+
+TEST(Errors, ErrorWithReason)
+{
+  const char* reason = "This is a test";
+  const cen::Error error {reason};
+  EXPECT_STREQ(error.what(), reason);
+}
+
+TEST(Errors, SDLError)
+{
+  const char* reason = "SDLError test";
+  SDL_SetError(reason);
+
+  const cen::SDLError error;
+  EXPECT_STREQ(error.what(), reason);
+
+  SDL_ClearError();
+}
+
+#if CEN_USE_SDL_IMAGE
+
+TEST(Errors, SDLImageError)
+{
+  const char* reason = "SDLImageError test";
+  IMG_SetError(reason);
+
+  const cen::SDLImageError error;
+  EXPECT_STREQ(error.what(), reason);
+
+  SDL_ClearError();
+}
+
+#endif  // CEN_USE_SDL_IMAGE
 
 #if CEN_USE_SDL_MIXER
 
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_mixer.h>
+TEST(Errors, SDLMixerError)
+{
+  const char* reason = "SDLMixerError test";
+  Mix_SetError(reason);
 
-#include <centurion/common/errors.hpp>
-#include <centurion/common/macros.hpp>
-#include <centurion/common/primitives.hpp>
+  const cen::SDLMixerError error;
+  EXPECT_STREQ(error.what(), reason);
 
-namespace cen {
-
-struct SDLMixerConfig final {
-  int flags {MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MID |
-             MIX_INIT_OPUS | MIX_INIT_WAVPACK};
-  int frequency {MIX_DEFAULT_FREQUENCY};
-  uint16 format {MIX_DEFAULT_FORMAT};
-  int channels {MIX_DEFAULT_CHANNELS};
-  int chunk_size {4096};
-};
-
-class SDLMixer final {
- public:
-  CEN_CANNOT_COPY(SDLMixer);
-  CEN_CANNOT_MOVE(SDLMixer);
-
-  [[nodiscard]] explicit SDLMixer(const SDLMixerConfig& cfg = {})
-  {
-    if (Mix_Init(cfg.flags) != cfg.flags) {
-      throw SDLMixerError {};
-    }
-
-    if (Mix_OpenAudio(cfg.frequency, cfg.format, cfg.channels, cfg.chunk_size) != 0) {
-      throw SDLMixerError {};
-    }
-  }
-
-  ~SDLMixer() noexcept
-  {
-    Mix_CloseAudio();
-    Mix_Quit();
-  }
-};
-
-}  // namespace cen
+  SDL_ClearError();
+}
 
 #endif  // CEN_USE_SDL_MIXER
-#endif  // CENTURION_INITIALIZATION_SDL_MIXER_HPP_
+
+#if CEN_USE_SDL_TTF
+
+TEST(Errors, SDLTTFError)
+{
+  const char* reason = "SDLTTFError test";
+  TTF_SetError(reason);
+
+  const cen::SDLTTFError error;
+  EXPECT_STREQ(error.what(), reason);
+
+  SDL_ClearError();
+}
+
+#endif  // CEN_USE_SDL_TTF

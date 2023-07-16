@@ -45,7 +45,7 @@ class SDLImage final {
                                                     IMG_INIT_TIF | IMG_INIT_WEBP |
                                                     IMG_INIT_JXL | IMG_INIT_AVIF)
   {
-    if (IMG_Init(flags) == 0) {
+    if (IMG_Init(flags) != flags) {
       throw SDLImageError {};
     }
   }

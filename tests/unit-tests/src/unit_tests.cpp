@@ -22,17 +22,30 @@
  * SOFTWARE.
  */
 
+#include <exception>  // exception
+#include <cstdlib>    // EXIT_FAILURE
+#include <iostream>   // cerr
+
 #include <gtest/gtest.h>
 
 #include <centurion/centurion.hpp>
 
 auto main(int argc, char* argv[]) -> int
 {
-  const cen::SDL sdl;
-  const cen::SDLImage sdl_image;
-  const cen::SDLMixer sdl_mixer;
-  const cen::SDLTTF sdl_ttf;
+  try {
+    cen::SDLMixerConfig mixer_cfg = {};
+    mixer_cfg.flags = MIX_INIT_MP3;
 
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+    const cen::SDL sdl;
+    const cen::SDLImage sdl_image {IMG_INIT_PNG};
+    const cen::SDLMixer sdl_mixer {mixer_cfg};
+    const cen::SDLTTF sdl_ttf;
+
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+  }
+  catch (const std::exception& e) {
+    std::cerr << "Unit tests threw exception: " << e.what() << '\n';
+    return EXIT_FAILURE;
+  }
 }

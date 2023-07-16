@@ -35,6 +35,7 @@ else ()
   endif ()
 
   if (CEN_USE_SDL_MIXER MATCHES ON)
+    set(SDL3MIXER_VENDORED ON)
     add_subdirectory(external/SDL_mixer)
   endif ()
 

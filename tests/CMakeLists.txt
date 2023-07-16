@@ -54,3 +54,4 @@ function(cen_prepare_target target)
 endfunction()
 
 add_subdirectory(unit-tests)
+add_subdirectory(mocked-tests)

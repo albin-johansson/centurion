@@ -22,12 +22,9 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#ifndef CENTURION_SYSTEM_HPP_
+#define CENTURION_SYSTEM_HPP_
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
-#include <centurion/system.hpp>
-#include <centurion/video.hpp>
+#include <centurion/system/time.hpp>
 
-#endif  // CENTURION_HPP_
+#endif  // CENTURION_SYSTEM_HPP_

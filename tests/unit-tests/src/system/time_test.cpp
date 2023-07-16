@@ -22,12 +22,28 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#include <concepts>  // same_as
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
-#include <centurion/system.hpp>
-#include <centurion/video.hpp>
+#include <centurion/system/time.hpp>
+#include <gtest/gtest.h>
 
-#endif  // CENTURION_HPP_
+static_assert(std::same_as<cen::Time::ns_type::rep, Uint64>);
+static_assert(std::same_as<cen::Time::us_type::rep, Uint64>);
+static_assert(std::same_as<cen::Time::ms_type::rep, Uint64>);
+static_assert(std::same_as<cen::Time::s_type::rep, Uint64>);
+
+TEST(Time, SinceInit)
+{
+  EXPECT_GT(cen::Time::since_init_ns(), cen::Time::ns_type::zero());
+  EXPECT_GT(cen::Time::since_init_us(), cen::Time::us_type::zero());
+  EXPECT_GT(cen::Time::since_init_ms(), cen::Time::ms_type::zero());
+}
+
+TEST(Time, Now)
+{
+  EXPECT_GT(cen::Time::now(), 0);
+  EXPECT_GT(cen::Time::now_ns(), cen::Time::ns_type::zero());
+  EXPECT_GT(cen::Time::now_us(), cen::Time::us_type::zero());
+  EXPECT_GT(cen::Time::now_ms(), cen::Time::ms_type::zero());
+  EXPECT_GT(cen::Time::now_s(), cen::Time::s_type::zero());
+}

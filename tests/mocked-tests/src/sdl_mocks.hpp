@@ -22,12 +22,28 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_HPP_
-#define CENTURION_HPP_
+#pragma once
 
-#include <centurion/common.hpp>
-#include <centurion/initialization.hpp>
-#include <centurion/system.hpp>
-#include <centurion/video.hpp>
+#include <SDL3/SDL.h>
 
-#endif  // CENTURION_HPP_
+#include <fff/fff.h>
+
+DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetTicks)
+DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetTicksNS)
+DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceCounter)
+DECLARE_FAKE_VALUE_FUNC(Uint64, SDL_GetPerformanceFrequency)
+
+namespace cen::testing {
+
+void reset_mocks();
+
+}  // namespace cen::testing
+
+#define CEN_MOCK_FIXTURE(Name)        \
+  class Name : public testing::Test { \
+   public:                            \
+    static void TearDownTestSuite()   \
+    {                                 \
+      cen::testing::reset_mocks();    \
+    }                                 \
+  }

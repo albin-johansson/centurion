@@ -32,7 +32,7 @@ PackConstructorInitializers: Never
 BinPackParameters: false
 BinPackArguments: false
 
-AllowShortFunctionsOnASingleLine: All
+AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortBlocksOnASingleLine: Empty
 AllowShortLambdasOnASingleLine: Inline

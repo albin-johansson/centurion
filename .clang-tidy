@@ -1,0 +1,53 @@
+FormatStyle: google
+Checks: "-*,
+         clang-analyzer-*,
+         performance-*,
+         portability-*,
+
+         bugprone-*,
+         -bugprone-easily-swappable-parameters,
+         -bugprone-narrowing-conversions,
+         -bugprone-unchecked-optional-access,
+
+         readability-*,
+         -readability-identifier-length,
+         -readability-uppercase-literal-suffix,
+         -readability-implicit-bool-conversion,
+         -readability-named-parameter,
+         -readability-function-cognitive-complexity,
+
+         modernize-*,
+         -modernize-avoid-c-arrays,
+
+         misc-*,
+         -misc-no-recursion,
+         -misc-non-private-member-variables-in-classes,
+
+         cppcoreguidelines-*,
+         -cppcoreguidelines-avoid-magic-numbers,
+         -cppcoreguidelines-avoid-non-const-global-variables,
+         -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+         -cppcoreguidelines-pro-type-vararg,
+         -cppcoreguidelines-pro-type-union-access,
+         -cppcoreguidelines-owning-memory,
+         -cppcoreguidelines-avoid-c-arrays,
+         -cppcoreguidelines-special-member-functions,
+         -cppcoreguidelines-narrowing-conversions,
+         -cppcoreguidelines-non-private-member-variables-in-classes,
+         "
+CheckOptions:
+  - { key: readability-identifier-naming.ClassCase, value: CamelCase }
+  - { key: readability-identifier-naming.StructCase, value: CamelCase }
+  - { key: readability-identifier-naming.EnumCase, value: lower_case }
+  - { key: readability-identifier-naming.EnumConstantCase, value: lower_case }
+  - { key: readability-identifier-naming.MethodCase, value: lower_case }
+  - { key: readability-identifier-naming.FunctionCase, value: lower_case }
+  - { key: readability-identifier-naming.ParameterCase, value: lower_case }
+  - { key: readability-identifier-naming.LocalVariableCase, value: lower_case }
+  - { key: readability-identifier-naming.GlobalConstantCase, value: lower_case }
+  - { key: readability-identifier-naming.StructMemberCase, value: lower_case }
+  - { key: readability-identifier-naming.ClassMemberCase, value: CamelCase }
+  - { key: readability-identifier-naming.ClassMemberPrefix, value: m }
+  - { key: readability-identifier-naming.ClassMethodCase, value: lower_case }
+  - { key: readability-identifier-naming.PrivateMethodPrefix, value: _ }

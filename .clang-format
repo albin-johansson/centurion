@@ -1,42 +1,131 @@
+Language: Cpp
+Standard: Latest
+
 BasedOnStyle: Google
 
-Language: Cpp
-Standard: c++20
-
-ColumnLimit: 95
-IndentWidth: 2
-
-DerivePointerAlignment: false
+ColumnLimit: 90
+UseTab: Never
+QualifierAlignment: Left
 PointerAlignment: Left
+DerivePointerAlignment: false
+MaxEmptyLinesToKeep: 1
+InsertBraces: true
+RemoveSemicolon: true
+PackConstructorInitializers: Never
+RequiresClausePosition: OwnLine
+# QualifierOrder: [ 'friend', 'inline', 'static', 'const', 'volatile', 'constexpr', 'restrict', 'type' ]
 
+IndentWidth: 2
+TabWidth: 2
+PPIndentWidth: 2
+ContinuationIndentWidth: 4
+ConstructorInitializerIndentWidth: 2
+BracedInitializerIndentWidth: 2
+IndentAccessModifiers: false
+IndentWrappedFunctionNames: false
 IndentRequiresClause: true
-
+IndentCaseLabels: true
+IndentCaseBlocks: false
+IndentGotoLabels: false
+IndentExternBlock: Indent
+IndentPPDirectives: BeforeHash
 NamespaceIndentation: None
+RequiresExpressionIndentation: OuterScope
+LambdaBodyIndentation: Signature
+
+BreakBeforeConceptDeclarations: Always
+BreakBeforeTernaryOperators: true
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Custom
+BraceWrapping:
+  IndentBraces: false
+  AfterNamespace: false
+  AfterExternBlock: true
+  AfterClass: false
+  AfterStruct: false
+  AfterEnum: false
+  AfterUnion: true
+  AfterFunction: true
+  AfterCaseLabel: false
+  AfterControlStatement: Never
+  BeforeElse: true
+  BeforeCatch: true
+  BeforeWhile: false
+  BeforeLambdaBody: false
+  SplitEmptyNamespace: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+
+Cpp11BracedListStyle: true
+
+BreakAfterAttributes: Leave
+
+BreakStringLiterals: false
+BreakInheritanceList: BeforeColon
+BreakConstructorInitializers: BeforeColon
+BreakArrays: false
+
+AlwaysBreakTemplateDeclarations: Yes
+
+SpacesBeforeTrailingComments: 2
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatementsExceptControlMacros
+SpaceBeforeCaseColon: false
+SpaceBeforeSquareBrackets: false
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpaceAroundPointerQualifiers: Default
+SpacesInAngles: Never
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: false
+
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLambdasOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortEnumsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Never
+
+ReflowComments: false
 FixNamespaceComments: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 0
 
+AccessModifierOffset: -1
 EmptyLineBeforeAccessModifier: Always
-
-AllowAllArgumentsOnNextLine: false
-AllowAllParametersOfDeclarationOnNextLine: false
-AllowAllConstructorInitializersOnNextLine: false
+EmptyLineAfterAccessModifier: Never
 
 BinPackParameters: false
 BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
 
-AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortBlocksOnASingleLine: Empty
-AllowShortLambdasOnASingleLine: All
-AllowShortEnumsOnASingleLine: false
-AllowShortLoopsOnASingleLine: false
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Standard headers, located in <> with no extension.
+  - Regex: '<[A-Za-z0-9\_\-]+>'
+    SortPriority: 1
+    Priority: 1
 
-BreakBeforeBinaryOperators: None
-BreakBeforeTernaryOperators: true
-BreakBeforeConceptDeclarations: true
+  # Headers in <> with extension and optional prefix.
+  - Regex: '<.+>'
+    SortPriority: 2
+    Priority: 2
 
-BreakBeforeBraces: Stroustrup
-
-BreakInheritanceList: BeforeComma
-BreakConstructorInitializers: BeforeComma
-
-SpaceBeforeCpp11BracedList: true
+  # Headers in "" with extension.
+  - Regex: '".+"'
+    SortPriority: 3
+    Priority: 3

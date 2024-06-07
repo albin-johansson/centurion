@@ -12,6 +12,7 @@
 *.pch
 
 # Compiled Dynamic libraries
+*.dll
 *.so
 *.dylib
 
@@ -44,14 +45,21 @@
 # Affinity Designer files
 *.afdesign
 
-# JetBrains IDE files
+# IDE files
 .idea
-
-# Visual Studio and VSCode files
+.fleet
 .vs
 .vscode
 
-bin/*.dll
+# Build directories
 build
 cmake-build-*
-doxygen-out
+
+# Python virtual environments
+**/venv
+
+# Script files
+scripts/.cache
+
+# Testing assets
+assets

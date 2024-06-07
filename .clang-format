@@ -1,42 +1,191 @@
 BasedOnStyle: Google
 
+# Language mode
 Language: Cpp
 Standard: c++20
 
-ColumnLimit: 95
+# Basic
+UseTab: Never
+ColumnLimit: 80
 IndentWidth: 2
+ContinuationIndentWidth: 4
+MaxEmptyLinesToKeep: 1
 
+# Pointers and references
 DerivePointerAlignment: false
 PointerAlignment: Left
+ReferenceAlignment: Left
 
-IndentRequiresClause: true
+# Qualifiers
+QualifierAlignment: Custom
+QualifierOrder: [ 'friend', 'inline', 'static', 'constexpr', 'const', 'volatile', 'restrict', 'type' ]
+SpaceAroundPointerQualifiers: Default
 
+# Braces
+InsertBraces: false
+BracedInitializerIndentWidth: 2
+Cpp11BracedListStyle: true
+SpaceBeforeCpp11BracedList: true
+AllowShortBlocksOnASingleLine: Never
+AlignArrayOfStructures: None
+BreakBeforeBraces: Custom
+BraceWrapping:
+  IndentBraces: false
+  AfterNamespace: false
+  AfterExternBlock: true
+  AfterClass: true
+  AfterStruct: true
+  AfterEnum: true
+  AfterUnion: true
+  AfterFunction: true
+  AfterCaseLabel: false
+  AfterControlStatement: Never
+  BeforeElse: true
+  BeforeCatch: true
+  BeforeWhile: false
+  BeforeLambdaBody: false
+  SplitEmptyNamespace: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+
+# Spaces
+SpaceBeforeParens: ControlStatementsExceptControlMacros
+SpaceBeforeSquareBrackets: false
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpacesInParens: Never
+SpacesInAngles: Never
+SpacesInSquareBrackets: false
+SpaceInEmptyBlock: false
+
+# Preprocessor
+AlignConsecutiveMacros: None
+AlignEscapedNewlines: Left
+IndentPPDirectives: None
+PPIndentWidth: 2
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Standard headers, located in <> with no extension.
+  - Regex: '<[A-Za-z0-9\_\-]+>'
+    SortPriority: 1
+    Priority: 1
+
+  # Headers in <> with extension and optional prefix.
+  - Regex: '<.+>'
+    SortPriority: 2
+    Priority: 2
+
+  # Headers in "" with extension.
+  - Regex: '".+"'
+    SortPriority: 3
+    Priority: 3
+
+# Operators
+AlignOperands: Align
+AlignConsecutiveDeclarations: None
+AlignConsecutiveAssignments: None
+SpaceBeforeAssignmentOperators: true
+BreakBeforeTernaryOperators: true
+BreakBeforeBinaryOperators: None
+
+# Control statements
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+# Attributes
+BreakAfterAttributes: Leave
+
+# Namespaces
 NamespaceIndentation: None
 FixNamespaceComments: true
 
+# Access modifiers
+IndentAccessModifiers: false
+AccessModifierOffset: -1
 EmptyLineBeforeAccessModifier: Always
+EmptyLineAfterAccessModifier: Never
 
-AllowAllArgumentsOnNextLine: false
-AllowAllParametersOfDeclarationOnNextLine: false
-AllowAllConstructorInitializersOnNextLine: false
+# Constructors
+PackConstructorInitializers: Never
+SpaceBeforeCtorInitializerColon: true
+ConstructorInitializerIndentWidth: 2
+BreakConstructorInitializers: BeforeColon
 
+# Inheritance
+BreakInheritanceList: BeforeColon
+SpaceBeforeInheritanceColon: true
+
+# Enums
+AllowShortEnumsOnASingleLine: false
+
+# Functions
+AlwaysBreakAfterReturnType: None
+AllowShortFunctionsOnASingleLine: None
+IndentWrappedFunctionNames: false
+RemoveSemicolon: false
 BinPackParameters: false
 BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 
-AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortBlocksOnASingleLine: Empty
+# Lambdas
+LambdaBodyIndentation: Signature
 AllowShortLambdasOnASingleLine: All
-AllowShortEnumsOnASingleLine: false
-AllowShortLoopsOnASingleLine: false
 
-BreakBeforeBinaryOperators: None
-BreakBeforeTernaryOperators: true
-BreakBeforeConceptDeclarations: true
+# Templates
+SpaceAfterTemplateKeyword: true
+AlwaysBreakTemplateDeclarations: Yes
 
-BreakBeforeBraces: Stroustrup
+# Concepts
+IndentRequiresClause: true
+BreakBeforeConceptDeclarations: Always
+RequiresClausePosition: OwnLine
+RequiresExpressionIndentation: OuterScope
+AllowShortCompoundRequirementOnASingleLine: true
 
-BreakInheritanceList: BeforeComma
-BreakConstructorInitializers: BeforeComma
+# Switches
+AllowShortCaseLabelsOnASingleLine: true
+SpaceBeforeCaseColon: false
+IndentCaseLabels: true
+IndentCaseBlocks: false
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
+  AlignCaseColons: false
 
-SpaceBeforeCpp11BracedList: true
+# Bit fields
+AlignConsecutiveBitFields: Consecutive
+BitFieldColonSpacing: Both
+
+# Digit separators
+IntegerLiteralSeparator:
+  Binary: -1
+  Decimal: 0
+  Hex: -1
+
+# Strings
+BreakStringLiterals: false
+BreakAdjacentStringLiterals: false
+AlwaysBreakBeforeMultilineStrings: false
+
+# Comments
+SpacesBeforeTrailingComments: 2
+ReflowComments: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 0
+
+# Miscellaneous
+AlignAfterOpenBracket: Align
+BreakArrays: false
+SpacesInContainerLiterals: false
+IndentGotoLabels: false
+IndentExternBlock: Indent
+KeepEmptyLinesAtTheStartOfBlocks: false
+InsertNewlineAtEOF: true
+SortUsingDeclarations: Lexicographic
+RemoveParentheses: Leave

@@ -1,57 +1,92 @@
 cmake_minimum_required(VERSION 3.15)
 
+option(CEN_USE_SYSTEM_SDL "Use the system-wide SDL installation" OFF)
+option(CEN_USE_SDL_IMAGE "Build with SDL_image support" OFF)
+option(CEN_USE_SDL_MIXER "Build with SDL_mixer support" OFF)
+option(CEN_USE_SDL_TTF "Build with SDL_ttf support" OFF)
+option(CEN_BUILD_UNIT_TESTS "Build the unit test suite" OFF)
+option(CEN_BUILD_DEMO_TESTS "Build the demo test suite" OFF)
+option(CEN_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
+
+message(DEBUG "CEN_USE_SYSTEM_SDL: ${CEN_USE_SYSTEM_SDL}")
+message(DEBUG "CEN_USE_SDL_IMAGE: ${CEN_USE_SDL_IMAGE}")
+message(DEBUG "CEN_USE_SDL_MIXER: ${CEN_USE_SDL_MIXER}")
+message(DEBUG "CEN_USE_SDL_TTF: ${CEN_USE_SDL_TTF}")
+message(DEBUG "CEN_BUILD_UNIT_TESTS: ${CEN_BUILD_UNIT_TESTS}")
+message(DEBUG "CEN_BUILD_DEMO_TESTS: ${CEN_BUILD_DEMO_TESTS}")
+message(DEBUG "CEN_WARNINGS_AS_ERRORS: ${CEN_WARNINGS_AS_ERRORS}")
+
+if (CEN_BUILD_UNIT_TESTS)
+  list(APPEND VCPKG_MANIFEST_FEATURES "test")
+endif ()
+
+message(DEBUG "VCPKG_MANIFEST_FEATURES: ${VCPKG_MANIFEST_FEATURES}")
+
 if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 endif ()
 
 project(centurion
-        VERSION 7.3.0
+        VERSION "8.0.0"
         HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
-        LANGUAGES CXX)
+        LANGUAGES "CXX"
+        )
 
-if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
-  set(CMAKE_CXX_STANDARD 17)
+if (PROJECT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  set(CEN_SUBPROJECT OFF)
+else ()
+  set(CEN_SUBPROJECT ON)
 endif ()
 
-set(CXX_STANDARD_REQUIRED ON)
-set(CXX_EXTENSIONS OFF)
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+message(DEBUG "CEN_SUBPROJECT: ${CEN_SUBPROJECT}")
 
-# Build options
-option(BUILD_TESTS "Build the test suite" OFF)
-option(BUILD_EXAMPLES "Build the examples" OFF)
-option(INCLUDE_AUDIO_TESTS "Test audio components" ON)
-option(TREAT_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
+# Default to C++20 unless we're being included as a part of another project.
+if (NOT CEN_SUBPROJECT AND NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 20)
+endif ()
 
-include(cmake/centurion.cmake)
+message(DEBUG "CMAKE_CXX_STANDARD: ${CMAKE_CXX_STANDARD}")
 
-# Directories
+if (CMAKE_CXX_STANDARD LESS 20)
+  message(FATAL_ERROR "This version of Centurion requires at least C++20")
+endif ()
+
+if (NOT CEN_SUBPROJECT)
+  set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY OFF)
+endif ()
+
+message(DEBUG "CMAKE_SKIP_INSTALL_ALL_DEPENDENCY: ${CMAKE_SKIP_INSTALL_ALL_DEPENDENCY}")
+
 set(CEN_ROOT_DIR "${PROJECT_SOURCE_DIR}")
-set(CEN_RESOURCES_DIR "${PROJECT_SOURCE_DIR}/test/resources")
-set(CEN_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
-set(CEN_BINARIES_DIR "${PROJECT_SOURCE_DIR}/bin")
 set(CEN_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external")
+set(CEN_ASSETS_DIR "${PROJECT_SOURCE_DIR}/assets")
 
-# Target names
-set(CENTURION_LIB_TARGET libcenturion)
-set(CENTURION_TEST_TARGET centurion-tests)
-set(CENTURION_MOCK_TARGET centurion-mocks)
+message(DEBUG "CEN_ROOT_DIR: ${CEN_ROOT_DIR}")
+message(DEBUG "CEN_EXTERNAL_DIR: ${CEN_EXTERNAL_DIR}")
+message(DEBUG "CEN_ASSETS_DIR: ${CEN_ASSETS_DIR}")
 
-# System dependencies
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
+include("${PROJECT_SOURCE_DIR}/cmake/centurion.cmake")
 
-if (BUILD_TESTS)
-  # Vcpkg test dependencies
-  find_package(GTest CONFIG REQUIRED)
-  find_package(cereal CONFIG REQUIRED)
-  find_package(GLEW REQUIRED)
+if (CEN_USE_SYSTEM_SDL)
+  message(FATAL_ERROR "System-wide SDL3 installation is currently not supported")
+else ()
+  set(SDL_DISABLE_INSTALL ON)
+  set(SDL_DISABLE_UNINSTALL ON)
 
-  add_subdirectory(test)
+  add_subdirectory("${PROJECT_SOURCE_DIR}/external/SDL")
+
+  if (CEN_USE_SDL_IMAGE)
+    add_subdirectory("${PROJECT_SOURCE_DIR}/external/SDL_image")
+  endif ()
+
+  if (CEN_USE_SDL_MIXER)
+    add_subdirectory("${PROJECT_SOURCE_DIR}/external/SDL_mixer")
+  endif ()
+
+  if (CEN_USE_SDL_TTF)
+    add_subdirectory("${PROJECT_SOURCE_DIR}/external/SDL_ttf")
+  endif ()
 endif ()
 
-if (BUILD_EXAMPLES)
-  add_subdirectory(examples)
-endif ()
+add_subdirectory(lib)
+add_subdirectory(test)

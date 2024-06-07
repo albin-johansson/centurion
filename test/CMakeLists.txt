@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.15)
-
 project(centurion-test CXX)
 
-enable_testing()
+if (CEN_BUILD_DEMO_TESTS)
+  add_subdirectory(demo)
+endif ()
 
-add_subdirectory(unit-tests)
-add_subdirectory(mocked-tests)
+if (CEN_BUILD_UNIT_TESTS)
+  find_package(GTest CONFIG REQUIRED)
+  add_subdirectory(unit)
+endif ()

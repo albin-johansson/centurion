@@ -33,6 +33,11 @@ inline error_message_fn _error_message_callback = _default_error_callback;
 
 }  // namespace error_detail
 
+void reset_error_message_callback() noexcept
+{
+  _error_message_callback = _default_error_callback;
+}
+
 void set_error_message_callback(const error_message_fn callback) noexcept
 {
   _error_message_callback = callback;

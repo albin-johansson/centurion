@@ -15,6 +15,8 @@ enum class result : std::uint8_t
 
 using error_message_fn = void (*)(std::string_view) noexcept;
 
+void reset_error_message_callback() noexcept;
+
 void set_error_message_callback(error_message_fn callback) noexcept;
 
 void emit_error_message(std::string_view error_message) noexcept;

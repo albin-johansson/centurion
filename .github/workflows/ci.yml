@@ -98,16 +98,18 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt install cmake \
+          sudo apt install build-essential \
+                           git \
+                           make \
+                           pkg-config \
+                           cmake \
                            ninja-build \
-                           xvfb \
                            gnome-desktop-testing \
                            libasound2-dev \
                            libpulse-dev \
                            libaudio-dev \
                            libjack-dev \
                            libsndio-dev \
-                           libsamplerate0-dev \
                            libx11-dev \
                            libxext-dev \
                            libxrandr-dev \
@@ -115,7 +117,6 @@ jobs:
                            libxfixes-dev \
                            libxi-dev \
                            libxss-dev \
-                           libwayland-dev \
                            libxkbcommon-dev \
                            libdrm-dev \
                            libgbm-dev \
@@ -126,11 +127,7 @@ jobs:
                            libibus-1.0-dev \
                            libudev-dev \
                            fcitx-libs-dev \
-                           libpipewire-0.3-dev \
-                           libdecor-0-dev \
-                           libfreetype-dev \
-                           fonts-dejavu-core \
-                           libharfbuzz-dev
+                           xvfb
 
       - name: Restore assets
         id: restore-assets
@@ -253,8 +250,8 @@ jobs:
                    -DCMAKE_BUILD_TYPE=Debug `
                    -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} `
                    -DCEN_USE_SYSTEM_SDL=OFF `
-                   -DCEN_USE_SDL_IMAGE=ON `
-                   -DCEN_USE_SDL_MIXER=ON `
+                   -DCEN_USE_SDL_IMAGE=OFF `
+                   -DCEN_USE_SDL_MIXER=OFF `
                    -DCEN_USE_SDL_TTF=ON `
                    -DCEN_BUILD_UNIT_TESTS=ON `
                    -DCEN_BUILD_DEMO_TESTS=ON `

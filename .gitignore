@@ -55,8 +55,9 @@
 build
 cmake-build-*
 
-# Python virtual environments
+# Python artifacts
 **/venv
+**/__pycache__/**
 
 # Script files
 scripts/.cache

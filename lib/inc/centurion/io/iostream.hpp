@@ -27,6 +27,8 @@ class iostream_base
   using size_type = std::size_t;
   using difference_type = std::int64_t;
 
+  virtual ~iostream_base() noexcept = default;
+
   // SDL_SeekIO
   auto seek(seek_mode mode, difference_type offset = 0) noexcept
       -> std::optional<difference_type>;

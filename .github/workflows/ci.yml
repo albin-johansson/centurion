@@ -33,7 +33,7 @@ jobs:
       - name: Download assets
         working-directory: ./scripts
         if: steps.restore-assets.outputs.cache-hit != 'true'
-        run: python download_assets.py
+        run: python download_assets.py --outdir "../assets"
 
       - name: Restore Vcpkg artifacts
         id: restore-vcpkg-artifacts
@@ -142,7 +142,7 @@ jobs:
       - name: Download assets
         working-directory: ./scripts
         if: steps.restore-assets.outputs.cache-hit != 'true'
-        run: python download_assets.py
+        run: python download_assets.py --outdir "../assets"
 
       - name: Restore Vcpkg
         id: restore-vcpkg-artifacts
@@ -224,7 +224,7 @@ jobs:
       - name: Download assets
         working-directory: ./scripts
         if: steps.restore-assets.outputs.cache-hit != 'true'
-        run: python download_assets.py
+        run: python download_assets.py --outdir "../assets"
 
       - name: Restore Vcpkg
         id: restore-vcpkg-artifacts

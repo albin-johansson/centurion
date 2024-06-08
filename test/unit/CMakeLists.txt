@@ -16,3 +16,4 @@ target_link_libraries(centurion-unit-tests
                       )
 
 cen_install_assets("${PROJECT_BINARY_DIR}")
+cen_install_sdl_runtime_dependencies("${PROJECT_BINARY_DIR}")

@@ -182,7 +182,7 @@ class basic_renderer final {
 
   [[nodiscard]] auto make_texture(file& file) const -> texture
   {
-    if (auto* ptr = IMG_LoadTextureRW(get(), file.data(), SDL_FALSE)) {
+    if (auto* ptr = IMG_LoadTexture_RW(get(), file.data(), SDL_FALSE)) {
       return texture {ptr};
     }
     else {

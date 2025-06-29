@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION "3.30")
 option(CEN_ENABLE_TESTS "Enable the test suites" "OFF")
 option(CEN_ENABLE_EXAMPLES "Enable the examples" "OFF")
 
+if (CEN_ENABLE_TESTS)
+  list(APPEND VCPKG_MANIFEST_FEATURES "tests")
+endif ()
+
 message(DEBUG "CEN_ENABLE_TESTS: ${CEN_ENABLE_TESTS}")
 message(DEBUG "CEN_ENABLE_EXAMPLES: ${CEN_ENABLE_EXAMPLES}")
 
@@ -11,6 +15,8 @@ project(centurion
         HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
         LANGUAGES "CXX"
         )
+
+message(DEBUG "VCPKG_MANIFEST_FEATURES: ${VCPKG_MANIFEST_FEATURES}")
 
 find_package(SDL3 CONFIG REQUIRED)
 
@@ -24,6 +30,10 @@ set_target_properties(centurion_lib
                       PREFIX ""
                       )
 
+target_sources(centurion_lib
+               PUBLIC FILE_SET "HEADERS" BASE_DIRS "include" FILES
+               "include/centurion/video.hpp"
+               )
 
 target_link_libraries(centurion_lib
                       PUBLIC

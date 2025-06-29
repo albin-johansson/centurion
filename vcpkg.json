@@ -1,16 +1,27 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "centurion",
-  "description": "A modern C++ wrapper library for SDL2",
+  "description": "A C++20 wrapper library for SDL3",
   "license": "MIT",
-  "version-semver": "7.3.0",
+  "version-semver": "8.0.0",
   "maintainers": [
     "albin-johansson"
   ],
-  "builtin-baseline": "638b1588be3a265a9c7ad5b212cef72a1cad336a",
+  "builtin-baseline": "0cb95c860ea83aafc1b24350510b30dec535989a",
   "dependencies": [
-    "gtest",
-    "glew",
-    "cereal"
-  ]
+    {
+      "name": "sdl3",
+      "features": [
+        "vulkan"
+      ]
+    }
+  ],
+  "features": {
+    "tests": {
+      "description": "Enable the test suites",
+      "dependencies": [
+        "gtest"
+      ]
+    }
+  }
 }

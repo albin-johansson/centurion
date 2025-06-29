@@ -20,8 +20,7 @@
     "tests": {
       "description": "Enable the test suites",
       "dependencies": [
-        "gtest",
-        "meekrosoft-fff"
+        "gtest"
       ]
     }
   }

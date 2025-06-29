@@ -24,12 +24,9 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -GNinja                             \
-                   -DCMAKE_BUILD_TYPE=Debug            \
-                   -DCMAKE_COMPILE_WARNING_AS_ERROR=ON \
-                   -DCEN_ENABLE_TESTS=ON               \
-                   -DCEN_ENABLE_EXAMPLES=OFF           \
-                   -DCEN_ENABLE_CXX20_MODULE=OFF
+          cmake .. --preset=testing-dbg                \
+                   --log-level=DEBUG                   \
+                   -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
 
       - name: "Build"
         run: |

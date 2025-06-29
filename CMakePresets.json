@@ -1,0 +1,59 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 30
+  },
+  "configurePresets": [
+    {
+      "name": "_default",
+      "hidden": true,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+    {
+      "name": "_default-dbg",
+      "hidden": true,
+      "inherits": [
+        "_default"
+      ],
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "_default-rel",
+      "hidden": true,
+      "inherits": [
+        "_default"
+      ],
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "testing-dbg",
+      "inherits": [
+        "_default-dbg"
+      ],
+      "cacheVariables": {
+        "CEN_ENABLE_TESTS": "ON",
+        "CEN_ENABLE_EXAMPLES": "ON"
+      }
+    },
+    {
+      "name": "testing-rel",
+      "inherits": [
+        "_default-rel"
+      ],
+      "cacheVariables": {
+        "CEN_ENABLE_TESTS": "ON",
+        "CEN_ENABLE_EXAMPLES": "ON"
+      }
+    }
+  ]
+}

@@ -32,6 +32,7 @@ set_target_properties(centurion_lib
 
 target_sources(centurion_lib
                PUBLIC FILE_SET "HEADERS" BASE_DIRS "include" FILES
+               "include/centurion/handle.hpp"
                "include/centurion/video.hpp"
                )
 

@@ -42,7 +42,8 @@ cen_prepare_target_properties(centurion_lib)
 target_sources(centurion_lib
                PUBLIC FILE_SET "HEADERS" BASE_DIRS "include" FILES
                "include/centurion/internal/defer.hpp"
-               "include/centurion/handle.hpp"
+               "include/centurion/util/common.hpp"
+               "include/centurion/util/handle.hpp"
                "include/centurion/init.hpp"
                "include/centurion/video.hpp"
 

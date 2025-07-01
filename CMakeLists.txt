@@ -44,6 +44,7 @@ target_sources(centurion_lib
                "include/centurion/gpu/buffer.hpp"
                "include/centurion/gpu/device.hpp"
                "include/centurion/gpu/sampler.hpp"
+               "include/centurion/gpu/swapchain.hpp"
                "include/centurion/internal/defer.hpp"
                "include/centurion/util/common.hpp"
                "include/centurion/util/handle.hpp"

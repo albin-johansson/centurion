@@ -5,6 +5,7 @@ module;
 #include <centurion/gpu/buffer.hpp>
 #include <centurion/gpu/device.hpp>
 #include <centurion/gpu/sampler.hpp>
+#include <centurion/gpu/swapchain.hpp>
 #include <centurion/util/common.hpp>
 #include <centurion/util/handle.hpp>
 
@@ -22,6 +23,12 @@ using cen::GpuDevice;
 
 // centurion/gpu/sampler.hpp
 using cen::GpuSampler;
+
+// centurion/gpu/swapchain.hpp
+using cen::GpuPresentMode;
+using cen::GpuPresentModeRepr;
+using cen::GpuSwapchainComposition;
+using cen::GpuSwapchainCompositionRepr;
 
 // centurion/util/common.hpp
 using cen::i16;

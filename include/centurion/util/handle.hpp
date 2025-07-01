@@ -452,6 +452,17 @@ class GpuHandleDeleter<SDL_GPUComputePipeline*> final
   }
 };
 
+/// Deleter for `SDL_GPUFence*`.
+template <>
+class GpuHandleDeleter<SDL_GPUFence*> final
+{
+ public:
+  static void destroy(SDL_GPUDevice* device, SDL_GPUFence* handle) noexcept
+  {
+    SDL_ReleaseGPUFence(device, handle);
+  }
+};
+
 /// A (possibly owning) handle to an SDL GPU resource.
 ///
 /// This is the GPU version of `cen::Handle`, refer to its documentation for more details.
@@ -464,6 +475,7 @@ class GpuHandleDeleter<SDL_GPUComputePipeline*> final
 /// - `SDL_GPUTexture*`
 /// - `SDL_GPUGraphicsPipeline*`
 /// - `SDL_GPUComputePipeline*`
+/// - `SDL_GPUFence*`
 ///
 /// \tparam HandleType The handle type.
 ///

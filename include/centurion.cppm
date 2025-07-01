@@ -5,6 +5,7 @@ module;
 #include <centurion/gpu/buffer.hpp>
 #include <centurion/gpu/compute_pass.hpp>
 #include <centurion/gpu/device.hpp>
+#include <centurion/gpu/fence.hpp>
 #include <centurion/gpu/pipeline.hpp>
 #include <centurion/gpu/render_pass.hpp>
 #include <centurion/gpu/sampler.hpp>
@@ -29,6 +30,9 @@ using cen::GpuComputePass;
 
 // centurion/gpu/device.hpp
 using cen::GpuDevice;
+
+// centurion/gpu/fence.hpp
+using cen::GpuFence;
 
 // centurion/gpu/pipeline.hpp
 using cen::GpuComputePipeline;

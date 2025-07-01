@@ -2,11 +2,16 @@
 
 module;
 
+#include <centurion/gpu/buffer.hpp>
+#include <centurion/util/common.hpp>
 #include <centurion/util/handle.hpp>
 
 export module centurion;
 
 export namespace cen {
+
+// centurion/gpu/buffer.hpp
+using cen::GpuBuffer;
 
 // centurion/util/common.hpp
 using cen::i16;

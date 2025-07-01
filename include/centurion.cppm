@@ -3,6 +3,7 @@
 module;
 
 #include <centurion/gpu/buffer.hpp>
+#include <centurion/gpu/sampler.hpp>
 #include <centurion/util/common.hpp>
 #include <centurion/util/handle.hpp>
 
@@ -10,8 +11,13 @@ export module centurion;
 
 export namespace cen {
 
+// NOLINTBEGIN(*-unused-using-decls)
+
 // centurion/gpu/buffer.hpp
 using cen::GpuBuffer;
+
+// centurion/gpu/sampler.hpp
+using cen::GpuSampler;
 
 // centurion/util/common.hpp
 using cen::i16;
@@ -30,5 +36,7 @@ using cen::GpuHandleDeleter;
 using cen::Handle;
 using cen::HandleDeleter;
 using cen::HandleMode;
+
+// NOLINTEND(*-unused-using-decls)
 
 }  // namespace cen

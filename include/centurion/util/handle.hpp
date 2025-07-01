@@ -419,6 +419,17 @@ class GpuHandleDeleter<SDL_GPUSampler*> final
   }
 };
 
+/// Deleter for `SDL_GPUTexture*`.
+template <>
+class GpuHandleDeleter<SDL_GPUTexture*> final
+{
+ public:
+  static void destroy(SDL_GPUDevice* device, SDL_GPUTexture* handle) noexcept
+  {
+    SDL_ReleaseGPUTexture(device, handle);
+  }
+};
+
 /// A (possibly owning) handle to an SDL GPU resource.
 ///
 /// This is the GPU version of `cen::Handle`, refer to its documentation for more details.
@@ -428,6 +439,7 @@ class GpuHandleDeleter<SDL_GPUSampler*> final
 /// - `SDL_GPUBuffer*`
 /// - `SDL_GPUTransferBuffer*`
 /// - `SDL_GPUSampler*`
+/// - `SDL_GPUTexture*`
 ///
 /// \tparam HandleType The handle type.
 ///

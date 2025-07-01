@@ -44,4 +44,45 @@ auto GpuBuffer::mode() const noexcept -> HandleMode
   return mHandle.mode();
 }
 
+GpuTransferBuffer::GpuTransferBuffer(SDL_GPUDevice* const device,
+                                     SDL_GPUTransferBuffer* const buffer,
+                                     const HandleMode mode) noexcept :
+  mHandle {device, buffer, mode}
+{}
+
+auto GpuTransferBuffer::map(const bool cycle) noexcept -> void*
+{
+  return SDL_MapGPUTransferBuffer(mHandle.device(), mHandle.get(), cycle);
+}
+
+void GpuTransferBuffer::unmap() noexcept
+{
+  SDL_UnmapGPUTransferBuffer(mHandle.device(), mHandle.get());
+}
+
+auto GpuTransferBuffer::device() const noexcept -> SDL_GPUDevice*
+{
+  return mHandle.device();
+}
+
+auto GpuTransferBuffer::get() noexcept -> SDL_GPUTransferBuffer*
+{
+  return mHandle.get();
+}
+
+auto GpuTransferBuffer::get() const noexcept -> const SDL_GPUTransferBuffer*
+{
+  return mHandle.get();
+}
+
+auto GpuTransferBuffer::const_get() const noexcept -> SDL_GPUTransferBuffer*
+{
+  return mHandle.get();
+}
+
+auto GpuTransferBuffer::mode() const noexcept -> HandleMode
+{
+  return mHandle.mode();
+}
+
 }  // namespace cen

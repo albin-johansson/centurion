@@ -17,6 +17,7 @@ export namespace cen {
 
 // centurion/gpu/buffer.hpp
 using cen::GpuBuffer;
+using cen::GpuTransferBuffer;
 
 // centurion/gpu/device.hpp
 using cen::GpuDevice;

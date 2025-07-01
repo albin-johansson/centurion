@@ -43,6 +43,7 @@ target_sources(centurion_lib
                PUBLIC FILE_SET "HEADERS" BASE_DIRS "include" FILES
                "include/centurion/gpu/buffer.hpp"
                "include/centurion/gpu/device.hpp"
+               "include/centurion/gpu/pipeline.hpp"
                "include/centurion/gpu/sampler.hpp"
                "include/centurion/gpu/swapchain.hpp"
                "include/centurion/gpu/texture.hpp"
@@ -55,6 +56,7 @@ target_sources(centurion_lib
                PRIVATE
                "src/centurion/gpu/buffer.cpp"
                "src/centurion/gpu/device.cpp"
+               "src/centurion/gpu/pipeline.cpp"
                "src/centurion/gpu/sampler.cpp"
                "src/centurion/gpu/texture.cpp"
                "src/centurion/init.cpp"

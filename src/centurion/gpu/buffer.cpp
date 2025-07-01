@@ -10,10 +10,6 @@ GpuBuffer::GpuBuffer(SDL_GPUDevice* const device,
   mHandle {device, buffer, mode}
 {}
 
-GpuBuffer::GpuBuffer() noexcept :
-  GpuBuffer {nullptr, nullptr, HandleMode::kOwning}
-{}
-
 void GpuBuffer::set_name(const zstring name) noexcept
 {
   SDL_SetGPUBufferName(mHandle.device(), mHandle.get(), name);

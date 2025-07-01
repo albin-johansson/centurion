@@ -17,7 +17,7 @@ class GpuSampler final
 {
  public:
   /// Creates a null owning GPU sampler.
-  GpuSampler() noexcept;
+  GpuSampler() noexcept = default;
 
   /// Creates a GPU sampler.
   ///

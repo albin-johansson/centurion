@@ -18,7 +18,7 @@ class GpuBuffer final
 {
  public:
   /// Creates a null owning GPU buffer.
-  GpuBuffer() noexcept;
+  GpuBuffer() noexcept = default;
 
   /// Creates a GPU buffer.
   ///

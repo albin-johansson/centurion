@@ -10,10 +10,6 @@ GpuSampler::GpuSampler(SDL_GPUDevice* const device,
   mHandle {device, sampler, mode}
 {}
 
-GpuSampler::GpuSampler() noexcept :
-  GpuSampler {nullptr, nullptr}
-{}
-
 auto GpuSampler::device() const noexcept -> SDL_GPUDevice*
 {
   return mHandle.device();

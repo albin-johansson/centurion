@@ -6,6 +6,7 @@ module;
 #include <centurion/gpu/device.hpp>
 #include <centurion/gpu/pipeline.hpp>
 #include <centurion/gpu/sampler.hpp>
+#include <centurion/gpu/shader.hpp>
 #include <centurion/gpu/swapchain.hpp>
 #include <centurion/gpu/texture.hpp>
 #include <centurion/util/common.hpp>
@@ -30,6 +31,9 @@ using cen::GpuGraphicsPipeline;
 
 // centurion/gpu/sampler.hpp
 using cen::GpuSampler;
+
+// centurion/gpu/shader.hpp
+using cen::GpuShader;
 
 // centurion/gpu/swapchain.hpp
 using cen::GpuPresentMode;

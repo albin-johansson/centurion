@@ -45,6 +45,7 @@ target_sources(centurion_lib
                "include/centurion/gpu/device.hpp"
                "include/centurion/gpu/pipeline.hpp"
                "include/centurion/gpu/sampler.hpp"
+               "include/centurion/gpu/shader.hpp"
                "include/centurion/gpu/swapchain.hpp"
                "include/centurion/gpu/texture.hpp"
                "include/centurion/internal/defer.hpp"
@@ -58,6 +59,7 @@ target_sources(centurion_lib
                "src/centurion/gpu/device.cpp"
                "src/centurion/gpu/pipeline.cpp"
                "src/centurion/gpu/sampler.cpp"
+               "src/centurion/gpu/shader.cpp"
                "src/centurion/gpu/texture.cpp"
                "src/centurion/init.cpp"
                )

@@ -5,6 +5,7 @@ module;
 #include <centurion/gpu/buffer.hpp>
 #include <centurion/gpu/device.hpp>
 #include <centurion/gpu/pipeline.hpp>
+#include <centurion/gpu/render_pass.hpp>
 #include <centurion/gpu/sampler.hpp>
 #include <centurion/gpu/shader.hpp>
 #include <centurion/gpu/swapchain.hpp>
@@ -28,6 +29,9 @@ using cen::GpuDevice;
 // centurion/gpu/pipeline.hpp
 using cen::GpuComputePipeline;
 using cen::GpuGraphicsPipeline;
+
+// centurion/gpu/render_pass.hpp
+using cen::GpuRenderPass;
 
 // centurion/gpu/sampler.hpp
 using cen::GpuSampler;

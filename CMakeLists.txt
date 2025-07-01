@@ -42,6 +42,7 @@ cen_prepare_target_properties(centurion_lib)
 target_sources(centurion_lib
                PUBLIC FILE_SET "HEADERS" BASE_DIRS "include" FILES
                "include/centurion/gpu/buffer.hpp"
+               "include/centurion/gpu/compute_pass.hpp"
                "include/centurion/gpu/device.hpp"
                "include/centurion/gpu/pipeline.hpp"
                "include/centurion/gpu/render_pass.hpp"
@@ -57,6 +58,7 @@ target_sources(centurion_lib
 
                PRIVATE
                "src/centurion/gpu/buffer.cpp"
+               "src/centurion/gpu/compute_pass.cpp"
                "src/centurion/gpu/device.cpp"
                "src/centurion/gpu/pipeline.cpp"
                "src/centurion/gpu/render_pass.cpp"

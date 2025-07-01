@@ -3,6 +3,7 @@
 module;
 
 #include <centurion/gpu/buffer.hpp>
+#include <centurion/gpu/compute_pass.hpp>
 #include <centurion/gpu/device.hpp>
 #include <centurion/gpu/pipeline.hpp>
 #include <centurion/gpu/render_pass.hpp>
@@ -22,6 +23,9 @@ export namespace cen {
 // centurion/gpu/buffer.hpp
 using cen::GpuBuffer;
 using cen::GpuTransferBuffer;
+
+// centurion/gpu/compute_pass.hpp
+using cen::GpuComputePass;
 
 // centurion/gpu/device.hpp
 using cen::GpuDevice;

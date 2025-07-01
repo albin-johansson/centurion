@@ -13,7 +13,7 @@ namespace cen {
 
 /// Represents a GPU buffer.
 ///
-/// \see `SDL_GPUBuffer`
+/// \see SDL_GPUBuffer
 class GpuBuffer final
 {
  public:

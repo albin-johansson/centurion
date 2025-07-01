@@ -42,6 +42,7 @@ cen_prepare_target_properties(centurion_lib)
 target_sources(centurion_lib
                PUBLIC FILE_SET "HEADERS" BASE_DIRS "include" FILES
                "include/centurion/gpu/buffer.hpp"
+               "include/centurion/gpu/device.hpp"
                "include/centurion/gpu/sampler.hpp"
                "include/centurion/internal/defer.hpp"
                "include/centurion/util/common.hpp"
@@ -51,6 +52,7 @@ target_sources(centurion_lib
 
                PRIVATE
                "src/centurion/gpu/buffer.cpp"
+               "src/centurion/gpu/device.cpp"
                "src/centurion/gpu/sampler.cpp"
                "src/centurion/init.cpp"
                )

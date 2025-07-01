@@ -3,6 +3,7 @@
 module;
 
 #include <centurion/gpu/buffer.hpp>
+#include <centurion/gpu/device.hpp>
 #include <centurion/gpu/sampler.hpp>
 #include <centurion/util/common.hpp>
 #include <centurion/util/handle.hpp>
@@ -15,6 +16,9 @@ export namespace cen {
 
 // centurion/gpu/buffer.hpp
 using cen::GpuBuffer;
+
+// centurion/gpu/device.hpp
+using cen::GpuDevice;
 
 // centurion/gpu/sampler.hpp
 using cen::GpuSampler;
